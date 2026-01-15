@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/canon.anchors.schema.json",
+  "title": "UMCP Canon Anchors Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "canon", "umcp_canon"],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "schemas/canon.anchors.schema.json"
+    },
+    "canon": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pre", "post", "weld_id"],
+      "properties": {
+        "pre": {
+          "$ref": "#/$defs/canonAnchor"
+        },
+        "post": {
+          "$ref": "#/$defs/canonAnchor"
+        },
+        "weld_id": {
+          "type": "string",
+          "minLength": 3
+        }
+      }
+    },
+    "umcp_canon": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["timezone", "contract_id", "closure_registry_id", "regimes"],
+      "properties": {
+        "timezone": {
+          "type": "string",
+          "minLength": 3
+        },
+        "contract_id": {
+          "type": "string",
+          "minLength": 3
+        },
+        "closure_registry_id": {
+          "type": "string",
+          "minLength": 3
+        },
+        "tier1_reserved_symbols": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        },
+        "regimes": {
+          "$ref": "#/$defs/regimes"
+        }
+      }
+    },
+    "notes": { "type": "string" },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "doiString": {
+      "type": "string",
+      "minLength": 6,
+      "pattern": "^10\\.[0-9]{4,9}/.+$"
+    },
+    "canonAnchor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "doi"],
+      "properties": {
+        "title": { "type": "string", "minLength": 1 },
+        "doi": { "$ref": "#/$defs/doiString" }
+      }
+    },
+    "regimes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stable", "watch", "collapse"],
+      "properties": {
+        "stable": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["omega_lt", "F_gt", "S_lt", "C_lt"],
+          "properties": {
+            "omega_lt": { "type": "number" },
+            "F_gt": { "type": "number" },
+            "S_lt": { "type": "number" },
+            "C_lt": { "type": "number" }
+          }
+        },
+        "watch": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["omega_range"],
+          "properties": {
+            "omega_range": {
+              "type": "array",
+              "prefixItems": [{ "type": "number" }, { "type": "number" }],
+              "items": false
+            }
+          }
+        },
+        "collapse": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["omega_gte", "critical_overlay"],
+          "properties": {
+            "omega_gte": { "type": "number" },
+            "critical_overlay": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["min_IC_lt"],
+              "properties": {
+                "min_IC_lt": { "type": "number" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
