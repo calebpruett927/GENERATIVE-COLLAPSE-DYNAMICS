@@ -1,63 +1,206 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "schemas/canon.anchors.schema.json",
-  "title": "UMCP Canon Anchors Schema",
+  "title": "UMCP Canon Anchors (identifiers + frozen defaults; NOT claims)",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema", "canon", "umcp_canon"],
+  "required": ["schema", "umcp_canon"],
   "properties": {
     "schema": {
       "type": "string",
       "const": "schemas/canon.anchors.schema.json"
     },
-    "canon": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["pre", "post", "weld_id"],
-      "properties": {
-        "pre": {
-          "$ref": "#/$defs/canonAnchor"
-        },
-        "post": {
-          "$ref": "#/$defs/canonAnchor"
-        },
-        "weld_id": {
-          "type": "string",
-          "minLength": 3
-        }
-      }
-    },
     "umcp_canon": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["timezone", "contract_id", "closure_registry_id", "regimes"],
+      "required": [
+        "canon_id",
+        "timezone",
+        "anchors",
+        "contract_defaults",
+        "artifacts",
+        "regimes"
+      ],
       "properties": {
-        "timezone": {
-          "type": "string",
-          "minLength": 3
+        "canon_id": { "type": "string", "minLength": 3 },
+        "scope": { "type": "string" },
+        "timezone": { "type": "string", "minLength": 3 },
+        "address": { "type": "string" },
+
+        "hygiene": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["weld_definition", "eid_definition", "tier_discipline", "no_improvisation"],
+          "properties": {
+            "weld_definition": { "type": "string", "minLength": 3 },
+            "eid_definition": { "type": "string", "minLength": 3 },
+            "tier_discipline": { "type": "string", "minLength": 3 },
+            "no_improvisation": { "type": "boolean" }
+          }
         },
-        "contract_id": {
-          "type": "string",
-          "minLength": 3
+
+        "anchors": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["pre", "post", "weld"],
+          "properties": {
+            "pre": { "$ref": "#/$defs/anchorRef" },
+            "post": { "$ref": "#/$defs/anchorRef" },
+            "weld": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id"],
+              "properties": {
+                "id": { "type": "string", "minLength": 3 }
+              }
+            }
+          }
         },
-        "closure_registry_id": {
-          "type": "string",
-          "minLength": 3
+
+        "identifiers": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "book_id": { "type": "string", "minLength": 3 },
+            "casepack_publication_doi": { "$ref": "#/$defs/doiString" }
+          }
         },
-        "tier1_reserved_symbols": {
-          "type": "array",
-          "items": { "type": "string", "minLength": 1 },
-          "minItems": 1
+
+        "contract_defaults": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["contract_id", "embedding", "tier_1_kernel"],
+          "properties": {
+            "contract_id": { "type": "string", "minLength": 3 },
+
+            "embedding": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["interval", "face", "oor_policy", "epsilon"],
+              "properties": {
+                "interval": {
+                  "type": "array",
+                  "prefixItems": [{ "type": "number" }, { "type": "number" }],
+                  "items": false
+                },
+                "face": { "type": "string", "enum": ["pre_clip", "post_clip"] },
+                "oor_policy": { "type": "string", "enum": ["clip_and_flag", "flag_only", "reject_row"] },
+                "epsilon": { "type": "number", "exclusiveMinimum": 0 }
+              }
+            },
+
+            "tier_1_kernel": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["reserved_symbols_ascii", "reserved_symbols_unicode", "frozen_parameters", "tolerances", "typed_censoring"],
+              "properties": {
+                "reserved_symbols_ascii": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": { "type": "string", "minLength": 1 }
+                },
+                "reserved_symbols_unicode": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": { "type": "string", "minLength": 1 }
+                },
+
+                "frozen_parameters": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["p", "alpha", "lambda", "eta"],
+                  "properties": {
+                    "p": { "type": "integer", "minimum": 1 },
+                    "alpha": { "type": "number", "minimum": 0 },
+                    "lambda": { "type": "number", "minimum": 0 },
+                    "eta": { "type": "number", "exclusiveMinimum": 0 }
+                  }
+                },
+
+                "tolerances": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["tol_seam", "tol_id"],
+                  "properties": {
+                    "tol_seam": { "type": "number", "minimum": 0 },
+                    "tol_id": { "type": "number", "minimum": 0 }
+                  }
+                },
+
+                "typed_censoring": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["tau_R_domain", "run_status_domain", "no_return_no_credit"],
+                  "properties": {
+                    "tau_R_domain": { "type": "string", "minLength": 3 },
+                    "run_status_domain": {
+                      "type": "array",
+                      "minItems": 3,
+                      "uniqueItems": true,
+                      "items": { "type": "string", "enum": ["CONFORMANT", "NONCONFORMANT", "NON_EVALUABLE"] }
+                    },
+                    "no_return_no_credit": { "type": "string", "minLength": 3 }
+                  }
+                }
+              }
+            }
+          }
         },
-        "regimes": {
-          "$ref": "#/$defs/regimes"
+
+        "artifacts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["receipts", "eid", "ss1m_minimum_fields"],
+          "properties": {
+            "receipts": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["ss1m_required_every_run", "seam_receipt_required_for_continuity_claims"],
+              "properties": {
+                "ss1m_required_every_run": { "type": "boolean" },
+                "seam_receipt_required_for_continuity_claims": { "type": "boolean" }
+              }
+            },
+            "eid": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["fields", "default_bundle"],
+              "properties": {
+                "fields": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": { "type": "string", "minLength": 1 }
+                },
+                "default_bundle": { "type": "string", "minLength": 3 }
+              }
+            },
+            "ss1m_minimum_fields": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["required"],
+              "properties": {
+                "required": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": { "type": "string", "minLength": 1 }
+                }
+              }
+            }
+          }
+        },
+
+        "regimes": { "$ref": "#/$defs/regimes" },
+
+        "change_control": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mutation_policy", "provenance_reference"],
+          "properties": {
+            "mutation_policy": { "type": "string", "minLength": 3 },
+            "provenance_reference": { "type": "string", "minLength": 3 }
+          }
         }
       }
-    },
-    "notes": { "type": "string" },
-    "extensions": {
-      "type": "object",
-      "additionalProperties": true
     }
   },
   "$defs": {
@@ -66,7 +209,7 @@
       "minLength": 6,
       "pattern": "^10\\.[0-9]{4,9}/.+$"
     },
-    "canonAnchor": {
+    "anchorRef": {
       "type": "object",
       "additionalProperties": false,
       "required": ["title", "doi"],
@@ -78,7 +221,7 @@
     "regimes": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["stable", "watch", "collapse"],
+      "required": ["stable", "watch", "collapse", "equator_diagnostic"],
       "properties": {
         "stable": {
           "type": "object",
@@ -117,6 +260,15 @@
                 "min_IC_lt": { "type": "number" }
               }
             }
+          }
+        },
+        "equator_diagnostic": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["enabled", "note"],
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "note": { "type": "string", "minLength": 3 }
           }
         }
       }
