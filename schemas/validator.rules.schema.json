@@ -1,0 +1,204 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/validator.rules.schema.json",
+  "title": "UMCP Validator Rules Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "version", "rules"],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "schemas/validator.rules.schema.json"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "defaults": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "numeric_tolerance": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "atol": { "type": "number", "minimum": 0 },
+            "rtol": { "type": "number", "minimum": 0 }
+          }
+        },
+        "on_missing": {
+          "$ref": "#/$defs/onMissingPolicy"
+        }
+      }
+    },
+    "rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/rule" }
+    }
+  },
+  "$defs": {
+    "severity": {
+      "type": "string",
+      "enum": ["ERROR", "WARN", "INFO"]
+    },
+    "onMissingPolicy": {
+      "type": "string",
+      "enum": ["error", "warn", "skip"]
+    },
+    "scope": {
+      "type": "string",
+      "enum": ["psi_trace", "invariants", "regime"]
+    },
+    "ruleId": {
+      "type": "string",
+      "pattern": "^[A-Z][0-9]{3}$"
+    },
+    "dotPath": {
+      "type": "string",
+      "pattern": "^[A-Za-z_][A-Za-z0-9_]*(\\.[A-Za-z_][A-Za-z0-9_]*)*$"
+    },
+    "rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "enabled", "severity", "scope", "check", "message"],
+      "properties": {
+        "id": { "$ref": "#/$defs/ruleId" },
+        "enabled": { "type": "boolean" },
+        "severity": { "$ref": "#/$defs/severity" },
+        "scope": { "$ref": "#/$defs/scope" },
+        "target": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "format": {
+              "type": "string",
+              "enum": ["psi_trace_csv_long", "psi_trace_csv_wide", "psi_trace_json", "tier1_invariants"]
+            }
+          }
+        },
+        "check": { "$ref": "#/$defs/check" },
+        "message": { "type": "string", "minLength": 1 }
+      }
+    },
+    "check": {
+      "type": "object",
+      "required": ["type"],
+      "oneOf": [
+        { "$ref": "#/$defs/checkPatternMinMatches" },
+        { "$ref": "#/$defs/checkApproxEqual" },
+        { "$ref": "#/$defs/checkRegimeLabelConsistency" }
+      ]
+    },
+    "checkPatternMinMatches": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "match_on", "pattern", "min_matches"],
+      "properties": {
+        "type": { "type": "string", "const": "pattern_min_matches" },
+        "match_on": { "type": "string", "enum": ["keys", "header"] },
+        "pattern": { "type": "string", "minLength": 1 },
+        "min_matches": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "checkApproxEqual": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "lhs_expr", "rhs_expr", "per_row", "on_missing"],
+      "properties": {
+        "type": { "type": "string", "const": "approx_equal" },
+        "lhs_expr": { "type": "string", "minLength": 1 },
+        "rhs_expr": { "type": "string", "minLength": 1 },
+        "atol": { "type": "number", "minimum": 0 },
+        "rtol": { "type": "number", "minimum": 0 },
+        "per_row": { "type": "boolean" },
+        "on_missing": { "$ref": "#/$defs/onMissingPolicy" }
+      }
+    },
+    "checkRegimeLabelConsistency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "source", "fields", "policies"],
+      "properties": {
+        "type": { "type": "string", "const": "regime_label_consistency" },
+        "source": { "type": "string", "enum": ["canon", "inline"] },
+        "thresholds": {
+          "description": "Only used if source=inline; otherwise thresholds are read from canon anchors.",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "stable": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["omega_lt", "F_gt", "S_lt", "C_lt"],
+              "properties": {
+                "omega_lt": { "type": "number" },
+                "F_gt": { "type": "number" },
+                "S_lt": { "type": "number" },
+                "C_lt": { "type": "number" }
+              }
+            },
+            "watch": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["omega_range"],
+              "properties": {
+                "omega_range": {
+                  "type": "array",
+                  "prefixItems": [{ "type": "number" }, { "type": "number" }],
+                  "items": false
+                }
+              }
+            },
+            "collapse": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["omega_gte", "critical_overlay"],
+              "properties": {
+                "omega_gte": { "type": "number" },
+                "critical_overlay": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["min_IC_lt"],
+                  "properties": {
+                    "min_IC_lt": { "type": "number" }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "fields": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["omega", "F", "S", "C", "IC_min", "regime_label", "critical_overlay"],
+          "properties": {
+            "omega": { "$ref": "#/$defs/dotPath" },
+            "F": { "$ref": "#/$defs/dotPath" },
+            "S": { "$ref": "#/$defs/dotPath" },
+            "C": { "$ref": "#/$defs/dotPath" },
+            "IC_min": { "$ref": "#/$defs/dotPath" },
+            "regime_label": { "$ref": "#/$defs/dotPath" },
+            "critical_overlay": { "$ref": "#/$defs/dotPath" }
+          }
+        },
+        "policies": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["require_regime_object", "on_missing_regime", "on_missing_IC_min"],
+          "properties": {
+            "require_regime_object": { "type": "boolean" },
+            "on_missing_regime": { "$ref": "#/$defs/onMissingPolicy" },
+            "on_missing_IC_min": { "$ref": "#/$defs/onMissingPolicy" }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "source": { "const": "inline" } }, "required": ["source"] },
+          "then": { "required": ["thresholds"] }
+        }
+      ]
+    }
+  }
+}
