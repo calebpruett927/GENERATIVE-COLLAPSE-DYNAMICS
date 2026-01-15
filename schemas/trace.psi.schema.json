@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/trace.psi.schema.json",
+  "title": "UMCP Ψ Trace Schema (parsed CSV or JSON trace)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "format", "rows"],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "schemas/trace.psi.schema.json"
+    },
+    "format": {
+      "type": "string",
+      "enum": ["psi_trace_csv_long", "psi_trace_csv_wide", "psi_trace_json"]
+    },
+    "embedding": {
+      "description": "Optional declaration to bind the trace to the frozen embedding context.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "interval": {
+          "type": "array",
+          "prefixItems": [{ "type": "number", "const": 0.0 }, { "type": "number", "const": 1.0 }],
+          "items": false
+        },
+        "face": { "type": "string" },
+        "oor_policy": { "type": "string", "enum": ["clip_and_flag", "flag_only", "reject_row"] },
+        "epsilon": { "type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 0.5 }
+      }
+    },
+    "rows": {
+      "type": "array",
+      "minItems": 1,
+      "items": {}
+    },
+    "notes": { "type": "string" },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "format": { "const": "psi_trace_csv_long" } }, "required": ["format"] },
+      "then": {
+        "properties": {
+          "rows": {
+            "items": { "$ref": "#/$defs/psiRowCsvLong" }
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "format": { "const": "psi_trace_csv_wide" } }, "required": ["format"] },
+      "then": {
+        "properties": {
+          "rows": {
+            "items": { "$ref": "#/$defs/psiRowCsvWide" }
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "format": { "const": "psi_trace_json" } }, "required": ["format"] },
+      "then": {
+        "properties": {
+          "rows": {
+            "items": { "$ref": "#/$defs/psiRowJson" }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "tScalar": {
+      "description": "Time index or timestamp string.",
+      "oneOf": [
+        { "type": "integer" },
+        { "type": "string", "minLength": 1 }
+      ]
+    },
+    "unitInterval": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+
+    "psiRowCsvLong": {
+      "description": "Long CSV: one row per (t, dim). Required columns: t, dim, c. Optional: oor, missing.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["t", "dim", "c"],
+      "properties": {
+        "t": { "$ref": "#/$defs/tScalar" },
+        "dim": { "type": "integer", "minimum": 1 },
+        "c": { "$ref": "#/$defs/unitInterval" },
+        "oor": { "type": "boolean" },
+        "missing": { "type": "boolean" }
+      }
+    },
+
+    "psiRowCsvWide": {
+      "description": "Wide CSV: one row per t. Requires t plus any number of c_k columns (and optional oor_k/miss_k).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["t"],
+      "properties": {
+        "t": { "$ref": "#/$defs/tScalar" }
+      },
+      "patternProperties": {
+        "^c_[0-9]+$": { "$ref": "#/$defs/unitInterval" },
+        "^oor_[0-9]+$": { "type": "boolean" },
+        "^miss_[0-9]+$": { "type": "boolean" },
+        "^meta_[A-Za-z0-9_]+$": {}
+      },
+      "minProperties": 2
+    },
+
+    "psiRowJson": {
+      "description": "Native JSON: one row per t with a coordinate vector and optional per-dim flags.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["t", "c"],
+      "properties": {
+        "t": { "$ref": "#/$defs/tScalar" },
+        "c": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/unitInterval" }
+        },
+        "oor": {
+          "description": "Optional per-dimension OOR flags.",
+          "type": "array",
+          "items": { "type": "boolean" }
+        },
+        "missing": {
+          "description": "Optional per-dimension missingness flags.",
+          "type": "array",
+          "items": { "type": "boolean" }
+        }
+      }
+    }
+  }
+}
