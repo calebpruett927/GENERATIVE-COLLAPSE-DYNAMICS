@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/contract.schema.json",
+  "title": "UMCP Contract Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "contract"],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "schemas/contract.schema.json"
+    },
+    "contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "version", "timezone", "embedding", "tier_1_kernel", "typed_censoring"],
+      "properties": {
+        "id": { "type": "string", "minLength": 3 },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "timezone": { "type": "string", "minLength": 3 },
+
+        "embedding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["interval", "face", "oor_policy", "epsilon"],
+          "properties": {
+            "interval": {
+              "type": "array",
+              "prefixItems": [{ "type": "number" }, { "type": "number" }],
+              "items": false
+            },
+            "face": { "type": "string", "enum": ["pre_clip", "post_clip"] },
+            "oor_policy": { "type": "string", "enum": ["clip_and_flag", "flag_only", "reject_row"] },
+            "epsilon": { "type": "number", "exclusiveMinimum": 0 }
+          }
+        },
+
+        "tier_1_kernel": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["reserved_symbols", "weights_policy", "frozen_parameters", "tolerances"],
+          "properties": {
+            "reserved_symbols": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 1 },
+              "minItems": 1
+            },
+            "weights_policy": {
+              "type": "string",
+              "enum": ["nonnegative_sum_to_one"]
+            },
+            "frozen_parameters": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["p", "alpha", "lambda", "eta"],
+              "properties": {
+                "p": { "type": "integer", "minimum": 1 },
+                "alpha": { "type": "number", "minimum": 0 },
+                "lambda": { "type": "number", "minimum": 0 },
+                "eta": { "type": "number", "exclusiveMinimum": 0 }
+              }
+            },
+            "tolerances": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["tol_seam", "tol_id"],
+              "properties": {
+                "tol_seam": { "type": "number", "minimum": 0 },
+                "tol_id": { "type": "number", "minimum": 0 }
+              }
+            }
+          }
+        },
+
+        "typed_censoring": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["tau_R_special_values", "run_status_enum", "no_return_no_credit"],
+          "properties": {
+            "tau_R_special_values": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 1 },
+              "minItems": 1
+            },
+            "run_status_enum": {
+              "type": "array",
+              "items": { "type": "string", "enum": ["CONFORMANT", "NONCONFORMANT", "NON_EVALUABLE"] },
+              "minItems": 3,
+              "uniqueItems": true
+            },
+            "no_return_no_credit": { "type": "boolean" }
+          }
+        }
+      }
+    },
+    "notes": { "type": "string" },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}
