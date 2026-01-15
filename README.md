@@ -34,7 +34,7 @@ A CasePack is a folder under `casepacks/<id>/` with:
 - optionally `expected/seam_receipt.json` (only for continuity claims)
 
 Example:
-- [`casepacks/hello_world/`](casepacks/hello_world/)
+- [`casepacks/hello_world/manifest/`](casepacks/hello_world/manifest)
 
 ## Start here (how to run)
 
