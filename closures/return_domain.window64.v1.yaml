@@ -1,0 +1,23 @@
+schema: "schemas/closures.schema.json"
+
+closure:
+  kind: "return_domain"
+  id: "UMCP.RETURN_DOMAIN.window.v1"
+
+  return_domain:
+    # Supported types per schema: window | cycle | custom
+    type: "window"
+
+    parameters:
+      # Window size W means: D_W(t) = { u : 0 <= u <= t-1 and (t-u) <= W }
+      # This is a default. CasePacks may override W in manifest.run_intent.return_domain.
+      W: 64
+
+    description: >
+      Window return-domain generator. Candidate return times for t are restricted to the last W steps.
+
+  notes: >
+    This closure freezes the return-domain generator family ("window").
+    W is provided as a default; if a CasePack overrides W, the override should be recorded in the run manifest.
+
+  extensions: {}
