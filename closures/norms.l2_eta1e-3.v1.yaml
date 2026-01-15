@@ -1,0 +1,21 @@
+schema: "schemas/closures.schema.json"
+
+closure:
+  kind: "norms"
+  id: "UMCP.NORMS.L2.eta1e-3.v1"
+
+  norms:
+    # Supported norms per schema: L1 | L2 | Linf | custom
+    norm: "L2"
+
+    # Neighborhood tolerance for return detection:
+    # U_θ(t) = { u in D_θ(t) : ||Ψ(t) - Ψ(u)|| <= η }
+    #
+    # This should match the frozen contract default eta (UMA.INTSTACK.v1: 1e-3).
+    eta: 1.0e-3
+
+  notes: >
+    L2 norm with η=1e-3 for return proximity testing.
+    For conformance, η should agree with the contract-frozen value under UMA.INTSTACK.v1.
+
+  extensions: {}
