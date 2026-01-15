@@ -11,6 +11,9 @@ If you are on Windows, run commands in Git Bash from the repository root (the fo
 To confirm you are in the repo root:
 
 ```bash
+bash scripts/setup.sh
+bash scripts/test.sh
+bash scripts/validate.sh
 pwd
 ls
 python -m venv .venv
@@ -20,6 +23,4 @@ pip install -e ".[test]"
 pytest
 umcp validate .
 umcp validate . --out validator.result.json
-bash scripts/setup.sh
-bash scripts/test.sh
-bash scripts/validate.sh
+
