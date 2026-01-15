@@ -1,0 +1,102 @@
+# pyproject.toml
+#
+# UMCP runnable + publication-grade repo configuration.
+# This file defines:
+#   - build system (setuptools)
+#   - project metadata
+#   - runtime dependencies (minimal)
+#   - dev/test dependencies (pytest, pyyaml, jsonschema)
+#   - pytest configuration
+#
+# Adjust author/email/repo URLs as desired.
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "umcp"
+version = "0.1.0"
+description = "Universal Measurement Contract Protocol (UMCP): contract-first validation, receipts, and runnable casepacks."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+
+authors = [
+  { name = "Clement Paulus" }
+]
+
+keywords = ["UMCP", "GCD", "contract-first", "validation", "reproducibility", "casepacks"]
+
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering",
+  "Topic :: Software Development :: Quality Assurance"
+]
+
+# Runtime dependencies:
+# Keep runtime small; tests/dev tooling goes in optional-dependencies.
+dependencies = [
+  "pyyaml>=6.0.1",
+  "jsonschema>=4.23.0"
+]
+
+[project.optional-dependencies]
+# Development and test tooling
+dev = [
+  "pytest>=8.0.0",
+  "pytest-cov>=5.0.0",
+  "ruff>=0.5.0"
+]
+test = [
+  "pytest>=8.0.0",
+  "pytest-cov>=5.0.0"
+]
+
+# CLI entry point (expects you have src/umcp/cli.py with main()).
+# If your CLI function differs, update accordingly.
+[project.scripts]
+umcp = "umcp.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["umcp*"]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-q"
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+# Keep warnings visible but not spammy; tune as desired.
+filterwarnings = [
+  "default",
+  "ignore::DeprecationWarning"
+]
+
+# Optional: coverage defaults (only used if you run pytest --cov)
+[tool.coverage.run]
+branch = true
+source = ["src/umcp"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
+fail_under = 0
+
+# Optional: ruff defaults (safe baseline)
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = []
