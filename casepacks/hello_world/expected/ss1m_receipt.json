@@ -1,0 +1,51 @@
+cat > casepacks/hello_world/expected/ss1m_receipt.json <<'EOF'
+{
+  "schema": "schemas/receipt.ss1m.schema.json",
+  "receipt": {
+    "kind": "ss1m",
+    "version": 1,
+    "created_utc": "2026-01-14T00:00:00Z",
+    "casepack": {
+      "id": "hello_world",
+      "manifest_path": "casepacks/hello_world/manifest.json"
+    },
+    "canon": {
+      "pre_doi": "10.5281/zenodo.17756705",
+      "post_doi": "10.5281/zenodo.18072852",
+      "weld_id": "W-2025-12-31-PHYS-COHERENCE"
+    },
+    "contract": {
+      "id": "UMA.INTSTACK.v1",
+      "path": "contracts/UMA.INTSTACK.v1.yaml"
+    },
+    "closures": {
+      "registry_id": "UMCP.CLOSURES.DEFAULT.v1",
+      "registry_path": "closures/registry.yaml"
+    },
+    "row": {
+      "t": 0,
+      "row_id": "hello_world:t0"
+    },
+    "kernel": {
+      "omega": 0.01,
+      "F": 0.99,
+      "S": 0.056001534354847386,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": -0.01005033585350145,
+      "IC": 0.99,
+      "IC_min": 0.99
+    },
+    "regime": {
+      "label": "Stable",
+      "critical_overlay": false
+    },
+    "tolerances": {
+      "epsilon": 1.0e-8,
+      "tol_seam": 0.005,
+      "tol_id": 1.0e-9
+    },
+    "notes": "Hello-world SS1m receipt for schema + semantic validation."
+  }
+}
+EOF
