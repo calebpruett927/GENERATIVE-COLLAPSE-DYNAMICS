@@ -1,0 +1,34 @@
+cat > casepacks/hello_world/expected/invariants.json <<'EOF'
+{
+  "schema": "schemas/invariants.schema.json",
+  "format": "tier1_invariants",
+  "contract_id": "UMA.INTSTACK.v1",
+  "closure_registry_id": "UMCP.CLOSURES.DEFAULT.v1",
+  "canon": {
+    "pre_doi": "10.5281/zenodo.17756705",
+    "post_doi": "10.5281/zenodo.18072852",
+    "weld_id": "W-2025-12-31-PHYS-COHERENCE",
+    "timezone": "America/Chicago"
+  },
+  "rows": [
+    {
+      "t": 0,
+      "omega": 0.01,
+      "F": 0.99,
+      "S": 0.056001534354847386,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": -0.01005033585350145,
+      "IC": 0.99,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      },
+      "kernel_optional": {
+        "IC_min": 0.99
+      }
+    }
+  ],
+  "notes": "Hello-world invariants aligned to validator semantic checks (W201/W202/W301)."
+}
+EOF
