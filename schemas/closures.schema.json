@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/closures.schema.json",
+  "title": "UMCP Closures and Registry Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema"],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "schemas/closures.schema.json"
+    },
+    "registry": { "$ref": "#/$defs/registry" },
+    "closure": { "$ref": "#/$defs/closureDoc" },
+    "notes": { "type": "string" },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "oneOf": [
+    { "required": ["registry"] },
+    { "required": ["closure"] }
+  ],
+  "$defs": {
+    "relPath": {
+      "type": "string",
+      "minLength": 1
+    },
+    "registry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "closures"],
+      "properties": {
+        "id": { "type": "string", "minLength": 3 },
+        "closures": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["gamma", "return_domain", "norms"],
+          "properties": {
+            "gamma": { "$ref": "#/$defs/registryRef" },
+            "return_domain": { "$ref": "#/$defs/registryRef" },
+            "norms": { "$ref": "#/$defs/registryRef" },
+            "curvature_neighborhood": { "$ref": "#/$defs/registryRef" }
+          }
+        }
+      }
+    },
+    "registryRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path"],
+      "properties": {
+        "path": { "$ref": "#/$defs/relPath" }
+      }
+    },
+
+    "closureKind": {
+      "type": "string",
+      "enum": ["gamma", "return_domain", "norms", "curvature_neighborhood"]
+    },
+
+    "closureDoc": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "id"],
+      "properties": {
+        "kind": { "$ref": "#/$defs/closureKind" },
+        "id": { "type": "string", "minLength": 3 },
+
+        "gamma": { "$ref": "#/$defs/gammaClosure" },
+        "return_domain": { "$ref": "#/$defs/returnDomainClosure" },
+        "norms": { "$ref": "#/$defs/normsClosure" },
+        "curvature_neighborhood": { "$ref": "#/$defs/curvatureNeighborhoodClosure" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "kind": { "const": "gamma" } }, "required": ["kind"] },
+          "then": { "required": ["gamma"] }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "return_domain" } }, "required": ["kind"] },
+          "then": { "required": ["return_domain"] }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "norms" } }, "required": ["kind"] },
+          "then": { "required": ["norms"] }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "curvature_neighborhood" } }, "required": ["kind"] },
+          "then": { "required": ["curvature_neighborhood"] }
+        }
+      ]
+    },
+
+    "gammaClosure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["form", "parameters"],
+      "properties": {
+        "form": {
+          "type": "string",
+          "enum": ["omega_power", "neglog_one_minus_omega", "custom"]
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+
+    "returnDomainClosure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "parameters"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["window", "cycle", "custom"]
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "description": { "type": "string" }
+      }
+    },
+
+    "normsClosure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["norm", "eta"],
+      "properties": {
+        "norm": {
+          "type": "string",
+          "enum": ["L1", "L2", "Linf", "custom"]
+        },
+        "eta": { "type": "number", "exclusiveMinimum": 0 }
+      }
+    },
+
+    "curvatureNeighborhoodClosure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "parameters"],
+      "properties": {
+        "type": { "type": "string", "enum": ["default", "custom"] },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    }
+  }
+}
