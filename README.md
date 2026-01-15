@@ -1,24 +1,25 @@
 # UMCP — Universal Measurement Contract Protocol
 
-UMCP is a contract-first framework for producing auditable, bounded traces and a fixed kernel of invariants from measurement data. This repository is organized to be simultaneously runnable (validators/tests) and publication-grade (schemas, receipts, immutability discipline).
+UMCP is a contract-first framework for producing auditable, bounded traces and a fixed kernel of invariants from measurement data. This repository contains the frozen contract boundary, pinned closures, machine schemas, a validator CLI, and a test suite so a third party can verify conformance from artifacts alone.
 
-UMCP is designed so that a third party can clone the repo and verify:
+The design goal is simple: a reviewer should be able to clone the repo and verify (1) what was frozen, (2) what was computed, and (3) what claims are supported by receipts—without relying on hidden defaults.
 
-- what was frozen (contract + closures),
-- what was computed (expected outputs),
-- what was claimed (receipts),
-- and what passed validation (machine-readable validator results).
+## Start here
 
-## What you can do immediately
+If you are on Windows, run commands in Git Bash from the repository root (the folder that contains `pyproject.toml`).
 
-From the repository root:
-
-1) Install dependencies (Python 3.11+)
+To confirm you are in the repo root:
 
 ```bash
+pwd
+ls
 python -m venv .venv
-source .venv/bin/activate  # macOS/Linux
-# .\.venv\Scripts\Activate.ps1  # Windows PowerShell
-
-pip install -U pip
+source .venv/Scripts/activate
+python -m pip install -U pip
 pip install -e ".[test]"
+pytest
+umcp validate .
+umcp validate . --out validator.result.json
+bash scripts/setup.sh
+bash scripts/test.sh
+bash scripts/validate.sh
