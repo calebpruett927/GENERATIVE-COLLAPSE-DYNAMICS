@@ -1,26 +1,37 @@
-# UMCP — Universal Measurement Contract Protocol
+# UMCP — Universal Measurement Contract Protocol (Metadata + Runnable Validator Surface)
 
-UMCP is a contract-first framework for producing auditable, bounded traces and a fixed kernel of invariants from measurement data. This repository contains the frozen contract boundary, pinned closures, machine schemas, a validator CLI, and a test suite so a third party can verify conformance from artifacts alone.
+This repository is the metadata + runnable validator surface for UMCP (Universal Measurement Contract Protocol). It is organized as a contract-first, artifact-driven system: what matters is not prose claims, but frozen contracts, pinned closures, formally defined schemas, and receipts that can be revalidated by third parties.
 
-The design goal is simple: a reviewer should be able to clone the repo and verify (1) what was frozen, (2) what was computed, and (3) what claims are supported by receipts—without relying on hidden defaults.
+UMCP’s core intent is that a reviewer can verify what was frozen, what was computed, and what is being claimed without relying on hidden defaults or implementation-specific assumptions.
 
-## Start here
+---
 
-If you are on Windows, run commands in Git Bash from the repository root (the folder that contains `pyproject.toml`).
+## Contents (high-level)
 
-To confirm you are in the repo root:
+1. Canon anchors (identifiers, not claims)  
+2. Frozen contract boundary (UMA.INTSTACK.v1)  
+3. Closures (explicit complements required to execute the contract)  
+4. Schemas (machine validation for all artifacts)  
+5. Validator rules (portable semantic checks)  
+6. Python validator CLI (`umcp validate`)  
+7. Tests (`pytest`)  
+8. CI workflow (GitHub Actions)  
+9. Publication receipts (SS1m / seam receipt)  
+10. Repo conventions and “how to run” instructions  
+
+---
+
+## Start here (how to run)
+
+Everything is run from the repository root: the folder that contains `pyproject.toml`.
+
+### A. Local run (Windows Git Bash / macOS / Linux)
+
+1) Create and activate a virtual environment
+
+macOS/Linux:
 
 ```bash
-bash scripts/setup.sh
-bash scripts/test.sh
-bash scripts/validate.sh
-pwd
-ls
 python -m venv .venv
-source .venv/Scripts/activate
-python -m pip install -U pip
-pip install -e ".[test]"
-pytest
-umcp validate .
-umcp validate . --out validator.result.json
+source .venv/bin/activate
 
