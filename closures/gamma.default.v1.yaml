@@ -1,0 +1,25 @@
+schema: "schemas/closures.schema.json"
+
+closure:
+  kind: "gamma"
+  id: "UMCP.GAMMA.omega_power.v1"
+
+  gamma:
+    # Supported forms per schema: omega_power | neglog_one_minus_omega | custom
+    #
+    # omega_power means: Γ(ω; p) = ω^p
+    # where p is frozen in the contract defaults (UMA.INTSTACK.v1: p=3).
+    form: "omega_power"
+
+    parameters:
+      # These are provided for audit clarity. The runtime should prefer the frozen contract values
+      # when they exist, and should warn if these disagree.
+      p: 3
+      epsilon: 1.0e-8
+
+  notes: >
+    Closure for D_ω in the seam budget model.
+    This file freezes the functional family for Γ; numeric p is contract-frozen under UMA.INTSTACK.v1.
+    Implementations should treat this as: D_ω = Γ(ω) = ω^p.
+
+  extensions: {}
