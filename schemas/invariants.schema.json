@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/invariants.schema.json",
+  "title": "UMCP Tier-1 Invariants Schema (expected/invariants.json)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "format", "rows"],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "schemas/invariants.schema.json"
+    },
+    "format": {
+      "type": "string",
+      "const": "tier1_invariants"
+    },
+    "contract_id": { "type": "string", "minLength": 1 },
+    "closure_registry_id": { "type": "string", "minLength": 1 },
+    "canon": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pre_doi", "post_doi", "weld_id", "timezone"],
+      "properties": {
+        "pre_doi": { "$ref": "#/$defs/doi" },
+        "post_doi": { "$ref": "#/$defs/doi" },
+        "weld_id": { "type": "string", "minLength": 1 },
+        "timezone": { "type": "string", "minLength": 1 }
+      }
+    },
+    "rows": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/invariantRow" }
+    },
+    "notes": { "type": "string" },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "doi": {
+      "type": "string",
+      "pattern": "^10\\.[0-9]{4,9}/[-._;()/:A-Za-z0-9]+$"
+    },
+    "tScalar": {
+      "oneOf": [
+        { "type": "integer" },
+        { "type": "string", "minLength": 1 }
+      ]
+    },
+    "tauR": {
+      "description": "Return delay: nonnegative real or typed-censoring token.",
+      "oneOf": [
+        { "type": "number", "minimum": 0 },
+        { "type": "string", "enum": ["INF_REC", "UNIDENTIFIABLE"] }
+      ]
+    },
+    "regimeLabel": {
+      "type": "string",
+      "enum": ["Stable", "Watch", "Collapse"]
+    },
+    "invariantRow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["t", "omega", "F", "S", "C", "tau_R", "kappa", "IC"],
+      "properties": {
+        "t": { "$ref": "#/$defs/tScalar" },
+
+        "omega": { "type": "number" },
+        "F": { "type": "number" },
+        "S": { "type": "number" },
+        "C": { "type": "number" },
+
+        "tau_R": { "$ref": "#/$defs/tauR" },
+
+        "kappa": { "type": "number" },
+        "IC": { "type": "number" },
+
+        "regime": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["label"],
+          "properties": {
+            "label": { "$ref": "#/$defs/regimeLabel" },
+            "critical_overlay": { "type": "boolean" },
+            "equator_residual": {
+              "description": "Optional diagnostic residual (not a gate).",
+              "type": "number"
+            }
+          }
+        },
+
+        "kernel_optional": {
+          "description": "Optional redundancy for convenience; not required by UMCP kernel definition.",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "IC_min": { "type": "number" }
+          }
+        }
+      }
+    }
+  }
+}
