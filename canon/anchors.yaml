@@ -1,0 +1,116 @@
+# canon/anchors.yaml
+# UMCP Canon Anchors (identifiers + frozen defaults; NOT claims)
+# Any semantic change here should bump canon_id and be logged in provenance.
+
+schema: "schemas/canon.anchors.schema.json"
+
+umcp_canon:
+  canon_id: "UMCP.CANON.v1"
+  scope: "GCD > UMCP (contract-first) | RCFT allowed as Tier-2 overlay only"
+  timezone: "America/Chicago"
+  address: "Clement Paulus"
+
+  hygiene:
+    # Definitions (do not conflate)
+    weld_definition: "Weld = PRE→POST seam event (continuity bridge); continuity claims require seam receipt."
+    eid_definition: "EID = artifact structural fingerprint (component counts); distinct from DOI and Weld."
+    tier_discipline: "Tier-1 symbols are reserved; Tier-2 overlays may not redefine Tier-1."
+    no_improvisation: true
+
+  anchors:
+    pre:
+      title: "The Episteme of Return"
+      doi: "10.5281/zenodo.17756705"
+    post:
+      title: "The Physics of Coherence: Recursive Collapse & Continuity Laws"
+      doi: "10.5281/zenodo.18072852"
+    weld:
+      id: "W-2025-12-31-PHYS-COHERENCE"
+
+  identifiers:
+    # Stable repo-level identifiers (optional but recommended)
+    book_id: "UMCP-MANUSCRIPT-0001"
+    casepack_publication_doi: "10.5281/zenodo.18226878"
+
+  contract_defaults:
+    contract_id: "UMA.INTSTACK.v1"
+
+    embedding:
+      interval: [0.0, 1.0]
+      face: "pre_clip"
+      oor_policy: "clip_and_flag"
+      epsilon: 1.0e-8
+
+    tier_1_kernel:
+      # Provide both ascii + unicode symbol lists for implementation portability.
+      reserved_symbols_ascii: ["omega", "F", "S", "C", "tau_R", "kappa", "IC"]
+      reserved_symbols_unicode: ["ω", "F", "S", "C", "τ_R", "κ", "IC"]
+
+      frozen_parameters:
+        p: 3
+        alpha: 1.0
+        lambda: 0.2
+        eta: 1.0e-3
+
+      tolerances:
+        tol_seam: 0.005
+        tol_id: 1.0e-9
+
+      typed_censoring:
+        tau_R_domain: "R>=0 union {INF_REC, UNIDENTIFIABLE}"
+        run_status_domain: ["CONFORMANT", "NONCONFORMANT", "NON_EVALUABLE"]
+        no_return_no_credit: "tau_R=INF_REC implies R*tau_R=0"
+
+  artifacts:
+    receipts:
+      ss1m_required_every_run: true
+      seam_receipt_required_for_continuity_claims: true
+
+    eid:
+      # Structural fingerprint fields (counts)
+      fields: ["P", "Eq", "Fig", "Tab", "List", "Box", "Ref"]
+      default_bundle: "M = P + Eq + Fig + Tab + List + Box + Ref"
+
+    ss1m_minimum_fields:
+      # Receipt minimums (human-checkable)
+      required:
+        - "weld_id"
+        - "pre_doi"
+        - "post_doi"
+        - "theta"          # return-domain generator id/params
+        - "tau_R"
+        - "IC0"
+        - "IC1"
+        - "kappa0"
+        - "kappa1"
+        - "delta_kappa_ledger"
+        - "ir"
+        - "delta_kappa_budget"
+        - "residual_s"
+        - "tol_seam"
+        - "tol_id"
+        - "manifest_sha256"
+
+  regimes:
+    # Kernel-only regime gates (equator is diagnostic only)
+    stable:
+      omega_lt: 0.038
+      F_gt: 0.90
+      S_lt: 0.15
+      C_lt: 0.14
+
+    watch:
+      omega_range: [0.038, 0.30]
+
+    collapse:
+      omega_gte: 0.30
+      critical_overlay:
+        min_IC_lt: 0.30
+
+    equator_diagnostic:
+      enabled: true
+      note: "Diagnostic only; never used as a gate."
+
+  change_control:
+    mutation_policy: "append-only; bump canon_id on any semantic change"
+    provenance_reference: "Provenance & Canon Note 1.0.1"
