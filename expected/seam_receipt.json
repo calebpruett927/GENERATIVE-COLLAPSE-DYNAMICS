@@ -1,0 +1,42 @@
+README.md
+pyproject.toml
+validator_rules.yaml
+
+canon/
+  anchors.yaml
+
+contracts/
+  README.md
+  UMA.INTSTACK.v1.yaml
+
+closures/
+  README.md
+  registry.yaml
+  gamma.default.v1.yaml
+  return_domain.window64.v1.yaml
+  norms.l2_eta1e-3.v1.yaml
+
+schemas/
+  *.schema.json
+
+casepacks/
+  hello_world/
+    manifest.json
+    raw_measurements.csv
+    expected/
+      psi.csv
+      invariants.json
+      ss1m_receipt.json
+
+docs/
+  quickstart.md
+  validator_usage.md
+  casepack_spec.md
+
+src/
+  umcp/
+    __init__.py
+    cli.py
+
+tests/
+  *.py
