@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/validator.result.schema.json",
+  "title": "UMCP Validator Result Schema (machine-readable output)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "created_utc", "validator", "run_status", "summary", "targets"],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "schemas/validator.result.schema.json"
+    },
+    "created_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "validator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version"],
+      "properties": {
+        "name": { "type": "string", "const": "umcp-validator" },
+        "version": { "type": "string", "minLength": 1 },
+        "implementation": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "language": { "type": "string", "minLength": 1 },
+            "git_commit": { "type": "string", "minLength": 1 },
+            "build": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    },
+    "run_status": {
+      "$ref": "#/$defs/runStatus"
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["counts"],
+      "properties": {
+        "counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["errors", "warnings", "info", "targets_total", "targets_failed"],
+          "properties": {
+            "errors": { "type": "integer", "minimum": 0 },
+            "warnings": { "type": "integer", "minimum": 0 },
+            "info": { "type": "integer", "minimum": 0 },
+            "targets_total": { "type": "integer", "minimum": 0 },
+            "targets_failed": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "strict": { "type": "boolean" },
+            "fail_on_warning": { "type": "boolean" }
+          }
+        }
+      }
+    },
+    "targets": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/targetResult" }
+    },
+    "issues": {
+      "description": "Optional flattened issue list (targets also contain issues).",
+      "type": "array",
+      "items": { "$ref": "#/$defs/issue" }
+    },
+    "notes": { "type": "string" },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "runStatus": {
+      "type": "string",
+      "enum": ["CONFORMANT", "NONCONFORMANT", "NON_EVALUABLE"]
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["ERROR", "WARN", "INFO"]
+    },
+    "issue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["severity", "code", "message"],
+      "properties": {
+        "severity": { "$ref": "#/$defs/severity" },
+        "code": {
+          "type": "string",
+          "pattern": "^(E|W|I)[0-9]{3}$"
+        },
+        "message": { "type": "string", "minLength": 1 },
+        "path": {
+          "description": "Filesystem path relative to repo root (preferred).",
+          "type": "string"
+        },
+        "json_pointer": {
+          "description": "JSON Pointer into a parsed document, if applicable.",
+          "type": "string"
+        },
+        "hint": {
+          "description": "Remediation hint intended for humans.",
+          "type": "string"
+        },
+        "rule": {
+          "description": "Optional human-facing rule name (stable string).",
+          "type": "string"
+        }
+      }
+    },
+    "targetResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["target_type", "target_path", "run_status", "issues", "counts"],
+      "properties": {
+        "target_type": {
+          "type": "string",
+          "enum": ["repo", "casepack", "file", "directory"]
+        },
+        "target_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "run_status": { "$ref": "#/$defs/runStatus" },
+        "counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["errors", "warnings", "info"],
+          "properties": {
+            "errors": { "type": "integer", "minimum": 0 },
+            "warnings": { "type": "integer", "minimum": 0 },
+            "info": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "issues": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/issue" }
+        },
+        "artifacts": {
+          "description": "Optional list of key artifacts that were checked for this target.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["kind", "path"],
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "canon_anchors",
+                  "contract",
+                  "closure_registry",
+                  "closure_file",
+                  "casepack_manifest",
+                  "psi_trace",
+                  "invariants",
+                  "receipt_ss1m",
+                  "receipt_seam"
+                ]
+              },
+              "path": { "type": "string", "minLength": 1 },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[A-Fa-f0-9]{64}$"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
