@@ -43,6 +43,11 @@
             "norms": { "$ref": "#/$defs/registryRef" },
             "curvature_neighborhood": { "$ref": "#/$defs/registryRef" }
           }
+        },
+        "notes": { "type": "string" },
+        "extensions": {
+          "type": "object",
+          "additionalProperties": true
         }
       }
     },
@@ -71,7 +76,12 @@
         "gamma": { "$ref": "#/$defs/gammaClosure" },
         "return_domain": { "$ref": "#/$defs/returnDomainClosure" },
         "norms": { "$ref": "#/$defs/normsClosure" },
-        "curvature_neighborhood": { "$ref": "#/$defs/curvatureNeighborhoodClosure" }
+        "curvature_neighborhood": { "$ref": "#/$defs/curvatureNeighborhoodClosure" },
+        "notes": { "type": "string" },
+        "extensions": {
+          "type": "object",
+          "additionalProperties": true
+        }
       },
       "allOf": [
         {

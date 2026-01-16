@@ -1,34 +1,134 @@
-cat > casepacks/hello_world/manifest.json <<'EOF'
 {
-  "schema": "schemas/manifest.schema.json",
-  "casepack": {
-    "id": "hello_world",
-    "version": "1.0.0",
-    "title": "Hello World CasePack (Minimal Wide Ψ)",
-    "description": "Minimal runnable/publication CasePack that validates schema + semantic rules: wide ψ CSV with c_k columns; invariants satisfy F≈1−ω and IC≈exp(κ); regime label matches canon thresholds.",
-    "created_utc": "2026-01-14T00:00:00Z",
-    "timezone": "America/Chicago",
-    "authors": ["Clement Paulus"]
-  },
-  "refs": {
-    "canon_anchors": { "path": "canon/anchors.yaml" },
-    "contract": { "id": "UMA.INTSTACK.v1", "path": "contracts/UMA.INTSTACK.v1.yaml" },
-    "closures_registry": { "id": "UMCP.CLOSURES.DEFAULT.v1", "path": "closures/registry.yaml" }
-  },
-  "artifacts": {
-    "raw_measurements": {
-      "path": "raw_measurements.csv",
-      "format": "csv"
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/manifest.schema.json",
+  "title": "UMCP CasePack Manifest Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "casepack", "refs", "artifacts"],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "schemas/manifest.schema.json"
     },
-    "expected": {
-      "psi_csv": { "path": "expected/psi.csv" },
-      "invariants_json": { "path": "expected/invariants.json" },
-      "ss1m_receipt_json": { "path": "expected/ss1m_receipt.json" }
+    "casepack": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "version", "title"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 2,
+          "pattern": "^[A-Za-z0-9._-]+$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "title": { "type": "string", "minLength": 1 },
+        "description": { "type": "string" },
+        "created_utc": { "type": "string", "format": "date-time" },
+        "timezone": { "type": "string" },
+        "authors": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "refs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canon_anchors", "contract", "closures_registry"],
+      "properties": {
+        "canon_anchors": { "$ref": "#/$defs/refWithPath" },
+        "contract": { "$ref": "#/$defs/refWithPathAndId" },
+        "closures_registry": { "$ref": "#/$defs/refWithPathAndId" }
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["raw_measurements", "expected"],
+      "properties": {
+        "raw_measurements": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path"],
+          "properties": {
+            "path": { "type": "string", "minLength": 1 },
+            "format": { "type": "string", "enum": ["csv", "json", "parquet", "other"] }
+          }
+        },
+        "expected": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["psi_csv", "invariants_json", "ss1m_receipt_json"],
+          "properties": {
+            "psi_csv": { "$ref": "#/$defs/pathOnly" },
+            "invariants_json": { "$ref": "#/$defs/pathOnly" },
+            "ss1m_receipt_json": { "$ref": "#/$defs/pathOnly" },
+            "seam_receipt_json": { "$ref": "#/$defs/pathOnly" }
+          }
+        }
+      }
+    },
+    "run_intent": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "return_domain_override": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "parameters"],
+          "properties": {
+            "type": { "type": "string", "enum": ["window", "cycle", "custom"] },
+            "parameters": { "type": "object", "additionalProperties": true }
+          }
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "checksums": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "manifest_sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "notes": { "type": "string" },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
     }
   },
-  "run_intent": {
-    "notes": "This CasePack uses a wide ψ CSV with three coordinates c_1..c_3. Values are chosen so Stable regime gates are satisfied under canon thresholds."
+  "$defs": {
+    "pathOnly": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 }
+      }
+    },
+    "refWithPath": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 }
+      }
+    },
+    "refWithPathAndId": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "path"],
+      "properties": {
+        "id": { "type": "string", "minLength": 3 },
+        "path": { "type": "string", "minLength": 1 }
+      }
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
   }
 }
-EOF
-

@@ -1,4 +1,3 @@
-cat > casepacks/hello_world/expected/ss1m_receipt.json <<'EOF'
 {
   "schema": "schemas/receipt.ss1m.schema.json",
   "receipt": {
@@ -48,4 +47,3 @@ cat > casepacks/hello_world/expected/ss1m_receipt.json <<'EOF'
     "notes": "Hello-world SS1m receipt for schema + semantic validation."
   }
 }
-EOF
