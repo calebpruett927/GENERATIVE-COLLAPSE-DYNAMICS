@@ -1,4 +1,11 @@
-cat > casepacks/hello_world/manifest.json <<'EOF'
+#!/usr/bin/env bash
+# Create manifest.json for a CasePack
+# Usage: ./create_manifest.sh [casepack_dir]
+# Example: ./create_manifest.sh casepacks/hello_world
+
+CASEPACK_DIR="${1:-casepacks/hello_world}"
+
+cat > "${CASEPACK_DIR}/manifest.json" <<'EOF'
 {
   "schema": "schemas/manifest.schema.json",
   "casepack": {
@@ -31,4 +38,3 @@ cat > casepacks/hello_world/manifest.json <<'EOF'
   }
 }
 EOF
-
