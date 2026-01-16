@@ -1,4 +1,2 @@
-cat > casepacks/hello_world/expected/psi.csv <<'EOF'
 t,c_1,c_2,c_3,oor_1,oor_2,oor_3,miss_1,miss_2,miss_3
 0,0.99,0.99,0.99,false,false,false,false,false,false
-EOF

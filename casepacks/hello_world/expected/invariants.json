@@ -1,4 +1,3 @@
-cat > casepacks/hello_world/expected/invariants.json <<'EOF'
 {
   "schema": "schemas/invariants.schema.json",
   "format": "tier1_invariants",
@@ -31,4 +30,3 @@ cat > casepacks/hello_world/expected/invariants.json <<'EOF'
   ],
   "notes": "Hello-world invariants aligned to validator semantic checks (W201/W202/W301)."
 }
-EOF
