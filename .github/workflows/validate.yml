@@ -4,11 +4,17 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   umcp-validate:
+    name: UMCP validate (strict)
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -20,6 +26,12 @@ jobs:
           python -m pip install -U pip
           pip install -e .
 
-      - name: Validate (strict)
+      - name: Validate (strict) + write report
         run: |
-          umcp validate . --strict
+          umcp validate . --strict --out validator.result.json
+
+      - name: Upload validator report
+        uses: actions/upload-artifact@v4
+        with:
+          name: validator-result
+          path: validator.result.json
