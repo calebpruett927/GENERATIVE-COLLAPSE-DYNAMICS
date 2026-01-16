@@ -205,3 +205,39 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+# -----------------------------
+# UMCP repo hygiene (project-specific)
+# -----------------------------
+
+# Local validator outputs (do not commit by default)
+validator.result.json
+validator.result.*.json
+validation.report.json
+validation.report.*.json
+
+# Local run artifacts (if you add a runtime that emits these)
+receipts/_local/
+receipts/*.tmp
+receipts/*.bak
+
+# CasePack generated outputs (keep expected/ in git, ignore generated caches)
+casepacks/**/generated/
+casepacks/**/.generated/
+casepacks/**/.cache/
+casepacks/**/.tmp/
+
+# If you keep a "scratch" or "working" area
+scratch/
+tmp/
+_tmp/
+
+# OS / filesystem noise
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE (uncomment if you want them ignored repo-wide)
+.vscode/
+.idea/
+*.swp
+*~ 
