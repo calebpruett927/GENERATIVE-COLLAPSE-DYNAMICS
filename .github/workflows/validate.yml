@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   umcp-validate:
-    name: UMCP validate (strict)
+    name: UMCP validate (fail on warning)
     runs-on: ubuntu-latest
 
     steps:
