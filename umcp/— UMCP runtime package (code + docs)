@@ -1,0 +1,8 @@
+# umcp/ — UMCP runtime package (code + docs)
+
+This directory is the importable UMCP package for the repository **UMCP-Metadata-Runnable-Code**.
+
+It is intentionally separate from the manuscript source: this repo is the runnable companion (schemas, contracts, closures, validator, CasePacks, receipts, tests). The `umcp/` folder is the execution surface: the code and the user-facing docs that explain how to run it.
+
+## Current contents (as of this commit)
+
