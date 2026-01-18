@@ -1,31 +1,53 @@
-UMCP Contracts
+# `contracts/` — frozen UMCP contract boundaries
 
-This folder contains contract documents that define the frozen, machine-checkable execution boundary for UMCP runs.
+This directory contains UMCP **contracts**: normative, versioned boundaries that freeze meanings and typed semantics required for auditable computation.
 
-A contract is not a narrative. It is an enforceable specification that the validator and runtime use to determine:
-- embedding bounds and OOR policy (Tier-0)
-- which Tier-1 kernel symbols are reserved and how they are computed
-- typed-censoring domains (e.g., τ_R special values and run_status enum)
-- frozen defaults and tolerances required for weld/receipt correctness
+A contract is not “configuration.” A contract is the execution boundary that makes outputs interpretable and comparable.
 
-Immutability and versioning
+## What lives here
 
-Published contracts should be treated as immutable. If you need a semantic change:
-- create a new contract id/version file (e.g., UMA.INTSTACK.v2.yaml)
-- do not modify UMA.INTSTACK.v1.yaml in-place once it is referenced by published CasePacks
-- update references in new CasePacks to the new contract
+- Versioned contract files (YAML), e.g.:
+  - `UMA.INTSTACK.v1.yaml`
 
-Schema
+Contracts are validated against the pinned schema:
+- `schemas/contract.schema.json`
 
-All contract files in this folder must validate against:
-- schemas/contract.schema.json
+## Non-negotiable rules
 
-Naming convention
+1) No in-place edits after release  
+Once a contract is published or referenced by any CasePack/receipt, do not modify it.  
+Changes require a new versioned contract file.
 
-- contracts/<CONTRACT_ID>.yaml
-Example:
-- contracts/UMA.INTSTACK.v1.yaml
+2) Manifest pinning is mandatory  
+CasePack manifests must pin:
+- `contract_id`
+- `contract_version`
 
-Operational note
+3) Kernel symbols are reserved  
+Contracts define the Tier-1 kernel boundary. Overlays and closures must not redefine Tier-1 symbols.
 
-The contract’s role is to freeze what must not drift across implementations. Anything not frozen here must be explicitly frozen via closures and the closure registry, or it is not eligible for “conformant” claims.
+4) Typed semantics are part of correctness  
+Typed boundary values (e.g. `tau_R = INF_REC`) must remain typed; implementations must not silently coerce them into floats.
+
+## When to create a new contract version
+
+Create a new contract version if you change any of the following:
+- Tier-1 definition semantics
+- typed-censoring semantics (e.g., special value sets or their meaning)
+- log-safety rules (`epsilon` behavior)
+- OOR policy semantics or face semantics
+- any tolerance/parameter that changes what “PASS/FAIL” means at the seam level
+
+If the change is a “degree of freedom” (choice among alternatives), prefer placing it in **closures** rather than in the contract.
+
+## Suggested workflow
+
+1) Add new contract file (do not overwrite older files)
+2) Update `contracts/CHANGELOG.md`
+3) Add at least one CasePack that pins the new contract version
+4) Add/adjust tests to ensure CI catches drift
+5) If continuity is claimed across versions, require seam receipts
+
+## Canonical contract in this repo
+
+- `UMA.INTSTACK.v1.yaml`
