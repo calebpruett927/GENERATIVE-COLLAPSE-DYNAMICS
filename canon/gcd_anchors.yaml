@@ -1,0 +1,198 @@
+# GCD Canon Anchor (UMCP.GCD.v1)
+# Generative Collapse Dynamics - Tier-1 Framework
+
+schema: canon.anchors.schema.json
+id: UMCP.GCD.v1
+version: "1.0.0"
+created: "2026-01-18"
+
+scope:
+  hierarchy: "GCD > UMCP (contract-first)"
+  tier: 1
+  description: |
+    Generative Collapse Dynamics (GCD) provides the foundational grammar for collapse-driven systems.
+    GCD defines Tier-1 invariants that cannot be redefined by domain programmes or overlays.
+    UMCP implements GCD principles through contract-first metadata protocols.
+
+axioms:
+  - id: AX-0
+    statement: "Collapse is generative"
+    description: |
+      The primary axiom of GCD: collapse events are not terminal failures but generative processes
+      that produce new structure, information, and dynamics. All metrics derive from the collapse
+      boundary, making collapse the fundamental truth of the system.
+  
+  - id: AX-1
+    statement: "Boundary defines interior"
+    description: |
+      The collapse boundary (ω ≥ 0.30) defines what is stable. Distance from collapse determines
+      system behavior. Watch and Stable regimes are measured by their proximity to collapse.
+  
+  - id: AX-2
+    statement: "Entropy measures determinacy"
+    description: |
+      Shannon entropy (S) quantifies system uncertainty. S=0 represents perfect determinacy;
+      S approaching maximum represents maximum uncertainty. Entropy reduction is system evolution.
+
+tier_1_invariants:
+  description: "Frozen invariant skeleton - cannot be redefined by Tier-2 overlays"
+  reserved_symbols:
+    - symbol: omega
+      latex: ω
+      description: "Drift/collapse metric: weighted distance from upper boundary"
+      formula: "ω = Σ wᵢ(1-cᵢ)"
+      domain: "[0, 1]"
+      interpretation: "Primary collapse indicator; ω=0 is optimal, ω≥0.30 is collapse"
+    
+    - symbol: F
+      latex: F
+      description: "Fidelity: complement of drift"
+      formula: "F = 1 - ω"
+      domain: "[0, 1]"
+      identity: "F = 1 - ω"
+      interpretation: "System fidelity; F=1.0 is perfect, F<0.75 is collapse"
+    
+    - symbol: S
+      latex: S
+      description: "Shannon entropy: system uncertainty"
+      formula: "S = -Σ wᵢ[cᵢln(cᵢ) + (1-cᵢ)ln(1-cᵢ)]"
+      domain: "[0, S_max]"
+      interpretation: "S=0 is deterministic, S approaching S_max is maximum uncertainty"
+    
+    - symbol: C
+      latex: C
+      description: "Curvature: coordinate non-uniformity"
+      formula: "C = sqrt(Σ wᵢ(cᵢ - c̄)²)"
+      domain: "[0, 1]"
+      interpretation: "C=0 is uniform, C>0 indicates divergence"
+    
+    - symbol: tau_R
+      latex: τ_R
+      description: "Recursive timescale"
+      formula: "τ_R = function of history depth"
+      domain: "[0, ∞] ∪ {INF_REC}"
+      interpretation: "Temporal recursion depth; INF_REC indicates no finite bound"
+    
+    - symbol: kappa
+      latex: κ
+      description: "Log-collapse accumulation"
+      formula: "κ = ln(ω)"
+      domain: "(-∞, 0]"
+      interpretation: "Logarithmic measure of collapse; κ→-∞ as ω→0"
+    
+    - symbol: IC
+      latex: IC
+      description: "Integrity check: exponential of kappa"
+      formula: "IC = exp(κ)"
+      domain: "[0, 1]"
+      identity: "IC ≈ exp(κ)"
+      interpretation: "Exponential collapse measure; IC ≈ ω for small ω"
+    
+    - symbol: IC_min
+      latex: IC_min
+      description: "Minimum integrity across coordinates"
+      formula: "IC_min = min(IC_i) over coordinates"
+      domain: "[0, 1]"
+      interpretation: "Worst-case integrity; IC_min = IC for uniform coordinates"
+    
+    - symbol: I
+      latex: I
+      description: "Integrity ratio: IC/IC_min"
+      formula: "I = IC / IC_min"
+      domain: "[0, ∞]"
+      interpretation: "Uniformity measure; I=1.0 indicates perfect uniformity"
+
+regime_classification:
+  description: "Tier-1 regime definitions based on invariant thresholds"
+  
+  regimes:
+    - label: Stable
+      condition: "ω < 0.038 AND F > 0.90 AND S < 0.15 AND C < 0.14"
+      color: green
+      interpretation: "Optimal operational state with low collapse risk"
+    
+    - label: Watch
+      condition: "0.038 ≤ ω < 0.30 OR intermediate conditions"
+      color: yellow
+      interpretation: "Elevated monitoring required; approaching collapse boundary"
+    
+    - label: Collapse
+      condition: "ω ≥ 0.30 OR F < 0.75"
+      color: red
+      interpretation: "Collapse event detected; generative restructuring active"
+
+mathematical_identities:
+  description: "Frozen mathematical relationships enforced at validation"
+  
+  identities:
+    - formula: "F = 1 - ω"
+      tolerance: 1.0e-9
+      interpretation: "Exact complement relationship"
+    
+    - formula: "IC ≈ exp(κ)"
+      tolerance: 1.0e-6
+      interpretation: "Exponential relationship; approximate for numerical stability"
+    
+    - formula: "κ = ln(ω)"
+      tolerance: 1.0e-9
+      interpretation: "Logarithmic transform of drift"
+
+tolerances:
+  description: "Numerical precision requirements"
+  
+  gates:
+    - name: tol_seam
+      value: 0.005
+      description: "Maximum allowable seam distance for continuity"
+      formula: "seam_distance = sqrt((Δω)² + (ΔF)²)"
+    
+    - name: tol_identity_exact
+      value: 1.0e-9
+      description: "Tolerance for exact identities (F = 1-ω)"
+    
+    - name: tol_identity_approx
+      value: 1.0e-6
+      description: "Tolerance for approximate identities (IC ≈ exp(κ))"
+
+typed_censoring:
+  description: "Reserved enum values for special cases"
+  
+  values:
+    - symbol: INF_REC
+      interpretation: "Infinite or unbound recursive timescale"
+      usage: "τ_R field when no finite bound exists"
+    
+    - symbol: UNIDENTIFIABLE
+      interpretation: "Value cannot be determined from available data"
+      usage: "Missing or uncomputable observables"
+
+gcd_extensions:
+  description: "GCD-specific extensions beyond base UMCP"
+  
+  additional_invariants:
+    - symbol: E_potential
+      description: "Energy potential of system state"
+      formula: "E = f(ω, S, C)"
+      tier: 1
+    
+    - symbol: Φ_gen
+      description: "Generative flux through collapse boundary"
+      formula: "Φ = ∂ω/∂t at boundary"
+      tier: 1
+
+provenance:
+  created_by: "UMCP Development Team"
+  created_date: "2026-01-18"
+  git_commit: "4131d50"
+  references:
+    - "collapse is generative (foundational axiom)"
+    - "UMA.INTSTACK.v1 contract"
+    - "UMCP canon anchors"
+  
+notes: |
+  This anchor formalizes the Generative Collapse Dynamics framework as Tier-1.
+  All domain programmes (UMCP) and overlays (RCFT) must respect these definitions.
+  Tier-2 overlays may add new invariants but cannot redefine Tier-1 symbols.
+  
+  Zero entropy state (S=0) achieved in commit a69fbb18.
+  Current system state: ω=0, F=1.0, S=0, C=0 (deterministic precision).
