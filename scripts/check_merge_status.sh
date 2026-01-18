@@ -80,7 +80,7 @@ try:
     warnings = data.get('summary', {}).get('counts', {}).get('warnings', -1)
     print(status, errors, warnings)
 except (json.JSONDecodeError, KeyError, FileNotFoundError) as e:
-    print(f'ERROR -1 -1', file=sys.stderr)
+    print('ERROR -1 -1', file=sys.stderr)
     sys.exit(1)
 " "$TEMP_RESULT")" || { echo "  Failed to parse validator results ❌"; exit 1; }
   
@@ -88,6 +88,9 @@ except (json.JSONDecodeError, KeyError, FileNotFoundError) as e:
     echo "  Validation: $STATUS (Errors: $ERRORS, Warnings: $WARNINGS) ✅"
   else
     echo "  Validation: $STATUS (Errors: $ERRORS, Warnings: $WARNINGS) ⚠️"
+    if [ "$STATUS" != "CONFORMANT" ] || [ "$ERRORS" -ne 0 ]; then
+      exit 1
+    fi
   fi
 else
   echo "  Validator failed to run ❌"
