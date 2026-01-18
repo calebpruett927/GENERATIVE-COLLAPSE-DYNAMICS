@@ -5,6 +5,7 @@ import csv
 import hashlib
 import json
 import math
+import os
 import re
 import subprocess
 import sys
@@ -17,6 +18,7 @@ import yaml
 from jsonschema import Draft202012Validator
 
 from . import VALIDATOR_NAME, __version__
+from .logging_utils import HealthCheck, get_logger
 
 # -----------------------------
 # Internal codes (stable)
@@ -954,16 +956,25 @@ def _validate_repo(repo_root: Path, fail_on_warning: bool) -> Dict[str, Any]:
 # CLI
 # -----------------------------
 def _cmd_validate(args: argparse.Namespace) -> int:
+    # Initialize logger
+    json_output = bool(os.environ.get("UMCP_JSON_LOGS", ""))
+    verbose = bool(getattr(args, 'verbose', False))
+    logger = get_logger(json_output=json_output, include_metrics=verbose)
+    
     start = Path(args.path).resolve()
     repo_root = _find_repo_root(start)
     if repo_root is None:
+        logger.error("Could not find repo root", path=str(start))
         print("ERROR: Could not find repo root (no pyproject.toml found in parents).", file=sys.stderr)
         return 2
 
     # Determine strict mode: --strict flag OR --fail-on-warning (legacy)
     strict_mode = bool(getattr(args, 'strict', False)) or bool(args.fail_on_warning)
     
-    result = _validate_repo(repo_root=repo_root, fail_on_warning=strict_mode)
+    logger.info("Starting validation", repo_root=str(repo_root), strict=strict_mode)
+    
+    with logger.operation("validate_repo", path=str(repo_root)) as metrics:
+        result = _validate_repo(repo_root=repo_root, fail_on_warning=strict_mode)
 
     out_json = json.dumps(result, indent=2, sort_keys=False)
     
@@ -1158,6 +1169,53 @@ def _compare_dict_field(dict1: dict, dict2: dict, key: str, label: str) -> None:
         print(f"  {label}: {val1} → {val2}")
 
 
+def _cmd_health(args: argparse.Namespace) -> int:
+    """Check system health and readiness for production operation."""
+    start = Path(args.path).resolve()
+    repo_root = _find_repo_root(start)
+    if repo_root is None:
+        print("ERROR: Could not find repo root (no pyproject.toml found in parents).", file=sys.stderr)
+        return 2
+    
+    health = HealthCheck.check(repo_root)
+    
+    if args.json:
+        print(json.dumps(health, indent=2))
+    else:
+        # Human-readable output
+        print("=" * 80)
+        print("UMCP System Health Check")
+        print("=" * 80)
+        print(f"Status: {health['status'].upper()}")
+        print(f"Timestamp: {health['timestamp']}")
+        print()
+        
+        print("Checks:")
+        for check_name, check_data in health.get("checks", {}).items():
+            if isinstance(check_data, dict):
+                status = check_data.get("status", "unknown")
+                symbol = "✓" if status == "pass" else "✗"
+                print(f"  {symbol} {check_name}: {status}")
+                if status == "fail" and "error" in check_data:
+                    print(f"    Error: {check_data['error']}")
+        print()
+        
+        if "metrics" in health:
+            print("Metrics:")
+            if "schemas_count" in health["metrics"]:
+                print(f"  Schemas: {health['metrics']['schemas_count']}")
+            if "system" in health["metrics"]:
+                sys_metrics = health["metrics"]["system"]
+                print(f"  CPU: {sys_metrics.get('cpu_percent', 'N/A')}%")
+                print(f"  Memory: {sys_metrics.get('memory_percent', 'N/A')}%")
+                print(f"  Disk: {sys_metrics.get('disk_percent', 'N/A')}%")
+            print()
+        
+        print("=" * 80)
+    
+    return 0 if health["status"] == "healthy" else 1
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="umcp", description="UMCP contract-first validator CLI")
     p.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
@@ -1169,6 +1227,7 @@ def build_parser() -> argparse.ArgumentParser:
     v.add_argument("--out", default=None, help="Write validator result JSON to this file")
     v.add_argument("--strict", action="store_true", help="Enable strict mode: warnings become errors")
     v.add_argument("--fail-on-warning", action="store_true", help="(Legacy) Treat warnings as failing")
+    v.add_argument("--verbose", "-v", action="store_true", help="Show performance metrics and detailed logging")
     v.set_defaults(func=_cmd_validate)
 
     r = sub.add_parser("run", help="Operational placeholder: validates the target")
@@ -1183,6 +1242,11 @@ def build_parser() -> argparse.ArgumentParser:
     d.add_argument("receipt2", help="Path to second receipt JSON file")
     d.add_argument("--verbose", "-v", action="store_true", help="Show detailed differences")
     d.set_defaults(func=_cmd_diff)
+
+    h = sub.add_parser("health", help="Check system health and production readiness")
+    h.add_argument("path", nargs="?", default=".", help="Path inside repo (default: .)")
+    h.add_argument("--json", action="store_true", help="Output as JSON for monitoring systems")
+    h.set_defaults(func=_cmd_health)
 
     return p
 
