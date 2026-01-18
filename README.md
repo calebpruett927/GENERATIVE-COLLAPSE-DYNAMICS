@@ -19,6 +19,24 @@ This repository contains the metadata and runnable validator for the Universal M
 
 ---
 
+## Merge Verification
+
+To verify that content has been successfully merged and the repository is in a healthy state, run:
+
+```bash
+./scripts/check_merge_status.sh
+```
+
+This script checks:
+- Git status (clean working tree)
+- Merge conflict artifacts
+- Test suite (all tests passing)
+- UMCP validator (CONFORMANT status)
+
+For a detailed merge verification report, see [`MERGE_VERIFICATION.md`](MERGE_VERIFICATION.md).
+
+---
+
 ## CasePacks (runnable publication units)
 
 A CasePack is a self‑contained folder under `casepacks/<id>/` that holds:
