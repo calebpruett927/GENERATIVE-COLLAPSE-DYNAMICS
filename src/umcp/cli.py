@@ -1,22 +1,24 @@
 from __future__ import annotations
 
 import argparse
-import csv
-import json
-import math
 import re
+import hashlib
+import json
+import re
+import subprocess
 import sys
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
+import yaml
 from jsonschema import Draft202012Validator
 
 try:
-    import yaml  # type: ignore
-except Exception:  # pragma: no cover
-    yaml = None  # type: ignore
+    import importlib.metadata as importlib_metadata
+except ImportError:
+    import importlib_metadata  # type: ignore
 
 from . import VALIDATOR_NAME, __version__
 
@@ -109,6 +111,29 @@ class TargetResult:
 # -----------------------------
 def _utc_now_iso() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def _get_git_commit(repo_root: Path) -> str:
+    """Get current git commit hash. Returns 'unknown' if not in git repo or error."""
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=repo_root,
+            capture_output=True,
+            text=True,
+            timeout=5,
+            check=False
+        )
+        if result.returncode == 0 and result.stdout.strip():
+            return result.stdout.strip()
+    except (subprocess.TimeoutExpired, FileNotFoundError, Exception):
+        pass
+    return "unknown"
+
+
+def _get_python_version() -> str:
+    """Get Python version string (e.g., '3.12.1')."""
+    return f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
 
 
 def _read_text(path: Path) -> str:
@@ -880,7 +905,8 @@ def _validate_repo(repo_root: Path, fail_on_warning: bool) -> Dict[str, Any]:
             "version": __version__,
             "implementation": {
                 "language": "python",
-                "git_commit": "unknown",
+                "python_version": _get_python_version(),
+                "git_commit": _get_git_commit(repo_root),
                 "build": "repo"
             }
         },
@@ -939,17 +965,45 @@ def _cmd_validate(args: argparse.Namespace) -> int:
         print("ERROR: Could not find repo root (no pyproject.toml found in parents).", file=sys.stderr)
         return 2
 
-    result = _validate_repo(repo_root=repo_root, fail_on_warning=bool(args.fail_on_warning))
+    # Determine strict mode: --strict flag OR --fail-on-warning (legacy)
+    strict_mode = bool(getattr(args, 'strict', False)) or bool(args.fail_on_warning)
+    
+    result = _validate_repo(repo_root=repo_root, fail_on_warning=strict_mode)
 
     out_json = json.dumps(result, indent=2, sort_keys=False)
+    
+    # Compute sha256 of result
+    result_hash = hashlib.sha256(out_json.encode('utf-8')).hexdigest()
+    
+    # Extract provenance details
+    created_utc = result.get("created_utc", "unknown")
+    git_commit = result.get("validator", {}).get("implementation", {}).get("git_commit", "unknown")
+    python_version = result.get("validator", {}).get("implementation", {}).get("python_version", "unknown")
+    error_count = result.get("summary", {}).get("counts", {}).get("errors", 0)
+    warning_count = result.get("summary", {}).get("counts", {}).get("warnings", 0)
+    
+    # Generate governance summary with full provenance
+    policy_mode = "strict" if strict_mode else "non-strict"
+    governance_note = (
+        f"UMCP validation: {result['run_status']} (repo + casepacks/hello_world), "
+        f"errors={error_count} warnings={warning_count}; "
+        f"validator={VALIDATOR_NAME} v{__version__} (build=repo, commit={git_commit[:8] if git_commit != 'unknown' else git_commit}, python={python_version}); "
+        f"policy strict={str(strict_mode).lower()}; "
+        f"created_utc={created_utc}; "
+        f"sha256={result_hash[:16]}...\n"
+        f"Note: non-strict = baseline structural validity; strict = publication lint gate."
+    )
+    
     if args.out:
         out_path = Path(args.out)
         if not out_path.is_absolute():
             out_path = repo_root / out_path
         out_path.write_text(out_json + "\n", encoding="utf-8")
         print(f"Wrote validator result: {_relpath(repo_root, out_path)}")
+        print(f"\n{governance_note}")
     else:
         print(out_json)
+        print(f"\n{governance_note}", file=sys.stderr)
 
     return 0 if result.get("run_status") == "CONFORMANT" else 1
 
@@ -964,6 +1018,152 @@ def _cmd_run(args: argparse.Namespace) -> int:
     return _cmd_validate(args)
 
 
+def _cmd_diff(args: argparse.Namespace) -> int:
+    """Compare two validation receipts and show differences."""
+    try:
+        r1_file = Path(args.receipt1)
+        r2_file = Path(args.receipt2)
+        
+        if not r1_file.exists():
+            print(f"Error: Receipt not found: {args.receipt1}", file=sys.stderr)
+            return 1
+        if not r2_file.exists():
+            print(f"Error: Receipt not found: {args.receipt2}", file=sys.stderr)
+            return 1
+        
+        with r1_file.open("r") as f:
+            receipt1 = json.load(f)
+        with r2_file.open("r") as f:
+            receipt2 = json.load(f)
+        
+        # Display header
+        print("=" * 80)
+        print("UMCP Receipt Comparison")
+        print("=" * 80)
+        print(f"Receipt 1: {args.receipt1}")
+        print(f"Receipt 2: {args.receipt2}")
+        print()
+        
+        # Compare basic info
+        print("📋 Basic Information")
+        print("-" * 80)
+        _compare_field(receipt1, receipt2, "run_status", "Status")
+        _compare_field(receipt1, receipt2, "created_utc", "Created UTC")
+        print()
+        
+        # Compare validation results
+        print("✅ Validation Results")
+        print("-" * 80)
+        summary1 = receipt1.get("summary", {}).get("counts", {})
+        summary2 = receipt2.get("summary", {}).get("counts", {})
+        _compare_dict_field(summary1, summary2, "errors", "Errors")
+        _compare_dict_field(summary1, summary2, "warnings", "Warnings")
+        
+        if getattr(args, 'verbose', False):
+            targets1 = receipt1.get("targets", [])
+            targets2 = receipt2.get("targets", [])
+            if len(targets1) != len(targets2):
+                print(f"  Target count changed: {len(targets1)} → {len(targets2)}")
+        print()
+        
+        # Compare implementation
+        print("🔧 Implementation")
+        print("-" * 80)
+        impl1 = receipt1.get("validator", {}).get("implementation", {})
+        impl2 = receipt2.get("validator", {}).get("implementation", {})
+        _compare_dict_field(impl1, impl2, "git_commit", "Git Commit")
+        _compare_dict_field(impl1, impl2, "python_version", "Python Version")
+        print()
+        
+        # Compare policy
+        print("⚖️  Policy")
+        print("-" * 80)
+        policy1 = receipt1.get("summary", {}).get("policy", {})
+        policy2 = receipt2.get("summary", {}).get("policy", {})
+        _compare_dict_field(policy1, policy2, "strict", "Strict Mode")
+        _compare_dict_field(policy1, policy2, "fail_on_warning", "Fail on Warning")
+        print()
+        
+        # Compare targets validated
+        print("📦 Targets Validated")
+        print("-" * 80)
+        targets1 = {t.get("target_path") for t in receipt1.get("targets", []) if isinstance(t, dict)}
+        targets2 = {t.get("target_path") for t in receipt2.get("targets", []) if isinstance(t, dict)}
+        
+        added = targets2 - targets1
+        removed = targets1 - targets2
+        common = targets1 & targets2
+        
+        print(f"  Common: {len(common)}")
+        if added:
+            print(f"  Added in Receipt 2: {len(added)}")
+            if getattr(args, 'verbose', False):
+                for target in sorted(t for t in added if t):
+                    print(f"    + {target}")
+        if removed:
+            print(f"  Removed from Receipt 1: {len(removed)}")
+            if getattr(args, 'verbose', False):
+                for target in sorted(t for t in removed if t):
+                    print(f"    - {target}")
+        print()
+        
+        # Summary
+        print("📊 Summary")
+        print("-" * 80)
+        
+        changes = []
+        if receipt1.get("run_status") != receipt2.get("run_status"):
+            changes.append("Status changed")
+        if impl1.get("git_commit") != impl2.get("git_commit"):
+            changes.append("Git commit changed")
+        if policy1.get("strict") != policy2.get("strict"):
+            changes.append("Policy mode changed")
+        if added or removed:
+            changes.append("Targets changed")
+        if summary1.get("errors") != summary2.get("errors"):
+            changes.append("Error count changed")
+        
+        if changes:
+            print("Changes detected:")
+            for change in changes:
+                print(f"  • {change}")
+        else:
+            print("No significant changes detected.")
+        
+        print("=" * 80)
+        
+        return 0
+        
+    except json.JSONDecodeError as e:
+        print(f"Error: Invalid JSON in receipt file: {e}", file=sys.stderr)
+        return 1
+    except Exception as e:
+        print(f"Error comparing receipts: {e}", file=sys.stderr)
+        return 1
+
+
+def _compare_field(dict1: dict, dict2: dict, key: str, label: str) -> None:
+    """Compare a single field between two dictionaries."""
+    val1 = dict1.get(key)
+    val2 = dict2.get(key)
+    
+    if val1 == val2:
+        print(f"  {label}: {val1} (unchanged)")
+    else:
+        print(f"  {label}: {val1} → {val2}")
+
+
+def _compare_dict_field(dict1: dict, dict2: dict, key: str, label: str) -> None:
+    """Compare a nested field between two dictionaries."""
+    val1 = dict1.get(key)
+    val2 = dict2.get(key)
+    
+    if val1 == val2:
+        print(f"  {label}: {val1} (unchanged)")
+    else:
+        print(f"  {label}: {val1} → {val2}")
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="umcp", description="UMCP contract-first validator CLI")
     p.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
@@ -972,25 +1172,29 @@ def build_parser() -> argparse.ArgumentParser:
 
     v = sub.add_parser("validate", help="Validate UMCP repo artifacts, CasePacks, schemas, and semantic rules")
     v.add_argument("path", nargs="?", default=".", help="Path inside repo (default: .)")
-    v.add_argument("--out", default=None, help="Write validator result JSON to this file (relative to repo root if not absolute)")
-    v.add_argument("--fail-on-warning", action="store_true", help="Treat warnings as failing (run_status becomes NONCONFORMANT)")
+    v.add_argument("--out", default=None, help="Write validator result JSON to this file")
+    v.add_argument("--strict", action="store_true", help="Enable strict mode: warnings become errors")
+    v.add_argument("--fail-on-warning", action="store_true", help="(Legacy) Treat warnings as failing")
     v.set_defaults(func=_cmd_validate)
 
-    r = sub.add_parser("run", help="Operational placeholder: validates the target; engine not yet implemented")
+    r = sub.add_parser("run", help="Operational placeholder: validates the target")
     r.add_argument("path", nargs="?", default=".", help="Path inside repo (default: .)")
-    r.add_argument("--out", default=None, help="Write validator result JSON to this file (relative to repo root if not absolute)")
-    r.add_argument("--fail-on-warning", action="store_true", help="Treat warnings as failing (run_status becomes NONCONFORMANT)")
+    r.add_argument("--out", default=None, help="Write validator result JSON to this file")
+    r.add_argument("--strict", action="store_true", help="Enable strict mode: warnings become errors")
+    r.add_argument("--fail-on-warning", action="store_true", help="(Legacy) Treat warnings as failing")
     r.set_defaults(func=_cmd_run)
+
+    d = sub.add_parser("diff", help="Compare two validation receipts")
+    d.add_argument("receipt1", help="Path to first receipt JSON file")
+    d.add_argument("receipt2", help="Path to second receipt JSON file")
+    d.add_argument("--verbose", "-v", action="store_true", help="Show detailed differences")
+    d.set_defaults(func=_cmd_diff)
 
     return p
 
 
-def main(argv: Optional[Sequence[str]] = None) -> None:
+def main() -> int:
+    """Main CLI entry point."""
     parser = build_parser()
-    args = parser.parse_args(argv)
-    rc = args.func(args)
-    raise SystemExit(rc)
-
-
-if __name__ == "__main__":  # pragma: no cover
-    main()
+    args = parser.parse_args()
+    return args.func(args)

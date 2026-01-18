@@ -26,6 +26,7 @@
           "additionalProperties": false,
           "properties": {
             "language": { "type": "string", "minLength": 1 },
+            "python_version": { "type": "string", "minLength": 1 },
             "git_commit": { "type": "string", "minLength": 1 },
             "build": { "type": "string", "minLength": 1 }
           }
