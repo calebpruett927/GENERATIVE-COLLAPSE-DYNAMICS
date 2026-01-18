@@ -1,0 +1,42 @@
+{
+  "status": "CONFORMANT",
+  "contract": "GCD.INTSTACK.v1",
+  "tier_level": 1,
+  "timestamp": "2026-01-18T20:45:00Z",
+  "identities_checked": [
+    {
+      "name": "Fidelity-drift duality",
+      "formula": "F = 1 - ω",
+      "satisfied": true,
+      "error": 0.0
+    },
+    {
+      "name": "Integrity-collapse relation",
+      "formula": "IC ≈ exp(κ)",
+      "satisfied": true,
+      "error": 1.0e-8
+    },
+    {
+      "name": "Energy decomposition",
+      "formula": "E = E_collapse + E_entropy + E_curvature",
+      "satisfied": true,
+      "error": 0.0
+    },
+    {
+      "name": "Resonance factorization",
+      "formula": "R = (1-|ω|)·(1-S)·exp(-C/C_crit)",
+      "satisfied": true,
+      "error": 0.0
+    }
+  ],
+  "gcd_metrics": {
+    "energy_regime": "Low",
+    "collapse_regime": "Minimal",
+    "flux_regime": "Dormant",
+    "resonance_regime": "Coherent"
+  },
+  "seam_distance": 0.0,
+  "errors": [],
+  "warnings": [],
+  "notes": "Zero entropy state - all GCD metrics at optimal/minimal values"
+}

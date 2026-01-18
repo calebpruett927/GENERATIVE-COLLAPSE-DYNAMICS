@@ -1,0 +1,179 @@
+schema: "schemas/contract.schema.json"
+
+contract:
+  id: "GCD.INTSTACK.v1"
+  version: "1.0.0"
+  timezone: "America/Chicago"
+  
+  parent_contract: "UMA.INTSTACK.v1"
+  tier_level: 1
+
+  embedding:
+    interval: [0.0, 1.0]
+    face: "pre_clip"
+    oor_policy: "clip_and_flag"
+    epsilon: 1.0e-8
+
+  tier_1_kernel:
+    reserved_symbols:
+      # Inherited from UMA.INTSTACK.v1 (frozen, cannot be redefined)
+      - "ω"
+      - "F"
+      - "S"
+      - "C"
+      - "τ_R"
+      - "κ"
+      - "IC"
+      - "IC_min"
+      - "omega"
+      - "tau_R"
+      - "kappa"
+      
+      # GCD extensions (Tier-1, frozen for downstream overlays)
+      - "E_potential"
+      - "Φ_collapse"
+      - "Φ_gen"
+      - "R"
+      - "I"
+
+    weights_policy: "nonnegative_sum_to_one"
+
+    frozen_parameters:
+      p: 3
+      alpha: 1.0
+      lambda: 0.2
+      eta: 1.0e-3
+      
+      # GCD-specific frozen parameters
+      alpha_energy: 1.0        # Entropy weight in E_potential
+      beta_energy: 0.5         # Curvature weight in E_potential
+      tau_0: 10.0              # Reference timescale for entropic collapse
+      C_crit: 0.2              # Critical curvature for field resonance
+
+    tolerances:
+      tol_seam: 0.005
+      tol_id: 1.0e-9
+      
+      # GCD tolerance extensions
+      tol_energy: 1.0e-6       # Energy computation tolerance
+      tol_flux: 1.0e-6         # Flux computation tolerance
+      tol_resonance: 1.0e-6    # Resonance computation tolerance
+
+  axioms:
+    - id: "AX-0"
+      statement: "Collapse is generative"
+      description: >
+        Every collapse event releases generative potential that can be 
+        harvested by downstream processes. Φ_gen ≥ 0 always.
+    
+    - id: "AX-1"
+      statement: "Boundary defines interior"
+      description: >
+        The system's boundary conditions fully determine its interior 
+        dynamics through resonance patterns. R measures this coupling.
+    
+    - id: "AX-2"
+      statement: "Entropy measures determinacy"
+      description: >
+        Entropy S quantifies the system's indeterminacy. S=0 implies 
+        deterministic precision; S→1 implies maximum disorder.
+
+  regime_classification:
+    energy:
+      low: { threshold: 0.01, condition: "E < 0.01" }
+      medium: { threshold: 0.05, condition: "0.01 ≤ E < 0.05" }
+      high: { threshold: null, condition: "E ≥ 0.05" }
+    
+    collapse:
+      minimal: { threshold: 0.01, condition: "Φ_collapse < 0.01" }
+      active: { threshold: 0.1, condition: "0.01 ≤ Φ_collapse < 0.1" }
+      critical: { threshold: null, condition: "Φ_collapse ≥ 0.1" }
+    
+    flux:
+      dormant: { threshold: 0.01, condition: "Φ_gen < 0.01" }
+      emerging: { threshold: 1.0, condition: "0.01 ≤ Φ_gen < 1.0" }
+      explosive: { threshold: null, condition: "Φ_gen ≥ 1.0" }
+    
+    resonance:
+      decoupled: { threshold: 0.3, condition: "R < 0.3" }
+      partial: { threshold: 0.7, condition: "0.3 ≤ R < 0.7" }
+      coherent: { threshold: null, condition: "R ≥ 0.7" }
+
+  mathematical_identities:
+    - name: "Fidelity-drift duality"
+      formula: "F = 1 - ω"
+      tolerance: 1.0e-9
+      
+    - name: "Integrity-collapse relation"
+      formula: "IC ≈ exp(κ)"
+      tolerance: 1.0e-6
+      
+    - name: "Energy decomposition"
+      formula: "E = E_collapse + E_entropy + E_curvature"
+      tolerance: 1.0e-6
+      
+    - name: "Resonance factorization"
+      formula: "R = (1-|ω|) · (1-S) · exp(-C/C_crit)"
+      tolerance: 1.0e-6
+
+  typed_censoring:
+    tau_R_special_values:
+      - "INF_REC"
+      - "UNIDENTIFIABLE"
+
+    run_status_enum:
+      - "CONFORMANT"
+      - "NONCONFORMANT"
+      - "NON_EVALUABLE"
+
+    no_return_no_credit: true
+    
+    gcd_regime_enums:
+      energy: ["Low", "Medium", "High"]
+      collapse: ["Minimal", "Active", "Critical"]
+      flux: ["Dormant", "Emerging", "Explosive"]
+      resonance: ["Decoupled", "Partial", "Coherent"]
+
+  closures:
+    # Reference to GCD closures in registry
+    energy_potential:
+      path: "closures/gcd/energy_potential.py"
+      inputs: ["omega", "S", "C"]
+      outputs: ["E_potential", "E_collapse", "E_entropy", "E_curvature", "regime"]
+    
+    entropic_collapse:
+      path: "closures/gcd/entropic_collapse.py"
+      inputs: ["S", "F", "tau_R"]
+      outputs: ["phi_collapse", "S_contribution", "F_contribution", "tau_damping", "regime"]
+    
+    generative_flux:
+      path: "closures/gcd/generative_flux.py"
+      inputs: ["kappa", "IC", "C"]
+      outputs: ["phi_gen", "kappa_component", "IC_amplification", "curvature_modulation", "regime"]
+    
+    field_resonance:
+      path: "closures/gcd/field_resonance.py"
+      inputs: ["omega", "S", "C"]
+      outputs: ["resonance", "coherence_factor", "order_factor", "curvature_damping", "regime"]
+
+  notes: >
+    GCD.INTSTACK.v1 extends UMA.INTSTACK.v1 with Generative Collapse Dynamics (GCD)
+    framework. It preserves all Tier-1 invariants from UMCP while adding GCD-specific
+    symbols (E_potential, Φ_collapse, Φ_gen, R) as frozen Tier-1 extensions.
+    
+    Axioms:
+    - AX-0: Collapse is generative (every collapse releases harvestable potential)
+    - AX-1: Boundary defines interior (resonance patterns couple boundary to interior)
+    - AX-2: Entropy measures determinacy (S=0 is deterministic, S→1 is maximum disorder)
+    
+    This contract is compatible with all UMCP tools and can be used as a parent contract
+    for Tier-2 overlays (e.g., RCFT). The frozen Tier-1 invariants cannot be overridden
+    by child contracts, ensuring mathematical consistency across the hierarchy.
+
+  provenance:
+    created: "2026-01-18"
+    author: "UMCP-GCD Working Group"
+    canonical_anchor: "canon/gcd_anchors.yaml"
+    parent_version: "UMA.INTSTACK.v1.0.0"
+
+  extensions: {}

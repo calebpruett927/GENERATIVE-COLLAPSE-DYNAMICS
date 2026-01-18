@@ -15,4 +15,25 @@ registry:
   notes: >
     Default closure registry used by UMA.INTSTACK.v1.
     Includes gamma, return-domain, norms, and curvature-neighborhood defaults.
-  extensions: {}
+  extensions:
+    gcd:
+      - name: "energy_potential"
+        path: "closures/gcd/energy_potential.py"
+        description: "Energy potential computation: E = ω² + α·S + β·C²"
+        inputs: ["omega", "S", "C"]
+        outputs: ["E_potential", "E_collapse", "E_entropy", "E_curvature", "regime"]
+      - name: "entropic_collapse"
+        path: "closures/gcd/entropic_collapse.py"
+        description: "Entropic collapse potential: Φ_collapse = S·(1-F)·exp(-τ_R/τ_0)"
+        inputs: ["S", "F", "tau_R"]
+        outputs: ["phi_collapse", "S_contribution", "F_contribution", "tau_damping", "regime"]
+      - name: "generative_flux"
+        path: "closures/gcd/generative_flux.py"
+        description: "Generative flux: Φ_gen = κ·√IC·(1+C²)"
+        inputs: ["kappa", "IC", "C"]
+        outputs: ["phi_gen", "kappa_component", "IC_amplification", "curvature_modulation", "regime"]
+      - name: "field_resonance"
+        path: "closures/gcd/field_resonance.py"
+        description: "Field resonance: R = (1-|ω|)·(1-S)·exp(-C/C_crit)"
+        inputs: ["omega", "S", "C"]
+        outputs: ["resonance", "coherence_factor", "order_factor", "curvature_damping", "regime"]

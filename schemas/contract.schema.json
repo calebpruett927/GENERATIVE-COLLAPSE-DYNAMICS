@@ -12,7 +12,7 @@
     },
     "contract": {
       "type": "object",
-      "additionalProperties": false,
+      "additionalProperties": true,
       "required": ["id", "version", "timezone", "embedding", "tier_1_kernel", "typed_censoring"],
       "properties": {
         "id": { "type": "string", "minLength": 3 },
@@ -26,6 +26,33 @@
           "type": "object",
           "additionalProperties": true
         },
+        "parent_contract": { "type": "string" },
+        "tier_level": { "type": "integer", "minimum": 1 },
+        "axioms": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "statement": { "type": "string" },
+              "description": { "type": "string" }
+            }
+          }
+        },
+        "regime_classification": { "type": "object" },
+        "mathematical_identities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "formula": { "type": "string" },
+              "tolerance": { "type": "number" }
+            }
+          }
+        },
+        "closures": { "type": "object" },
+        "provenance": { "type": "object" },
 
         "embedding": {
           "type": "object",
@@ -59,22 +86,29 @@
             },
             "frozen_parameters": {
               "type": "object",
-              "additionalProperties": false,
+              "additionalProperties": true,
               "required": ["p", "alpha", "lambda", "eta"],
               "properties": {
                 "p": { "type": "integer", "minimum": 1 },
                 "alpha": { "type": "number", "minimum": 0 },
                 "lambda": { "type": "number", "minimum": 0 },
-                "eta": { "type": "number", "exclusiveMinimum": 0 }
+                "eta": { "type": "number", "exclusiveMinimum": 0 },
+                "alpha_energy": { "type": "number" },
+                "beta_energy": { "type": "number" },
+                "tau_0": { "type": "number" },
+                "C_crit": { "type": "number" }
               }
             },
             "tolerances": {
               "type": "object",
-              "additionalProperties": false,
+              "additionalProperties": true,
               "required": ["tol_seam", "tol_id"],
               "properties": {
                 "tol_seam": { "type": "number", "minimum": 0 },
-                "tol_id": { "type": "number", "minimum": 0 }
+                "tol_id": { "type": "number", "minimum": 0 },
+                "tol_energy": { "type": "number" },
+                "tol_flux": { "type": "number" },
+                "tol_resonance": { "type": "number" }
               }
             }
           }
@@ -82,7 +116,7 @@
 
         "typed_censoring": {
           "type": "object",
-          "additionalProperties": false,
+          "additionalProperties": true,
           "required": ["tau_R_special_values", "run_status_enum", "no_return_no_credit"],
           "properties": {
             "tau_R_special_values": {
@@ -96,7 +130,8 @@
               "minItems": 3,
               "uniqueItems": true
             },
-            "no_return_no_credit": { "type": "boolean" }
+            "no_return_no_credit": { "type": "boolean" },
+            "gcd_regime_enums": { "type": "object" }
           }
         }
       }

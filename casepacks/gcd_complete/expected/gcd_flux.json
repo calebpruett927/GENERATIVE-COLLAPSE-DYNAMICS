@@ -1,0 +1,8 @@
+{
+  "phi_gen": 0.000184,
+  "kappa_component": 18.420681,
+  "IC_amplification": 1.0e-5,
+  "curvature_modulation": 1.0,
+  "regime": "Dormant",
+  "notes": "Generative flux at zero entropy: Φ_gen = κ·√IC·(1+C²) ≈ 0 (IC≈0)"
+}

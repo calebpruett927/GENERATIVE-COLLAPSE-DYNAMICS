@@ -1,0 +1,8 @@
+{
+  "resonance": 1.0,
+  "coherence_factor": 1.0,
+  "order_factor": 1.0,
+  "curvature_damping": 1.0,
+  "regime": "Coherent",
+  "notes": "Field resonance at zero entropy: R = (1-|ω|)·(1-S)·exp(-C/C_crit) = 1 (perfect resonance)"
+}

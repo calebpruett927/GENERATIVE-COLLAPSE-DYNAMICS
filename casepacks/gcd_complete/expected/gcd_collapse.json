@@ -1,0 +1,8 @@
+{
+  "phi_collapse": 0.0,
+  "S_contribution": 0.0,
+  "F_contribution": 0.0,
+  "tau_damping": 0.904837,
+  "regime": "Minimal",
+  "notes": "Entropic collapse at zero entropy: Φ_collapse = S·(1-F)·exp(-τ_R/τ_0) = 0"
+}

@@ -1,0 +1,8 @@
+{
+  "E_potential": 0.0,
+  "E_collapse": 0.0,
+  "E_entropy": 0.0,
+  "E_curvature": 0.0,
+  "regime": "Low",
+  "notes": "Energy potential at zero entropy state: E = ω² + α·S + β·C² = 0"
+}
