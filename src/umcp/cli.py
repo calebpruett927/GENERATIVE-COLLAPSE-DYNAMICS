@@ -6,6 +6,7 @@ import hashlib
 import json
 import math
 import re
+import subprocess
 import sys
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
@@ -110,6 +111,29 @@ class TargetResult:
 # -----------------------------
 def _utc_now_iso() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def _get_git_commit(repo_root: Path) -> str:
+    """Get current git commit hash. Returns 'unknown' if not in git repo or error."""
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=repo_root,
+            capture_output=True,
+            text=True,
+            timeout=5,
+            check=False
+        )
+        if result.returncode == 0 and result.stdout.strip():
+            return result.stdout.strip()
+    except (subprocess.TimeoutExpired, FileNotFoundError, Exception):
+        pass
+    return "unknown"
+
+
+def _get_python_version() -> str:
+    """Get Python version string (e.g., '3.12.1')."""
+    return f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
 
 
 def _read_text(path: Path) -> str:
@@ -881,7 +905,8 @@ def _validate_repo(repo_root: Path, fail_on_warning: bool) -> Dict[str, Any]:
             "version": __version__,
             "implementation": {
                 "language": "python",
-                "git_commit": "unknown",
+                "python_version": _get_python_version(),
+                "git_commit": _get_git_commit(repo_root),
                 "build": "repo"
             }
         },
@@ -950,12 +975,22 @@ def _cmd_validate(args: argparse.Namespace) -> int:
     # Compute sha256 of result
     result_hash = hashlib.sha256(out_json.encode('utf-8')).hexdigest()
     
-    # Generate governance summary pointer
+    # Extract provenance details
+    created_utc = result.get("created_utc", "unknown")
+    git_commit = result.get("validator", {}).get("implementation", {}).get("git_commit", "unknown")
+    python_version = result.get("validator", {}).get("implementation", {}).get("python_version", "unknown")
+    error_count = result.get("summary", {}).get("counts", {}).get("errors", 0)
+    warning_count = result.get("summary", {}).get("counts", {}).get("warnings", 0)
+    
+    # Generate governance summary with full provenance
     policy_mode = "strict" if strict_mode else "non-strict"
     governance_note = (
-        f"Repo + hello_world CasePack validated {result['run_status']}; "
-        f"validator.result.json sha256={result_hash[:16]}...; "
-        f"validator v{__version__}; policy {policy_mode}. "
+        f"UMCP validation: {result['run_status']} (repo + casepacks/hello_world), "
+        f"errors={error_count} warnings={warning_count}; "
+        f"validator={VALIDATOR_NAME} v{__version__} (build=repo, commit={git_commit[:8] if git_commit != 'unknown' else git_commit}, python={python_version}); "
+        f"policy strict={str(strict_mode).lower()}; "
+        f"created_utc={created_utc}; "
+        f"sha256={result_hash[:16]}...\n"
         f"Note: non-strict = baseline structural validity; strict = publication lint gate."
     )
     
