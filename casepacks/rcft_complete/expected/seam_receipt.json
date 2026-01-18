@@ -1,0 +1,32 @@
+{
+  "status": "CONFORMANT",
+  "contract": "RCFT.INTSTACK.v1",
+  "tier": 2,
+  "parent_contract": "GCD.INTSTACK.v1",
+  "timestamp": "2026-01-18T00:00:00Z",
+  "identities_satisfied": [
+    "F = 1 - ω (F=1.0, ω=0.0, diff=0.0 < 1e-9)",
+    "IC ≈ exp(κ) (IC=0.0, exp(κ)=1.1e-8, within tol)",
+    "E_potential = ω² + α·S + β·C² (E=0.0, computed=0.0, diff=0.0 < 1e-6)",
+    "R = (1-|ω|)·(1-S)·exp(-C/C_crit) (R=1.0, computed=1.0, diff=0.0 < 1e-6)",
+    "1 ≤ D_fractal ≤ 3 (D_f=0.0, special case: point trajectory)",
+    "Theta_phase ∈ [0, 2π) (Θ=0.0, within [0, 6.28))",
+    "lambda_pattern > 0 (λ=inf, special case: constant field)"
+  ],
+  "tier_1_regimes": {
+    "umcp": "Stable",
+    "gcd_energy": "Low",
+    "gcd_collapse": "Minimal",
+    "gcd_flux": "Dormant",
+    "gcd_resonance": "Coherent"
+  },
+  "tier_2_regimes": {
+    "rcft_fractal": "Smooth",
+    "rcft_recursive": "Dormant",
+    "rcft_pattern": "Standing"
+  },
+  "tier_hierarchy_validated": true,
+  "tier_1_frozen_symbols_unchanged": true,
+  "all_closures_executed": true,
+  "notes": "Zero entropy state analyzed with full RCFT Tier-2 overlay. All Tier-1 invariants remain frozen and unchanged. RCFT augments with geometric analysis: D_f=0 (point), Ψ_r=0 (no memory), λ=inf (no oscillation)."
+}

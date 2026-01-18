@@ -1,0 +1,13 @@
+{
+  "Psi_recursive": 0.0,
+  "regime": "Dormant",
+  "convergence_achieved": true,
+  "components": {
+    "total_field": 0.0,
+    "mean_contribution": 0.0,
+    "max_contribution": 0.0,
+    "decay_rate": 0.8,
+    "effective_memory": 4.48
+  },
+  "interpretation": "Zero entropy state has no recursive field coupling (Ψ_r=0), collapse events are completely isolated"
+}

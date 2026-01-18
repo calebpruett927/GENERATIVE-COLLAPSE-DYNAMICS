@@ -1,0 +1,7 @@
+{
+  "resonance": 1.0,
+  "coherence_factor": 1.0,
+  "order_factor": 1.0,
+  "curvature_damping": 1.0,
+  "regime": "Coherent"
+}

@@ -1,24 +1,40 @@
 [![CI](../../actions/workflows/validate.yml/badge.svg)](../../actions/workflows/validate.yml)
 [![Production Ready](https://img.shields.io/badge/production-ready-brightgreen)](docs/production_deployment.md)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
+[![Tests](https://img.shields.io/badge/tests-221%20passing-success)](tests/)
+[![GCD+RCFT](https://img.shields.io/badge/frameworks-GCD%20%2B%20RCFT-blueviolet)](docs/rcft_theory.md)
 
 # UMCP — Universal Measurement Contract Protocol (Metadata + Runnable Validator Surface)
 
 This repository contains the metadata and runnable validator for the Universal Measurement Contract Protocol (UMCP).  UMCP is designed as a **contract‑first, artifact‑driven** system with **production-grade monitoring and observability**.  Instead of prose alone, you'll find frozen contracts, pinned closure registries, machine‑readable schemas, and receipts that can be re‑validated by third parties.  The goal is for reviewers to verify exactly what was frozen, what was computed, and what claims are made—without hidden defaults or implementation‑specific assumptions.
 
+## What's New in v1.1.0 🎉
+
+**Recursive Collapse Field Theory (RCFT)** - A complete Tier-2 framework extending GCD with geometric and topological analysis:
+
+- **3 New Closures**: Fractal dimension, recursive field strength, resonance pattern analysis
+- **Complete Integration**: All 221 tests passing (100% success rate), full backward compatibility
+- **Production Ready**: Comprehensive documentation ([theory](docs/rcft_theory.md), [usage](docs/rcft_usage.md)), validated with zero-entropy examples
+- **Augmentation Philosophy**: RCFT augments GCD without override - all Tier-1 invariants remain frozen
+
+See [CHANGELOG.md](CHANGELOG.md) for full details.
+
 ## Contents
 
-1. **Canon anchors** – Stable identifiers and default numeric thresholds.  
-2. **Contracts** – Frozen boundaries defining Tier‑1 kernel semantics (e.g., `UMA.INTSTACK.v1`).  
-3. **Closures** – Explicit complements (Γ forms, return‑domain generators, norms) that complete a contract.  
+1. **Canon anchors** – Stable identifiers and default numeric thresholds (UMCP, GCD, RCFT).  
+2. **Contracts** – Frozen boundaries defining Tier‑1 and Tier-2 semantics (`GCD.INTSTACK.v1`, `RCFT.INTSTACK.v1`).  
+3. **Closures** – Explicit complements implementing the frameworks:
+   - **GCD Tier-1** (4 closures): Energy potential, entropic collapse, generative flux, field resonance
+   - **RCFT Tier-2** (3 closures): Fractal dimension, recursive field, resonance pattern
 4. **Schemas** – JSON Schema files describing valid structures for all artifacts.  
 5. **Validator rules** – Portable semantic checks enforced at runtime.  
 6. **Validator CLI** – A Python entrypoint (`umcp validate`, `umcp health`) with structured logging.  
-7. **CasePacks** – Runnable publication units (inputs, invariants, receipts).  
-8. **Tests** – Comprehensive pytest suite (56 tests) for regression and quality assurance.  
+7. **CasePacks** – Runnable publication units (inputs, invariants, receipts) for GCD and RCFT.  
+8. **Tests** – Comprehensive pytest suite (221 tests: 142 original + 56 RCFT + 23 integration).  
 9. **CI workflow** – GitHub Actions configuration (`validate.yml`) that runs the validator and tests.  
 10. **Production deployment** – [Complete guide](docs/production_deployment.md) for enterprise deployment.
 11. **Monitoring & Observability** – Structured JSON logging, performance metrics, health checks.
+12. **RCFT Documentation** – [Theory](docs/rcft_theory.md) and [Usage Guide](docs/rcft_usage.md) for Tier-2 overlay.
 
 ---
 

@@ -1,0 +1,13 @@
+{
+  "lambda_pattern": "inf",
+  "Theta_phase": 0.0,
+  "pattern_type": "Standing",
+  "phase_coherence": 1.0,
+  "harmonic_content": 0.0,
+  "components": {
+    "mean_field": 1.0,
+    "std_field": 0.0,
+    "phase_variance": 0.0
+  },
+  "interpretation": "Constant field at R=1.0 with no oscillations, perfect standing pattern with infinite wavelength"
+}

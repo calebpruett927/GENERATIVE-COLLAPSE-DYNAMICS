@@ -16,8 +16,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "umcp"
-version = "0.1.0"
-description = "Universal Measurement Contract Protocol (UMCP): contract-first validation, receipts, and runnable casepacks."
+version = "1.1.0"
+description = "Universal Measurement Contract Protocol (UMCP): contract-first validation, receipts, and runnable casepacks with GCD and RCFT frameworks."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
@@ -26,7 +26,7 @@ authors = [
   { name = "Clement Paulus" }
 ]
 
-keywords = ["UMCP", "GCD", "contract-first", "validation", "reproducibility", "casepacks"]
+keywords = ["UMCP", "GCD", "RCFT", "contract-first", "validation", "reproducibility", "casepacks", "fractal", "recursive-field"]
 
 classifiers = [
   "Development Status :: 4 - Beta",

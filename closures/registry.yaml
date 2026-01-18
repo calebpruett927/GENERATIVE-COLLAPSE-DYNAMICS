@@ -37,3 +37,19 @@ registry:
         description: "Field resonance: R = (1-|ω|)·(1-S)·exp(-C/C_crit)"
         inputs: ["omega", "S", "C"]
         outputs: ["resonance", "coherence_factor", "order_factor", "curvature_damping", "regime"]
+    rcft:
+      - name: "fractal_dimension"
+        path: "closures/rcft/fractal_dimension.py"
+        description: "Fractal dimension of collapse trajectory: D_f = log(N(ε))/log(1/ε)"
+        inputs: ["trajectory", "eps_values"]
+        outputs: ["D_fractal", "regime", "box_counts", "r_squared", "log_slope"]
+      - name: "recursive_field"
+        path: "closures/rcft/recursive_field.py"
+        description: "Recursive field strength: Ψ_r = Σ α^n·Ψ_n"
+        inputs: ["S_series", "C_series", "F_series", "alpha"]
+        outputs: ["Psi_recursive", "regime", "contributions", "convergence_achieved"]
+      - name: "resonance_pattern"
+        path: "closures/rcft/resonance_pattern.py"
+        description: "Resonance pattern analysis: λ_p, Θ via FFT"
+        inputs: ["field_series", "dt"]
+        outputs: ["lambda_pattern", "Theta_phase", "pattern_type", "phase_coherence"]

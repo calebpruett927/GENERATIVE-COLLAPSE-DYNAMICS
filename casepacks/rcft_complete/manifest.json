@@ -1,0 +1,30 @@
+{
+  "id": "RCFT_COMPLETE_EXAMPLE",
+  "contract": "RCFT.INTSTACK.v1",
+  "description": "Complete RCFT Tier-2 example with zero entropy state and Tier-2 metrics",
+  "files": {
+    "raw_measurements": "casepacks/rcft_complete/raw_measurements.csv",
+    "expected_outputs": {
+      "invariants": "casepacks/rcft_complete/expected/invariants.json",
+      "gcd_energy": "casepacks/rcft_complete/expected/gcd_energy.json",
+      "gcd_collapse": "casepacks/rcft_complete/expected/gcd_collapse.json",
+      "gcd_flux": "casepacks/rcft_complete/expected/gcd_flux.json",
+      "gcd_resonance": "casepacks/rcft_complete/expected/gcd_resonance.json",
+      "rcft_fractal": "casepacks/rcft_complete/expected/rcft_fractal.json",
+      "rcft_recursive": "casepacks/rcft_complete/expected/rcft_recursive.json",
+      "rcft_pattern": "casepacks/rcft_complete/expected/rcft_pattern.json",
+      "seam_receipt": "casepacks/rcft_complete/expected/seam_receipt.json"
+    }
+  },
+  "closures": [
+    "energy_potential",
+    "entropic_collapse",
+    "generative_flux",
+    "field_resonance",
+    "fractal_dimension",
+    "recursive_field",
+    "resonance_pattern"
+  ],
+  "tier": 2,
+  "notes": "Zero entropy state with full RCFT Tier-2 analysis including fractal dimension, recursive field, and resonance patterns"
+}

@@ -1,0 +1,12 @@
+{
+  "D_fractal": 0.0,
+  "regime": "Smooth",
+  "log_slope": 0.0,
+  "r_squared": 1.0,
+  "components": {
+    "min_eps": 1e-06,
+    "max_eps": 1e-06,
+    "n_eps_values": 1
+  },
+  "interpretation": "Zero entropy trajectory is a point (D_f=0), perfectly smooth with no fractal structure"
+}
