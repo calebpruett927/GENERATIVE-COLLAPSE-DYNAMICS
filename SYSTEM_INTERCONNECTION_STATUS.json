@@ -1,0 +1,51 @@
+{
+  "system_status": "FULLY_INTERCONNECTED",
+  "timestamp": "2026-01-18T21:35:00Z",
+  "tier_structure": {
+    "tier_0": {
+      "name": "Base UMCP",
+      "canon": "canon/anchors.yaml",
+      "contract": "contracts/UMA.INTSTACK.v1.yaml",
+      "registry": "closures/registry.yaml",
+      "casepacks": [
+        "manifest.yaml",
+        "casepacks/hello_world/manifest.json"
+      ]
+    },
+    "tier_1": {
+      "name": "GCD (Generative Collapse Dynamics)",
+      "canon": "canon/gcd_anchors.yaml",
+      "contract": "contracts/GCD.INTSTACK.v1.yaml",
+      "closures": [
+        "closures/gcd/energy_potential.py",
+        "closures/gcd/entropic_collapse.py",
+        "closures/gcd/generative_flux.py",
+        "closures/gcd/field_resonance.py"
+      ],
+      "casepacks": [
+        "casepacks/gcd_complete/manifest.json"
+      ]
+    },
+    "tier_2": {
+      "name": "RCFT (Recursive Collapse Field Theory)",
+      "canon": "canon/rcft_anchors.yaml",
+      "contract": "contracts/RCFT.INTSTACK.v1.yaml",
+      "extends": "tier_1 (includes all GCD closures)",
+      "closures": [
+        "closures/rcft/fractal_dimension.py",
+        "closures/rcft/recursive_field.py",
+        "closures/rcft/resonance_pattern.py"
+      ],
+      "casepacks": [
+        "casepacks/rcft_complete/manifest.json"
+      ]
+    }
+  },
+  "validation": {
+    "tests_passing": 221,
+    "tests_failing": 0,
+    "schema_errors": 0,
+    "all_files_exist": true,
+    "all_paths_valid": true
+  }
+}
