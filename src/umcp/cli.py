@@ -1018,6 +1018,153 @@ def _cmd_run(args: argparse.Namespace) -> int:
     return _cmd_validate(args)
 
 
+def _cmd_diff(args: argparse.Namespace) -> int:
+    """Compare two validation receipts and show differences."""
+    try:
+        # Load receipts
+        r1_file = Path(args.receipt1)
+        r2_file = Path(args.receipt2)
+        
+        if not r1_file.exists():
+            print(f"Error: Receipt not found: {args.receipt1}", file=sys.stderr)
+            return 1
+        if not r2_file.exists():
+            print(f"Error: Receipt not found: {args.receipt2}", file=sys.stderr)
+            return 1
+        
+        with r1_file.open("r") as f:
+            receipt1 = json.load(f)
+        with r2_file.open("r") as f:
+            receipt2 = json.load(f)
+        
+        # Display header
+        print("=" * 80)
+        print("UMCP Receipt Comparison")
+        print("=" * 80)
+        print(f"Receipt 1: {args.receipt1}")
+        print(f"Receipt 2: {args.receipt2}")
+        print()
+        
+        # Compare basic info
+        print("📋 Basic Information")
+        print("-" * 80)
+        _compare_field(receipt1, receipt2, "run_status", "Status")
+        _compare_field(receipt1, receipt2, "created_utc", "Created UTC")
+        print()
+        
+        # Compare validation results
+        print("✅ Validation Results")
+        print("-" * 80)
+        summary1 = receipt1.get("summary", {}).get("counts", {})
+        summary2 = receipt2.get("summary", {}).get("counts", {})
+        _compare_dict_field(summary1, summary2, "errors", "Errors")
+        _compare_dict_field(summary1, summary2, "warnings", "Warnings")
+        
+        if args.verbose:
+            targets1 = receipt1.get("targets", [])
+            targets2 = receipt2.get("targets", [])
+            if len(targets1) != len(targets2):
+                print(f"  Target count changed: {len(targets1)} → {len(targets2)}")
+        print()
+        
+        # Compare implementation
+        print("🔧 Implementation")
+        print("-" * 80)
+        impl1 = receipt1.get("validator", {}).get("implementation", {})
+        impl2 = receipt2.get("validator", {}).get("implementation", {})
+        _compare_dict_field(impl1, impl2, "git_commit", "Git Commit")
+        _compare_dict_field(impl1, impl2, "python_version", "Python Version")
+        print()
+        
+        # Compare policy
+        print("⚖️  Policy")
+        print("-" * 80)
+        policy1 = receipt1.get("summary", {}).get("policy", {})
+        policy2 = receipt2.get("summary", {}).get("policy", {})
+        _compare_dict_field(policy1, policy2, "strict", "Strict Mode")
+        _compare_dict_field(policy1, policy2, "fail_on_warning", "Fail on Warning")
+        print()
+        
+        # Compare targets validated
+        print("📦 Targets Validated")
+        print("-" * 80)
+        targets1 = {t.get("target_path") for t in receipt1.get("targets", [])}
+        targets2 = {t.get("target_path") for t in receipt2.get("targets", [])}
+        
+        added = targets2 - targets1
+        removed = targets1 - targets2
+        common = targets1 & targets2
+        
+        print(f"  Common: {len(common)}")
+        if added:
+            print(f"  Added in Receipt 2: {len(added)}")
+            if args.verbose:
+                for target in sorted(added):
+                    print(f"    + {target}")
+        if removed:
+            print(f"  Removed from Receipt 1: {len(removed)}")
+            if args.verbose:
+                for target in sorted(removed):
+                    print(f"    - {target}")
+        print()
+        
+        # Summary
+        print("📊 Summary")
+        print("-" * 80)
+        
+        changes = []
+        if receipt1.get("run_status") != receipt2.get("run_status"):
+            changes.append("Status changed")
+        if impl1.get("git_commit") != impl2.get("git_commit"):
+            changes.append("Git commit changed")
+        if policy1.get("strict") != policy2.get("strict"):
+            changes.append("Policy mode changed")
+        if added or removed:
+            changes.append("Targets changed")
+        if summary1.get("errors") != summary2.get("errors"):
+            changes.append("Error count changed")
+        
+        if changes:
+            print("Changes detected:")
+            for change in changes:
+                print(f"  • {change}")
+        else:
+            print("No significant changes detected.")
+        
+        print("=" * 80)
+        
+        return 0
+        
+    except json.JSONDecodeError as e:
+        print(f"Error: Invalid JSON in receipt file: {e}", file=sys.stderr)
+        return 1
+    except Exception as e:
+        print(f"Error comparing receipts: {e}", file=sys.stderr)
+        return 1
+
+
+def _compare_field(dict1: dict, dict2: dict, key: str, label: str) -> None:
+    """Compare a single field between two dictionaries."""
+    val1 = dict1.get(key)
+    val2 = dict2.get(key)
+    
+    if val1 == val2:
+        print(f"  {label}: {val1} (unchanged)")
+    else:
+        print(f"  {label}: {val1} → {val2}")
+
+
+def _compare_dict_field(dict1: dict, dict2: dict, key: str, label: str) -> None:
+    """Compare a nested field between two dictionaries."""
+    val1 = dict1.get(key)
+    val2 = dict2.get(key)
+    
+    if val1 == val2:
+        print(f"  {label}: {val1} (unchanged)")
+    else:
+        print(f"  {label}: {val1} → {val2}")
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="umcp", description="UMCP contract-first validator CLI")
     p.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
@@ -1038,219 +1185,17 @@ def build_parser() -> argparse.ArgumentParser:
     r.add_argument("--fail-on-warning", action="store_true", help="(Legacy) Treat warnings as failing (same as --strict)")
     r.set_defaults(func=_cmd_run)
 
+    d = sub.add_parser("diff", help="Compare two validation receipts")
+    d.add_argument("receipt1", help="Path to first receipt JSON file")
+    d.add_argument("receipt2", help="Path to second receipt JSON file")
+    d.add_argument("--verbose", "-v", action="store_true", help="Show detailed differences")
+    d.set_defaults(func=_cmd_diff)
+
     return p
 
 
 def main() -> int:
-    """Main CLI entry point for UMCP validator."""
-    parser = argparse.ArgumentParser(
-        prog="umcp",
-        description="Universal Measurement Contract Protocol (UMCP) validator",
-    )
-    parser.add_argument("--version", action="version", version=f"umcp {__version__}")
-    
-    subparsers = parser.add_subparsers(dest="command", help="Available commands")
-    
-    # Validate command
-    validate_parser = subparsers.add_parser("validate", help="Validate UMCP artifacts")
-    validate_parser.add_argument(
-        "path",
-        nargs="?",
-        default=".",
-        help="Path to validate (default: current directory)",
-    )
-    validate_parser.add_argument(
-        "--strict",
-        action="store_true",
-        help="Enable strict validation mode (publication lint gate)",
-    )
-    
-    # Diff command (NEW)
-    diff_parser = subparsers.add_parser("diff", help="Compare two validation receipts")
-    diff_parser.add_argument(
-        "receipt1",
-        help="Path to first receipt JSON file",
-    )
-    diff_parser.add_argument(
-        "receipt2",
-        help="Path to second receipt JSON file",
-    )
-    diff_parser.add_argument(
-        "--verbose",
-        "-v",
-        action="store_true",
-        help="Show detailed differences",
-    )
-    
-    # Run command
-    run_parser = subparsers.add_parser("run", help="Run validation (engine placeholder)")
-    run_parser.add_argument(
-        "path",
-        nargs="?",
-        default=".",
-        help="Path to run validation on",
-    )
-    
+    """Main CLI entry point."""
+    parser = build_parser()
     args = parser.parse_args()
-    
-    if args.command == "validate":
-        return validate_command(args.path, strict=args.strict)
-    elif args.command == "diff":
-        return diff_command(args.receipt1, args.receipt2, verbose=args.verbose)
-    elif args.command == "run":
-        return run_command(args.path)
-    else:
-        parser.print_help()
-        return 0
-
-
-def diff_command(receipt1_path: str, receipt2_path: str, verbose: bool = False) -> int:
-    """Compare two validation receipts and show differences."""
-    import json
-    from datetime import datetime
-    from pathlib import Path
-    
-    try:
-        # Load receipts
-        r1_file = Path(receipt1_path)
-        r2_file = Path(receipt2_path)
-        
-        if not r1_file.exists():
-            print(f"Error: Receipt not found: {receipt1_path}")
-            return 1
-        if not r2_file.exists():
-            print(f"Error: Receipt not found: {receipt2_path}")
-            return 1
-        
-        with r1_file.open("r") as f:
-            receipt1 = json.load(f)
-        with r2_file.open("r") as f:
-            receipt2 = json.load(f)
-        
-        # Display header
-        print("=" * 80)
-        print("UMCP Receipt Comparison")
-        print("=" * 80)
-        print(f"Receipt 1: {receipt1_path}")
-        print(f"Receipt 2: {receipt2_path}")
-        print()
-        
-        # Compare basic info
-        print("📋 Basic Information")
-        print("-" * 80)
-        _compare_field(receipt1, receipt2, "status", "Status")
-        _compare_field(receipt1, receipt2, "created_utc", "Created UTC")
-        print()
-        
-        # Compare validation results
-        print("✅ Validation Results")
-        print("-" * 80)
-        _compare_field(receipt1, receipt2, "error_count", "Errors")
-        _compare_field(receipt1, receipt2, "warning_count", "Warnings")
-        
-        if verbose:
-            errors1 = receipt1.get("errors", [])
-            errors2 = receipt2.get("errors", [])
-            if errors1 != errors2:
-                print(f"  Error details changed:")
-                print(f"    Receipt 1: {len(errors1)} errors")
-                print(f"    Receipt 2: {len(errors2)} errors")
-        print()
-        
-        # Compare implementation
-        print("🔧 Implementation")
-        print("-" * 80)
-        impl1 = receipt1.get("implementation", {})
-        impl2 = receipt2.get("implementation", {})
-        _compare_nested(impl1, impl2, "validator_version", "Validator Version")
-        _compare_nested(impl1, impl2, "git_commit", "Git Commit")
-        _compare_nested(impl1, impl2, "python_version", "Python Version")
-        print()
-        
-        # Compare policy
-        print("⚖️  Policy")
-        print("-" * 80)
-        policy1 = receipt1.get("policy", {})
-        policy2 = receipt2.get("policy", {})
-        _compare_nested(policy1, policy2, "strict", "Strict Mode")
-        _compare_nested(policy1, policy2, "fail_on_warning", "Fail on Warning")
-        print()
-        
-        # Compare artifacts validated
-        print("📦 Artifacts Validated")
-        print("-" * 80)
-        artifacts1 = set(receipt1.get("artifacts_validated", []))
-        artifacts2 = set(receipt2.get("artifacts_validated", []))
-        
-        added = artifacts2 - artifacts1
-        removed = artifacts1 - artifacts2
-        common = artifacts1 & artifacts2
-        
-        print(f"  Common: {len(common)}")
-        if added:
-            print(f"  Added in Receipt 2: {len(added)}")
-            if verbose:
-                for artifact in sorted(added):
-                    print(f"    + {artifact}")
-        if removed:
-            print(f"  Removed from Receipt 1: {len(removed)}")
-            if verbose:
-                for artifact in sorted(removed):
-                    print(f"    - {artifact}")
-        print()
-        
-        # Summary
-        print("📊 Summary")
-        print("-" * 80)
-        
-        changes = []
-        if receipt1.get("status") != receipt2.get("status"):
-            changes.append("Status changed")
-        if impl1.get("git_commit") != impl2.get("git_commit"):
-            changes.append("Git commit changed")
-        if policy1.get("strict") != policy2.get("strict"):
-            changes.append("Policy mode changed")
-        if added or removed:
-            changes.append("Artifacts changed")
-        if receipt1.get("error_count") != receipt2.get("error_count"):
-            changes.append("Error count changed")
-        
-        if changes:
-            print("Changes detected:")
-            for change in changes:
-                print(f"  • {change}")
-        else:
-            print("No significant changes detected.")
-        
-        print("=" * 80)
-        
-        return 0
-        
-    except json.JSONDecodeError as e:
-        print(f"Error: Invalid JSON in receipt file: {e}")
-        return 1
-    except Exception as e:
-        print(f"Error comparing receipts: {e}")
-        return 1
-
-
-def _compare_field(dict1: dict, dict2: dict, key: str, label: str) -> None:
-    """Compare a single field between two dictionaries."""
-    val1 = dict1.get(key)
-    val2 = dict2.get(key)
-    
-    if val1 == val2:
-        print(f"  {label}: {val1} (unchanged)")
-    else:
-        print(f"  {label}: {val1} → {val2}")
-
-
-def _compare_nested(dict1: dict, dict2: dict, key: str, label: str) -> None:
-    """Compare a nested field between two dictionaries."""
-    val1 = dict1.get(key)
-    val2 = dict2.get(key)
-    
-    if val1 == val2:
-        print(f"  {label}: {val1} (unchanged)")
-    else:
-        print(f"  {label}: {val1} → {val2}")
+    return args.func(args)
