@@ -1,0 +1,54 @@
+{
+  "schema": "schemas/validator.result.schema.json",
+  "created_utc": "2026-01-18T20:26:12Z",
+  "validator": {
+    "name": "umcp-validator",
+    "version": "0.1.0",
+    "implementation": {
+      "language": "python",
+      "python_version": "3.12.1",
+      "git_commit": "a69fbb1873e31a127c9662a4473d3c8eadb932fc",
+      "build": "repo"
+    }
+  },
+  "run_status": "CONFORMANT",
+  "summary": {
+    "counts": {
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "targets_total": 2,
+      "targets_failed": 0
+    },
+    "policy": {
+      "strict": true,
+      "fail_on_warning": true
+    }
+  },
+  "targets": [
+    {
+      "target_type": "repo",
+      "target_path": ".",
+      "run_status": "CONFORMANT",
+      "counts": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 0
+      },
+      "issues": []
+    },
+    {
+      "target_type": "casepack",
+      "target_path": "casepacks/hello_world",
+      "run_status": "CONFORMANT",
+      "counts": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 0
+      },
+      "issues": []
+    }
+  ],
+  "issues": [],
+  "notes": "UMCP repository validation"
+}

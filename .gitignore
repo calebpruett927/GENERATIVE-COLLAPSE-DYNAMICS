@@ -214,11 +214,11 @@ __marimo__/
 # UMCP repo hygiene (project-specific)
 # -----------------------------
 
-# Local validator outputs (do not commit by default)
-validator.result.json
-validator.result.*.json
+# Local validator outputs (keep current receipt, ignore transient outputs)
+validation-result.json
 validation.report.json
 validation.report.*.json
+old-receipt.json
 
 # Local run artifacts (if you add a runtime that emits these)
 receipts/_local/
