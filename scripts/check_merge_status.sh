@@ -44,8 +44,11 @@ echo ""
 echo "✓ Running tests:"
 if ! activate_venv; then
   echo "  Virtual environment not found. Creating..."
-  python3 -m venv .venv
-  activate_venv
+  python3 -m venv .venv || { echo "Failed to create venv"; exit 1; }
+  if ! activate_venv; then
+    echo "Failed to activate venv after creation"
+    exit 1
+  fi
   pip install -q -e ".[test]"
 fi
 
@@ -59,12 +62,13 @@ echo ""
 
 echo "✓ Running UMCP validator:"
 TEMP_RESULT=$(mktemp)
-trap "rm -f $TEMP_RESULT" EXIT
+trap 'rm -f "$TEMP_RESULT"' EXIT
 
 if umcp validate . --out "$TEMP_RESULT" 2>&1 | grep -q "Wrote validator result"; then
   read -r STATUS ERRORS WARNINGS <<< "$(python3 -c "
 import json
-data = json.load(open('$TEMP_RESULT'))
+with open('$TEMP_RESULT') as f:
+    data = json.load(f)
 print(data['run_status'], data['summary']['counts']['errors'], data['summary']['counts']['warnings'])
 ")"
   
