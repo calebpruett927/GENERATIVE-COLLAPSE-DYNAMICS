@@ -92,7 +92,10 @@ class TestClosures:
         
         closures_dir = REPO_ROOT / "closures"
         
-        for closure in registry.get("closures", []):
+        # Handle both 'entries' and 'closures' keys for compatibility
+        entries = registry.get("entries", registry.get("closures", []))
+        
+        for closure in entries:
             if isinstance(closure, dict) and "file" in closure:
                 closure_file = closures_dir / closure["file"]
                 assert closure_file.exists(), f"Closure file not found: {closure['file']}"
@@ -104,7 +107,10 @@ class TestClosures:
         with registry_path.open("r") as f:
             registry = yaml.safe_load(f)
         
-        closure_ids = [c.get("closure_id") for c in registry.get("closures", []) if isinstance(c, dict)]
+        # Handle both 'entries' and 'closures' keys for compatibility
+        entries = registry.get("entries", registry.get("closures", []))
+        
+        closure_ids = [c.get("closure_id") for c in entries if isinstance(c, dict)]
         closure_ids = [cid for cid in closure_ids if cid is not None]
         
         if closure_ids:

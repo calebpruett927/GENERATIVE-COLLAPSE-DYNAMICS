@@ -94,14 +94,14 @@ class UMCPValidator:
         """Load closure registry."""
         registry_path = self.repo_root / "closures" / "registry.yaml"
         if not registry_path.exists():
-            self.closures = {"closures": []}
+            self.closures = {"entries": []}
             return
             
         try:
             with registry_path.open("r") as f:
-                self.closures = yaml.safe_load(f) or {"closures": []}
+                self.closures = yaml.safe_load(f) or {"entries": []}
         except Exception:
-            self.closures = {"closures": []}
+            self.closures = {"entries": []}
     
     def validate_with_umcp(self, file_path: Path, schema_name: str) -> Tuple[bool, List[str], Dict[str, Any]]:
         """
@@ -117,8 +117,8 @@ class UMCPValidator:
         # Basic schema validation
         is_valid, errors = self.standard.validate_file(file_path, schema_name)
         
-        # Additional UMCP checks
-        closures_list = self.closures.get("closures", [])
+        # Additional UMCP checks - handle both 'entries' and 'closures' keys
+        closures_list = self.closures.get("entries", self.closures.get("closures", []))
         if isinstance(closures_list, list):
             closures_count = len(closures_list)
         else:

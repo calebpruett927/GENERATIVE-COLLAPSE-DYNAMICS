@@ -20,7 +20,11 @@ registry:
 # UMCP Closure Registry
 # Defines computational closures for transforming raw inputs into Ψ-invariants
 
-closures:
+registry_id: "umcp.closures.v1"
+version: "1.0.0"
+description: "UMCP Closure Registry for computational transforms"
+
+entries:
   - closure_id: "hello_world.v1"
     version: "1.0.0"
     description: "Simple hello world closure for demonstration"
