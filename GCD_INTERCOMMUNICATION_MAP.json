@@ -1,0 +1,95 @@
+{
+  "validation_timestamp": "2026-01-18T21:00:00Z",
+  "commit": "bfa6f58",
+  "status": "VALIDATED",
+  "components": {
+    "canon": {
+      "file": "canon/gcd_anchors.yaml",
+      "id": "UMCP.GCD.v1",
+      "references_to": [],
+      "referenced_by": [
+        "contracts/GCD.INTSTACK.v1.yaml"
+      ]
+    },
+    "contract": {
+      "file": "contracts/GCD.INTSTACK.v1.yaml",
+      "id": "GCD.INTSTACK.v1",
+      "references_to": [
+        "canon/gcd_anchors.yaml",
+        "closures/gcd/energy_potential.py",
+        "closures/gcd/entropic_collapse.py",
+        "closures/gcd/generative_flux.py",
+        "closures/gcd/field_resonance.py"
+      ],
+      "referenced_by": [
+        "casepacks/gcd_complete/manifest.json",
+        "closures/registry.yaml"
+      ]
+    },
+    "closures": {
+      "count": 4,
+      "files": [
+        "closures/gcd/energy_potential.py",
+        "closures/gcd/entropic_collapse.py",
+        "closures/gcd/generative_flux.py",
+        "closures/gcd/field_resonance.py"
+      ],
+      "references_to": [],
+      "referenced_by": [
+        "contracts/GCD.INTSTACK.v1.yaml",
+        "closures/registry.yaml",
+        "casepacks/gcd_complete/manifest.json"
+      ]
+    },
+    "registry": {
+      "file": "closures/registry.yaml",
+      "id": "UMCP.CLOSURES.DEFAULT.v1",
+      "references_to": [
+        "closures/gcd/energy_potential.py",
+        "closures/gcd/entropic_collapse.py",
+        "closures/gcd/generative_flux.py",
+        "closures/gcd/field_resonance.py"
+      ],
+      "referenced_by": []
+    },
+    "casepack": {
+      "file": "casepacks/gcd_complete/manifest.json",
+      "id": "GCD_COMPLETE_EXAMPLE",
+      "references_to": [
+        "contracts/GCD.INTSTACK.v1.yaml",
+        "closures/gcd/energy_potential.py",
+        "closures/gcd/entropic_collapse.py",
+        "closures/gcd/generative_flux.py",
+        "closures/gcd/field_resonance.py"
+      ],
+      "referenced_by": [],
+      "data_files": 1,
+      "expected_outputs": 6
+    },
+    "schema": {
+      "file": "schemas/contract.schema.json",
+      "validates": [
+        "contracts/GCD.INTSTACK.v1.yaml"
+      ],
+      "status": "Extended for GCD support"
+    }
+  },
+  "validation_results": {
+    "closure_imports": "PASS",
+    "contract_references": "PASS",
+    "manifest_integrity": "PASS",
+    "registry_connectivity": "PASS",
+    "integration_flow": "PASS",
+    "schema_compliance": "PASS",
+    "test_suite": "PASS (142/142)",
+    "intercommunication": "PASS"
+  },
+  "metrics": {
+    "total_files_added": 17,
+    "total_files_modified": 2,
+    "gcd_closures": 4,
+    "test_coverage": "100%",
+    "tests_added": 52,
+    "total_tests": 142
+  }
+}

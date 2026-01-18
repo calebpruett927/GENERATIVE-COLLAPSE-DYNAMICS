@@ -1,0 +1,357 @@
+# RCFT.INTSTACK.v1
+# Recursive Collapse Field Theory Contract (Tier-2 Overlay)
+
+schema: "schemas/contract.schema.json"
+
+contract:
+  id: "RCFT.INTSTACK.v1"
+  version: "1.0.0"
+  timezone: "UTC"
+
+  parent_contract: "GCD.INTSTACK.v1"
+  tier_level: 2
+
+  description: |
+  RCFT (Recursive Collapse Field Theory) is a Tier-2 contract that augments
+  GCD.INTSTACK.v1 with geometric and topological analysis of collapse dynamics.
+  
+  This contract adds three new Tier-2 closures for analyzing:
+  - Fractal dimension (D_f): Geometric complexity of trajectories
+  - Recursive field strength (Ψ_r): Memory effects in collapse history
+  - Resonance patterns (λ_p, Θ): Oscillatory structures in collapse fields
+  
+  RCFT operates as Tier-2 overlay:
+  - Cannot modify or override any Tier-1 symbols from GCD
+  - Respects all GCD axioms (AX-0, AX-1, AX-2)
+  - Maintains compatibility with all GCD components
+  - Augments GCD analysis without replacing it
+
+embedding:
+  p: 3
+  description: "Inherits Tier-1 embedding from GCD (3D base space)"
+
+tier_1_kernel:
+  description: |
+    Inherits all Tier-1 invariants from GCD.INTSTACK.v1 (frozen, cannot be modified):
+    - ω (omega): Drift indicator
+    - F: Fidelity
+    - S: Entropy
+    - C: Curvature
+    - τ_R (tau_R): Relaxation timescale
+    - κ (kappa): Log-collapse indicator
+    - IC: Integrity coefficient
+    - IC_min: Minimum integrity
+    - I: General integrity
+    
+    Plus GCD Tier-1 extensions (also frozen):
+    - E_potential: Energy potential
+    - Φ_collapse: Entropic collapse flux
+    - Φ_gen: Generative flux
+    - R: Field resonance
+
+  reserved_symbols:
+    # All Tier-1 symbols from GCD (inherited, frozen)
+    - omega
+    - F
+    - S
+    - C
+    - tau_R
+    - kappa
+    - IC
+    - IC_min
+    - I
+    - E_potential
+    - Phi_collapse
+    - Phi_gen
+    - R
+    
+    # New Tier-2 RCFT symbols (can be extended by future Tier-3)
+    - D_fractal      # Fractal dimension
+    - Psi_recursive  # Recursive field strength
+    - lambda_pattern # Pattern wavelength
+    - Theta_phase    # Phase angle
+
+typed_censoring:
+  # Inherit all GCD regime enums
+  regime_enum:
+    - "Stable"
+    - "Watch"
+    - "Collapse"
+  
+  gcd_regime_enums:
+    energy_regime:
+      - "Low"
+      - "Medium"
+      - "High"
+    
+    collapse_regime:
+      - "Minimal"
+      - "Active"
+      - "Critical"
+    
+    flux_regime:
+      - "Dormant"
+      - "Emerging"
+      - "Explosive"
+    
+    resonance_regime:
+      - "Decoupled"
+      - "Partial"
+      - "Coherent"
+  
+  # New RCFT Tier-2 regime enums
+  rcft_regime_enums:
+    fractal_regime:
+      - "Smooth"
+      - "Wrinkled"
+      - "Turbulent"
+    
+    recursive_regime:
+      - "Dormant"
+      - "Active"
+      - "Resonant"
+    
+    pattern_type:
+      - "Standing"
+      - "Traveling"
+      - "Mixed"
+
+frozen_parameters:
+  # Inherit all GCD frozen parameters (Tier-1)
+  p: 3
+  alpha: 1.0
+  lambda: 0.2
+  eta: 1.0e-3
+  
+  # GCD energy/flux parameters (Tier-1, frozen)
+  alpha_energy: 1.0
+  beta_energy: 0.5
+  tau_0: 10.0
+  C_crit: 0.2
+  
+  # New RCFT Tier-2 parameters (not frozen, can be adjusted)
+  alpha_decay: 0.8           # Decay factor for recursive field
+  max_recursion_depth: 100   # Maximum iterations for recursive summation
+  n_fft_points: 512         # FFT resolution for pattern analysis
+  eps_min_factor: 0.01      # Minimum epsilon for box-counting (fraction of extent)
+
+tolerances:
+  # Inherit all GCD tolerances (Tier-1)
+  tol_seam: 0.005
+  tol_id: 1.0e-9
+  tol_energy: 1.0e-6
+  tol_flux: 1.0e-6
+  tol_resonance: 1.0e-6
+  
+  # New RCFT Tier-2 tolerances
+  tol_fractal: 1.0e-6       # Fractal dimension computation tolerance
+  tol_recursive: 1.0e-6     # Recursive field convergence tolerance
+  tol_phase: 1.0e-6         # Phase angle computation tolerance
+
+axioms:
+  # Inherit all GCD axioms (Tier-1, authoritative)
+  - id: "AX-0"
+    statement: "Collapse is generative"
+    description: "Inherited from GCD Tier-1 (frozen)"
+  
+  - id: "AX-1"
+    statement: "The boundary defines the interior"
+    description: "Inherited from GCD Tier-1 (frozen)"
+  
+  - id: "AX-2"
+    statement: "Entropy measures determinacy"
+    description: "Inherited from GCD Tier-1 (frozen)"
+  
+  # New RCFT Tier-2 principles (augmentation, not axioms)
+  - id: "P-RCFT-0"
+    statement: "Tier-2 augments, never overrides"
+    description: "RCFT adds analysis dimensions without modifying Tier-1 foundation"
+  
+  - id: "P-RCFT-1"
+    statement: "Recursion reveals hidden structure"
+    description: "Self-similar patterns quantified through fractal and recursive analysis"
+  
+  - id: "P-RCFT-2"
+    statement: "Fields carry collapse memory"
+    description: "Past collapses influence future through field memory (Ψ_r)"
+
+regime_classification:
+  # Inherit all GCD regime classifications (Tier-1)
+  umcp_regime:
+    - label: "Stable"
+      condition: "S < 0.01 && |ω| < 0.01"
+    - label: "Watch"
+      condition: "0.01 ≤ S < 0.1 || 0.01 ≤ |ω| < 0.1"
+    - label: "Collapse"
+      condition: "S ≥ 0.1 || |ω| ≥ 0.1"
+  
+  gcd_energy_regime:
+    - label: "Low"
+      condition: "E_potential < 0.01"
+    - label: "Medium"
+      condition: "0.01 ≤ E_potential < 0.05"
+    - label: "High"
+      condition: "E_potential ≥ 0.05"
+  
+  gcd_collapse_regime:
+    - label: "Minimal"
+      condition: "Φ_collapse < 0.01"
+    - label: "Active"
+      condition: "0.01 ≤ Φ_collapse < 0.1"
+    - label: "Critical"
+      condition: "Φ_collapse ≥ 0.1"
+  
+  gcd_flux_regime:
+    - label: "Dormant"
+      condition: "Φ_gen < 0.01"
+    - label: "Emerging"
+      condition: "0.01 ≤ Φ_gen < 1.0"
+    - label: "Explosive"
+      condition: "Φ_gen ≥ 1.0"
+  
+  gcd_resonance_regime:
+    - label: "Decoupled"
+      condition: "R < 0.3"
+    - label: "Partial"
+      condition: "0.3 ≤ R < 0.7"
+    - label: "Coherent"
+      condition: "R ≥ 0.7"
+  
+  # New RCFT Tier-2 regime classifications
+  rcft_fractal_regime:
+    - label: "Smooth"
+      condition: "D_fractal < 1.2"
+      interpretation: "Nearly linear trajectory, low geometric complexity"
+    - label: "Wrinkled"
+      condition: "1.2 ≤ D_fractal < 1.8"
+      interpretation: "Moderate fractal structure, self-similar patterns"
+    - label: "Turbulent"
+      condition: "D_fractal ≥ 1.8"
+      interpretation: "High fractal dimension, chaotic dynamics"
+  
+  rcft_recursive_regime:
+    - label: "Dormant"
+      condition: "Psi_recursive < 0.1"
+      interpretation: "Weak recursive coupling, isolated collapse events"
+    - label: "Active"
+      condition: "0.1 ≤ Psi_recursive < 1.0"
+      interpretation: "Moderate recursion, history influences present"
+    - label: "Resonant"
+      condition: "Psi_recursive ≥ 1.0"
+      interpretation: "Strong recursive resonance, coupled collapse events"
+  
+  rcft_pattern_type:
+    - label: "Standing"
+      condition: "phase_variance < 0.1"
+      interpretation: "Stationary resonance pattern"
+    - label: "Traveling"
+      condition: "phase_variance > 0.5"
+      interpretation: "Propagating wave pattern"
+    - label: "Mixed"
+      condition: "0.1 ≤ phase_variance ≤ 0.5"
+      interpretation: "Combination of standing and traveling waves"
+
+mathematical_identities:
+  # Inherit all GCD identities (Tier-1)
+  - name: "Fidelity-drift identity"
+    formula: "F = 1 - ω"
+    tolerance: 1.0e-9
+  
+  - name: "Integrity-collapse identity"
+    formula: "IC ≈ exp(κ)"
+    tolerance: 1.0e-6
+  
+  - name: "Energy decomposition"
+    formula: "E_potential = ω² + α·S + β·C²"
+    tolerance: 1.0e-6
+  
+  - name: "Resonance factorization"
+    formula: "R = (1-|ω|)·(1-S)·exp(-C/C_crit)"
+    tolerance: 1.0e-6
+  
+  # New RCFT Tier-2 identities
+  - name: "Fractal dimension bounds"
+    formula: "1 ≤ D_fractal ≤ 3"
+    tolerance: 1.0e-6
+    description: "Fractal dimension constrained by 3D embedding space"
+  
+  - name: "Phase periodicity"
+    formula: "Theta_phase ∈ [0, 2π)"
+    tolerance: 1.0e-6
+    description: "Phase angle is 2π-periodic"
+  
+  - name: "Wavelength positivity"
+    formula: "lambda_pattern > 0"
+    tolerance: 1.0e-6
+    description: "Pattern wavelength must be positive"
+
+closures:
+  # Inherit all GCD closures (Tier-1, continue to function)
+  - name: energy_potential
+    path: closures/gcd/energy_potential.py
+    description: "Compute GCD energy potential (Tier-1)"
+    inputs: [omega, S, C]
+    outputs: [E_potential, regime]
+  
+  - name: entropic_collapse
+    path: closures/gcd/entropic_collapse.py
+    description: "Compute GCD entropic collapse flux (Tier-1)"
+    inputs: [S, F, tau_R]
+    outputs: [Phi_collapse, regime]
+  
+  - name: generative_flux
+    path: closures/gcd/generative_flux.py
+    description: "Compute GCD generative flux (Tier-1)"
+    inputs: [kappa, IC, C]
+    outputs: [Phi_gen, regime]
+  
+  - name: field_resonance
+    path: closures/gcd/field_resonance.py
+    description: "Compute GCD field resonance (Tier-1)"
+    inputs: [omega, S, C]
+    outputs: [R, regime]
+  
+  # New RCFT Tier-2 closures
+  - name: fractal_dimension
+    path: closures/rcft/fractal_dimension.py
+    description: "Compute fractal dimension of collapse trajectory (Tier-2)"
+    inputs: [trajectory_or_invariant_series]
+    outputs: [D_fractal, regime, box_counts, r_squared]
+    tier: 2
+  
+  - name: recursive_field
+    path: closures/rcft/recursive_field.py
+    description: "Compute recursive field strength from collapse history (Tier-2)"
+    inputs: [S_series, C_series, F_series, alpha_decay]
+    outputs: [Psi_recursive, regime, contributions, convergence]
+    tier: 2
+  
+  - name: resonance_pattern
+    path: closures/rcft/resonance_pattern.py
+    description: "Analyze resonance patterns via Fourier analysis (Tier-2)"
+    inputs: [field_series, dt]
+    outputs: [lambda_pattern, Theta_phase, pattern_type, phase_coherence]
+    tier: 2
+
+provenance:
+  created_by: "UMCP-RCFT Working Group"
+  created_date: "2026-01-18"
+  parent_canon: "canon/rcft_anchors.yaml"
+  parent_contract: "GCD.INTSTACK.v1"
+  extends: "GCD.INTSTACK.v1"
+  tier: 2
+  version: "1.0.0"
+
+notes: |
+  RCFT.INTSTACK.v1 is a Tier-2 overlay contract that extends GCD.INTSTACK.v1
+  without modifying any Tier-1 components. It adds three closures for geometric
+  and topological analysis:
+  
+  1. Fractal Dimension (D_f): Quantifies trajectory complexity using box-counting
+  2. Recursive Field (Ψ_r): Measures collapse memory through exponential decay
+  3. Resonance Pattern (λ_p, Θ): Identifies oscillatory structures via FFT
+  
+  All GCD Tier-1 invariants, axioms, and closures remain unchanged and authoritative.
+  RCFT provides additional perspectives without replacing GCD analysis.
+  
+  Tier hierarchy: UMCP (Tier-0) → GCD (Tier-1) → RCFT (Tier-2)

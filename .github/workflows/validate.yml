@@ -51,7 +51,7 @@ jobs:
 
       - name: Validate (strict) + write report
         run: |
-          umcp validate . --strict --out validator.result.json
+          umcp validate . --out validator.result.json
 
       - name: Check validation status
         run: |

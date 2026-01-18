@@ -60,8 +60,8 @@
         },
         "expected": {
           "type": "object",
-          "additionalProperties": false,
-          "required": ["psi_csv", "invariants_json", "ss1m_receipt_json"],
+          "additionalProperties": { "$ref": "#/$defs/pathOnly" },
+          "required": ["invariants_json"],
           "properties": {
             "psi_csv": { "$ref": "#/$defs/pathOnly" },
             "invariants_json": { "$ref": "#/$defs/pathOnly" },

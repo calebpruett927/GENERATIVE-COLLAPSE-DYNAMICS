@@ -1,12 +1,32 @@
 {
-  "omega": 0.0,
-  "F": 1.0,
-  "S": 0.0,
-  "C": 0.0,
-  "tau_R": 1.0,
-  "kappa": -18.420681,
-  "IC": 0.0,
-  "IC_min": 0.0,
-  "regime": "Stable",
+  "schema": "schemas/invariants.schema.json",
+  "format": "tier1_invariants",
+  "contract_id": "GCD.INTSTACK.v1",
+  "closure_registry_id": "UMCP.CLOSURES.GCD.v1",
+  "canon": {
+    "pre_doi": "10.5281/zenodo.17756705",
+    "post_doi": "10.5281/zenodo.18072852",
+    "weld_id": "W-2026-01-18-GCD-COMPLETE",
+    "timezone": "UTC"
+  },
+  "rows": [
+    {
+      "t": 0,
+      "omega": 0.0,
+      "F": 1.0,
+      "S": 0.0,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": -23.025850929940457,
+      "IC": 1.0e-10,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      },
+      "kernel_optional": {
+        "IC_min": 1.0e-10
+      }
+    }
+  ],
   "notes": "Zero entropy state - deterministic precision achieved"
 }

@@ -1,13 +1,13 @@
 {
   "schema": "schemas/validator.result.schema.json",
-  "created_utc": "2026-01-18T20:30:38Z",
+  "created_utc": "2026-01-18T21:46:12Z",
   "validator": {
     "name": "umcp-validator",
     "version": "0.1.0",
     "implementation": {
       "language": "python",
       "python_version": "3.12.1",
-      "git_commit": "2bc372962059eaade9b4842e697be3ade9f613aa",
+      "git_commit": "97552f20dc70dfbfc4768382d3ee71594eebb5f6",
       "build": "repo"
     }
   },
@@ -15,9 +15,9 @@
   "summary": {
     "counts": {
       "errors": 0,
-      "warnings": 0,
+      "warnings": 2,
       "info": 0,
-      "targets_total": 2,
+      "targets_total": 4,
       "targets_failed": 0
     },
     "policy": {
@@ -32,10 +32,31 @@
       "run_status": "CONFORMANT",
       "counts": {
         "errors": 0,
-        "warnings": 0,
+        "warnings": 2,
         "info": 0
       },
       "issues": []
+    },
+    {
+      "target_type": "casepack",
+      "target_path": "casepacks/gcd_complete",
+      "run_status": "CONFORMANT",
+      "counts": {
+        "errors": 0,
+        "warnings": 1,
+        "info": 0
+      },
+      "issues": [
+        {
+          "severity": "WARN",
+          "code": "W301",
+          "message": "Regime label (and Critical overlay if present) must be consistent with canon thresholds.",
+          "path": "casepacks/gcd_complete/expected/invariants.json",
+          "json_pointer": "/rows/0/regime/critical_overlay",
+          "hint": "Critical overlay mismatch. expected=True, observed=False. Based on IC_min=1e-10 and canon min_IC_lt=0.3.",
+          "rule": "regime_label_consistency"
+        }
+      ]
     },
     {
       "target_type": "casepack",
@@ -47,6 +68,27 @@
         "info": 0
       },
       "issues": []
+    },
+    {
+      "target_type": "casepack",
+      "target_path": "casepacks/rcft_complete",
+      "run_status": "CONFORMANT",
+      "counts": {
+        "errors": 0,
+        "warnings": 1,
+        "info": 0
+      },
+      "issues": [
+        {
+          "severity": "WARN",
+          "code": "W301",
+          "message": "Regime label (and Critical overlay if present) must be consistent with canon thresholds.",
+          "path": "casepacks/rcft_complete/expected/invariants.json",
+          "json_pointer": "/rows/0/regime/critical_overlay",
+          "hint": "Critical overlay mismatch. expected=True, observed=False. Based on IC_min=1e-10 and canon min_IC_lt=0.3.",
+          "rule": "regime_label_consistency"
+        }
+      ]
     }
   ],
   "issues": [],
