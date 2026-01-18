@@ -1,2 +1,2 @@
 t,regime_label,critical_overlay,omega,F,S,C,notes
-1.0,Stable,false,0.010000,0.990000,0.056002,0.000000,"Stable regime: low drift, high fidelity"
+1.0,Stable,false,0.000000,1.000000,0.000000,0.000000,"Stable regime: zero drift, perfect fidelity"

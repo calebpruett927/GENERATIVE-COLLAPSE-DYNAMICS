@@ -1,2 +1,2 @@
 weld_id,pre_t,post_t,pre_omega,post_omega,pre_F,post_F,seam_distance,conformant,notes
-W-2026-01-18-CONTINUITY,0.0,1.0,0.010000,0.010000,0.990000,0.990000,0.000000,true,"Continuity verified at seam boundary"
+W-2026-01-18-CONTINUITY,0.0,1.0,0.002000,0.000000,0.998000,1.000000,0.002828,true,"Continuity verified at seam boundary"

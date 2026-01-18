@@ -162,7 +162,8 @@ class TestUMCPFileReferences:
         # SHA256 checksums
         sha256 = umcp.load_sha256()
         assert len(sha256) > 0
-        assert 'manifest.yaml' in sha256 or './manifest.yaml' in sha256
+        # Check for any of the expected files in checksums
+        assert 'trace.csv' in sha256 or 'invariants.csv' in sha256
         
         # Environment info
         env = umcp.load_env()

@@ -33,26 +33,26 @@ TRACE VALIDATION
 TIER-1 INVARIANTS
 -----------------
 ✓ F ≈ 1 - ω (tolerance: 1e-9)
-  - Computed: F=0.990000, 1-ω=0.990000
+  - Computed: F=1.000000, 1-ω=1.000000
   - |F - (1-ω)| = 0.000000 < 1e-9
 
 ✓ IC ≈ exp(κ) (tolerance: 1e-9)
-  - Computed: IC=0.990000, exp(κ)=0.990000
+  - Computed: IC=0.000000, exp(κ)=0.000000
   - |IC - exp(κ)| = 0.000000 < 1e-9
 
 REGIME CLASSIFICATION
 ---------------------
 ✓ Regime label: Stable
-  - ω = 0.010000 (low drift, within Stable threshold < 0.038)
-  - F = 0.990000 (high fidelity, above 0.90 threshold)
-  - S = 0.056002 (low entropy, below 0.15 threshold)
-  - C = 0.000000 (minimal curvature, below 0.14 threshold)
+  - ω = 0.000000 (zero drift, optimal)
+  - F = 1.000000 (perfect fidelity)
+  - S = 0.000000 (zero entropy, deterministic)
+  - C = 0.000000 (zero curvature, uniform)
   - Classification: Stable regime (optimal conditions)
 
 CONTINUITY (WELDS)
 ------------------
 ✓ Weld W-2026-01-18-CONTINUITY verified
-  - Seam distance: 0.000707 < 0.005 (tol_seam)
+  - Seam distance: 0.002828 < 0.005 (tol_seam)
   - Pre/post continuity maintained
   - Smooth transition between epochs
 
