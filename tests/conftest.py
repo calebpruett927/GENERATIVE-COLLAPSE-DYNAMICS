@@ -32,6 +32,8 @@ class RepoPaths:
     schemas_dir: Path
     canon_anchors: Path
     contract: Path
+    contracts_dir: Path
+    closures_dir: Path
     closures_registry: Path
     validator_rules: Path
     hello_world_dir: Path
@@ -50,6 +52,8 @@ def repo_paths() -> RepoPaths:
         schemas_dir=root / "schemas",
         canon_anchors=root / "canon" / "anchors.yaml",
         contract=root / "contracts" / "UMA.INTSTACK.v1.yaml",
+        contracts_dir=root / "contracts",
+        closures_dir=root / "closures",
         closures_registry=root / "closures" / "registry.yaml",
         validator_rules=root / "validator_rules.yaml",
         hello_world_dir=root / "casepacks" / "hello_world",

@@ -1,14 +1,15 @@
 # pyproject.toml
 #
 # UMCP runnable + publication-grade repo configuration.
-# This file defines:
-#   - build system (setuptools)
-#   - project metadata
-#   - runtime dependencies (minimal)
-#   - dev/test dependencies (pytest, pyyaml, jsonschema)
-#   - pytest configuration
+# - build system (setuptools)
+# - project metadata
+# - runtime deps (minimal)
+# - dev/test deps
+# - pytest config
 #
-# Adjust author/email/repo URLs as desired.
+# IMPORTANT:
+# - keywords belongs at [project].keywords (list of strings)
+# - [project.urls] values MUST be strings (valid URLs), not lists
 
 [build-system]
 requires = ["setuptools>=68", "wheel"]
@@ -46,8 +47,13 @@ dependencies = [
   "jsonschema>=4.23.0"
 ]
 
+# These MUST be strings; do not put lists here.
+[project.urls]
+Homepage = "https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code"
+Repository = "https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code"
+Issues = "https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/issues"
+
 [project.optional-dependencies]
-# Development and test tooling
 dev = [
   "pytest>=8.0.0",
   "pytest-cov>=5.0.0",
@@ -58,8 +64,6 @@ test = [
   "pytest-cov>=5.0.0"
 ]
 
-# CLI entry point (expects you have src/umcp/cli.py with main()).
-# If your CLI function differs, update accordingly.
 [project.scripts]
 umcp = "umcp.cli:main"
 
@@ -75,14 +79,11 @@ minversion = "8.0"
 addopts = "-q"
 testpaths = ["tests"]
 pythonpath = ["src"]
-
-# Keep warnings visible but not spammy; tune as desired.
 filterwarnings = [
   "default",
   "ignore::DeprecationWarning"
 ]
 
-# Optional: coverage defaults (only used if you run pytest --cov)
 [tool.coverage.run]
 branch = true
 source = ["src/umcp"]
@@ -92,7 +93,6 @@ show_missing = true
 skip_covered = false
 fail_under = 0
 
-# Optional: ruff defaults (safe baseline)
 [tool.ruff]
 line-length = 100
 target-version = "py311"

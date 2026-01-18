@@ -5,6 +5,9 @@
 
 CASEPACK_DIR="${1:-casepacks/hello_world}"
 
+# Create directory if it doesn't exist
+mkdir -p "${CASEPACK_DIR}"
+
 cat > "${CASEPACK_DIR}/manifest.json" <<'EOF'
 {
   "schema": "schemas/manifest.schema.json",
