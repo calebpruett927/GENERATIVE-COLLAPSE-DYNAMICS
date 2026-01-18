@@ -49,7 +49,11 @@ if ! activate_venv; then
     echo "Failed to activate venv after creation"
     exit 1
   fi
-  pip install -q -e ".[test]"
+  echo "  Installing dependencies..."
+  if ! pip install -q -e ".[test]"; then
+    echo "  Failed to install dependencies. Retrying with verbose output..."
+    pip install -e ".[test]"
+  fi
 fi
 
 if pytest -q; then
@@ -68,10 +72,17 @@ if umcp validate . --out "$TEMP_RESULT" 2>&1 | grep -q "Wrote validator result";
   read -r STATUS ERRORS WARNINGS <<< "$(python3 -c "
 import json
 import sys
-with open(sys.argv[1]) as f:
-    data = json.load(f)
-print(data['run_status'], data['summary']['counts']['errors'], data['summary']['counts']['warnings'])
-" "$TEMP_RESULT")"
+try:
+    with open(sys.argv[1]) as f:
+        data = json.load(f)
+    status = data.get('run_status', 'UNKNOWN')
+    errors = data.get('summary', {}).get('counts', {}).get('errors', -1)
+    warnings = data.get('summary', {}).get('counts', {}).get('warnings', -1)
+    print(status, errors, warnings)
+except (json.JSONDecodeError, KeyError, FileNotFoundError) as e:
+    print(f'ERROR -1 -1', file=sys.stderr)
+    sys.exit(1)
+" "$TEMP_RESULT")" || { echo "  Failed to parse validator results ❌"; exit 1; }
   
   if [ "$STATUS" = "CONFORMANT" ] && [ "$ERRORS" -eq 0 ] && [ "$WARNINGS" -eq 0 ]; then
     echo "  Validation: $STATUS (Errors: $ERRORS, Warnings: $WARNINGS) ✅"
