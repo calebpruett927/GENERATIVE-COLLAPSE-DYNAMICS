@@ -1,46 +1,34 @@
 {
-  "$schema": "../schemas/manifest.schema.json",
-  "manifest": {
-    "id": "GCD_COMPLETE_EXAMPLE",
+  "schema": "schemas/manifest.schema.json",
+  "casepack": {
+    "id": "gcd_complete",
     "version": "1.0.0",
-    "contract": "GCD.INTSTACK.v1",
-    "created": "2026-01-18T20:45:00Z",
-    "description": "Complete GCD example demonstrating zero entropy state and all GCD closures"
+    "title": "GCD Complete Example (Tier-1)",
+    "description": "Complete GCD Tier-1 example demonstrating zero entropy state and all GCD closures",
+    "created_utc": "2026-01-18T20:45:00Z",
+    "timezone": "UTC",
+    "authors": ["Clement Paulus"]
   },
-  "data": {
-    "raw_measurements": "raw_measurements.csv",
-    "derived": {
-      "trace": "derived/trace.csv"
+  "refs": {
+    "canon_anchors": { "path": "canon/gcd_anchors.yaml" },
+    "contract": { "id": "GCD.INTSTACK.v1", "path": "contracts/GCD.INTSTACK.v1.yaml" },
+    "closures_registry": { "id": "UMCP.CLOSURES.GCD.v1", "path": "closures/registry.yaml" }
+  },
+  "artifacts": {
+    "raw_measurements": {
+      "path": "raw_measurements.csv",
+      "format": "csv"
     },
-    "outputs": {
-      "invariants": "outputs/invariants.csv",
-      "regimes": "outputs/regimes.csv",
-      "welds": "outputs/welds.csv",
-      "report": "outputs/report.txt",
-      "gcd_metrics": "outputs/gcd_metrics.csv"
+    "expected": {
+      "invariants_json": { "path": "expected/invariants.json" },
+      "gcd_energy_json": { "path": "expected/gcd_energy.json" },
+      "gcd_collapse_json": { "path": "expected/gcd_collapse.json" },
+      "gcd_flux_json": { "path": "expected/gcd_flux.json" },
+      "gcd_resonance_json": { "path": "expected/gcd_resonance.json" },
+      "seam_receipt_json": { "path": "expected/seam_receipt.json" }
     }
   },
-  "integrity": {
-    "checksums": "integrity/sha256.txt",
-    "env": "integrity/env.txt",
-    "code_version": "integrity/code_version.txt"
-  },
-  "expected": {
-    "invariants": "expected/invariants.json",
-    "gcd_energy": "expected/gcd_energy.json",
-    "gcd_collapse": "expected/gcd_collapse.json",
-    "gcd_flux": "expected/gcd_flux.json",
-    "gcd_resonance": "expected/gcd_resonance.json",
-    "seam_receipt": "expected/seam_receipt.json"
-  },
-  "closures": {
-    "registry": "closures/registry.yaml",
-    "gcd": {
-      "energy_potential": "closures/gcd/energy_potential.py",
-      "entropic_collapse": "closures/gcd/entropic_collapse.py",
-      "generative_flux": "closures/gcd/generative_flux.py",
-      "field_resonance": "closures/gcd/field_resonance.py"
-    }
-  },
-  "notes": "Zero entropy state (S=0) demonstrating GCD framework with all Tier-1 invariants and GCD-specific metrics"
+  "run_intent": {
+    "notes": "This CasePack demonstrates all GCD Tier-1 closures with zero entropy state (S=0). Includes energy potential, entropic collapse, generative flux, and field resonance computations."
+  }
 }

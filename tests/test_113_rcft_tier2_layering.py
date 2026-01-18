@@ -204,8 +204,8 @@ class TestMultiTierValidation:
         with open(manifest_path) as f:
             manifest = json.load(f)
         
-        assert manifest["contract"] == "RCFT.INTSTACK.v1"
-        assert manifest["tier"] == 2
+        assert manifest["refs"]["contract"]["id"] == "RCFT.INTSTACK.v1"
+        assert "rcft" in manifest["casepack"]["id"].lower()
     
     def test_rcft_casepack_has_all_tier_outputs(self):
         """RCFT casepack should have outputs for all tiers."""
@@ -213,21 +213,21 @@ class TestMultiTierValidation:
         with open(manifest_path) as f:
             manifest = json.load(f)
         
-        expected_outputs = manifest["files"]["expected_outputs"]
+        expected_outputs = manifest["artifacts"]["expected"]
         
         # Tier-0/1 outputs
-        assert "invariants" in expected_outputs
+        assert "invariants_json" in expected_outputs
         
         # GCD Tier-1 outputs
-        assert "gcd_energy" in expected_outputs
-        assert "gcd_collapse" in expected_outputs
-        assert "gcd_flux" in expected_outputs
-        assert "gcd_resonance" in expected_outputs
+        assert "gcd_energy_json" in expected_outputs
+        assert "gcd_collapse_json" in expected_outputs
+        assert "gcd_flux_json" in expected_outputs
+        assert "gcd_resonance_json" in expected_outputs
         
         # RCFT Tier-2 outputs
-        assert "rcft_fractal" in expected_outputs
-        assert "rcft_recursive" in expected_outputs
-        assert "rcft_pattern" in expected_outputs
+        assert "rcft_fractal_json" in expected_outputs
+        assert "rcft_recursive_json" in expected_outputs
+        assert "rcft_pattern_json" in expected_outputs
     
     def test_rcft_receipt_validates_all_tiers(self):
         """RCFT receipt should validate identities from all tiers."""
