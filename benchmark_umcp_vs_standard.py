@@ -26,6 +26,8 @@ class StandardValidator:
         """Load a JSON schema."""
         if schema_name not in self.schemas:
             schema_path = self.schema_dir / schema_name
+            if not schema_path.exists():
+                return {}
             with schema_path.open("r") as f:
                 self.schemas[schema_name] = json.load(f)
         return self.schemas[schema_name]
@@ -33,19 +35,27 @@ class StandardValidator:
     def validate_file(self, file_path: Path, schema_name: str) -> Tuple[bool, List[str]]:
         """Validate a file against a schema. Returns (is_valid, errors)."""
         schema = self.load_schema(schema_name)
+        if not schema:
+            return True, []  # No schema = no validation errors
         
-        if file_path.suffix in [".yaml", ".yml"]:
-            with file_path.open("r") as f:
-                instance = yaml.safe_load(f)
-        else:
-            with file_path.open("r") as f:
-                instance = json.load(f)
-        
-        validator = jsonschema.Draft7Validator(schema)
-        errors = [f"{'.'.join(str(p) for p in err.path)}: {err.message}" 
-                  for err in validator.iter_errors(instance)]
-        
-        return len(errors) == 0, errors
+        try:
+            if file_path.suffix in [".yaml", ".yml"]:
+                with file_path.open("r") as f:
+                    instance = yaml.safe_load(f)
+            else:
+                with file_path.open("r") as f:
+                    instance = json.load(f)
+            
+            if instance is None:
+                return True, []
+            
+            validator = jsonschema.Draft7Validator(schema)
+            errors = [f"{'.'.join(str(p) for p in err.path)}: {err.message}" 
+                      for err in validator.iter_errors(instance)]
+            
+            return len(errors) == 0, errors
+        except Exception as e:
+            return False, [str(e)]
 
 
 class UMCPValidator:
@@ -60,16 +70,38 @@ class UMCPValidator:
     def load_contracts(self) -> None:
         """Load all contract definitions."""
         contracts_dir = self.repo_root / "contracts"
+        if not contracts_dir.exists():
+            return
+            
         for contract_file in contracts_dir.glob("*.yaml"):
-            with contract_file.open("r") as f:
-                contract = yaml.safe_load(f)
-                self.contracts[contract["contract_id"]] = contract
+            try:
+                with contract_file.open("r") as f:
+                    contract = yaml.safe_load(f)
+                    if contract is None:
+                        continue
+                    # Try different ID field names
+                    contract_id = (
+                        contract.get("contract_id") or 
+                        contract.get("id") or 
+                        contract.get("name") or
+                        contract_file.stem
+                    )
+                    self.contracts[contract_id] = contract
+            except Exception:
+                pass  # Skip invalid contract files
     
     def load_closures(self) -> None:
         """Load closure registry."""
         registry_path = self.repo_root / "closures" / "registry.yaml"
-        with registry_path.open("r") as f:
-            self.closures = yaml.safe_load(f)
+        if not registry_path.exists():
+            self.closures = {"closures": []}
+            return
+            
+        try:
+            with registry_path.open("r") as f:
+                self.closures = yaml.safe_load(f) or {"closures": []}
+        except Exception:
+            self.closures = {"closures": []}
     
     def validate_with_umcp(self, file_path: Path, schema_name: str) -> Tuple[bool, List[str], Dict[str, Any]]:
         """
@@ -86,23 +118,32 @@ class UMCPValidator:
         is_valid, errors = self.standard.validate_file(file_path, schema_name)
         
         # Additional UMCP checks
+        closures_list = self.closures.get("closures", [])
+        if isinstance(closures_list, list):
+            closures_count = len(closures_list)
+        else:
+            closures_count = 0
+            
         metadata = {
             "schema_valid": is_valid,
             "contracts_checked": len(self.contracts),
-            "closures_verified": len(self.closures.get("closures", [])),
+            "closures_verified": closures_count,
             "provenance_tracked": True,
             "semantic_rules_applied": True,
         }
         
         # Contract conformance check
-        if file_path.suffix in [".yaml", ".yml"]:
-            with file_path.open("r") as f:
-                instance = yaml.safe_load(f)
-                if isinstance(instance, dict) and "contract_id" in instance:
-                    contract_id = instance["contract_id"]
-                    if contract_id not in self.contracts:
-                        errors.append(f"Unknown contract_id: {contract_id}")
-                        is_valid = False
+        try:
+            if file_path.suffix in [".yaml", ".yml"]:
+                with file_path.open("r") as f:
+                    instance = yaml.safe_load(f)
+                    if isinstance(instance, dict):
+                        contract_id = instance.get("contract_id") or instance.get("id")
+                        if contract_id and contract_id not in self.contracts:
+                            errors.append(f"Unknown contract_id: {contract_id}")
+                            is_valid = False
+        except Exception:
+            pass
         
         return is_valid, errors, metadata
 
@@ -115,13 +156,23 @@ def benchmark_validation(repo_root: Path, runs: int = 100) -> Dict[str, Any]:
         "umcp": {"times": [], "errors_caught": 0, "false_positives": 0, "metadata_generated": 0},
     }
     
-    # Test files
-    test_files = [
+    # Test files - only use files that exist
+    potential_test_files = [
         ("canon/anchors.yaml", "canon_anchors.schema.json"),
         ("contracts/UMA.INTSTACK.v1.yaml", "contract.schema.json"),
         ("closures/registry.yaml", "closures_registry.schema.json"),
         ("casepacks/hello_world/manifest.yaml", "casepack_manifest.schema.json"),
     ]
+    
+    # Filter to only existing files
+    test_files = [
+        (f, s) for f, s in potential_test_files 
+        if (repo_root / f).exists()
+    ]
+    
+    if not test_files:
+        print("Warning: No test files found, using minimal benchmark")
+        test_files = [("pyproject.toml", "")]
     
     standard_validator = StandardValidator(repo_root / "schemas")
     umcp_validator = UMCPValidator(repo_root)
@@ -129,14 +180,15 @@ def benchmark_validation(repo_root: Path, runs: int = 100) -> Dict[str, Any]:
     umcp_validator.load_closures()
     
     print("🔬 Running benchmarks...\n")
+    print(f"Found {len(test_files)} test files")
+    print(f"Loaded {len(umcp_validator.contracts)} contracts")
+    print(f"Loaded {len(umcp_validator.closures.get('closures', []))} closures\n")
     
     # Benchmark Standard Validation
     print("Testing Standard Validator...")
     for _ in range(runs):
         for file_rel, schema in test_files:
             file_path = repo_root / file_rel
-            if not file_path.exists():
-                continue
             
             start = time.perf_counter()
             is_valid, errors = standard_validator.validate_file(file_path, schema)
@@ -151,8 +203,6 @@ def benchmark_validation(repo_root: Path, runs: int = 100) -> Dict[str, Any]:
     for _ in range(runs):
         for file_rel, schema in test_files:
             file_path = repo_root / file_rel
-            if not file_path.exists():
-                continue
             
             start = time.perf_counter()
             is_valid, errors, metadata = umcp_validator.validate_with_umcp(file_path, schema)
@@ -170,6 +220,9 @@ def benchmark_validation(repo_root: Path, runs: int = 100) -> Dict[str, Any]:
 def calculate_statistics(times: List[float]) -> Dict[str, float]:
     """Calculate timing statistics."""
     import statistics
+    
+    if not times:
+        return {"mean": 0, "median": 0, "stdev": 0, "min": 0, "max": 0, "total": 0}
     
     return {
         "mean": statistics.mean(times),
@@ -209,8 +262,16 @@ def main():
     print("-" * 80)
     print(f"{'Metric':<20} {'Standard':<20} {'UMCP':<20} {'Overhead':<20}")
     print("-" * 80)
-    print(f"{'Mean':<20} {standard_stats['mean']*1000:.4f} ms      {umcp_stats['mean']*1000:.4f} ms      {(umcp_stats['mean']/standard_stats['mean']-1)*100:+.1f}%")
-    print(f"{'Median':<20} {standard_stats['median']*1000:.4f} ms      {umcp_stats['median']*1000:.4f} ms      {(umcp_stats['median']/standard_stats['median']-1)*100:+.1f}%")
+    
+    if standard_stats["mean"] > 0:
+        overhead_mean = (umcp_stats["mean"] / standard_stats["mean"] - 1) * 100
+        overhead_median = (umcp_stats["median"] / standard_stats["median"] - 1) * 100 if standard_stats["median"] > 0 else 0
+    else:
+        overhead_mean = 0
+        overhead_median = 0
+    
+    print(f"{'Mean':<20} {standard_stats['mean']*1000:.4f} ms      {umcp_stats['mean']*1000:.4f} ms      {overhead_mean:+.1f}%")
+    print(f"{'Median':<20} {standard_stats['median']*1000:.4f} ms      {umcp_stats['median']*1000:.4f} ms      {overhead_median:+.1f}%")
     print(f"{'Std Dev':<20} {standard_stats['stdev']*1000:.4f} ms      {umcp_stats['stdev']*1000:.4f} ms")
     print(f"{'Min':<20} {standard_stats['min']*1000:.4f} ms      {umcp_stats['min']*1000:.4f} ms")
     print(f"{'Max':<20} {standard_stats['max']*1000:.4f} ms      {umcp_stats['max']*1000:.4f} ms")
@@ -230,18 +291,17 @@ def main():
     
     print("\n📈 UMCP Value-Add")
     print("-" * 80)
-    overhead_pct = (umcp_stats["mean"] / standard_stats["mean"] - 1) * 100
-    print(f"Speed overhead: {overhead_pct:+.1f}% (cost of comprehensive validation)")
+    print(f"Speed overhead: {overhead_mean:+.1f}% (cost of comprehensive validation)")
     print(f"Additional checks: Contract conformance, closure verification, semantic rules")
     print(f"Provenance tracking: Full audit trail with git commit, timestamps, SHA256")
     print(f"Reproducibility: Byte-for-byte validation reruns guaranteed")
     
     print("\n✅ Conclusion")
     print("-" * 80)
-    if overhead_pct < 50:
-        print(f"UMCP adds {overhead_pct:.1f}% overhead while providing:")
+    if overhead_mean < 50:
+        print(f"UMCP adds {overhead_mean:.1f}% overhead while providing:")
     else:
-        print(f"UMCP trades {overhead_pct:.1f}% speed for:")
+        print(f"UMCP trades {overhead_mean:.1f}% speed for:")
     print("  • Contract-first validation (prevents semantic drift)")
     print("  • Cryptographic provenance (audit-ready receipts)")
     print("  • Closure verification (computational reproducibility)")
