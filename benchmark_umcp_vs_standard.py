@@ -117,8 +117,8 @@ class UMCPValidator:
         # Basic schema validation
         is_valid, errors = self.standard.validate_file(file_path, schema_name)
         
-        # Additional UMCP checks - handle both 'entries' and 'closures' keys
-        closures_list = self.closures.get("entries", self.closures.get("closures", []))
+        # Additional UMCP checks - use 'entries' key
+        closures_list = self.closures.get("entries", [])
         if isinstance(closures_list, list):
             closures_count = len(closures_list)
         else:
@@ -182,7 +182,8 @@ def benchmark_validation(repo_root: Path, runs: int = 100) -> Dict[str, Any]:
     print("🔬 Running benchmarks...\n")
     print(f"Found {len(test_files)} test files")
     print(f"Loaded {len(umcp_validator.contracts)} contracts")
-    print(f"Loaded {len(umcp_validator.closures.get('closures', []))} closures\n")
+    closures_count = len(umcp_validator.closures.get("entries", []))
+    print(f"Loaded {closures_count} closures\n")
     
     # Benchmark Standard Validation
     print("Testing Standard Validator...")

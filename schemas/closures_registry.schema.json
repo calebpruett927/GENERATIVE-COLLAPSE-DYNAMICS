@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://umcp.dev/schemas/closures_registry.schema.json",
+  "title": "UMCP Closures Registry",
+  "description": "Schema for the UMCP closure registry file",
+  "type": "object",
+  "required": ["registry_id", "version", "entries"],
+  "additionalProperties": false,
+  "properties": {
+    "registry_id": {
+      "type": "string",
+      "description": "Unique identifier for this registry"
+    },
+    "version": {
+      "type": "string",
+      "description": "Registry version"
+    },
+    "description": {
+      "type": "string",
+      "description": "Human-readable description"
+    },
+    "entries": {
+      "type": "array",
+      "description": "List of closure definitions",
+      "items": {
+        "type": "object",
+        "required": ["closure_id", "version"],
+        "properties": {
+          "closure_id": {
+            "type": "string",
+            "description": "Unique closure identifier"
+          },
+          "version": {
+            "type": "string",
+            "description": "Closure version"
+          },
+          "description": {
+            "type": "string",
+            "description": "Human-readable description"
+          },
+          "file": {
+            "type": "string",
+            "description": "Path to closure implementation file"
+          },
+          "contract_ref": {
+            "type": "string",
+            "description": "Reference to contract this closure implements"
+          },
+          "inputs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "type": { "type": "string" },
+                "unit": { "type": "string" }
+              }
+            }
+          },
+          "outputs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "type": { "type": "string" },
+                "unit": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
