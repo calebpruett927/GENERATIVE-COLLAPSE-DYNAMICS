@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import math
 import re
@@ -939,17 +940,35 @@ def _cmd_validate(args: argparse.Namespace) -> int:
         print("ERROR: Could not find repo root (no pyproject.toml found in parents).", file=sys.stderr)
         return 2
 
-    result = _validate_repo(repo_root=repo_root, fail_on_warning=bool(args.fail_on_warning))
+    # Determine strict mode: --strict flag OR --fail-on-warning (legacy)
+    strict_mode = bool(getattr(args, 'strict', False)) or bool(args.fail_on_warning)
+    
+    result = _validate_repo(repo_root=repo_root, fail_on_warning=strict_mode)
 
     out_json = json.dumps(result, indent=2, sort_keys=False)
+    
+    # Compute sha256 of result
+    result_hash = hashlib.sha256(out_json.encode('utf-8')).hexdigest()
+    
+    # Generate governance summary pointer
+    policy_mode = "strict" if strict_mode else "non-strict"
+    governance_note = (
+        f"Repo + hello_world CasePack validated {result['run_status']}; "
+        f"validator.result.json sha256={result_hash[:16]}...; "
+        f"validator v{__version__}; policy {policy_mode}. "
+        f"Note: non-strict = baseline structural validity; strict = publication lint gate."
+    )
+    
     if args.out:
         out_path = Path(args.out)
         if not out_path.is_absolute():
             out_path = repo_root / out_path
         out_path.write_text(out_json + "\n", encoding="utf-8")
         print(f"Wrote validator result: {_relpath(repo_root, out_path)}")
+        print(f"\n{governance_note}")
     else:
         print(out_json)
+        print(f"\n{governance_note}", file=sys.stderr)
 
     return 0 if result.get("run_status") == "CONFORMANT" else 1
 
@@ -973,13 +992,15 @@ def build_parser() -> argparse.ArgumentParser:
     v = sub.add_parser("validate", help="Validate UMCP repo artifacts, CasePacks, schemas, and semantic rules")
     v.add_argument("path", nargs="?", default=".", help="Path inside repo (default: .)")
     v.add_argument("--out", default=None, help="Write validator result JSON to this file (relative to repo root if not absolute)")
-    v.add_argument("--fail-on-warning", action="store_true", help="Treat warnings as failing (run_status becomes NONCONFORMANT)")
+    v.add_argument("--strict", action="store_true", help="Enable strict mode: warnings become errors (publication lint gate)")
+    v.add_argument("--fail-on-warning", action="store_true", help="(Legacy) Treat warnings as failing (same as --strict)")
     v.set_defaults(func=_cmd_validate)
 
     r = sub.add_parser("run", help="Operational placeholder: validates the target; engine not yet implemented")
     r.add_argument("path", nargs="?", default=".", help="Path inside repo (default: .)")
     r.add_argument("--out", default=None, help="Write validator result JSON to this file (relative to repo root if not absolute)")
-    r.add_argument("--fail-on-warning", action="store_true", help="Treat warnings as failing (run_status becomes NONCONFORMANT)")
+    r.add_argument("--strict", action="store_true", help="Enable strict mode: warnings become errors (publication lint gate)")
+    r.add_argument("--fail-on-warning", action="store_true", help="(Legacy) Treat warnings as failing (same as --strict)")
     r.set_defaults(func=_cmd_run)
 
     return p
