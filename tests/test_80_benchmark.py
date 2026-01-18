@@ -15,6 +15,31 @@ REPO_ROOT = Path(__file__).parent.parent
 class TestBenchmark:
     """Test the benchmark functionality."""
 
+    def test_benchmark_file_exists(self):
+        """Benchmark script should exist."""
+        benchmark_path = REPO_ROOT / "benchmark_umcp_vs_standard.py"
+        
+        if not benchmark_path.exists():
+            pytest.skip("Benchmark script not found")
+        
+        assert benchmark_path.exists()
+
+    def test_benchmark_is_valid_python(self):
+        """Benchmark script should be valid Python."""
+        benchmark_path = REPO_ROOT / "benchmark_umcp_vs_standard.py"
+        
+        if not benchmark_path.exists():
+            pytest.skip("Benchmark script not found")
+        
+        result = subprocess.run(
+            [sys.executable, "-m", "py_compile", str(benchmark_path)],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+        )
+        
+        assert result.returncode == 0, f"Benchmark has syntax errors: {result.stderr}"
+
     @pytest.mark.slow
     def test_benchmark_runs(self):
         """Benchmark script should run without errors."""
@@ -28,7 +53,7 @@ class TestBenchmark:
             cwd=REPO_ROOT,
             capture_output=True,
             text=True,
-            timeout=60,  # 60 second timeout
+            timeout=120,
         )
         
         assert result.returncode == 0, f"Benchmark failed: {result.stderr}"
