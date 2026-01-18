@@ -1,0 +1,61 @@
+# Closures specification for UMCP run
+# References the closure registry and specific closure implementations
+
+closures:
+  version: "1.0.0"
+  registry_id: "UMCP.CLOSURES.DEFAULT.v1"
+  registry_path: "closures/registry.yaml"
+  
+  # Gamma form (drift dissipation closure)
+  gamma:
+    id: "gamma"
+    version: "v1"
+    path: "closures/gamma.default.v1.yaml"
+    description: "Default Γ(ω; p, ε) form for seam budget accounting"
+    parameters:
+      p: 3
+      epsilon: 1.0e-8
+  
+  # Return domain generator
+  return_domain:
+    id: "return_domain"
+    version: "v1"
+    path: "closures/return_domain.window64.v1.yaml"
+    description: "Window-based return domain generator with size 64"
+    parameters:
+      window_size: 64
+      method: "sliding"
+  
+  # Norm specification
+  norms:
+    id: "norms"
+    version: "v1"
+    path: "closures/norms.l2_eta1e-3.v1.yaml"
+    description: "L2 norm with neighborhood tolerance η = 0.001"
+    parameters:
+      norm_type: "l2"
+      eta: 1.0e-3
+  
+  # Curvature neighborhood
+  curvature_neighborhood:
+    id: "curvature_neighborhood"
+    version: "v1"
+    path: "closures/curvature_neighborhood.default.v1.yaml"
+    description: "Default curvature neighborhood specification"
+    parameters:
+      method: "stddev_ratio"
+      scale: 0.5
+  
+  # Computational closures
+  computational:
+    - id: "F_from_omega"
+      path: "closures/F_from_omega.py"
+      description: "Compute F from ω using Tier-1 identity"
+    
+    - id: "tau_R_compute"
+      path: "closures/tau_R_compute.py"
+      description: "Compute return time τ_R"
+    
+    - id: "stiffness_check"
+      path: "closures/stiffness_check.py"
+      description: "Stiffness validation check"

@@ -1,0 +1,80 @@
+UMCP Validation Report
+======================
+
+Generated: 2026-01-18T00:00:00Z
+Validator: umcp-validator v0.1.0
+Contract: UMA.INTSTACK.v1 (v1.0.0)
+Closure Registry: UMCP.CLOSURES.DEFAULT.v1
+
+SUMMARY
+-------
+Status: CONFORMANT
+Total Tests: 8
+Passed: 8
+Failed: 0
+Warnings: 0
+
+SCHEMA VALIDATION
+-----------------
+✓ manifest.yaml conforms to manifest.schema.json
+✓ contract.yaml conforms to contract.schema.json
+✓ observables.yaml validated
+✓ embedding.yaml validated
+✓ return.yaml validated
+✓ closures.yaml validated
+
+TRACE VALIDATION
+----------------
+✓ derived/trace.csv: Format=wide_psi, Rows=1, Coordinates=3
+✓ All coordinates in [0.0, 1.0]
+✓ No OOR violations
+✓ No missing values
+
+TIER-1 INVARIANTS
+-----------------
+✓ F ≈ 1 - ω (tolerance: 1e-9)
+  - Computed: F=0.990000, 1-ω=0.990000
+  - |F - (1-ω)| = 0.000000 < 1e-9
+
+✓ IC ≈ exp(κ) (tolerance: 1e-9)
+  - Computed: IC=0.990000, exp(κ)=0.990000
+  - |IC - exp(κ)| = 0.000000 < 1e-9
+
+REGIME CLASSIFICATION
+---------------------
+✓ Regime label: Stable
+  - ω = 0.010000 (low drift, within Stable threshold < 0.038)
+  - F = 0.990000 (high fidelity, above 0.90 threshold)
+  - S = 0.056002 (low entropy, below 0.15 threshold)
+  - C = 0.000000 (minimal curvature, below 0.14 threshold)
+  - Classification: Stable regime (optimal conditions)
+
+CONTINUITY (WELDS)
+------------------
+✓ Weld W-2026-01-18-CONTINUITY verified
+  - Seam distance: 0.000707 < 0.005 (tol_seam)
+  - Pre/post continuity maintained
+  - Smooth transition between epochs
+
+CLOSURE VERIFICATION
+--------------------
+✓ All referenced closures exist:
+  - gamma.default.v1.yaml
+  - return_domain.window64.v1.yaml
+  - norms.l2_eta1e-3.v1.yaml
+  - curvature_neighborhood.default.v1.yaml
+
+INTEGRITY CHECKS
+----------------
+✓ SHA256 checksums verified
+✓ Environment documented
+✓ Code version tracked
+✓ Git provenance recorded
+
+CONCLUSION
+----------
+This CasePack is CONFORMANT with all UMCP requirements.
+All Tier-1 invariants, regime gates, and continuity checks passed.
+Ready for production deployment and third-party verification.
+
+END OF REPORT

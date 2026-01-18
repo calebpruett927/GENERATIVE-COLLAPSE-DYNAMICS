@@ -1,0 +1,58 @@
+# Observable variables configuration for UMCP run
+# Defines which measurements are tracked and their properties
+
+observables:
+  version: "1.0.0"
+  description: "Observable variable specifications for this UMCP run"
+
+  # Primary observables from raw measurements
+  primary:
+    - id: "x_1"
+      name: "Observable 1"
+      unit: "dimensionless"
+      range: [0.0, 10.0]
+      description: "First primary observable variable"
+    
+    - id: "x_2"
+      name: "Observable 2"
+      unit: "dimensionless"
+      range: [0.0, 10.0]
+      description: "Second primary observable variable"
+    
+    - id: "x_3"
+      name: "Observable 3"
+      unit: "dimensionless"
+      range: [0.0, 10.0]
+      description: "Third primary observable variable"
+
+  # Derived observables (computed from primary)
+  derived:
+    - id: "c_1"
+      name: "Coordinate 1"
+      unit: "normalized"
+      range: [0.0, 1.0]
+      transform: "clip(x_1 / 10.0, 0, 1)"
+      description: "First embedded coordinate"
+    
+    - id: "c_2"
+      name: "Coordinate 2"
+      unit: "normalized"
+      range: [0.0, 1.0]
+      transform: "clip(x_2 / 10.0, 0, 1)"
+      description: "Second embedded coordinate"
+    
+    - id: "c_3"
+      name: "Coordinate 3"
+      unit: "normalized"
+      range: [0.0, 1.0]
+      transform: "clip(x_3 / 10.0, 0, 1)"
+      description: "Third embedded coordinate"
+
+  # Measurement metadata
+  metadata:
+    sampling_rate: "continuous"
+    timezone: "America/Chicago"
+    quality_flags:
+      - "oor_flag"
+      - "missing_flag"
+      - "invalid_flag"

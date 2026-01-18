@@ -1,0 +1,59 @@
+# Embedding configuration for UMCP
+# Defines how raw observables are transformed into bounded coordinates
+
+embedding:
+  version: "1.0.0"
+  contract_id: "UMA.INTSTACK.v1"
+  
+  # Embedding parameters from contract
+  parameters:
+    interval: [0.0, 1.0]
+    face: "pre_clip"
+    oor_policy: "clip_and_flag"
+    epsilon: 1.0e-8
+  
+  # Coordinate transformations
+  coordinates:
+    - id: "c_1"
+      source: "x_1"
+      transform:
+        type: "linear_scale"
+        parameters:
+          input_range: [0.0, 10.0]
+          output_range: [0.0, 1.0]
+          clip: true
+      description: "Linear scaling with clipping to [0,1]"
+    
+    - id: "c_2"
+      source: "x_2"
+      transform:
+        type: "linear_scale"
+        parameters:
+          input_range: [0.0, 10.0]
+          output_range: [0.0, 1.0]
+          clip: true
+      description: "Linear scaling with clipping to [0,1]"
+    
+    - id: "c_3"
+      source: "x_3"
+      transform:
+        type: "linear_scale"
+        parameters:
+          input_range: [0.0, 10.0]
+          output_range: [0.0, 1.0]
+          clip: true
+      description: "Linear scaling with clipping to [0,1]"
+  
+  # OOR handling
+  oor_handling:
+    policy: "clip_and_flag"
+    flags:
+      below_range: "oor_low"
+      above_range: "oor_high"
+      invalid: "oor_invalid"
+  
+  # Log-safety parameters
+  log_safety:
+    epsilon: 1.0e-8
+    method: "offset"
+    description: "Add epsilon to avoid log(0)"

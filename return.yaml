@@ -1,0 +1,40 @@
+# Return domain configuration for UMCP
+# Specifies how candidate return times are generated and evaluated
+
+return_domain:
+  version: "1.0.0"
+  registry_id: "UMCP.CLOSURES.DEFAULT.v1"
+  
+  # Return domain generator type
+  generator:
+    type: "window"
+    id: "return_domain.window64.v1"
+    path: "closures/return_domain.window64.v1.yaml"
+  
+  # Window-based return domain parameters
+  parameters:
+    window_size: 64
+    step_size: 1
+    min_window: 8
+    max_window: 256
+    method: "sliding"
+  
+  # Neighborhood tolerance for return evaluation
+  neighborhood:
+    norm: "l2"
+    tolerance: 1.0e-3
+    description: "L2 norm with eta = 0.001 for return proximity"
+  
+  # Return time computation
+  return_time:
+    method: "first_return"
+    special_values:
+      - id: "INF_REC"
+        description: "Infinite recurrence (no return within window)"
+      - id: "UNIDENTIFIABLE"
+        description: "Return time cannot be determined"
+  
+  # Censoring policy
+  censoring:
+    no_return_no_credit: true
+    description: "If no return occurs, do not credit the run"

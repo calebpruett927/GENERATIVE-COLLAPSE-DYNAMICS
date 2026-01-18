@@ -99,7 +99,66 @@ This script checks:
 For a detailed merge verification report, see [`MERGE_VERIFICATION.md`](MERGE_VERIFICATION.md).
 
 ---
+## Root-Level UMCP Files
 
+In addition to CasePacks, this repository includes root-level UMCP configuration files for direct reference:
+
+**Configuration** (YAML):
+- [`manifest.yaml`](manifest.yaml) – Root-level CasePack manifest
+- [`contract.yaml`](contract.yaml) – Contract specification
+- [`observables.yaml`](observables.yaml) – Observable variable definitions
+- [`embedding.yaml`](embedding.yaml) – Embedding transformation config
+- [`return.yaml`](return.yaml) – Return domain specifications
+- [`closures.yaml`](closures.yaml) – Closure registry references
+
+**Data Files**:
+- [`weights.csv`](weights.csv) – Weight coefficients
+- [`derived/trace.csv`](derived/trace.csv) – Bounded trace Ψ_ε(t)
+- [`derived/trace_meta.yaml`](derived/trace_meta.yaml) – Trace metadata
+
+**Outputs**:
+- [`outputs/invariants.csv`](outputs/invariants.csv) – Tier-1 invariants
+- [`outputs/regimes.csv`](outputs/regimes.csv) – Regime classifications
+- [`outputs/welds.csv`](outputs/welds.csv) – Continuity verification
+- [`outputs/report.txt`](outputs/report.txt) – Validation report
+
+**Integrity**:
+- [`integrity/sha256.txt`](integrity/sha256.txt) – File checksums
+- [`integrity/env.txt`](integrity/env.txt) – Python environment
+- [`integrity/code_version.txt`](integrity/code_version.txt) – Git provenance
+
+### Programmatic Access
+
+```python
+from umcp import get_umcp_files, get_closure_loader, get_root_validator
+
+# Load any UMCP file
+umcp = get_umcp_files()
+manifest = umcp.load_manifest()
+contract = umcp.load_contract()
+invariants = umcp.load_invariants()
+
+# Execute closures
+loader = get_closure_loader()
+result = loader.execute_closure("F_from_omega", omega=10.0, r=0.5, m=1.0)
+
+# Validate system integrity
+validator = get_root_validator()
+validation_result = validator.validate_all()
+print(f"Status: {validation_result['status']}")
+```
+
+See [docs/file_reference.md](docs/file_reference.md) and [docs/interconnected_architecture.md](docs/interconnected_architecture.md) for complete documentation.
+
+### Demonstration
+
+Run the interconnected system demonstration:
+
+```bash
+python examples/interconnected_demo.py
+```
+
+---
 ## CasePacks (runnable publication units)
 
 A CasePack is a self‑contained folder under `casepacks/<id>/` that holds:
