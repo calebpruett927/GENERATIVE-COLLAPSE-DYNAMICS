@@ -310,10 +310,12 @@ class TestZeroEntropyAcrossTiers:
         with open(invariants_path) as f:
             inv = json.load(f)
         
-        assert inv["omega"] == 0.0
-        assert inv["F"] == 1.0
-        assert inv["S"] == 0.0
-        assert inv["C"] == 0.0
+        # Access values from rows array (new format)
+        row = inv["rows"][0]
+        assert row["omega"] == 0.0
+        assert row["F"] == 1.0
+        assert row["S"] == 0.0
+        assert row["C"] == 0.0
     
     def test_tier1_gcd_zero_entropy_values(self):
         """GCD extensions at zero entropy."""
