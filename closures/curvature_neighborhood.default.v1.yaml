@@ -1,0 +1,16 @@
+# closures/curvature_neighborhood.default.v1.yaml
+schema: "schemas/closures.schema.json"
+
+closure:
+  kind: "curvature_neighborhood"
+  id: "UMCP.CURVATURE.DEFAULT.v1"
+  curvature_neighborhood:
+    method: "std"
+    normalization: 0.5
+    convention: "population"
+  notes: >
+    Default curvature-neighborhood closure.  Uses standard deviation over the
+    trace coordinates with normalization 0.5.  Changes the computed C value
+    and thus regime labeling.  Any change to method or normalization requires
+    a new closure registry ID.
+  extensions: {}
