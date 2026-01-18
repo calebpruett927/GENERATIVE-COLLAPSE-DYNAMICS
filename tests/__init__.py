@@ -15,7 +15,6 @@ import sys
 from pathlib import Path
 from typing import Final
 
-
 REPO_ROOT: Final[Path] = Path(__file__).resolve().parents[1]
 
 

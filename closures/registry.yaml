@@ -10,81 +10,9 @@ registry:
       path: "closures/return_domain.window64.v1.yaml"
     norms:
       path: "closures/norms.l2_eta1e-3.v1.yaml"
-    curvature_neighborhood:    # NEW ENTRY
+    curvature_neighborhood:
       path: "closures/curvature_neighborhood.default.v1.yaml"
   notes: >
     Default closure registry used by UMA.INTSTACK.v1.
     Includes gamma, return-domain, norms, and curvature-neighborhood defaults.
   extensions: {}
-
-# UMCP Closure Registry
-# Defines computational closures for transforming raw inputs into Ψ-invariants
-
-registry_id: "umcp.closures.v1"
-version: "1.0.0"
-description: "UMCP Closure Registry for computational transforms"
-
-entries:
-  - closure_id: "hello_world.v1"
-    version: "1.0.0"
-    description: "Simple hello world closure for demonstration"
-    file: "hello_world.py"
-    contract_ref: "UMA.INTSTACK.v1"
-    inputs:
-      - name: "omega"
-        type: "float"
-        unit: "rad/s"
-    outputs:
-      - name: "F"
-        type: "float"
-        unit: "N"
-
-  - closure_id: "F_from_omega.v1"
-    version: "1.0.0"
-    description: "Compute force from angular velocity"
-    file: "F_from_omega.py"
-    contract_ref: "UMA.INTSTACK.v1"
-    inputs:
-      - name: "omega"
-        type: "float"
-        unit: "rad/s"
-      - name: "r"
-        type: "float"
-        unit: "m"
-      - name: "m"
-        type: "float"
-        unit: "kg"
-    outputs:
-      - name: "F"
-        type: "float"
-        unit: "N"
-
-  - closure_id: "stiffness_check.v1"
-    version: "1.0.0"
-    description: "Validate stiffness constraints"
-    file: "stiffness_check.py"
-    contract_ref: "UMA.INTSTACK.v1"
-    inputs:
-      - name: "kappa"
-        type: "float"
-        unit: "N/m"
-    outputs:
-      - name: "valid"
-        type: "boolean"
-
-  - closure_id: "tau_R_compute.v1"
-    version: "1.0.0"
-    description: "Compute resonance time constant"
-    file: "tau_R_compute.py"
-    contract_ref: "UMA.INTSTACK.v1"
-    inputs:
-      - name: "omega"
-        type: "float"
-        unit: "rad/s"
-      - name: "damping"
-        type: "float"
-        unit: "dimensionless"
-    outputs:
-      - name: "tau_R"
-        type: "float"
-        unit: "s"

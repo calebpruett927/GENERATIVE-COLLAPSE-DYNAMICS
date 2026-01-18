@@ -6,18 +6,18 @@ import math
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
+from typing import Any, Dict, List
 
 import pytest
 
 try:
     import yaml  # type: ignore
-except Exception as e:  # pragma: no cover
+except Exception:  # pragma: no cover
     yaml = None  # type: ignore
 
 try:
     from jsonschema import Draft202012Validator  # type: ignore
-except Exception as e:  # pragma: no cover
+except Exception:  # pragma: no cover
     Draft202012Validator = None  # type: ignore
 
 

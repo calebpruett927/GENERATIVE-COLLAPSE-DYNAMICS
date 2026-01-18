@@ -1,27 +1,22 @@
 from __future__ import annotations
 
 import argparse
-import re
+import csv
 import hashlib
 import json
+import math
 import re
 import subprocess
 import sys
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Sequence, Tuple
+from typing import Any, Dict, List, Optional
 
 import yaml
 from jsonschema import Draft202012Validator
 
-try:
-    import importlib.metadata as importlib_metadata
-except ImportError:
-    import importlib_metadata  # type: ignore
-
 from . import VALIDATOR_NAME, __version__
-
 
 # -----------------------------
 # Internal codes (stable)
@@ -983,7 +978,6 @@ def _cmd_validate(args: argparse.Namespace) -> int:
     warning_count = result.get("summary", {}).get("counts", {}).get("warnings", 0)
     
     # Generate governance summary with full provenance
-    policy_mode = "strict" if strict_mode else "non-strict"
     governance_note = (
         f"UMCP validation: {result['run_status']} (repo + casepacks/hello_world), "
         f"errors={error_count} warnings={warning_count}; "

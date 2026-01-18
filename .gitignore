@@ -51,6 +51,11 @@ coverage.xml
 .pytest_cache/
 cover/
 
+# Benchmark and profiling outputs
+benchmark_profile.txt
+*.prof
+*.profile
+
 # Translations
 *.mo
 *.pot
