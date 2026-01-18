@@ -1,116 +1,49 @@
-![CI](../../actions/workflows/validate.yml/badge.svg)
+[![CI](../../actions/workflows/validate.yml/badge.svg)](../../actions/workflows/validate.yml)
 
-# UMCP — Universal Measurement Contract Protocol (Metadata + Runnable Validator Surface)
+# UMCP — Universal Measurement Contract Protocol (Metadata + Runnable Validator Surface)
 
-This repository is the metadata + runnable validator surface for UMCP (Universal Measurement Contract Protocol). It is organized as a contract-first, artifact-driven system: what matters is not prose claims, but frozen contracts, pinned closures, formally defined schemas, and receipts that can be revalidated by third parties.
+This repository contains the metadata and runnable validator for the Universal Measurement Contract Protocol (UMCP).  UMCP is designed as a **contract‑first, artifact‑driven** system.  Instead of prose alone, you’ll find frozen contracts, pinned closure registries, machine‑readable schemas, and receipts that can be re‑validated by third parties.  The goal is for reviewers to verify exactly what was frozen, what was computed, and what claims are made—without hidden defaults or implementation‑specific assumptions.
 
-UMCP’s core intent is that a reviewer can verify what was frozen, what was computed, and what is being claimed without relying on hidden defaults or implementation-specific assumptions.
+## Contents
+
+1. **Canon anchors** – Stable identifiers and default numeric thresholds.  
+2. **Contracts** – Frozen boundaries defining Tier‑1 kernel semantics (e.g., `UMA.INTSTACK.v1`).  
+3. **Closures** – Explicit complements (Γ forms, return‑domain generators, norms) that complete a contract.  
+4. **Schemas** – JSON Schema files describing valid structures for all artifacts.  
+5. **Validator rules** – Portable semantic checks enforced at runtime.  
+6. **Validator CLI** – A Python entrypoint (`umcp validate`) to run schema and semantic validation.  
+7. **CasePacks** – Runnable publication units (inputs, invariants, receipts).  
+8. **Tests** – Pytest suite for regression.  
+9. **CI workflow** – GitHub Actions configuration (`validate.yml`) that runs the validator and tests.  
+10. **Quick start** – How to set up and run the validator locally.
+
+---
+
+## CasePacks (runnable publication units)
+
+A CasePack is a self‑contained folder under `casepacks/<id>/` that holds:
+
+- `manifest.json` – Pins the contract ID, version, closure registry ID, and any explicit overrides.  
+- `raw_measurements.*` – Inputs used to produce a bounded trace (optional for L0 examples).  
+- `expected/psi.csv` – Bounded trace row(s) with out-of-range (OOR) and missingness flags.  
+- `expected/invariants.json` – Tier‑1 invariants (`ω`, `F`, `S`, `C`, `τ_R`, `κ`, `IC`) computed on Ψ\_ε(t).  
+- `expected/ss1m_receipt.json` – The minimum audit receipt for the run.  
+- `expected/seam_receipt.json` – Only when continuity (weld) is claimed.  
+
+Example CasePack: [`casepacks/hello_world/`](casepacks/hello_world/)
 
 ---
 
-## Contents (high-level)
+## Quick start
 
-1. Canon anchors (identifiers, not claims)  
-2. Frozen contract boundary (UMA.INTSTACK.v1)  
-3. Closures (explicit complements required to execute the contract)  
-4. Schemas (machine validation for all artifacts)  
-5. Validator rules (portable semantic checks)  
-6. Python validator CLI (`umcp validate`)  
-7. Tests (`pytest`)  
-8. CI workflow (GitHub Actions)  
-9. Publication receipts (SS1m / seam receipt)  
-10. Repo conventions and “how to run” instructions  
+All commands assume you are in the repository root (the folder containing `pyproject.toml`).  Python 3.8 or later is required.
 
----
-## CasePacks (runnable/publication units)
+### Set up a virtual environment
 
-A CasePack is a folder under `casepacks/<id>/` with:
+**Linux/macOS:**
 
-- `manifest.json` (declares references + expected outputs)
-- `raw_measurements.*` (inputs)
-- `expected/psi.csv`
-- `expected/invariants.json`
-- `expected/ss1m_receipt.json`
-- optionally `expected/seam_receipt.json` (only for continuity claims)
-
-Example:
-- [`casepacks/hello_world/manifest/`](casepacks/hello_world/manifest)
-
-## Start here (how to run)
-
-Everything is run from the repository root: the folder that contains `pyproject.toml`.
-
-### A. Local run (Windows Git Bash / macOS / Linux)
-
-1) Create and activate a virtual environment
-      
-## Quick links
-
-- Canon anchors (identifiers + defaults): [`canon/anchors.yaml`](canon/anchors.yaml)
-- Frozen contract (UMA.INTSTACK.v1): [`contracts/UMA.INTSTACK.v1.yaml`](contracts/UMA.INTSTACK.v1.yaml)
-- Closure registry (pins active closure set): [`closures/registry.yaml`](closures/registry.yaml)
-- Schemas folder (all formal definitions): [`schemas/`](schemas/)
-- Validator rules: [`validator_rules.yaml`](validator_rules.yaml)
-- Example CasePack: [`casepacks/hello_world/`](casepacks/hello_world/)
-- Test suite: [`tests/`](tests/)
-- Validator CLI source: [`src/umcp/cli.py`](src/umcp/cli.py)
-- CI workflow: [`.github/workflows/validate.yml`](.github/workflows/validate.yml)
-## Repository map
-
-- Canon: [`canon/`](canon/)
-- Contracts: [`contracts/`](contracts/)
-- Closures: [`closures/`](closures/)
-- Schemas: [`schemas/`](schemas/)
-- CasePacks: [`casepacks/`](casepacks/)
-- Source: [`src/`](src/)
-- Tests: [`tests/`](tests/)
-- CI: [`.github/workflows/`](.github/workflows/)
-
-## What goes where
-
-| If you are adding… | Put it here | Example |
-|---|---|---|
-| A new anchor / threshold update | `canon/anchors.yaml` | Update `regimes.*` |
-| A new contract version | `contracts/` | `contracts/UMA.INTSTACK.v2.yaml` |
-| A new closure set | `closures/` | `closures/gamma.*.yaml` + update `closures/registry.yaml` |
-| A new schema | `schemas/` | `schemas/my_artifact.schema.json` |
-| A new runnable/publication example | `casepacks/<id>/` | `casepacks/hello_world/` |
-| New docs for users | `docs/` | `docs/quickstart.md` |
-| Code changes to validator | `src/umcp/` | `src/umcp/cli.py` |
-| Tests for new rules | `tests/` | `tests/test_semantic_rules.py` |
-## Provenance and change control
-
-- Contracts and closure sets should be treated as immutable once referenced by a published CasePack.
-- If semantics change, version the contract/closure registry and create a new CasePack id.
-- Canon anchors are identifiers + frozen defaults; they are not claims.
-
-## Validator output (what to read)
-
-`umcp validate` prints JSON. The most important fields are:
-
-- `run_status`: `CONFORMANT` or `NONCONFORMANT`
-- `targets[*].issues`: list of issues with `severity`, `code`, `path`, `json_pointer`, and `hint`
-- `summary.counts.errors`: quick failure count
-
-
-## Common tasks
-  ```markdown
-### If you get stuck
-- Confirm you are in the repo root: `ls` should show `pyproject.toml`.
-- Confirm venv is active: your prompt shows `(.venv)`.
-macOS/Linux:
-
-### Install (one-time per machine)
 ```bash
-python -m venv .venv
-source .venv/Scripts/activate  # Windows Git Bash
+python3 -m venv .venv
+source .venv/bin/activate
 python -m pip install -U pip
 pip install -e ".[test]"
-  umcp validate .
-  pytest
-  umcp validate . --out validator.result.json
-
-python -m venv .venv
-source .venv/bin/activate
-
-
