@@ -32,12 +32,12 @@ fi
 echo ""
 
 echo "✓ Checking for merge conflict artifacts:"
-CONFLICTS=$(find . -type f \( -name "*.orig" -o -name "*.rej" -o -name "*CONFLICT*" \) 2>/dev/null | wc -l)
+CONFLICTS=$(find . -type f \( -name "*.orig" -o -name "*.rej" -o -name "*CONFLICT*" \) ! -path "./.git/*" ! -path "./.venv/*" ! -path "./node_modules/*" 2>/dev/null | wc -l)
 if [ "$CONFLICTS" -eq 0 ]; then
   echo "  No conflict artifacts found ✅"
 else
   echo "  Found $CONFLICTS conflict artifact(s) ❌"
-  find . -type f \( -name "*.orig" -o -name "*.rej" -o -name "*CONFLICT*" \) 2>/dev/null
+  find . -type f \( -name "*.orig" -o -name "*.rej" -o -name "*CONFLICT*" \) ! -path "./.git/*" ! -path "./.venv/*" ! -path "./node_modules/*" 2>/dev/null
 fi
 echo ""
 
@@ -67,10 +67,11 @@ trap 'rm -f "$TEMP_RESULT"' EXIT
 if umcp validate . --out "$TEMP_RESULT" 2>&1 | grep -q "Wrote validator result"; then
   read -r STATUS ERRORS WARNINGS <<< "$(python3 -c "
 import json
-with open('$TEMP_RESULT') as f:
+import sys
+with open(sys.argv[1]) as f:
     data = json.load(f)
 print(data['run_status'], data['summary']['counts']['errors'], data['summary']['counts']['warnings'])
-")"
+" "$TEMP_RESULT")"
   
   if [ "$STATUS" = "CONFORMANT" ] && [ "$ERRORS" -eq 0 ] && [ "$WARNINGS" -eq 0 ]; then
     echo "  Validation: $STATUS (Errors: $ERRORS, Warnings: $WARNINGS) ✅"
