@@ -38,7 +38,11 @@ elif [[ -f ".venv/Scripts/activate" ]]; then
 else
   echo "  Virtual environment not found. Creating..."
   python3 -m venv .venv
-  source .venv/bin/activate
+  if [[ -f ".venv/bin/activate" ]]; then
+    source .venv/bin/activate
+  elif [[ -f ".venv/Scripts/activate" ]]; then
+    source .venv/Scripts/activate
+  fi
   pip install -q -e ".[test]"
 fi
 
@@ -51,18 +55,21 @@ fi
 echo ""
 
 echo "✓ Running UMCP validator:"
-if umcp validate . --out /tmp/validator_check.json 2>&1 | grep -q "Wrote validator result"; then
-  STATUS=$(python3 -c "import json; print(json.load(open('/tmp/validator_check.json'))['run_status'])")
-  ERRORS=$(python3 -c "import json; print(json.load(open('/tmp/validator_check.json'))['summary']['counts']['errors'])")
-  WARNINGS=$(python3 -c "import json; print(json.load(open('/tmp/validator_check.json'))['summary']['counts']['warnings'])")
+TEMP_RESULT=$(mktemp "${TMPDIR:-/tmp}/validator_check.XXXXXX.json")
+if umcp validate . --out "$TEMP_RESULT" 2>&1 | grep -q "Wrote validator result"; then
+  STATUS=$(python3 -c "import json; print(json.load(open('$TEMP_RESULT'))['run_status'])")
+  ERRORS=$(python3 -c "import json; print(json.load(open('$TEMP_RESULT'))['summary']['counts']['errors'])")
+  WARNINGS=$(python3 -c "import json; print(json.load(open('$TEMP_RESULT'))['summary']['counts']['warnings'])")
   
   if [ "$STATUS" = "CONFORMANT" ] && [ "$ERRORS" -eq 0 ] && [ "$WARNINGS" -eq 0 ]; then
     echo "  Validation: $STATUS (Errors: $ERRORS, Warnings: $WARNINGS) ✅"
   else
     echo "  Validation: $STATUS (Errors: $ERRORS, Warnings: $WARNINGS) ⚠️"
   fi
+  rm -f "$TEMP_RESULT"
 else
   echo "  Validator failed to run ❌"
+  rm -f "$TEMP_RESULT"
   exit 1
 fi
 echo ""

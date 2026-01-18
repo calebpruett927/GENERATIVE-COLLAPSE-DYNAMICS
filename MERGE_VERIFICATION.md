@@ -103,7 +103,7 @@ All expected UMCP components present:
 **Documentation**: ✅
 - `README.md`
 - `LICENSE`
-- `docs/quickstart.md.`
+- `docs/quickstart.md`
 - `docs/python_coding_key.md`
 
 **Scripts**: ✅
