@@ -38,35 +38,35 @@ Raw Measurements → Invariants → Closures → Validation → Receipt
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
 │  1. INPUT                                                           │
-│     └─ raw_measurements.csv  (your experimental data)              │
+│     └─ raw_measurements.csv  (your experimental data)               │
 │                                                                     │
 │  2. INVARIANTS COMPUTATION                                          │
-│     ├─ ω (drift)                                                   │
-│     ├─ F (fidelity)                                                │
-│     ├─ S (entropy)                                                 │
-│     └─ C (curvature)                                               │
+│     ├─ ω (drift)                                                    │
+│     ├─ F (fidelity)                                                 │
+│     ├─ S (entropy)                                                  │
+│     └─ C (curvature)                                                │
 │                                                                     │
 │  3. CLOSURE EXECUTION (choose framework)                            │
-│     ┌─────────────────────┐      ┌──────────────────────┐         │
-│     │ GCD (Tier-1)        │      │ RCFT (Tier-2)        │         │
-│     ├─────────────────────┤      ├──────────────────────┤         │
-│     │ • Energy (E)        │  OR  │ • Fractal (D_f)      │         │
-│     │ • Collapse (Φ_c)    │      │ • Recursive (Ψ_r)    │         │
-│     │ • Flux (Φ_gen)      │      │ • Pattern (λ, Θ)     │         │
-│     │ • Resonance (R)     │      │ + all GCD closures   │         │
-│     └─────────────────────┘      └──────────────────────┘         │
+│     ┌─────────────────────┐      ┌──────────────────────┐           │
+│     │ GCD (Tier-1)        │      │ RCFT (Tier-2)        │           │
+│     ├─────────────────────┤      ├──────────────────────┤           │
+│     │ • Energy (E)        │  OR  │ • Fractal (D_f)      │           │
+│     │ • Collapse (Φ_c)    │      │ • Recursive (Ψ_r)    │           │
+│     │ • Flux (Φ_gen)      │      │ • Pattern (λ, Θ)     │           │
+│     │ • Resonance (R)     │      │ + all GCD closures   │           │
+│     └─────────────────────┘      └──────────────────────┘           │
 │                                                                     │
 │  4. VALIDATION                                                      │
-│     ├─ Contract conformance (schema validation)                    │
-│     ├─ Regime classification (Low/Medium/High, etc.)               │
-│     ├─ Mathematical identities (F = 1-ω, IC ≈ exp(κ), etc.)      │
-│     └─ Tolerance checks (within tol_seam, tol_id, etc.)           │
+│     ├─ Contract conformance (schema validation)                     │
+│     ├─ Regime classification (Low/Medium/High, etc.)                │
+│     ├─ Mathematical identities (F = 1-ω, IC ≈ exp(κ), etc.)         │
+│     └─ Tolerance checks (within tol_seam, tol_id, etc.)             │
 │                                                                     │
 │  5. OUTPUT                                                          │
-│     ├─ invariants.json (computed metrics)                          │
-│     ├─ closure_results.json (GCD/RCFT outputs)                     │
-│     ├─ seam_receipt.json (validation status + SHA256)              │
-│     └─ CONFORMANT or NONCONFORMANT status                          │
+│     ├─ invariants.json (computed metrics)                           │
+│     ├─ closure_results.json (GCD/RCFT outputs)                      │
+│     ├─ seam_receipt.json (validation status + SHA256)               │
+│     └─ CONFORMANT or NONCONFORMANT status                           │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
 ```
