@@ -203,10 +203,17 @@ def compute_multi_field_resonance(
     Phi_pattern = compute_resonance_pattern(Phi_gen_series, dt, tol)
     E_pattern = compute_resonance_pattern(E_series, dt, tol)
     
-    # Compute cross-correlations
-    R_Phi_corr = np.corrcoef(R_series, Phi_gen_series)[0, 1]
-    R_E_corr = np.corrcoef(R_series, E_series)[0, 1]
-    Phi_E_corr = np.corrcoef(Phi_gen_series, E_series)[0, 1]
+    # Compute cross-correlations with warning suppression for constant fields
+    # If fields are constant (zero variance), correlation is undefined -> set to 0
+    with np.errstate(invalid='ignore'):
+        R_Phi_corr_matrix = np.corrcoef(R_series, Phi_gen_series)
+        R_E_corr_matrix = np.corrcoef(R_series, E_series)
+        Phi_E_corr_matrix = np.corrcoef(Phi_gen_series, E_series)
+    
+    # Handle NaN from constant fields (zero variance)
+    R_Phi_corr = R_Phi_corr_matrix[0, 1] if not np.isnan(R_Phi_corr_matrix[0, 1]) else 0.0
+    R_E_corr = R_E_corr_matrix[0, 1] if not np.isnan(R_E_corr_matrix[0, 1]) else 0.0
+    Phi_E_corr = Phi_E_corr_matrix[0, 1] if not np.isnan(Phi_E_corr_matrix[0, 1]) else 0.0
     
     # Phase difference between fields
     phase_diff_R_Phi = (R_pattern['Theta_phase'] - Phi_pattern['Theta_phase']) % (2 * np.pi)
