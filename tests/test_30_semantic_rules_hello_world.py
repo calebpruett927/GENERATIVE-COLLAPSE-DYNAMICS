@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import math
 import re
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
+
+import pytest
 
 from .conftest import (
     RepoPaths,
@@ -14,32 +16,46 @@ from .conftest import (
     load_json,
     load_yaml,
     parse_csv_as_rows,
-    repo_paths,
     require_file,
 )
 
 RE_CK = re.compile(r"^c_[0-9]+$")
 
 
+def _get_draft202012_validator():
+    """Import Draft202012Validator or skip if jsonschema is unavailable."""
+    try:
+        from jsonschema import Draft202012Validator  # type: ignore
+    except Exception as exc:  # pragma: no cover
+        pytest.skip(f"jsonschema (Draft202012Validator) not available: {exc}")
+    return Draft202012Validator
+
+
 def test_validator_rules_file_exists_and_conforms(repo_paths: RepoPaths) -> None:
     require_file(repo_paths.validator_rules)
+
     rules_doc = load_yaml(repo_paths.validator_rules)
     schema_path = repo_paths.root / "schemas" / "validator.rules.schema.json"
     assert schema_path.exists(), f"Missing rules schema: {schema_path.as_posix()}"
 
-    # Validate rules_doc against schema
-    from jsonschema import Draft202012Validator  # type: ignore
+    Draft202012Validator = _get_draft202012_validator()
     schema = load_json(schema_path)
+
+    # Validate the schema itself, then validate the document against it.
     Draft202012Validator.check_schema(schema)
     v = Draft202012Validator(schema)
-    errors = sorted(v.iter_errors(rules_doc), key=lambda e: e.json_path)
-    assert not errors, "validator_rules.yaml failed schema validation:\n" + "\n".join(f"{e.json_path}: {e.message}" for e in errors)
+
+    errors = sorted(v.iter_errors(rules_doc), key=lambda e: list(e.path))
+    assert not errors, (
+        "validator_rules.yaml failed schema validation:\n"
+        + "\n".join(f"{'/'.join(map(str, e.path))}: {e.message}" for e in errors)
+    )
 
 
 def test_E101_wide_psi_has_at_least_one_coordinate_column_when_wide(repo_paths: RepoPaths) -> None:
     """
-    Implements the E101 semantic check:
-      If psi trace is wide, require at least one c_<k> column.
+    E101 semantic check:
+      If psi trace is wide CSV, require at least one c_<k> coordinate column.
     """
     rules_doc = load_yaml(repo_paths.validator_rules)
     rule = load_rule_by_id(rules_doc, "E101")
@@ -47,26 +63,33 @@ def test_E101_wide_psi_has_at_least_one_coordinate_column_when_wide(repo_paths: 
     rows = parse_csv_as_rows(repo_paths.hello_psi_csv)
     fmt = infer_psi_format(rows)
     if fmt != "psi_trace_csv_wide":
-        return  # Not applicable to long/JSON formats.
+        pytest.skip("E101 applies only to wide CSV psi trace format.")
 
     keys_union = set()
     for r in rows:
         keys_union.update(r.keys())
 
     matches = sum(1 for k in keys_union if RE_CK.match(k))
-    assert matches >= rule["check"]["min_matches"], (
-        f"E101 failed: expected >= {rule['check']['min_matches']} coordinate columns matching {rule['check']['pattern']}, "
-        f"observed {matches}."
+    min_matches = int(rule["check"]["min_matches"])
+    pattern = str(rule["check"]["pattern"])
+
+    assert matches >= min_matches, (
+        f"E101 failed: expected >= {min_matches} coordinate columns matching {pattern}, observed {matches}."
     )
 
 
 def test_W201_F_equals_one_minus_omega(repo_paths: RepoPaths) -> None:
     """
-    Implements W201 semantic check with canonical closeness definition.
+    W201 semantic check:
+      F ≈ 1 − ω (with canonical closeness definition).
     """
     rules_doc = load_yaml(repo_paths.validator_rules)
     rule = load_rule_by_id(rules_doc, "W201")
     inv = load_json(repo_paths.hello_invariants_json)
+
+    assert isinstance(inv, dict) and "rows" in inv and isinstance(inv["rows"], list), (
+        "expected/invariants.json must contain a top-level 'rows' array."
+    )
 
     atol = float(rule.get("atol", 1.0e-9))
     rtol = float(rule.get("rtol", 0.0))
@@ -75,7 +98,7 @@ def test_W201_F_equals_one_minus_omega(repo_paths: RepoPaths) -> None:
     F_path = rule["check"]["fields"]["F"]
 
     rows: List[Dict[str, Any]] = inv["rows"]
-    failures = []
+    failures: List[Tuple[Any, ...]] = []
 
     for i, row in enumerate(rows):
         omega = dot_get(row, omega_path)
@@ -100,11 +123,16 @@ def test_W201_F_equals_one_minus_omega(repo_paths: RepoPaths) -> None:
 
 def test_W202_IC_equals_exp_kappa(repo_paths: RepoPaths) -> None:
     """
-    Implements W202 semantic check with canonical closeness definition.
+    W202 semantic check:
+      IC ≈ exp(κ) (with canonical closeness definition).
     """
     rules_doc = load_yaml(repo_paths.validator_rules)
     rule = load_rule_by_id(rules_doc, "W202")
     inv = load_json(repo_paths.hello_invariants_json)
+
+    assert isinstance(inv, dict) and "rows" in inv and isinstance(inv["rows"], list), (
+        "expected/invariants.json must contain a top-level 'rows' array."
+    )
 
     atol = float(rule.get("atol", 1.0e-9))
     rtol = float(rule.get("rtol", 1.0e-9))
@@ -113,7 +141,7 @@ def test_W202_IC_equals_exp_kappa(repo_paths: RepoPaths) -> None:
     kappa_path = rule["check"]["fields"]["kappa"]
 
     rows: List[Dict[str, Any]] = inv["rows"]
-    failures = []
+    failures: List[Tuple[Any, ...]] = []
 
     for i, row in enumerate(rows):
         IC = dot_get(row, IC_path)
@@ -142,15 +170,23 @@ def test_W202_IC_equals_exp_kappa(repo_paths: RepoPaths) -> None:
 
 def test_W301_regime_label_consistency_with_canon(repo_paths: RepoPaths) -> None:
     """
-    Implements W301 semantic check:
-      - compute expected label from canon thresholds
-      - compare to regime.label when present; for publication-grade expected/invariants.json it SHOULD be present
+    W301 semantic check:
+      - compute expected regime label from canon thresholds
+      - compare to provided regime.label
+      - check critical overlay when IC_min is present and numeric
     """
     rules_doc = load_yaml(repo_paths.validator_rules)
     rule = load_rule_by_id(rules_doc, "W301")
-    inv = load_json(repo_paths.hello_invariants_json)
-    canon = load_yaml(repo_paths.canon_anchors)
 
+    inv = load_json(repo_paths.hello_invariants_json)
+    assert isinstance(inv, dict) and "rows" in inv and isinstance(inv["rows"], list), (
+        "expected/invariants.json must contain a top-level 'rows' array."
+    )
+
+    canon = load_yaml(repo_paths.canon_anchors)
+    assert isinstance(canon, dict) and "umcp_canon" in canon and "regimes" in canon["umcp_canon"], (
+        "canon/anchors.yaml must contain umcp_canon.regimes thresholds."
+    )
     thresholds = canon["umcp_canon"]["regimes"]
 
     omega_path = rule["check"]["fields"]["omega"]
@@ -162,12 +198,11 @@ def test_W301_regime_label_consistency_with_canon(repo_paths: RepoPaths) -> None
     crit_path = rule["check"]["fields"]["critical_overlay"]
     icmin_path = rule["check"]["fields"]["IC_min"]
 
-    policies = rule["check"]["policies"]
-    on_missing_regime = policies.get("on_missing_regime", "warn")
+    policies = rule["check"].get("policies", {})
     on_missing_icmin = policies.get("on_missing_IC_min", "skip")
 
     rows: List[Dict[str, Any]] = inv["rows"]
-    failures = []
+    failures: List[Tuple[Any, ...]] = []
 
     for i, row in enumerate(rows):
         omega = dot_get(row, omega_path)
@@ -175,25 +210,24 @@ def test_W301_regime_label_consistency_with_canon(repo_paths: RepoPaths) -> None
         S = dot_get(row, S_path)
         C = dot_get(row, C_path)
 
-        if not all(isinstance(x, (int, float)) for x in [omega, F, S, C]):
-            # cannot compute expected label
-            if on_missing_regime != "skip":
-                failures.append((i, "cannot compute expected label", omega, F, S, C))
+        if not all(isinstance(x, (int, float)) for x in (omega, F, S, C)):
+            failures.append((i, "cannot compute expected label (missing/non-numeric omega/F/S/C)", omega, F, S, C))
             continue
 
         exp_label = compute_expected_regime_label(float(omega), float(F), float(S), float(C), thresholds)
 
         provided_label = dot_get(row, label_path)
         if provided_label is None:
-            # For a published expected/invariants.json, require this to be present even if policy is warn.
             failures.append((i, "missing regime.label", exp_label))
         else:
             if provided_label not in {"Stable", "Watch", "Collapse"}:
-                failures.append((i, "invalid label", provided_label))
+                failures.append((i, "invalid regime.label", provided_label))
             elif provided_label != exp_label:
-                failures.append((i, "label mismatch", exp_label, provided_label, float(omega), float(F), float(S), float(C)))
+                failures.append(
+                    (i, "label mismatch", exp_label, provided_label, float(omega), float(F), float(S), float(C))
+                )
 
-        # Critical overlay check is optional and only checkable if IC_min exists and numeric
+        # Critical overlay check: only strictly checkable if IC_min is present and numeric.
         IC_min = dot_get(row, icmin_path)
         crit = dot_get(row, crit_path)
 
@@ -201,11 +235,16 @@ def test_W301_regime_label_consistency_with_canon(repo_paths: RepoPaths) -> None
             if on_missing_icmin != "skip" and crit is not None:
                 failures.append((i, "critical_overlay present but IC_min missing/non-numeric", IC_min, crit))
         else:
-            expected_crit = float(IC_min) < float(thresholds["collapse"]["critical_overlay"]["min_IC_lt"])
+            # Expect critical overlay if IC_min is strictly below the canon threshold.
+            collapse_block = thresholds.get("collapse", {})
+            crit_spec = collapse_block.get("critical_overlay", {})
+            min_ic_lt = float(crit_spec.get("min_IC_lt", 0.30))
+
+            expected_crit = float(IC_min) < min_ic_lt
             if crit is not None:
                 if not isinstance(crit, bool):
                     failures.append((i, "critical_overlay not boolean", crit))
                 elif crit != expected_crit:
-                    failures.append((i, "critical_overlay mismatch", expected_crit, crit, float(IC_min)))
+                    failures.append((i, "critical_overlay mismatch", expected_crit, crit, float(IC_min), min_ic_lt))
 
     assert not failures, "W301 regime label consistency failed:\n" + "\n".join(map(str, failures))
