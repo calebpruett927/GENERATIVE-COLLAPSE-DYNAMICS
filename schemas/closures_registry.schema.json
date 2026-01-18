@@ -25,6 +25,7 @@
       "items": {
         "type": "object",
         "required": ["closure_id", "version"],
+        "additionalProperties": true,
         "properties": {
           "closure_id": {
             "type": "string",
@@ -50,22 +51,14 @@
             "type": "array",
             "items": {
               "type": "object",
-              "properties": {
-                "name": { "type": "string" },
-                "type": { "type": "string" },
-                "unit": { "type": "string" }
-              }
+              "additionalProperties": true
             }
           },
           "outputs": {
             "type": "array",
             "items": {
               "type": "object",
-              "properties": {
-                "name": { "type": "string" },
-                "type": { "type": "string" },
-                "unit": { "type": "string" }
-              }
+              "additionalProperties": true
             }
           }
         }
