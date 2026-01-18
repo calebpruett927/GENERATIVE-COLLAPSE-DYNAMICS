@@ -1,11 +1,7 @@
 from __future__ import annotations
 
 import argparse
-import csv
-import hashlib
 import json
-import math
-import re
 import subprocess
 import sys
 from dataclasses import dataclass, field
@@ -13,12 +9,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
+import yaml
 from jsonschema import Draft202012Validator
 
 try:
-    import yaml  # type: ignore
-except Exception:  # pragma: no cover
-    yaml = None  # type: ignore
+    import importlib.metadata as importlib_metadata
+except ImportError:
+    import importlib_metadata  # type: ignore
 
 from . import VALIDATOR_NAME, __version__
 
@@ -1021,7 +1018,6 @@ def _cmd_run(args: argparse.Namespace) -> int:
 def _cmd_diff(args: argparse.Namespace) -> int:
     """Compare two validation receipts and show differences."""
     try:
-        # Load receipts
         r1_file = Path(args.receipt1)
         r2_file = Path(args.receipt2)
         
@@ -1060,7 +1056,7 @@ def _cmd_diff(args: argparse.Namespace) -> int:
         _compare_dict_field(summary1, summary2, "errors", "Errors")
         _compare_dict_field(summary1, summary2, "warnings", "Warnings")
         
-        if args.verbose:
+        if getattr(args, 'verbose', False):
             targets1 = receipt1.get("targets", [])
             targets2 = receipt2.get("targets", [])
             if len(targets1) != len(targets2):
@@ -1088,8 +1084,8 @@ def _cmd_diff(args: argparse.Namespace) -> int:
         # Compare targets validated
         print("📦 Targets Validated")
         print("-" * 80)
-        targets1 = {t.get("target_path") for t in receipt1.get("targets", [])}
-        targets2 = {t.get("target_path") for t in receipt2.get("targets", [])}
+        targets1 = {t.get("target_path") for t in receipt1.get("targets", []) if isinstance(t, dict)}
+        targets2 = {t.get("target_path") for t in receipt2.get("targets", []) if isinstance(t, dict)}
         
         added = targets2 - targets1
         removed = targets1 - targets2
@@ -1098,13 +1094,13 @@ def _cmd_diff(args: argparse.Namespace) -> int:
         print(f"  Common: {len(common)}")
         if added:
             print(f"  Added in Receipt 2: {len(added)}")
-            if args.verbose:
-                for target in sorted(added):
+            if getattr(args, 'verbose', False):
+                for target in sorted(t for t in added if t):
                     print(f"    + {target}")
         if removed:
             print(f"  Removed from Receipt 1: {len(removed)}")
-            if args.verbose:
-                for target in sorted(removed):
+            if getattr(args, 'verbose', False):
+                for target in sorted(t for t in removed if t):
                     print(f"    - {target}")
         print()
         
@@ -1173,16 +1169,16 @@ def build_parser() -> argparse.ArgumentParser:
 
     v = sub.add_parser("validate", help="Validate UMCP repo artifacts, CasePacks, schemas, and semantic rules")
     v.add_argument("path", nargs="?", default=".", help="Path inside repo (default: .)")
-    v.add_argument("--out", default=None, help="Write validator result JSON to this file (relative to repo root if not absolute)")
-    v.add_argument("--strict", action="store_true", help="Enable strict mode: warnings become errors (publication lint gate)")
-    v.add_argument("--fail-on-warning", action="store_true", help="(Legacy) Treat warnings as failing (same as --strict)")
+    v.add_argument("--out", default=None, help="Write validator result JSON to this file")
+    v.add_argument("--strict", action="store_true", help="Enable strict mode: warnings become errors")
+    v.add_argument("--fail-on-warning", action="store_true", help="(Legacy) Treat warnings as failing")
     v.set_defaults(func=_cmd_validate)
 
-    r = sub.add_parser("run", help="Operational placeholder: validates the target; engine not yet implemented")
+    r = sub.add_parser("run", help="Operational placeholder: validates the target")
     r.add_argument("path", nargs="?", default=".", help="Path inside repo (default: .)")
-    r.add_argument("--out", default=None, help="Write validator result JSON to this file (relative to repo root if not absolute)")
-    r.add_argument("--strict", action="store_true", help="Enable strict mode: warnings become errors (publication lint gate)")
-    r.add_argument("--fail-on-warning", action="store_true", help="(Legacy) Treat warnings as failing (same as --strict)")
+    r.add_argument("--out", default=None, help="Write validator result JSON to this file")
+    r.add_argument("--strict", action="store_true", help="Enable strict mode: warnings become errors")
+    r.add_argument("--fail-on-warning", action="store_true", help="(Legacy) Treat warnings as failing")
     r.set_defaults(func=_cmd_run)
 
     d = sub.add_parser("diff", help="Compare two validation receipts")

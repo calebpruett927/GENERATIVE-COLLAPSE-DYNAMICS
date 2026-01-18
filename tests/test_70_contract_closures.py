@@ -72,49 +72,58 @@ class TestClosures:
     def test_closure_registry_exists(self):
         """Closure registry should exist."""
         registry_path = REPO_ROOT / "closures" / "registry.yaml"
-        
-        if not registry_path.exists():
-            # Try alternative names
-            alt_paths = [
-                REPO_ROOT / "closures" / "registry.yml",
-                REPO_ROOT / "closures" / "closures.yaml",
-            ]
-            found = any(p.exists() for p in alt_paths)
-            if not found:
-                pytest.skip("No closure registry found")
-        else:
-            assert registry_path.exists()
+        assert registry_path.exists(), "closures/registry.yaml should exist"
 
     def test_closure_registry_is_valid_yaml(self):
         """Closure registry should be valid YAML."""
         registry_path = REPO_ROOT / "closures" / "registry.yaml"
-        
-        if not registry_path.exists():
-            pytest.skip("No closure registry found")
         
         with registry_path.open("r") as f:
             registry = yaml.safe_load(f)
         
         assert registry is not None, "Registry should not be empty"
 
-    def test_closure_ids_unique(self):
-        """All closure IDs should be unique."""
+    def test_closure_files_exist(self):
+        """All referenced closure files should exist."""
         registry_path = REPO_ROOT / "closures" / "registry.yaml"
-        
-        if not registry_path.exists():
-            pytest.skip("No closure registry found")
         
         with registry_path.open("r") as f:
             registry = yaml.safe_load(f)
         
-        if not isinstance(registry, dict) or "closures" not in registry:
-            pytest.skip("Registry doesn't have expected structure")
+        closures_dir = REPO_ROOT / "closures"
+        
+        for closure in registry.get("closures", []):
+            if isinstance(closure, dict) and "file" in closure:
+                closure_file = closures_dir / closure["file"]
+                assert closure_file.exists(), f"Closure file not found: {closure['file']}"
+
+    def test_closure_ids_unique(self):
+        """All closure IDs should be unique."""
+        registry_path = REPO_ROOT / "closures" / "registry.yaml"
+        
+        with registry_path.open("r") as f:
+            registry = yaml.safe_load(f)
         
         closure_ids = [c.get("closure_id") for c in registry.get("closures", []) if isinstance(c, dict)]
         closure_ids = [cid for cid in closure_ids if cid is not None]
         
         if closure_ids:
             assert len(closure_ids) == len(set(closure_ids)), "Duplicate closure IDs found"
+
+    def test_closure_files_are_valid_python(self):
+        """All closure Python files should be syntactically valid."""
+        closures_dir = REPO_ROOT / "closures"
+        
+        for py_file in closures_dir.glob("*.py"):
+            if py_file.name == "__init__.py":
+                continue
+            with py_file.open("r") as f:
+                content = f.read()
+            # Try to compile to check syntax
+            try:
+                compile(content, py_file.name, "exec")
+            except SyntaxError as e:
+                pytest.fail(f"Syntax error in {py_file.name}: {e}")
 
 
 class TestCanon:
@@ -128,20 +137,11 @@ class TestCanon:
     def test_canon_anchors_exist(self):
         """Canon anchors should exist."""
         anchors_path = REPO_ROOT / "canon" / "anchors.yaml"
-        
-        if not anchors_path.exists():
-            alt_path = REPO_ROOT / "canon" / "anchors.yml"
-            if not alt_path.exists():
-                pytest.skip("No canon anchors file found")
-        
-        assert anchors_path.exists() or (REPO_ROOT / "canon" / "anchors.yml").exists()
+        assert anchors_path.exists(), "canon/anchors.yaml should exist"
 
     def test_canon_is_valid_yaml(self):
         """Canon anchors should be valid YAML."""
         anchors_path = REPO_ROOT / "canon" / "anchors.yaml"
-        
-        if not anchors_path.exists():
-            pytest.skip("No canon anchors found")
         
         with anchors_path.open("r") as f:
             canon = yaml.safe_load(f)
