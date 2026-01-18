@@ -1,0 +1,18 @@
+# closures/registry.yaml
+schema: "schemas/closures.schema.json"
+
+registry:
+  id: "UMCP.CLOSURES.DEFAULT.v1"
+  closures:
+    gamma:
+      path: "closures/gamma.default.v1.yaml"
+    return_domain:
+      path: "closures/return_domain.window64.v1.yaml"
+    norms:
+      path: "closures/norms.l2_eta1e-3.v1.yaml"
+    curvature_neighborhood:    # NEW ENTRY
+      path: "closures/curvature_neighborhood.default.v1.yaml"
+  notes: >
+    Default closure registry used by UMA.INTSTACK.v1.
+    Includes gamma, return-domain, norms, and curvature-neighborhood defaults.
+  extensions: {}
