@@ -6,21 +6,12 @@ contract:
   timezone: "America/Chicago"
 
   embedding:
-    # Bounded trace requirement: Ψ(t) ∈ [0,1]^n after embedding.
     interval: [0.0, 1.0]
-    # face=pre_clip means the embedding is defined on un-clipped values; clipping is a policy step.
     face: "pre_clip"
-    # Out-of-range handling policy:
-    # - clip_and_flag: clamp to [0,1] and record OOR flags
-    # - flag_only: do not clamp, but record flags (often not desired for kernel computation)
-    # - reject_row: fail row ingestion if any coordinate is OOR
     oor_policy: "clip_and_flag"
-    # Log-safety epsilon for Ψ_ε(t) ∈ [ε, 1-ε]^n used in entropy/log computations.
-    epsilon: 1.0e-8
+    epsilon: 1e-8
 
   tier_1_kernel:
-    # Reserved symbols (unicode + ascii variants for implementation portability).
-    # Overlays (Tier-2) may not redefine these.
     reserved_symbols:
       - "ω"
       - "F"
@@ -33,40 +24,28 @@ contract:
       - "tau_R"
       - "kappa"
 
-    # Weight policy for w_i used in kernel reductions.
     weights_policy: "nonnegative_sum_to_one"
 
     frozen_parameters:
-      # Γ(ω; p, ε) typically uses p; concrete Γ form is provided by closures.
       p: 3
-      # Curvature penalty parameter for D_C = α C (seam budget).
       alpha: 1.0
-      # Reserved for implementations that use λ in overlay controllers; frozen for compatibility.
       lambda: 0.2
-      # Neighborhood tolerance for return detection: ‖Ψ(t) − Ψ(u)‖ ≤ η.
-      eta: 1.0e-3
+      eta: 1e-3
 
     tolerances:
-      # Seam budget residual tolerance for weld PASS/FAIL.
       tol_seam: 0.005
-      # Identity tolerance for equality checks (e.g., ir vs exp(Δκ_ledger)).
-      tol_id: 1.0e-9
+      tol_id: 1e-9
 
   typed_censoring:
-    # Special values for τ_R when return is not available or not identifiable.
-    # INF_REC corresponds to ∞_rec in the UMCP text.
     tau_R_special_values:
       - "INF_REC"
       - "UNIDENTIFIABLE"
 
-    # Validation run status domain.
     run_status_enum:
       - "CONFORMANT"
       - "NONCONFORMANT"
       - "NON_EVALUABLE"
 
-    # Policy toggle for “no return → no credit” accounting in seam budget:
-    # τ_R = INF_REC implies R * τ_R is treated as 0 (typed-censored credit).
     no_return_no_credit: true
 
   notes: >
