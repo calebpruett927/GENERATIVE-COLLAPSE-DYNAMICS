@@ -242,6 +242,11 @@ scratch/
 tmp/
 _tmp/
 
+# Ephemeral runtime logs (AXIOM-0: What Returns Through Collapse Is Real)
+ledger/return_log.csv
+outputs/*.csv
+outputs/*.txt
+
 # OS / filesystem noise
 .DS_Store
 Thumbs.db
