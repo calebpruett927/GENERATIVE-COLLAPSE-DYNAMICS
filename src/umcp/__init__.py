@@ -29,7 +29,7 @@ __all__ = [
     "get_root_validator",
 ]
 
-__version__ = "0.1.0"
+__version__ = "1.3.1"
 
 VALIDATOR_NAME = "umcp-validator"
 DEFAULT_TZ = "America/Chicago"
