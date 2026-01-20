@@ -1,13 +1,29 @@
 [![CI](../../actions/workflows/validate.yml/badge.svg)](../../actions/workflows/validate.yml)
-[![Production Ready](https://img.shields.io/badge/production-ready-brightgreen)](docs/production_deployment.md)
-[![Version](https://img.shields.io/badge/version-1.3.2--immutable-blue)](IMMUTABLE_RELEASE.md)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
-[![Tests](https://img.shields.io/badge/tests-233%20passing-success)](tests/)
-[![Validation](https://img.shields.io/badge/validation-0%20errors%20%7C%200%20warnings-brightgreen)](.)
-[![Integrity](https://img.shields.io/badge/integrity-165%20files%20SHA256-green)](integrity/sha256.txt)
-[![Performance](https://img.shields.io/badge/performance-20--25%25%20faster%20with%20cache-orange)](.)
-[![Smart Cache](https://img.shields.io/badge/cache-intelligent%20%7C%20persistent-blue)](.umcp_cache/)
-[![Extensions](https://img.shields.io/badge/extensions-4%20registered-purple)](EXTENSION_INTEGRATION.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+## ✅ Verify Everything Yourself
+
+**Don't trust badges - verify the code:**
+
+```bash
+# Check tests (should show 233 passing)
+pytest -v
+
+# Check UMCP validation (should show CONFORMANT, 0 errors)
+umcp validate .
+
+# Check file integrity (should show 200 files)
+wc -l < integrity/sha256.txt
+
+# Check version
+python -c "import tomli; print(tomli.load(open('pyproject.toml','rb'))['project']['version'])"
+
+# Check CI status
+gh run list --limit 1
+```
+
+All metrics are **verifiable from source code** - no marketing hype.
 
 ---
 
