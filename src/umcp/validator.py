@@ -287,13 +287,31 @@ class RootFileValidator:
             self.errors.append(f"✗ Error validating regime classification: {e}")
 
     def _validate_checksums(self) -> None:
-        """Validate SHA256 checksums in integrity/sha256.txt."""
+        """Validate SHA256 checksums in integrity/sha256.txt.
+
+        Implements no_return_no_credit principle: only artifacts that return
+        through the collapse-reconstruction cycle receive credit in validation.
+        Ephemeral build artifacts are excluded from checksum validation.
+        """
         try:
             checksum_path = self.root / "integrity" / "sha256.txt"
             with open(checksum_path) as f:
                 lines = f.readlines()
 
+            # Artifacts that do not return through collapse receive no credit
+            # (AXIOM-0: What Returns Through Collapse Is Real)
+            NON_RETURNING_PATTERNS = [
+                ".mypy_cache/",  # Ephemeral type checker cache
+                ".pytest_cache/",  # Ephemeral test cache
+                "__pycache__/",  # Ephemeral bytecode cache
+                ".venv/",  # Environment-specific virtual environment
+                "validator.result.baseline.json",  # Generated output artifact
+                "validator.result.strict.json",  # Generated output artifact
+            ]
+
             mismatches = []
+            validated_count = 0
+
             for line in lines:
                 line = line.strip()
                 # Skip empty lines and comments
@@ -305,6 +323,11 @@ class RootFileValidator:
                     continue
 
                 expected_hash, file_path = parts
+
+                # Apply typed censoring: skip non-returning artifacts
+                if any(pattern in file_path for pattern in NON_RETURNING_PATTERNS):
+                    continue
+
                 full_path = self.root / file_path
 
                 if not full_path.exists():
@@ -319,11 +342,13 @@ class RootFileValidator:
 
                 if actual_hash != expected_hash:
                     mismatches.append(f"{file_path} (hash mismatch)")
+                else:
+                    validated_count += 1
 
             if mismatches:
                 self.errors.append(f"✗ Checksum mismatches: {', '.join(mismatches)}")
             else:
-                self.passed.append("✓ All checksums valid")
+                self.passed.append(f"✓ All checksums valid ({validated_count} files verified)")
         except Exception as e:
             self.errors.append(f"✗ Error validating checksums: {e}")
 
