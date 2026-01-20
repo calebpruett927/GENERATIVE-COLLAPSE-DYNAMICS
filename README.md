@@ -718,7 +718,7 @@ Example CasePack: [`casepacks/hello_world/`](casepacks/hello_world/)
 
 ## Quick start
 
-All commands assume you are in the repository root (the folder containing `pyproject.toml`).  Python 3.8 or later is required.
+All commands assume you are in the repository root (the folder containing `pyproject.toml`).  Python 3.11 or later is required (3.12+ recommended).
 
 ### Set up a virtual environment
 

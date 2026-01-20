@@ -127,7 +127,7 @@ All expected UMCP components present:
 ### ✅ CI/CD Configuration
 - GitHub Actions workflow (`validate.yml`) present and properly configured
 - Workflow runs validation on push and pull_request events
-- Uses Python 3.11, installs dependencies, and runs validator in strict mode
+- Uses Python 3.12, installs dependencies, and runs validator in strict mode
 
 ## Conclusion
 
