@@ -395,3 +395,110 @@ if check_extension('api'):
 from umcp_extensions import install_extension
 install_extension('visualization')
 """)
+
+
+def main():
+    """
+    CLI entry point for umcp-ext command.
+    This provides a simple interface to list and manage UMCP extensions.
+    """
+    import argparse
+    
+    parser = argparse.ArgumentParser(
+        description="UMCP Extension Manager",
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    
+    subparsers = parser.add_subparsers(dest='command', help='Available commands')
+    
+    # List command
+    subparsers.add_parser('list', help='List all available extensions')
+    
+    # Info command
+    info_parser = subparsers.add_parser('info', help='Show extension info')
+    info_parser.add_argument('extension', help='Extension name')
+    
+    # Check command
+    check_parser = subparsers.add_parser('check', help='Check if extension is available')
+    check_parser.add_argument('extension', help='Extension name')
+    
+    # Install command
+    install_parser = subparsers.add_parser('install', help='Install extension dependencies')
+    install_parser.add_argument('extension', help='Extension name')
+    
+    # Run command
+    run_parser = subparsers.add_parser('run', help='Run an extension')
+    run_parser.add_argument('extension', help='Extension name')
+    
+    args = parser.parse_args()
+    
+    if not args.command:
+        parser.print_help()
+        return 0
+    
+    if args.command == 'list':
+        extensions = list_extensions()
+        print("Available UMCP Extensions:")
+        print()
+        for ext_id, ext_info in extensions.items():
+            status = "✅" if check_extension(ext_id) else "⚠️"
+            print(f"{status} {ext_id}: {ext_info.get('name', 'Unknown')}")
+            print(f"   {ext_info.get('description', '')}")
+            print(f"   Command: {ext_info.get('command', 'N/A')}")
+            print()
+        return 0
+    
+    elif args.command == 'info':
+        ext = get_extension_info(args.extension)
+        if not ext:
+            print(f"❌ Extension '{args.extension}' not found")
+            return 1
+        
+        print(f"Extension: {ext['name']}")
+        print(f"Description: {ext['description']}")
+        print(f"Type: {ext.get('type', 'unknown')}")
+        print(f"Command: {ext.get('command', 'N/A')}")
+        print(f"Module: {ext['module']}")
+        print(f"Class: {ext.get('class', 'N/A')}")
+        print(f"Requirements: {', '.join(ext.get('requires', []))}")
+        return 0
+    
+    elif args.command == 'check':
+        if check_extension(args.extension):
+            print(f"✅ Extension '{args.extension}' is available and ready")
+            return 0
+        else:
+            print(f"⚠️ Extension '{args.extension}' is not available")
+            print("   Try: umcp-ext install", args.extension)
+            return 1
+    
+    elif args.command == 'install':
+        try:
+            install_extension(args.extension)
+            print(f"✅ Extension '{args.extension}' dependencies installed")
+            return 0
+        except Exception as e:
+            print(f"❌ Failed to install extension: {e}")
+            return 1
+    
+    elif args.command == 'run':
+        if not check_extension(args.extension):
+            print(f"⚠️ Extension '{args.extension}' is not available")
+            print(f"   Install with: umcp-ext install {args.extension}")
+            return 1
+        
+        try:
+            ext = load_extension(args.extension)
+            ext.run()
+            return 0
+        except Exception as e:
+            print(f"❌ Failed to run extension: {e}")
+            import traceback
+            traceback.print_exc()
+            return 1
+    
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

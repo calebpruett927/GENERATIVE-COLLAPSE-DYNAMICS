@@ -93,7 +93,7 @@ Issues = "https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/issues"
 umcp = "umcp.cli:main"
 umcp-visualize = "visualize_umcp:main"
 umcp-api = "api_umcp:run_server"
-umcp-ext = "umcp-ext:main"
+umcp-ext = "umcp_extensions:main"
 umcp-format = "umcp_autoformat:main"
 
 # Extension discovery and plugin system
