@@ -253,3 +253,57 @@ async def get_current_regime():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+
+# UMCP Extension Entry Points
+def run_server():
+    """Entry point for umcp-api command"""
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+
+
+class UMCPAuditAPI:
+    """UMCP Extension: Public Audit API
+    
+    Provides REST API access to UMCP validation receipts and regime statistics.
+    Automatically registered with UMCP extension system.
+    
+    Attributes:
+        name: Extension name
+        version: Extension version
+        description: Extension description
+        requires: Required dependencies
+    """
+    
+    name = "audit-api"
+    version = "1.0.0"
+    description = "Public REST API for UMCP validation receipts and regime statistics"
+    requires = ["fastapi>=0.109.0", "uvicorn[standard]>=0.27.0"]
+    
+    @staticmethod
+    def install():
+        """Install extension dependencies"""
+        import subprocess
+        subprocess.check_call(["pip", "install"] + UMCPAuditAPI.requires)
+    
+    @staticmethod
+    def run():
+        """Run the extension"""
+        run_server()
+    
+    @staticmethod
+    def info():
+        """Return extension metadata"""
+        return {
+            "name": UMCPAuditAPI.name,
+            "version": UMCPAuditAPI.version,
+            "description": UMCPAuditAPI.description,
+            "requires": UMCPAuditAPI.requires,
+            "endpoints": [
+                {"path": "/health", "method": "GET", "description": "Health check"},
+                {"path": "/latest-receipt", "method": "GET", "description": "Latest validation receipt"},
+                {"path": "/ledger", "method": "GET", "description": "Historical validation ledger"},
+                {"path": "/stats", "method": "GET", "description": "Aggregate statistics"},
+                {"path": "/regime", "method": "GET", "description": "Current regime classification"},
+            ]
+        }

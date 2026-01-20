@@ -12,6 +12,7 @@ Advanced Streamlit app for UMCP validation monitoring:
 
 Usage:
     streamlit run visualize_umcp.py
+    umcp-visualize  # Using entry point
     
 Features:
     - Auto-refresh capability
@@ -38,6 +39,55 @@ try:
 except ImportError:
     st.error("Please install required packages: pip install streamlit pandas plotly numpy")
     st.stop()
+
+
+# UMCP Extension Entry Points
+class UMCPVisualization:
+    """UMCP Extension: Interactive Visualization Dashboard
+    
+    Provides Streamlit-based visualization of UMCP validation data.
+    Automatically registered with UMCP extension system.
+    
+    Attributes:
+        name: Extension name
+        version: Extension version
+        description: Extension description
+        requires: Required dependencies
+    """
+    
+    name = "visualization"
+    version = "1.0.0"
+    description = "Interactive Streamlit dashboard for UMCP validation monitoring"
+    requires = ["streamlit>=1.30.0", "pandas>=2.0.0", "plotly>=5.18.0", "numpy>=1.24.0"]
+    
+    @staticmethod
+    def install():
+        """Install extension dependencies"""
+        import subprocess
+        subprocess.check_call(["pip", "install"] + UMCPVisualization.requires)
+    
+    @staticmethod
+    def run():
+        """Run the extension"""
+        main()
+    
+    @staticmethod
+    def info():
+        """Return extension metadata"""
+        return {
+            "name": UMCPVisualization.name,
+            "version": UMCPVisualization.version,
+            "description": UMCPVisualization.description,
+            "requires": UMCPVisualization.requires,
+            "features": [
+                "Real-time validation metrics",
+                "Interactive phase space plots",
+                "Regime transition tracking",
+                "Historical trend analysis",
+                "Anomaly detection",
+                "Export capabilities"
+            ]
+        }
 
 
 # Enhanced color scheme matching UMCP regimes

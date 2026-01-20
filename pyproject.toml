@@ -17,7 +17,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "umcp"
 version = "1.3.1"
-description = "Universal Measurement Contract Protocol (UMCP): contract-first validation, receipts, and runnable casepacks with GCD and RCFT frameworks. Features intelligent caching and progressive optimization."
+description = "Universal Measurement Contract Protocol (UMCP): contract-first validation, receipts, and runnable casepacks with GCD and RCFT frameworks. Core Axiom: What Returns Through Collapse Is Real (no_return_no_credit). Features intelligent caching, progressive optimization, and extensible plugin architecture."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
@@ -91,6 +91,25 @@ Issues = "https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/issues"
 
 [project.scripts]
 umcp = "umcp.cli:main"
+umcp-visualize = "visualize_umcp:main"
+umcp-api = "api_umcp:run_server"
+umcp-ext = "umcp-ext:main"
+umcp-format = "umcp_autoformat:main"
+
+# Extension discovery and plugin system
+[project.entry-points."umcp.extensions"]
+visualization = "visualize_umcp:UMCPVisualization"
+api = "api_umcp:UMCPAuditAPI"
+ledger = "umcp.cli:LedgerExtension"
+
+[project.entry-points."umcp.contracts"]
+uma = "contracts.UMA.INTSTACK.v1:contract"
+gcd = "contracts.GCD.INTSTACK.v1:contract"
+rcft = "contracts.RCFT.INTSTACK.v1:contract"
+
+[project.entry-points."umcp.closures"]
+gcd_closures = "closures.gcd:register"
+rcft_closures = "closures.rcft:register"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
@@ -98,6 +117,19 @@ package-dir = {"" = "src"}
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["umcp*"]
+
+[tool.setuptools.package-data]
+umcp = [
+  "py.typed",
+  "../contracts/*.yaml",
+  "../closures/**/*.py",
+  "../schemas/*.json",
+  "../canon/*.yaml"
+]
+
+# Auto-discovery of extensions
+[tool.setuptools.dynamic]
+# Extensions are auto-discovered from root directory
 
 [tool.pytest.ini_options]
 minversion = "8.0"

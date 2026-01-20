@@ -21,7 +21,10 @@
 ║                    UMCP PRODUCTION SYSTEM STATUS                     ║
 ╚══════════════════════════════════════════════════════════════════════╝
 
-  🔐 Canon:           UMCP.CANON.v1
+  � CORE AXIOM:      "What Returns Through Collapse Is Real"
+                      no_return_no_credit: true
+
+  �🔐 Canon:           UMCP.CANON.v1
   📜 Contract:        UMA.INTSTACK.v1
   🔗 Weld:            W-2025-12-31-PHYS-COHERENCE
   
@@ -75,19 +78,42 @@ UMCP is a **production-grade system** for creating, validating, and sharing repr
 
 ## 🎯 What is UMCP?
 
-UMCP transforms computational experiments into **auditable artifacts**:
+UMCP transforms computational experiments into **auditable artifacts** based on a single foundational principle:
+
+### **🔷 The Core Axiom: What Returns Through Collapse Is Real**
+
+```yaml
+# Encoded in every UMCP contract
+typed_censoring:
+  no_return_no_credit: true
+```
+
+**Meaning**: Reality is defined by what persists through collapse-reconstruction cycles. Only measurements that return—that survive transformation and can be reproduced—receive credit as real, valid observations.
+
+This axiom unifies:
+- **Measurement Theory**: Only reproducible (returning) measurements are valid
+- **Generative Collapse Dynamics (GCD)**: Collapse produces new structure
+- **Recursive Collapse Field Theory (RCFT)**: Returns accumulate memory across scales
+
+---
+
+### UMCP Workflow
 
 ```
 Raw Measurements → Invariants → Closures → Validation → Receipt
       (CSV)           (JSON)      (Python)    (Contract)   (SHA256)
+                                                    ↓
+                                        Only what returns receives credit
 ```
 
 **Key Concepts:**
-- **Contracts**: Frozen mathematical specifications (GCD, RCFT) defining valid computation
-- **Invariants**: Core metrics (ω, F, S, C) computed from raw data
-- **Closures**: Computational functions (energy, collapse, flux, resonance, fractal, recursive, pattern)
-- **CasePacks**: Self-contained reproducible units (inputs + expected outputs + receipt)
-- **Validation**: Automated verification that results conform to contract specifications
+- **Contracts**: Frozen mathematical specifications (GCD, RCFT) encoding the return axiom
+- **Invariants**: Core metrics (ω, F, S, C) that must return through validation
+- **Closures**: Computational functions computing what returns from collapse
+- **CasePacks**: Self-contained reproducible units proving return verification
+- **Validation**: Automated verification that results return conformantly
+
+📖 **[Read the full axiom documentation](AXIOM.md)** for philosophical foundations, mathematical formulation, and physical interpretations.
 
 ---
 

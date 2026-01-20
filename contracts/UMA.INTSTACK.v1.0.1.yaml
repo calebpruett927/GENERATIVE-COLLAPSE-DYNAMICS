@@ -1,63 +1,55 @@
-schema: "schemas/contract.schema.json"
-
+schema: schemas/contract.schema.json
 contract:
-  id: "UMA.INTSTACK.v1.0.1"
-  version: "1.0.1"
-  timezone: "America/Chicago"
-
+  id: UMA.INTSTACK.v1.0.1
+  version: 1.0.1
+  timezone: America/Chicago
   embedding:
-    interval: [0.0, 1.0]
-    face: "pre_clip"
-    oor_policy: "clip_and_flag"
-    epsilon: 1.0e-8
-
+    interval:
+    - 0.0
+    - 1.0
+    face: pre_clip
+    oor_policy: clip_and_flag
+    epsilon: 1.0e-08
   tier_1_kernel:
     reserved_symbols:
-      - "ω"
-      - "F"
-      - "S"
-      - "C"
-      - "τ_R"
-      - "κ"
-      - "IC"
-      - "omega"
-      - "tau_R"
-      - "kappa"
-
-    weights_policy: "nonnegative_sum_to_one"
-
+    - "\u03C9"
+    - F
+    - S
+    - C
+    - "\u03C4_R"
+    - "\u03BA"
+    - IC
+    - omega
+    - tau_R
+    - kappa
+    weights_policy: nonnegative_sum_to_one
     frozen_parameters:
       p: 3
       alpha: 1.0
       lambda: 0.2
-      eta: 1.0e-3
-
+      eta: 0.001
     tolerances:
       tol_seam: 0.005
-      tol_id: 1.0e-9
-
+      tol_id: 1.0e-09
   typed_censoring:
     tau_R_special_values:
-      - "INF_REC"
-      - "UNIDENTIFIABLE"
-
+    - INF_REC
+    - UNIDENTIFIABLE
     run_status_enum:
-      - "CONFORMANT"
-      - "NONCONFORMANT"
-      - "NON_EVALUABLE"
-
+    - CONFORMANT
+    - NONCONFORMANT
+    - NON_EVALUABLE
     no_return_no_credit: true
+  notes: 'UMA.INTSTACK.v1.0.1 is a documentation/packaging revision of UMA.INTSTACK.v1
+    that preserves the same kernel meanings and frozen parameters. This file exists
+    to support downstream tooling that requires an explicit patch-level contract id/version
+    string. No numeric semantics are changed relative to UMA.INTSTACK.v1; governance
+    impact is limited to identity labeling. Use a seam receipt if continuity is asserted
+    across this labeling change in a publication context.
 
-  notes: >
-    UMA.INTSTACK.v1.0.1 is a documentation/packaging revision of UMA.INTSTACK.v1 that
-    preserves the same kernel meanings and frozen parameters. This file exists to support
-    downstream tooling that requires an explicit patch-level contract id/version string.
-    No numeric semantics are changed relative to UMA.INTSTACK.v1; governance impact is
-    limited to identity labeling. Use a seam receipt if continuity is asserted across
-    this labeling change in a publication context.
-
+    '
   extensions:
-    parent_contract_id: "UMA.INTSTACK.v1"
-    change_class: "patch"
+    parent_contract_id: UMA.INTSTACK.v1
+    change_class: patch
     change_notes:
-      - "No semantic changes; patch-level id/version for packaging/tooling compatibility."
+    - No semantic changes; patch-level id/version for packaging/tooling compatibility.

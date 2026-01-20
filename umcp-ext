@@ -1,0 +1,219 @@
+#!/usr/bin/env python3
+"""
+UMCP Extension Manager CLI
+
+Command-line interface for managing UMCP extensions.
+
+Usage:
+    umcp-ext list                      # List all extensions
+    umcp-ext info <name>               # Show extension details
+    umcp-ext install <name>            # Install extension dependencies
+    umcp-ext run <name>                # Run an extension
+    umcp-ext check <name>              # Check if extension is installed
+    
+Examples:
+    umcp-ext list
+    umcp-ext info visualization
+    umcp-ext install api
+    umcp-ext run visualization
+"""
+
+import argparse
+import sys
+from pathlib import Path
+
+# Add current directory to path to import umcp_extensions
+sys.path.insert(0, str(Path(__file__).parent))
+
+import umcp_extensions as ext
+
+
+def cmd_list(args):
+    """List all extensions"""
+    extensions = ext.list_extensions(args.type)
+    
+    print("\n" + "="*80)
+    print(" " * 28 + "UMCP EXTENSIONS")
+    print("="*80)
+    
+    if not extensions:
+        print("\nNo extensions found.")
+        return 0
+    
+    for e in extensions:
+        installed = ext.check_extension(e.get("name", ""))
+        status = "✅ INSTALLED" if installed else "❌ NOT INSTALLED"
+        
+        print(f"\n📦 {e['name']}")
+        print(f"   Status:      {status}")
+        print(f"   Type:        {e.get('type', 'unknown')}")
+        print(f"   Description: {e.get('description', 'N/A')}")
+        if e.get('command'):
+            print(f"   Command:     {e['command']}")
+        if e.get('requires'):
+            print(f"   Requires:    {', '.join(e['requires'])}")
+    
+    print("\n" + "="*80)
+    print(f"Total: {len(extensions)} extensions\n")
+    
+    return 0
+
+
+def cmd_info(args):
+    """Show detailed extension information"""
+    info = ext.get_extension_info(args.name)
+    
+    if not info:
+        print(f"❌ Extension '{args.name}' not found")
+        return 1
+    
+    installed = ext.check_extension(args.name)
+    
+    print("\n" + "="*80)
+    print(f"Extension: {info['name']}")
+    print("="*80)
+    print(f"\nStatus:      {'✅ INSTALLED' if installed else '❌ NOT INSTALLED'}")
+    print(f"Type:        {info.get('type', 'unknown')}")
+    print(f"Description: {info.get('description', 'N/A')}")
+    print(f"Module:      {info.get('module', 'N/A')}")
+    print(f"Class:       {info.get('class', 'N/A')}")
+    
+    if info.get('command'):
+        print(f"Command:     {info['command']}")
+    
+    if info.get('requires'):
+        print(f"\nDependencies:")
+        for dep in info['requires']:
+            print(f"  • {dep}")
+    
+    if info.get('port'):
+        print(f"\nPort:        {info['port']}")
+    
+    if info.get('endpoints'):
+        print(f"\nAPI Endpoints:")
+        for ep in info['endpoints']:
+            print(f"  • {ep['method']} {ep['path']} - {ep['description']}")
+    
+    if info.get('features'):
+        print(f"\nFeatures:")
+        for feature in info['features']:
+            print(f"  • {feature}")
+    
+    print("\n" + "="*80 + "\n")
+    
+    return 0
+
+
+def cmd_install(args):
+    """Install extension dependencies"""
+    print(f"Installing dependencies for '{args.name}'...")
+    
+    if ext.install_extension(args.name):
+        print(f"✅ Successfully installed '{args.name}'")
+        return 0
+    else:
+        print(f"❌ Failed to install '{args.name}'")
+        return 1
+
+
+def cmd_check(args):
+    """Check if extension is installed"""
+    installed = ext.check_extension(args.name)
+    
+    if installed:
+        print(f"✅ Extension '{args.name}' is installed")
+        return 0
+    else:
+        print(f"❌ Extension '{args.name}' is not installed")
+        print(f"\nTo install: umcp-ext install {args.name}")
+        return 1
+
+
+def cmd_run(args):
+    """Run an extension"""
+    # Check if installed
+    if not ext.check_extension(args.name):
+        print(f"❌ Extension '{args.name}' is not installed")
+        print(f"\nTo install: umcp-ext install {args.name}")
+        return 1
+    
+    # Load extension
+    extension = ext.load_extension(args.name)
+    if not extension:
+        print(f"❌ Failed to load extension '{args.name}'")
+        return 1
+    
+    # Run extension
+    print(f"🚀 Running '{args.name}'...")
+    try:
+        extension.run()
+        return 0
+    except Exception as e:
+        print(f"❌ Error running extension: {e}")
+        return 1
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="UMCP Extension Manager",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  umcp-ext list                    # List all extensions
+  umcp-ext list --type dashboard   # List dashboard extensions only
+  umcp-ext info visualization      # Show details for visualization
+  umcp-ext install api             # Install API dependencies
+  umcp-ext run visualization       # Run visualization dashboard
+  umcp-ext check api               # Check if API is installed
+
+Extension Types:
+  dashboard  - Interactive visualization and monitoring
+  api        - REST API and web services
+  logging    - Data collection and audit trails
+  tool       - Command-line utilities
+  closure    - Custom computational closures
+  validator  - Custom validation logic
+"""
+    )
+    
+    subparsers = parser.add_subparsers(dest="command", help="Command to run")
+    
+    # list command
+    list_parser = subparsers.add_parser("list", help="List all extensions")
+    list_parser.add_argument(
+        "--type", "-t",
+        help="Filter by extension type"
+    )
+    list_parser.set_defaults(func=cmd_list)
+    
+    # info command
+    info_parser = subparsers.add_parser("info", help="Show extension details")
+    info_parser.add_argument("name", help="Extension name")
+    info_parser.set_defaults(func=cmd_info)
+    
+    # install command
+    install_parser = subparsers.add_parser("install", help="Install extension dependencies")
+    install_parser.add_argument("name", help="Extension name")
+    install_parser.set_defaults(func=cmd_install)
+    
+    # check command
+    check_parser = subparsers.add_parser("check", help="Check if extension is installed")
+    check_parser.add_argument("name", help="Extension name")
+    check_parser.set_defaults(func=cmd_check)
+    
+    # run command
+    run_parser = subparsers.add_parser("run", help="Run an extension")
+    run_parser.add_argument("name", help="Extension name")
+    run_parser.set_defaults(func=cmd_run)
+    
+    args = parser.parse_args()
+    
+    if not args.command:
+        parser.print_help()
+        return 0
+    
+    return args.func(args)
+
+
+if __name__ == "__main__":
+    sys.exit(main())

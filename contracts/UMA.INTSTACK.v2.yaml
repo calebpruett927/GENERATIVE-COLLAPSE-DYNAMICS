@@ -1,48 +1,47 @@
-schema: "schemas/contract.schema.json"
-
+schema: schemas/contract.schema.json
 contract:
-  id: "UMA.INTSTACK.v2"
-  version: "2.0.0"
-  timezone: "America/Chicago"
-
+  id: UMA.INTSTACK.v2
+  version: 2.0.0
+  timezone: America/Chicago
   embedding:
-    interval: [0.0, 1.0]
-    face: "pre_clip"
-    oor_policy: "clip_and_flag"
-    epsilon: 1.0e-8
-
+    interval:
+    - 0.0
+    - 1.0
+    face: pre_clip
+    oor_policy: clip_and_flag
+    epsilon: 1.0e-08
   tier_1_kernel:
     reserved_symbols:
-      - "ω"
-      - "F"
-      - "S"
-      - "C"
-      - "τ_R"
-      - "κ"
-      - "IC"
-      - "omega"
-      - "tau_R"
-      - "kappa"
-
-    weights_policy: "nonnegative_sum_to_one"
-
+    - "\u03C9"
+    - F
+    - S
+    - C
+    - "\u03C4_R"
+    - "\u03BA"
+    - IC
+    - omega
+    - tau_R
+    - kappa
+    weights_policy: nonnegative_sum_to_one
     frozen_parameters:
       p: 3
       alpha: 1.0
       lambda: 0.2
-      eta: 1.0e-3
-
+      eta: 0.001
     tolerances:
       tol_seam: 0.005
-      tol_id: 1.0e-9
-
+      tol_id: 1.0e-09
   typed_censoring:
-    tau_R_special_values: ["INF_REC", "UNIDENTIFIABLE"]
-    run_status_enum: ["CONFORMANT", "NONCONFORMANT", "NON_EVALUABLE"]
+    tau_R_special_values:
+    - INF_REC
+    - UNIDENTIFIABLE
+    run_status_enum:
+    - CONFORMANT
+    - NONCONFORMANT
+    - NON_EVALUABLE
     no_return_no_credit: true
+  notes: 'UMA.INTSTACK.v2 is a schema-conformant successor contract file. It preserves
+    the default UMCP boundary and typing surface while versioning the contract identifier.
 
-  notes: >
-    UMA.INTSTACK.v2 is a schema-conformant successor contract file. It preserves the default
-    UMCP boundary and typing surface while versioning the contract identifier.
-
+    '
   extensions: {}
