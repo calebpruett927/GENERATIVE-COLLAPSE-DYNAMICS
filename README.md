@@ -1,10 +1,13 @@
 [![CI](../../actions/workflows/validate.yml/badge.svg)](../../actions/workflows/validate.yml)
 [![Production Ready](https://img.shields.io/badge/production-ready-brightgreen)](docs/production_deployment.md)
+[![Version](https://img.shields.io/badge/version-1.3.2--immutable-blue)](IMMUTABLE_RELEASE.md)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![Tests](https://img.shields.io/badge/tests-233%20passing-success)](tests/)
 [![Validation](https://img.shields.io/badge/validation-0%20errors%20%7C%200%20warnings-brightgreen)](.)
+[![Integrity](https://img.shields.io/badge/integrity-165%20files%20SHA256-green)](integrity/sha256.txt)
 [![Performance](https://img.shields.io/badge/performance-20--25%25%20faster%20with%20cache-orange)](.)
 [![Smart Cache](https://img.shields.io/badge/cache-intelligent%20%7C%20persistent-blue)](.umcp_cache/)
+[![Extensions](https://img.shields.io/badge/extensions-4%20registered-purple)](EXTENSION_INTEGRATION.md)
 
 ---
 
@@ -52,9 +55,12 @@
      Skipping:   4/4 casepacks (unchanged)
      Learning:   Progressive acceleration
      
-  🔧 CLI:         umcp validate
-  🌐 Dashboard:   Port 8501 (Interactive)
-  🔌 API:         Port 8000 (REST)
+  🔧 CLI Commands:
+     umcp validate           # Run validation
+     umcp-visualize         # Launch dashboard (port 8501)
+     umcp-api               # Start REST API (port 8000)
+     umcp-ext list          # List extensions
+     umcp-format --all      # Format contracts
   
   📦 Ledger:      ledger/return_log.csv (continuous append)
   🧪 CasePacks:   hello_world | gcd_complete | rcft_complete
@@ -179,8 +185,77 @@ umcp health
 # ✓ All systems operational
 
 pytest
-# 221 tests passed in ~7s
+# 233 tests passed
+
+# List available extensions
+./umcp-ext list
+# ✓ 4 extensions registered
 ```
+
+---
+
+## 🔌 Extension System
+
+UMCP features an **auto-discovery extension system** with 4 built-in plugins:
+
+### 1. Visualization Dashboard
+
+Interactive Streamlit dashboard for real-time monitoring:
+
+```bash
+# Launch dashboard
+umcp-visualize
+# Or: streamlit run visualize_umcp.py
+
+# Opens on http://localhost:8501
+```
+
+**Features**: Phase space plots, time series analysis, regime tracking, export capabilities
+
+### 2. Public Audit API
+
+REST API for programmatic access:
+
+```bash
+# Start API server
+umcp-api
+# Or: uvicorn api_umcp:app --reload
+
+# Available at http://localhost:8000
+```
+
+**Endpoints**:
+- `GET /health` - Health check
+- `GET /latest-receipt` - Latest validation receipt
+- `GET /ledger` - Historical validation log
+- `GET /stats` - Aggregate statistics
+- `GET /regime` - Current regime classification
+
+### 3. Continuous Ledger
+
+Automatic logging of all validation runs:
+
+```bash
+# Ledger updates automatically on validation
+umcp validate
+
+# View history
+cat ledger/return_log.csv
+```
+
+### 4. Contract Auto-Formatter
+
+Validate and format all contracts:
+
+```bash
+# Format all contracts
+umcp-format --all
+
+# Validate specific contract
+umcp-format --validate contracts/GCD.INTSTACK.v1.yaml
+```
+
+**See [EXTENSION_INTEGRATION.md](EXTENSION_INTEGRATION.md) for complete documentation.**
 
 ---
 
@@ -897,11 +972,15 @@ MIT License - see [LICENSE](LICENSE) for details.
 ## 🙏 Acknowledgments
 
 **Framework**: UMCP (Universal Measurement Contract Protocol)  
+**Core Axiom**: "What Returns Through Collapse Is Real"  
 **Tier-1**: GCD (Generative Collapse Dynamics)  
 **Tier-2**: RCFT (Recursive Collapse Field Theory)  
 **Author**: Clement Paulus  
-**Version**: 1.1.0  
-**Tests**: 221 passing (100% success)
+**Version**: 1.3.2-immutable  
+**Release**: January 20, 2026  
+**Tests**: 233 passing (100% success)  
+**Integrity**: 165 files SHA256 checksummed  
+**Extensions**: 4 auto-discovered plugins
 
 ---
 
@@ -910,7 +989,26 @@ MIT License - see [LICENSE](LICENSE) for details.
 - **Issues**: [GitHub Issues](https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/issues)
 - **Documentation**: [docs/](docs/)
 - **Examples**: [casepacks/](casepacks/)
+- **Immutable Release**: [IMMUTABLE_RELEASE.md](IMMUTABLE_RELEASE.md)
+- **Core Axiom**: [AXIOM.md](AXIOM.md)
+- **Extensions**: [EXTENSION_INTEGRATION.md](EXTENSION_INTEGRATION.md)
 
 ---
 
-**Built with ❤️ for reproducible science**
+## 🔒 Immutable Release v1.3.2
+
+This is the **immutable snapshot** of UMCP with:
+- ✅ Core axiom encoded in all contracts (`no_return_no_credit: true`)
+- ✅ 165 files cryptographically verified (SHA256)
+- ✅ Extension system with auto-discovery
+- ✅ Complete documentation (2,000+ lines)
+- ✅ Zero uncommitted changes
+- ✅ Git tagged: `v1.3.2-immutable`
+
+**Verify integrity**: `sha256sum -c integrity/sha256.txt`  
+**Read full details**: [IMMUTABLE_RELEASE.md](IMMUTABLE_RELEASE.md)
+
+---
+
+**Built with ❤️ for reproducible science**  
+*"What Returns Through Collapse Is Real"*
