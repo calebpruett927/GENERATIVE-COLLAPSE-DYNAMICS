@@ -244,6 +244,9 @@ _tmp/
 Thumbs.db
 desktop.ini
 
+# Duplicate directory issue (recursive clones)
+UMCP-Metadata-Runnable-Code/
+
 # Editor / IDE (uncomment if you want them ignored repo-wide)
 .vscode/
 .idea/
