@@ -1,4 +1,6 @@
-f65b891389b1ff94927da0eb7c35e387bc251abe
-v0.1.1-2-gf65b891
-branch: main
-date: 2026-01-18 08:24:37 +0000
+v1.3.1-1-g92a414d
+commit: 92a414d6a9ff9a9bc00e32a286ebee8c1b097532
+author: Clement Paulus <calebpruett003@gmail.com>
+date: 2026-01-20 04:32:53 +0000
+branch: HEAD -> main
+message: feat: Complete UMCP extension system integration with core axiom
