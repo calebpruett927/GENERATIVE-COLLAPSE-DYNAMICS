@@ -42,6 +42,9 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - release-build
+    
+    permissions:
+      id-token: write  # Required for trusted publishing to PyPI
 
     steps:
       - name: Retrieve release distributions
@@ -52,6 +55,3 @@ jobs:
 
       - name: Publish release distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          password: ${{ secrets.PYPI_API_TOKEN }}
-          packages-dir: dist/
