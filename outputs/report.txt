@@ -1,7 +1,7 @@
 UMCP Validation Report
 ======================
 
-Generated: 2026-01-18T00:00:00Z
+Generated: 2026-01-20T00:00:00Z
 Validator: umcp-validator v0.1.0
 Contract: UMA.INTSTACK.v1 (v1.0.0)
 Closure Registry: UMCP.CLOSURES.DEFAULT.v1
@@ -33,28 +33,28 @@ TRACE VALIDATION
 TIER-1 INVARIANTS
 -----------------
 ✓ F ≈ 1 - ω (tolerance: 1e-9)
-  - Computed: F=1.000000, 1-ω=1.000000
+  - Computed: F=0.99999999, 1-ω=0.99999999
   - |F - (1-ω)| = 0.000000 < 1e-9
 
 ✓ IC ≈ exp(κ) (tolerance: 1e-9)
-  - Computed: IC=0.000000, exp(κ)=0.000000
+  - Computed: IC=0.99999999, exp(κ)=0.99999999
   - |IC - exp(κ)| = 0.000000 < 1e-9
 
 REGIME CLASSIFICATION
 ---------------------
 ✓ Regime label: Stable
-  - ω = 0.000000 (zero drift, optimal)
-  - F = 1.000000 (perfect fidelity)
-  - S = 0.000000 (zero entropy, deterministic)
-  - C = 0.000000 (zero curvature, uniform)
-  - Classification: Stable regime (optimal conditions)
+  - ω = 0.00000001 (near-zero drift)
+  - F = 0.99999999 (near-perfect fidelity)
+  - S = 0.00000019 (near-zero entropy)
+  - C = 0.00000000 (zero curvature, uniform)
+  - Classification: Stable regime (near-optimal conditions)
 
 CONTINUITY (WELDS)
 ------------------
 ✓ Weld W-2026-01-18-CONTINUITY verified
-  - Seam distance: 0.002828 < 0.005 (tol_seam)
+  - Seam distance: 0.000000 < 0.005 (tol_seam)
   - Pre/post continuity maintained
-  - Smooth transition between epochs
+  - Single-epoch trace (no seam)
 
 CLOSURE VERIFICATION
 --------------------
