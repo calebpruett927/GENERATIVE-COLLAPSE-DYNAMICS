@@ -11,11 +11,10 @@ Validates:
 - Tolerance specifications
 """
 
+from pathlib import Path
+
 import pytest
 import yaml
-import os
-import json
-from pathlib import Path
 
 
 @pytest.fixture

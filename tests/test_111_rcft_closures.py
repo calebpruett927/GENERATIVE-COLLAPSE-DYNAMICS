@@ -14,17 +14,16 @@ Validates Tier-2 behavior:
 - Do not modify Tier-1 symbols
 """
 
-import pytest
-import numpy as np
 import sys
 from pathlib import Path
+
+import numpy as np
+import pytest
 
 # Import RCFT closures
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from closures.rcft import fractal_dimension
-from closures.rcft import recursive_field
-from closures.rcft import resonance_pattern
+from closures.rcft import fractal_dimension, recursive_field, resonance_pattern
 
 
 class TestFractalDimension:

@@ -24,9 +24,8 @@ Regime thresholds:
     - Explosive: Φ_gen ≥ 1.0
 """
 
-import sys
-from typing import Dict
 import math
+from typing import Dict
 
 
 def compute_generative_flux(
@@ -135,7 +134,7 @@ def main():
         print(f"{tc['name']}")
         print(f"  Inputs: κ={tc['kappa']:.2f}, IC={tc['IC']:.6f}, C={tc['C']:.2f}")
         print(f"  Φ_gen = {result['phi_gen']:.6f}")
-        print(f"  Components:")
+        print("  Components:")
         print(f"    - Collapse depth |κ|: {result['kappa_component']:.2f}")
         print(f"    - IC amplification: {result['IC_amplification']:.6f}")
         print(f"    - Curvature modulation: {result['curvature_modulation']:.6f}")

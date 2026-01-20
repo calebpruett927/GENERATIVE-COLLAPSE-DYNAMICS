@@ -4,7 +4,6 @@ Tests for production-grade logging and monitoring features.
 from __future__ import annotations
 
 import json
-from pathlib import Path
 
 import pytest
 

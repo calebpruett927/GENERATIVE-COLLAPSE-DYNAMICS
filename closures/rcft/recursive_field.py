@@ -24,8 +24,9 @@ Tier-2 Constraints:
     - Augments GCD with field memory quantification
 """
 
+from typing import Any, Dict
+
 import numpy as np
-from typing import Dict, List, Any
 
 
 def compute_field_strength_single(S: float, C: float, F: float) -> float:

@@ -23,8 +23,7 @@ Regime thresholds:
     - Critical: Φ_collapse ≥ 0.1
 """
 
-import sys
-from typing import Dict, Tuple
+from typing import Dict
 
 
 def compute_entropic_collapse(
@@ -135,7 +134,7 @@ def main():
         print(f"{tc['name']}")
         print(f"  Inputs: S={tc['S']:.3f}, F={tc['F']:.3f}, τ_R={tc['tau_R']:.1f}")
         print(f"  Φ_collapse = {result['phi_collapse']:.6f}")
-        print(f"  Components:")
+        print("  Components:")
         print(f"    - Entropy contribution: {result['S_contribution']:.3f}")
         print(f"    - Anti-fidelity (1-F): {result['F_contribution']:.3f}")
         print(f"    - Temporal damping: {result['tau_damping']:.6f}")

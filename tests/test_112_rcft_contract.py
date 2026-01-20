@@ -13,10 +13,11 @@ Validates:
 - Tolerances
 """
 
-import yaml
-import pytest
-import jsonschema
 from pathlib import Path
+
+import jsonschema
+import pytest
+import yaml
 
 
 @pytest.fixture

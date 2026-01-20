@@ -25,9 +25,8 @@ Resonance regime thresholds:
     - Coherent: R ≥ 0.7
 """
 
-import sys
-from typing import Dict
 import math
+from typing import Dict
 
 
 def compute_field_resonance(
@@ -136,7 +135,7 @@ def main():
         print(f"{tc['name']}")
         print(f"  Inputs: ω={tc['omega']:.3f}, S={tc['S']:.3f}, C={tc['C']:.2f}")
         print(f"  R = {result['resonance']:.6f}")
-        print(f"  Components:")
+        print("  Components:")
         print(f"    - Coherence (1-|ω|): {result['coherence_factor']:.3f}")
         print(f"    - Order (1-S): {result['order_factor']:.3f}")
         print(f"    - Curvature damping: {result['curvature_damping']:.6f}")

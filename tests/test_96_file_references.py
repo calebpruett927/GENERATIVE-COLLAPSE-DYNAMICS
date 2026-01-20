@@ -5,8 +5,6 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
-
 from umcp import UMCPFiles, get_umcp_files
 
 
@@ -162,8 +160,9 @@ class TestUMCPFileReferences:
         # SHA256 checksums
         sha256 = umcp.load_sha256()
         assert len(sha256) > 0
-        # Check for any of the expected files in checksums
-        assert 'trace.csv' in sha256 or 'invariants.csv' in sha256
+        # Check for any of the expected source files in checksums
+        # The sha256.txt contains source files (.py, .yaml, .md, etc.) not data files
+        assert any(x in sha256 for x in ['pyproject.toml', '.yaml', '.py', '.md'])
         
         # Environment info
         env = umcp.load_env()

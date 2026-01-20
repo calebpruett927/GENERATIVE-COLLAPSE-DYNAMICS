@@ -4,6 +4,7 @@ Test root file validation and interconnectedness.
 from __future__ import annotations
 
 import pytest
+
 from src.umcp import (
     ClosureLoader,
     RootFileValidator,

@@ -293,9 +293,9 @@ def main():
     print("\n📈 UMCP Value-Add")
     print("-" * 80)
     print(f"Speed overhead: {overhead_mean:+.1f}% (cost of comprehensive validation)")
-    print(f"Additional checks: Contract conformance, closure verification, semantic rules")
-    print(f"Provenance tracking: Full audit trail with git commit, timestamps, SHA256")
-    print(f"Reproducibility: Byte-for-byte validation reruns guaranteed")
+    print("Additional checks: Contract conformance, closure verification, semantic rules")
+    print("Provenance tracking: Full audit trail with git commit, timestamps, SHA256")
+    print("Reproducibility: Byte-for-byte validation reruns guaranteed")
     
     print("\n✅ Conclusion")
     print("-" * 80)

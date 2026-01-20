@@ -8,8 +8,7 @@ Formula: E = ω² + α·S + β·C²
 where α and β are configurable damping factors.
 """
 
-import math
-from typing import Dict, Any, Optional
+from typing import Any, Dict
 
 
 def compute_energy_potential(

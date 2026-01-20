@@ -1,10 +1,11 @@
 """
 Generate PNG visualizations for UMCP system architecture and benchmarks.
 """
-import matplotlib.pyplot as plt
-from matplotlib.patches import FancyBboxPatch
-import numpy as np
 import textwrap
+
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.patches import FancyBboxPatch
 
 # Global style (professional, print-friendly)
 plt.style.use('seaborn-v0_8-whitegrid')

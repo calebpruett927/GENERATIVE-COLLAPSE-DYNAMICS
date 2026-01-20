@@ -948,7 +948,7 @@ def _validate_casepack_strict(target: TargetResult, repo_root: Path, case_dir: P
         target.add_issue(Issue(
             severity=severity,
             code="W105",
-            message=f"Strict: closures/closure_registry.yaml missing",
+            message="Strict: closures/closure_registry.yaml missing",
             path=_relpath(repo_root, case_dir),
             hint="Create closure_registry.yaml declaring weld budget terms",
             rule="strict_closures"
@@ -965,7 +965,7 @@ def _validate_casepack_strict(target: TargetResult, repo_root: Path, case_dir: P
                 target.add_issue(Issue(
                     severity=severity,
                     code="W106",
-                    message=f"Strict: ss1m.json missing manifest root_sha256",
+                    message="Strict: ss1m.json missing manifest root_sha256",
                     path=_relpath(repo_root, ss1m_path),
                     hint="Run generate_manifest.py to update receipt with manifest hash",
                     rule="strict_manifest_integrity"
@@ -976,7 +976,7 @@ def _validate_casepack_strict(target: TargetResult, repo_root: Path, case_dir: P
                 target.add_issue(Issue(
                     severity=severity,
                     code="W107",
-                    message=f"Strict: ss1m.json missing environment metadata",
+                    message="Strict: ss1m.json missing environment metadata",
                     path=_relpath(repo_root, ss1m_path),
                     hint="Add environment metadata (python_version, platform, hostname) to receipt",
                     rule="strict_environment_metadata"
@@ -1002,7 +1002,7 @@ def _validate_casepack_strict(target: TargetResult, repo_root: Path, case_dir: P
                     target.add_issue(Issue(
                         severity=severity,
                         code="W108",
-                        message=f"Strict: README makes continuity claim but seam_receipt.json missing",
+                        message="Strict: README makes continuity claim but seam_receipt.json missing",
                         path=_relpath(repo_root, readme_path),
                         hint="Either remove continuity claims or add seam_receipt.json with PASS status",
                         rule="strict_continuity_claim"

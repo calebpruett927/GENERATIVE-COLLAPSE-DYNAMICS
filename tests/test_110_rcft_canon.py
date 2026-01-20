@@ -13,9 +13,10 @@ Validates:
 - Typed censoring enums
 """
 
-import yaml
-import pytest
 from pathlib import Path
+
+import pytest
+import yaml
 
 
 @pytest.fixture

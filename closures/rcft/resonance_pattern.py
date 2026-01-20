@@ -22,8 +22,9 @@ Tier-2 Constraints:
     - Respects all GCD mathematical identities and tolerances
 """
 
+from typing import Any, Dict
+
 import numpy as np
-from typing import Dict, Any, Optional
 
 
 def compute_resonance_pattern(

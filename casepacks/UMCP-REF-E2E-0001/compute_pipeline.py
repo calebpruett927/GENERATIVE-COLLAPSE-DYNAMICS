@@ -19,14 +19,14 @@ Follows UMCP requirements:
 """
 
 import csv
+import hashlib
 import json
 import math
 import os
 import sys
-import hashlib
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import List, Dict, Tuple, Any
+from typing import Any, Dict, List, Tuple
 
 # Paths
 CASEPACK = Path(__file__).resolve().parent

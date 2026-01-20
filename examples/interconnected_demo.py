@@ -11,9 +11,6 @@ Demonstrates the full interconnected UMCP system:
 from __future__ import annotations
 
 from umcp import (
-    ClosureLoader,
-    RootFileValidator,
-    UMCPFiles,
     get_closure_loader,
     get_root_validator,
     get_umcp_files,
@@ -185,7 +182,7 @@ def main():
     regime = inv["regime_label"]
     
     print(f"  ✓ Current regime: {regime}")
-    print(f"    Thresholds satisfied:")
+    print("    Thresholds satisfied:")
     print(f"      ω < 0.038: {omega_val < 0.038} (ω={omega_val:.6f})")
     print(f"      F > 0.90:  {F_val > 0.90} (F={F_val:.6f})")
     print(f"      S < 0.15:  {S_val < 0.15} (S={S_val:.6f})")
@@ -200,7 +197,7 @@ def main():
     print("INTERCONNECTED SYSTEM SUMMARY")
     print("=" * 70)
     print()
-    print(f"✓ Root files loaded: 16/16")
+    print("✓ Root files loaded: 16/16")
     
     # Get validation result
     validator_result = validator.validate_all()

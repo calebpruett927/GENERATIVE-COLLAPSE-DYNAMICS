@@ -24,17 +24,17 @@ Features:
 
 import csv
 import json
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
 import streamlit as st
 
 try:
-    import pandas as pd
     import numpy as np
-    import plotly.graph_objects as go
+    import pandas as pd
     import plotly.express as px
+    import plotly.graph_objects as go
     from plotly.subplots import make_subplots
 except ImportError:
     st.error("Please install required packages: pip install streamlit pandas plotly numpy")
@@ -200,7 +200,7 @@ def load_regimes(repo_root: Path) -> Optional[Dict[str, Any]]:
             reader = csv.DictReader(f)
             rows = list(reader)
             return rows[0] if rows else None
-    except Exception as e:
+    except Exception:
         return None
 
 

@@ -10,10 +10,11 @@ Validates:
 - Multi-tier regime classifications coexist
 """
 
-import yaml
-import pytest
 import json
 from pathlib import Path
+
+import pytest
+import yaml
 
 
 @pytest.fixture
