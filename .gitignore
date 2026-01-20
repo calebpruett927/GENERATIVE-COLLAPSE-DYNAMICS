@@ -222,6 +222,9 @@ validation-result.json
 validation.report.json
 validation.report.*.json
 old-receipt.json
+validator.result.*.json
+validator.result.baseline.json
+validator.result.strict.json
 
 # Local run artifacts (if you add a runtime that emits these)
 receipts/_local/
