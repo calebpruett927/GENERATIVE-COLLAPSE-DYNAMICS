@@ -1,5 +1,9 @@
 # RCFT Canon Anchor (UMCP.RCFT.v1)
 # Recursive Collapse Field Theory - Tier-2 Overlay
+#
+# Complete term definitions: ../GLOSSARY.md#tier-2-rcft-overlay-extensions
+# Symbol lookup: ../SYMBOL_INDEX.md#tier-2-rcft-extension-symbols
+# Term index: ../TERM_INDEX.md#r
 
 schema: canon.anchors.schema.json
 id: UMCP.RCFT.v1

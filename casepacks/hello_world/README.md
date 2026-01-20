@@ -2,6 +2,9 @@
 
 **Minimal test case for UMCP validation**
 
+**Protocol Resources:**  
+[Glossary](../../GLOSSARY.md) | [Symbol Index](../../SYMBOL_INDEX.md) | [Term Index](../../TERM_INDEX.md)
+
 ## Overview
 
 This is the simplest possible CasePack demonstrating UMCP validation. It contains a single timepoint with near-maximum coherence values, designed to validate the structural framework without complex dynamics.

@@ -1,5 +1,9 @@
 # UMCP Production Deployment Guide
 
+**Protocol Infrastructure:**  
+[GLOSSARY.md](../GLOSSARY.md) | [SYMBOL_INDEX.md](../SYMBOL_INDEX.md) | [TERM_INDEX.md](../TERM_INDEX.md)  
+**Key Terms:** [Freeze](../GLOSSARY.md#freeze) | [Manifest](../GLOSSARY.md#manifest-manifestyaml) | [Conformance](../GLOSSARY.md#nonconformance)
+
 This guide provides best practices for deploying UMCP validator in production environments.
 
 ## Table of Contents

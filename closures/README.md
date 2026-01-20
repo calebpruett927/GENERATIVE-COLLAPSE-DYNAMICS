@@ -1,5 +1,7 @@
 UMCP Closures
 
+**See also:** [GLOSSARY.md](../GLOSSARY.md#closure) | [SYMBOL_INDEX.md](../SYMBOL_INDEX.md#tier-15-seam-and-weld-symbols) | [TERM_INDEX.md](../TERM_INDEX.md#c)
+
 This folder contains the explicit closure set required to make UMCP runs executable and auditable.
 
 Closures are where you freeze the “missing pieces” that cannot be derived from Tier-1 identities alone:

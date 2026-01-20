@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://umcp.dev/schemas/glossary.schema.json",
+  "title": "UMCP Glossary Entry Schema",
+  "description": "Schema for structured glossary entries in the UMCP protocol. Ensures every term has required fields for self-service lookup and protocol compliance.",
+  "type": "object",
+  "properties": {
+    "term": {
+      "type": "string",
+      "description": "Canonical spelling of the term (single authoritative name)"
+    },
+    "tier_tag": {
+      "type": "string",
+      "enum": ["Tier-0", "Tier-1", "Tier-1.5", "Tier-2", "Meta", "Procedure", "Boundary"],
+      "description": "Hierarchical tier classification"
+    },
+    "definition": {
+      "type": "string",
+      "description": "Operational, non-narrative definition (one paragraph)"
+    },
+    "not_confused_with": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Common collisions and misreads (required field)",
+      "minItems": 1
+    },
+    "inputs_outputs": {
+      "type": "object",
+      "properties": {
+        "consumes": {
+          "type": "string",
+          "description": "What this procedural item takes as input"
+        },
+        "produces": {
+          "type": "string",
+          "description": "What this procedural item outputs"
+        }
+      },
+      "description": "Required if the entry is procedural"
+    },
+    "where_defined": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Textual pointers to canonical definition locations (files)",
+      "minItems": 1
+    },
+    "where_used": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Primary chapters/files/examples using this term",
+      "minItems": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": ["Canonical", "Optional", "Deprecated"],
+      "description": "Protocol status of this term"
+    },
+    "synonyms_aliases": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Alternative names that redirect to this canonical term"
+    },
+    "symbol": {
+      "type": "object",
+      "properties": {
+        "unicode": {
+          "type": "string",
+          "description": "Unicode/LaTeX representation (e.g., ω, Ψ)"
+        },
+        "ascii": {
+          "type": "string",
+          "description": "ASCII file encoding (e.g., omega, Psi)"
+        },
+        "domain": {
+          "type": "string",
+          "description": "Mathematical domain (e.g., [0,1], ℕ∪{∞_rec})"
+        },
+        "formula": {
+          "type": "string",
+          "description": "Mathematical formula or definition"
+        }
+      },
+      "description": "Symbol-specific metadata if entry is a mathematical symbol"
+    },
+    "migration_note": {
+      "type": "string",
+      "description": "Required for deprecated terms: explains what to use instead"
+    },
+    "examples": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Links to worked examples or use cases"
+    }
+  },
+  "required": [
+    "term",
+    "tier_tag",
+    "definition",
+    "not_confused_with",
+    "where_defined",
+    "where_used",
+    "status"
+  ],
+  "if": {
+    "properties": {
+      "status": {
+        "const": "Deprecated"
+      }
+    }
+  },
+  "then": {
+    "required": ["migration_note"]
+  },
+  "additionalProperties": false
+}

@@ -1,5 +1,7 @@
 # The Core Axiom of UMCP
 
+**Protocol Infrastructure:** [Glossary](GLOSSARY.md) | [Symbol Index](SYMBOL_INDEX.md) | [Term Index](TERM_INDEX.md)
+
 ## The Single Foundational Principle
 
 **AXIOM-0 (The Return Axiom)**:  

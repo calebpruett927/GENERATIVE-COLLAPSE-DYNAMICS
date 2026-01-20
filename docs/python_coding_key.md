@@ -1,5 +1,8 @@
 # UMCP Python Coding Key (Beam)
 
+**Protocol Infrastructure:**  
+[GLOSSARY.md](../GLOSSARY.md) | [SYMBOL_INDEX.md](../SYMBOL_INDEX.md#file-format-encodings) | [TERM_INDEX.md](../TERM_INDEX.md)
+
 This document is the authoritative coding and style key for all Python files in this repository.
 Goal: consistent imports, consistent typing, stable CLI behavior, predictable test execution, and
 audit-friendly error surfaces.

@@ -87,10 +87,26 @@ All metrics are **verifiable from source code** - no marketing hype.
 ```
 
 **Quick Access:**
+- 📚 **[Glossary](GLOSSARY.md)** — Authoritative term definitions (protocol infrastructure)
+- 🔤 **[Symbol Index](SYMBOL_INDEX.md)** — Fast Unicode/ASCII symbol lookup
+- 📇 **[Term Index](TERM_INDEX.md)** — Alphabetical term cross-reference
 - 🎨 **[Visualization Dashboard](https://scaling-train-97wgvp77rw993xjwr-8501.app.github.dev/)** — Phase space, time series, regime monitoring
 - 🔌 **API Endpoints** — `/health`, `/latest-receipt`, `/ledger`, `/stats`, `/regime`
 - 📖 **[Extensions Guide](QUICKSTART_EXTENSIONS.md)** — Dashboard & API usage
 - 🧪 **[Theory Docs](docs/rcft_theory.md)** — Mathematical foundations
+
+---
+
+## 📚 **Protocol Infrastructure**
+
+UMCP includes comprehensive glossary and indexing systems for self-service term lookup:
+
+- **[Protocol Reference Guide](PROTOCOL_REFERENCE.md)** — Master navigation and quick lookup
+- **[Glossary](GLOSSARY.md)** — Structured definitions for all protocol terms (Tier-0 through Tier-2)
+- **[Symbol Index](SYMBOL_INDEX.md)** — Fast Unicode/ASCII symbol lookup with collision prevention
+- **[Term Index](TERM_INDEX.md)** — Alphabetical term cross-reference with file locations
+
+**Why this matters:** Prevents ambiguous definitions, symbol capture, and "reader imports" that silently redefine protocol meanings. Every term has one authoritative meaning, enabling reproducibility and dispute resolution without private clarification.
 
 ---
 

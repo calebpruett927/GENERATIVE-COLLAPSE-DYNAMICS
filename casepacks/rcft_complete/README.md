@@ -2,6 +2,9 @@
 
 **Complete test case for RCFT (Recursive Collapse Field Theory) Tier-2 framework**
 
+**Protocol Resources:**  
+[Glossary](../../GLOSSARY.md#tier-2-rcft-overlay-extensions) | [Symbol Index](../../SYMBOL_INDEX.md#tier-2-rcft-extension-symbols) | [Term Index](../../TERM_INDEX.md#r)
+
 ## Overview
 
 This CasePack demonstrates the complete RCFT Tier-2 framework validation, including all GCD Tier-1 closures plus 3 RCFT Tier-2 closures. It validates the full tier hierarchy and augmentation model.

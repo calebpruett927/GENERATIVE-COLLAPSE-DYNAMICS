@@ -1,5 +1,7 @@
 # `contracts/` — frozen UMCP contract boundaries
 
+**Protocol Resources:** [GLOSSARY.md](../GLOSSARY.md) | [SYMBOL_INDEX.md](../SYMBOL_INDEX.md) | [TERM_INDEX.md](../TERM_INDEX.md#c)
+
 This directory contains UMCP **contracts**: normative, versioned boundaries that freeze meanings and typed semantics required for auditable computation.
 
 A contract is not “configuration.” A contract is the execution boundary that makes outputs interpretable and comparable.

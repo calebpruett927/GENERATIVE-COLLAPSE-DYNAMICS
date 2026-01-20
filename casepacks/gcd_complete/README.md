@@ -2,6 +2,9 @@
 
 **Complete test case for GCD (Generalized Collapse Dynamics) framework**
 
+**Protocol Resources:**  
+[Glossary](../../GLOSSARY.md#tier-1-reserved-symbols-gcd-framework) | [Symbol Index](../../SYMBOL_INDEX.md#tier-1-gcd-reserved-symbols) | [Term Index](../../TERM_INDEX.md#g)
+
 ## Overview
 
 This CasePack demonstrates the complete GCD Tier-1 framework validation. It exercises the full pipeline with all 4 GCD closures and validates the complete contract specification.

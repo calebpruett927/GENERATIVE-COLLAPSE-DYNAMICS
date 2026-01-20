@@ -1,5 +1,7 @@
 # Recursive Collapse Field Theory (RCFT) - Tier-2 Overlay
 
+**Quick Reference:** [GLOSSARY.md](../GLOSSARY.md#tier-2-rcft-overlay-extensions) | [SYMBOL_INDEX.md](../SYMBOL_INDEX.md#tier-2-rcft-extension-symbols) | [canon/rcft_anchors.yaml](../canon/rcft_anchors.yaml)
+
 ## Overview
 
 RCFT is a Tier-2 overlay that extends the Generative Collapse Dynamics (GCD) framework with geometric and topological analysis capabilities. It operates under the principle of **augmentation without override**: all GCD Tier-1 invariants remain frozen and unchanged, while RCFT adds three new dimensions of analysis.

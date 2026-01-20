@@ -1,5 +1,9 @@
 # GCD Canon Anchor (UMCP.GCD.v1)
 # Generative Collapse Dynamics - Tier-1 Framework
+#
+# Complete term definitions: ../GLOSSARY.md#tier-1-reserved-symbols-gcd-framework
+# Symbol lookup: ../SYMBOL_INDEX.md#tier-1-gcd-reserved-symbols
+# Term index: ../TERM_INDEX.md#g
 
 schema: canon.anchors.schema.json
 id: UMCP.GCD.v1

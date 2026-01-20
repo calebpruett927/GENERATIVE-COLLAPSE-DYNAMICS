@@ -1,5 +1,7 @@
 # UMCP Interconnected System Architecture
 
+**Term Definitions:** [GLOSSARY.md](../GLOSSARY.md) | [SYMBOL_INDEX.md](../SYMBOL_INDEX.md) | [TERM_INDEX.md](../TERM_INDEX.md)
+
 ## Overview
 
 The UMCP (Universal Measurement Contract Protocol) system is designed with full interconnectedness between components. This document describes how the various parts of the system reference and depend on each other.
