@@ -1,0 +1,10 @@
+t,x1_voltage,x2_temperature,x3_pressure,units,notes
+0,8.5,9.2,9.8,V|K|Pa,"Initial stable readings"
+1,9.1,9.5,9.6,V|K|Pa,"Stable operation continues"
+2,9.3,9.7,9.4,V|K|Pa,"Minor fluctuation in pressure"
+3,12.5,9.8,9.2,V|K|Pa,"Voltage spike - OUT OF RANGE event (x1 > 10)"
+4,8.9,9.6,9.5,V|K|Pa,"Recovered to nominal after OOR event"
+5,8.5,9.2,9.8,V|K|Pa,"EXACT RETURN to t=0 state - finite τ_R detected"
+6,9.0,9.4,9.7,V|K|Pa,"Normal operation continues"
+7,8.8,9.3,9.8,V|K|Pa,"Stable region"
+8,9.2,9.5,9.6,V|K|Pa,"Final stable state"

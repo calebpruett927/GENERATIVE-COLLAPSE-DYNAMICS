@@ -1,0 +1,76 @@
+{
+  "schema": "schemas/receipt.ss1m.schema.json",
+  "receipt": {
+    "kind": "ss1m",
+    "version": 1,
+    "case_id": "UMCP-REF-E2E-0001",
+    "timezone": "America/Chicago",
+    "emitted_at": "2026-01-20T00:53:16.231976+00:00",
+    "address": "Clement Paulus",
+    "canon": {
+      "pre_doi": "10.5281/zenodo.17756705",
+      "post_doi": "10.5281/zenodo.18072852",
+      "weld_id": "W-2025-12-31-PHYS-COHERENCE"
+    },
+    "contract": {
+      "id": "UMA.INTSTACK.v1",
+      "version": "1.0.0",
+      "path": "contracts/contract.yaml",
+      "frozen_parameters": {
+        "a": 0.0,
+        "b": 10.0,
+        "face": "pre_clip",
+        "epsilon": 1e-08,
+        "p": 3,
+        "alpha": 1.0,
+        "lambda": 0.2,
+        "eta": 0.001,
+        "tol_seam": 0.005,
+        "tol_id": 1e-09,
+        "oor_policy": "clip_and_flag"
+      }
+    },
+    "environment": {
+      "python_version": "3.12.1",
+      "platform": "Linux",
+      "hostname": "codespaces-55d312"
+    },
+    "manifest": {
+      "id": "UMCP-REF-E2E-0001.manifest",
+      "root_sha256": "8695cc84b81970b651db2e16af4eca10499e4f8e0d1e0affbc1b23200cb5ca66"
+    },
+    "kernel_summary": {
+      "total_rows": 9,
+      "final_row": {
+        "t": 8,
+        "omega": 0.056666666666666754,
+        "F": 0.9433333333333332,
+        "S": 0.21507625428287777,
+        "C": 0.03399346342395193,
+        "tau_R": "INF_REC",
+        "kappa": -0.05849896594895229,
+        "IC": 0.9431792156946185
+      },
+      "ic_consistency": {
+        "final_abs_error": 0.0,
+        "tolerance": 1e-09,
+        "check_passed": true
+      }
+    },
+    "regime_summary": {
+      "distribution": {
+        "Watch": 8,
+        "Stable": 1
+      },
+      "final_regime": "Watch"
+    },
+    "typed_boundaries": {
+      "oor_count": 1,
+      "inf_rec_count": 8,
+      "finite_return_count": 1,
+      "note": "\u03c4_R = INF_REC \u2192 R\u00b7\u03c4_R = 0 (no credit rule)"
+    },
+    "status": "CONFORMANT",
+    "notes": "Complete end-to-end pipeline execution. All Tier-1 invariants computed after contract freeze."
+  }
+}

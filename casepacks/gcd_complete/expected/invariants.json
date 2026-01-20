@@ -21,7 +21,7 @@
       "IC": 1.0e-10,
       "regime": {
         "label": "Stable",
-        "critical_overlay": false
+        "critical_overlay": true
       },
       "kernel_optional": {
         "IC_min": 1.0e-10

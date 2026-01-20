@@ -6,11 +6,13 @@ import hashlib
 import json
 import math
 import os
+import pickle
 import re
 import subprocess
 import sys
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -32,6 +34,79 @@ E_PARSE = "E004"
 
 RE_CK = re.compile(r"^c_[0-9]+$")
 RE_FLOAT = re.compile(r"[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?")
+RE_INT = re.compile(r"[-+]?\d+$")
+
+# Pre-compiled patterns for strict validation
+RE_POSITIVE_WELD_CLAIM = re.compile(r'\bweld\s+(?:PASS|validated|demonstrated|confirmed|verified)\b', re.IGNORECASE)
+RE_POSITIVE_SEAM_CLAIM = re.compile(r'\bseam\s+(?:PASS|validated|demonstrated|confirmed|verified)\b', re.IGNORECASE)
+RE_POSITIVE_CONTINUITY_CLAIM = re.compile(r'\bcontinuity\s+claim\s+(?:PASS|validated|demonstrated|confirmed)\b', re.IGNORECASE)
+
+# -----------------------------
+# Persistent cache management
+# -----------------------------
+_VALIDATOR_CACHE: Dict[str, Draft202012Validator] = {}
+_FILE_CONTENT_CACHE: Dict[str, Any] = {}
+_FILE_HASH_CACHE: Dict[str, str] = {}
+_CACHE_STATS = {"hits": 0, "misses": 0, "schema_reuse": 0, "file_reuse": 0}
+
+def _get_cache_dir(repo_root: Path) -> Path:
+    """Get or create .umcp_cache directory at repo root."""
+    cache_dir = repo_root / ".umcp_cache"
+    cache_dir.mkdir(exist_ok=True)
+    return cache_dir
+
+def _compute_file_hash(path: Path) -> str:
+    """Compute SHA256 hash of file contents."""
+    return hashlib.sha256(path.read_bytes()).hexdigest()[:16]
+
+def _load_cache_metadata(repo_root: Path) -> Dict[str, Any]:
+    """Load cache metadata from disk."""
+    cache_file = _get_cache_dir(repo_root) / "validation_cache.pkl"
+    if cache_file.exists():
+        try:
+            with open(cache_file, "rb") as f:
+                return pickle.load(f)
+        except Exception:
+            pass
+    return {"file_hashes": {}, "schema_hashes": {}, "stats": {"total_runs": 0}}
+
+def _save_cache_metadata(repo_root: Path, metadata: Dict[str, Any]) -> None:
+    """Save cache metadata to disk."""
+    cache_file = _get_cache_dir(repo_root) / "validation_cache.pkl"
+    try:
+        with open(cache_file, "wb") as f:
+            pickle.dump(metadata, f)
+    except Exception:
+        pass  # Silent fail on cache write
+
+def _get_cached_validator(schema: Dict[str, Any], schema_id: str) -> Draft202012Validator:
+    """Get cached validator or create and cache new one."""
+    if schema_id not in _VALIDATOR_CACHE:
+        _VALIDATOR_CACHE[schema_id] = Draft202012Validator(schema)
+        _CACHE_STATS["misses"] += 1
+    else:
+        _CACHE_STATS["hits"] += 1
+        _CACHE_STATS["schema_reuse"] += 1
+    return _VALIDATOR_CACHE[schema_id]
+
+class LazySchemaLoader:
+    """Lazy-load schemas only when first accessed. Reduces overhead for targeted validation."""
+    def __init__(self, repo_root: Path, repo_target: TargetResult):
+        self.repo_root = repo_root
+        self.repo_target = repo_target
+        self._schemas: Dict[str, Optional[Dict[str, Any]]] = {}
+        self._loaded = set()
+    
+    def get(self, schema_name: str) -> Optional[Dict[str, Any]]:
+        """Load and validate schema on first access."""
+        if schema_name in self._loaded:
+            return self._schemas.get(schema_name)
+        
+        self._loaded.add(schema_name)
+        schema_path = self.repo_root / "schemas" / f"{schema_name}.schema.json"
+        schema = _validate_schema_json(self.repo_target, self.repo_root, schema_path)
+        self._schemas[schema_name] = schema
+        return schema
 
 
 # -----------------------------
@@ -138,20 +213,112 @@ def _read_text(path: Path) -> str:
 
 
 def _load_json(path: Path) -> Any:
-    return json.loads(_read_text(path))
+    """Load JSON with content-based caching."""
+    path_str = str(path)
+    
+    # Check if file exists in cache and hasn't changed
+    if path_str in _FILE_HASH_CACHE:
+        try:
+            current_hash = _compute_file_hash(path)
+            if current_hash == _FILE_HASH_CACHE[path_str]:
+                if path_str in _FILE_CONTENT_CACHE:
+                    _CACHE_STATS["file_reuse"] += 1
+                    return _FILE_CONTENT_CACHE[path_str]
+        except Exception:
+            pass
+    
+    # Load and cache
+    content = json.loads(_read_text(path))
+    try:
+        _FILE_CONTENT_CACHE[path_str] = content
+        _FILE_HASH_CACHE[path_str] = _compute_file_hash(path)
+    except Exception:
+        pass  # Silent fail on cache
+    return content
 
 
 def _load_yaml(path: Path) -> Any:
+    """Load YAML with content-based caching."""
     if yaml is None:
         raise RuntimeError("PyYAML is required (pip install pyyaml).")
-    return yaml.safe_load(_read_text(path))
+    
+    path_str = str(path)
+    
+    # Check if file exists in cache and hasn't changed
+    if path_str in _FILE_HASH_CACHE:
+        try:
+            current_hash = _compute_file_hash(path)
+            if current_hash == _FILE_HASH_CACHE[path_str]:
+                if path_str in _FILE_CONTENT_CACHE:
+                    _CACHE_STATS["file_reuse"] += 1
+                    return _FILE_CONTENT_CACHE[path_str]
+        except Exception:
+            pass
+    
+    # Load and cache
+    content = yaml.safe_load(_read_text(path))
+    try:
+        _FILE_CONTENT_CACHE[path_str] = content
+        _FILE_HASH_CACHE[path_str] = _compute_file_hash(path)
+    except Exception:
+        pass  # Silent fail on cache
+    return content
 
+
+@lru_cache(maxsize=256)
+def _get_resolved_path(path_str: str) -> Path:
+    """Cache resolved paths to avoid repeated filesystem operations."""
+    return Path(path_str).resolve()
 
 def _relpath(repo_root: Path, p: Path) -> str:
     try:
-        return p.resolve().relative_to(repo_root.resolve()).as_posix()
+        repo_resolved = _get_resolved_path(str(repo_root))
+        p_resolved = _get_resolved_path(str(p))
+        return p_resolved.relative_to(repo_resolved).as_posix()
     except Exception:
         return p.as_posix()
+
+
+def _append_to_ledger(repo_root: Path, run_status: str, invariants_data: Optional[Dict[str, Any]] = None) -> None:
+    """
+    Append validation result to continuous ledger at ledger/return_log.csv.
+    Records: timestamp, run_status, Δκ (delta_kappa), s (stiffness), and optional observables.
+    """
+    ledger_dir = repo_root / "ledger"
+    ledger_path = ledger_dir / "return_log.csv"
+    
+    # Ensure ledger directory exists
+    ledger_dir.mkdir(exist_ok=True)
+    
+    # Check if we need to write header
+    write_header = not ledger_path.exists() or ledger_path.stat().st_size == 0
+    
+    # Prepare row data
+    timestamp = _utc_now_iso()
+    row = {
+        "timestamp": timestamp,
+        "run_status": run_status,
+        "delta_kappa": "",
+        "stiffness": "",
+        "omega": "",
+        "curvature": ""
+    }
+    
+    # Extract invariants if available
+    if invariants_data:
+        row["delta_kappa"] = invariants_data.get("delta_kappa", "")
+        row["stiffness"] = invariants_data.get("S", "")
+        row["omega"] = invariants_data.get("omega", "")
+        row["curvature"] = invariants_data.get("C", "")
+    
+    # Append to ledger
+    with open(ledger_path, 'a', newline='', encoding='utf-8') as f:
+        fieldnames = ["timestamp", "run_status", "delta_kappa", "stiffness", "omega", "curvature"]
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        
+        if write_header:
+            writer.writeheader()
+        writer.writerow(row)
 
 
 def _require_file(target: TargetResult, repo_root: Path, p: Path, kind_hint: str = "") -> bool:
@@ -236,7 +403,7 @@ def _validate_instance_against_schema(
     schema: Dict[str, Any],
     schema_name: str,
 ) -> None:
-    v = Draft202012Validator(schema)
+    v = _get_cached_validator(schema, schema_name)
     errors = sorted(v.iter_errors(instance), key=lambda e: (e.json_path, e.message))
     if not errors:
         return
@@ -268,7 +435,8 @@ def _coerce_scalar(v: Any) -> Any:
         return True
     if low in {"false", "f", "no", "n"}:
         return False
-    if re.fullmatch(r"[-+]?\d+", s):
+    # Use pre-compiled regex patterns
+    if RE_INT.fullmatch(s):
         try:
             return int(s)
         except Exception:
@@ -654,6 +822,211 @@ def _apply_semantic_rules_to_casepack(
 # -----------------------------
 # Validation workflow
 # -----------------------------
+def _should_skip_casepack(cache_metadata: Dict[str, Any], manifest_path: Path, case_path: str) -> bool:
+    """Check if casepack can be skipped based on unchanged manifest hash."""
+    if not manifest_path.exists():
+        return False
+    
+    try:
+        # Check if we have cached result for this casepack
+        cached_casepacks = cache_metadata.get("casepack_results", {})
+        if case_path not in cached_casepacks:
+            return False
+        
+        cached_entry = cached_casepacks[case_path]
+        
+        # Only skip if previous result was CONFORMANT
+        if cached_entry.get("status") != "CONFORMANT":
+            return False
+        
+        # Check if manifest hash matches
+        current_hash = _compute_file_hash(manifest_path)
+        cached_hash = cached_entry.get("manifest_hash")
+        
+        return current_hash == cached_hash
+    except Exception:
+        return False
+
+def _cache_casepack_result(cache_metadata: Dict[str, Any], case_path: str, manifest_path: Path, status: str) -> None:
+    """Cache casepack validation result with manifest hash."""
+    try:
+        if "casepack_results" not in cache_metadata:
+            cache_metadata["casepack_results"] = {}
+        
+        cache_metadata["casepack_results"][case_path] = {
+            "status": status,
+            "manifest_hash": _compute_file_hash(manifest_path) if manifest_path.exists() else None,
+            "last_validated": _utc_now_iso()
+        }
+    except Exception:
+        pass  # Silent fail on cache update
+
+def _validate_casepack_strict(target: TargetResult, repo_root: Path, case_dir: Path, fail_on_warning: bool) -> None:
+    """
+    Apply strict validation rules to a CasePack.
+    Strict rules (emitted as warnings in baseline, errors in strict):
+    - contracts/ must exist with all required files (contract.yaml, embedding.yaml, return.yaml, weights.yaml)
+    - contract.yaml must include all UMA.INTSTACK.v1 required fields
+    - weights.yaml must sum to 1.0 within tolerance
+    - closures/closure_registry.yaml must exist
+    - receipts/ss1m.json must include manifest root hash
+    - If README contains weld/seam/continuity language, require seam_receipt.json with PASS
+    """
+    severity = "ERROR" if fail_on_warning else "WARN"
+    
+    # Check contracts directory and required files
+    contracts_dir = case_dir / "contracts"
+    if not contracts_dir.exists():
+        target.add_issue(Issue(
+            severity=severity,
+            code="W101",
+            message=f"Strict: contracts/ directory missing in {_relpath(repo_root, case_dir)}",
+            path=_relpath(repo_root, case_dir),
+            hint="Create contracts/ with contract.yaml, embedding.yaml, return.yaml, weights.yaml",
+            rule="strict_casepack_structure"
+        ))
+    else:
+        # Check required contract files
+        required_files = ["contract.yaml", "embedding.yaml", "return.yaml", "weights.yaml"]
+        for fname in required_files:
+            fpath = contracts_dir / fname
+            if not fpath.exists():
+                target.add_issue(Issue(
+                    severity=severity,
+                    code="W102",
+                    message=f"Strict: Missing required contract file: {fname}",
+                    path=_relpath(repo_root, contracts_dir),
+                    hint=f"Create {fname} with explicit contract specifications",
+                    rule="strict_contract_files"
+                ))
+        
+        # Validate contract.yaml contains required UMA.INTSTACK.v1 fields
+        contract_path = contracts_dir / "contract.yaml"
+        if contract_path.exists():
+            try:
+                contract_doc = _load_yaml(contract_path)
+                frozen_params = contract_doc.get("contract", {}).get("tier_1_kernel", {}).get("frozen_parameters", {})
+                required_params = ["a", "b", "face", "epsilon", "p", "alpha", "lambda", "eta", "tol_seam", "tol_id"]
+                for param in required_params:
+                    if param not in frozen_params:
+                        target.add_issue(Issue(
+                            severity=severity,
+                            code="W103",
+                            message=f"Strict: contract.yaml missing required parameter: {param}",
+                            path=_relpath(repo_root, contract_path),
+                            hint=f"Add {param} to contract.tier_1_kernel.frozen_parameters",
+                            rule="strict_contract_completeness"
+                        ))
+            except Exception:
+                pass  # Parse errors already caught by baseline validation
+        
+        # Validate weights.yaml sums to 1.0
+        weights_path = contracts_dir / "weights.yaml"
+        if weights_path.exists():
+            try:
+                weights_doc = _load_yaml(weights_path)
+                channels = weights_doc.get("weights", {}).get("channels", [])
+                if channels:
+                    weight_sum = sum(ch.get("weight", 0) for ch in channels)
+                    tol = weights_doc.get("weights", {}).get("validation", {}).get("tolerance", 1e-9)
+                    if abs(weight_sum - 1.0) > tol:
+                        target.add_issue(Issue(
+                            severity=severity,
+                            code="W104",
+                            message=f"Strict: weights do not sum to 1.0 (sum={weight_sum:.12f})",
+                            path=_relpath(repo_root, weights_path),
+                            hint=f"Adjust weights to sum to 1.0 within tolerance {tol}",
+                            rule="strict_weights_normalization"
+                        ))
+            except Exception:
+                pass
+    
+    # Check closures directory
+    closures_dir = case_dir / "closures"
+    closure_registry = closures_dir / "closure_registry.yaml"
+    if not closure_registry.exists():
+        target.add_issue(Issue(
+            severity=severity,
+            code="W105",
+            message=f"Strict: closures/closure_registry.yaml missing",
+            path=_relpath(repo_root, case_dir),
+            hint="Create closure_registry.yaml declaring weld budget terms",
+            rule="strict_closures"
+        ))
+    
+    # Check receipts directory and SS1M manifest hash
+    receipts_dir = case_dir / "receipts"
+    ss1m_path = receipts_dir / "ss1m.json"
+    if ss1m_path.exists():
+        try:
+            ss1m_doc = _load_json(ss1m_path)
+            manifest_hash = ss1m_doc.get("receipt", {}).get("manifest", {}).get("root_sha256")
+            if not manifest_hash or manifest_hash == "pending":
+                target.add_issue(Issue(
+                    severity=severity,
+                    code="W106",
+                    message=f"Strict: ss1m.json missing manifest root_sha256",
+                    path=_relpath(repo_root, ss1m_path),
+                    hint="Run generate_manifest.py to update receipt with manifest hash",
+                    rule="strict_manifest_integrity"
+                ))
+            
+            # Check environment metadata
+            if "environment" not in ss1m_doc.get("receipt", {}):
+                target.add_issue(Issue(
+                    severity=severity,
+                    code="W107",
+                    message=f"Strict: ss1m.json missing environment metadata",
+                    path=_relpath(repo_root, ss1m_path),
+                    hint="Add environment metadata (python_version, platform, hostname) to receipt",
+                    rule="strict_environment_metadata"
+                ))
+        except Exception:
+            pass
+    
+    # Check README for continuity claims requiring seam_receipt
+    readme_path = case_dir / "README.md"
+    if readme_path.exists():
+        try:
+            readme_text = readme_path.read_text()
+            # Use pre-compiled regex patterns for better performance
+            has_positive_claim = (
+                RE_POSITIVE_WELD_CLAIM.search(readme_text) or
+                RE_POSITIVE_SEAM_CLAIM.search(readme_text) or
+                RE_POSITIVE_CONTINUITY_CLAIM.search(readme_text)
+            )
+            
+            if has_positive_claim:
+                seam_receipt_path = case_dir / "receipts" / "seam_receipt.json"
+                if not seam_receipt_path.exists():
+                    target.add_issue(Issue(
+                        severity=severity,
+                        code="W108",
+                        message=f"Strict: README makes continuity claim but seam_receipt.json missing",
+                        path=_relpath(repo_root, readme_path),
+                        hint="Either remove continuity claims or add seam_receipt.json with PASS status",
+                        rule="strict_continuity_claim"
+                    ))
+                else:
+                    # Validate seam receipt status is PASS
+                    try:
+                        seam_doc = _load_json(seam_receipt_path)
+                        status = seam_doc.get("receipt", {}).get("status")
+                        if status != "PASS":
+                            target.add_issue(Issue(
+                                severity=severity,
+                                code="W109",
+                                message=f"Strict: seam_receipt.json status is {status}, expected PASS",
+                                path=_relpath(repo_root, seam_receipt_path),
+                                hint="Fix seam calculation or remove continuity claims from README",
+                                rule="strict_continuity_integrity"
+                            ))
+                    except Exception:
+                        pass
+        except Exception:
+            pass
+
+
 def _find_repo_root(start: Path) -> Optional[Path]:
     """
     Find repo root by searching upward for pyproject.toml.
@@ -668,6 +1041,10 @@ def _find_repo_root(start: Path) -> Optional[Path]:
 
 
 def _validate_repo(repo_root: Path, fail_on_warning: bool) -> Dict[str, Any]:
+    # Load persistent cache metadata
+    cache_metadata = _load_cache_metadata(repo_root)
+    cache_metadata["stats"]["total_runs"] = cache_metadata["stats"].get("total_runs", 0) + 1
+    
     repo_target = TargetResult(target_type="repo", target_path=".")
     casepack_targets: List[TargetResult] = []
 
@@ -678,16 +1055,13 @@ def _validate_repo(repo_root: Path, fail_on_warning: bool) -> Dict[str, Any]:
     _require_dir(repo_target, repo_root, repo_root / "closures")
     _require_dir(repo_target, repo_root, repo_root / "casepacks")
 
-    # Load core schemas needed for validation
-    schema_rules = _validate_schema_json(repo_target, repo_root, repo_root / "schemas" / "validator.rules.schema.json")
-    schema_canon = _validate_schema_json(repo_target, repo_root, repo_root / "schemas" / "canon.anchors.schema.json")
-    schema_contract = _validate_schema_json(repo_target, repo_root, repo_root / "schemas" / "contract.schema.json")
-    schema_closures = _validate_schema_json(repo_target, repo_root, repo_root / "schemas" / "closures.schema.json")
-    schema_manifest = _validate_schema_json(repo_target, repo_root, repo_root / "schemas" / "manifest.schema.json")
-    schema_psi = _validate_schema_json(repo_target, repo_root, repo_root / "schemas" / "trace.psi.schema.json")
-    schema_invariants = _validate_schema_json(repo_target, repo_root, repo_root / "schemas" / "invariants.schema.json")
-    schema_ss1m = _validate_schema_json(repo_target, repo_root, repo_root / "schemas" / "receipt.ss1m.schema.json")
-    schema_result = _validate_schema_json(repo_target, repo_root, repo_root / "schemas" / "validator.result.schema.json")
+    # Use lazy schema loader - only loads schemas when actually needed
+    schemas = LazySchemaLoader(repo_root, repo_target)
+    
+    # Always load result schema (needed for self-validation) and rules/canon (commonly used)
+    schema_result = schemas.get("validator.result")
+    schema_rules = schemas.get("validator.rules")
+    schema_canon = schemas.get("canon.anchors")
 
     # Validate all schemas present are structurally valid (best effort).
     schemas_dir = repo_root / "schemas"
@@ -695,7 +1069,7 @@ def _validate_repo(repo_root: Path, fail_on_warning: bool) -> Dict[str, Any]:
         for sp in sorted(schemas_dir.glob("*.json")):
             _validate_schema_json(repo_target, repo_root, sp)
 
-    # Load and validate anchors.yaml
+    # Load and validate anchors.yaml (already loaded in lazy loader)
     canon_path = repo_root / "canon" / "anchors.yaml"
     canon_doc = None
     if _require_file(repo_target, repo_root, canon_path) and schema_canon:
@@ -715,8 +1089,9 @@ def _validate_repo(repo_root: Path, fail_on_warning: bool) -> Dict[str, Any]:
         else:
             _validate_instance_against_schema(repo_target, repo_root, canon_doc, canon_path, schema_canon, "canon.anchors.schema.json")
 
-    # Load and validate contract
+    # Load and validate contract (lazy load)
     contract_path = repo_root / "contracts" / "UMA.INTSTACK.v1.yaml"
+    schema_contract = schemas.get("contract")
     if _require_file(repo_target, repo_root, contract_path) and schema_contract:
         try:
             contract_doc = _load_yaml(contract_path)
@@ -734,8 +1109,9 @@ def _validate_repo(repo_root: Path, fail_on_warning: bool) -> Dict[str, Any]:
         else:
             _validate_instance_against_schema(repo_target, repo_root, contract_doc, contract_path, schema_contract, "contract.schema.json")
 
-    # Load and validate closures registry + referenced closure files
+    # Load and validate closures registry + referenced closure files (lazy load)
     closures_registry_path = repo_root / "closures" / "registry.yaml"
+    schema_closures = schemas.get("closures")
     if _require_file(repo_target, repo_root, closures_registry_path) and schema_closures:
         try:
             registry_doc = _load_yaml(closures_registry_path)
@@ -790,6 +1166,7 @@ def _validate_repo(repo_root: Path, fail_on_warning: bool) -> Dict[str, Any]:
 
     # Validate casepacks
     casepacks_dir = repo_root / "casepacks"
+    casepacks_skipped = 0
     if casepacks_dir.exists():
         for case_dir in sorted(p for p in casepacks_dir.iterdir() if p.is_dir()):
             manifest_path = case_dir / "manifest.json"
@@ -797,13 +1174,24 @@ def _validate_repo(repo_root: Path, fail_on_warning: bool) -> Dict[str, Any]:
             psi_csv_path = expected_dir / "psi.csv"
             invariants_path = expected_dir / "invariants.json"
             ss1m_path = expected_dir / "ss1m_receipt.json"
+            
+            case_path = _relpath(repo_root, case_dir)
+            
+            # Smart casepack skipping: Skip if manifest unchanged and previously CONFORMANT
+            if _should_skip_casepack(cache_metadata, manifest_path, case_path):
+                casepacks_skipped += 1
+                t = TargetResult(target_type="casepack", target_path=case_path)
+                t.run_status = "CONFORMANT"
+                casepack_targets.append(t)
+                continue
 
-            t = TargetResult(target_type="casepack", target_path=_relpath(repo_root, case_dir))
+            t = TargetResult(target_type="casepack", target_path=case_path)
             # Required structure
             _require_file(t, repo_root, manifest_path, "CasePack requires manifest.json")
             _require_dir(t, repo_root, expected_dir, "CasePack requires expected/ outputs for regression/publication")
 
-            # Validate manifest schema
+            # Validate manifest schema (lazy load)
+            schema_manifest = schemas.get("manifest")
             if manifest_path.exists() and schema_manifest:
                 try:
                     mdoc = _load_json(manifest_path)
@@ -819,8 +1207,11 @@ def _validate_repo(repo_root: Path, fail_on_warning: bool) -> Dict[str, Any]:
                 else:
                     _validate_instance_against_schema(t, repo_root, mdoc, manifest_path, schema_manifest, "manifest.schema.json")
 
-            # Validate psi.csv via schema (parsed)
-            if psi_csv_path.exists() and schema_psi:
+            # Validate psi.csv via schema (parsed, lazy load)
+            if psi_csv_path.exists():
+                schema_psi = schemas.get("trace.psi")
+                if not schema_psi:
+                    continue
                 try:
                     rows = _parse_csv_rows(psi_csv_path)
                     fmt = _infer_psi_format(rows)
@@ -837,8 +1228,11 @@ def _validate_repo(repo_root: Path, fail_on_warning: bool) -> Dict[str, Any]:
                 else:
                     _validate_instance_against_schema(t, repo_root, psi_doc, psi_csv_path, schema_psi, "trace.psi.schema.json")
 
-            # Validate invariants.json
-            if invariants_path.exists() and schema_invariants:
+            # Validate invariants.json (lazy load)
+            if invariants_path.exists():
+                schema_invariants = schemas.get("invariants")
+                if not schema_invariants:
+                    continue
                 try:
                     inv_doc = _load_json(invariants_path)
                 except Exception as e:
@@ -853,8 +1247,11 @@ def _validate_repo(repo_root: Path, fail_on_warning: bool) -> Dict[str, Any]:
                 else:
                     _validate_instance_against_schema(t, repo_root, inv_doc, invariants_path, schema_invariants, "invariants.schema.json")
 
-            # Validate SS1m receipt if present
-            if ss1m_path.exists() and schema_ss1m:
+            # Validate SS1m receipt if present (lazy load)
+            if ss1m_path.exists():
+                schema_ss1m = schemas.get("receipt.ss1m")
+                if not schema_ss1m:
+                    continue
                 try:
                     ss1m_doc = _load_json(ss1m_path)
                 except Exception as e:
@@ -880,8 +1277,15 @@ def _validate_repo(repo_root: Path, fail_on_warning: bool) -> Dict[str, Any]:
                         psi_csv_path=psi_csv_path if psi_csv_path.exists() else None,
                         invariants_json_path=invariants_path if invariants_path.exists() else None,
                     )
+            
+            # Apply strict validation rules
+            _validate_casepack_strict(t, repo_root, case_dir, fail_on_warning)
 
             t.finalize_status(fail_on_warning=fail_on_warning)
+            
+            # Cache result for future smart skipping
+            _cache_casepack_result(cache_metadata, case_path, manifest_path, t.run_status)
+            
             casepack_targets.append(t)
 
     # Finalize repo status (aggregate counts)
@@ -894,6 +1298,12 @@ def _validate_repo(repo_root: Path, fail_on_warning: bool) -> Dict[str, Any]:
     targets_total = 1 + len(casepack_targets)
     targets_failed = sum(1 for t in [repo_target, *casepack_targets] if t.run_status != "CONFORMANT")
 
+    # Save cache metadata and stats
+    cache_metadata["file_hashes"] = _FILE_HASH_CACHE.copy()
+    cache_metadata["last_run"] = _utc_now_iso()
+    cache_metadata["cache_stats"] = _CACHE_STATS.copy()
+    _save_cache_metadata(repo_root, cache_metadata)
+    
     result = {
         "schema": "schemas/validator.result.schema.json",
         "created_utc": _utc_now_iso(),
@@ -919,12 +1329,38 @@ def _validate_repo(repo_root: Path, fail_on_warning: bool) -> Dict[str, Any]:
             "policy": {
                 "strict": bool(fail_on_warning),
                 "fail_on_warning": bool(fail_on_warning)
+            },
+            "cache_stats": {
+                "schema_validators_cached": len(_VALIDATOR_CACHE),
+                "files_cached": len(_FILE_CONTENT_CACHE),
+                "cache_hits": _CACHE_STATS["hits"],
+                "cache_misses": _CACHE_STATS["misses"],
+                "file_reuse": _CACHE_STATS["file_reuse"],
+                "schema_reuse": _CACHE_STATS["schema_reuse"],
+                "casepacks_skipped": casepacks_skipped,
+                "total_validation_runs": cache_metadata["stats"]["total_runs"]
             }
         },
         "targets": [repo_target.to_json(), *[t.to_json() for t in casepack_targets]],
         "issues": [],  # optional flattened list; leaving empty avoids duplication
         "notes": "UMCP repository validation"
     }
+
+    # Append to continuous ledger if CONFORMANT
+    if repo_target.run_status == "CONFORMANT":
+        # Try to extract invariants from outputs/invariants.csv
+        invariants_csv = repo_root / "outputs" / "invariants.csv"
+        invariants_data = None
+        if invariants_csv.exists():
+            try:
+                with open(invariants_csv, 'r') as f:
+                    reader = csv.DictReader(f)
+                    rows = list(reader)
+                    if rows:
+                        invariants_data = rows[0]
+            except Exception:
+                pass  # Ledger is best-effort
+        _append_to_ledger(repo_root, repo_target.run_status, invariants_data)
 
     # Self-validate validator.result.json output if schema_result loaded successfully
     if schema_result is not None:

@@ -31,7 +31,7 @@ jobs:
           python -m pytest -v --tb=short
 
   umcp-validate:
-    name: UMCP validate (strict mode)
+    name: UMCP validate (baseline + strict)
     runs-on: ubuntu-latest
     needs: test
 
@@ -49,24 +49,41 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e .
 
-      - name: Validate (strict) + write report
+      - name: Validate (baseline) + write report
         run: |
-          umcp validate . --out validator.result.json
+          umcp validate . --out validator.result.baseline.json
 
-      - name: Check validation status
+      - name: Check baseline validation status
         run: |
-          STATUS=$(python -c "import json; print(json.load(open('validator.result.json'))['run_status'])")
-          echo "Validation status: $STATUS"
+          STATUS=$(python -c "import json; print(json.load(open('validator.result.baseline.json'))['run_status'])")
+          echo "Baseline validation status: $STATUS"
           if [ "$STATUS" != "CONFORMANT" ]; then
-            echo "❌ Validation failed with status: $STATUS"
-            cat validator.result.json
+            echo "❌ Baseline validation failed with status: $STATUS"
+            cat validator.result.baseline.json
             exit 1
           fi
-          echo "✅ Validation CONFORMANT"
+          echo "✅ Baseline validation CONFORMANT"
 
-      - name: Upload validator report
+      - name: Validate E2E case (strict mode)
+        run: |
+          umcp validate --strict casepacks/UMCP-REF-E2E-0001 --out validator.result.strict.json
+
+      - name: Check strict validation status
+        run: |
+          STATUS=$(python -c "import json; result = json.load(open('validator.result.strict.json')); targets = [t for t in result.get('targets', []) if 'UMCP-REF-E2E-0001' in t.get('target_path', '')]; print(targets[0]['run_status'] if targets else 'UNKNOWN')")
+          echo "Strict validation status: $STATUS"
+          if [ "$STATUS" != "CONFORMANT" ]; then
+            echo "❌ Strict validation failed for E2E case with status: $STATUS"
+            cat validator.result.strict.json
+            exit 1
+          fi
+          echo "✅ Strict validation CONFORMANT for E2E case"
+
+      - name: Upload validator reports
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: validator-result
-          path: validator.result.json
+          name: validator-results
+          path: |
+            validator.result.baseline.json
+            validator.result.strict.json

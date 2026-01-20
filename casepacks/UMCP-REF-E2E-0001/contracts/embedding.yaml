@@ -1,0 +1,44 @@
+schema: "schemas/embedding.schema.json"
+
+embedding:
+  id: "UMCP-REF-E2E-0001.embedding"
+  version: "1.0.0"
+  
+  source_space:
+    description: "Raw physical measurements"
+    channels:
+      - name: "x1_voltage"
+        unit: "V"
+        physical_range: [0.0, 10.0]
+      - name: "x2_temperature"
+        unit: "K"
+        physical_range: [0.0, 10.0]
+      - name: "x3_pressure"
+        unit: "Pa"
+        physical_range: [0.0, 10.0]
+  
+  target_space:
+    description: "Unit hypercube Ψ-coordinates"
+    interval: [0.0, 1.0]
+    coordinates: ["c_1", "c_2", "c_3"]
+  
+  transform:
+    method: "linear_affine"
+    formula: "c_i = (x_i - a) / (b - a)"
+    parameters:
+      a: 0.0
+      b: 10.0
+    face: "pre_clip"
+    epsilon: 1.0e-8
+  
+  oor_policy:
+    method: "clip_and_flag"
+    clip_to: [0.0, 1.0]
+    flag_field: "oor_i"
+    description: "Values outside [0,10] are clipped to [0,1] and flagged"
+  
+  sampling:
+    temporal: "discrete_integer_t"
+    rate: "single_shot_per_t"
+  
+  notes: "Embedding x(t) → Ψ(t) for UMCP-REF-E2E-0001. Raw measurements scaled to unit cube."

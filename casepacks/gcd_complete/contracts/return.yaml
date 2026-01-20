@@ -1,0 +1,34 @@
+schema: "schemas/return.schema.json"
+
+return:
+  id: "gcd_complete.return"
+  version: "1.0.0"
+  
+  return_norm:
+    id: "l2_eta1e-3"
+    method: "L2"
+    formula: "||Ψ(t) - Ψ(0)||_2"
+    threshold_eta: 1.0e-3
+    description: "Euclidean distance from initial state"
+  
+  return_domain:
+    generator_id: "D_θ"
+    method: "sliding_window"
+    window_size: 64
+    overlap: 0.5
+    description: "Return domain via sliding window"
+  
+  return_horizon:
+    H_rec: "INF"
+    description: "Infinite recurrence horizon"
+  
+  typing:
+    tau_R_finite: "finite_return_time"
+    tau_R_infinite: "INF_REC"
+    rule: "R·τ_R = 0 when τ_R = INF_REC"
+  
+  credit_rule:
+    no_return_no_credit: true
+    formula: "R·τ_R = 0 ⟺ τ_R ∈ {INF_REC, UNIDENTIFIABLE}"
+  
+  notes: "GCD return configuration - L2 norm with η=1e-3."

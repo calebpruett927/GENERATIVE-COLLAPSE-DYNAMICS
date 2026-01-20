@@ -1,12 +1,73 @@
 [![CI](../../actions/workflows/validate.yml/badge.svg)](../../actions/workflows/validate.yml)
 [![Production Ready](https://img.shields.io/badge/production-ready-brightgreen)](docs/production_deployment.md)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
-[![Tests](https://img.shields.io/badge/tests-221%20passing-success)](tests/)
-[![GCD+RCFT](https://img.shields.io/badge/frameworks-GCD%20%2B%20RCFT-blueviolet)](docs/rcft_theory.md)
+[![Tests](https://img.shields.io/badge/tests-233%20passing-success)](tests/)
+[![Validation](https://img.shields.io/badge/validation-0%20errors%20%7C%200%20warnings-brightgreen)](.)
+[![Performance](https://img.shields.io/badge/performance-20--25%25%20faster%20with%20cache-orange)](.)
+[![Smart Cache](https://img.shields.io/badge/cache-intelligent%20%7C%20persistent-blue)](.umcp_cache/)
 
-# UMCP — Universal Measurement Contract Protocol
+---
 
-**Contract-first validation framework for reproducible computational experiments**
+## 🚀 **Live System HUD**
+
+<div align="center">
+
+### **[📊 LAUNCH DASHBOARD →](https://scaling-train-97wgvp77rw993xjwr-8501.app.github.dev/)**
+
+</div>
+
+```
+╔══════════════════════════════════════════════════════════════════════╗
+║                    UMCP PRODUCTION SYSTEM STATUS                     ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+  🔐 Canon:           UMCP.CANON.v1
+  📜 Contract:        UMA.INTSTACK.v1
+  🔗 Weld:            W-2025-12-31-PHYS-COHERENCE
+  
+  📚 DOI References:
+     PRE:  10.5281/zenodo.17756705  (The Episteme of Return)
+     POST: 10.5281/zenodo.18072852  (Physics of Coherence)
+     PACK: 10.5281/zenodo.18226878  (CasePack Publication)
+
+  ⚙️  Tier-1 Kernel:
+     p=3  α=1.0  λ=0.2  η=0.001
+     
+  🎯 Regime Gates:
+     Stable:   ω<0.038  F>0.90  S<0.15  C<0.14
+     Collapse: ω≥0.30
+     
+  📊 Current State:
+     Status:     CONFORMANT ✅
+     Regime:     Stable
+     Errors:     0
+     Warnings:   0
+     
+  ⚡ Performance:
+     Cache:      Intelligent + Persistent
+     Speedup:    20-25% faster (warm)
+     Skipping:   4/4 casepacks (unchanged)
+     Learning:   Progressive acceleration
+     
+  🔧 CLI:         umcp validate
+  🌐 Dashboard:   Port 8501 (Interactive)
+  🔌 API:         Port 8000 (REST)
+  
+  📦 Ledger:      ledger/return_log.csv (continuous append)
+  🧪 CasePacks:   hello_world | gcd_complete | rcft_complete
+  
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           "No improvisation. Contract-first. Tier-1 reserved."
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**Quick Access:**
+- 🎨 **[Visualization Dashboard](https://scaling-train-97wgvp77rw993xjwr-8501.app.github.dev/)** — Phase space, time series, regime monitoring
+- 🔌 **API Endpoints** — `/health`, `/latest-receipt`, `/ledger`, `/stats`, `/regime`
+- 📖 **[Extensions Guide](QUICKSTART_EXTENSIONS.md)** — Dashboard & API usage
+- 🧪 **[Theory Docs](docs/rcft_theory.md)** — Mathematical foundations
+
+---
 
 UMCP is a **production-grade system** for creating, validating, and sharing reproducible computational workflows. It enforces mathematical contracts, tracks provenance, generates cryptographic receipts, and validates results against frozen specifications—ensuring reviewers can verify exactly what was computed, how, and under what assumptions.
 

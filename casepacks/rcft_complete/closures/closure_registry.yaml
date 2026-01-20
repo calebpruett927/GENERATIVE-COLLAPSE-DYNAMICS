@@ -1,0 +1,48 @@
+schema: "schemas/closures_registry.schema.json"
+
+registry:
+  id: "rcft_complete.closures"
+  version: "1.0.0"
+  
+  closures:
+    gamma:
+      id: "gamma.default.v1"
+      description: "Γ(ω; p, ε) = ω^p with p=3, ε=1e-8"
+      formula: "Γ(ω) = max(ε, ω)^p"
+      parameters:
+        p: 3
+        epsilon: 1.0e-8
+      path: "closures/rcft/gamma.default.v1.yaml"
+    
+    DC_form:
+      id: "DC.alpha_scaling.v1"
+      description: "Dissipation-curvature coupling DC = α·C"
+      formula: "DC = α·C"
+      parameters:
+        alpha: 1.0
+      notes: "Linear coupling between dissipation and curvature"
+    
+    R_estimator:
+      id: "R.tau_procedure.v1"
+      description: "Return estimator R from τ_R"
+      formula: "R = f(τ_R, regime_history)"
+      method: "sliding_window_variance"
+      notes: "R·τ_R = 0 when τ_R = INF_REC"
+    
+    curvature_neighborhood:
+      id: "curvature_neighborhood.default.v1"
+      description: "Curvature neighborhood for κ computation"
+      method: "local_variance"
+      radius: "adaptive"
+      path: "closures/rcft/curvature_neighborhood.default.v1.yaml"
+  
+  weld_budget:
+    enabled: false
+    note: "Budget terms declared but not computed for this test case"
+    formula: "Δκ_budget = R·τ_R - (D_ω + D_C)"
+    components:
+      - "R·τ_R: return credit term"
+      - "D_ω: omega dissipation"
+      - "D_C: curvature dissipation"
+  
+  notes: "RCFT closure registry - budget terms declared for completeness."

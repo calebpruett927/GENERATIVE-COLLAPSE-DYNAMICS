@@ -1,0 +1,49 @@
+{
+  "schema": "schemas/receipt.ss1m.schema.json",
+  "receipt": {
+    "kind": "ss1m",
+    "version": 1,
+    "created_utc": "2026-01-19T17:37:23Z",
+    "casepack": {
+      "id": "UMCP-REF-E2E-0001",
+      "manifest_path": "casepacks/UMCP-REF-E2E-0001/manifest.json"
+    },
+    "canon": {
+      "pre_doi": "10.5281/zenodo.17756705",
+      "post_doi": "10.5281/zenodo.18072852",
+      "weld_id": "W-2025-12-31-PHYS-COHERENCE"
+    },
+    "contract": {
+      "id": "UMA.INTSTACK.v1",
+      "path": "contracts/UMA.INTSTACK.v1.yaml"
+    },
+    "closures": {
+      "registry_id": "UMCP.CLOSURES.DEFAULT.v1",
+      "registry_path": "closures/registry.yaml"
+    },
+    "row": {
+      "t": 7,
+      "row_id": "UMCP-REF-E2E-0001:t7"
+    },
+    "kernel": {
+      "omega": 0.056666666666666664,
+      "F": 0.9433333333333334,
+      "S": 0.21507625012740497,
+      "C": 0.03399346342395192,
+      "tau_R": "INF_REC",
+      "kappa": -0.05849854062082026,
+      "IC": 0.9431792456857067,
+      "IC_min": 0.88
+    },
+    "regime": {
+      "label": "Watch",
+      "critical_overlay": false
+    },
+    "tolerances": {
+      "epsilon": 1e-08,
+      "tol_seam": 0.005,
+      "tol_id": 1e-09
+    },
+    "notes": "UMCP-REF-E2E-0001 SS1M receipt. Complete audit-ready pipeline. OOR events: 1, INF_REC count: 8."
+  }
+}

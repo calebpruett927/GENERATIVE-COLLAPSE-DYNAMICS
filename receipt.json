@@ -1,13 +1,13 @@
 {
   "schema": "schemas/validator.result.schema.json",
-  "created_utc": "2026-01-18T21:47:13Z",
+  "created_utc": "2026-01-19T00:36:43Z",
   "validator": {
     "name": "umcp-validator",
     "version": "0.1.0",
     "implementation": {
       "language": "python",
       "python_version": "3.12.1",
-      "git_commit": "4db6a4d43ad31b7a02e86803209b69c2c52a2be0",
+      "git_commit": "aa3d0921135b9ebfa12b214fa02d978ad4239871",
       "build": "repo"
     }
   },

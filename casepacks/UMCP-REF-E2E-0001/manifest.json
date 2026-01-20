@@ -1,0 +1,45 @@
+{
+  "schema": "schemas/manifest.schema.json",
+  "casepack": {
+    "id": "UMCP-REF-E2E-0001",
+    "version": "1.0.0",
+    "title": "UMCP End-to-End Reference CasePack - Complete Audit Trail",
+    "description": "Complete, minimal, end-to-end reference CasePack demonstrating full UMCP audit trail with contract freeze, Tier-1 kernel computation, typed boundaries, OOR handling, and cryptographic manifest.",
+    "created_utc": "2026-01-19T17:37:23Z",
+    "timezone": "America/Chicago",
+    "authors": ["Clement Paulus"]
+  },
+  "refs": {
+    "canon_anchors": {
+      "path": "canon/anchors.yaml"
+    },
+    "contract": {
+      "id": "UMA.INTSTACK.v1",
+      "path": "contracts/UMA.INTSTACK.v1.yaml"
+    },
+    "closures_registry": {
+      "id": "UMCP.CLOSURES.DEFAULT.v1",
+      "path": "closures/registry.yaml"
+    }
+  },
+  "artifacts": {
+    "raw_measurements": {
+      "path": "data/raw.csv",
+      "format": "csv"
+    },
+    "expected": {
+      "psi_csv": {
+        "path": "expected/psi.csv"
+      },
+      "invariants_json": {
+        "path": "expected/invariants.json"
+      },
+      "ss1m_receipt_json": {
+        "path": "expected/ss1m_receipt.json"
+      }
+    }
+  },
+  "run_intent": {
+    "notes": "Full pipeline execution with OOR events (t=3), typed boundaries (τ_R=INF_REC), and regime classification. Demonstrates clip_and_flag policy and no-credit rule for non-return."
+  }
+}

@@ -1,0 +1,61 @@
+schema: "schemas/contract.schema.json"
+
+contract:
+  id: "UMA.INTSTACK.v1"
+  version: "1.0.0"
+  timezone: "America/Chicago"
+  address: "Hello World Test Case"
+  frozen_at: "2026-01-20T00:00:00-06:00"
+
+  canon:
+    pre_doi: "10.5281/zenodo.17756705"
+    post_doi: "10.5281/zenodo.18072852"
+    weld_id: "W-2025-12-31-PHYS-COHERENCE"
+
+  embedding:
+    interval: [0.0, 1.0]
+    face: "pre_clip"
+    oor_policy: "clip_and_flag"
+    epsilon: 1.0e-8
+
+  tier_1_kernel:
+    reserved_symbols:
+      - "ω"
+      - "F"
+      - "S"
+      - "C"
+      - "τ_R"
+      - "κ"
+      - "IC"
+      - "omega"
+      - "tau_R"
+      - "kappa"
+
+    weights_policy: "nonnegative_sum_to_one"
+
+    frozen_parameters:
+      a: 0
+      b: 10
+      face: "pre_clip"
+      epsilon: 1.0e-8
+      p: 3
+      alpha: 1.0
+      lambda: 0.2
+      eta: 1.0e-3
+      tol_seam: 0.005
+      tol_id: 1.0e-9
+
+  typed_censoring:
+    tau_R_special_values:
+      - "INF_REC"
+      - "UNIDENTIFIABLE"
+
+    run_status_enum:
+      - "CONFORMANT"
+      - "NONCONFORMANT"
+      - "NON_EVALUABLE"
+
+    no_return_no_credit: true
+    oor_handling: "clip_and_flag"
+
+  notes: "Minimal hello_world contract snapshot for testing."

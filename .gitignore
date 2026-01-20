@@ -48,6 +48,9 @@ coverage.xml
 *.cover
 *.py.cover
 .hypothesis/
+
+# UMCP persistent cache (validation metadata)
+.umcp_cache/
 .pytest_cache/
 cover/
 
