@@ -42,13 +42,11 @@ class TestClosureLoadingEdgeCases:
         
         # Try to execute hello_world if it exists
         if (loader.closures_dir / "hello_world.py").exists():
-            try:
-                result = loader.execute_closure("hello_world")
-                # hello_world should return something
-                assert result is not None
-            except (TypeError, AttributeError) as e:
-                # May have required parameters
-                pytest.skip(f"hello_world has required params: {e}")
+            # hello_world requires omega parameter
+            result = loader.execute_closure("hello_world", omega=10.0)
+            # hello_world should return something
+            assert result is not None
+            assert "F" in result
         else:
             pytest.skip("hello_world closure not available")
 
