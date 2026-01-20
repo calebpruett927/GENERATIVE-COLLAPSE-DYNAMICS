@@ -1,6 +1,7 @@
 """
 Test CLI diff command for comparing validation receipts.
 """
+
 from __future__ import annotations
 
 import json

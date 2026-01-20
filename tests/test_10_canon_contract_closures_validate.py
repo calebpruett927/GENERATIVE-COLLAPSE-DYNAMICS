@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, List, Tuple
+from typing import Any
 
 from .conftest import (
     RepoPaths,
@@ -11,7 +11,7 @@ from .conftest import (
 )
 
 
-def _fmt_errors(prefix: str, errors: List[str], limit: int = 80) -> str:
+def _fmt_errors(prefix: str, errors: list[str], limit: int = 80) -> str:
     if not errors:
         return ""
     shown = errors[:limit]
@@ -42,7 +42,7 @@ def test_all_contracts_conform_to_schema(repo_paths: RepoPaths) -> None:
 
     assert contract_files, f"No contract files found in {repo_paths.contracts_dir.as_posix()}"
 
-    failures: List[Tuple[str, List[str]]] = []
+    failures: list[tuple[str, list[str]]] = []
     for cf in contract_files:
         require_file(cf)
         doc = load_yaml(cf)
@@ -83,7 +83,7 @@ def test_closure_registry_and_referenced_files_conform_to_schema(repo_paths: Rep
         "closures/registry.yaml must include a non-empty mapping at registry.closures."
     )
 
-    ref_paths: List[str] = []
+    ref_paths: list[str] = []
     for _, spec in closures_obj.items():
         if isinstance(spec, dict) and isinstance(spec.get("path"), str):
             ref_paths.append(spec["path"])
@@ -92,7 +92,7 @@ def test_closure_registry_and_referenced_files_conform_to_schema(repo_paths: Rep
         "closures/registry.yaml must reference at least one closure file via registry.closures.<name>.path."
     )
 
-    failures: List[Tuple[str, List[str]]] = []
+    failures: list[tuple[str, list[str]]] = []
     for rel_path in ref_paths:
         closure_path = (repo_paths.root / rel_path).resolve()
         require_file(closure_path)

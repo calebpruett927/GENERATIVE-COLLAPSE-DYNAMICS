@@ -2,25 +2,26 @@
 Resonance Time Constant Closure
 Computes the resonance time constant from angular velocity and damping.
 """
+
 from __future__ import annotations
 
 
 def compute(omega: float, damping: float) -> dict:
     """
     Compute resonance time constant.
-    
+
     tau_R = 1 / (damping * omega)
-    
+
     Args:
         omega: Angular velocity in rad/s
         damping: Damping ratio (dimensionless)
-        
+
     Returns:
         Dict with computed tau_R in seconds
     """
     if omega <= 0 or damping <= 0:
         raise ValueError("omega and damping must be positive")
-    
+
     tau_R = 1.0 / (damping * omega)
     return {"tau_R": tau_R}
 

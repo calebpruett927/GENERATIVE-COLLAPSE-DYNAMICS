@@ -11,10 +11,10 @@ Automatically discovers and registers UMCP extensions, including:
 
 Usage:
     from umcp_extensions import list_extensions, load_extension
-    
+
     # List all available extensions
     extensions = list_extensions()
-    
+
     # Load and run an extension
     viz = load_extension('visualization')
     viz.run()
@@ -22,14 +22,14 @@ Usage:
 
 import importlib
 import sys
-from typing import Any, Dict, List, Optional
+from typing import Any, ClassVar
 
 
 class ExtensionRegistry:
     """Registry for UMCP extensions"""
-    
+
     # Built-in extensions shipped with UMCP
-    BUILTIN_EXTENSIONS = {
+    BUILTIN_EXTENSIONS: ClassVar[dict] = {
         "visualization": {
             "module": "visualize_umcp",
             "class": "UMCPVisualization",
@@ -38,7 +38,7 @@ class ExtensionRegistry:
             "requires": ["streamlit>=1.30.0", "pandas>=2.0.0", "plotly>=5.18.0"],
             "command": "umcp-visualize",
             "port": 8501,
-            "type": "dashboard"
+            "type": "dashboard",
         },
         "api": {
             "module": "api_umcp",
@@ -48,7 +48,7 @@ class ExtensionRegistry:
             "requires": ["fastapi>=0.109.0", "uvicorn[standard]>=0.27.0"],
             "command": "umcp-api",
             "port": 8000,
-            "type": "api"
+            "type": "api",
         },
         "ledger": {
             "module": "umcp.cli",
@@ -57,7 +57,7 @@ class ExtensionRegistry:
             "description": "Automatic logging of validation receipts to CSV ledger",
             "requires": [],  # Built into core
             "command": None,  # Automatically active
-            "type": "logging"
+            "type": "logging",
         },
         "autoformat": {
             "module": "umcp_autoformat",
@@ -66,28 +66,28 @@ class ExtensionRegistry:
             "description": "Automatic formatting and validation of UMCP contracts",
             "requires": [],  # Uses stdlib only
             "command": "python umcp_autoformat.py",
-            "type": "tool"
-        }
+            "type": "tool",
+        },
     }
-    
+
     # Extension categories
-    CATEGORIES = {
+    CATEGORIES: ClassVar[dict] = {
         "dashboard": "Interactive visualization and monitoring",
         "api": "REST API and web services",
         "logging": "Data collection and audit trails",
         "tool": "Command-line utilities",
         "closure": "Custom computational closures",
-        "validator": "Custom validation logic"
+        "validator": "Custom validation logic",
     }
-    
+
     def __init__(self):
-        self._extensions: Dict[str, Dict[str, Any]] = {}
+        self._extensions: dict[str, dict[str, Any]] = {}
         self._load_builtin()
-    
+
     def _load_builtin(self):
         """Load built-in extensions"""
         self._extensions.update(self.BUILTIN_EXTENSIONS)
-    
+
     def register(
         self,
         name: str,
@@ -95,13 +95,13 @@ class ExtensionRegistry:
         cls: str,
         description: str,
         extension_type: str = "custom",
-        requires: Optional[List[str]] = None,
-        command: Optional[str] = None,
-        **metadata
+        requires: list[str] | None = None,
+        command: str | None = None,
+        **metadata,
     ):
         """
         Register a custom extension
-        
+
         Args:
             name: Extension identifier
             module: Python module path
@@ -120,44 +120,44 @@ class ExtensionRegistry:
             "requires": requires or [],
             "command": command,
             "type": extension_type,
-            **metadata
+            **metadata,
         }
-    
-    def list(self, extension_type: Optional[str] = None) -> List[Dict[str, Any]]:
+
+    def list(self, extension_type: str | None = None) -> list[dict[str, Any]]:
         """
         List registered extensions
-        
+
         Args:
             extension_type: Filter by type (None = all)
-        
+
         Returns:
             List of extension metadata dicts
         """
         extensions = list(self._extensions.values())
-        
+
         if extension_type:
             extensions = [e for e in extensions if e.get("type") == extension_type]
-        
+
         return extensions
-    
-    def get(self, name: str) -> Optional[Dict[str, Any]]:
+
+    def get(self, name: str) -> dict[str, Any] | None:
         """Get extension metadata by name"""
         return self._extensions.get(name)
-    
-    def load(self, name: str) -> Optional[Any]:
+
+    def load(self, name: str) -> Any | None:
         """
         Load and return extension class
-        
+
         Args:
             name: Extension identifier
-        
+
         Returns:
             Extension class or None if not found
         """
         ext = self.get(name)
         if not ext:
             return None
-        
+
         try:
             module = importlib.import_module(ext["module"])
             cls = getattr(module, ext["class"])
@@ -165,50 +165,51 @@ class ExtensionRegistry:
         except (ImportError, AttributeError) as e:
             print(f"Failed to load extension '{name}': {e}")
             return None
-    
+
     def install_dependencies(self, name: str) -> bool:
         """
         Install extension dependencies
-        
+
         Args:
             name: Extension identifier
-        
+
         Returns:
             True if successful, False otherwise
         """
         ext = self.get(name)
         if not ext:
             return False
-        
+
         requires = ext.get("requires", [])
         if not requires:
             return True
-        
+
         try:
             import subprocess
-            subprocess.check_call([sys.executable, "-m", "pip", "install"] + requires)
+
+            subprocess.check_call([sys.executable, "-m", "pip", "install", *requires])
             return True
         except subprocess.CalledProcessError:
             return False
-    
+
     def check_installed(self, name: str) -> bool:
         """
         Check if extension dependencies are installed
-        
+
         Args:
             name: Extension identifier
-        
+
         Returns:
             True if all dependencies installed, False otherwise
         """
         ext = self.get(name)
         if not ext:
             return False
-        
+
         requires = ext.get("requires", [])
         if not requires:
             return True
-        
+
         for dep in requires:
             # Extract package name (before >=, ==, etc.)
             pkg_name = dep.split(">=")[0].split("==")[0].split("[")[0]
@@ -216,7 +217,7 @@ class ExtensionRegistry:
                 importlib.import_module(pkg_name)
             except ImportError:
                 return False
-        
+
         return True
 
 
@@ -224,16 +225,16 @@ class ExtensionRegistry:
 _registry = ExtensionRegistry()
 
 
-def list_extensions(extension_type: Optional[str] = None) -> List[Dict[str, Any]]:
+def list_extensions(extension_type: str | None = None) -> list[dict[str, Any]]:
     """
     List all registered UMCP extensions
-    
+
     Args:
         extension_type: Filter by type (dashboard, api, logging, tool, etc.)
-    
+
     Returns:
         List of extension metadata dictionaries
-    
+
     Example:
         >>> extensions = list_extensions()
         >>> for ext in extensions:
@@ -242,16 +243,16 @@ def list_extensions(extension_type: Optional[str] = None) -> List[Dict[str, Any]
     return _registry.list(extension_type)
 
 
-def load_extension(name: str) -> Optional[Any]:
+def load_extension(name: str) -> Any | None:
     """
     Load an extension by name
-    
+
     Args:
         name: Extension identifier
-    
+
     Returns:
         Extension class or None if not found
-    
+
     Example:
         >>> viz = load_extension('visualization')
         >>> if viz:
@@ -260,13 +261,13 @@ def load_extension(name: str) -> Optional[Any]:
     return _registry.load(name)
 
 
-def get_extension_info(name: str) -> Optional[Dict[str, Any]]:
+def get_extension_info(name: str) -> dict[str, Any] | None:
     """
     Get metadata for an extension
-    
+
     Args:
         name: Extension identifier
-    
+
     Returns:
         Extension metadata dict or None
     """
@@ -276,10 +277,10 @@ def get_extension_info(name: str) -> Optional[Dict[str, Any]]:
 def install_extension(name: str) -> bool:
     """
     Install extension dependencies
-    
+
     Args:
         name: Extension identifier
-    
+
     Returns:
         True if successful, False otherwise
     """
@@ -289,27 +290,20 @@ def install_extension(name: str) -> bool:
 def check_extension(name: str) -> bool:
     """
     Check if extension is installed
-    
+
     Args:
         name: Extension identifier
-    
+
     Returns:
         True if installed, False otherwise
     """
     return _registry.check_installed(name)
 
 
-def register_extension(
-    name: str,
-    module: str,
-    cls: str,
-    description: str,
-    extension_type: str = "custom",
-    **kwargs
-):
+def register_extension(name: str, module: str, cls: str, description: str, extension_type: str = "custom", **kwargs):
     """
     Register a custom extension
-    
+
     Args:
         name: Extension identifier
         module: Python module path
@@ -317,7 +311,7 @@ def register_extension(
         description: Description
         extension_type: Extension category
         **kwargs: Additional metadata
-    
+
     Example:
         >>> register_extension(
         ...     name="my_closure",
@@ -334,44 +328,44 @@ def register_extension(
 def print_extensions_table():
     """Print a formatted table of all extensions"""
     extensions = list_extensions()
-    
-    print("\n" + "="*80)
+
+    print("\n" + "=" * 80)
     print(" " * 25 + "UMCP EXTENSIONS")
-    print("="*80)
-    
+    print("=" * 80)
+
     categories = {}
     for ext in extensions:
         cat = ext.get("type", "custom")
         if cat not in categories:
             categories[cat] = []
         categories[cat].append(ext)
-    
+
     for cat, exts in sorted(categories.items()):
         cat_desc = _registry.CATEGORIES.get(cat, "Custom extensions")
         print(f"\n📦 {cat.upper()}: {cat_desc}")
         print("-" * 80)
-        
+
         for ext in exts:
             installed = check_extension(ext.get("name", ""))
             status = "✅" if installed else "❌"
             name = ext.get("name", "Unknown")
             desc = ext.get("description", "")
             cmd = ext.get("command", "")
-            
+
             print(f"  {status} {name}")
             print(f"     {desc}")
             if cmd:
                 print(f"     Command: {cmd}")
             print()
-    
-    print("="*80)
+
+    print("=" * 80)
     print(f"Total: {len(extensions)} extensions\n")
 
 
 if __name__ == "__main__":
     # Print extension table when run directly
     print_extensions_table()
-    
+
     # Show usage examples
     print("\nUsage Examples:")
     print("-" * 80)
@@ -403,40 +397,39 @@ def main():
     This provides a simple interface to list and manage UMCP extensions.
     """
     import argparse
-    
+
     parser = argparse.ArgumentParser(
-        description="UMCP Extension Manager",
-        formatter_class=argparse.RawDescriptionHelpFormatter
+        description="UMCP Extension Manager", formatter_class=argparse.RawDescriptionHelpFormatter
     )
-    
-    subparsers = parser.add_subparsers(dest='command', help='Available commands')
-    
+
+    subparsers = parser.add_subparsers(dest="command", help="Available commands")
+
     # List command
-    subparsers.add_parser('list', help='List all available extensions')
-    
+    subparsers.add_parser("list", help="List all available extensions")
+
     # Info command
-    info_parser = subparsers.add_parser('info', help='Show extension info')
-    info_parser.add_argument('extension', help='Extension name')
-    
+    info_parser = subparsers.add_parser("info", help="Show extension info")
+    info_parser.add_argument("extension", help="Extension name")
+
     # Check command
-    check_parser = subparsers.add_parser('check', help='Check if extension is available')
-    check_parser.add_argument('extension', help='Extension name')
-    
+    check_parser = subparsers.add_parser("check", help="Check if extension is available")
+    check_parser.add_argument("extension", help="Extension name")
+
     # Install command
-    install_parser = subparsers.add_parser('install', help='Install extension dependencies')
-    install_parser.add_argument('extension', help='Extension name')
-    
+    install_parser = subparsers.add_parser("install", help="Install extension dependencies")
+    install_parser.add_argument("extension", help="Extension name")
+
     # Run command
-    run_parser = subparsers.add_parser('run', help='Run an extension')
-    run_parser.add_argument('extension', help='Extension name')
-    
+    run_parser = subparsers.add_parser("run", help="Run an extension")
+    run_parser.add_argument("extension", help="Extension name")
+
     args = parser.parse_args()
-    
+
     if not args.command:
         parser.print_help()
         return 0
-    
-    if args.command == 'list':
+
+    if args.command == "list":
         extensions = list_extensions()
         print("Available UMCP Extensions:")
         print()
@@ -447,13 +440,13 @@ def main():
             print(f"   Command: {ext_info.get('command', 'N/A')}")
             print()
         return 0
-    
-    elif args.command == 'info':
+
+    elif args.command == "info":
         ext = get_extension_info(args.extension)
         if not ext:
             print(f"❌ Extension '{args.extension}' not found")
             return 1
-        
+
         print(f"Extension: {ext['name']}")
         print(f"Description: {ext['description']}")
         print(f"Type: {ext.get('type', 'unknown')}")
@@ -462,8 +455,8 @@ def main():
         print(f"Class: {ext.get('class', 'N/A')}")
         print(f"Requirements: {', '.join(ext.get('requires', []))}")
         return 0
-    
-    elif args.command == 'check':
+
+    elif args.command == "check":
         if check_extension(args.extension):
             print(f"✅ Extension '{args.extension}' is available and ready")
             return 0
@@ -471,8 +464,8 @@ def main():
             print(f"⚠️ Extension '{args.extension}' is not available")
             print("   Try: umcp-ext install", args.extension)
             return 1
-    
-    elif args.command == 'install':
+
+    elif args.command == "install":
         try:
             install_extension(args.extension)
             print(f"✅ Extension '{args.extension}' dependencies installed")
@@ -480,13 +473,13 @@ def main():
         except Exception as e:
             print(f"❌ Failed to install extension: {e}")
             return 1
-    
-    elif args.command == 'run':
+
+    elif args.command == "run":
         if not check_extension(args.extension):
             print(f"⚠️ Extension '{args.extension}' is not available")
             print(f"   Install with: umcp-ext install {args.extension}")
             return 1
-        
+
         try:
             ext = load_extension(args.extension)
             ext.run()
@@ -494,9 +487,10 @@ def main():
         except Exception as e:
             print(f"❌ Failed to run extension: {e}")
             import traceback
+
             traceback.print_exc()
             return 1
-    
+
     return 0
 
 

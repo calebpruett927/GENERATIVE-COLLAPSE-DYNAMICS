@@ -486,7 +486,7 @@ Quick alphabetical index of all protocol terms with definitions and file locatio
 
 **By Task:**
 - Validation: [src/umcp/validator.py](src/umcp/validator.py)
-- CasePack creation: [docs/quickstart.md.](docs/quickstart.md.)
+- CasePack creation: [docs/quickstart.md](docs/quickstart.md)
 - Extension development: [QUICKSTART_EXTENSIONS.md](QUICKSTART_EXTENSIONS.md)
 - Testing: [tests/](tests/)
 

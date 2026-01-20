@@ -4,12 +4,14 @@ UMCP Closure Loading and Execution
 This module provides utilities for loading and executing closures referenced
 in the closures registry (closures/registry.yaml).
 """
+
 from __future__ import annotations
 
 import importlib.util
 import sys
+from collections.abc import Callable
 from pathlib import Path
-from typing import Any, Callable, Dict, Optional
+from typing import Any
 
 import yaml
 
@@ -17,18 +19,18 @@ import yaml
 class ClosureLoader:
     """
     Loads and executes closures from the closures/ directory.
-    
+
     Example:
         >>> loader = ClosureLoader()
         >>> result = loader.execute_closure("F_from_omega", omega=10.0, r=0.5, m=1.0)
         >>> print(result)
         {'F': 50.0}
     """
-    
-    def __init__(self, root_dir: Optional[Path] = None):
+
+    def __init__(self, root_dir: Path | None = None):
         """
         Initialize closure loader.
-        
+
         Args:
             root_dir: Repository root directory (default: auto-detect)
         """
@@ -42,77 +44,77 @@ class ClosureLoader:
                 current = current.parent
             else:
                 root_dir = Path.cwd()
-        
+
         self.root = root_dir
         self.closures_dir = self.root / "closures"
         self.registry_path = self.closures_dir / "registry.yaml"
-        self._registry: Optional[Dict[str, Any]] = None
-        self._loaded_modules: Dict[str, Any] = {}
-    
+        self._registry: dict[str, Any] | None = None
+        self._loaded_modules: dict[str, Any] = {}
+
     @property
-    def registry(self) -> Dict[str, Any]:
+    def registry(self) -> dict[str, Any]:
         """Load and cache the closures registry."""
         if self._registry is None:
             if not self.registry_path.exists():
                 raise FileNotFoundError(f"Closures registry not found: {self.registry_path}")
-            with open(self.registry_path, 'r') as f:
+            with open(self.registry_path) as f:
                 self._registry = yaml.safe_load(f)
         return self._registry
-    
-    def list_closures(self) -> Dict[str, str]:
+
+    def list_closures(self) -> dict[str, str]:
         """
         List all registered closures.
-        
+
         Returns:
             Dict mapping closure names to their file paths
         """
         registry = self.registry.get("registry", {})
         closures_obj = registry.get("closures", {})
-        
+
         result = {}
         for name, spec in closures_obj.items():
             if isinstance(spec, dict) and "path" in spec:
                 result[name] = spec["path"]
-        
+
         return result
-    
+
     def load_closure_module(self, name: str) -> Any:
         """
         Load a Python closure module from closures/ directory.
-        
+
         Args:
             name: Name of the closure (e.g., "F_from_omega")
-            
+
         Returns:
             The loaded Python module
         """
         if name in self._loaded_modules:
             return self._loaded_modules[name]
-        
+
         # Try direct .py file first
         py_file = self.closures_dir / f"{name}.py"
         if not py_file.exists():
             raise FileNotFoundError(f"Closure module not found: {py_file}")
-        
+
         # Load the module dynamically
         spec = importlib.util.spec_from_file_location(f"umcp.closures.{name}", py_file)
         if spec is None or spec.loader is None:
             raise ImportError(f"Failed to load closure module: {py_file}")
-        
+
         module = importlib.util.module_from_spec(spec)
         sys.modules[f"umcp.closures.{name}"] = module
         spec.loader.exec_module(module)
-        
+
         self._loaded_modules[name] = module
         return module
-    
+
     def get_closure_function(self, name: str) -> Callable:
         """
         Get the compute function from a closure module.
-        
+
         Args:
             name: Name of the closure
-            
+
         Returns:
             The compute function
         """
@@ -120,32 +122,32 @@ class ClosureLoader:
         if not hasattr(module, "compute"):
             raise AttributeError(f"Closure module {name} does not have a 'compute' function")
         return module.compute
-    
-    def execute_closure(self, name: str, **kwargs) -> Dict[str, Any]:
+
+    def execute_closure(self, name: str, **kwargs) -> dict[str, Any]:
         """
         Execute a closure with the given parameters.
-        
+
         Args:
             name: Name of the closure
             **kwargs: Parameters to pass to the closure's compute function
-            
+
         Returns:
             Result dict from the closure
-            
+
         Example:
             >>> loader = ClosureLoader()
             >>> result = loader.execute_closure("F_from_omega", omega=10.0, r=0.5, m=1.0)
         """
         compute_fn = self.get_closure_function(name)
         return compute_fn(**kwargs)
-    
+
     def validate_closure_exists(self, name: str) -> bool:
         """
         Check if a closure exists and can be loaded.
-        
+
         Args:
             name: Name of the closure
-            
+
         Returns:
             True if closure exists and can be loaded
         """
@@ -156,13 +158,13 @@ class ClosureLoader:
             return False
 
 
-def get_closure_loader(root_dir: Optional[Path] = None) -> ClosureLoader:
+def get_closure_loader(root_dir: Path | None = None) -> ClosureLoader:
     """
     Factory function to create a ClosureLoader instance.
-    
+
     Args:
         root_dir: Repository root directory (default: auto-detect)
-        
+
     Returns:
         ClosureLoader instance
     """

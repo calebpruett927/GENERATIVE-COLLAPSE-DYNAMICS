@@ -34,7 +34,7 @@ def _set_test_timezone() -> None:
     os.environ.setdefault("TZ", "America/Chicago")
     # tzset is POSIX; guard for platforms where it doesn't exist.
     try:
-        import time  # noqa: WPS433 (standard lib)
+        import time
 
         if hasattr(time, "tzset"):
             time.tzset()
@@ -60,4 +60,4 @@ def testdata_path(*parts: str) -> Path:
 _ensure_repo_root_on_syspath()
 _set_test_timezone()
 
-__all__ = ["repo_root", "testdata_path", "REPO_ROOT"]
+__all__ = ["REPO_ROOT", "repo_root", "testdata_path"]

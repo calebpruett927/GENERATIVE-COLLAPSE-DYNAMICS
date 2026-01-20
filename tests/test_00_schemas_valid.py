@@ -54,6 +54,6 @@ def test_schema_ids_are_present_and_local(repo_paths: RepoPaths) -> None:
         schema: Any = load_json(sf)
         assert "$id" in schema, f"Schema missing $id: {sf.as_posix()}"
         assert isinstance(schema["$id"], str), f"Schema $id must be a string: {sf.as_posix()}"
-        assert schema["$id"].startswith(
-            "schemas/"
-        ), f"Schema $id should be a local path starting with 'schemas/': {sf.as_posix()}"
+        assert schema["$id"].startswith("schemas/"), (
+            f"Schema $id should be a local path starting with 'schemas/': {sf.as_posix()}"
+        )

@@ -2,16 +2,17 @@
 Stiffness Check Closure
 Validates that stiffness values are within acceptable bounds.
 """
+
 from __future__ import annotations
 
 
 def compute(kappa: float) -> dict:
     """
     Check if stiffness is valid (positive and within reasonable bounds).
-    
+
     Args:
         kappa: Stiffness in N/m
-        
+
     Returns:
         Dict with validity boolean
     """

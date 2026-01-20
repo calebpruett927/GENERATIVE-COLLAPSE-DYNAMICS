@@ -2,24 +2,25 @@
 Force from Angular Velocity Closure
 Computes centripetal force from angular velocity, radius, and mass.
 """
+
 from __future__ import annotations
 
 
 def compute(omega: float, r: float, m: float) -> dict:
     """
     Compute centripetal force from angular velocity.
-    
+
     F = m * omega^2 * r
-    
+
     Args:
         omega: Angular velocity in rad/s
         r: Radius in meters
         m: Mass in kg
-        
+
     Returns:
         Dict with computed force F in Newtons
     """
-    F = m * (omega ** 2) * r
+    F = m * (omega**2) * r
     return {"F": F}
 
 

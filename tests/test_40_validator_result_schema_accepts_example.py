@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Dict
+from typing import Any
 
 from .conftest import RepoPaths, load_schema, validate_instance
 
@@ -13,7 +13,7 @@ def test_validator_result_schema_accepts_minimal_example(repo_paths: RepoPaths) 
     schema = load_schema(repo_paths, "validator.result.schema.json")
 
     # Keep this example intentionally small, but structurally realistic.
-    example: Dict[str, Any] = {
+    example: dict[str, Any] = {
         "schema": "schemas/validator.result.schema.json",
         "created_utc": "2026-01-14T20:00:00Z",
         "validator": {

@@ -1,0 +1,39 @@
+# Pre-commit hooks for UMCP
+# Install: pre-commit install
+# Run: pre-commit run --all-files
+
+repos:
+  # Basic hygiene checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: ^(.*\.md|.*\.txt)$
+      - id: end-of-file-fixer
+        exclude: ^(.*\.txt)$
+      - id: check-yaml
+        args: ['--unsafe']  # Allow custom YAML tags
+      - id: check-toml
+      - id: check-json
+      - id: detect-private-key
+      - id: check-added-large-files
+        args: ['--maxkb=500']
+      - id: mixed-line-ending
+
+  # Ruff linting and formatting
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.6.9
+    hooks:
+      - id: ruff
+        args: ["--fix"]
+      - id: ruff-format
+
+  # Type checking with mypy (enable after initial setup is stable)
+  # - repo: https://github.com/pre-commit/mirrors-mypy
+  #   rev: v1.11.2
+  #   hooks:
+  #     - id: mypy
+  #       additional_dependencies:
+  #         - types-PyYAML
+  #         - types-jsonschema
+  #       args: ["--config-file=pyproject.toml"]

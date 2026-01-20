@@ -104,7 +104,7 @@ This reference guide provides fast pathways to all protocol infrastructure, ensu
 | **Regime classification** | [contracts/GCD.INTSTACK.v1.yaml](contracts/GCD.INTSTACK.v1.yaml) → regime_gates |
 | **Weld evaluation** | [contracts/GCD.INTSTACK.v1.yaml](contracts/GCD.INTSTACK.v1.yaml) → weld_gate |
 | **RCFT overlay** | [docs/rcft_theory.md](docs/rcft_theory.md), [canon/rcft_anchors.yaml](canon/rcft_anchors.yaml) |
-| **Create CasePack** | [docs/quickstart.md.](docs/quickstart.md.) |
+| **Create CasePack** | [docs/quickstart.md](docs/quickstart.md) |
 | **Validate** | `umcp validate`, [src/umcp/validator.py](src/umcp/validator.py) |
 
 ---

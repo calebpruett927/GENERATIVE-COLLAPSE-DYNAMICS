@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import math
 import re
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 import pytest
 
@@ -46,9 +46,8 @@ def test_validator_rules_file_exists_and_conforms(repo_paths: RepoPaths) -> None
     v = Draft202012Validator(schema)
 
     errors = sorted(v.iter_errors(rules_doc), key=lambda e: list(e.path))
-    assert not errors, (
-        "validator_rules.yaml failed schema validation:\n"
-        + "\n".join(f"{'/'.join(map(str, e.path))}: {e.message}" for e in errors)
+    assert not errors, "validator_rules.yaml failed schema validation:\n" + "\n".join(
+        f"{'/'.join(map(str, e.path))}: {e.message}" for e in errors
     )
 
 
@@ -97,8 +96,8 @@ def test_W201_F_equals_one_minus_omega(repo_paths: RepoPaths) -> None:
     omega_path = rule["check"]["fields"]["omega"]
     F_path = rule["check"]["fields"]["F"]
 
-    rows: List[Dict[str, Any]] = inv["rows"]
-    failures: List[Tuple[Any, ...]] = []
+    rows: list[dict[str, Any]] = inv["rows"]
+    failures: list[tuple[Any, ...]] = []
 
     for i, row in enumerate(rows):
         omega = dot_get(row, omega_path)
@@ -140,8 +139,8 @@ def test_W202_IC_equals_exp_kappa(repo_paths: RepoPaths) -> None:
     IC_path = rule["check"]["fields"]["IC"]
     kappa_path = rule["check"]["fields"]["kappa"]
 
-    rows: List[Dict[str, Any]] = inv["rows"]
-    failures: List[Tuple[Any, ...]] = []
+    rows: list[dict[str, Any]] = inv["rows"]
+    failures: list[tuple[Any, ...]] = []
 
     for i, row in enumerate(rows):
         IC = dot_get(row, IC_path)
@@ -201,8 +200,8 @@ def test_W301_regime_label_consistency_with_canon(repo_paths: RepoPaths) -> None
     policies = rule["check"].get("policies", {})
     on_missing_icmin = policies.get("on_missing_IC_min", "skip")
 
-    rows: List[Dict[str, Any]] = inv["rows"]
-    failures: List[Tuple[Any, ...]] = []
+    rows: list[dict[str, Any]] = inv["rows"]
+    failures: list[tuple[Any, ...]] = []
 
     for i, row in enumerate(rows):
         omega = dot_get(row, omega_path)

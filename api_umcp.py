@@ -17,9 +17,9 @@ Endpoints:
 
 import csv
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Dict, Optional
+from typing import ClassVar
 
 try:
     from fastapi import FastAPI, HTTPException
@@ -31,9 +31,7 @@ except ImportError:
 
 
 app = FastAPI(
-    title="UMCP Audit API",
-    description="Public API for UMCP validation receipts and regime statistics",
-    version="1.0.0"
+    title="UMCP Audit API", description="Public API for UMCP validation receipts and regime statistics", version="1.0.0"
 )
 
 
@@ -50,7 +48,7 @@ class RegimeInfo(BaseModel):
     F: float
     S: float
     C: float
-    timestamp: Optional[str] = None
+    timestamp: str | None = None
 
 
 class StatsResponse(BaseModel):
@@ -58,8 +56,8 @@ class StatsResponse(BaseModel):
     conformant_count: int
     nonconformant_count: int
     current_regime: str
-    regime_distribution: Dict[str, int]
-    latest_timestamp: Optional[str] = None
+    regime_distribution: dict[str, int]
+    latest_timestamp: str | None = None
 
 
 def get_repo_root() -> Path:
@@ -82,7 +80,7 @@ def classify_regime(omega: float, F: float, S: float, C: float) -> str:
         return "Watch"
 
 
-@app.get("/", response_model=Dict[str, str])
+@app.get("/", response_model=dict[str, str])
 async def root():
     """API root with available endpoints"""
     return {
@@ -92,19 +90,15 @@ async def root():
             "/latest-receipt": "Latest validation receipt",
             "/ledger": "Historical validation ledger",
             "/stats": "Aggregate statistics",
-            "/regime": "Current regime classification"
-        }
+            "/regime": "Current regime classification",
+        },
     }
 
 
 @app.get("/health", response_model=HealthResponse)
 async def health():
     """Health check endpoint"""
-    return HealthResponse(
-        status="ok",
-        timestamp=datetime.now(timezone.utc).isoformat(),
-        version="1.0.0"
-    )
+    return HealthResponse(status="ok", timestamp=datetime.now(UTC).isoformat(), version="1.0.0")
 
 
 @app.get("/latest-receipt")
@@ -112,19 +106,16 @@ async def latest_receipt():
     """Get the most recent validation receipt"""
     repo_root = get_repo_root()
     receipt_path = repo_root / "receipt.json"
-    
+
     if not receipt_path.exists():
-        raise HTTPException(
-            status_code=404,
-            detail="No receipt found. Run 'umcp validate' first."
-        )
-    
+        raise HTTPException(status_code=404, detail="No receipt found. Run 'umcp validate' first.")
+
     try:
-        with open(receipt_path, 'r') as f:
+        with open(receipt_path) as f:
             receipt = json.load(f)
         return JSONResponse(content=receipt)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error loading receipt: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error loading receipt: {e!s}") from e
 
 
 @app.get("/ledger")
@@ -132,21 +123,18 @@ async def get_ledger():
     """Get historical validation ledger"""
     repo_root = get_repo_root()
     ledger_path = repo_root / "ledger" / "return_log.csv"
-    
+
     if not ledger_path.exists():
-        raise HTTPException(
-            status_code=404,
-            detail="No ledger found. Run 'umcp validate' to start collecting data."
-        )
-    
+        raise HTTPException(status_code=404, detail="No ledger found. Run 'umcp validate' to start collecting data.")
+
     try:
-        with open(ledger_path, 'r') as f:
+        with open(ledger_path) as f:
             reader = csv.DictReader(f)
             records = list(reader)
-        
+
         return JSONResponse(content={"records": records, "count": len(records)})
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error loading ledger: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error loading ledger: {e!s}") from e
 
 
 @app.get("/stats", response_model=StatsResponse)
@@ -154,60 +142,57 @@ async def get_stats():
     """Get aggregate validation statistics"""
     repo_root = get_repo_root()
     ledger_path = repo_root / "ledger" / "return_log.csv"
-    
+
     if not ledger_path.exists():
-        raise HTTPException(
-            status_code=404,
-            detail="No ledger found. Run 'umcp validate' to start collecting data."
-        )
-    
+        raise HTTPException(status_code=404, detail="No ledger found. Run 'umcp validate' to start collecting data.")
+
     try:
-        with open(ledger_path, 'r') as f:
+        with open(ledger_path) as f:
             reader = csv.DictReader(f)
             records = list(reader)
-        
+
         if not records:
             raise HTTPException(status_code=404, detail="Ledger is empty")
-        
+
         # Count statuses
         total = len(records)
-        conformant = sum(1 for r in records if r['run_status'] == 'CONFORMANT')
+        conformant = sum(1 for r in records if r["run_status"] == "CONFORMANT")
         nonconformant = total - conformant
-        
+
         # Classify regimes
         regime_counts = {"Stable": 0, "Watch": 0, "Collapse": 0, "Unknown": 0}
         for record in records:
             try:
-                omega = float(record['omega']) if record['omega'] else 0
+                omega = float(record["omega"]) if record["omega"] else 0
                 F = 1.0 - omega
-                S = float(record['stiffness']) if record['stiffness'] else 0
-                C = float(record['curvature']) if record['curvature'] else 0
+                S = float(record["stiffness"]) if record["stiffness"] else 0
+                C = float(record["curvature"]) if record["curvature"] else 0
                 regime = classify_regime(omega, F, S, C)
                 regime_counts[regime] += 1
             except (ValueError, KeyError):
                 regime_counts["Unknown"] += 1
-        
+
         # Get current regime from latest record
         latest = records[-1]
         try:
-            omega = float(latest['omega']) if latest['omega'] else 0
+            omega = float(latest["omega"]) if latest["omega"] else 0
             F = 1.0 - omega
-            S = float(latest['stiffness']) if latest['stiffness'] else 0
-            C = float(latest['curvature']) if latest['curvature'] else 0
+            S = float(latest["stiffness"]) if latest["stiffness"] else 0
+            C = float(latest["curvature"]) if latest["curvature"] else 0
             current_regime = classify_regime(omega, F, S, C)
         except (ValueError, KeyError):
             current_regime = "Unknown"
-        
+
         return StatsResponse(
             total_validations=total,
             conformant_count=conformant,
             nonconformant_count=nonconformant,
             current_regime=current_regime,
             regime_distribution=regime_counts,
-            latest_timestamp=latest.get('timestamp')
+            latest_timestamp=latest.get("timestamp"),
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error computing stats: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error computing stats: {e!s}") from e
 
 
 @app.get("/regime", response_model=RegimeInfo)
@@ -215,39 +200,29 @@ async def get_current_regime():
     """Get current regime classification with invariants"""
     repo_root = get_repo_root()
     inv_path = repo_root / "outputs" / "invariants.csv"
-    
+
     if not inv_path.exists():
-        raise HTTPException(
-            status_code=404,
-            detail="No invariants found. Run 'umcp validate' first."
-        )
-    
+        raise HTTPException(status_code=404, detail="No invariants found. Run 'umcp validate' first.")
+
     try:
-        with open(inv_path, 'r') as f:
+        with open(inv_path) as f:
             reader = csv.DictReader(f)
             rows = list(reader)
-        
+
         if not rows:
             raise HTTPException(status_code=404, detail="Invariants file is empty")
-        
+
         inv = rows[0]
-        omega = float(inv.get('omega', 0))
-        F = float(inv.get('F', 0))
-        S = float(inv.get('S', 0))
-        C = float(inv.get('C', 0))
-        
+        omega = float(inv.get("omega", 0))
+        F = float(inv.get("F", 0))
+        S = float(inv.get("S", 0))
+        C = float(inv.get("C", 0))
+
         regime = classify_regime(omega, F, S, C)
-        
-        return RegimeInfo(
-            regime=regime,
-            omega=omega,
-            F=F,
-            S=S,
-            C=C,
-            timestamp=datetime.now(timezone.utc).isoformat()
-        )
+
+        return RegimeInfo(regime=regime, omega=omega, F=F, S=S, C=C, timestamp=datetime.now(UTC).isoformat())
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error loading regime: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error loading regime: {e!s}") from e
 
 
 if __name__ == "__main__":
@@ -264,33 +239,34 @@ def run_server():
 
 class UMCPAuditAPI:
     """UMCP Extension: Public Audit API
-    
+
     Provides REST API access to UMCP validation receipts and regime statistics.
     Automatically registered with UMCP extension system.
-    
+
     Attributes:
         name: Extension name
         version: Extension version
         description: Extension description
         requires: Required dependencies
     """
-    
+
     name = "audit-api"
     version = "1.0.0"
     description = "Public REST API for UMCP validation receipts and regime statistics"
-    requires = ["fastapi>=0.109.0", "uvicorn[standard]>=0.27.0"]
-    
+    requires: ClassVar[list[str]] = ["fastapi>=0.109.0", "uvicorn[standard]>=0.27.0"]
+
     @staticmethod
     def install():
         """Install extension dependencies"""
         import subprocess
-        subprocess.check_call(["pip", "install"] + UMCPAuditAPI.requires)
-    
+
+        subprocess.check_call(["pip", "install", *UMCPAuditAPI.requires])
+
     @staticmethod
     def run():
         """Run the extension"""
         run_server()
-    
+
     @staticmethod
     def info():
         """Return extension metadata"""
@@ -305,5 +281,5 @@ class UMCPAuditAPI:
                 {"path": "/ledger", "method": "GET", "description": "Historical validation ledger"},
                 {"path": "/stats", "method": "GET", "description": "Aggregate statistics"},
                 {"path": "/regime", "method": "GET", "description": "Current regime classification"},
-            ]
+            ],
         }

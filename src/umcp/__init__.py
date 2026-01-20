@@ -18,15 +18,15 @@ and repo conformance toolchain.
 from __future__ import annotations
 
 __all__ = [
-    "__version__",
-    "VALIDATOR_NAME",
     "DEFAULT_TZ",
-    "UMCPFiles",
-    "get_umcp_files",
+    "VALIDATOR_NAME",
     "ClosureLoader",
-    "get_closure_loader",
     "RootFileValidator",
+    "UMCPFiles",
+    "__version__",
+    "get_closure_loader",
     "get_root_validator",
+    "get_umcp_files",
 ]
 
 __version__ = "1.3.1"

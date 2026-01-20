@@ -28,8 +28,8 @@ def gcd_canon(repo_root):
     """Load GCD canon anchor."""
     canon_path = repo_root / "canon" / "gcd_anchors.yaml"
     assert canon_path.exists(), f"GCD canon not found: {canon_path}"
-    
-    with open(canon_path, 'r') as f:
+
+    with open(canon_path) as f:
         return yaml.safe_load(f)
 
 
@@ -61,10 +61,10 @@ def test_gcd_axioms(gcd_canon):
     """Test GCD axioms are defined."""
     assert "axioms" in gcd_canon
     axioms = gcd_canon["axioms"]
-    
+
     # Should have 3 axioms
     assert len(axioms) >= 3, "GCD must define at least 3 axioms"
-    
+
     axiom_ids = [ax["id"] for ax in axioms]
     assert "AX-0" in axiom_ids, "Missing AX-0: Collapse is generative"
     assert "AX-1" in axiom_ids, "Missing AX-1: Boundary defines interior"
@@ -75,7 +75,7 @@ def test_gcd_axiom_ax0(gcd_canon):
     """Test AX-0: Collapse is generative."""
     axioms = {ax["id"]: ax for ax in gcd_canon["axioms"]}
     ax0 = axioms["AX-0"]
-    
+
     assert "statement" in ax0
     assert "collapse" in ax0["statement"].lower()
     assert "generative" in ax0["statement"].lower()
@@ -85,7 +85,7 @@ def test_gcd_axiom_ax1(gcd_canon):
     """Test AX-1: Boundary defines interior."""
     axioms = {ax["id"]: ax for ax in gcd_canon["axioms"]}
     ax1 = axioms["AX-1"]
-    
+
     assert "statement" in ax1
     assert "boundary" in ax1["statement"].lower()
     assert "interior" in ax1["statement"].lower()
@@ -95,7 +95,7 @@ def test_gcd_axiom_ax2(gcd_canon):
     """Test AX-2: Entropy measures determinacy."""
     axioms = {ax["id"]: ax for ax in gcd_canon["axioms"]}
     ax2 = axioms["AX-2"]
-    
+
     assert "statement" in ax2
     assert "entropy" in ax2["statement"].lower()
     assert "determinacy" in ax2["statement"].lower()
@@ -107,7 +107,7 @@ def test_gcd_reserved_symbols(gcd_canon):
     tier1 = gcd_canon["tier_1_invariants"]
     assert "reserved_symbols" in tier1
     symbols = tier1["reserved_symbols"]
-    
+
     # Check symbol list is present
     assert len(symbols) >= 8, "Should have at least 8 Tier-1 invariants"
 
@@ -116,7 +116,7 @@ def test_gcd_regime_classification(gcd_canon):
     """Test GCD regime classification is defined."""
     assert "regime_classification" in gcd_canon
     regimes = gcd_canon["regime_classification"]
-    
+
     # Check regime_classification has regimes list
     assert "regimes" in regimes
     regime_labels = [r["label"] for r in regimes["regimes"]]
@@ -128,7 +128,7 @@ def test_gcd_regime_classification(gcd_canon):
 def test_gcd_regime_thresholds(gcd_canon):
     """Test regime thresholds are specified."""
     regimes = gcd_canon["regime_classification"]["regimes"]
-    
+
     # Find Stable regime
     stable = next(r for r in regimes if r["label"] == "Stable")
     assert "condition" in stable or "thresholds" in stable
@@ -138,7 +138,7 @@ def test_gcd_mathematical_identities(gcd_canon):
     """Test GCD mathematical identities are defined."""
     assert "mathematical_identities" in gcd_canon
     identities = gcd_canon["mathematical_identities"]
-    
+
     # Core identities exist
     assert len(identities) >= 2
 
@@ -147,7 +147,7 @@ def test_gcd_tolerances(gcd_canon):
     """Test GCD tolerances are specified."""
     assert "tolerances" in gcd_canon
     tol = gcd_canon["tolerances"]
-    
+
     # Check for gates structure
     assert "gates" in tol
     gate_names = [g["name"] for g in tol["gates"]]
@@ -167,7 +167,7 @@ def test_gcd_provenance(gcd_canon):
     """Test GCD canon has provenance metadata."""
     assert "provenance" in gcd_canon
     prov = gcd_canon["provenance"]
-    
+
     assert "created_date" in prov or "created" in prov
     assert "created_by" in prov or "author" in prov
 

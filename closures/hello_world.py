@@ -2,16 +2,17 @@
 Hello World Closure
 Simple demonstration closure for UMCP validation.
 """
+
 from __future__ import annotations
 
 
 def compute(omega: float) -> dict:
     """
     Simple hello world computation.
-    
+
     Args:
         omega: Angular velocity in rad/s
-        
+
     Returns:
         Dict with computed force F
     """

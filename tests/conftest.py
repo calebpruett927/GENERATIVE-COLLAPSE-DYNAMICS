@@ -6,7 +6,7 @@ import math
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 import pytest
 
@@ -93,7 +93,7 @@ def ensure_jsonschema_available() -> None:
     assert Draft202012Validator is not None, "jsonschema is required (pip install jsonschema)."
 
 
-def load_schema(repo_paths: RepoPaths, schema_filename: str) -> Dict[str, Any]:
+def load_schema(repo_paths: RepoPaths, schema_filename: str) -> dict[str, Any]:
     ensure_jsonschema_available()
     schema_path = repo_paths.schemas_dir / schema_filename
     require_file(schema_path)
@@ -102,7 +102,7 @@ def load_schema(repo_paths: RepoPaths, schema_filename: str) -> Dict[str, Any]:
     return schema
 
 
-def validate_instance(instance: Any, schema: Dict[str, Any]) -> List[str]:
+def validate_instance(instance: Any, schema: dict[str, Any]) -> list[str]:
     """
     Returns list of error strings (empty if valid).
     """
@@ -148,18 +148,18 @@ def coerce_scalar(v: Any) -> Any:
     return s
 
 
-def parse_csv_as_rows(path: Path) -> List[Dict[str, Any]]:
+def parse_csv_as_rows(path: Path) -> list[dict[str, Any]]:
     require_file(path)
     with path.open("r", encoding="utf-8", newline="") as f:
         reader = csv.DictReader(f)
         assert reader.fieldnames is not None, f"No header row found in CSV: {path.as_posix()}"
-        rows: List[Dict[str, Any]] = []
+        rows: list[dict[str, Any]] = []
         for r in reader:
             rows.append({k: coerce_scalar(v) for k, v in r.items()})
         return rows
 
 
-def infer_psi_format(rows: List[Dict[str, Any]]) -> str:
+def infer_psi_format(rows: list[dict[str, Any]]) -> str:
     """
     Infer psi trace format based on available keys.
     - long: has ('dim' and 'c') at least in first row
@@ -182,15 +182,11 @@ def infer_psi_format(rows: List[Dict[str, Any]]) -> str:
     return "psi_trace_csv_long"
 
 
-def build_psi_doc(rows: List[Dict[str, Any]], fmt: str) -> Dict[str, Any]:
+def build_psi_doc(rows: list[dict[str, Any]], fmt: str) -> dict[str, Any]:
     """
     Build a JSON document conforming to schemas/trace.psi.schema.json from parsed CSV rows.
     """
-    return {
-        "schema": "schemas/trace.psi.schema.json",
-        "format": fmt,
-        "rows": rows
-    }
+    return {"schema": "schemas/trace.psi.schema.json", "format": fmt, "rows": rows}
 
 
 def close(lhs: float, rhs: float, atol: float, rtol: float) -> bool:
@@ -202,13 +198,7 @@ def close(lhs: float, rhs: float, atol: float, rtol: float) -> bool:
     return abs(lhs - rhs) <= (atol + rtol * abs(rhs))
 
 
-def compute_expected_regime_label(
-    omega: float,
-    F: float,
-    S: float,
-    C: float,
-    thresholds: Dict[str, Any]
-) -> str:
+def compute_expected_regime_label(omega: float, F: float, S: float, C: float, thresholds: dict[str, Any]) -> str:
     """
     Canonical expected label:
     - Collapse if omega >= omega_gte
@@ -221,13 +211,13 @@ def compute_expected_regime_label(
     if omega >= collapse_omega_gte:
         return "Collapse"
 
-    if (omega < stable["omega_lt"]) and (F > stable["F_gt"]) and (S < stable["S_lt"]) and (C < stable["C_lt"]):
+    if (omega < stable["omega_lt"]) and (stable["F_gt"] < F) and (stable["S_lt"] > S) and (stable["C_lt"] > C):
         return "Stable"
 
     return "Watch"
 
 
-def load_rule_by_id(rules_doc: Dict[str, Any], rule_id: str) -> Dict[str, Any]:
+def load_rule_by_id(rules_doc: dict[str, Any], rule_id: str) -> dict[str, Any]:
     for r in rules_doc.get("rules", []):
         if r.get("id") == rule_id:
             return r
