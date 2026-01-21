@@ -5,9 +5,45 @@
 ## The Single Foundational Principle
 
 **AXIOM-0 (The Return Axiom)**:  
-## **What Returns Through Collapse Is Real**
+## **"Collapse is generative; only what returns is real."**
+
+**This is not a metaphor. It is a constraint on admissible claims.**
 
 This is the fundamental axiom upon which the entire Universal Measurement Contract Protocol (UMCP), Generative Collapse Dynamics (GCD), and Recursive Collapse Field Theory (RCFT) are built.
+
+---
+
+## Operational Definitions (Enforcement-Tied)
+
+**These terms are operational and enforcement-tied. Do not import everyday meanings.**
+
+| Term | Operational Meaning | NOT Confused With |
+|------|---------------------|-------------------|
+| **Collapse** | Regime label produced by kernel gates on (ω, F, S, C) under frozen thresholds | Wavefunction collapse, catastrophe as metaphor, "failure" as narrative |
+| **Return** (τ_R) | Re-entry condition: existence of prior u ∈ Dθ(t) with ‖Ψ(t) - Ψ(u)‖ ≤ η; yields τ_R or ∞ᵣₑ꜀ | Repetition, periodicity, nostalgia, "coming back" |
+| **Drift** (ω) | ω = 1 - F, collapse proximity measure, range [0,1] | Random drift, velocity, wandering |
+| **Integrity** (IC) | Kernel composite: IC = exp(κ) where κ = Σ wᵢ ln(cᵢ,ε) | Information content, moral integrity, "truth" |
+| **Entropy** (S) | Shannon entropy: S = -Σ wᵢ[cᵢ ln(cᵢ) + (1-cᵢ)ln(1-cᵢ)] | Thermodynamic entropy, chaos, disorder as vibe |
+| **Coherence** | Continuity under contract: stability of meaning via frozen interface + seam auditing | Agreement, stylistic clarity, "makes sense" |
+| **Contract** | Frozen interface snapshot: pins units, embedding, clipping, weights, return settings | Social agreement, vague assumptions |
+
+---
+
+## Operational Statement
+
+**Plain Language**: If you claim a system is continuous, stable, robust, or real in a way that matters, you must be able to show **return**—meaning the system can re-enter its admissible neighborhood after **drift** (ω), perturbation, or delay, under the same declared evaluation rules.
+
+**Formal Statement**: A continuity claim requires demonstrating τ_R < ∞ᵣₑ꜀ (finite return time) where:
+- **Drift** (ω) has not exceeded collapse threshold
+- **Entropy** (S) remains within admissible bounds
+- **Integrity** (IC) can be re-established
+- **Return** (τ_R) is computed under frozen contract + closures
+
+This is encoded in the contract system as:
+
+```yaml
+no_return_no_credit: true
+```
 
 ---
 
@@ -16,27 +52,6 @@ This is the fundamental axiom upon which the entire Universal Measurement Contra
 ### The Principle
 
 The axiom states that **reality is defined by what persists through collapse events**. Only that which returns—that which survives the collapse and reconstruction process—can be considered real and measurable.
-
-This is encoded in the contract system as:
-
-```yaml
-no_return_no_credit: true
-```
-
-### Mathematical Formulation
-
-If a quantity or measurement `Q` does not return through the collapse-reconstruction cycle, it receives **no credit** in the system. Formally:
-
-$$
-\text{Real}(Q) \iff Q \text{ returns through collapse}
-$$
-
-Where:
-- **Collapse**: The process of dimensional reduction, projection, or transformation
-- **Return**: The persistence of structure, pattern, or information through the collapse
-- **Credit**: Recognition as a valid, real measurement within the UMCP framework
-
-### Physical Interpretation
 
 1. **Observables Must Survive Measurement**: Like quantum measurement, observation involves collapse. Only observables that survive their own measurement are real.
 

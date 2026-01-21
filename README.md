@@ -116,7 +116,54 @@ UMCP is a **production-grade system** for creating, validating, and sharing repr
 
 ## 🎯 What is UMCP?
 
-UMCP transforms computational experiments into **auditable artifacts** based on a single foundational principle:
+**UMCP is a measurement discipline for claims.** It requires that every serious claim be published as a reproducible record (a **row**) with declared inputs, frozen rules, computed integrity outputs, and receipts that allow independent review.
+
+**Core Axiom** (operational): *"Collapse is generative; only what returns is real."*  
+If you claim a system is continuous, stable, or real, you must show **return**—the system can re-enter its admissible neighborhood after drift, perturbation, or delay.
+
+### 📐 Operational Terms Defined
+
+**These terms are operational and enforcement-tied. Do not import everyday meanings.**
+
+**Tier-0 (Interface Layer)**:
+- **Trace** (Ψ): Bounded representation Ψ(t) ∈ [0,1]ⁿ of raw measurements
+- **Row**: Minimal publishable unit (observations + frozen rules + kernel outputs + receipts)
+- **Contract**: Frozen interface snapshot pinning units, embedding, clipping, weights, and return settings
+
+**Tier-1 (GCD Framework - Kernel Invariants)**:
+
+| Symbol | Name | Definition | Range | NOT confused with |
+|--------|------|------------|-------|------------------|
+| **ω** | Drift | ω = 1 - F (collapse proximity) | [0,1] | Randomness, velocity |
+| **F** | Fidelity | F = Σ wᵢ·cᵢ (weighted coherence) | [0,1] | Accuracy, allegiance |
+| **S** | Entropy | S = -Σ wᵢ[cᵢ ln(cᵢ) + (1-cᵢ)ln(1-cᵢ)] | ≥0 | Thermodynamic entropy, chaos |
+| **C** | Curvature | C = stddev(cᵢ)/0.5 (instability proxy) | [0,1] | Geometric curvature |
+| **κ** | Log-integrity | κ = Σ wᵢ ln(cᵢ,ε) | ≤0 | Information content |
+| **IC** | Integrity | IC = exp(κ) (composite stability) | (0,1] | Moral integrity, truth |
+| **τ_R** | Return time | Re-entry delay to domain Dθ | ℕ∪{∞ᵣₑ꜀} | Periodicity, repetition |
+
+**Tier-2 (RCFT Framework - Geometric Extensions)**:
+- **Dꜰ**: Fractal dimension (trajectory complexity), 1 ≤ Dꜰ ≤ 3
+- **Ψᵣ**: Recursive field (self-referential strength)
+- **B**: Basin strength (attractor robustness)
+
+**Tier-1.5 (Governance)**:
+- **Weld**: Seam audit (PASS/FAIL) with explicit ledger/budget accounting across structural changes
+- **Closure**: Declared non-identity term required for weld budgeting (e.g., Γ, R, curvature neighborhood)
+
+### 🔬 Why These Definitions Matter
+
+The axiom "what returns is real" means:
+1. **Drift** (ω) tracks collapse proximity
+2. **Entropy** (S) measures disorder
+3. **Integrity** (IC) quantifies stability
+4. **Return** (τ_R) proves the system can recover
+
+These are **not metaphors**—they are computed quantities with enforcement rules.
+
+---
+
+UMCP transforms computational experiments into **auditable artifacts** based on this foundational principle:
 
 ### **🔷 The Core Axiom: What Returns Through Collapse Is Real**
 

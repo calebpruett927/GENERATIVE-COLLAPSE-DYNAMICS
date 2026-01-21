@@ -6,14 +6,42 @@ Analyzes the topology of collapse attractors in phase space. This closure identi
 stable attractors, computes basin boundaries, and measures attractor strength using
 Lyapunov-like metrics applied to recursive field evolution.
 
+**Tier-2 RCFT Framework**: Augments Tier-1 GCD with recursive/geometric metrics.
+Does not modify Tier-1 invariants or thresholds. Compatible with all GCD analysis.
+
+**Operational Terms Defined** (enforcement-tied, not metaphors):
+
+Tier-1 Inputs (from GCD Kernel, see canon/gcd_anchors.yaml):
+    ω (omega) = Drift = 1 - F, collapse proximity
+                Range: [0,1], NOT: random drift, velocity, or wandering
+    S = Entropy = -Σ wᵢ[cᵢ ln(cᵢ) + (1-cᵢ)ln(1-cᵢ)], disorder measure
+                Range: ≥0, NOT: thermodynamic entropy, chaos, or "mess"
+    C = Curvature = stddev(cᵢ)/0.5, spatial heterogeneity (instability proxy)
+                Range: [0,1], NOT: geometric curvature in spacetime
+    F = Fidelity = Σ wᵢ·cᵢ, weighted coherence
+                Range: [0,1], NOT: accuracy, allegiance
+
+Tier-2 Quantities (RCFT Extensions, see canon/rcft_anchors.yaml):
+    Ψ_r = Recursive field strength = Σ αⁿ·Ψₙ (from recursive_field.py)
+                Tier-2 metric, self-referential field strength
+                NOT: metaphorical "recursion" or programming loops
+    B = Basin strength = -∇²Ψ_r(x₀) / ||∇Ψ_r(x₀)||
+                Tier-2 topological measure, attractor robustness
+                NOT: moral strength, "strong arguments", or force
+    x₀ = Initial state in (ω, S, C) phase space using Tier-1 coordinates
+    x_attr = Attractor point coordinates in Tier-1 phase space
+    t = Time steps to convergence
+    D_f = Fractal dimension (from fractal_dimension.py), 1 ≤ D_f ≤ 3
+                Tier-2 metric, trajectory complexity
+
 Mathematical Foundation:
     Basin Strength: B = -∇²Ψ_r(x₀) / ||∇Ψ_r(x₀)||
     Attractor Distance: d_attr = min||x - x_attr|| over all attractors
     Convergence Rate: λ_conv = -log(||x_t - x_attr||) / t
 
 Where:
-    Ψ_r = Recursive field (from recursive_field.py)
-    x₀ = Initial state in (ω, S, C) space
+    Ψ_r = Recursive field (Tier-2, from recursive_field.py)
+    x₀ = Initial state in (ω, S, C) phase space (Tier-1 coordinates)
     x_attr = Attractor point coordinates
     t = Time steps to convergence
 

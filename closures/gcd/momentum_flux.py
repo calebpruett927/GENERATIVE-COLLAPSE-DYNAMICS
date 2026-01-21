@@ -6,19 +6,40 @@ Computes momentum transfer flux during regime transitions. This closure measures
 the rate of change of system integrity weighted by curvature, providing insight
 into the dynamics of collapse and recovery.
 
+**Tier-1 GCD Framework**: Uses only base Generalized Collapse Dynamics invariants.
+Does not introduce new symbols or modify existing mathematical identities.
+
+**Operational Terms Defined** (enforcement-tied, not metaphors):
+
+Tier-1 Invariants (Inputs from GCD Kernel):
+    κ (kappa) = Log-integrity = ln(IC), where IC is integrity composite
+                NOT: information content, entropy, or moral integrity
+    IC = Integrity composite = exp(κ), multiplicative measure of state integrity
+                Range: (0,1], NOT: moral integrity, "truth", or data quality
+    ω (omega) = Drift = 1 - F, collapse proximity metric
+                Range: [0,1], NOT: random drift, velocity, or wandering
+    F = Fidelity = weighted mean of trace components Σ wᵢ·cᵢ
+                Range: [0,1], NOT: accuracy, allegiance, or moral fidelity
+    C = Curvature = stddev(cᵢ)/0.5, spatial heterogeneity (instability proxy)
+                Range: [0,1], NOT: geometric curvature in spacetime
+    dκ/dt = Time derivative of log-integrity (momentum indicator)
+                Measures rate of integrity change
+    τ_R (tau_R) = Return delay = time steps until trajectory returns to domain Dθ
+                Range: ℕ∪{∞ᵣₑ꜀}, NOT: periodicity, repetition, or nostalgia
+
 Formula:
     Φ_momentum = (dκ/dt) · √(1 + C²) · (1 - ω)
 
 Where:
     dκ/dt = Rate of change of log-integrity (momentum indicator)
-    C = Curvature (spatial heterogeneity)
-    ω = Drift (collapse proximity)
+    C = Curvature (Tier-1 invariant, spatial heterogeneity)
+    ω = Drift (Tier-1 invariant, collapse proximity)
 
 Physical Interpretation:
     - Positive dκ/dt indicates recovery (integrity increasing)
-    - Negative dκ/dt indicates collapse progression
-    - Curvature amplifies flux magnitude
-    - Drift factor weights by distance from collapse boundary
+    - Negative dκ/dt indicates collapse progression (integrity decreasing)
+    - Curvature √(1+C²) amplifies flux magnitude in non-uniform regions
+    - Drift factor (1-ω) weights by distance from collapse boundary
 
 Regime Classification:
     - Restoring:  Φ_momentum < -0.1  (strong recovery flux)
@@ -40,13 +61,18 @@ def compute_momentum_flux(
     kappa_series: np.ndarray, C_series: np.ndarray, omega_series: np.ndarray, dt: float = 1.0, tol: float = 1e-10
 ) -> dict[str, Any]:
     """
-    Compute momentum flux from time series of Tier-1 invariants.
+    Compute momentum flux from time series of Tier-1 GCD invariants.
+
+    Tier-1 GCD Invariants Used:
+        κ (kappa): Log-integrity, ln(IC) where IC = integrity composite
+        C: Curvature, spatial heterogeneity measure (dispersion proxy)
+        ω (omega): Drift, collapse proximity (ω = 1 - F where F = fidelity)
 
     Args:
-        kappa_series: Array of log-integrity values (κ)
-        C_series: Array of curvature values
-        omega_series: Array of drift values
-        dt: Time step (default=1.0)
+        kappa_series: Array of log-integrity values (κ), Tier-1 invariant
+        C_series: Array of curvature values (C), Tier-1 invariant
+        omega_series: Array of drift values (ω), Tier-1 invariant
+        dt: Time step between measurements (default=1.0)
         tol: Numerical tolerance (default=1e-10)
 
     Returns:
