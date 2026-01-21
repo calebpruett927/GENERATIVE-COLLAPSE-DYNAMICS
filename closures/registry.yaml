@@ -43,6 +43,11 @@ registry:
         description: "Field resonance: R = (1-|ω|)·(1-S)·exp(-C/C_crit)"
         inputs: ["omega", "S", "C"]
         outputs: ["resonance", "coherence_factor", "order_factor", "curvature_damping", "regime"]
+      - name: "momentum_flux"
+        path: "closures/gcd/momentum_flux.py"
+        description: "Momentum transfer flux: Φ_momentum = (dκ/dt)·√(1+C²)·(1-ω)"
+        inputs: ["kappa_series", "C_series", "omega_series", "dt"]
+        outputs: ["phi_momentum", "dkappa_dt", "mean_flux", "regime", "net_integrity_change", "flux_variance"]
     rcft:
       - name: "fractal_dimension"
         path: "closures/rcft/fractal_dimension.py"
@@ -59,3 +64,8 @@ registry:
         description: "Resonance pattern analysis: λ_p, Θ via FFT"
         inputs: ["field_series", "dt"]
         outputs: ["lambda_pattern", "Theta_phase", "pattern_type", "phase_coherence"]
+      - name: "attractor_basin"
+        path: "closures/rcft/attractor_basin.py"
+        description: "Attractor basin topology: B = -∇²Ψ_r / ||∇Ψ_r||"
+        inputs: ["omega_series", "S_series", "C_series", "psi_r_series"]
+        outputs: ["n_attractors_found", "attractor_locations", "basin_strengths", "regime", "convergence_rates", "basin_volumes"]

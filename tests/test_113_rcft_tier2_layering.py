@@ -270,7 +270,7 @@ class TestRegistryIntegration:
         assert "gcd" in registry["registry"]["extensions"]
 
         gcd_closures = registry["registry"]["extensions"]["gcd"]
-        assert len(gcd_closures) == 4
+        assert len(gcd_closures) == 5  # Updated: 4 original + momentum_flux
 
     def test_registry_has_rcft_section(self):
         """Registry should have RCFT extension section."""
@@ -281,7 +281,7 @@ class TestRegistryIntegration:
         assert "rcft" in registry["registry"]["extensions"]
 
         rcft_closures = registry["registry"]["extensions"]["rcft"]
-        assert len(rcft_closures) == 3
+        assert len(rcft_closures) == 4  # Updated: 3 original + attractor_basin
 
     def test_registry_closure_paths_resolve(self):
         """All closure paths in registry should resolve."""
