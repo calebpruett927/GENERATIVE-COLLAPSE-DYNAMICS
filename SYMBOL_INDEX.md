@@ -2,14 +2,77 @@
 
 **Fast lookup table for reserved symbols**  
 **Version:** 1.0.0  
-**Last Updated:** 2026-01-20
+**Last Updated:** 2026-01-21
 
 This index provides rapid symbol lookup with Unicode, ASCII, and file encodings. Required for preventing symbol capture and ensuring protocol reproducibility.
+
+**⚠️ THIS TABLE IS THE AUTHORITY. If you need a symbol in a new sense, mint a new one. Do not overload.**
 
 See also:
 - [Glossary](GLOSSARY.md) - Complete structured definitions
 - [Term Index](TERM_INDEX.md) - Alphabetical term lookup
 - [Canon Anchors](canon/) - Machine-readable specifications
+- [FACE_POLICY.md](FACE_POLICY.md) - Boundary governance
+- [UHMP.md](UHMP.md) - Universal Hash Manifest Protocol
+
+---
+
+## One-Page Authoritative Symbol Table
+
+**From UMCP Manuscript v1.0.0 §2.3.1**
+
+| Symbol | Tier | Meaning (canonical) |
+|--------|------|---------------------|
+| **Ψ(t)** | 1 | Bounded trace in [0,1]ⁿ (unitless) |
+| **c_i(t)** | 1 | Components of Ψ(t); i = 1, …, n |
+| **w_i** | 1 | Frozen weights; w_i ≥ 0, Σ w_i = 1 |
+| **F** | 1 | Fidelity: F = Σ w_i c_i |
+| **ω** | 1 | Drift: ω = 1 - F |
+| **S** | 1 | Entropy functional (uses ε-clipped logs) |
+| **C** | 1 | Curvature proxy (symbol reserved; definition fixed per contract/closures) |
+| **τ_R** | 1 | Re-entry delay / return time; may be ∞_rec |
+| **κ** | 1 | Log-integrity (with ε-clipping) |
+| **IC** | 1 | Integrity composite: IC = exp(κ) |
+| **η** | 0 | Return tolerance (contract parameter) |
+| **H_rec** | 0 | Return horizon (contract parameter) |
+| **ε** | 0 | Log-safety clip (contract parameter) |
+| **D_θ(t)** | 0/1 | Return-domain generator (declared at Tier-0; used to define return candidates) |
+| **U_θ(t)** | 1 | Return candidate set under metric and tolerance |
+| **∞_rec** | 0/1 | Typed "no return observed within horizon" marker |
+| **Γ(ω; p, ε)** | 1.5 | Closure defining D_ω for seam budget (must be frozen) |
+| **R** | 1.5 | Return-credit estimator (closure-defined; required for seam budget) |
+| **D_ω** | 1.5 | Drift dissipation term from Γ (closure-defined) |
+| **D_C** | 1.5 | Curvature dissipation term (typically αC, closure-defined) |
+
+---
+
+## Namespace Collision Guidance (Approved Alternatives)
+
+**Definition**: If your field's conventional notation collides with reserved symbols, use these **approved alternatives**. The intent is to prevent symbol capture and keep runs auditable.
+
+| Conventional Meaning | Forbidden Symbol | Approved Alternatives |
+|---------------------|------------------|----------------------|
+| Angular frequency | ω (reserved drift) | Ω, ω_ang, ϖ |
+| Capacitance | C (reserved curvature) | 𝒞, C_cap, C_elec |
+| Geometric curvature (DG) | C (reserved curvature) | 𝒦, κ_g, K_Gauss |
+| Thermodynamic entropy | S (reserved entropy) | S_th, 𝒮 |
+| External "information content" | IC (reserved integrity) | I_info, ℐ |
+
+---
+
+## Anti-Example: Symbol Collision and Correction
+
+### ❌ Incorrect (nonconformant)
+
+> "We measure capacitance C(t) and compute curvature C later."
+
+**Problem**: Symbol collision between domain quantity (capacitance) and kernel invariant (curvature proxy).
+
+### ✅ Correct (conformant)
+
+> "We measure capacitance C_cap(t) (Tier-0, units: F) and embed it via N_K into Ψ(t) components c_i(t). The kernel curvature proxy remains C (Tier-1) and is computed only from Ψ(t)."
+
+**Correction rule**: Rename the domain quantity using an approved alternative (e.g., C_cap or 𝒞), declare its tier and units, and keep C reserved exclusively for the kernel curvature proxy.
 
 ---
 
