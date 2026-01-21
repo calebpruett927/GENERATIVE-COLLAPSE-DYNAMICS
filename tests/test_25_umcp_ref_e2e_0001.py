@@ -88,7 +88,9 @@ def test_e2e_finite_returns():
 
     assert finite_count >= 1, f"Expected at least 1 finite return, found {finite_count}"
     assert inf_rec_count >= 1, f"Expected at least 1 INF_REC, found {inf_rec_count}"
-    print(f"✓ Found {finite_count} finite returns and {inf_rec_count} INF_REC instances")
+    print(
+        f"✓ Found {finite_count} finite returns and {inf_rec_count} INF_REC instances"
+    )
 
 
 def test_e2e_ss1m_receipt_structure():
@@ -110,7 +112,9 @@ def test_e2e_ss1m_receipt_structure():
     assert tb["finite_return_count"] >= 1, "Expected at least 1 finite return"
     assert tb["inf_rec_count"] >= 1, "Expected at least 1 INF_REC"
 
-    print(f"✓ OOR: {tb['oor_count']}, Finite: {tb['finite_return_count']}, INF_REC: {tb['inf_rec_count']}")
+    print(
+        f"✓ OOR: {tb['oor_count']}, Finite: {tb['finite_return_count']}, INF_REC: {tb['inf_rec_count']}"
+    )
 
 
 def test_e2e_manifest_hash_present():
@@ -160,7 +164,9 @@ def test_e2e_ic_consistency():
         error = abs(IC - expected_IC)
         max_error = max(max_error, error)
 
-        assert error < tolerance, f"IC consistency violation: IC={IC}, exp(κ)={expected_IC}, error={error}"
+        assert (
+            error < tolerance
+        ), f"IC consistency violation: IC={IC}, exp(κ)={expected_IC}, error={error}"
 
     print(f"✓ IC ≈ exp(κ) check passed (max error: {max_error:.2e})")
 
@@ -177,7 +183,9 @@ def test_e2e_kernel_summary_in_receipt():
         ic_check = kernel_summary["ic_consistency"]
         assert "check_passed" in ic_check
         assert ic_check["check_passed"] is True, "IC consistency check failed"
-        print(f"✓ IC consistency check in receipt: PASS (error={ic_check.get('final_abs_error', 'N/A')})")
+        print(
+            f"✓ IC consistency check in receipt: PASS (error={ic_check.get('final_abs_error', 'N/A')})"
+        )
     else:
         # Legacy format - just verify final row exists
         assert "final_row" in kernel_summary
@@ -186,7 +194,12 @@ def test_e2e_kernel_summary_in_receipt():
 
 def test_e2e_baseline_validation():
     """Verify E2E case passes baseline validation."""
-    result = subprocess.run(["umcp", "validate", str(E2E_CASE)], cwd=REPO_ROOT, capture_output=True, text=True)
+    result = subprocess.run(
+        ["umcp", "validate", str(E2E_CASE)],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+    )
 
     # Parse JSON output
     output = result.stdout
@@ -204,8 +217,12 @@ def test_e2e_baseline_validation():
                 break
 
         assert e2e_target is not None, "E2E case not found in validation results"
-        assert e2e_target["run_status"] == "CONFORMANT", f"Baseline validation failed: {e2e_target}"
-        assert e2e_target["counts"]["errors"] == 0, f"Expected 0 errors, got {e2e_target['counts']['errors']}"
+        assert (
+            e2e_target["run_status"] == "CONFORMANT"
+        ), f"Baseline validation failed: {e2e_target}"
+        assert (
+            e2e_target["counts"]["errors"] == 0
+        ), f"Expected 0 errors, got {e2e_target['counts']['errors']}"
 
         print(
             f"✓ Baseline validation: CONFORMANT (errors={e2e_target['counts']['errors']}, warnings={e2e_target['counts']['warnings']})"
@@ -217,7 +234,10 @@ def test_e2e_baseline_validation():
 def test_e2e_strict_validation():
     """Verify E2E case passes strict validation."""
     result = subprocess.run(
-        ["umcp", "validate", "--strict", str(E2E_CASE)], cwd=REPO_ROOT, capture_output=True, text=True
+        ["umcp", "validate", "--strict", str(E2E_CASE)],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
     )
 
     # Parse JSON output
@@ -244,12 +264,16 @@ def test_e2e_strict_validation():
                 break
 
         assert e2e_target is not None, "E2E case not found in strict validation results"
-        assert e2e_target["run_status"] == "CONFORMANT", f"Strict validation failed: {e2e_target}"
-        assert e2e_target["counts"]["errors"] == 0, (
-            f"Expected 0 errors in strict mode, got {e2e_target['counts']['errors']}"
-        )
+        assert (
+            e2e_target["run_status"] == "CONFORMANT"
+        ), f"Strict validation failed: {e2e_target}"
+        assert (
+            e2e_target["counts"]["errors"] == 0
+        ), f"Expected 0 errors in strict mode, got {e2e_target['counts']['errors']}"
 
-        print(f"✓ Strict validation: CONFORMANT (errors={e2e_target['counts']['errors']})")
+        print(
+            f"✓ Strict validation: CONFORMANT (errors={e2e_target['counts']['errors']})"
+        )
     except (json.JSONDecodeError, KeyError) as e:
         pytest.fail(f"Failed to parse strict validation output: {e}\n{output}")
 

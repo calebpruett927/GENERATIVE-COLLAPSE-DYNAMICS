@@ -8,7 +8,12 @@ import json
 
 import pytest
 
-from umcp.logging_utils import HealthCheck, PerformanceMetrics, StructuredLogger, get_logger
+from umcp.logging_utils import (
+    HealthCheck,
+    PerformanceMetrics,
+    StructuredLogger,
+    get_logger,
+)
 
 
 def test_performance_metrics():

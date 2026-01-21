@@ -38,7 +38,9 @@ try:
     import plotly.graph_objects as go
     from plotly.subplots import make_subplots
 except ImportError:
-    st.error("Please install required packages: pip install streamlit pandas plotly numpy")
+    st.error(
+        "Please install required packages: pip install streamlit pandas plotly numpy"
+    )
     st.stop()
 
 
@@ -59,7 +61,12 @@ class UMCPVisualization:
     name = "visualization"
     version = "1.0.0"
     description = "Interactive Streamlit dashboard for UMCP validation monitoring"
-    requires: ClassVar[list[str]] = ["streamlit>=1.30.0", "pandas>=2.0.0", "plotly>=5.18.0", "numpy>=1.24.0"]
+    requires: ClassVar[list[str]] = [
+        "streamlit>=1.30.0",
+        "pandas>=2.0.0",
+        "plotly>=5.18.0",
+        "numpy>=1.24.0",
+    ]
 
     @staticmethod
     def install():
@@ -249,16 +256,23 @@ def compute_statistics(df: pd.DataFrame) -> dict[str, Any]:
     # Calculate regime distribution
     df_with_regime = df.copy()
     df_with_regime["regime"] = df_with_regime.apply(
-        lambda row: classify_regime(row["omega"], 1.0 - row["omega"], row["stiffness"], row["curvature"]), axis=1
+        lambda row: classify_regime(
+            row["omega"], 1.0 - row["omega"], row["stiffness"], row["curvature"]
+        ),
+        axis=1,
     )
 
     regime_counts = df_with_regime["regime"].value_counts().to_dict()
     stats["regime_distribution"] = regime_counts
-    stats["current_regime"] = df_with_regime["regime"].iloc[-1] if not df_with_regime.empty else "Unknown"
+    stats["current_regime"] = (
+        df_with_regime["regime"].iloc[-1] if not df_with_regime.empty else "Unknown"
+    )
 
     # Detect regime transitions
     if len(df_with_regime) > 1:
-        regime_changes = (df_with_regime["regime"] != df_with_regime["regime"].shift()).sum() - 1
+        regime_changes = (
+            df_with_regime["regime"] != df_with_regime["regime"].shift()
+        ).sum() - 1
         stats["regime_transitions"] = regime_changes
     else:
         stats["regime_transitions"] = 0
@@ -266,7 +280,9 @@ def compute_statistics(df: pd.DataFrame) -> dict[str, Any]:
     return stats
 
 
-def detect_anomalies(df: pd.DataFrame, col: str = "omega", threshold: float = 2.0) -> pd.Series:
+def detect_anomalies(
+    df: pd.DataFrame, col: str = "omega", threshold: float = 2.0
+) -> pd.Series:
     """Detect anomalies using z-score method"""
     if df is None or df.empty or col not in df.columns:
         return pd.Series([False] * len(df)) if df is not None else pd.Series()
@@ -291,7 +307,10 @@ def plot_omega_vs_curvature(df: pd.DataFrame, show_anomalies: bool = True):
     df = df.copy()
     df["regime"] = df.apply(
         lambda row: classify_regime(
-            float(row["omega"]), 1.0 - float(row["omega"]), float(row["stiffness"]), float(row["curvature"])
+            float(row["omega"]),
+            1.0 - float(row["omega"]),
+            float(row["stiffness"]),
+            float(row["curvature"]),
         ),
         axis=1,
     )
@@ -356,7 +375,12 @@ def plot_omega_vs_curvature(df: pd.DataFrame, show_anomalies: bool = True):
                     y=anomaly_df["curvature"],
                     mode="markers",
                     name="Anomalies",
-                    marker={"color": "black", "size": 16, "symbol": "x-open", "line": {"width": 2}},
+                    marker={
+                        "color": "black",
+                        "size": 16,
+                        "symbol": "x-open",
+                        "line": {"width": 2},
+                    },
                     text=anomaly_df["timestamp"].dt.strftime("%Y-%m-%d %H:%M"),
                     hovertemplate="<b>ANOMALY</b><br>%{text}<br>ω: %{x:.6f}<br>C: %{y:.6f}<extra></extra>",
                 )
@@ -374,7 +398,13 @@ def plot_omega_vs_curvature(df: pd.DataFrame, show_anomalies: bool = True):
         hovermode="closest",
         height=600,
         showlegend=True,
-        legend={"yanchor": "top", "y": 0.99, "xanchor": "right", "x": 0.99, "bgcolor": "rgba(255, 255, 255, 0.8)"},
+        legend={
+            "yanchor": "top",
+            "y": 0.99,
+            "xanchor": "right",
+            "x": 0.99,
+            "bgcolor": "rgba(255, 255, 255, 0.8)",
+        },
     )
 
     # Add annotations for regime regions
@@ -563,7 +593,10 @@ def plot_regime_timeline(df: pd.DataFrame):
 
     df = df.copy()
     df["regime"] = df.apply(
-        lambda row: classify_regime(row["omega"], 1.0 - row["omega"], row["stiffness"], row["curvature"]), axis=1
+        lambda row: classify_regime(
+            row["omega"], 1.0 - row["omega"], row["stiffness"], row["curvature"]
+        ),
+        axis=1,
     )
 
     # Create regime timeline
@@ -581,7 +614,11 @@ def plot_regime_timeline(df: pd.DataFrame):
                     y=regime_df["regime_num"],
                     mode="markers+lines",
                     name=regime,
-                    marker={"color": REGIME_COLORS[regime], "size": 15, "symbol": "square"},
+                    marker={
+                        "color": REGIME_COLORS[regime],
+                        "size": 15,
+                        "symbol": "square",
+                    },
                     line={"color": REGIME_COLORS[regime], "width": 3},
                     hovertemplate="<b>%{text}</b><br>Timestamp: %{x}<extra></extra>",
                     text=regime_df["regime"],
@@ -659,33 +696,60 @@ def plot_distribution_violin(df: pd.DataFrame):
 
     df = df.copy()
     df["regime"] = df.apply(
-        lambda row: classify_regime(row["omega"], 1.0 - row["omega"], row["stiffness"], row["curvature"]), axis=1
+        lambda row: classify_regime(
+            row["omega"], 1.0 - row["omega"], row["stiffness"], row["curvature"]
+        ),
+        axis=1,
     )
 
-    fig = make_subplots(rows=1, cols=3, subplot_titles=("ω Distribution", "C Distribution", "S Distribution"))
+    fig = make_subplots(
+        rows=1,
+        cols=3,
+        subplot_titles=("ω Distribution", "C Distribution", "S Distribution"),
+    )
 
     for regime in ["Stable", "Watch", "Collapse"]:
         regime_df = df[df["regime"] == regime]
         if not regime_df.empty:
             fig.add_trace(
-                go.Violin(y=regime_df["omega"], name=regime, marker_color=REGIME_COLORS[regime], showlegend=True),
+                go.Violin(
+                    y=regime_df["omega"],
+                    name=regime,
+                    marker_color=REGIME_COLORS[regime],
+                    showlegend=True,
+                ),
                 row=1,
                 col=1,
             )
 
             fig.add_trace(
-                go.Violin(y=regime_df["curvature"], name=regime, marker_color=REGIME_COLORS[regime], showlegend=False),
+                go.Violin(
+                    y=regime_df["curvature"],
+                    name=regime,
+                    marker_color=REGIME_COLORS[regime],
+                    showlegend=False,
+                ),
                 row=1,
                 col=2,
             )
 
             fig.add_trace(
-                go.Violin(y=regime_df["stiffness"], name=regime, marker_color=REGIME_COLORS[regime], showlegend=False),
+                go.Violin(
+                    y=regime_df["stiffness"],
+                    name=regime,
+                    marker_color=REGIME_COLORS[regime],
+                    showlegend=False,
+                ),
                 row=1,
                 col=3,
             )
 
-    fig.update_layout(title="Invariant Distributions by Regime", template="plotly_white", height=400, showlegend=True)
+    fig.update_layout(
+        title="Invariant Distributions by Regime",
+        template="plotly_white",
+        height=400,
+        showlegend=True,
+    )
 
     fig.update_yaxes(title_text="ω", row=1, col=1)
     fig.update_yaxes(title_text="C", row=1, col=2)
@@ -705,7 +769,11 @@ def display_latest_receipt(receipt: dict[str, Any] | None):
     col1, col2, col3, col4 = st.columns(4)
 
     status = receipt.get("run_status", "UNKNOWN")
-    status_color = {"CONFORMANT": "🟢", "NONCONFORMANT": "🔴", "NON_EVALUABLE": "🟠"}.get(status, "⚪")
+    status_color = {
+        "CONFORMANT": "🟢",
+        "NONCONFORMANT": "🔴",
+        "NON_EVALUABLE": "🟠",
+    }.get(status, "⚪")
 
     with col1:
         st.metric("Status", f"{status_color} {status}")
@@ -776,7 +844,10 @@ def display_current_invariants(invariants: dict[str, Any] | None):
 
 def main():
     st.set_page_config(
-        page_title="UMCP Production Dashboard", page_icon="📊", layout="wide", initial_sidebar_state="expanded"
+        page_title="UMCP Production Dashboard",
+        page_icon="📊",
+        layout="wide",
+        initial_sidebar_state="expanded",
     )
 
     # Custom CSS for better styling
@@ -793,7 +864,9 @@ def main():
     )
 
     st.title("🔍 UMCP Production Dashboard")
-    st.markdown("**Real-time monitoring of UMCP validation, regime transitions, and system health**")
+    st.markdown(
+        "**Real-time monitoring of UMCP validation, regime transitions, and system health**"
+    )
 
     # Detect repository root
     repo_root = Path.cwd()
@@ -842,11 +915,21 @@ def main():
         col1, col2, col3, col4, col5 = st.columns(5)
 
         with col1:
-            st.metric("Total Validations", stats.get("total_validations", 0), help="Total number of validation runs")
+            st.metric(
+                "Total Validations",
+                stats.get("total_validations", 0),
+                help="Total number of validation runs",
+            )
 
         with col2:
-            conformant_rate = (stats.get("conformant", 0) / max(stats.get("total_validations", 1), 1)) * 100
-            st.metric("Conformance Rate", f"{conformant_rate:.1f}%", help="Percentage of successful validations")
+            conformant_rate = (
+                stats.get("conformant", 0) / max(stats.get("total_validations", 1), 1)
+            ) * 100
+            st.metric(
+                "Conformance Rate",
+                f"{conformant_rate:.1f}%",
+                help="Percentage of successful validations",
+            )
 
         with col3:
             current_regime = stats.get("current_regime", "Unknown")
@@ -863,12 +946,19 @@ def main():
             omega_trend = stats.get("omega_trend", 0)
             trend_arrow = "↑" if omega_trend > 0 else "↓" if omega_trend < 0 else "→"
             st.metric(
-                "ω Trend", f"{trend_arrow} {abs(omega_trend):.6f}", delta=f"{omega_trend:.6f}", delta_color="inverse"
+                "ω Trend",
+                f"{trend_arrow} {abs(omega_trend):.6f}",
+                delta=f"{omega_trend:.6f}",
+                delta_color="inverse",
             )
 
         with col5:
             transitions = stats.get("regime_transitions", 0)
-            st.metric("Regime Transitions", transitions, help="Number of regime changes detected")
+            st.metric(
+                "Regime Transitions",
+                transitions,
+                help="Number of regime changes detected",
+            )
 
     st.markdown("---")
 
@@ -909,12 +999,21 @@ def main():
 
         # Tab organization
         tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
-            ["🎯 Phase Space", "📈 Time Series", "⏱️ Timeline", "📊 Statistics", "🔗 Correlations", "📋 Raw Data"]
+            [
+                "🎯 Phase Space",
+                "📈 Time Series",
+                "⏱️ Timeline",
+                "📊 Statistics",
+                "🔗 Correlations",
+                "📋 Raw Data",
+            ]
         )
 
         with tab1:
             st.markdown("### Phase Space: Regime Classification")
-            st.markdown("Explore the ω-C phase space with regime boundaries and anomaly detection")
+            st.markdown(
+                "Explore the ω-C phase space with regime boundaries and anomaly detection"
+            )
             plot_omega_vs_curvature(ledger_df_filtered, show_anomalies=show_anomalies)
 
             if show_advanced_stats and not ledger_df_filtered.empty:
@@ -922,7 +1021,8 @@ def main():
                 col1, col2, col3 = st.columns(3)
                 with col1:
                     st.metric(
-                        "ω Range", f"{ledger_df_filtered['omega'].min():.6f} - {ledger_df_filtered['omega'].max():.6f}"
+                        "ω Range",
+                        f"{ledger_df_filtered['omega'].min():.6f} - {ledger_df_filtered['omega'].max():.6f}",
                     )
                 with col2:
                     st.metric(
@@ -937,20 +1037,31 @@ def main():
 
         with tab2:
             st.markdown("### Invariants Over Time")
-            st.markdown("Track ω, C, and S metrics with moving averages and threshold indicators")
+            st.markdown(
+                "Track ω, C, and S metrics with moving averages and threshold indicators"
+            )
             plot_time_series(ledger_df_filtered, show_moving_avg=show_moving_avg)
 
             if show_advanced_stats and len(ledger_df_filtered) > 1:
                 st.markdown("#### Trend Analysis")
                 col1, col2, col3 = st.columns(3)
                 with col1:
-                    omega_change = ledger_df_filtered["omega"].iloc[-1] - ledger_df_filtered["omega"].iloc[0]
+                    omega_change = (
+                        ledger_df_filtered["omega"].iloc[-1]
+                        - ledger_df_filtered["omega"].iloc[0]
+                    )
                     st.metric("ω Change", f"{omega_change:+.6f}", delta=omega_change)
                 with col2:
-                    curv_change = ledger_df_filtered["curvature"].iloc[-1] - ledger_df_filtered["curvature"].iloc[0]
+                    curv_change = (
+                        ledger_df_filtered["curvature"].iloc[-1]
+                        - ledger_df_filtered["curvature"].iloc[0]
+                    )
                     st.metric("C Change", f"{curv_change:+.6f}", delta=curv_change)
                 with col3:
-                    stiff_change = ledger_df_filtered["stiffness"].iloc[-1] - ledger_df_filtered["stiffness"].iloc[0]
+                    stiff_change = (
+                        ledger_df_filtered["stiffness"].iloc[-1]
+                        - ledger_df_filtered["stiffness"].iloc[0]
+                    )
                     st.metric("S Change", f"{stiff_change:+.6f}", delta=stiff_change)
 
         with tab3:
@@ -963,7 +1074,12 @@ def main():
                 st.markdown("#### Regime Distribution")
                 df_temp = ledger_df_filtered.copy()
                 df_temp["regime"] = df_temp.apply(
-                    lambda row: classify_regime(row["omega"], 1.0 - row["omega"], row["stiffness"], row["curvature"]),
+                    lambda row: classify_regime(
+                        row["omega"],
+                        1.0 - row["omega"],
+                        row["stiffness"],
+                        row["curvature"],
+                    ),
                     axis=1,
                 )
                 regime_counts = df_temp["regime"].value_counts()
@@ -973,12 +1089,21 @@ def main():
                         go.Pie(
                             labels=regime_counts.index,
                             values=regime_counts.values,
-                            marker={"colors": [REGIME_COLORS.get(r, "#6c757d") for r in regime_counts.index]},
+                            marker={
+                                "colors": [
+                                    REGIME_COLORS.get(r, "#6c757d")
+                                    for r in regime_counts.index
+                                ]
+                            },
                             hole=0.4,
                         )
                     ]
                 )
-                fig.update_layout(title="Time Spent in Each Regime", template="plotly_white", height=400)
+                fig.update_layout(
+                    title="Time Spent in Each Regime",
+                    template="plotly_white",
+                    height=400,
+                )
                 st.plotly_chart(fig, width="stretch")
 
         with tab4:
@@ -1022,11 +1147,13 @@ def main():
                 plot_correlation_heatmap(ledger_df_filtered)
 
                 st.markdown("#### Interpretation")
-                st.info("""
+                st.info(
+                    """
                 - **Strong positive correlation (>0.7)**: Metrics move together
                 - **Strong negative correlation (<-0.7)**: Metrics move oppositely
                 - **Weak correlation (-0.3 to 0.3)**: Little to no linear relationship
-                """)
+                """
+                )
 
         with tab6:
             st.markdown("### Raw Ledger Data")
@@ -1042,7 +1169,9 @@ def main():
                 display_df = ledger_df_filtered
 
             st.dataframe(
-                display_df.style.highlight_max(axis=0, subset=["omega", "curvature"]), width="stretch", height=400
+                display_df.style.highlight_max(axis=0, subset=["omega", "curvature"]),
+                width="stretch",
+                height=400,
             )
 
             # Export options
@@ -1079,7 +1208,9 @@ def main():
                 anomalies = detect_anomalies(ledger_df_filtered, "omega")
                 if anomalies.any():
                     st.warning(f"⚠️ {anomalies.sum()} anomalies detected in ω values")
-                    anomaly_df = ledger_df_filtered[anomalies][["timestamp", "omega", "curvature", "stiffness"]]
+                    anomaly_df = ledger_df_filtered[anomalies][
+                        ["timestamp", "omega", "curvature", "stiffness"]
+                    ]
                     st.dataframe(anomaly_df)
                 else:
                     st.success("✅ No anomalies detected")
@@ -1087,19 +1218,25 @@ def main():
             with col2:
                 st.markdown("#### Recent Activity")
                 if len(ledger_df_filtered) > 5:
-                    recent = ledger_df_filtered.tail(5)[["timestamp", "run_status", "omega"]]
+                    recent = ledger_df_filtered.tail(5)[
+                        ["timestamp", "run_status", "omega"]
+                    ]
                     st.dataframe(recent)
 
     else:
-        st.info("📭 No ledger data available. Run `umcp validate` to start collecting data.")
+        st.info(
+            "📭 No ledger data available. Run `umcp validate` to start collecting data."
+        )
         st.code("umcp validate --out receipt.json", language="bash")
         st.markdown("### Getting Started")
-        st.markdown("""
+        st.markdown(
+            """
         1. Run UMCP validation in your terminal
         2. Refresh this dashboard to see results
         3. Historical data will accumulate automatically
         4. Use filters and visualization options in the sidebar
-        """)
+        """
+        )
 
     # Footer
     st.markdown("---")

@@ -24,7 +24,9 @@ Regime thresholds:
 """
 
 
-def compute_entropic_collapse(S: float, F: float, tau_R: float, tau_0: float = 10.0) -> dict[str, float]:
+def compute_entropic_collapse(
+    S: float, F: float, tau_R: float, tau_0: float = 10.0
+) -> dict[str, float]:
     """
     Compute entropic collapse potential from GCD Tier-1 invariants.
 
@@ -91,10 +93,30 @@ def main():
 
     # Test cases spanning regime spectrum
     test_cases = [
-        {"name": "Zero Entropy (S=0, deterministic precision)", "S": 0.0, "F": 1.0, "tau_R": 1.0},
-        {"name": "Stable Regime (low entropy, high fidelity)", "S": 0.056, "F": 0.99, "tau_R": 5.0},
-        {"name": "Watch Regime (moderate entropy, moderate fidelity)", "S": 0.20, "F": 0.85, "tau_R": 15.0},
-        {"name": "Collapse Boundary (high entropy, low fidelity)", "S": 0.50, "F": 0.50, "tau_R": 50.0},
+        {
+            "name": "Zero Entropy (S=0, deterministic precision)",
+            "S": 0.0,
+            "F": 1.0,
+            "tau_R": 1.0,
+        },
+        {
+            "name": "Stable Regime (low entropy, high fidelity)",
+            "S": 0.056,
+            "F": 0.99,
+            "tau_R": 5.0,
+        },
+        {
+            "name": "Watch Regime (moderate entropy, moderate fidelity)",
+            "S": 0.20,
+            "F": 0.85,
+            "tau_R": 15.0,
+        },
+        {
+            "name": "Collapse Boundary (high entropy, low fidelity)",
+            "S": 0.50,
+            "F": 0.50,
+            "tau_R": 50.0,
+        },
     ]
 
     for tc in test_cases:

@@ -182,7 +182,9 @@ class TestUMCPFileReferences:
         assert len(status) > 0
 
         # All should exist
-        assert all(status.values()), f"Some files missing: {[k for k, v in status.items() if not v]}"
+        assert all(
+            status.values()
+        ), f"Some files missing: {[k for k, v in status.items() if not v]}"
 
     def test_get_missing_files_returns_empty(self):
         """get_missing_files should return empty list when all exist."""

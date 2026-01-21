@@ -27,7 +27,9 @@ Regime thresholds:
 import math
 
 
-def compute_generative_flux(kappa: float, IC: float, C: float, eps: float = 1e-10) -> dict[str, float]:
+def compute_generative_flux(
+    kappa: float, IC: float, C: float, eps: float = 1e-10
+) -> dict[str, float]:
     """
     Compute generative flux through collapse boundary.
 
@@ -92,10 +94,30 @@ def main():
 
     # Test cases spanning regime spectrum
     test_cases = [
-        {"name": "Zero Entropy (κ=-18.4, IC≈0, minimal flux)", "kappa": -18.420681, "IC": 0.0, "C": 0.0},
-        {"name": "Stable Regime (moderate collapse, low curvature)", "kappa": -2.0, "IC": 0.135, "C": 0.05},
-        {"name": "Watch Regime (deeper collapse, moderate curvature)", "kappa": -5.0, "IC": 0.0067, "C": 0.15},
-        {"name": "Collapse Boundary (extreme collapse, high curvature)", "kappa": -10.0, "IC": 4.5e-5, "C": 0.50},
+        {
+            "name": "Zero Entropy (κ=-18.4, IC≈0, minimal flux)",
+            "kappa": -18.420681,
+            "IC": 0.0,
+            "C": 0.0,
+        },
+        {
+            "name": "Stable Regime (moderate collapse, low curvature)",
+            "kappa": -2.0,
+            "IC": 0.135,
+            "C": 0.05,
+        },
+        {
+            "name": "Watch Regime (deeper collapse, moderate curvature)",
+            "kappa": -5.0,
+            "IC": 0.0067,
+            "C": 0.15,
+        },
+        {
+            "name": "Collapse Boundary (extreme collapse, high curvature)",
+            "kappa": -10.0,
+            "IC": 4.5e-5,
+            "C": 0.50,
+        },
     ]
 
     for tc in test_cases:

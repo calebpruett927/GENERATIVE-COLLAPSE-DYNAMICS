@@ -52,7 +52,9 @@ def validate_files():
         assert "refs" in manifest, "Missing 'refs' section"
         assert "artifacts" in manifest, "Missing 'artifacts' section"
         print("  ✓ Structure valid")
-        print(f"    CasePack: {manifest['casepack']['id']} v{manifest['casepack']['version']}")
+        print(
+            f"    CasePack: {manifest['casepack']['id']} v{manifest['casepack']['version']}"
+        )
     except Exception as e:
         errors.append(f"manifest.yaml validation failed: {e}")
         print(f"  ✗ {e}")
@@ -164,7 +166,9 @@ def validate_files():
             ic_expected = math.exp(kappa)
             ic_error = abs(IC - ic_expected) / max(abs(ic_expected), 1e-10)
             if ic_error > 1e-3:  # Relative error threshold
-                warnings.append(f"Row {i}: IC ≈ exp(κ) violation (rel_error={ic_error:.2e})")
+                warnings.append(
+                    f"Row {i}: IC ≈ exp(κ) violation (rel_error={ic_error:.2e})"
+                )
 
         print("  ✓ Structure valid")
         print(f"    Rows: {len(invariants)}")

@@ -239,7 +239,11 @@ def test_rcft_closure_tier_marking(rcft_contract):
     closures = rcft_contract["closures"]
 
     for closure_name, closure_spec in closures.items():
-        if closure_name in ["fractal_dimension", "recursive_field", "resonance_pattern"]:
+        if closure_name in [
+            "fractal_dimension",
+            "recursive_field",
+            "resonance_pattern",
+        ]:
             assert "tier" in closure_spec
             assert closure_spec["tier"] == 2
 

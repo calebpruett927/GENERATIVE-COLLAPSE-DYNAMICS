@@ -732,14 +732,15 @@ tests/
 
 ---
 
-## 🤝 What's New in v1.1.0
+## 🤝 What's New in v1.4.0
 
-**Recursive Collapse Field Theory (RCFT)** - Complete Tier-2 framework:
+**Complete Protocol Infrastructure & Manuscript Integration**:
 
-- **3 New Closures**: Fractal dimension, recursive field, resonance pattern
-- **Complete Integration**: 221 tests passing (100% success), full backward compatibility
-- **Production Ready**: Comprehensive documentation, validated examples
-- **Performance**: 7s test execution (was 12s for 30 tests, now 221 tests!)
+- **8 Major Protocol Documents**: AXIOM, TIER_SYSTEM, KERNEL_SPECIFICATION, PUBLICATION_INFRASTRUCTURE, UHMP, FACE_POLICY, SYMBOL_INDEX, CASEPACK_REFERENCE
+- **Formal Specifications**: 19 lemmas, complete kernel definitions (F, ω, S, C, κ, IC, τ_R), seam accounting
+- **Publication Standards**: CasePack structure, manifests, receipts (SS1m, Seam), integrity ledgers
+- **325 Tests Passing**: Full GCD + RCFT frameworks with complete backward compatibility
+- **Production Ready**: Manuscript-aligned documentation, frozen contracts, reproducible workflows
 
 See [CHANGELOG.md](CHANGELOG.md) for full release notes.
 
@@ -956,14 +957,14 @@ UMCP-Metadata-Runnable-Code/
 │   ├── hello_world/           # Zero entropy example
 │   └── rcft_complete/         # Full RCFT validation
 ├── schemas/                    # JSON schemas (10 files)
-├── tests/                      # Test suite (221 tests)
+├── tests/                      # Test suite (325 tests)
 ├── docs/                       # Documentation
 │   ├── rcft_theory.md         # RCFT mathematical foundation
 │   └── rcft_usage.md          # RCFT usage guide
 ├── scripts/                    # Utility scripts
 ├── src/umcp/                   # UMCP CLI and core
 ├── validator_rules.yaml        # Validation rules
-└── pyproject.toml             # Project config (v1.1.0)
+└── pyproject.toml             # Project config (v1.4.0)
 ```
 
 ---
@@ -1092,15 +1093,16 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-## 🔒 Immutable Release v1.3.2
+## 🔒 Immutable Release v1.4.0
 
-This is the **immutable snapshot** of UMCP with:
-- ✅ Core axiom encoded in all contracts (`no_return_no_credit: true`)
-- ✅ 165 files cryptographically verified (SHA256)
-- ✅ Extension system with auto-discovery
-- ✅ Complete documentation (2,000+ lines)
+This is the **production-ready snapshot** of UMCP with:
+- ✅ Complete manuscript integration (§2.3, §3, §5, §8 - 8 protocol documents, ~5,500 lines)
+- ✅ Formal kernel specification (19 lemmas, complete definitions)
+- ✅ CasePack reference structure (manifests, receipts, integrity ledgers)
+- ✅ 325 tests passing (GCD + RCFT frameworks)
+- ✅ All files cryptographically verified (SHA256)
 - ✅ Zero uncommitted changes
-- ✅ Git tagged: `v1.3.2-immutable`
+- ✅ Git tagged: `v1.4.0-immutable`
 
 **Verify integrity**: `sha256sum -c integrity/sha256.txt`  
 **Read full details**: [IMMUTABLE_RELEASE.md](IMMUTABLE_RELEASE.md)

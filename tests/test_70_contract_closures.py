@@ -27,7 +27,9 @@ class TestContracts:
         if not contracts_dir.exists():
             pytest.skip("No contracts directory")
 
-        yaml_files = list(contracts_dir.glob("*.yaml")) + list(contracts_dir.glob("*.yml"))
+        yaml_files = list(contracts_dir.glob("*.yaml")) + list(
+            contracts_dir.glob("*.yml")
+        )
 
         if not yaml_files:
             pytest.skip("No contract files found")
@@ -44,7 +46,9 @@ class TestContracts:
         if not contracts_dir.exists():
             pytest.skip("No contracts directory")
 
-        yaml_files = list(contracts_dir.glob("*.yaml")) + list(contracts_dir.glob("*.yml"))
+        yaml_files = list(contracts_dir.glob("*.yaml")) + list(
+            contracts_dir.glob("*.yml")
+        )
 
         if not yaml_files:
             pytest.skip("No contract files found")
@@ -55,10 +59,14 @@ class TestContracts:
 
             # Check for any ID-like field
             has_id = (
-                any("id" in k.lower() or "name" in k.lower() for k in contract) if isinstance(contract, dict) else False
+                any("id" in k.lower() or "name" in k.lower() for k in contract)
+                if isinstance(contract, dict)
+                else False
             )
 
-            assert has_id or isinstance(contract, dict), f"{contract_file.name} should have an identifier"
+            assert has_id or isinstance(
+                contract, dict
+            ), f"{contract_file.name} should have an identifier"
 
 
 class TestClosures:
@@ -98,7 +106,9 @@ class TestClosures:
         for closure in entries:
             if isinstance(closure, dict) and "file" in closure:
                 closure_file = closures_dir / closure["file"]
-                assert closure_file.exists(), f"Closure file not found: {closure['file']}"
+                assert (
+                    closure_file.exists()
+                ), f"Closure file not found: {closure['file']}"
 
     def test_closure_ids_unique(self):
         """All closure IDs should be unique."""
@@ -114,7 +124,9 @@ class TestClosures:
         closure_ids = [cid for cid in closure_ids if cid is not None]
 
         if closure_ids:
-            assert len(closure_ids) == len(set(closure_ids)), "Duplicate closure IDs found"
+            assert len(closure_ids) == len(
+                set(closure_ids)
+            ), "Duplicate closure IDs found"
 
     def test_closure_files_are_valid_python(self):
         """All closure Python files should be syntactically valid."""

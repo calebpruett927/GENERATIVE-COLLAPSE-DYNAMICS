@@ -214,7 +214,10 @@ def test_rcft_computational_notes(rcft_canon):
     assert "box-counting" in notes["fractal_dimension"].lower()
 
     # Check FFT mentioned for pattern wavelength
-    assert "FFT" in notes["pattern_wavelength"] or "fft" in notes["pattern_wavelength"].lower()
+    assert (
+        "FFT" in notes["pattern_wavelength"]
+        or "fft" in notes["pattern_wavelength"].lower()
+    )
 
 
 def test_rcft_provenance(rcft_canon):

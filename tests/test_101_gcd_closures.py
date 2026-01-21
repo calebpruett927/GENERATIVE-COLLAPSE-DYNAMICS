@@ -215,7 +215,11 @@ def test_field_resonance_factorization(repo_root):
     result = module.compute_field_resonance(omega=0.1, S=0.2, C=0.1)
 
     # R = (1-|ω|) · (1-S) · exp(-C/C_crit)
-    R_computed = result["coherence_factor"] * result["order_factor"] * result["curvature_damping"]
+    R_computed = (
+        result["coherence_factor"]
+        * result["order_factor"]
+        * result["curvature_damping"]
+    )
     assert abs(R_computed - result["resonance"]) < 1e-9
 
 

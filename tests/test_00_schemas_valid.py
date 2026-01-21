@@ -23,7 +23,9 @@ def test_schemas_directory_exists(repo_paths: RepoPaths) -> None:
     require_dir(repo_paths.schemas_dir)
 
 
-def test_all_schema_files_are_valid_json_and_valid_draft202012_schema(repo_paths: RepoPaths) -> None:
+def test_all_schema_files_are_valid_json_and_valid_draft202012_schema(
+    repo_paths: RepoPaths,
+) -> None:
     """
     Ensures every *.json file under schemas/ is:
       - valid JSON
@@ -53,7 +55,9 @@ def test_schema_ids_are_present_and_local(repo_paths: RepoPaths) -> None:
     for sf in schema_files:
         schema: Any = load_json(sf)
         assert "$id" in schema, f"Schema missing $id: {sf.as_posix()}"
-        assert isinstance(schema["$id"], str), f"Schema $id must be a string: {sf.as_posix()}"
-        assert schema["$id"].startswith("schemas/"), (
-            f"Schema $id should be a local path starting with 'schemas/': {sf.as_posix()}"
-        )
+        assert isinstance(
+            schema["$id"], str
+        ), f"Schema $id must be a string: {sf.as_posix()}"
+        assert schema["$id"].startswith(
+            "schemas/"
+        ), f"Schema $id should be a local path starting with 'schemas/': {sf.as_posix()}"

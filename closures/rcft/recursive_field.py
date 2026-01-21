@@ -92,7 +92,10 @@ def compute_recursive_field(
 
     # Compute field strength at each time point
     contributions = np.array(
-        [compute_field_strength_single(S_series[i], C_series[i], F_series[i]) for i in range(n_points)]
+        [
+            compute_field_strength_single(S_series[i], C_series[i], F_series[i])
+            for i in range(n_points)
+        ]
     )
 
     # Limit to max_iterations
@@ -141,7 +144,10 @@ def compute_recursive_field(
 
 
 def compute_recursive_field_from_energy(
-    E_series: np.ndarray, alpha: float = 0.8, max_iterations: int = 100, tol: float = 1e-6
+    E_series: np.ndarray,
+    alpha: float = 0.8,
+    max_iterations: int = 100,
+    tol: float = 1e-6,
 ) -> dict[str, Any]:
     """
     Alternative: Compute recursive field directly from GCD energy potential series.
@@ -217,7 +223,9 @@ if __name__ == "__main__":
     print(f"  Ψ_recursive: {result['Psi_recursive']:.6f}")
     print(f"  Regime: {result['regime']}")
     print(f"  Mean contribution: {result['components']['mean_contribution']:.6f}")
-    print(f"  Effective memory: {result['components']['effective_memory']:.2f} iterations")
+    print(
+        f"  Effective memory: {result['components']['effective_memory']:.2f} iterations"
+    )
 
     # Test 3: Moderate entropy with decay (active)
     print("\nTest 3: Moderate Entropy (Active)")

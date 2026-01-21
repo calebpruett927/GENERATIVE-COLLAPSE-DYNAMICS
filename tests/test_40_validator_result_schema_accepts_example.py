@@ -54,4 +54,6 @@ def test_validator_result_schema_accepts_minimal_example(repo_paths: RepoPaths) 
     }
 
     errors = validate_instance(example, schema)
-    assert not errors, "validator.result schema rejected minimal example:\n" + "\n".join(errors)
+    assert (
+        not errors
+    ), "validator.result schema rejected minimal example:\n" + "\n".join(errors)

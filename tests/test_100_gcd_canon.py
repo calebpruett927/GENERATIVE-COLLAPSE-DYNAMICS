@@ -151,13 +151,19 @@ def test_gcd_tolerances(gcd_canon):
     # Check for gates structure
     assert "gates" in tol
     gate_names = [g["name"] for g in tol["gates"]]
-    assert "tol_seam" in gate_names or "seam_continuity" in " ".join([g.get("description", "") for g in tol["gates"]])
+    assert "tol_seam" in gate_names or "seam_continuity" in " ".join(
+        [g.get("description", "") for g in tol["gates"]]
+    )
 
 
 def test_gcd_extensions(gcd_canon):
     """Test GCD extensions are defined."""
     # Check for gcd_extensions section (lowercase)
-    assert "gcd_extensions" in gcd_canon or "GCD_extensions" in gcd_canon or "tier_2_extensions" in gcd_canon
+    assert (
+        "gcd_extensions" in gcd_canon
+        or "GCD_extensions" in gcd_canon
+        or "tier_2_extensions" in gcd_canon
+    )
     if "gcd_extensions" in gcd_canon:
         ext = gcd_canon["gcd_extensions"]
         assert len(ext) >= 2

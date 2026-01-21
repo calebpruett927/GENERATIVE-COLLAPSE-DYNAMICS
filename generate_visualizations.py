@@ -76,12 +76,24 @@ def draw_section(ax, x, y, w, h, title, subtitle, lines, color):
         )
     )
 
-    ax.text(x + 0.35, y + h - 0.45, title, fontsize=12, fontweight="bold", color=PALETTE["dark"], zorder=4)
-    ax.text(x + 0.35, y + h - 0.75, subtitle, fontsize=9.5, color=PALETTE["muted"], zorder=4)
+    ax.text(
+        x + 0.35,
+        y + h - 0.45,
+        title,
+        fontsize=12,
+        fontweight="bold",
+        color=PALETTE["dark"],
+        zorder=4,
+    )
+    ax.text(
+        x + 0.35, y + h - 0.75, subtitle, fontsize=9.5, color=PALETTE["muted"], zorder=4
+    )
 
     text_y = y + h - 1.15
     for line in lines:
-        ax.text(x + 0.45, text_y, f"• {line}", fontsize=9.3, color=PALETTE["dark"], zorder=4)
+        ax.text(
+            x + 0.45, text_y, f"• {line}", fontsize=9.3, color=PALETTE["dark"], zorder=4
+        )
         text_y -= 0.34
 
 
@@ -112,8 +124,23 @@ def create_architecture_diagram():
     ax.add_patch(bg)
 
     # Title and subtitle
-    ax.text(8, 8.4, "UMCP System Architecture", ha="center", fontsize=18, fontweight="bold", color=PALETTE["dark"])
-    ax.text(8, 8.05, "Contract-first validation across three tiers", ha="center", fontsize=10, color=PALETTE["muted"])
+    ax.text(
+        8,
+        8.4,
+        "UMCP System Architecture",
+        ha="center",
+        fontsize=18,
+        fontweight="bold",
+        color=PALETTE["dark"],
+    )
+    ax.text(
+        8,
+        8.05,
+        "Contract-first validation across three tiers",
+        ha="center",
+        fontsize=10,
+        color=PALETTE["muted"],
+    )
 
     draw_section(
         ax,
@@ -180,10 +207,16 @@ def create_architecture_diagram():
 
     # Vertical connectors
     ax.annotate(
-        "", xy=(8, 5.9), xytext=(8, 5.7), arrowprops={"arrowstyle": "-|>", "lw": 1.4, "color": PALETTE["muted"]}
+        "",
+        xy=(8, 5.9),
+        xytext=(8, 5.7),
+        arrowprops={"arrowstyle": "-|>", "lw": 1.4, "color": PALETTE["muted"]},
     )
     ax.annotate(
-        "", xy=(8, 3.3), xytext=(8, 3.1), arrowprops={"arrowstyle": "-|>", "lw": 1.4, "color": PALETTE["muted"]}
+        "",
+        xy=(8, 3.3),
+        xytext=(8, 3.1),
+        arrowprops={"arrowstyle": "-|>", "lw": 1.4, "color": PALETTE["muted"]},
     )
 
     # Math callouts (framework-accurate equations)
@@ -198,11 +231,34 @@ def create_architecture_diagram():
         zorder=5,
     )
     ax.add_patch(eq_box)
-    ax.text(7.25, 8.25, "GCD Equations", fontsize=9.5, fontweight="bold", color=PALETTE["dark"])
-    ax.text(7.25, 7.9, r"$E=\omega^2+\alpha S+\beta C^2$", fontsize=9, color=PALETTE["dark"])
-    ax.text(7.25, 7.6, r"$\Phi_c=S(1-F)e^{-\tau_R/\tau_0}$", fontsize=9, color=PALETTE["dark"])
-    ax.text(7.25, 7.3, r"$\Phi_g=\kappa\sqrt{IC}(1+C^2)$", fontsize=9, color=PALETTE["dark"])
-    ax.text(7.25, 7.0, r"$R=(1-|\omega|)(1-S)e^{-C/C_{crit}}$", fontsize=9, color=PALETTE["dark"])
+    ax.text(
+        7.25,
+        8.25,
+        "GCD Equations",
+        fontsize=9.5,
+        fontweight="bold",
+        color=PALETTE["dark"],
+    )
+    ax.text(
+        7.25, 7.9, r"$E=\omega^2+\alpha S+\beta C^2$", fontsize=9, color=PALETTE["dark"]
+    )
+    ax.text(
+        7.25,
+        7.6,
+        r"$\Phi_c=S(1-F)e^{-\tau_R/\tau_0}$",
+        fontsize=9,
+        color=PALETTE["dark"],
+    )
+    ax.text(
+        7.25, 7.3, r"$\Phi_g=\kappa\sqrt{IC}(1+C^2)$", fontsize=9, color=PALETTE["dark"]
+    )
+    ax.text(
+        7.25,
+        7.0,
+        r"$R=(1-|\omega|)(1-S)e^{-C/C_{crit}}$",
+        fontsize=9,
+        color=PALETTE["dark"],
+    )
 
     rcft_box = FancyBboxPatch(
         (7.1, 2.2),
@@ -215,10 +271,27 @@ def create_architecture_diagram():
         zorder=5,
     )
     ax.add_patch(rcft_box)
-    ax.text(7.25, 3.4, "RCFT Equations", fontsize=9.5, fontweight="bold", color=PALETTE["dark"])
-    ax.text(7.25, 3.1, r"$D_f=\log N(\epsilon)/\log(1/\epsilon)$", fontsize=9, color=PALETTE["dark"])
-    ax.text(7.25, 2.8, r"$\Psi_r=\sum \alpha^n\Psi_n$", fontsize=9, color=PALETTE["dark"])
-    ax.text(7.25, 2.5, r"$(\lambda_p,\Theta)$ via FFT", fontsize=9, color=PALETTE["dark"])
+    ax.text(
+        7.25,
+        3.4,
+        "RCFT Equations",
+        fontsize=9.5,
+        fontweight="bold",
+        color=PALETTE["dark"],
+    )
+    ax.text(
+        7.25,
+        3.1,
+        r"$D_f=\log N(\epsilon)/\log(1/\epsilon)$",
+        fontsize=9,
+        color=PALETTE["dark"],
+    )
+    ax.text(
+        7.25, 2.8, r"$\Psi_r=\sum \alpha^n\Psi_n$", fontsize=9, color=PALETTE["dark"]
+    )
+    ax.text(
+        7.25, 2.5, r"$(\lambda_p,\Theta)$ via FFT", fontsize=9, color=PALETTE["dark"]
+    )
 
     # Footer summary
     footer = FancyBboxPatch(
@@ -240,7 +313,13 @@ def create_architecture_diagram():
     )
 
     plt.tight_layout()
-    plt.savefig("architecture_diagram.png", dpi=450, bbox_inches="tight", facecolor="white", edgecolor="none")
+    plt.savefig(
+        "architecture_diagram.png",
+        dpi=450,
+        bbox_inches="tight",
+        facecolor="white",
+        edgecolor="none",
+    )
     print("✓ Created: architecture_diagram.png")
     plt.close()
 
@@ -263,8 +342,23 @@ def create_architecture_grid():
     )
     ax.add_patch(bg)
 
-    ax.text(8, 8.4, "UMCP Architecture (Grid View)", ha="center", fontsize=18, fontweight="bold", color=PALETTE["dark"])
-    ax.text(8, 8.05, "Components grouped by tier", ha="center", fontsize=10, color=PALETTE["muted"])
+    ax.text(
+        8,
+        8.4,
+        "UMCP Architecture (Grid View)",
+        ha="center",
+        fontsize=18,
+        fontweight="bold",
+        color=PALETTE["dark"],
+    )
+    ax.text(
+        8,
+        8.05,
+        "Components grouped by tier",
+        ha="center",
+        fontsize=10,
+        color=PALETTE["muted"],
+    )
 
     col_w = 4.8
     row_h = 2.0
@@ -381,7 +475,13 @@ def create_architecture_grid():
         color=PALETTE["accent"],
     )
 
-    plt.savefig("architecture_grid.png", dpi=450, bbox_inches="tight", facecolor="white", edgecolor="none")
+    plt.savefig(
+        "architecture_grid.png",
+        dpi=450,
+        bbox_inches="tight",
+        facecolor="white",
+        edgecolor="none",
+    )
     print("✓ Created: architecture_grid.png")
     plt.close()
 
@@ -398,8 +498,12 @@ def create_benchmark_comparison():
     x = np.arange(len(categories))
     width = 0.35
 
-    bars1 = ax1.bar(x - width / 2, standard, width, label="Standard", color="#2E86AB", alpha=0.8)
-    bars2 = ax1.bar(x + width / 2, umcp, width, label="UMCP", color="#F77F00", alpha=0.8)
+    bars1 = ax1.bar(
+        x - width / 2, standard, width, label="Standard", color="#2E86AB", alpha=0.8
+    )
+    bars2 = ax1.bar(
+        x + width / 2, umcp, width, label="UMCP", color="#F77F00", alpha=0.8
+    )
 
     ax1.set_ylabel("Time (milliseconds)", fontsize=11)
     ax1.set_title("Validation Speed Comparison", fontsize=13, fontweight="bold")
@@ -412,17 +516,39 @@ def create_benchmark_comparison():
     for bars in [bars1, bars2]:
         for bar in bars:
             height = bar.get_height()
-            ax1.text(bar.get_x() + bar.get_width() / 2.0, height, f"{height:.2f}", ha="center", va="bottom", fontsize=9)
+            ax1.text(
+                bar.get_x() + bar.get_width() / 2.0,
+                height,
+                f"{height:.2f}",
+                ha="center",
+                va="bottom",
+                fontsize=9,
+            )
 
     # Feature comparison
-    features = ["Errors\nCaught", "Contract\nCheck", "Closure\nVerify", "Semantic\nRules", "Provenance\nTrack"]
+    features = [
+        "Errors\nCaught",
+        "Contract\nCheck",
+        "Closure\nVerify",
+        "Semantic\nRules",
+        "Provenance\nTrack",
+    ]
     standard_features = [400, 0, 0, 0, 0]
     umcp_features = [400, 400, 400, 400, 400]
 
     x2 = np.arange(len(features))
 
-    ax2.bar(x2 - width / 2, standard_features, width, label="Standard", color="#2E86AB", alpha=0.8)
-    ax2.bar(x2 + width / 2, umcp_features, width, label="UMCP", color="#F77F00", alpha=0.8)
+    ax2.bar(
+        x2 - width / 2,
+        standard_features,
+        width,
+        label="Standard",
+        color="#2E86AB",
+        alpha=0.8,
+    )
+    ax2.bar(
+        x2 + width / 2, umcp_features, width, label="UMCP", color="#F77F00", alpha=0.8
+    )
 
     ax2.set_ylabel("Checks Performed", fontsize=11)
     ax2.set_title("Validation Features Comparison", fontsize=13, fontweight="bold")
@@ -432,7 +558,13 @@ def create_benchmark_comparison():
     ax2.grid(axis="y", alpha=0.3)
 
     plt.tight_layout()
-    plt.savefig("benchmark_comparison.png", dpi=300, bbox_inches="tight", facecolor="white", edgecolor="none")
+    plt.savefig(
+        "benchmark_comparison.png",
+        dpi=300,
+        bbox_inches="tight",
+        facecolor="white",
+        edgecolor="none",
+    )
     print("✓ Created: benchmark_comparison.png")
     plt.close()
 
@@ -456,8 +588,23 @@ def create_workflow_diagram():
     )
     ax.add_patch(bg)
 
-    ax.text(7, 8.5, "UMCP Workflow", ha="center", fontsize=16, fontweight="bold", color=PALETTE["dark"])
-    ax.text(7, 8.15, "From raw data to validated receipt", ha="center", fontsize=10, color=PALETTE["muted"])
+    ax.text(
+        7,
+        8.5,
+        "UMCP Workflow",
+        ha="center",
+        fontsize=16,
+        fontweight="bold",
+        color=PALETTE["dark"],
+    )
+    ax.text(
+        7,
+        8.15,
+        "From raw data to validated receipt",
+        ha="center",
+        fontsize=10,
+        color=PALETTE["muted"],
+    )
 
     # Step 1: Input
     step1 = FancyBboxPatch(
@@ -476,7 +623,10 @@ def create_workflow_diagram():
 
     # Arrow
     ax.annotate(
-        "", xy=(4.5, 7.1), xytext=(4.1, 7.1), arrowprops={"arrowstyle": "-|>", "lw": 1.6, "color": PALETTE["dark"]}
+        "",
+        xy=(4.5, 7.1),
+        xytext=(4.1, 7.1),
+        arrowprops={"arrowstyle": "-|>", "lw": 1.6, "color": PALETTE["dark"]},
     )
 
     # Step 2: Invariants
@@ -496,7 +646,10 @@ def create_workflow_diagram():
 
     # Arrow
     ax.annotate(
-        "", xy=(8.2, 7.1), xytext=(7.8, 7.1), arrowprops={"arrowstyle": "-|>", "lw": 1.6, "color": PALETTE["dark"]}
+        "",
+        xy=(8.2, 7.1),
+        xytext=(7.8, 7.1),
+        arrowprops={"arrowstyle": "-|>", "lw": 1.6, "color": PALETTE["dark"]},
     )
 
     # Step 3: Closures
@@ -516,7 +669,10 @@ def create_workflow_diagram():
 
     # Arrow down from step 2
     ax.annotate(
-        "", xy=(6.2, 5.8), xytext=(6.2, 6.4), arrowprops={"arrowstyle": "-|>", "lw": 1.6, "color": PALETTE["dark"]}
+        "",
+        xy=(6.2, 5.8),
+        xytext=(6.2, 6.4),
+        arrowprops={"arrowstyle": "-|>", "lw": 1.6, "color": PALETTE["dark"]},
     )
 
     # Step 4: Validation
@@ -536,7 +692,10 @@ def create_workflow_diagram():
 
     # Arrow down
     ax.annotate(
-        "", xy=(6.2, 3.5), xytext=(6.2, 4.1), arrowprops={"arrowstyle": "-|>", "lw": 1.6, "color": PALETTE["dark"]}
+        "",
+        xy=(6.2, 3.5),
+        xytext=(6.2, 4.1),
+        arrowprops={"arrowstyle": "-|>", "lw": 1.6, "color": PALETTE["dark"]},
     )
 
     # Step 5: Receipt
@@ -568,7 +727,9 @@ def create_workflow_diagram():
     )
     ax.add_patch(canon_box)
     ax.text(2.3, 5.0, "Canon", ha="center", fontsize=9, fontweight="bold")
-    ax.text(2.3, 4.65, "anchors.yaml", ha="center", fontsize=7.5, color=PALETTE["muted"])
+    ax.text(
+        2.3, 4.65, "anchors.yaml", ha="center", fontsize=7.5, color=PALETTE["muted"]
+    )
 
     # Contract
     contract_box = FancyBboxPatch(
@@ -583,7 +744,14 @@ def create_workflow_diagram():
     )
     ax.add_patch(contract_box)
     ax.text(11.4, 5.0, "Contract", ha="center", fontsize=9, fontweight="bold")
-    ax.text(11.4, 4.65, "GCD/RCFT.INTSTACK.v1", ha="center", fontsize=7.5, color=PALETTE["muted"])
+    ax.text(
+        11.4,
+        4.65,
+        "GCD/RCFT.INTSTACK.v1",
+        ha="center",
+        fontsize=7.5,
+        color=PALETTE["muted"],
+    )
 
     # Registry
     registry_box = FancyBboxPatch(
@@ -598,7 +766,14 @@ def create_workflow_diagram():
     )
     ax.add_patch(registry_box)
     ax.text(11.4, 2.9, "Registry", ha="center", fontsize=9, fontweight="bold")
-    ax.text(11.4, 2.55, "closures/registry.yaml", ha="center", fontsize=7.5, color=PALETTE["muted"])
+    ax.text(
+        11.4,
+        2.55,
+        "closures/registry.yaml",
+        ha="center",
+        fontsize=7.5,
+        color=PALETTE["muted"],
+    )
 
     # Connect to steps
     ax.plot([3.7, 4.7], [5.1, 6.1], color=PALETTE["muted"], alpha=0.4, linewidth=1)
@@ -634,13 +809,21 @@ def create_workflow_diagram():
         linewidth=1.0,
     )
     ax.add_patch(legend)
-    ax.text(1.0, 5.05, "Math checks", fontsize=9.2, fontweight="bold", color=PALETTE["dark"])
+    ax.text(
+        1.0, 5.05, "Math checks", fontsize=9.2, fontweight="bold", color=PALETTE["dark"]
+    )
     ax.text(1.0, 4.75, r"$IC\approx e^{\kappa}$", fontsize=8.8)
     ax.text(1.0, 4.45, r"$F\approx 1-\omega$", fontsize=8.8)
     ax.text(1.0, 4.15, r"$IC\approx e^{\kappa}$", fontsize=8.8)
 
     plt.tight_layout()
-    plt.savefig("workflow_diagram.png", dpi=450, bbox_inches="tight", facecolor="white", edgecolor="none")
+    plt.savefig(
+        "workflow_diagram.png",
+        dpi=450,
+        bbox_inches="tight",
+        facecolor="white",
+        edgecolor="none",
+    )
     print("✓ Created: workflow_diagram.png")
     plt.close()
 
@@ -663,8 +846,23 @@ def create_workflow_vertical():
     )
     ax.add_patch(bg)
 
-    ax.text(5, 13.3, "UMCP Workflow (Vertical)", ha="center", fontsize=16, fontweight="bold", color=PALETTE["dark"])
-    ax.text(5, 12.9, "Optimized for documents and slides", ha="center", fontsize=10, color=PALETTE["muted"])
+    ax.text(
+        5,
+        13.3,
+        "UMCP Workflow (Vertical)",
+        ha="center",
+        fontsize=16,
+        fontweight="bold",
+        color=PALETTE["dark"],
+    )
+    ax.text(
+        5,
+        12.9,
+        "Optimized for documents and slides",
+        ha="center",
+        fontsize=10,
+        color=PALETTE["muted"],
+    )
 
     steps = [
         ("Step 1", "Raw data", "CSV / JSON", PALETTE["tier0"]),
@@ -713,7 +911,13 @@ def create_workflow_vertical():
     ax.text(4.6, 1.35, "SHA256 checksums", fontsize=8.5)
     ax.text(7.0, 1.35, "Validation status", fontsize=8.5)
 
-    plt.savefig("workflow_vertical.png", dpi=450, bbox_inches="tight", facecolor="white", edgecolor="none")
+    plt.savefig(
+        "workflow_vertical.png",
+        dpi=450,
+        bbox_inches="tight",
+        facecolor="white",
+        edgecolor="none",
+    )
     print("✓ Created: workflow_vertical.png")
     plt.close()
 

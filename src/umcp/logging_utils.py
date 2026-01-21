@@ -18,6 +18,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+# psutil availability check
 try:
     import psutil
 
@@ -41,14 +42,8 @@ class PerformanceMetrics:
         """Mark operation complete and calculate metrics."""
         self.end_time = time.perf_counter()
         self.duration_ms = (self.end_time - self.start_time) * 1000
-
-        if HAS_PSUTIL:
-            try:
-                process = psutil.Process()
-                self.memory_used_mb = process.memory_info().rss / 1024 / 1024
-                self.cpu_percent = process.cpu_percent(interval=0.1)
-            except Exception:
-                pass
+        self.memory_used_mb = None
+        self.cpu_percent = None
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for logging."""
@@ -94,7 +89,10 @@ class StructuredLogger:
             handler.setFormatter(JsonFormatter())
         else:
             handler.setFormatter(
-                logging.Formatter("%(asctime)s [%(levelname)s] %(name)s: %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
+                logging.Formatter(
+                    "%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+                    datefmt="%Y-%m-%d %H:%M:%S",
+                )
             )
 
         self.logger.addHandler(handler)
@@ -137,7 +135,13 @@ class StructuredLogger:
             yield metrics
         except Exception as e:
             metrics.finish()
-            self.error(f"Failed: {name}", error=str(e), error_type=type(e).__name__, **context, **metrics.to_dict())
+            self.error(
+                f"Failed: {name}",
+                error=str(e),
+                error_type=type(e).__name__,
+                **context,
+                **metrics.to_dict(),
+            )
             raise
         else:
             metrics.finish()
@@ -177,7 +181,12 @@ class HealthCheck:
 
         Returns comprehensive health status suitable for monitoring endpoints.
         """
-        health = {"status": "healthy", "timestamp": datetime.now(UTC).isoformat(), "checks": {}, "metrics": {}}
+        health = {
+            "status": "healthy",
+            "timestamp": datetime.now(UTC).isoformat(),
+            "checks": {},
+            "metrics": {},
+        }
 
         # Check: Required directories exist
         try:
@@ -197,7 +206,10 @@ class HealthCheck:
             schemas_dir = repo_root / "schemas"
             if schemas_dir.exists():
                 schema_count = len(list(schemas_dir.glob("*.json")))
-                health["checks"]["schemas"] = {"status": "pass" if schema_count > 0 else "fail", "count": schema_count}
+                health["checks"]["schemas"] = {
+                    "status": "pass" if schema_count > 0 else "fail",
+                    "count": schema_count,
+                }
                 health["metrics"]["schemas_count"] = schema_count
         except Exception as e:
             health["checks"]["schemas"] = {"status": "fail", "error": str(e)}
@@ -214,12 +226,18 @@ class HealthCheck:
 
         # Overall status
         failed_checks = sum(
-            1 for check in health["checks"].values() if isinstance(check, dict) and check.get("status") == "fail"
+            1
+            for check in health["checks"].values()
+            if isinstance(check, dict) and check.get("status") == "fail"
         )
 
         if failed_checks > 0:
             health["status"] = "unhealthy"
-        elif any(check.get("status") == "degraded" for check in health["checks"].values() if isinstance(check, dict)):
+        elif any(
+            check.get("status") == "degraded"
+            for check in health["checks"].values()
+            if isinstance(check, dict)
+        ):
             health["status"] = "degraded"
 
         return health
@@ -229,7 +247,9 @@ class HealthCheck:
 _default_logger: StructuredLogger | None = None
 
 
-def get_logger(name: str = "umcp", json_output: bool = False, include_metrics: bool = True) -> StructuredLogger:
+def get_logger(
+    name: str = "umcp", json_output: bool = False, include_metrics: bool = True
+) -> StructuredLogger:
     """
     Get or create a structured logger instance.
 
@@ -243,5 +263,7 @@ def get_logger(name: str = "umcp", json_output: bool = False, include_metrics: b
     """
     global _default_logger
     if _default_logger is None:
-        _default_logger = StructuredLogger(name=name, json_output=json_output, include_metrics=include_metrics)
+        _default_logger = StructuredLogger(
+            name=name, json_output=json_output, include_metrics=include_metrics
+        )
     return _default_logger

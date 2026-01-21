@@ -29,7 +29,14 @@ class UMCPContractFormatter:
     REQUIRED_TIERS: ClassVar[dict] = {
         "UMA": {
             "tier_level": 0,
-            "required_fields": ["id", "version", "timezone", "embedding", "tier_1_kernel", "typed_censoring"],
+            "required_fields": [
+                "id",
+                "version",
+                "timezone",
+                "embedding",
+                "tier_1_kernel",
+                "typed_censoring",
+            ],
             "axiom_check": "no_return_no_credit",
         },
         "GCD": {
@@ -86,7 +93,9 @@ class UMCPContractFormatter:
         self.warnings: list[str] = []
         self.fixes: list[str] = []
 
-    def format_contract(self, contract_path: Path, output_path: Path | None = None) -> bool:
+    def format_contract(
+        self, contract_path: Path, output_path: Path | None = None
+    ) -> bool:
         """
         Format a UMCP contract file
 
@@ -133,7 +142,9 @@ class UMCPContractFormatter:
         output = output_path or contract_path
         try:
             with open(output, "w") as f:
-                yaml.dump(formatted, f, default_flow_style=False, sort_keys=False, indent=2)
+                yaml.dump(
+                    formatted, f, default_flow_style=False, sort_keys=False, indent=2
+                )
             self.fixes.append(f"Formatted contract written to {output}")
             return True
         except Exception as e:
@@ -203,7 +214,9 @@ class UMCPContractFormatter:
 
         return formatted
 
-    def _ensure_axiom_encoding(self, contract: dict[str, Any], tier: str) -> dict[str, Any]:
+    def _ensure_axiom_encoding(
+        self, contract: dict[str, Any], tier: str
+    ) -> dict[str, Any]:
         """Ensure core axiom is properly encoded"""
         tier_config = self.REQUIRED_TIERS[tier]
         axiom_key = tier_config["axiom_check"]
@@ -226,13 +239,16 @@ class UMCPContractFormatter:
 
             # Check if axiom exists
             axiom_exists = any(
-                a.get("id") == axiom_key or a.get("statement") == self.AXIOM_TEMPLATES[axiom_key]["statement"]
+                a.get("id") == axiom_key
+                or a.get("statement") == self.AXIOM_TEMPLATES[axiom_key]["statement"]
                 for a in contract["contract"]["axioms"]
             )
 
             if not axiom_exists:
                 # Add axiom
-                contract["contract"]["axioms"].insert(0, self.AXIOM_TEMPLATES[axiom_key])
+                contract["contract"]["axioms"].insert(
+                    0, self.AXIOM_TEMPLATES[axiom_key]
+                )
                 self.fixes.append(f"Added {axiom_key} axiom")
 
         return contract
@@ -253,7 +269,9 @@ class UMCPContractFormatter:
         if tier == "UMA":
             typed_censoring = contract_data.get("typed_censoring", {})
             if not typed_censoring.get("no_return_no_credit"):
-                self.errors.append("Core axiom not encoded: no_return_no_credit must be true")
+                self.errors.append(
+                    "Core axiom not encoded: no_return_no_credit must be true"
+                )
         else:
             axioms = contract_data.get("axioms", [])
             axiom_found = any(a.get("id") == axiom_key for a in axioms)
@@ -315,11 +333,19 @@ def format_all_contracts(repo_root: Path, formatter: UMCPContractFormatter) -> i
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Auto-format and validate UMCP contract files")
+    parser = argparse.ArgumentParser(
+        description="Auto-format and validate UMCP contract files"
+    )
     parser.add_argument("contract", nargs="?", help="Contract file to format")
-    parser.add_argument("--all", action="store_true", help="Format all contracts in repository")
-    parser.add_argument("--validate", action="store_true", help="Validate without formatting")
-    parser.add_argument("--strict", action="store_true", help="Strict mode (warnings become errors)")
+    parser.add_argument(
+        "--all", action="store_true", help="Format all contracts in repository"
+    )
+    parser.add_argument(
+        "--validate", action="store_true", help="Validate without formatting"
+    )
+    parser.add_argument(
+        "--strict", action="store_true", help="Strict mode (warnings become errors)"
+    )
     parser.add_argument("--output", "-o", help="Output path (default: overwrite input)")
 
     args = parser.parse_args()

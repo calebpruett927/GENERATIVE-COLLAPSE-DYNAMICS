@@ -40,7 +40,9 @@ def test_all_contracts_conform_to_schema(repo_paths: RepoPaths) -> None:
     schema = load_schema(repo_paths, "contract.schema.json")
     contract_files = sorted(repo_paths.contracts_dir.glob("*.yaml"))
 
-    assert contract_files, f"No contract files found in {repo_paths.contracts_dir.as_posix()}"
+    assert (
+        contract_files
+    ), f"No contract files found in {repo_paths.contracts_dir.as_posix()}"
 
     failures: list[tuple[str, list[str]]] = []
     for cf in contract_files:
@@ -58,7 +60,9 @@ def test_all_contracts_conform_to_schema(repo_paths: RepoPaths) -> None:
         raise AssertionError("\n".join(msg_lines))
 
 
-def test_closure_registry_and_referenced_files_conform_to_schema(repo_paths: RepoPaths) -> None:
+def test_closure_registry_and_referenced_files_conform_to_schema(
+    repo_paths: RepoPaths,
+) -> None:
     """
     Validates:
       - closures/registry.yaml against schemas/closures.schema.json
@@ -79,18 +83,18 @@ def test_closure_registry_and_referenced_files_conform_to_schema(repo_paths: Rep
 
     reg_obj: Any = registry.get("registry", {})
     closures_obj: Any = reg_obj.get("closures", {})
-    assert isinstance(closures_obj, dict) and closures_obj, (
-        "closures/registry.yaml must include a non-empty mapping at registry.closures."
-    )
+    assert (
+        isinstance(closures_obj, dict) and closures_obj
+    ), "closures/registry.yaml must include a non-empty mapping at registry.closures."
 
     ref_paths: list[str] = []
     for _, spec in closures_obj.items():
         if isinstance(spec, dict) and isinstance(spec.get("path"), str):
             ref_paths.append(spec["path"])
 
-    assert ref_paths, (
-        "closures/registry.yaml must reference at least one closure file via registry.closures.<name>.path."
-    )
+    assert (
+        ref_paths
+    ), "closures/registry.yaml must reference at least one closure file via registry.closures.<name>.path."
 
     failures: list[tuple[str, list[str]]] = []
     for rel_path in ref_paths:

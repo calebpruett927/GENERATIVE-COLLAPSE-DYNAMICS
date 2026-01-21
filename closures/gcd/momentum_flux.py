@@ -58,7 +58,11 @@ import numpy as np
 
 
 def compute_momentum_flux(
-    kappa_series: np.ndarray, C_series: np.ndarray, omega_series: np.ndarray, dt: float = 1.0, tol: float = 1e-10
+    kappa_series: np.ndarray,
+    C_series: np.ndarray,
+    omega_series: np.ndarray,
+    dt: float = 1.0,
+    tol: float = 1e-10,
 ) -> dict[str, Any]:
     """
     Compute momentum flux from time series of Tier-1 GCD invariants.
@@ -140,7 +144,9 @@ def compute_momentum_flux(
     }
 
 
-def compute_scalar_momentum_flux(kappa: float, kappa_prev: float, C: float, omega: float, dt: float = 1.0) -> dict[str, Any]:
+def compute_scalar_momentum_flux(
+    kappa: float, kappa_prev: float, C: float, omega: float, dt: float = 1.0
+) -> dict[str, Any]:
     """
     Compute momentum flux for single time step (scalar version).
 
@@ -211,7 +217,9 @@ if __name__ == "__main__":
 
     # Test 4: Scalar version
     print("\nTest 4: Scalar Momentum Flux (Single Step)")
-    result = compute_scalar_momentum_flux(kappa=-2.5, kappa_prev=-2.0, C=0.08, omega=0.05, dt=1.0)
+    result = compute_scalar_momentum_flux(
+        kappa=-2.5, kappa_prev=-2.0, C=0.08, omega=0.05, dt=1.0
+    )
     print(f"  Φ_momentum: {result['phi_momentum']:.6f}")
     print(f"  dκ/dt: {result['dkappa_dt']:.6f}")
     print(f"  Regime: {result['regime']}")

@@ -300,7 +300,14 @@ def check_extension(name: str) -> bool:
     return _registry.check_installed(name)
 
 
-def register_extension(name: str, module: str, cls: str, description: str, extension_type: str = "custom", **kwargs):
+def register_extension(
+    name: str,
+    module: str,
+    cls: str,
+    description: str,
+    extension_type: str = "custom",
+    **kwargs,
+):
     """
     Register a custom extension
 
@@ -369,7 +376,8 @@ if __name__ == "__main__":
     # Show usage examples
     print("\nUsage Examples:")
     print("-" * 80)
-    print("""
+    print(
+        """
 # List all extensions
 from umcp_extensions import list_extensions
 extensions = list_extensions()
@@ -388,7 +396,8 @@ if check_extension('api'):
 # Install extension dependencies
 from umcp_extensions import install_extension
 install_extension('visualization')
-""")
+"""
+    )
 
 
 def main():
@@ -399,7 +408,8 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="UMCP Extension Manager", formatter_class=argparse.RawDescriptionHelpFormatter
+        description="UMCP Extension Manager",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
 
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
@@ -412,11 +422,15 @@ def main():
     info_parser.add_argument("extension", help="Extension name")
 
     # Check command
-    check_parser = subparsers.add_parser("check", help="Check if extension is available")
+    check_parser = subparsers.add_parser(
+        "check", help="Check if extension is available"
+    )
     check_parser.add_argument("extension", help="Extension name")
 
     # Install command
-    install_parser = subparsers.add_parser("install", help="Install extension dependencies")
+    install_parser = subparsers.add_parser(
+        "install", help="Install extension dependencies"
+    )
     install_parser.add_argument("extension", help="Extension name")
 
     # Run command

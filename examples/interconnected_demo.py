@@ -173,7 +173,9 @@ def main():
         kernel = contract_obj["tier_1_kernel"]
         invariant_names = kernel.get("invariants", [])
         print(f"  ✓ Contract defines {len(invariant_names)} Tier-1 invariants")
-        print(f"    Invariants: {', '.join([inv.get('symbol', '') for inv in invariant_names])}")
+        print(
+            f"    Invariants: {', '.join([inv.get('symbol', '') for inv in invariant_names])}"
+        )
 
     # Check that invariants match regime classification
     omega_val = float(inv["omega"])

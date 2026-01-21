@@ -66,7 +66,9 @@ class ClosureLoader:
         """Load and cache the closures registry."""
         if self._registry is None:
             if not self.registry_path.exists():
-                raise FileNotFoundError(f"Closures registry not found: {self.registry_path}")
+                raise FileNotFoundError(
+                    f"Closures registry not found: {self.registry_path}"
+                )
             with open(self.registry_path) as f:
                 self._registry = yaml.safe_load(f)
         return self._registry
@@ -118,7 +120,7 @@ class ClosureLoader:
         self._loaded_modules[name] = module
         return module
 
-    def get_closure_function(self, name: str) -> Callable:
+    def get_closure_function(self, name: str) -> Callable[..., Any]:
         """
         Get the compute function from a closure module.
 
@@ -130,10 +132,12 @@ class ClosureLoader:
         """
         module = self.load_closure_module(name)
         if not hasattr(module, "compute"):
-            raise AttributeError(f"Closure module {name} does not have a 'compute' function")
-        return module.compute
+            raise AttributeError(
+                f"Closure module {name} does not have a 'compute' function"
+            )
+        return module.compute  # type: ignore[no-any-return]
 
-    def execute_closure(self, name: str, **kwargs) -> dict[str, Any]:
+    def execute_closure(self, name: str, **kwargs: Any) -> dict[str, Any]:
         """
         Execute a closure with the given parameters.
 
@@ -149,7 +153,7 @@ class ClosureLoader:
             >>> result = loader.execute_closure("F_from_omega", omega=10.0, r=0.5, m=1.0)
         """
         compute_fn = self.get_closure_function(name)
-        return compute_fn(**kwargs)
+        return compute_fn(**kwargs)  # type: ignore[no-any-return]
 
     def validate_closure_exists(self, name: str) -> bool:
         """

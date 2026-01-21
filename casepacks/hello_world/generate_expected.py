@@ -44,10 +44,27 @@ def main() -> None:
     # Write psi.csv (wide)
     with PSI_CSV.open("w", encoding="utf-8", newline="") as f:
         w = csv.writer(f)
-        w.writerow(["t", "c_1", "c_2", "c_3", "oor_1", "oor_2", "oor_3", "miss_1", "miss_2", "miss_3"])
-        oor = [("true" if (c < 0.0 or c > 1.0) else "false") for c in cs]  # after clip, always false
+        w.writerow(
+            [
+                "t",
+                "c_1",
+                "c_2",
+                "c_3",
+                "oor_1",
+                "oor_2",
+                "oor_3",
+                "miss_1",
+                "miss_2",
+                "miss_3",
+            ]
+        )
+        oor = [
+            ("true" if (c < 0.0 or c > 1.0) else "false") for c in cs
+        ]  # after clip, always false
         miss = ["false", "false", "false"]
-        w.writerow([t, cs[0], cs[1], cs[2], oor[0], oor[1], oor[2], miss[0], miss[1], miss[2]])
+        w.writerow(
+            [t, cs[0], cs[1], cs[2], oor[0], oor[1], oor[2], miss[0], miss[1], miss[2]]
+        )
 
     # Compute invariants with uniform weights
     n = len(cs)
@@ -94,9 +111,11 @@ def main() -> None:
                 "kappa": kappa,
                 "IC": IC,
                 "regime": {
-                    "label": "Stable"
-                    if (omega < 0.038 and F > 0.90 and S < 0.15 and C < 0.14)
-                    else ("Collapse" if omega >= 0.30 else "Watch"),
+                    "label": (
+                        "Stable"
+                        if (omega < 0.038 and F > 0.90 and S < 0.15 and C < 0.14)
+                        else ("Collapse" if omega >= 0.30 else "Watch")
+                    ),
                     "critical_overlay": False,
                 },
                 "kernel_optional": {"IC_min": min(cs)},

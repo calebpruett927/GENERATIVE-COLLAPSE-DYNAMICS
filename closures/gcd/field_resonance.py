@@ -28,7 +28,9 @@ Resonance regime thresholds:
 import math
 
 
-def compute_field_resonance(omega: float, S: float, C: float, C_crit: float = 0.2) -> dict[str, float]:
+def compute_field_resonance(
+    omega: float, S: float, C: float, C_crit: float = 0.2
+) -> dict[str, float]:
     """
     Compute field resonance from GCD Tier-1 invariants.
 
@@ -93,10 +95,30 @@ def main():
 
     # Test cases spanning regime spectrum
     test_cases = [
-        {"name": "Zero Entropy (ω=0, S=0, C=0, perfect resonance)", "omega": 0.0, "S": 0.0, "C": 0.0},
-        {"name": "Stable Regime (low drift, low entropy, low curvature)", "omega": 0.01, "S": 0.056, "C": 0.05},
-        {"name": "Watch Regime (moderate drift, moderate entropy)", "omega": 0.15, "S": 0.20, "C": 0.15},
-        {"name": "Collapse Boundary (high drift, high entropy, high curvature)", "omega": 0.30, "S": 0.50, "C": 0.50},
+        {
+            "name": "Zero Entropy (ω=0, S=0, C=0, perfect resonance)",
+            "omega": 0.0,
+            "S": 0.0,
+            "C": 0.0,
+        },
+        {
+            "name": "Stable Regime (low drift, low entropy, low curvature)",
+            "omega": 0.01,
+            "S": 0.056,
+            "C": 0.05,
+        },
+        {
+            "name": "Watch Regime (moderate drift, moderate entropy)",
+            "omega": 0.15,
+            "S": 0.20,
+            "C": 0.15,
+        },
+        {
+            "name": "Collapse Boundary (high drift, high entropy, high curvature)",
+            "omega": 0.30,
+            "S": 0.50,
+            "C": 0.50,
+        },
     ]
 
     for tc in test_cases:

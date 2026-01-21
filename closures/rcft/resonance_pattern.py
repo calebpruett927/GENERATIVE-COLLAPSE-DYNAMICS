@@ -27,7 +27,9 @@ from typing import Any
 import numpy as np
 
 
-def compute_resonance_pattern(field_series: np.ndarray, dt: float = 1.0, tol: float = 1e-6) -> dict[str, Any]:
+def compute_resonance_pattern(
+    field_series: np.ndarray, dt: float = 1.0, tol: float = 1e-6
+) -> dict[str, Any]:
     """
     Analyze resonance patterns in a field time series using Fourier analysis.
 
@@ -127,8 +129,13 @@ def compute_resonance_pattern(field_series: np.ndarray, dt: float = 1.0, tol: fl
     harmonic_strength = 0.0
     if dominant_idx > 0 and 2 * dominant_idx < len(power_spectrum):
         harmonic_indices = [2 * dominant_idx, 3 * dominant_idx]
-        harmonic_powers = [power_spectrum[idx] if idx < len(power_spectrum) else 0.0 for idx in harmonic_indices]
-        harmonic_strength = np.sum(harmonic_powers) / (power_spectrum[dominant_idx] + tol)
+        harmonic_powers = [
+            power_spectrum[idx] if idx < len(power_spectrum) else 0.0
+            for idx in harmonic_indices
+        ]
+        harmonic_strength = np.sum(harmonic_powers) / (
+            power_spectrum[dominant_idx] + tol
+        )
 
     # Compute phase variance for pattern classification
     # Reconstruct instantaneous phase from Hilbert transform
@@ -151,7 +158,10 @@ def compute_resonance_pattern(field_series: np.ndarray, dt: float = 1.0, tol: fl
         "max_power": float(np.max(power_spectrum)),
         "phase_variance": float(phase_variance),
         "spectral_entropy": float(
-            -np.sum((power_spectrum / np.sum(power_spectrum)) * np.log(power_spectrum / np.sum(power_spectrum) + tol))
+            -np.sum(
+                (power_spectrum / np.sum(power_spectrum))
+                * np.log(power_spectrum / np.sum(power_spectrum) + tol)
+            )
         ),
     }
 
@@ -168,7 +178,11 @@ def compute_resonance_pattern(field_series: np.ndarray, dt: float = 1.0, tol: fl
 
 
 def compute_multi_field_resonance(
-    R_series: np.ndarray, Phi_gen_series: np.ndarray, E_series: np.ndarray, dt: float = 1.0, tol: float = 1e-6
+    R_series: np.ndarray,
+    Phi_gen_series: np.ndarray,
+    E_series: np.ndarray,
+    dt: float = 1.0,
+    tol: float = 1e-6,
 ) -> dict[str, Any]:
     """
     Analyze resonance patterns across multiple GCD Tier-1 fields simultaneously.
@@ -199,19 +213,29 @@ def compute_multi_field_resonance(
         Phi_E_corr_matrix = np.corrcoef(Phi_gen_series, E_series)
 
     # Handle NaN from constant fields (zero variance)
-    R_Phi_corr = R_Phi_corr_matrix[0, 1] if not np.isnan(R_Phi_corr_matrix[0, 1]) else 0.0
+    R_Phi_corr = (
+        R_Phi_corr_matrix[0, 1] if not np.isnan(R_Phi_corr_matrix[0, 1]) else 0.0
+    )
     R_E_corr = R_E_corr_matrix[0, 1] if not np.isnan(R_E_corr_matrix[0, 1]) else 0.0
-    Phi_E_corr = Phi_E_corr_matrix[0, 1] if not np.isnan(Phi_E_corr_matrix[0, 1]) else 0.0
+    Phi_E_corr = (
+        Phi_E_corr_matrix[0, 1] if not np.isnan(Phi_E_corr_matrix[0, 1]) else 0.0
+    )
 
     # Phase difference between fields
-    phase_diff_R_Phi = (R_pattern["Theta_phase"] - Phi_pattern["Theta_phase"]) % (2 * np.pi)
+    phase_diff_R_Phi = (R_pattern["Theta_phase"] - Phi_pattern["Theta_phase"]) % (
+        2 * np.pi
+    )
     phase_diff_R_E = (R_pattern["Theta_phase"] - E_pattern["Theta_phase"]) % (2 * np.pi)
 
     # Dominant wavelength (use R as primary)
     lambda_dominant = R_pattern["lambda_pattern"]
 
     # Overall pattern type (majority vote)
-    pattern_types = [R_pattern["pattern_type"], Phi_pattern["pattern_type"], E_pattern["pattern_type"]]
+    pattern_types = [
+        R_pattern["pattern_type"],
+        Phi_pattern["pattern_type"],
+        E_pattern["pattern_type"],
+    ]
     pattern_type = max(set(pattern_types), key=pattern_types.count)
 
     return {
@@ -221,14 +245,27 @@ def compute_multi_field_resonance(
         "R_pattern": R_pattern,
         "Phi_pattern": Phi_pattern,
         "E_pattern": E_pattern,
-        "cross_correlations": {"R_Phi": float(R_Phi_corr), "R_E": float(R_E_corr), "Phi_E": float(Phi_E_corr)},
-        "phase_differences": {"R_Phi": float(phase_diff_R_Phi), "R_E": float(phase_diff_R_E)},
+        "cross_correlations": {
+            "R_Phi": float(R_Phi_corr),
+            "R_E": float(R_E_corr),
+            "Phi_E": float(Phi_E_corr),
+        },
+        "phase_differences": {
+            "R_Phi": float(phase_diff_R_Phi),
+            "R_E": float(phase_diff_R_E),
+        },
         "coherence": {
             "R": R_pattern["phase_coherence"],
             "Phi": Phi_pattern["phase_coherence"],
             "E": E_pattern["phase_coherence"],
             "mean": float(
-                np.mean([R_pattern["phase_coherence"], Phi_pattern["phase_coherence"], E_pattern["phase_coherence"]])
+                np.mean(
+                    [
+                        R_pattern["phase_coherence"],
+                        Phi_pattern["phase_coherence"],
+                        E_pattern["phase_coherence"],
+                    ]
+                )
             ),
         },
     }

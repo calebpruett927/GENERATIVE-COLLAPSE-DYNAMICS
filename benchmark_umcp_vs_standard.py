@@ -33,7 +33,9 @@ class StandardValidator:
                 self.schemas[schema_name] = json.load(f)
         return self.schemas[schema_name]
 
-    def validate_file(self, file_path: Path, schema_name: str) -> tuple[bool, list[str]]:
+    def validate_file(
+        self, file_path: Path, schema_name: str
+    ) -> tuple[bool, list[str]]:
         """Validate a file against a schema. Returns (is_valid, errors)."""
         schema = self.load_schema(schema_name)
         if not schema:
@@ -51,7 +53,10 @@ class StandardValidator:
                 return True, []
 
             validator = jsonschema.Draft7Validator(schema)
-            errors = [f"{'.'.join(str(p) for p in err.path)}: {err.message}" for err in validator.iter_errors(instance)]
+            errors = [
+                f"{'.'.join(str(p) for p in err.path)}: {err.message}"
+                for err in validator.iter_errors(instance)
+            ]
 
             return len(errors) == 0, errors
         except Exception as e:
@@ -81,7 +86,10 @@ class UMCPValidator:
                         continue
                     # Try different ID field names
                     contract_id = (
-                        contract.get("contract_id") or contract.get("id") or contract.get("name") or contract_file.stem
+                        contract.get("contract_id")
+                        or contract.get("id")
+                        or contract.get("name")
+                        or contract_file.stem
                     )
                     self.contracts[contract_id] = contract
             except Exception:
@@ -100,7 +108,9 @@ class UMCPValidator:
         except Exception:
             self.closures = {"entries": []}
 
-    def validate_with_umcp(self, file_path: Path, schema_name: str) -> tuple[bool, list[str], dict[str, Any]]:
+    def validate_with_umcp(
+        self, file_path: Path, schema_name: str
+    ) -> tuple[bool, list[str], dict[str, Any]]:
         """
         Full UMCP validation including:
         - Schema validation
@@ -147,7 +157,12 @@ def benchmark_validation(repo_root: Path, runs: int = 100) -> dict[str, Any]:
 
     results = {
         "standard": {"times": [], "errors_caught": 0, "false_positives": 0},
-        "umcp": {"times": [], "errors_caught": 0, "false_positives": 0, "metadata_generated": 0},
+        "umcp": {
+            "times": [],
+            "errors_caught": 0,
+            "false_positives": 0,
+            "metadata_generated": 0,
+        },
     }
 
     # Test files - only use files that exist
@@ -197,7 +212,9 @@ def benchmark_validation(repo_root: Path, runs: int = 100) -> dict[str, Any]:
             file_path = repo_root / file_rel
 
             start = time.perf_counter()
-            is_valid, errors, metadata = umcp_validator.validate_with_umcp(file_path, schema)
+            is_valid, errors, metadata = umcp_validator.validate_with_umcp(
+                file_path, schema
+            )
             elapsed = time.perf_counter() - start
 
             results["umcp"]["times"].append(elapsed)
@@ -258,7 +275,9 @@ def main():
     if standard_stats["mean"] > 0:
         overhead_mean = (umcp_stats["mean"] / standard_stats["mean"] - 1) * 100
         overhead_median = (
-            (umcp_stats["median"] / standard_stats["median"] - 1) * 100 if standard_stats["median"] > 0 else 0
+            (umcp_stats["median"] / standard_stats["median"] - 1) * 100
+            if standard_stats["median"] > 0
+            else 0
         )
     else:
         overhead_mean = 0
@@ -270,9 +289,15 @@ def main():
     print(
         f"{'Median':<20} {standard_stats['median'] * 1000:.4f} ms      {umcp_stats['median'] * 1000:.4f} ms      {overhead_median:+.1f}%"
     )
-    print(f"{'Std Dev':<20} {standard_stats['stdev'] * 1000:.4f} ms      {umcp_stats['stdev'] * 1000:.4f} ms")
-    print(f"{'Min':<20} {standard_stats['min'] * 1000:.4f} ms      {umcp_stats['min'] * 1000:.4f} ms")
-    print(f"{'Max':<20} {standard_stats['max'] * 1000:.4f} ms      {umcp_stats['max'] * 1000:.4f} ms")
+    print(
+        f"{'Std Dev':<20} {standard_stats['stdev'] * 1000:.4f} ms      {umcp_stats['stdev'] * 1000:.4f} ms"
+    )
+    print(
+        f"{'Min':<20} {standard_stats['min'] * 1000:.4f} ms      {umcp_stats['min'] * 1000:.4f} ms"
+    )
+    print(
+        f"{'Max':<20} {standard_stats['max'] * 1000:.4f} ms      {umcp_stats['max'] * 1000:.4f} ms"
+    )
     print(
         f"{'Total ({runs} runs)':<20} {standard_stats['total'] * 1000:.2f} ms      {umcp_stats['total'] * 1000:.2f} ms"
     )
@@ -281,7 +306,9 @@ def main():
     print("-" * 80)
     print(f"{'Metric':<30} {'Standard':<25} {'UMCP':<25}")
     print("-" * 80)
-    print(f"{'Errors Caught':<30} {results['standard']['errors_caught']:<25} {results['umcp']['errors_caught']:<25}")
+    print(
+        f"{'Errors Caught':<30} {results['standard']['errors_caught']:<25} {results['umcp']['errors_caught']:<25}"
+    )
     print(
         f"{'False Positives':<30} {results['standard']['false_positives']:<25} {results['umcp']['false_positives']:<25}"
     )
@@ -289,12 +316,16 @@ def main():
     print(f"{'Contract Conformance':<30} {'No':<25} {'Yes':<25}")
     print(f"{'Closure Verification':<30} {'No':<25} {'Yes':<25}")
     print(f"{'Semantic Rules':<30} {'No':<25} {'Yes':<25}")
-    print(f"{'Metadata Generated':<30} {0:<25} {results['umcp']['metadata_generated']:<25}")
+    print(
+        f"{'Metadata Generated':<30} {0:<25} {results['umcp']['metadata_generated']:<25}"
+    )
 
     print("\n📈 UMCP Value-Add")
     print("-" * 80)
     print(f"Speed overhead: {overhead_mean:+.1f}% (cost of comprehensive validation)")
-    print("Additional checks: Contract conformance, closure verification, semantic rules")
+    print(
+        "Additional checks: Contract conformance, closure verification, semantic rules"
+    )
     print("Provenance tracking: Full audit trail with git commit, timestamps, SHA256")
     print("Reproducibility: Byte-for-byte validation reruns guaranteed")
 

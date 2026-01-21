@@ -85,12 +85,12 @@ class UMCPFiles:
         self.env_txt = self.integrity_dir / "env.txt"
         self.code_version_txt = self.integrity_dir / "code_version.txt"
 
-    def load_yaml(self, path: Path) -> dict[str, Any]:
+    def load_yaml(self, path: Path) -> Any:
         """Load a YAML file."""
         with open(path) as f:
             return yaml.safe_load(f)
 
-    def load_json(self, path: Path) -> dict[str, Any]:
+    def load_json(self, path: Path) -> Any:
         """Load a JSON file."""
         with open(path) as f:
             return json.load(f)

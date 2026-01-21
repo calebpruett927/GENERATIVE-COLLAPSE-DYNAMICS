@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 """
 UMCP Public Audit API
 
@@ -13,6 +14,10 @@ Endpoints:
     GET /ledger - Historical validation ledger
     GET /stats - Aggregate statistics
     GET /regime - Current regime classification
+
+Authentication:
+    All endpoints are public by default. No API token required for local/dev use.
+    For production, add authentication (see QUICKSTART_EXTENSIONS.md for JWT example).
 """
 
 import csv
@@ -31,7 +36,9 @@ except ImportError:
 
 
 app = FastAPI(
-    title="UMCP Audit API", description="Public API for UMCP validation receipts and regime statistics", version="1.0.0"
+    title="UMCP Audit API",
+    description="Public API for UMCP validation receipts and regime statistics",
+    version="1.0.0",
 )
 
 
@@ -98,7 +105,9 @@ async def root():
 @app.get("/health", response_model=HealthResponse)
 async def health():
     """Health check endpoint"""
-    return HealthResponse(status="ok", timestamp=datetime.now(UTC).isoformat(), version="1.0.0")
+    return HealthResponse(
+        status="ok", timestamp=datetime.now(UTC).isoformat(), version="1.0.0"
+    )
 
 
 @app.get("/latest-receipt")
@@ -108,14 +117,18 @@ async def latest_receipt():
     receipt_path = repo_root / "receipt.json"
 
     if not receipt_path.exists():
-        raise HTTPException(status_code=404, detail="No receipt found. Run 'umcp validate' first.")
+        raise HTTPException(
+            status_code=404, detail="No receipt found. Run 'umcp validate' first."
+        )
 
     try:
         with open(receipt_path) as f:
             receipt = json.load(f)
         return JSONResponse(content=receipt)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error loading receipt: {e!s}") from e
+        raise HTTPException(
+            status_code=500, detail=f"Error loading receipt: {e!s}"
+        ) from e
 
 
 @app.get("/ledger")
@@ -125,7 +138,10 @@ async def get_ledger():
     ledger_path = repo_root / "ledger" / "return_log.csv"
 
     if not ledger_path.exists():
-        raise HTTPException(status_code=404, detail="No ledger found. Run 'umcp validate' to start collecting data.")
+        raise HTTPException(
+            status_code=404,
+            detail="No ledger found. Run 'umcp validate' to start collecting data.",
+        )
 
     try:
         with open(ledger_path) as f:
@@ -134,7 +150,9 @@ async def get_ledger():
 
         return JSONResponse(content={"records": records, "count": len(records)})
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error loading ledger: {e!s}") from e
+        raise HTTPException(
+            status_code=500, detail=f"Error loading ledger: {e!s}"
+        ) from e
 
 
 @app.get("/stats", response_model=StatsResponse)
@@ -144,7 +162,10 @@ async def get_stats():
     ledger_path = repo_root / "ledger" / "return_log.csv"
 
     if not ledger_path.exists():
-        raise HTTPException(status_code=404, detail="No ledger found. Run 'umcp validate' to start collecting data.")
+        raise HTTPException(
+            status_code=404,
+            detail="No ledger found. Run 'umcp validate' to start collecting data.",
+        )
 
     try:
         with open(ledger_path) as f:
@@ -192,7 +213,9 @@ async def get_stats():
             latest_timestamp=latest.get("timestamp"),
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error computing stats: {e!s}") from e
+        raise HTTPException(
+            status_code=500, detail=f"Error computing stats: {e!s}"
+        ) from e
 
 
 @app.get("/regime", response_model=RegimeInfo)
@@ -202,7 +225,9 @@ async def get_current_regime():
     inv_path = repo_root / "outputs" / "invariants.csv"
 
     if not inv_path.exists():
-        raise HTTPException(status_code=404, detail="No invariants found. Run 'umcp validate' first.")
+        raise HTTPException(
+            status_code=404, detail="No invariants found. Run 'umcp validate' first."
+        )
 
     try:
         with open(inv_path) as f:
@@ -220,9 +245,18 @@ async def get_current_regime():
 
         regime = classify_regime(omega, F, S, C)
 
-        return RegimeInfo(regime=regime, omega=omega, F=F, S=S, C=C, timestamp=datetime.now(UTC).isoformat())
+        return RegimeInfo(
+            regime=regime,
+            omega=omega,
+            F=F,
+            S=S,
+            C=C,
+            timestamp=datetime.now(UTC).isoformat(),
+        )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error loading regime: {e!s}") from e
+        raise HTTPException(
+            status_code=500, detail=f"Error loading regime: {e!s}"
+        ) from e
 
 
 if __name__ == "__main__":
@@ -279,9 +313,25 @@ class UMCPAuditAPI:
             "requires": UMCPAuditAPI.requires,
             "endpoints": [
                 {"path": "/health", "method": "GET", "description": "Health check"},
-                {"path": "/latest-receipt", "method": "GET", "description": "Latest validation receipt"},
-                {"path": "/ledger", "method": "GET", "description": "Historical validation ledger"},
-                {"path": "/stats", "method": "GET", "description": "Aggregate statistics"},
-                {"path": "/regime", "method": "GET", "description": "Current regime classification"},
+                {
+                    "path": "/latest-receipt",
+                    "method": "GET",
+                    "description": "Latest validation receipt",
+                },
+                {
+                    "path": "/ledger",
+                    "method": "GET",
+                    "description": "Historical validation ledger",
+                },
+                {
+                    "path": "/stats",
+                    "method": "GET",
+                    "description": "Aggregate statistics",
+                },
+                {
+                    "path": "/regime",
+                    "method": "GET",
+                    "description": "Current regime classification",
+                },
             ],
         }
