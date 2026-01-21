@@ -173,7 +173,6 @@ a98c2e596fa28eac73feb6843a0951a9a37c91b44074abb9f0664a52ba8809cc  ./.mypy_cache/
 df364d57d4f20509d89862a9c35f86d8ebbadba58e2c8b6e5decd1aaefb71180  ./.mypy_cache/3.11/zipimport.data.json
 9553d070bda651c0818ac87b9e73bd3f4fb3f97d14b7a047e2c70b4191adf202  ./.mypy_cache/3.11/zipimport.meta.json
 0e6b2f7b0215571c29e74331841de6a5f2fa0446c892f56b2fddc9edd2666ebf  ./.pre-commit-config.yaml
-73fd6fccdd802c419a6b2d983d6c3173b7da97558ac4b589edec2dfe443db9ad  ./.pytest_cache/README.md
 8b94f463fd101670b294003eadc7da29079012e04b40460631a175e42ffcd3be  ./.venv/etc/jupyter/nbconfig/notebook.d/pydeck.json
 b07698c4e36d5440d9db8cbc01deea4658b10f88883c2da2a47d56efdfae3db1  ./.venv/lib/python3.12/site-packages/PIL/AvifImagePlugin.py
 3e19597c846611f9a8adb85965e48ce5e79b1a8d448bb7cbfa547d5e57d36590  ./.venv/lib/python3.12/site-packages/PIL/BdfFontFile.py
@@ -379,7 +378,6 @@ b42c9ffd054886bd764c94e41077db35276ab2f30343c1f077c278a3904e8cc1  ./.venv/lib/py
 11ce60c7ed6dc1d99dff47ececb0ce35282de4d39e51301142317b3aadbc8b77  ./.venv/lib/python3.12/site-packages/altair/expr/core.py
 05378c0eaf9814f48e29dc7403ecb4559afa6750b2c1261ebfa00f9c1296ebc7  ./.venv/lib/python3.12/site-packages/altair/expr/funcs.py
 bee5bf5a92fe8b4f8969329b0cf4e93b040dbdb0ea3bd1ae93755e8fa3e11fc0  ./.venv/lib/python3.12/site-packages/altair/jupyter/__init__.py
-8b0cebca1014826f870fb2aea6f295d93298e54ef84bb98bc8629ed2b801e03f  ./.venv/lib/python3.12/site-packages/altair/jupyter/js/README.md
 b62225fa0eba6c7e6fe611621bb5be5b0a11fc24954bdef43fc3d6c2eeff8f60  ./.venv/lib/python3.12/site-packages/altair/jupyter/jupyter_chart.py
 42ccf3147ac77d4345df269032d82e903fdfdc06fb345337cae82fd1d7ca97a3  ./.venv/lib/python3.12/site-packages/altair/theme.py
 db135b3768e599ccad26bff5be04aff9a999c4da59f6c4c48b8f177e0978dbde  ./.venv/lib/python3.12/site-packages/altair/typing/__init__.py
@@ -4954,7 +4952,6 @@ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  ./.venv/lib/py
 d29c818b1a17dfc7e57533ced55c2c862fc7d170400abcfc7ac6282f8a3bd4a2  ./.venv/lib/python3.12/site-packages/pyarrow/tests/arrow_39313.py
 b5929bfed44b7f11daa2c0e4f58bb618b12c26331aaee5c3e422a16caffa1eaf  ./.venv/lib/python3.12/site-packages/pyarrow/tests/arrow_7980.py
 ca16c75940119e94689e6c55b5790fbfb6013abfcaf81d034567e4ad6e309c21  ./.venv/lib/python3.12/site-packages/pyarrow/tests/conftest.py
-ff85f95eccd9a90b56015133e4dd556b8572c9ac864203432ab71d317d886f8b  ./.venv/lib/python3.12/site-packages/pyarrow/tests/data/orc/README.md
 f617571c006b56991ba6366051fb77f643852f6c5219e1b8184b9ad0799e96eb  ./.venv/lib/python3.12/site-packages/pyarrow/tests/interchange/__init__.py
 db77b9b692812fe7a4039b96a4cebe7fa1d53c5f77ec79f37ee9ded13cbd9a8a  ./.venv/lib/python3.12/site-packages/pyarrow/tests/interchange/test_conversion.py
 030ab00fc6f6815d5fe47111b731ba52d388b2114669f508ffd0903952cf9e1a  ./.venv/lib/python3.12/site-packages/pyarrow/tests/interchange/test_interchange_spec.py
@@ -7261,7 +7258,6 @@ ffa304ce7a2e679570cead47d1a892c27c1b50ebf944bd11e4cf3954d45a61eb  ./MERGE_VERIFI
 6d62150837db3d4e48c6591d38f4d63b4802468fc58eaa2fb86b4f4181281842  ./PROTOCOL_REFERENCE.md
 aba2af97081c48fe79b398fad42102506f5587bce689010692059af4e33c0542  ./Phase_2_COMPLETE.md
 c7541802bf126b18a624514ea886d6903f1a11fac04f7584e3c5341e2609e747  ./QUICKSTART_EXTENSIONS.md
-7b54a6445c030fdf113532f4b5fb12770512d8e43819e3011173402a2c719e62  ./README.md
 704ccdd61df39bd05a90d17625145aee5a4c5fa3cd38b605c5a2d7f6da2399ff  ./SYMBOL_INDEX.md
 d5d0727706a92d166a3227280cee3915c6333e4d54ba11ec26cb8cc4425efb75  ./SYSTEM_ARCHITECTURE.md
 dbb599c3564851778a111d8b621b04c3c8f6f640a840d60eb478defa29eb2ee5  ./SYSTEM_INTERCONNECTION_STATUS.json
@@ -7272,7 +7268,6 @@ e4d8248d11314954b3cc58b8f04fc4be6f3f5a3c6f10be2d294015e370439d3e  ./canon/anchor
 fbe0fa1ed71175bfa5955394f688fb3cb6b44f02f5d98abeada284b8f2c03e53  ./canon/docs/validator_usage.md
 71c975413aeee0b077fa336e50d28736bec0a85f500bab5edf3aa181bc2cfcf3  ./canon/gcd_anchors.yaml
 4ba73c79037f779372c02f2ccc550a1529aea5b1df6e2f46b2c084a3723b629d  ./canon/rcft_anchors.yaml
-a26c0ca192a5cca1438552c13a7a0b66643917acebe2fb16f04cfdd80bc0dd4b  ./casepacks/UMCP-REF-E2E-0001/README.md
 739452b1d88c5e0dfe64ae145edc46fe8c3f8b48bc690b6cd73b294b595db6c5  ./casepacks/UMCP-REF-E2E-0001/closures/closure_registry.yaml
 3f306c05ae2e282c015016071d5fad67e260bd219dd221fe4a9dc21336145cff  ./casepacks/UMCP-REF-E2E-0001/compute_pipeline.py
 0787be85985c32c105eb99e46716ab56c1947b666b59bc400981893fb646afe0  ./casepacks/UMCP-REF-E2E-0001/contracts/contract.yaml
@@ -7286,7 +7281,6 @@ ac6d4312dc01250eac40820610b515d40e891f2ebb21966df2303adda2f77e59  ./casepacks/UM
 e3d5ef7260eb8764d1cc971d804408e1749e35ef57a83e59674df0bb9b3cbca2  ./casepacks/UMCP-REF-E2E-0001/manifest.json
 0a13e4f0dc8e988e3373a4a5e58d77121b88ee73ef80b6bb8b6bc9232d008e62  ./casepacks/UMCP-REF-E2E-0001/manifest/manifest.json
 3efb57ee58b62a74d1d775869572038782bab354d7bec6f9e71b6e330399e443  ./casepacks/UMCP-REF-E2E-0001/receipts/ss1m.json
-c52b5f171a006363ceddfb35f70dcdc7b0ad034817abca0c461bc64100699667  ./casepacks/gcd_complete/README.md
 11e9277bf3a163f59a4ceb101d8d8dc1ed5013f98c984e49ea79fd691de48089  ./casepacks/gcd_complete/closures/closure_registry.yaml
 ce28edd3d1f5b908b821582ee1af743c1683ee8e0f0b5e4ddc4822a55bf769f5  ./casepacks/gcd_complete/contracts/contract.yaml
 2252f2332094a0dac3325f9dda8e5c57afa67949c4d764637a8d9dd3d0c8f8c8  ./casepacks/gcd_complete/contracts/embedding.yaml
@@ -7299,7 +7293,6 @@ ce28edd3d1f5b908b821582ee1af743c1683ee8e0f0b5e4ddc4822a55bf769f5  ./casepacks/gc
 46079cb6c3c380a4e4d53edf457d5475b5bb05a0472fe6e8d66071ecdcecc677  ./casepacks/gcd_complete/expected/invariants.json
 6f771389c3d54ef8a316ddfa45ee5c99b6e5a54163027d72121a7f416d2d0bb6  ./casepacks/gcd_complete/expected/seam_receipt.json
 e5f3d87a175bb5633324f99903ec7f99ad81d7a686ee06537271b5bc49198a42  ./casepacks/gcd_complete/manifest.json
-fc2f47e650ecbd0c0864deb2e439cb6efb7c02677680543832579fc1f77fe8d8  ./casepacks/hello_world/README.md
 a5cd86e748e93a2bd4dfb0bd2b42951a1d2ea1ab72bc939e2fda2aab4a9708b9  ./casepacks/hello_world/closures/closure_registry.yaml
 3accfdba2b04692b585008d39768a0ad14564e04a80e4e2db78640c908319b77  ./casepacks/hello_world/contracts/contract.yaml
 44f1834fcd60755d2d31aa9110caf844f8f4d7c012134c9141837e3d8c8c78ba  ./casepacks/hello_world/contracts/embedding.yaml
@@ -7309,7 +7302,6 @@ e32a354cafba75563f4799fa3a1430b21eb483a15383f63efe2c5a9380a2e3d3  ./casepacks/he
 02b9c14c393d0e1de9eeeedb34d3be6c34ff919132a669f0b6527f4baa0f8f03  ./casepacks/hello_world/expected/ss1m_receipt.json
 fb81380c6943abe26f88e949b167d5e7aa934a9142beba4481a9f0839753e88e  ./casepacks/hello_world/generate_expected.py
 baacfc988d6ef9b2b99bca8e5462241a2abf56c69d113d0fe7749d85bff75235  ./casepacks/hello_world/manifest.json
-26bbc6af8538d706d7e261185b4066382876cd5fae16e21c1f7c21466b043f93  ./casepacks/rcft_complete/README.md
 6951ffad23d079064cc0d12d99430a6f52a869e4884f28c355af38bb4383fc62  ./casepacks/rcft_complete/closures/closure_registry.yaml
 451008446ce49e3114c0526e436b03d3a62f03c9f6ba5ea6a87519b7533698c9  ./casepacks/rcft_complete/contracts/contract.yaml
 919bc89f30f82bb8bdc3d4961435c85f8e60312e69a2db01ebe6962cd614aad6  ./casepacks/rcft_complete/contracts/embedding.yaml
@@ -7327,7 +7319,6 @@ bbdafcf42b8abc6cc3094d0353dc6988eca43f80a4e0bef175bfd8aefb381525  ./casepacks/rc
 5bbb3bc630c7744707b6f274b192dbd6793077073a596ca7a314cf1d93e59909  ./casepacks/rcft_complete/manifest.json
 7eb098e51636229f2d91abfb49631f56e42f57e3891ff956ddbf4018d86731cc  ./closures.yaml
 3ce63e190c29485874b99f83c6a1c3246257162d4ffe71b5eb8132766f0cc3af  ./closures/F_from_omega.py
-1d2f9fd01a005c2056729173e41e82c9b42fdb240bd3fe34fd47a5fbfbcdb459  ./closures/README.md
 0122df96157fb181ee54d2c40575e29e91334c0384efd45ea4980188e21eb9c7  ./closures/curvature_neighborhood.default.v1.yaml
 5b78e3ad6c9b5c8237f5ee82b666d0fe2bedd1f18d760903a4343976fe8c72bd  ./closures/gamma.default.v1.yaml
 85dc5e338e111248f4fdd68ba4adc87473939feeef6e053ebbb5d521b4f1e571  ./closures/gcd/energy_potential.py
@@ -7347,7 +7338,6 @@ c196eabae4768a25b544da5cc773902c39a7fa67bf38a75cd1c6487b2802eac4  ./closures/tau
 b9955661cf1dd5acd77115153a2e327fb320bdf624ee69576aba6a4c82ab6e2e  ./contracts/CHANGELOG.md
 47021a248e78c433411bf93e9b57c31b5b560c189cb1ff7953890cc0e4487bd6  ./contracts/GCD.INTSTACK.v1.yaml
 c63553e1a967b3373e2d55ed45dddbb83d1de6d64a64b5fd848b0b1cda8e5b79  ./contracts/RCFT.INTSTACK.v1.yaml
-b7cdc07ed4f7c6be1b47549aeb7d14ef85934b71a2c10a78388721c0ea8fc848  ./contracts/README.md
 e7ccc3ad2261e099903b545e6a19cd5a1ecea9f84fa46afa613631b7d697dc08  ./contracts/UMA.INTSTACK.v1.0.1.yaml
 9392b2d6a81e7bb319d81034bb68af01309151b8001cd0aac8cf21a30482141c  ./contracts/UMA.INTSTACK.v1.yaml
 042eabc7f4a4f1163bcfe54efa65db6dfad664633131034999e3e3a2772e1506  ./contracts/UMA.INTSTACK.v2.yaml
@@ -7432,3 +7422,5 @@ e131afabe33e272225f284f723c6845010fea9d2ba3c27663f6b6f9d129793d8  UHMP.md
 eba410aad35dce5549aaafdcbf32c8d443d7d83cc5ab281da58319303b45d4db  FACE_POLICY.md
 0cb639c6df80d93b2f281a5c00355fcb5be43e4ea882a8b4abfbd175484dfb6d  TIER_SYSTEM.md
 1ea5b5265f4ee16656cd1f473115628bd8bc81912750f35e618a345a093b293d  PUBLICATION_INFRASTRUCTURE.md
+5695743b07a94310b8ff2f3a420c7d80511e7c8e4e7de123b3e36fee0da7d202  KERNEL_SPECIFICATION.md
+6c729cc617874ed9a1855567a84c50a760de22f7af85cddaaa6294ac98ac3c65  README.md
