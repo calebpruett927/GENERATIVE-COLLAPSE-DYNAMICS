@@ -20,7 +20,7 @@ version = "1.4.0"
 description = "Universal Measurement Contract Protocol (UMCP): Interconnected contract-first validation framework with GCD and RCFT. Core Axiom: What Returns Through Collapse Is Real. Features bidirectional cross-references, closure registries, and full reproducibility."
 readme = "README.md"
 requires-python = ">=3.11"
-license = { text = "MIT" }
+license = "MIT"
 
 authors = [
   { name = "Clement Paulus" }
@@ -31,7 +31,6 @@ keywords = ["UMCP", "GCD", "RCFT", "contract-first", "validation", "reproducibil
 classifiers = [
   "Development Status :: 4 - Beta",
   "Intended Audience :: Science/Research",
-  "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
