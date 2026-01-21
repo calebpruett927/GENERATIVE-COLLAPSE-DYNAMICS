@@ -1,6 +1,14 @@
 # RCFT Canon Anchor (UMCP.RCFT.v1)
 # Recursive Collapse Field Theory - Tier-2 Overlay
 #
+# Interconnections:
+# - Referenced by: contracts/RCFT.INTSTACK.v1.yaml, casepacks/rcft_complete/
+# - Parent: canon/gcd_anchors.yaml (GCD.v1 - Tier-1 framework)
+# - Extends: Tier-1 invariants with fractal/recursive analysis
+# - Implements: Tier-2 symbols (D_f, Ψ_r, λ_p, Θ)
+# - Documentation: GLOSSARY.md#tier-2, SYMBOL_INDEX.md#tier-2-rcft
+# - Related: closures/rcft/*.py, docs/rcft_theory.md
+#
 # Complete term definitions: ../GLOSSARY.md#tier-2-rcft-overlay-extensions
 # Symbol lookup: ../SYMBOL_INDEX.md#tier-2-rcft-extension-symbols
 # Term index: ../TERM_INDEX.md#r

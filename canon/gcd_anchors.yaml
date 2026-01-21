@@ -1,6 +1,14 @@
 # GCD Canon Anchor (UMCP.GCD.v1)
 # Generative Collapse Dynamics - Tier-1 Framework
 #
+# Interconnections:
+# - Referenced by: contracts/GCD.INTSTACK.v1.yaml, casepacks/gcd_complete/
+# - Parent: canon/anchors.yaml (UMCP.CANON.v1)
+# - Child: canon/rcft_anchors.yaml (RCFT extends GCD)
+# - Implements: Tier-1 invariants (ω, F, S, C, τ_R, κ, IC)
+# - Documentation: GLOSSARY.md#tier-1, SYMBOL_INDEX.md#tier-1-gcd
+# - Related: closures/gcd/*.py (computational implementations)
+#
 # Complete term definitions: ../GLOSSARY.md#tier-1-reserved-symbols-gcd-framework
 # Symbol lookup: ../SYMBOL_INDEX.md#tier-1-gcd-reserved-symbols
 # Term index: ../TERM_INDEX.md#g

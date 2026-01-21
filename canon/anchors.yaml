@@ -1,6 +1,12 @@
 # canon/anchors.yaml
 # UMCP Canon Anchors (identifiers + frozen defaults; NOT claims)
 # Any semantic change here should bump canon_id and be logged in provenance.
+#
+# Interconnections:
+# - Referenced by: manifest.yaml (refs.canon_anchors), contracts/*.yaml
+# - Defines: UMCP.CANON.v1 (base framework), weld definitions, DOI anchors
+# - Documentation: GLOSSARY.md, AXIOM.md, PROTOCOL_REFERENCE.md
+# - Related: canon/gcd_anchors.yaml (Tier-1), canon/rcft_anchors.yaml (Tier-2)
 
 schema: "schemas/canon.anchors.schema.json"
 
