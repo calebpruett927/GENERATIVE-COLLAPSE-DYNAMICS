@@ -27,9 +27,7 @@ Regime thresholds:
 import math
 
 
-def compute_generative_flux(
-    kappa: float, IC: float, C: float, eps: float = 1e-10
-) -> dict[str, float]:
+def compute_generative_flux(kappa: float, IC: float, C: float, eps: float = 1e-10) -> dict[str, float]:
     """
     Compute generative flux through collapse boundary.
 

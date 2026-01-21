@@ -57,9 +57,7 @@ class TestFractalDimension:
         """Spiral trajectory should show moderate complexity."""
         theta = np.linspace(0, 4 * np.pi, 200)
         r = theta / (4 * np.pi)
-        trajectory = np.column_stack(
-            [r * np.cos(theta), r * np.sin(theta), np.zeros_like(theta)]
-        )
+        trajectory = np.column_stack([r * np.cos(theta), r * np.sin(theta), np.zeros_like(theta)])
         result = fractal_dimension.compute_fractal_dimension(trajectory)
 
         assert result["D_fractal"] >= 0.0
@@ -162,9 +160,7 @@ class TestRecursiveField:
     def test_energy_based_computation(self):
         """Should compute from energy series."""
         E_series = np.linspace(0.1, 0.01, 30)
-        result = recursive_field.compute_recursive_field_from_energy(
-            E_series, alpha=0.75
-        )
+        result = recursive_field.compute_recursive_field_from_energy(E_series, alpha=0.75)
 
         assert "Psi_recursive" in result
         assert result["regime"] in ["Dormant", "Active", "Resonant"]
@@ -239,9 +235,7 @@ class TestResonancePattern:
         Phi_field = 0.5 + 0.3 * np.sin(t + np.pi / 4)
         E_field = 0.1 + 0.05 * np.sin(2 * t)
 
-        result = resonance_pattern.compute_multi_field_resonance(
-            R_field, Phi_field, E_field, dt=t[1] - t[0]
-        )
+        result = resonance_pattern.compute_multi_field_resonance(R_field, Phi_field, E_field, dt=t[1] - t[0])
 
         assert "lambda_pattern" in result
         assert "pattern_type" in result
@@ -260,9 +254,7 @@ class TestResonancePattern:
         Phi_zero = np.full(30, 0.0001)
         E_zero = np.zeros(30)
 
-        result = resonance_pattern.compute_multi_field_resonance(
-            R_zero, Phi_zero, E_zero
-        )
+        result = resonance_pattern.compute_multi_field_resonance(R_zero, Phi_zero, E_zero)
 
         assert result["pattern_type"] == "Standing"
         assert result["coherence"]["R"] == 1.0

@@ -105,9 +105,7 @@ async def root():
 @app.get("/health", response_model=HealthResponse)
 async def health():
     """Health check endpoint"""
-    return HealthResponse(
-        status="ok", timestamp=datetime.now(UTC).isoformat(), version="1.0.0"
-    )
+    return HealthResponse(status="ok", timestamp=datetime.now(UTC).isoformat(), version="1.0.0")
 
 
 @app.get("/latest-receipt")
@@ -117,18 +115,14 @@ async def latest_receipt():
     receipt_path = repo_root / "receipt.json"
 
     if not receipt_path.exists():
-        raise HTTPException(
-            status_code=404, detail="No receipt found. Run 'umcp validate' first."
-        )
+        raise HTTPException(status_code=404, detail="No receipt found. Run 'umcp validate' first.")
 
     try:
         with open(receipt_path) as f:
             receipt = json.load(f)
         return JSONResponse(content=receipt)
     except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Error loading receipt: {e!s}"
-        ) from e
+        raise HTTPException(status_code=500, detail=f"Error loading receipt: {e!s}") from e
 
 
 @app.get("/ledger")
@@ -150,9 +144,7 @@ async def get_ledger():
 
         return JSONResponse(content={"records": records, "count": len(records)})
     except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Error loading ledger: {e!s}"
-        ) from e
+        raise HTTPException(status_code=500, detail=f"Error loading ledger: {e!s}") from e
 
 
 @app.get("/stats", response_model=StatsResponse)
@@ -213,9 +205,7 @@ async def get_stats():
             latest_timestamp=latest.get("timestamp"),
         )
     except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Error computing stats: {e!s}"
-        ) from e
+        raise HTTPException(status_code=500, detail=f"Error computing stats: {e!s}") from e
 
 
 @app.get("/regime", response_model=RegimeInfo)
@@ -225,9 +215,7 @@ async def get_current_regime():
     inv_path = repo_root / "outputs" / "invariants.csv"
 
     if not inv_path.exists():
-        raise HTTPException(
-            status_code=404, detail="No invariants found. Run 'umcp validate' first."
-        )
+        raise HTTPException(status_code=404, detail="No invariants found. Run 'umcp validate' first.")
 
     try:
         with open(inv_path) as f:
@@ -254,9 +242,7 @@ async def get_current_regime():
             timestamp=datetime.now(UTC).isoformat(),
         )
     except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Error loading regime: {e!s}"
-        ) from e
+        raise HTTPException(status_code=500, detail=f"Error loading regime: {e!s}") from e
 
 
 if __name__ == "__main__":

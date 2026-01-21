@@ -82,10 +82,7 @@ class TestDiffCommand:
             text=True,
         )
         assert result.returncode == 0
-        assert (
-            "unchanged" in result.stdout.lower()
-            or "No significant changes" in result.stdout
-        )
+        assert "unchanged" in result.stdout.lower() or "No significant changes" in result.stdout
 
     def test_diff_different_receipts(self, sample_receipt_1, sample_receipt_2):
         """Diff different receipts shows changes."""

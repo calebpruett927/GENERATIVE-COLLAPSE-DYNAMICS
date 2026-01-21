@@ -58,13 +58,9 @@ def main() -> None:
                 "miss_3",
             ]
         )
-        oor = [
-            ("true" if (c < 0.0 or c > 1.0) else "false") for c in cs
-        ]  # after clip, always false
+        oor = [("true" if (c < 0.0 or c > 1.0) else "false") for c in cs]  # after clip, always false
         miss = ["false", "false", "false"]
-        w.writerow(
-            [t, cs[0], cs[1], cs[2], oor[0], oor[1], oor[2], miss[0], miss[1], miss[2]]
-        )
+        w.writerow([t, cs[0], cs[1], cs[2], oor[0], oor[1], oor[2], miss[0], miss[1], miss[2]])
 
     # Compute invariants with uniform weights
     n = len(cs)

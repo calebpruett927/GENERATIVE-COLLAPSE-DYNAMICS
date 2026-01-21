@@ -422,15 +422,11 @@ def main():
     info_parser.add_argument("extension", help="Extension name")
 
     # Check command
-    check_parser = subparsers.add_parser(
-        "check", help="Check if extension is available"
-    )
+    check_parser = subparsers.add_parser("check", help="Check if extension is available")
     check_parser.add_argument("extension", help="Extension name")
 
     # Install command
-    install_parser = subparsers.add_parser(
-        "install", help="Install extension dependencies"
-    )
+    install_parser = subparsers.add_parser("install", help="Install extension dependencies")
     install_parser.add_argument("extension", help="Extension name")
 
     # Run command

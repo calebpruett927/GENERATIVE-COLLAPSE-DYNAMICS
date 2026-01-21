@@ -38,9 +38,7 @@ try:
     import plotly.graph_objects as go
     from plotly.subplots import make_subplots
 except ImportError:
-    st.error(
-        "Please install required packages: pip install streamlit pandas plotly numpy"
-    )
+    st.error("Please install required packages: pip install streamlit pandas plotly numpy")
     st.stop()
 
 
@@ -256,23 +254,17 @@ def compute_statistics(df: pd.DataFrame) -> dict[str, Any]:
     # Calculate regime distribution
     df_with_regime = df.copy()
     df_with_regime["regime"] = df_with_regime.apply(
-        lambda row: classify_regime(
-            row["omega"], 1.0 - row["omega"], row["stiffness"], row["curvature"]
-        ),
+        lambda row: classify_regime(row["omega"], 1.0 - row["omega"], row["stiffness"], row["curvature"]),
         axis=1,
     )
 
     regime_counts = df_with_regime["regime"].value_counts().to_dict()
     stats["regime_distribution"] = regime_counts
-    stats["current_regime"] = (
-        df_with_regime["regime"].iloc[-1] if not df_with_regime.empty else "Unknown"
-    )
+    stats["current_regime"] = df_with_regime["regime"].iloc[-1] if not df_with_regime.empty else "Unknown"
 
     # Detect regime transitions
     if len(df_with_regime) > 1:
-        regime_changes = (
-            df_with_regime["regime"] != df_with_regime["regime"].shift()
-        ).sum() - 1
+        regime_changes = (df_with_regime["regime"] != df_with_regime["regime"].shift()).sum() - 1
         stats["regime_transitions"] = regime_changes
     else:
         stats["regime_transitions"] = 0
@@ -280,9 +272,7 @@ def compute_statistics(df: pd.DataFrame) -> dict[str, Any]:
     return stats
 
 
-def detect_anomalies(
-    df: pd.DataFrame, col: str = "omega", threshold: float = 2.0
-) -> pd.Series:
+def detect_anomalies(df: pd.DataFrame, col: str = "omega", threshold: float = 2.0) -> pd.Series:
     """Detect anomalies using z-score method"""
     if df is None or df.empty or col not in df.columns:
         return pd.Series([False] * len(df)) if df is not None else pd.Series()
@@ -593,9 +583,7 @@ def plot_regime_timeline(df: pd.DataFrame):
 
     df = df.copy()
     df["regime"] = df.apply(
-        lambda row: classify_regime(
-            row["omega"], 1.0 - row["omega"], row["stiffness"], row["curvature"]
-        ),
+        lambda row: classify_regime(row["omega"], 1.0 - row["omega"], row["stiffness"], row["curvature"]),
         axis=1,
     )
 
@@ -696,9 +684,7 @@ def plot_distribution_violin(df: pd.DataFrame):
 
     df = df.copy()
     df["regime"] = df.apply(
-        lambda row: classify_regime(
-            row["omega"], 1.0 - row["omega"], row["stiffness"], row["curvature"]
-        ),
+        lambda row: classify_regime(row["omega"], 1.0 - row["omega"], row["stiffness"], row["curvature"]),
         axis=1,
     )
 
@@ -864,9 +850,7 @@ def main():
     )
 
     st.title("🔍 UMCP Production Dashboard")
-    st.markdown(
-        "**Real-time monitoring of UMCP validation, regime transitions, and system health**"
-    )
+    st.markdown("**Real-time monitoring of UMCP validation, regime transitions, and system health**")
 
     # Detect repository root
     repo_root = Path.cwd()
@@ -922,9 +906,7 @@ def main():
             )
 
         with col2:
-            conformant_rate = (
-                stats.get("conformant", 0) / max(stats.get("total_validations", 1), 1)
-            ) * 100
+            conformant_rate = (stats.get("conformant", 0) / max(stats.get("total_validations", 1), 1)) * 100
             st.metric(
                 "Conformance Rate",
                 f"{conformant_rate:.1f}%",
@@ -1011,9 +993,7 @@ def main():
 
         with tab1:
             st.markdown("### Phase Space: Regime Classification")
-            st.markdown(
-                "Explore the ω-C phase space with regime boundaries and anomaly detection"
-            )
+            st.markdown("Explore the ω-C phase space with regime boundaries and anomaly detection")
             plot_omega_vs_curvature(ledger_df_filtered, show_anomalies=show_anomalies)
 
             if show_advanced_stats and not ledger_df_filtered.empty:
@@ -1037,31 +1017,20 @@ def main():
 
         with tab2:
             st.markdown("### Invariants Over Time")
-            st.markdown(
-                "Track ω, C, and S metrics with moving averages and threshold indicators"
-            )
+            st.markdown("Track ω, C, and S metrics with moving averages and threshold indicators")
             plot_time_series(ledger_df_filtered, show_moving_avg=show_moving_avg)
 
             if show_advanced_stats and len(ledger_df_filtered) > 1:
                 st.markdown("#### Trend Analysis")
                 col1, col2, col3 = st.columns(3)
                 with col1:
-                    omega_change = (
-                        ledger_df_filtered["omega"].iloc[-1]
-                        - ledger_df_filtered["omega"].iloc[0]
-                    )
+                    omega_change = ledger_df_filtered["omega"].iloc[-1] - ledger_df_filtered["omega"].iloc[0]
                     st.metric("ω Change", f"{omega_change:+.6f}", delta=omega_change)
                 with col2:
-                    curv_change = (
-                        ledger_df_filtered["curvature"].iloc[-1]
-                        - ledger_df_filtered["curvature"].iloc[0]
-                    )
+                    curv_change = ledger_df_filtered["curvature"].iloc[-1] - ledger_df_filtered["curvature"].iloc[0]
                     st.metric("C Change", f"{curv_change:+.6f}", delta=curv_change)
                 with col3:
-                    stiff_change = (
-                        ledger_df_filtered["stiffness"].iloc[-1]
-                        - ledger_df_filtered["stiffness"].iloc[0]
-                    )
+                    stiff_change = ledger_df_filtered["stiffness"].iloc[-1] - ledger_df_filtered["stiffness"].iloc[0]
                     st.metric("S Change", f"{stiff_change:+.6f}", delta=stiff_change)
 
         with tab3:
@@ -1089,12 +1058,7 @@ def main():
                         go.Pie(
                             labels=regime_counts.index,
                             values=regime_counts.values,
-                            marker={
-                                "colors": [
-                                    REGIME_COLORS.get(r, "#6c757d")
-                                    for r in regime_counts.index
-                                ]
-                            },
+                            marker={"colors": [REGIME_COLORS.get(r, "#6c757d") for r in regime_counts.index]},
                             hole=0.4,
                         )
                     ]
@@ -1208,9 +1172,7 @@ def main():
                 anomalies = detect_anomalies(ledger_df_filtered, "omega")
                 if anomalies.any():
                     st.warning(f"⚠️ {anomalies.sum()} anomalies detected in ω values")
-                    anomaly_df = ledger_df_filtered[anomalies][
-                        ["timestamp", "omega", "curvature", "stiffness"]
-                    ]
+                    anomaly_df = ledger_df_filtered[anomalies][["timestamp", "omega", "curvature", "stiffness"]]
                     st.dataframe(anomaly_df)
                 else:
                     st.success("✅ No anomalies detected")
@@ -1218,15 +1180,11 @@ def main():
             with col2:
                 st.markdown("#### Recent Activity")
                 if len(ledger_df_filtered) > 5:
-                    recent = ledger_df_filtered.tail(5)[
-                        ["timestamp", "run_status", "omega"]
-                    ]
+                    recent = ledger_df_filtered.tail(5)[["timestamp", "run_status", "omega"]]
                     st.dataframe(recent)
 
     else:
-        st.info(
-            "📭 No ledger data available. Run `umcp validate` to start collecting data."
-        )
+        st.info("📭 No ledger data available. Run `umcp validate` to start collecting data.")
         st.code("umcp validate --out receipt.json", language="bash")
         st.markdown("### Getting Started")
         st.markdown(

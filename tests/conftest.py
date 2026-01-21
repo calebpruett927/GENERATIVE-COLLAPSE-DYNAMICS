@@ -60,16 +60,8 @@ def repo_paths() -> RepoPaths:
         hello_manifest=root / "casepacks" / "hello_world" / "manifest.json",
         hello_expected_dir=root / "casepacks" / "hello_world" / "expected",
         hello_psi_csv=root / "casepacks" / "hello_world" / "expected" / "psi.csv",
-        hello_invariants_json=root
-        / "casepacks"
-        / "hello_world"
-        / "expected"
-        / "invariants.json",
-        hello_ss1m_receipt_json=root
-        / "casepacks"
-        / "hello_world"
-        / "expected"
-        / "ss1m_receipt.json",
+        hello_invariants_json=root / "casepacks" / "hello_world" / "expected" / "invariants.json",
+        hello_ss1m_receipt_json=root / "casepacks" / "hello_world" / "expected" / "ss1m_receipt.json",
     )
 
 
@@ -78,9 +70,7 @@ def require_file(path: Path) -> None:
 
 
 def require_dir(path: Path) -> None:
-    assert (
-        path.exists() and path.is_dir()
-    ), f"Missing required directory: {path.as_posix()}"
+    assert path.exists() and path.is_dir(), f"Missing required directory: {path.as_posix()}"
 
 
 def load_text(path: Path) -> str:
@@ -100,9 +90,7 @@ def load_yaml(path: Path) -> Any:
 
 
 def ensure_jsonschema_available() -> None:
-    assert (
-        Draft202012Validator is not None
-    ), "jsonschema is required (pip install jsonschema)."
+    assert Draft202012Validator is not None, "jsonschema is required (pip install jsonschema)."
 
 
 def load_schema(repo_paths: RepoPaths, schema_filename: str) -> dict[str, Any]:
@@ -164,9 +152,7 @@ def parse_csv_as_rows(path: Path) -> list[dict[str, Any]]:
     require_file(path)
     with path.open("r", encoding="utf-8", newline="") as f:
         reader = csv.DictReader(f)
-        assert (
-            reader.fieldnames is not None
-        ), f"No header row found in CSV: {path.as_posix()}"
+        assert reader.fieldnames is not None, f"No header row found in CSV: {path.as_posix()}"
         rows: list[dict[str, Any]] = []
         for r in reader:
             rows.append({k: coerce_scalar(v) for k, v in r.items()})
@@ -212,9 +198,7 @@ def close(lhs: float, rhs: float, atol: float, rtol: float) -> bool:
     return abs(lhs - rhs) <= (atol + rtol * abs(rhs))
 
 
-def compute_expected_regime_label(
-    omega: float, F: float, S: float, C: float, thresholds: dict[str, Any]
-) -> str:
+def compute_expected_regime_label(omega: float, F: float, S: float, C: float, thresholds: dict[str, Any]) -> str:
     """
     Canonical expected label:
     - Collapse if omega >= omega_gte
@@ -227,12 +211,7 @@ def compute_expected_regime_label(
     if omega >= collapse_omega_gte:
         return "Collapse"
 
-    if (
-        (omega < stable["omega_lt"])
-        and (stable["F_gt"] < F)
-        and (stable["S_lt"] > S)
-        and (stable["C_lt"] > C)
-    ):
+    if (omega < stable["omega_lt"]) and (stable["F_gt"] < F) and (stable["S_lt"] > S) and (stable["C_lt"] > C):
         return "Stable"
 
     return "Watch"

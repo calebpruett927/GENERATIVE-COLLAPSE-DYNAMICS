@@ -66,9 +66,7 @@ class ClosureLoader:
         """Load and cache the closures registry."""
         if self._registry is None:
             if not self.registry_path.exists():
-                raise FileNotFoundError(
-                    f"Closures registry not found: {self.registry_path}"
-                )
+                raise FileNotFoundError(f"Closures registry not found: {self.registry_path}")
             with open(self.registry_path) as f:
                 self._registry = yaml.safe_load(f)
         return self._registry
@@ -132,9 +130,7 @@ class ClosureLoader:
         """
         module = self.load_closure_module(name)
         if not hasattr(module, "compute"):
-            raise AttributeError(
-                f"Closure module {name} does not have a 'compute' function"
-            )
+            raise AttributeError(f"Closure module {name} does not have a 'compute' function")
         return module.compute  # type: ignore[no-any-return]
 
     def execute_closure(self, name: str, **kwargs: Any) -> dict[str, Any]:

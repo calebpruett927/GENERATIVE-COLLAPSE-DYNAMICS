@@ -28,9 +28,7 @@ Resonance regime thresholds:
 import math
 
 
-def compute_field_resonance(
-    omega: float, S: float, C: float, C_crit: float = 0.2
-) -> dict[str, float]:
+def compute_field_resonance(omega: float, S: float, C: float, C_crit: float = 0.2) -> dict[str, float]:
     """
     Compute field resonance from GCD Tier-1 invariants.
 

@@ -226,18 +226,12 @@ class HealthCheck:
 
         # Overall status
         failed_checks = sum(
-            1
-            for check in health["checks"].values()
-            if isinstance(check, dict) and check.get("status") == "fail"
+            1 for check in health["checks"].values() if isinstance(check, dict) and check.get("status") == "fail"
         )
 
         if failed_checks > 0:
             health["status"] = "unhealthy"
-        elif any(
-            check.get("status") == "degraded"
-            for check in health["checks"].values()
-            if isinstance(check, dict)
-        ):
+        elif any(check.get("status") == "degraded" for check in health["checks"].values() if isinstance(check, dict)):
             health["status"] = "degraded"
 
         return health
@@ -247,9 +241,7 @@ class HealthCheck:
 _default_logger: StructuredLogger | None = None
 
 
-def get_logger(
-    name: str = "umcp", json_output: bool = False, include_metrics: bool = True
-) -> StructuredLogger:
+def get_logger(name: str = "umcp", json_output: bool = False, include_metrics: bool = True) -> StructuredLogger:
     """
     Get or create a structured logger instance.
 
@@ -263,7 +255,5 @@ def get_logger(
     """
     global _default_logger
     if _default_logger is None:
-        _default_logger = StructuredLogger(
-            name=name, json_output=json_output, include_metrics=include_metrics
-        )
+        _default_logger = StructuredLogger(name=name, json_output=json_output, include_metrics=include_metrics)
     return _default_logger

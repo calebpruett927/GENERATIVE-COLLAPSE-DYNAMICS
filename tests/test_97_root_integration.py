@@ -34,9 +34,7 @@ def test_root_files_mathematically_consistent():
     validator._validate_invariant_identities()
 
     # Should have no errors for F=1-ω and IC≈exp(κ)
-    identity_errors = [
-        e for e in validator.errors if "identity" in e.lower() or "F ≠ 1-ω" in e
-    ]
+    identity_errors = [e for e in validator.errors if "identity" in e.lower() or "F ≠ 1-ω" in e]
     assert not identity_errors, f"Mathematical identity violations: {identity_errors}"
 
 
@@ -63,9 +61,7 @@ def test_trace_coordinates_in_bounds():
     validator = RootFileValidator()
     validator._validate_trace_bounds()
 
-    bound_errors = [
-        e for e in validator.errors if "bound" in e.lower() or "coordinate" in e.lower()
-    ]
+    bound_errors = [e for e in validator.errors if "bound" in e.lower() or "coordinate" in e.lower()]
     assert not bound_errors, f"Coordinate bound errors: {bound_errors}"
 
 
@@ -224,9 +220,7 @@ def test_regimes_match_invariants():
     for inv, reg in zip(invariants, regimes, strict=False):
         inv_regime = inv.get("regime_label", "")
         reg_regime = reg.get("regime_label", "")
-        assert (
-            inv_regime == reg_regime
-        ), f"Regime mismatch: invariants={inv_regime}, regimes={reg_regime}"
+        assert inv_regime == reg_regime, f"Regime mismatch: invariants={inv_regime}, regimes={reg_regime}"
 
 
 def test_checksums_are_valid():
@@ -234,9 +228,7 @@ def test_checksums_are_valid():
     validator = RootFileValidator()
     validator._validate_checksums()
 
-    checksum_errors = [
-        e for e in validator.errors if "checksum" in e.lower() or "hash" in e.lower()
-    ]
+    checksum_errors = [e for e in validator.errors if "checksum" in e.lower() or "hash" in e.lower()]
     assert not checksum_errors, f"Checksum validation errors: {checksum_errors}"
 
 

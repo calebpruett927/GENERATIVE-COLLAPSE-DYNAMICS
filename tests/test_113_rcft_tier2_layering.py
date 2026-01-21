@@ -84,10 +84,7 @@ class TestTierHierarchy:
     def test_tier_chain(self, uma_contract, gcd_contract, rcft_contract):
         """Full chain should be UMA → GCD → RCFT."""
         # UMA has no parent (Tier-0 / base)
-        assert (
-            "parent_contract" not in uma_contract
-            or uma_contract.get("parent_contract") is None
-        )
+        assert "parent_contract" not in uma_contract or uma_contract.get("parent_contract") is None
 
         # GCD extends UMA
         assert gcd_contract["parent_contract"] == "UMA.INTSTACK.v1"
@@ -131,16 +128,12 @@ class TestTier1FrozenSymbols:
 
     def test_rcft_does_not_redefine_tier1(self, rcft_canon):
         """RCFT Tier-2 extensions should not redefine Tier-1 symbols."""
-        tier2_symbols = [
-            s["symbol"] for s in rcft_canon["tier_2_extensions"]["reserved_symbols"]
-        ]
+        tier2_symbols = [s["symbol"] for s in rcft_canon["tier_2_extensions"]["reserved_symbols"]]
         frozen_tier1 = rcft_canon["tier_hierarchy"]["tier_1_frozen_symbols"]
 
         # No overlap between Tier-2 and frozen Tier-1
         for symbol in tier2_symbols:
-            assert (
-                symbol not in frozen_tier1
-            ), f"Tier-2 symbol {symbol} conflicts with frozen Tier-1"
+            assert symbol not in frozen_tier1, f"Tier-2 symbol {symbol} conflicts with frozen Tier-1"
 
     def test_rcft_principles_acknowledge_freeze(self, rcft_canon):
         """RCFT principles should state "Tier-2 augments, never overrides"."""

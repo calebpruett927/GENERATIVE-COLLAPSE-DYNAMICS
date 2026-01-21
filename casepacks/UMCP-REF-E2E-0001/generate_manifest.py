@@ -117,9 +117,7 @@ def main():
         with open(receipt_path) as f:
             receipt = json.load(f)
 
-        receipt["receipt"]["manifest"]["root_sha256"] = manifest["manifest"][
-            "root_sha256"
-        ]
+        receipt["receipt"]["manifest"]["root_sha256"] = manifest["manifest"]["root_sha256"]
 
         with open(receipt_path, "w") as f:
             json.dump(receipt, f, indent=2)

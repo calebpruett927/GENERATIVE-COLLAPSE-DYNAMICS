@@ -34,11 +34,7 @@ def test_hello_world_manifest_conforms(repo_paths: RepoPaths) -> None:
     schema = load_schema(repo_paths, "manifest.schema.json")
 
     errors = validate_instance(manifest, schema)
-    assert (
-        not errors
-    ), "casepacks/hello_world/manifest.json failed schema validation:\n" + "\n".join(
-        errors
-    )
+    assert not errors, "casepacks/hello_world/manifest.json failed schema validation:\n" + "\n".join(errors)
 
 
 def test_hello_world_psi_conforms(repo_paths: RepoPaths) -> None:
@@ -52,8 +48,7 @@ def test_hello_world_psi_conforms(repo_paths: RepoPaths) -> None:
     schema = load_schema(repo_paths, "trace.psi.schema.json")
     errors = validate_instance(psi_doc, schema)
     assert not errors, (
-        "casepacks/hello_world/expected/psi.csv (parsed) failed trace.psi schema validation:\n"
-        + "\n".join(errors)
+        "casepacks/hello_world/expected/psi.csv (parsed) failed trace.psi schema validation:\n" + "\n".join(errors)
     )
 
 
@@ -66,8 +61,7 @@ def test_hello_world_invariants_conform(repo_paths: RepoPaths) -> None:
 
     errors = validate_instance(inv, schema)
     assert not errors, (
-        "casepacks/hello_world/expected/invariants.json failed invariants schema validation:\n"
-        + "\n".join(errors)
+        "casepacks/hello_world/expected/invariants.json failed invariants schema validation:\n" + "\n".join(errors)
     )
 
 
@@ -79,7 +73,6 @@ def test_hello_world_ss1m_receipt_conforms(repo_paths: RepoPaths) -> None:
     schema = load_schema(repo_paths, "receipt.ss1m.schema.json")
 
     errors = validate_instance(ss1m, schema)
-    assert not errors, (
-        "casepacks/hello_world/expected/ss1m_receipt.json failed SS1m schema validation:\n"
-        + "\n".join(errors)
+    assert not errors, "casepacks/hello_world/expected/ss1m_receipt.json failed SS1m schema validation:\n" + "\n".join(
+        errors
     )

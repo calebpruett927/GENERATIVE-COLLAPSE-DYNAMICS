@@ -85,15 +85,11 @@ def draw_section(ax, x, y, w, h, title, subtitle, lines, color):
         color=PALETTE["dark"],
         zorder=4,
     )
-    ax.text(
-        x + 0.35, y + h - 0.75, subtitle, fontsize=9.5, color=PALETTE["muted"], zorder=4
-    )
+    ax.text(x + 0.35, y + h - 0.75, subtitle, fontsize=9.5, color=PALETTE["muted"], zorder=4)
 
     text_y = y + h - 1.15
     for line in lines:
-        ax.text(
-            x + 0.45, text_y, f"• {line}", fontsize=9.3, color=PALETTE["dark"], zorder=4
-        )
+        ax.text(x + 0.45, text_y, f"• {line}", fontsize=9.3, color=PALETTE["dark"], zorder=4)
         text_y -= 0.34
 
 
@@ -239,9 +235,7 @@ def create_architecture_diagram():
         fontweight="bold",
         color=PALETTE["dark"],
     )
-    ax.text(
-        7.25, 7.9, r"$E=\omega^2+\alpha S+\beta C^2$", fontsize=9, color=PALETTE["dark"]
-    )
+    ax.text(7.25, 7.9, r"$E=\omega^2+\alpha S+\beta C^2$", fontsize=9, color=PALETTE["dark"])
     ax.text(
         7.25,
         7.6,
@@ -249,9 +243,7 @@ def create_architecture_diagram():
         fontsize=9,
         color=PALETTE["dark"],
     )
-    ax.text(
-        7.25, 7.3, r"$\Phi_g=\kappa\sqrt{IC}(1+C^2)$", fontsize=9, color=PALETTE["dark"]
-    )
+    ax.text(7.25, 7.3, r"$\Phi_g=\kappa\sqrt{IC}(1+C^2)$", fontsize=9, color=PALETTE["dark"])
     ax.text(
         7.25,
         7.0,
@@ -286,12 +278,8 @@ def create_architecture_diagram():
         fontsize=9,
         color=PALETTE["dark"],
     )
-    ax.text(
-        7.25, 2.8, r"$\Psi_r=\sum \alpha^n\Psi_n$", fontsize=9, color=PALETTE["dark"]
-    )
-    ax.text(
-        7.25, 2.5, r"$(\lambda_p,\Theta)$ via FFT", fontsize=9, color=PALETTE["dark"]
-    )
+    ax.text(7.25, 2.8, r"$\Psi_r=\sum \alpha^n\Psi_n$", fontsize=9, color=PALETTE["dark"])
+    ax.text(7.25, 2.5, r"$(\lambda_p,\Theta)$ via FFT", fontsize=9, color=PALETTE["dark"])
 
     # Footer summary
     footer = FancyBboxPatch(
@@ -498,12 +486,8 @@ def create_benchmark_comparison():
     x = np.arange(len(categories))
     width = 0.35
 
-    bars1 = ax1.bar(
-        x - width / 2, standard, width, label="Standard", color="#2E86AB", alpha=0.8
-    )
-    bars2 = ax1.bar(
-        x + width / 2, umcp, width, label="UMCP", color="#F77F00", alpha=0.8
-    )
+    bars1 = ax1.bar(x - width / 2, standard, width, label="Standard", color="#2E86AB", alpha=0.8)
+    bars2 = ax1.bar(x + width / 2, umcp, width, label="UMCP", color="#F77F00", alpha=0.8)
 
     ax1.set_ylabel("Time (milliseconds)", fontsize=11)
     ax1.set_title("Validation Speed Comparison", fontsize=13, fontweight="bold")
@@ -546,9 +530,7 @@ def create_benchmark_comparison():
         color="#2E86AB",
         alpha=0.8,
     )
-    ax2.bar(
-        x2 + width / 2, umcp_features, width, label="UMCP", color="#F77F00", alpha=0.8
-    )
+    ax2.bar(x2 + width / 2, umcp_features, width, label="UMCP", color="#F77F00", alpha=0.8)
 
     ax2.set_ylabel("Checks Performed", fontsize=11)
     ax2.set_title("Validation Features Comparison", fontsize=13, fontweight="bold")
@@ -727,9 +709,7 @@ def create_workflow_diagram():
     )
     ax.add_patch(canon_box)
     ax.text(2.3, 5.0, "Canon", ha="center", fontsize=9, fontweight="bold")
-    ax.text(
-        2.3, 4.65, "anchors.yaml", ha="center", fontsize=7.5, color=PALETTE["muted"]
-    )
+    ax.text(2.3, 4.65, "anchors.yaml", ha="center", fontsize=7.5, color=PALETTE["muted"])
 
     # Contract
     contract_box = FancyBboxPatch(
@@ -809,9 +789,7 @@ def create_workflow_diagram():
         linewidth=1.0,
     )
     ax.add_patch(legend)
-    ax.text(
-        1.0, 5.05, "Math checks", fontsize=9.2, fontweight="bold", color=PALETTE["dark"]
-    )
+    ax.text(1.0, 5.05, "Math checks", fontsize=9.2, fontweight="bold", color=PALETTE["dark"])
     ax.text(1.0, 4.75, r"$IC\approx e^{\kappa}$", fontsize=8.8)
     ax.text(1.0, 4.45, r"$F\approx 1-\omega$", fontsize=8.8)
     ax.text(1.0, 4.15, r"$IC\approx e^{\kappa}$", fontsize=8.8)

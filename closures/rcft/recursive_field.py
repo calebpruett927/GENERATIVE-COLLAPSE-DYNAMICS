@@ -92,10 +92,7 @@ def compute_recursive_field(
 
     # Compute field strength at each time point
     contributions = np.array(
-        [
-            compute_field_strength_single(S_series[i], C_series[i], F_series[i])
-            for i in range(n_points)
-        ]
+        [compute_field_strength_single(S_series[i], C_series[i], F_series[i]) for i in range(n_points)]
     )
 
     # Limit to max_iterations
@@ -223,9 +220,7 @@ if __name__ == "__main__":
     print(f"  Ψ_recursive: {result['Psi_recursive']:.6f}")
     print(f"  Regime: {result['regime']}")
     print(f"  Mean contribution: {result['components']['mean_contribution']:.6f}")
-    print(
-        f"  Effective memory: {result['components']['effective_memory']:.2f} iterations"
-    )
+    print(f"  Effective memory: {result['components']['effective_memory']:.2f} iterations")
 
     # Test 3: Moderate entropy with decay (active)
     print("\nTest 3: Moderate Entropy (Active)")

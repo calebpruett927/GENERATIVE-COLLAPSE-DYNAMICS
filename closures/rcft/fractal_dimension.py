@@ -207,9 +207,7 @@ if __name__ == "__main__":
     print("\nTest 3: Planar Spiral (Wrinkled)")
     theta = np.linspace(0, 4 * np.pi, 200)
     r = theta / (4 * np.pi)
-    spiral_trajectory = np.column_stack(
-        [r * np.cos(theta), r * np.sin(theta), np.zeros_like(theta)]
-    )
+    spiral_trajectory = np.column_stack([r * np.cos(theta), r * np.sin(theta), np.zeros_like(theta)])
     result = compute_fractal_dimension(spiral_trajectory)
     print(f"  D_fractal: {result['D_fractal']:.6f}")
     print(f"  Regime: {result['regime']}")

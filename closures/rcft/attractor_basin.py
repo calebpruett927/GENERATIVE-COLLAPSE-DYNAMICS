@@ -217,9 +217,7 @@ def compute_attractor_basin(
     }
 
 
-def _compute_simple_recursive_field(
-    omega: np.ndarray, S: np.ndarray, C: np.ndarray, alpha: float = 0.5
-) -> np.ndarray:
+def _compute_simple_recursive_field(omega: np.ndarray, S: np.ndarray, C: np.ndarray, alpha: float = 0.5) -> np.ndarray:
     """
     Simple recursive field computation for attractor analysis.
 

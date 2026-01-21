@@ -62,9 +62,7 @@ class TestMomentumFlux:
         """Scalar version should work for single time step."""
         from closures.gcd.momentum_flux import compute_scalar_momentum_flux
 
-        result = compute_scalar_momentum_flux(
-            kappa=-2.5, kappa_prev=-2.0, C=0.08, omega=0.05, dt=1.0
-        )
+        result = compute_scalar_momentum_flux(kappa=-2.5, kappa_prev=-2.0, C=0.08, omega=0.05, dt=1.0)
 
         assert "phi_momentum" in result
         assert "dkappa_dt" in result

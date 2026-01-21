@@ -142,11 +142,7 @@ class TestChecksumValidation:
         validator = RootFileValidator(root_dir=tmp_path)
         validator._validate_checksums()
 
-        errors = [
-            e
-            for e in validator.errors
-            if "checksum" in e.lower() or "sha256" in e.lower()
-        ]
+        errors = [e for e in validator.errors if "checksum" in e.lower() or "sha256" in e.lower()]
         assert len(errors) > 0
 
     def test_checksum_malformed_line(self, tmp_path):

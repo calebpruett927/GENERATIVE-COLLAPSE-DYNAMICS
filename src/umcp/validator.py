@@ -238,20 +238,14 @@ class RootFileValidator:
             # Check F = 1 - ω
             expected_F = 1.0 - omega
             if abs(F - expected_F) < 1e-9:
-                self.passed.append(
-                    f"✓ F = 1-ω identity satisfied (|{F} - {expected_F}| < 1e-9)"
-                )
+                self.passed.append(f"✓ F = 1-ω identity satisfied (|{F} - {expected_F}| < 1e-9)")
             else:
-                self.errors.append(
-                    f"✗ F ≠ 1-ω: F={F}, 1-ω={expected_F}, diff={abs(F - expected_F)}"
-                )
+                self.errors.append(f"✗ F ≠ 1-ω: F={F}, 1-ω={expected_F}, diff={abs(F - expected_F)}")
 
             # Check IC ≈ exp(κ)
             expected_IC = math.exp(kappa)
             if abs(IC - expected_IC) < 1e-6:
-                self.passed.append(
-                    f"✓ IC ≈ exp(κ) identity satisfied (|{IC} - {expected_IC:.6f}| < 1e-6)"
-                )
+                self.passed.append(f"✓ IC ≈ exp(κ) identity satisfied (|{IC} - {expected_IC:.6f}| < 1e-6)")
             else:
                 self.warnings.append(
                     f"⚠ IC ≈ exp(κ) slightly off: IC={IC}, exp(κ)={expected_IC:.6f}, diff={abs(IC - expected_IC)}"
@@ -368,9 +362,7 @@ class RootFileValidator:
             if mismatches:
                 self.errors.append(f"✗ Checksum mismatches: {', '.join(mismatches)}")
             else:
-                self.passed.append(
-                    f"✓ All checksums valid ({validated_count} files verified)"
-                )
+                self.passed.append(f"✓ All checksums valid ({validated_count} files verified)")
         except Exception as e:
             self.errors.append(f"✗ Error validating checksums: {e}")
 

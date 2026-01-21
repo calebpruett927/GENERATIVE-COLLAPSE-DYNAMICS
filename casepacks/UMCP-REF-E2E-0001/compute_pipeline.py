@@ -113,9 +113,7 @@ def compute_invariants(cs: list[float], t: int, psi0: list[float]) -> dict[str, 
     S = 0.0
     for i in range(n):
         c_safe = log_safe(cs[i])
-        S += w[i] * (
-            c_safe * math.log(c_safe) + (1.0 - c_safe) * math.log(1.0 - c_safe)
-        )
+        S += w[i] * (c_safe * math.log(c_safe) + (1.0 - c_safe) * math.log(1.0 - c_safe))
     S = -S
 
     # C: curvature proxy = std(c_i) / 0.5
@@ -230,18 +228,14 @@ def stage_compute(raw_rows: list[dict]) -> list[dict]:
 
     # Write psi_trace.csv
     with open(PSI_CSV, "w", newline="") as f:
-        writer = csv.DictWriter(
-            f, fieldnames=["t", "c_1", "c_2", "c_3", "oor_1", "oor_2", "oor_3"]
-        )
+        writer = csv.DictWriter(f, fieldnames=["t", "c_1", "c_2", "c_3", "oor_1", "oor_2", "oor_3"])
         writer.writeheader()
         writer.writerows(psi_rows)
 
     log.log(f"Wrote Ψ-trace: {PSI_CSV}")
 
     # Count OOR events
-    oor_count = sum(
-        1 for row in psi_rows if row["oor_1"] or row["oor_2"] or row["oor_3"]
-    )
+    oor_count = sum(1 for row in psi_rows if row["oor_1"] or row["oor_2"] or row["oor_3"])
     log.log(f"OOR events detected: {oor_count}")
 
     # Second pass: compute kernel invariants
@@ -280,9 +274,7 @@ def stage_regime(kernel_rows: list[dict]):
     regime_rows = []
     for row in kernel_rows:
         label, critical = classify_regime(row["omega"], row["F"], row["S"], row["C"])
-        regime_rows.append(
-            {"t": row["t"], "regime": label, "critical_overlay": critical}
-        )
+        regime_rows.append({"t": row["t"], "regime": label, "critical_overlay": critical})
 
     # Write regime.csv
     with open(REGIME_CSV, "w", newline="") as f:
@@ -323,9 +315,7 @@ def stage_render(kernel_rows: list[dict]):
         )
 
     with open(DIAG_CSV, "w", newline="") as f:
-        writer = csv.DictWriter(
-            f, fieldnames=["t", "F_equator_distance", "near_equator", "note"]
-        )
+        writer = csv.DictWriter(f, fieldnames=["t", "F_equator_distance", "near_equator", "note"])
         writer.writeheader()
         writer.writerows(diag_rows)
 
@@ -362,9 +352,7 @@ def stage_export(kernel_rows: list[dict], regime_rows: list[dict]):
 
         # Tolerance check (strict: 1e-9, baseline: warn if > 1e-6)
         if relative_error > 1e-6:
-            log.log(
-                f"  WARNING: t={row['t']}: IC consistency violation (rel_error={relative_error:.2e})"
-            )
+            log.log(f"  WARNING: t={row['t']}: IC consistency violation (rel_error={relative_error:.2e})")
 
     # Check final row consistency
     final_ic_error = abs(final_row["IC"] - math.exp(final_row["kappa"]))
@@ -384,11 +372,7 @@ def stage_export(kernel_rows: list[dict], regime_rows: list[dict]):
     with open(PSI_CSV, newline="") as f:
         reader = csv.DictReader(f)
         for row in reader:
-            if (
-                row["oor_1"] == "True"
-                or row["oor_2"] == "True"
-                or row["oor_3"] == "True"
-            ):
+            if row["oor_1"] == "True" or row["oor_2"] == "True" or row["oor_3"] == "True":
                 oor_count += 1
 
     # Count tau_R types
@@ -447,12 +431,9 @@ def stage_export(kernel_rows: list[dict], regime_rows: list[dict]):
                     "IC": final_row["IC"],
                 },
                 "ic_consistency": {
-                    "final_abs_error": abs(
-                        final_row["IC"] - math.exp(final_row["kappa"])
-                    ),
+                    "final_abs_error": abs(final_row["IC"] - math.exp(final_row["kappa"])),
                     "tolerance": 1e-9,
-                    "check_passed": abs(final_row["IC"] - math.exp(final_row["kappa"]))
-                    < 1e-9,
+                    "check_passed": abs(final_row["IC"] - math.exp(final_row["kappa"])) < 1e-9,
                 },
             },
             "regime_summary": {
@@ -517,9 +498,7 @@ def main():
     log.log("╔══════════════════════════════════════════════════════════╗")
     log.log("║                     SS1M SUMMARY                         ║")
     log.log("╚══════════════════════════════════════════════════════════╝")
-    log.log(
-        f"Case: {receipt['receipt']['case_id']} | Status: {receipt['receipt']['status']}"
-    )
+    log.log(f"Case: {receipt['receipt']['case_id']} | Status: {receipt['receipt']['status']}")
     log.log(
         f"Final: ω={final['omega']:.6f} F={final['F']:.6f} S={final['S']:.6f} C={final['C']:.6f} τ_R={final['tau_R']} κ={final['kappa']:.6f} IC={final['IC']:.6f}"
     )

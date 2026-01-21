@@ -133,9 +133,7 @@ def main():
         f_check = abs(F - (1 - omega))
         ic_check = abs(IC - 2.71828**kappa)  # exp(kappa)
         print("\n  Tier-1 Validation:")
-        print(
-            f"    F ≈ 1-ω: |{F:.6f} - {1 - omega:.6f}| = {f_check:.2e} {'✓' if f_check < 1e-6 else '✗'}"
-        )
+        print(f"    F ≈ 1-ω: |{F:.6f} - {1 - omega:.6f}| = {f_check:.2e} {'✓' if f_check < 1e-6 else '✗'}")
         print(f"    IC ≈ exp(κ): {ic_check:.2e} {'✓' if ic_check < 1e-6 else '✗'}")
     print()
 
@@ -145,9 +143,7 @@ def main():
     regimes = umcp.load_regimes()
     print(f"  Classifications: {len(regimes)}")
     for regime in regimes:
-        print(
-            f"    t={regime['t']}: {regime['regime_label']} (critical: {regime['critical_overlay']})"
-        )
+        print(f"    t={regime['t']}: {regime['regime_label']} (critical: {regime['critical_overlay']})")
     print()
 
     # Load integrity information

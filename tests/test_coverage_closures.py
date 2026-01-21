@@ -137,9 +137,7 @@ class TestClosureLoadingEdgeCases:
         # Try F_from_omega if it exists
         if (loader.closures_dir / "F_from_omega.py").exists():
             try:
-                result = loader.execute_closure(
-                    "F_from_omega", omega=10.0, r=0.5, m=1.0
-                )
+                result = loader.execute_closure("F_from_omega", omega=10.0, r=0.5, m=1.0)
                 assert result is not None
             except (TypeError, AttributeError) as e:
                 pytest.skip(f"F_from_omega has different signature: {e}")

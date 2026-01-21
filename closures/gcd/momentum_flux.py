@@ -217,9 +217,7 @@ if __name__ == "__main__":
 
     # Test 4: Scalar version
     print("\nTest 4: Scalar Momentum Flux (Single Step)")
-    result = compute_scalar_momentum_flux(
-        kappa=-2.5, kappa_prev=-2.0, C=0.08, omega=0.05, dt=1.0
-    )
+    result = compute_scalar_momentum_flux(kappa=-2.5, kappa_prev=-2.0, C=0.08, omega=0.05, dt=1.0)
     print(f"  Φ_momentum: {result['phi_momentum']:.6f}")
     print(f"  dκ/dt: {result['dkappa_dt']:.6f}")
     print(f"  Regime: {result['regime']}")

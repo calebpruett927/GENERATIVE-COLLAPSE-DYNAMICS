@@ -27,9 +27,7 @@ from typing import Any
 import numpy as np
 
 
-def compute_resonance_pattern(
-    field_series: np.ndarray, dt: float = 1.0, tol: float = 1e-6
-) -> dict[str, Any]:
+def compute_resonance_pattern(field_series: np.ndarray, dt: float = 1.0, tol: float = 1e-6) -> dict[str, Any]:
     """
     Analyze resonance patterns in a field time series using Fourier analysis.
 
@@ -129,13 +127,8 @@ def compute_resonance_pattern(
     harmonic_strength = 0.0
     if dominant_idx > 0 and 2 * dominant_idx < len(power_spectrum):
         harmonic_indices = [2 * dominant_idx, 3 * dominant_idx]
-        harmonic_powers = [
-            power_spectrum[idx] if idx < len(power_spectrum) else 0.0
-            for idx in harmonic_indices
-        ]
-        harmonic_strength = np.sum(harmonic_powers) / (
-            power_spectrum[dominant_idx] + tol
-        )
+        harmonic_powers = [power_spectrum[idx] if idx < len(power_spectrum) else 0.0 for idx in harmonic_indices]
+        harmonic_strength = np.sum(harmonic_powers) / (power_spectrum[dominant_idx] + tol)
 
     # Compute phase variance for pattern classification
     # Reconstruct instantaneous phase from Hilbert transform
@@ -158,10 +151,7 @@ def compute_resonance_pattern(
         "max_power": float(np.max(power_spectrum)),
         "phase_variance": float(phase_variance),
         "spectral_entropy": float(
-            -np.sum(
-                (power_spectrum / np.sum(power_spectrum))
-                * np.log(power_spectrum / np.sum(power_spectrum) + tol)
-            )
+            -np.sum((power_spectrum / np.sum(power_spectrum)) * np.log(power_spectrum / np.sum(power_spectrum) + tol))
         ),
     }
 
@@ -213,18 +203,12 @@ def compute_multi_field_resonance(
         Phi_E_corr_matrix = np.corrcoef(Phi_gen_series, E_series)
 
     # Handle NaN from constant fields (zero variance)
-    R_Phi_corr = (
-        R_Phi_corr_matrix[0, 1] if not np.isnan(R_Phi_corr_matrix[0, 1]) else 0.0
-    )
+    R_Phi_corr = R_Phi_corr_matrix[0, 1] if not np.isnan(R_Phi_corr_matrix[0, 1]) else 0.0
     R_E_corr = R_E_corr_matrix[0, 1] if not np.isnan(R_E_corr_matrix[0, 1]) else 0.0
-    Phi_E_corr = (
-        Phi_E_corr_matrix[0, 1] if not np.isnan(Phi_E_corr_matrix[0, 1]) else 0.0
-    )
+    Phi_E_corr = Phi_E_corr_matrix[0, 1] if not np.isnan(Phi_E_corr_matrix[0, 1]) else 0.0
 
     # Phase difference between fields
-    phase_diff_R_Phi = (R_pattern["Theta_phase"] - Phi_pattern["Theta_phase"]) % (
-        2 * np.pi
-    )
+    phase_diff_R_Phi = (R_pattern["Theta_phase"] - Phi_pattern["Theta_phase"]) % (2 * np.pi)
     phase_diff_R_E = (R_pattern["Theta_phase"] - E_pattern["Theta_phase"]) % (2 * np.pi)
 
     # Dominant wavelength (use R as primary)
