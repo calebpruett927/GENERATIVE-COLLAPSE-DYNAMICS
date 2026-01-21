@@ -3,6 +3,17 @@ UMCP File Reference Module
 
 Provides easy access to root-level UMCP files and standardized paths.
 Use this module to load manifest, contract, observables, and other root-level configuration files.
+
+Interconnections:
+- Reads: All root-level YAML/CSV files (manifest, contract, observables, etc.)
+- Used by: examples/interconnected_demo.py, tests/test_96_file_references.py
+- API: UMCPFiles class provides load_*() methods for all UMCP files
+- Documentation: docs/file_reference.md, docs/interconnected_architecture.md
+
+Design:
+- Auto-detects repository root via pyproject.toml
+- Provides standardized paths for all UMCP artifacts
+- Supports YAML, JSON, CSV, and text file loading
 """
 
 from __future__ import annotations

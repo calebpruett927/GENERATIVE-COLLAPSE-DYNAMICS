@@ -1,4 +1,6 @@
 schema: "schemas/manifest.schema.json"
+# Interconnection map: This manifest references contracts, closures, and canon anchors
+# See: docs/interconnected_architecture.md for full system diagram
 
 casepack:
   id: "umcp_complete"
@@ -11,14 +13,20 @@ casepack:
     - "UMCP Validator"
 
 refs:
+  # Canonical specifications (Tier-1 symbol definitions)
   canon_anchors:
     path: "canon/anchors.yaml"
+    notes: "Tier-1 GCD framework specifications"
+  # Contract enforcement (frozen rules and invariants)
   contract:
     id: "UMA.INTSTACK.v1"
     path: "contracts/UMA.INTSTACK.v1.yaml"
+    notes: "Primary contract with typed censoring and no_return_no_credit"
+  # Closure implementations (computational functions)
   closures_registry:
     id: "UMCP.CLOSURES.DEFAULT.v1"
     path: "closures/registry.yaml"
+    notes: "Base closures + GCD + RCFT extensions"
 
 artifacts:
   raw_measurements:

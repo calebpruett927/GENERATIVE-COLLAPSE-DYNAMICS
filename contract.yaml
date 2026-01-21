@@ -1,4 +1,9 @@
 schema: "schemas/contract.schema.json"
+# Contract interconnections:
+# - Referenced by: manifest.yaml (refs.contract)
+# - Specifies: Tier-1 kernel, typed censoring rules (no_return_no_credit)
+# - Canon anchor: canon/anchors.yaml
+# - Documentation: GLOSSARY.md#contract, docs/interconnected_architecture.md
 
 contract:
   id: "UMA.INTSTACK.v1"

@@ -29,7 +29,7 @@ __all__ = [
     "get_umcp_files",
 ]
 
-__version__ = "1.3.1"
+__version__ = "1.3.2"
 
 VALIDATOR_NAME = "umcp-validator"
 DEFAULT_TZ = "America/Chicago"

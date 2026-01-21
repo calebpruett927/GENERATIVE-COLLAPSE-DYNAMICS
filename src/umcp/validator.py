@@ -2,6 +2,20 @@
 UMCP Root File Validator
 
 Validates the 16 root-level UMCP files for structural integrity and mathematical consistency.
+
+Interconnections:
+- Validates: All root files (manifest, contract, observables, weights, trace, invariants, etc.)
+- Checks: Tier-1 identities (F = 1-ω, IC ≈ exp(κ)), regime classification, checksums
+- Implements: AXIOM-0 (no_return_no_credit), typed censoring rules
+- Used by: umcp CLI (umcp validate), tests/test_97_root_integration.py
+- Documentation: PROTOCOL_REFERENCE.md, docs/interconnected_architecture.md
+
+Validation layers:
+1. File existence (16 required files)
+2. Schema conformance (YAML/CSV structure)
+3. Mathematical identities (Tier-1 kernel)
+4. Regime thresholds (GCD classification)
+5. Integrity checksums (SHA256)
 """
 
 from __future__ import annotations

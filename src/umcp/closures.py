@@ -3,6 +3,16 @@ UMCP Closure Loading and Execution
 
 This module provides utilities for loading and executing closures referenced
 in the closures registry (closures/registry.yaml).
+
+Interconnections:
+- Reads: closures/registry.yaml (UMCP.CLOSURES.DEFAULT.v1)
+- Loads: closures/*.py, closures/gcd/*.py, closures/rcft/*.py
+- Used by: examples/interconnected_demo.py, tests/test_70_contract_closures.py
+- Documentation: docs/interconnected_architecture.md, GLOSSARY.md#closure
+
+API:
+- ClosureLoader: Main class for loading and executing closures
+- get_closure_loader(): Factory function for obtaining a ClosureLoader instance
 """
 
 from __future__ import annotations

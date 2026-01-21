@@ -1,5 +1,11 @@
 # Return domain configuration for UMCP
 # Specifies how candidate return times are generated and evaluated
+# Interconnections:
+# - References: closures/registry.yaml (UMCP.CLOSURES.DEFAULT.v1)
+# - Uses closures: return_domain.window64.v1.yaml, norms.l2_eta1e-3.v1.yaml
+# - Implements: no_return_no_credit (AXIOM-0 compliance)
+# - Output to: invariants.csv (τ_R values)
+# - Documentation: GLOSSARY.md#return-domain, AXIOM.md
 
 return_domain:
   version: "1.0.0"

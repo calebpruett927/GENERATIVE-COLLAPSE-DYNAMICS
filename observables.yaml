@@ -1,5 +1,9 @@
 # Observable variables configuration for UMCP run
 # Defines which measurements are tracked and their properties
+# Interconnections:
+# - Input to: trace.csv (derived coordinates c_1, c_2, c_3)
+# - Used by: invariants.csv computation (via Tier-1 kernel)
+# - Documentation: GLOSSARY.md#observable, docs/interconnected_architecture.md
 
 observables:
   version: "1.0.0"

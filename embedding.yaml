@@ -1,5 +1,10 @@
 # Embedding configuration for UMCP
 # Defines how raw observables are transformed into bounded coordinates
+# Interconnections:
+# - References: contract.yaml (UMA.INTSTACK.v1)
+# - Input from: observables.yaml (x_1, x_2, x_3)
+# - Output to: trace.csv (c_1, c_2, c_3)
+# - Documentation: GLOSSARY.md#embedding, docs/interconnected_architecture.md
 
 embedding:
   version: "1.0.0"

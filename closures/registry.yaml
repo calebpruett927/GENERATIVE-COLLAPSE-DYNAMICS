@@ -1,8 +1,14 @@
 # closures/registry.yaml
+# Central closure registry for UMCP protocol
+# Cross-references: manifest.yaml, contract.yaml, casepacks/*/closures/closure_registry.yaml
+# Documentation: docs/interconnected_architecture.md, GLOSSARY.md#closure-registry
 schema: "schemas/closures.schema.json"
 
 registry:
   id: "UMCP.CLOSURES.DEFAULT.v1"
+  notes: >
+    Default closure registry with base closures and GCD/RCFT extensions.
+    Version 1.0.0 - includes gamma, return-domain, norms, and curvature-neighborhood defaults.
   closures:
     gamma:
       path: "closures/gamma.default.v1.yaml"
