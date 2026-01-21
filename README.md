@@ -94,6 +94,7 @@ All metrics are **verifiable from source code** - no marketing hype.
 - � **[Publication Infrastructure](PUBLICATION_INFRASTRUCTURE.md)** — Publication rows, Case IDs, make_pubrow.py, contract variants
 - 📐 **[Kernel Specification](KERNEL_SPECIFICATION.md)** — Formal definitions and lemmas (F, ω, S, C, κ, IC, τ_R, seam accounting)
 - 🔐 **[UHMP](UHMP.md)** — Universal Hash Manifest Protocol (5-phase mint, identity governance)
+- 📦 **[CasePack Reference](CASEPACK_REFERENCE.md)** — Complete CasePack structure (manifests, receipts, integrity ledger, validation)
 - 🎯 **[Face Policy](FACE_POLICY.md)** — Boundary governance and admissible clipping rules
 - 🎨 **[Visualization Dashboard](https://scaling-train-97wgvp77rw993xjwr-8501.app.github.dev/)** — Phase space, time series, regime monitoring
 - 🔌 **API Endpoints** — `/health`, `/latest-receipt`, `/ledger`, `/stats`, `/regime`
@@ -114,6 +115,7 @@ UMCP includes comprehensive protocol governance and indexing systems:
 - **[PUBLICATION_INFRASTRUCTURE.md](PUBLICATION_INFRASTRUCTURE.md)** — Publication row format, Case ID conventions (CPOC-*), make_pubrow.py tool, contract variants, Weld ID vs EID distinction, ASCII header mapping
 - **[UHMP.md](UHMP.md)** — Universal Hash Manifest Protocol (5-phase mint, SHA-256 identity, ledger governance)
 - **[FACE_POLICY.md](FACE_POLICY.md)** — Boundary governance: admissible face policies, OOR handling, clipping rules
+- **[CASEPACK_REFERENCE.md](CASEPACK_REFERENCE.md)** — **Complete CasePack structure**: manifests (YAML/JSON), receipts (ss1m_receipt.json, seam_receipt.json), integrity ledger (sha256.txt), validation rules (rules.yml). Reference format for publishable units.
 - **[Protocol Reference Guide](PROTOCOL_REFERENCE.md)** — Master navigation and quick lookup
 
 ### Term and Symbol References
