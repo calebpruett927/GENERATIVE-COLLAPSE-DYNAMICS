@@ -90,6 +90,7 @@ All metrics are **verifiable from source code** - no marketing hype.
 - 📚 **[Glossary](GLOSSARY.md)** — Authoritative term definitions (protocol infrastructure)
 - 🔤 **[Symbol Index](SYMBOL_INDEX.md)** — Fast Unicode/ASCII symbol lookup with collision prevention
 - 📇 **[Term Index](TERM_INDEX.md)** — Alphabetical term cross-reference
+- 🏗️ **[Tier System](TIER_SYSTEM.md)** — Tier-0/1/1.5/2 separation, freeze gates, weld accounting
 - 🔐 **[UHMP](UHMP.md)** — Universal Hash Manifest Protocol (5-phase mint, identity governance)
 - 🎯 **[Face Policy](FACE_POLICY.md)** — Boundary governance and admissible clipping rules
 - 🎨 **[Visualization Dashboard](https://scaling-train-97wgvp77rw993xjwr-8501.app.github.dev/)** — Phase space, time series, regime monitoring
@@ -106,6 +107,7 @@ UMCP includes comprehensive protocol governance and indexing systems:
 ### Core Protocol Documents
 
 - **[AXIOM.md](AXIOM.md)** — Core axiom: "Collapse is generative; only what returns is real" (operational definitions)
+- **[TIER_SYSTEM.md](TIER_SYSTEM.md)** — **Tier-0 (interface), Tier-1 (kernel), Tier-1.5 (weld), Tier-2 (overlays)** with freeze gates, one-way dependency flow, and nonconformance criteria
 - **[UHMP.md](UHMP.md)** — Universal Hash Manifest Protocol (5-phase mint, SHA-256 identity, ledger governance)
 - **[FACE_POLICY.md](FACE_POLICY.md)** — Boundary governance: admissible face policies, OOR handling, clipping rules
 - **[Protocol Reference Guide](PROTOCOL_REFERENCE.md)** — Master navigation and quick lookup
