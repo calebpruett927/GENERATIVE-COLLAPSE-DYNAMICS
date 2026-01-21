@@ -17,7 +17,7 @@ class TestClosureLoadingEdgeCases:
     def test_load_nonexistent_module(self):
         """Test loading a closure module that doesn't exist."""
         loader = ClosureLoader()
-        
+
         with pytest.raises(FileNotFoundError):
             loader.load_closure_module("definitely_does_not_exist_xyz")
 
@@ -26,12 +26,12 @@ class TestClosureLoadingEdgeCases:
         # Create a temporary closure dir with a Python file that has no compute function
         closure_dir = tmp_path / "closures"
         closure_dir.mkdir()
-        
+
         test_file = closure_dir / "no_callable.py"
         test_file.write_text("x = 42  # No compute function here")
-        
+
         loader = ClosureLoader(root_dir=tmp_path)
-        
+
         # Try to get the compute function - should raise AttributeError
         with pytest.raises(AttributeError):
             loader.get_closure_function("no_callable")
@@ -39,7 +39,7 @@ class TestClosureLoadingEdgeCases:
     def test_execute_closure_with_real_closure(self):
         """Test executing a real closure from the repository."""
         loader = ClosureLoader()
-        
+
         # Try to execute hello_world if it exists
         if (loader.closures_dir / "hello_world.py").exists():
             # hello_world requires omega parameter
@@ -53,7 +53,7 @@ class TestClosureLoadingEdgeCases:
     def test_execute_closure_missing_function(self):
         """Test executing a closure when the function doesn't exist."""
         loader = ClosureLoader()
-        
+
         # This should raise an error or return None
         with pytest.raises((AttributeError, TypeError, FileNotFoundError)):
             loader.execute_closure("definitely_nonexistent")
@@ -61,7 +61,7 @@ class TestClosureLoadingEdgeCases:
     def test_validate_closure_exists_true(self):
         """Test validate_closure_exists for existing closure."""
         loader = ClosureLoader()
-        
+
         # hello_world should exist
         if (loader.closures_dir / "hello_world.py").exists():
             assert loader.validate_closure_exists("hello_world") is True
@@ -69,16 +69,16 @@ class TestClosureLoadingEdgeCases:
     def test_validate_closure_exists_false(self):
         """Test validate_closure_exists for non-existent closure."""
         loader = ClosureLoader()
-        
+
         assert loader.validate_closure_exists("nonexistent_xyz") is False
 
     def test_list_closures_returns_dict(self):
         """Test that list_closures returns proper structure."""
         loader = ClosureLoader()
-        
+
         closures = loader.list_closures()
         assert isinstance(closures, dict)
-        
+
         # Check structure
         for name, path in closures.items():
             assert isinstance(name, str)
@@ -87,19 +87,19 @@ class TestClosureLoadingEdgeCases:
     def test_registry_property(self):
         """Test registry property access."""
         loader = ClosureLoader()
-        
+
         registry = loader.registry
         assert isinstance(registry, dict)
 
     def test_module_caching(self):
         """Test that modules are cached after first load."""
         loader = ClosureLoader()
-        
+
         # Load a module twice
         if (loader.closures_dir / "hello_world.py").exists():
             module1 = loader.load_closure_module("hello_world")
             module2 = loader.load_closure_module("hello_world")
-            
+
             # Should be the same object (cached)
             assert module1 is module2
 
@@ -107,10 +107,10 @@ class TestClosureLoadingEdgeCases:
         """Test ClosureLoader with explicit root directory."""
         closure_dir = tmp_path / "closures"
         closure_dir.mkdir()
-        
+
         registry_file = closure_dir / "registry.yaml"
         registry_file.write_text("closures: {}")
-        
+
         loader = ClosureLoader(root_dir=tmp_path)
         assert loader.root == tmp_path
         assert loader.closures_dir == closure_dir
@@ -119,13 +119,13 @@ class TestClosureLoadingEdgeCases:
         """Test loading a module that causes ImportError."""
         closure_dir = tmp_path / "closures"
         closure_dir.mkdir()
-        
+
         # Create a Python file with syntax that will cause issues
         bad_file = closure_dir / "bad_module.py"
         bad_file.write_text("import nonexistent_module_xyz")
-        
+
         loader = ClosureLoader(root_dir=tmp_path)
-        
+
         # This should raise ImportError or similar
         with pytest.raises((ImportError, ModuleNotFoundError)):
             loader.load_closure_module("bad_module")
@@ -133,7 +133,7 @@ class TestClosureLoadingEdgeCases:
     def test_execute_closure_with_kwargs(self):
         """Test executing closure with keyword arguments."""
         loader = ClosureLoader()
-        
+
         # Try F_from_omega if it exists
         if (loader.closures_dir / "F_from_omega.py").exists():
             try:

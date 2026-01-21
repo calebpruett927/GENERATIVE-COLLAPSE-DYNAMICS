@@ -55,9 +55,7 @@ class TestContracts:
 
             # Check for any ID-like field
             has_id = (
-                any("id" in k.lower() or "name" in k.lower() for k in contract)
-                if isinstance(contract, dict)
-                else False
+                any("id" in k.lower() or "name" in k.lower() for k in contract) if isinstance(contract, dict) else False
             )
 
             assert has_id or isinstance(contract, dict), f"{contract_file.name} should have an identifier"

@@ -18,10 +18,10 @@ class TestManifestValidation:
         """Test manifest without schema field."""
         manifest_path = tmp_path / "manifest.yaml"
         manifest_path.write_text("casepack: test\nversion: 1.0")
-        
+
         validator = RootFileValidator(root_dir=tmp_path)
         validator._validate_manifest()
-        
+
         errors = [e for e in validator.errors if "manifest" in e and "schema" in e]
         assert len(errors) > 0
 
@@ -29,10 +29,10 @@ class TestManifestValidation:
         """Test manifest without casepack field."""
         manifest_path = tmp_path / "manifest.yaml"
         manifest_path.write_text("schema: test\nversion: 1.0")
-        
+
         validator = RootFileValidator(root_dir=tmp_path)
         validator._validate_manifest()
-        
+
         errors = [e for e in validator.errors if "manifest" in e and "casepack" in e]
         assert len(errors) > 0
 
@@ -40,10 +40,10 @@ class TestManifestValidation:
         """Test manifest with invalid YAML."""
         manifest_path = tmp_path / "manifest.yaml"
         manifest_path.write_text("invalid: yaml: structure: [[[")
-        
+
         validator = RootFileValidator(root_dir=tmp_path)
         validator._validate_manifest()
-        
+
         errors = [e for e in validator.errors if "manifest" in e]
         assert len(errors) > 0
 
@@ -55,10 +55,10 @@ class TestContractValidation:
         """Test contract without schema field."""
         contract_path = tmp_path / "contract.yaml"
         contract_path.write_text("contract: test\nversion: 1.0")
-        
+
         validator = RootFileValidator(root_dir=tmp_path)
         validator._validate_contract()
-        
+
         errors = [e for e in validator.errors if "contract" in e and "schema" in e]
         assert len(errors) > 0
 
@@ -66,10 +66,10 @@ class TestContractValidation:
         """Test contract without contract field."""
         contract_path = tmp_path / "contract.yaml"
         contract_path.write_text("schema: test\nversion: 1.0")
-        
+
         validator = RootFileValidator(root_dir=tmp_path)
         validator._validate_contract()
-        
+
         errors = [e for e in validator.errors if "contract" in e.lower()]
         assert len(errors) > 0
 
@@ -77,10 +77,10 @@ class TestContractValidation:
         """Test contract with invalid YAML."""
         contract_path = tmp_path / "contract.yaml"
         contract_path.write_text("invalid: yaml: [[[")
-        
+
         validator = RootFileValidator(root_dir=tmp_path)
         validator._validate_contract()
-        
+
         errors = [e for e in validator.errors if "contract" in e.lower()]
         assert len(errors) > 0
 
@@ -92,10 +92,10 @@ class TestObservablesValidation:
         """Test observables without observables field."""
         obs_path = tmp_path / "observables.yaml"
         obs_path.write_text("schema: test\nversion: 1.0")
-        
+
         validator = RootFileValidator(root_dir=tmp_path)
         validator._validate_observables()
-        
+
         errors = [e for e in validator.errors if "observables" in e and "missing" in e]
         assert len(errors) > 0
 
@@ -103,10 +103,10 @@ class TestObservablesValidation:
         """Test observables with invalid YAML."""
         obs_path = tmp_path / "observables.yaml"
         obs_path.write_text("invalid: [[[")
-        
+
         validator = RootFileValidator(root_dir=tmp_path)
         validator._validate_observables()
-        
+
         errors = [e for e in validator.errors if "observables" in e]
         assert len(errors) > 0
 
@@ -118,10 +118,10 @@ class TestWeightsValidation:
         """Test weights with invalid CSV."""
         weights_path = tmp_path / "weights.csv"
         weights_path.write_text("invalid,csv\n,,,malformed")
-        
+
         validator = RootFileValidator(root_dir=tmp_path)
         validator._validate_weights()
-        
+
         # Should handle gracefully
         assert True
 
@@ -129,7 +129,7 @@ class TestWeightsValidation:
         """Test weights file missing."""
         validator = RootFileValidator(root_dir=tmp_path)
         validator._validate_weights()
-        
+
         errors = [e for e in validator.errors if "weight" in e.lower()]
         assert len(errors) > 0
 
@@ -141,7 +141,7 @@ class TestChecksumValidation:
         """Test when checksum file doesn't exist."""
         validator = RootFileValidator(root_dir=tmp_path)
         validator._validate_checksums()
-        
+
         errors = [e for e in validator.errors if "checksum" in e.lower() or "sha256" in e.lower()]
         assert len(errors) > 0
 
@@ -150,10 +150,10 @@ class TestChecksumValidation:
         sha_path = tmp_path / "integrity" / "sha256.txt"
         sha_path.parent.mkdir(parents=True, exist_ok=True)
         sha_path.write_text("malformed line without hash\n")
-        
+
         validator = RootFileValidator(root_dir=tmp_path)
         validator._validate_checksums()
-        
+
         # Should handle gracefully
         assert True
 
@@ -165,14 +165,14 @@ class TestInvariantValidation:
         """Test invariant validation with missing files."""
         validator = RootFileValidator(root_dir=tmp_path)
         validator._validate_invariant_identities()
-        
+
         # Should handle missing files gracefully
         assert True
 
     def test_invariant_with_real_files(self):
         """Test invariant validation with actual files."""
         validator = RootFileValidator(root_dir=REPO_ROOT)
-        
+
         # This may pass or fail depending on data, but shouldn't crash
         try:
             validator._validate_invariant_identities()
@@ -187,7 +187,7 @@ class TestFileExistenceChecks:
         """Test checking files that don't exist."""
         validator = RootFileValidator(root_dir=tmp_path)
         validator._check_file_existence()
-        
+
         # Should have errors for missing files
         assert len(validator.errors) > 0
 
@@ -195,6 +195,6 @@ class TestFileExistenceChecks:
         """Test checking files that exist."""
         validator = RootFileValidator(root_dir=REPO_ROOT)
         validator._check_file_existence()
-        
+
         # Should have some passed checks
         assert len(validator.passed) > 0

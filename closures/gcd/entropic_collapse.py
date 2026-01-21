@@ -24,7 +24,6 @@ Regime thresholds:
 """
 
 
-
 def compute_entropic_collapse(S: float, F: float, tau_R: float, tau_0: float = 10.0) -> dict[str, float]:
     """
     Compute entropic collapse potential from GCD Tier-1 invariants.

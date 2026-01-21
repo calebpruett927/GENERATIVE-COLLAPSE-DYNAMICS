@@ -179,8 +179,12 @@ def create_architecture_diagram():
     )
 
     # Vertical connectors
-    ax.annotate("", xy=(8, 5.9), xytext=(8, 5.7), arrowprops={"arrowstyle": "-|>", "lw": 1.4, "color": PALETTE["muted"]})
-    ax.annotate("", xy=(8, 3.3), xytext=(8, 3.1), arrowprops={"arrowstyle": "-|>", "lw": 1.4, "color": PALETTE["muted"]})
+    ax.annotate(
+        "", xy=(8, 5.9), xytext=(8, 5.7), arrowprops={"arrowstyle": "-|>", "lw": 1.4, "color": PALETTE["muted"]}
+    )
+    ax.annotate(
+        "", xy=(8, 3.3), xytext=(8, 3.1), arrowprops={"arrowstyle": "-|>", "lw": 1.4, "color": PALETTE["muted"]}
+    )
 
     # Math callouts (framework-accurate equations)
     eq_box = FancyBboxPatch(
@@ -471,7 +475,9 @@ def create_workflow_diagram():
     ax.text(2.5, 6.8, "CSV / JSON", ha="center", fontsize=8, color=PALETTE["muted"])
 
     # Arrow
-    ax.annotate("", xy=(4.5, 7.1), xytext=(4.1, 7.1), arrowprops={"arrowstyle": "-|>", "lw": 1.6, "color": PALETTE["dark"]})
+    ax.annotate(
+        "", xy=(4.5, 7.1), xytext=(4.1, 7.1), arrowprops={"arrowstyle": "-|>", "lw": 1.6, "color": PALETTE["dark"]}
+    )
 
     # Step 2: Invariants
     step2 = FancyBboxPatch(
@@ -489,7 +495,9 @@ def create_workflow_diagram():
     ax.text(6.2, 6.8, "Invariants", ha="center", fontsize=8, color=PALETTE["muted"])
 
     # Arrow
-    ax.annotate("", xy=(8.2, 7.1), xytext=(7.8, 7.1), arrowprops={"arrowstyle": "-|>", "lw": 1.6, "color": PALETTE["dark"]})
+    ax.annotate(
+        "", xy=(8.2, 7.1), xytext=(7.8, 7.1), arrowprops={"arrowstyle": "-|>", "lw": 1.6, "color": PALETTE["dark"]}
+    )
 
     # Step 3: Closures
     step3 = FancyBboxPatch(
@@ -507,7 +515,9 @@ def create_workflow_diagram():
     ax.text(9.9, 6.8, "Closures", ha="center", fontsize=8, color=PALETTE["muted"])
 
     # Arrow down from step 2
-    ax.annotate("", xy=(6.2, 5.8), xytext=(6.2, 6.4), arrowprops={"arrowstyle": "-|>", "lw": 1.6, "color": PALETTE["dark"]})
+    ax.annotate(
+        "", xy=(6.2, 5.8), xytext=(6.2, 6.4), arrowprops={"arrowstyle": "-|>", "lw": 1.6, "color": PALETTE["dark"]}
+    )
 
     # Step 4: Validation
     step4 = FancyBboxPatch(
@@ -525,7 +535,9 @@ def create_workflow_diagram():
     ax.text(6.2, 4.6, "Contract", ha="center", fontsize=8, color=PALETTE["muted"])
 
     # Arrow down
-    ax.annotate("", xy=(6.2, 3.5), xytext=(6.2, 4.1), arrowprops={"arrowstyle": "-|>", "lw": 1.6, "color": PALETTE["dark"]})
+    ax.annotate(
+        "", xy=(6.2, 3.5), xytext=(6.2, 4.1), arrowprops={"arrowstyle": "-|>", "lw": 1.6, "color": PALETTE["dark"]}
+    )
 
     # Step 5: Receipt
     step5 = FancyBboxPatch(
@@ -679,7 +691,10 @@ def create_workflow_vertical():
 
         if i < len(steps) - 1:
             ax.annotate(
-                "", xy=(5, y - 0.3), xytext=(5, y), arrowprops={"arrowstyle": "-|>", "lw": 1.6, "color": PALETTE["muted"]}
+                "",
+                xy=(5, y - 0.3),
+                xytext=(5, y),
+                arrowprops={"arrowstyle": "-|>", "lw": 1.6, "color": PALETTE["muted"]},
             )
         y -= 2.2
 

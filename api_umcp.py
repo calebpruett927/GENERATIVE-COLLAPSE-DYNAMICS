@@ -227,6 +227,7 @@ async def get_current_regime():
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8000)
 
 
@@ -234,6 +235,7 @@ if __name__ == "__main__":
 def run_server():
     """Entry point for umcp-api command"""
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8000)
 
 

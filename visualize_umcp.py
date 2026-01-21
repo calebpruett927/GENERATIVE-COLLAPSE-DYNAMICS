@@ -330,7 +330,10 @@ def plot_omega_vs_curvature(df: pd.DataFrame, show_anomalies: bool = True):
                     mode="markers+lines",
                     name=regime,
                     marker={
-                        "color": REGIME_COLORS[regime], "size": 12, "line": {"width": 2, "color": "white"}, "symbol": "circle"
+                        "color": REGIME_COLORS[regime],
+                        "size": 12,
+                        "line": {"width": 2, "color": "white"},
+                        "symbol": "circle",
                     },
                     line={"color": REGIME_COLORS[regime], "width": 1, "dash": "dot"},
                     text=regime_data["timestamp"].dt.strftime("%Y-%m-%d %H:%M"),
@@ -589,7 +592,10 @@ def plot_regime_timeline(df: pd.DataFrame):
         title="Regime Classification Timeline",
         xaxis_title="Timestamp",
         yaxis={
-            "title": "Regime", "tickmode": "array", "tickvals": [0, 1, 2, 3], "ticktext": ["Stable", "Watch", "Collapse", "Unknown"]
+            "title": "Regime",
+            "tickmode": "array",
+            "tickvals": [0, 1, 2, 3],
+            "ticktext": ["Stable", "Watch", "Collapse", "Unknown"],
         },
         template="plotly_white",
         height=300,
