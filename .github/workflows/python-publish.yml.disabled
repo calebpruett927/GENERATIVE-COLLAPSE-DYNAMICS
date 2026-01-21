@@ -44,7 +44,7 @@ jobs:
       - release-build
     
     permissions:
-      id-token: write  # Required for trusted publishing to PyPI
+      id-token: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Retrieve release distributions

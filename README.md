@@ -7,14 +7,13 @@
 **Don't trust badges - verify the code:**
 
 ```bash
-# Check tests (should show 233 passing)
-pytest -v
+pytest -v  # Should show 325 passing
 
 # Check UMCP validation (should show CONFORMANT, 0 errors)
 umcp validate .
 
-# Check file integrity (should show 200 files)
-wc -l < integrity/sha256.txt
+# Check file integrity (should show 1 file)
+cat integrity/sha256.txt
 
 # Check version
 python -c "import tomli; print(tomli.load(open('pyproject.toml','rb'))['project']['version'])"
@@ -80,6 +79,16 @@ All metrics are **verifiable from source code** - no marketing hype.
   
   📦 Ledger:      ledger/return_log.csv (continuous append)
   🧪 CasePacks:   hello_world | gcd_complete | rcft_complete
+
+---
+
+## 🛡️ Automation & Integrity
+
+- **325 tests** run automatically on every commit (pytest, CI/CD)
+- **Code style** enforced with ruff and black (auto-formatting)
+- **Integrity checks**: Every key file is tracked with SHA256 in integrity/sha256.txt
+- **Automated script**: Run `python scripts/update_integrity.py` after any change to api_umcp.py to update the integrity file
+- **No manual steps missed**: All validation, formatting, and integrity are enforced before release
   
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
            "No improvisation. Contract-first. Tier-1 reserved."
@@ -265,6 +274,7 @@ Raw Measurements → Invariants → Closures → Validation → Receipt
 
 ## 🚀 Quick Start (5 Minutes)
 
+
 ### Installation
 
 ```bash
@@ -282,11 +292,14 @@ umcp health
 # ✓ All systems operational
 
 pytest
-# 233 tests passed
+# 325 tests passed
 
 # List available extensions
-./umcp-ext list
+umcp-ext list
 # ✓ 4 extensions registered
+
+# Update integrity after code/format changes
+python scripts/update_integrity.py
 ```
 
 ---

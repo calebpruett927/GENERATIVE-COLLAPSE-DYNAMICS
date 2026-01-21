@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 
 """
 UMCP Public Audit API
@@ -19,6 +18,9 @@ Authentication:
     All endpoints are public by default. No API token required for local/dev use.
     For production, add authentication (see QUICKSTART_EXTENSIONS.md for JWT example).
 """
+#!/usr/bin/env python3
+
+__version__ = "1.0.0"
 
 import csv
 import json
@@ -26,13 +28,26 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import ClassVar
 
+# --- API Key Authentication (Production) ---
+# Set your API key here (for demo; use env vars in production)
+API_KEY = "your-api-key-here"
+
+from fastapi import Depends, Security
+from fastapi.security import APIKeyHeader
+
+api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
+
+def verify_api_key(api_key: str = Security(api_key_header)):
+    if api_key != API_KEY:
+        raise HTTPException(status_code=401, detail="Invalid or missing API key")
+    return api_key
+
 try:
     from fastapi import FastAPI, HTTPException
     from fastapi.responses import JSONResponse
     from pydantic import BaseModel
-except ImportError:
-    print("Please install FastAPI: pip install fastapi uvicorn")
-    exit(1)
+except ImportError as e:
+    raise ImportError("Please install FastAPI: pip install fastapi uvicorn") from e
 
 
 app = FastAPI(
@@ -209,8 +224,8 @@ async def get_stats():
 
 
 @app.get("/regime", response_model=RegimeInfo)
-async def get_current_regime():
-    """Get current regime classification with invariants"""
+async def get_current_regime(api_key: str = Depends(verify_api_key)):
+    """Get current regime classification with invariants (API key required in production)"""
     repo_root = get_repo_root()
     inv_path = repo_root / "outputs" / "invariants.csv"
 
@@ -266,7 +281,7 @@ class UMCPAuditAPI:
     Automatically registered with UMCP extension system.
 
     Attributes:
-        name: Extension name
+        name: UMCP extension name
         version: Extension version
         description: Extension description
         requires: Required dependencies
