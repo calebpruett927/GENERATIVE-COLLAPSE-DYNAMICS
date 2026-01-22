@@ -1,0 +1,35 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.1, pytest-9.0.2, pluggy-1.6.0
+rootdir: /workspaces/UMCP-Metadata-Runnable-Code
+configfile: pyproject.toml
+testpaths: tests
+collected 325 items
+
+tests/test_00_schemas_valid.py ...                                       [  0%]
+tests/test_100_gcd_canon.py ...............                              [  5%]
+tests/test_101_gcd_closures.py .....................                     [ 12%]
+tests/test_102_gcd_contract.py ................                          [ 16%]
+tests/test_10_canon_contract_closures_validate.py ...                    [ 17%]
+tests/test_110_rcft_canon.py ..............                              [ 22%]
+tests/test_111_rcft_closures.py ........................                 [ 29%]
+tests/test_112_rcft_contract.py ..................                       [ 35%]
+tests/test_113_rcft_tier2_layering.py .......................            [ 42%]
+tests/test_115_new_closures.py ..................                        [ 47%]
+tests/test_20_casepack_hello_world_validates.py .....                    [ 49%]
+tests/test_25_umcp_ref_e2e_0001.py ............                          [ 52%]
+tests/test_30_semantic_rules_hello_world.py .....                        [ 54%]
+tests/test_40_validator_result_schema_accepts_example.py .               [ 54%]
+tests/test_51_cli_diff.py ....                                           [ 56%]
+tests/test_70_contract_closures.py ............                          [ 59%]
+tests/test_80_benchmark.py .....                                         [ 61%]
+tests/test_90_edge_cases.py .........                                    [ 64%]
+tests/test_95_logging_monitoring.py .........                            [ 66%]
+tests/test_96_file_references.py ................                        [ 71%]
+tests/test_97_root_integration.py ..................                     [ 77%]
+tests/test_cli.py .........                                              [ 80%]
+tests/test_coverage_boost.py .....................                       [ 86%]
+tests/test_coverage_closures.py ............                             [ 90%]
+tests/test_coverage_file_refs.py ................                        [ 95%]
+tests/test_coverage_validator.py ................                        [100%]
+
+============================= 325 passed in 22.10s =============================
