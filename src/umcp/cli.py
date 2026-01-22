@@ -1,4 +1,12 @@
+
 from __future__ import annotations
+
+# Ensure src is in sys.path for absolute imports when running as a script
+import os
+import sys
+repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if repo_root not in sys.path:
+    sys.path.insert(0, repo_root)
 
 import argparse
 import csv
@@ -19,8 +27,8 @@ from typing import Any
 import yaml
 from jsonschema import Draft202012Validator
 
-from . import VALIDATOR_NAME, __version__
-from .logging_utils import HealthCheck, get_logger
+from umcp import VALIDATOR_NAME, __version__
+from umcp.logging_utils import HealthCheck, get_logger
 
 # -----------------------------
 # Internal codes (stable)
@@ -1934,6 +1942,23 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     """Main CLI entry point."""
+    print("[DEBUG] Entered main()")
     parser = build_parser()
-    args = parser.parse_args()
-    return args.func(args)
+    print("[DEBUG] Built parser")
+    try:
+        print("[DEBUG] About to parse args")
+        args = parser.parse_args()
+        print(f"[DEBUG] Parsed args: {args}")
+        if not hasattr(args, 'func'):
+            print("Error: No command provided. Use --help for usage.", file=sys.stderr)
+            parser.print_help()
+            return 2
+        print("[DEBUG] About to call command handler")
+        return args.func(args)
+    except Exception as e:
+        print(f"CLI error: {e}", file=sys.stderr)
+        return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

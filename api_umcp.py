@@ -32,14 +32,22 @@ from pydantic import BaseModel
 __version__ = "1.0.0"
 
 # --- API Key Authentication (Production) ---
+
 # Set your API key here (for demo; use env vars in production)
-API_KEY = "your-api-key-here"
+import os
+import logging
+API_KEY = os.environ.get("UMCP_API_KEY", "your-api-key-here")
+
+# Configure basic logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("umcp.api")
 
 api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
 
 
 def verify_api_key(api_key: str = Security(api_key_header)):
     if api_key != API_KEY:
+        logger.warning("Unauthorized API key access attempt.")
         raise HTTPException(status_code=401, detail="Invalid or missing API key")
     return api_key
 
@@ -117,7 +125,7 @@ async def health():
     return HealthResponse(status="ok", timestamp=datetime.now(UTC).isoformat(), version="1.0.0")
 
 
-@app.get("/latest-receipt")
+@app.get("/latest-receipt", response_model=dict)
 async def latest_receipt():
     """Get the most recent validation receipt"""
     repo_root = get_repo_root()
@@ -131,10 +139,11 @@ async def latest_receipt():
             receipt = json.load(f)
         return JSONResponse(content=receipt)
     except Exception as e:
+        logger.error(f"Error loading receipt: {e!s}")
         raise HTTPException(status_code=500, detail=f"Error loading receipt: {e!s}") from e
 
 
-@app.get("/ledger")
+@app.get("/ledger", response_model=dict)
 async def get_ledger():
     """Get historical validation ledger"""
     repo_root = get_repo_root()
@@ -153,6 +162,7 @@ async def get_ledger():
 
         return JSONResponse(content={"records": records, "count": len(records)})
     except Exception as e:
+        logger.error(f"Error loading ledger: {e!s}")
         raise HTTPException(status_code=500, detail=f"Error loading ledger: {e!s}") from e
 
 
@@ -214,6 +224,7 @@ async def get_stats():
             latest_timestamp=latest.get("timestamp"),
         )
     except Exception as e:
+        logger.error(f"Error computing stats: {e!s}")
         raise HTTPException(status_code=500, detail=f"Error computing stats: {e!s}") from e
 
 
@@ -251,6 +262,7 @@ async def get_current_regime(api_key: str = Depends(verify_api_key)):
             timestamp=datetime.now(UTC).isoformat(),
         )
     except Exception as e:
+        logger.error(f"Error loading regime: {e!s}")
         raise HTTPException(status_code=500, detail=f"Error loading regime: {e!s}") from e
 
 
