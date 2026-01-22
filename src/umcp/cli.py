@@ -16,7 +16,6 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
-
 try:
     import yaml
 except ImportError:

@@ -24,8 +24,6 @@ from pathlib import Path
 from typing import Any
 
 
-
-
 class ClosureLoader:
     """
     Loads and executes closures from the closures/ directory.
