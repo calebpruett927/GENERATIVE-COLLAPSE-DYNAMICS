@@ -1,9 +1,9 @@
-
 from __future__ import annotations
 
 # Ensure src is in sys.path for absolute imports when running as a script
 import os
 import sys
+
 repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if repo_root not in sys.path:
     sys.path.insert(0, repo_root)
@@ -45,8 +45,12 @@ RE_FLOAT = re.compile(r"[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?")
 RE_INT = re.compile(r"[-+]?\d+$")
 
 # Pre-compiled patterns for strict validation
-RE_POSITIVE_WELD_CLAIM = re.compile(r"\bweld\s+(?:PASS|validated|demonstrated|confirmed|verified)\b", re.IGNORECASE)
-RE_POSITIVE_SEAM_CLAIM = re.compile(r"\bseam\s+(?:PASS|validated|demonstrated|confirmed|verified)\b", re.IGNORECASE)
+RE_POSITIVE_WELD_CLAIM = re.compile(
+    r"\bweld\s+(?:PASS|validated|demonstrated|confirmed|verified)\b", re.IGNORECASE
+)
+RE_POSITIVE_SEAM_CLAIM = re.compile(
+    r"\bseam\s+(?:PASS|validated|demonstrated|confirmed|verified)\b", re.IGNORECASE
+)
 RE_POSITIVE_CONTINUITY_CLAIM = re.compile(
     r"\bcontinuity\s+claim\s+(?:PASS|validated|demonstrated|confirmed)\b", re.IGNORECASE
 )
@@ -94,7 +98,9 @@ def _save_cache_metadata(repo_root: Path, metadata: dict[str, Any]) -> None:
         pass  # Silent fail on cache write
 
 
-def _get_cached_validator(schema: dict[str, Any], schema_id: str) -> Draft202012Validator:
+def _get_cached_validator(
+    schema: dict[str, Any], schema_id: str
+) -> Draft202012Validator:
     """Get cached validator or create and cache new one."""
     if schema_id not in _VALIDATOR_CACHE:
         _VALIDATOR_CACHE[schema_id] = Draft202012Validator(schema)
@@ -161,7 +167,9 @@ class TargetResult:
     target_type: str  # repo|casepack|file|directory
     target_path: str
     run_status: str = "CONFORMANT"
-    counts: dict[str, int] = field(default_factory=lambda: {"errors": 0, "warnings": 0, "info": 0})
+    counts: dict[str, int] = field(
+        default_factory=lambda: {"errors": 0, "warnings": 0, "info": 0}
+    )
     issues: list[Issue] = field(default_factory=list)
     artifacts: list[dict[str, Any]] = field(default_factory=list)
 
@@ -175,7 +183,9 @@ class TargetResult:
             self.counts["info"] += 1
 
     def finalize_status(self, fail_on_warning: bool) -> None:
-        if self.counts["errors"] > 0 or (fail_on_warning and self.counts["warnings"] > 0):
+        if self.counts["errors"] > 0 or (
+            fail_on_warning and self.counts["warnings"] > 0
+        ):
             self.run_status = "NONCONFORMANT"
         else:
             self.run_status = "CONFORMANT"
@@ -235,7 +245,10 @@ def _load_json(path: Path) -> Any:
     if path_str in _FILE_HASH_CACHE:
         try:
             current_hash = _compute_file_hash(path)
-            if current_hash == _FILE_HASH_CACHE[path_str] and path_str in _FILE_CONTENT_CACHE:
+            if (
+                current_hash == _FILE_HASH_CACHE[path_str]
+                and path_str in _FILE_CONTENT_CACHE
+            ):
                 _CACHE_STATS["file_reuse"] += 1
                 return _FILE_CONTENT_CACHE[path_str]
         except Exception:
@@ -262,7 +275,10 @@ def _load_yaml(path: Path) -> Any:
     if path_str in _FILE_HASH_CACHE:
         try:
             current_hash = _compute_file_hash(path)
-            if current_hash == _FILE_HASH_CACHE[path_str] and path_str in _FILE_CONTENT_CACHE:
+            if (
+                current_hash == _FILE_HASH_CACHE[path_str]
+                and path_str in _FILE_CONTENT_CACHE
+            ):
                 _CACHE_STATS["file_reuse"] += 1
                 return _FILE_CONTENT_CACHE[path_str]
         except Exception:
@@ -293,7 +309,9 @@ def _relpath(repo_root: Path, p: Path) -> str:
         return p.as_posix()
 
 
-def _append_to_ledger(repo_root: Path, run_status: str, invariants_data: dict[str, Any] | None = None) -> None:
+def _append_to_ledger(
+    repo_root: Path, run_status: str, invariants_data: dict[str, Any] | None = None
+) -> None:
     """
     Append validation result to continuous ledger at ledger/return_log.csv.
     Records: timestamp, run_status, Δκ (delta_kappa), s (stiffness), and optional observables.
@@ -342,7 +360,9 @@ def _append_to_ledger(repo_root: Path, run_status: str, invariants_data: dict[st
         writer.writerow(row)
 
 
-def _require_file(target: TargetResult, repo_root: Path, p: Path, kind_hint: str = "") -> bool:
+def _require_file(
+    target: TargetResult, repo_root: Path, p: Path, kind_hint: str = ""
+) -> bool:
     if p.exists() and p.is_file():
         return True
     target.add_issue(
@@ -359,7 +379,9 @@ def _require_file(target: TargetResult, repo_root: Path, p: Path, kind_hint: str
     return False
 
 
-def _require_dir(target: TargetResult, repo_root: Path, p: Path, kind_hint: str = "") -> bool:
+def _require_dir(
+    target: TargetResult, repo_root: Path, p: Path, kind_hint: str = ""
+) -> bool:
     if p.exists() and p.is_dir():
         return True
     target.add_issue(
@@ -369,18 +391,24 @@ def _require_dir(target: TargetResult, repo_root: Path, p: Path, kind_hint: str 
             message=f"Missing required directory: {_relpath(repo_root, p)}",
             path=_relpath(repo_root, p),
             json_pointer=None,
-            hint=(f"Create the directory at this exact path. {kind_hint}".strip() or None),
+            hint=(
+                f"Create the directory at this exact path. {kind_hint}".strip() or None
+            ),
             rule="require_dir",
         )
     )
     return False
 
 
-def _validate_schema_json(target: TargetResult, repo_root: Path, schema_path: Path) -> dict[str, Any] | None:
+def _validate_schema_json(
+    target: TargetResult, repo_root: Path, schema_path: Path
+) -> dict[str, Any] | None:
     """
     Load and Draft202012Validator.check_schema(schema). On failure, emit E002.
     """
-    if not _require_file(target, repo_root, schema_path, "Schemas must exist under schemas/*.json"):
+    if not _require_file(
+        target, repo_root, schema_path, "Schemas must exist under schemas/*.json"
+    ):
         return None
     try:
         schema = _load_json(schema_path)
@@ -587,7 +615,9 @@ def _emit_rule_issue(
     )
 
 
-def _expected_regime_label(omega: float, F: float, S: float, C: float, regimes: dict[str, Any]) -> str:
+def _expected_regime_label(
+    omega: float, F: float, S: float, C: float, regimes: dict[str, Any]
+) -> str:
     # Canonical expected label:
     # - Collapse if omega >= omega_gte
     # - Stable if omega < omega_lt AND F > F_gt AND S < S_lt AND C < C_lt
@@ -829,7 +859,9 @@ def _apply_semantic_rules_to_casepack(
             if provided_label is None:
                 if on_missing_regime != "skip":
                     sev = "ERROR" if on_missing_regime == "error" else rule["severity"]
-                    hint = f"Missing regime.label. Expected label would be '{exp_label}'."
+                    hint = (
+                        f"Missing regime.label. Expected label would be '{exp_label}'."
+                    )
                     _emit_rule_issue(
                         target,
                         repo_root,
@@ -876,7 +908,11 @@ def _apply_semantic_rules_to_casepack(
             IC_min = _dot_get(row, icmin_path)
             crit = _dot_get(row, crit_path)
 
-            if (IC_min is None) or (not isinstance(IC_min, (int, float))) or (not math.isfinite(float(IC_min))):
+            if (
+                (IC_min is None)
+                or (not isinstance(IC_min, (int, float)))
+                or (not math.isfinite(float(IC_min)))
+            ):
                 if on_missing_icmin in {"warn", "error"} and crit is not None:
                     sev = "ERROR" if on_missing_icmin == "error" else rule["severity"]
                     hint = (
@@ -932,7 +968,9 @@ def _apply_semantic_rules_to_casepack(
 # -----------------------------
 # Validation workflow
 # -----------------------------
-def _should_skip_casepack(cache_metadata: dict[str, Any], manifest_path: Path, case_path: str) -> bool:
+def _should_skip_casepack(
+    cache_metadata: dict[str, Any], manifest_path: Path, case_path: str
+) -> bool:
     """Check if casepack can be skipped based on unchanged manifest hash."""
     if not manifest_path.exists():
         return False
@@ -958,7 +996,9 @@ def _should_skip_casepack(cache_metadata: dict[str, Any], manifest_path: Path, c
         return False
 
 
-def _cache_casepack_result(cache_metadata: dict[str, Any], case_path: str, manifest_path: Path, status: str) -> None:
+def _cache_casepack_result(
+    cache_metadata: dict[str, Any], case_path: str, manifest_path: Path, status: str
+) -> None:
     """Cache casepack validation result with manifest hash."""
     try:
         if "casepack_results" not in cache_metadata:
@@ -966,14 +1006,18 @@ def _cache_casepack_result(cache_metadata: dict[str, Any], case_path: str, manif
 
         cache_metadata["casepack_results"][case_path] = {
             "status": status,
-            "manifest_hash": (_compute_file_hash(manifest_path) if manifest_path.exists() else None),
+            "manifest_hash": (
+                _compute_file_hash(manifest_path) if manifest_path.exists() else None
+            ),
             "last_validated": _utc_now_iso(),
         }
     except Exception:
         pass  # Silent fail on cache update
 
 
-def _validate_casepack_strict(target: TargetResult, repo_root: Path, case_dir: Path, fail_on_warning: bool) -> None:
+def _validate_casepack_strict(
+    target: TargetResult, repo_root: Path, case_dir: Path, fail_on_warning: bool
+) -> None:
     """
     Apply strict validation rules to a CasePack.
     Strict rules (emitted as warnings in baseline, errors in strict):
@@ -1026,7 +1070,11 @@ def _validate_casepack_strict(target: TargetResult, repo_root: Path, case_dir: P
         if contract_path.exists():
             try:
                 contract_doc = _load_yaml(contract_path)
-                frozen_params = contract_doc.get("contract", {}).get("tier_1_kernel", {}).get("frozen_parameters", {})
+                frozen_params = (
+                    contract_doc.get("contract", {})
+                    .get("tier_1_kernel", {})
+                    .get("frozen_parameters", {})
+                )
                 required_params = [
                     "a",
                     "b",
@@ -1062,7 +1110,11 @@ def _validate_casepack_strict(target: TargetResult, repo_root: Path, case_dir: P
                 channels = weights_doc.get("weights", {}).get("channels", [])
                 if channels:
                     weight_sum = sum(ch.get("weight", 0) for ch in channels)
-                    tol = weights_doc.get("weights", {}).get("validation", {}).get("tolerance", 1e-9)
+                    tol = (
+                        weights_doc.get("weights", {})
+                        .get("validation", {})
+                        .get("tolerance", 1e-9)
+                    )
                     if abs(weight_sum - 1.0) > tol:
                         target.add_issue(
                             Issue(
@@ -1098,7 +1150,9 @@ def _validate_casepack_strict(target: TargetResult, repo_root: Path, case_dir: P
     if ss1m_path.exists():
         try:
             ss1m_doc = _load_json(ss1m_path)
-            manifest_hash = ss1m_doc.get("receipt", {}).get("manifest", {}).get("root_sha256")
+            manifest_hash = (
+                ss1m_doc.get("receipt", {}).get("manifest", {}).get("root_sha256")
+            )
             if not manifest_hash or manifest_hash == "pending":
                 target.add_issue(
                     Issue(
@@ -1189,7 +1243,9 @@ def _find_repo_root(start: Path) -> Path | None:
 def _validate_repo(repo_root: Path, fail_on_warning: bool) -> dict[str, Any]:
     # Load persistent cache metadata
     cache_metadata = _load_cache_metadata(repo_root)
-    cache_metadata["stats"]["total_runs"] = cache_metadata["stats"].get("total_runs", 0) + 1
+    cache_metadata["stats"]["total_runs"] = (
+        cache_metadata["stats"].get("total_runs", 0) + 1
+    )
 
     repo_target = TargetResult(target_type="repo", target_path=".")
     casepack_targets: list[TargetResult] = []
@@ -1272,7 +1328,10 @@ def _validate_repo(repo_root: Path, fail_on_warning: bool) -> dict[str, Any]:
     # Load and validate closures registry + referenced closure files (lazy load)
     closures_registry_path = repo_root / "closures" / "registry.yaml"
     schema_closures = schemas.get("closures")
-    if _require_file(repo_target, repo_root, closures_registry_path) and schema_closures:
+    if (
+        _require_file(repo_target, repo_root, closures_registry_path)
+        and schema_closures
+    ):
         try:
             registry_doc = _load_yaml(closures_registry_path)
         except Exception as e:
@@ -1299,7 +1358,9 @@ def _validate_repo(repo_root: Path, fail_on_warning: bool) -> dict[str, Any]:
 
         if registry_doc and isinstance(registry_doc, dict):
             ref_paths = []
-            closures_map = (registry_doc.get("registry", {}) or {}).get("closures", {}) or {}
+            closures_map = (registry_doc.get("registry", {}) or {}).get(
+                "closures", {}
+            ) or {}
             if isinstance(closures_map, dict):
                 for key in [
                     "gamma",
@@ -1308,7 +1369,11 @@ def _validate_repo(repo_root: Path, fail_on_warning: bool) -> dict[str, Any]:
                     "curvature_neighborhood",
                 ]:
                     val = closures_map.get(key)
-                    if isinstance(val, dict) and "path" in val and isinstance(val["path"], str):
+                    if (
+                        isinstance(val, dict)
+                        and "path" in val
+                        and isinstance(val["path"], str)
+                    ):
                         ref_paths.append(val["path"])
 
             for rp in ref_paths:
@@ -1341,7 +1406,9 @@ def _validate_repo(repo_root: Path, fail_on_warning: bool) -> dict[str, Any]:
     rules_doc = None
     rules_path = repo_root / "validator_rules.yaml"
     if schema_rules:
-        rules_doc = _load_validator_rules(repo_target, repo_root, rules_path, schema_rules)
+        rules_doc = _load_validator_rules(
+            repo_target, repo_root, rules_path, schema_rules
+        )
 
     # Validate casepacks
     casepacks_dir = repo_root / "casepacks"
@@ -1366,7 +1433,9 @@ def _validate_repo(repo_root: Path, fail_on_warning: bool) -> dict[str, Any]:
 
             t = TargetResult(target_type="casepack", target_path=case_path)
             # Required structure
-            _require_file(t, repo_root, manifest_path, "CasePack requires manifest.json")
+            _require_file(
+                t, repo_root, manifest_path, "CasePack requires manifest.json"
+            )
             _require_dir(
                 t,
                 repo_root,
@@ -1491,14 +1560,20 @@ def _validate_repo(repo_root: Path, fail_on_warning: bool) -> dict[str, Any]:
                     )
 
             # Apply semantic rules if rules + canon available
-            if rules_doc and canon_doc and (psi_csv_path.exists() or invariants_path.exists()):
+            if (
+                rules_doc
+                and canon_doc
+                and (psi_csv_path.exists() or invariants_path.exists())
+            ):
                 _apply_semantic_rules_to_casepack(
                     target=t,
                     repo_root=repo_root,
                     rules_doc=rules_doc,
                     canon_doc=canon_doc,
                     psi_csv_path=psi_csv_path if psi_csv_path.exists() else None,
-                    invariants_json_path=(invariants_path if invariants_path.exists() else None),
+                    invariants_json_path=(
+                        invariants_path if invariants_path.exists() else None
+                    ),
                 )
 
             # Apply strict validation rules
@@ -1507,19 +1582,25 @@ def _validate_repo(repo_root: Path, fail_on_warning: bool) -> dict[str, Any]:
             t.finalize_status(fail_on_warning=fail_on_warning)
 
             # Cache result for future smart skipping
-            _cache_casepack_result(cache_metadata, case_path, manifest_path, t.run_status)
+            _cache_casepack_result(
+                cache_metadata, case_path, manifest_path, t.run_status
+            )
 
             casepack_targets.append(t)
 
     # Finalize repo status (aggregate counts)
     repo_target.counts["errors"] += sum(t.counts["errors"] for t in casepack_targets)
-    repo_target.counts["warnings"] += sum(t.counts["warnings"] for t in casepack_targets)
+    repo_target.counts["warnings"] += sum(
+        t.counts["warnings"] for t in casepack_targets
+    )
     repo_target.counts["info"] += sum(t.counts["info"] for t in casepack_targets)
     repo_target.finalize_status(fail_on_warning=fail_on_warning)
 
     # Summary block
     targets_total = 1 + len(casepack_targets)
-    targets_failed = sum(1 for t in [repo_target, *casepack_targets] if t.run_status != "CONFORMANT")
+    targets_failed = sum(
+        1 for t in [repo_target, *casepack_targets] if t.run_status != "CONFORMANT"
+    )
 
     # Save cache metadata and stats
     cache_metadata["file_hashes"] = _FILE_HASH_CACHE.copy()
@@ -1645,8 +1726,16 @@ def _cmd_validate(args: argparse.Namespace) -> int:
 
     # Extract provenance details
     created_utc = result.get("created_utc", "unknown")
-    git_commit = result.get("validator", {}).get("implementation", {}).get("git_commit", "unknown")
-    python_version = result.get("validator", {}).get("implementation", {}).get("python_version", "unknown")
+    git_commit = (
+        result.get("validator", {})
+        .get("implementation", {})
+        .get("git_commit", "unknown")
+    )
+    python_version = (
+        result.get("validator", {})
+        .get("implementation", {})
+        .get("python_version", "unknown")
+    )
     error_count = result.get("summary", {}).get("counts", {}).get("errors", 0)
     warning_count = result.get("summary", {}).get("counts", {}).get("warnings", 0)
 
@@ -1754,8 +1843,16 @@ def _cmd_diff(args: argparse.Namespace) -> int:
         # Compare targets validated
         print("📦 Targets Validated")
         print("-" * 80)
-        targets1 = {t.get("target_path") for t in receipt1.get("targets", []) if isinstance(t, dict)}
-        targets2 = {t.get("target_path") for t in receipt2.get("targets", []) if isinstance(t, dict)}
+        targets1 = {
+            t.get("target_path")
+            for t in receipt1.get("targets", [])
+            if isinstance(t, dict)
+        }
+        targets2 = {
+            t.get("target_path")
+            for t in receipt2.get("targets", [])
+            if isinstance(t, dict)
+        }
 
         added = targets2 - targets1
         removed = targets1 - targets2
@@ -1882,7 +1979,9 @@ def _cmd_health(args: argparse.Namespace) -> int:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(prog="umcp", description="UMCP contract-first validator CLI")
+    p = argparse.ArgumentParser(
+        prog="umcp", description="UMCP contract-first validator CLI"
+    )
     p.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
 
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -1892,7 +1991,9 @@ def build_parser() -> argparse.ArgumentParser:
         help="Validate UMCP repo artifacts, CasePacks, schemas, and semantic rules",
     )
     v.add_argument("path", nargs="?", default=".", help="Path inside repo (default: .)")
-    v.add_argument("--out", default=None, help="Write validator result JSON to this file")
+    v.add_argument(
+        "--out", default=None, help="Write validator result JSON to this file"
+    )
     v.add_argument(
         "--strict",
         action="store_true",
@@ -1913,7 +2014,9 @@ def build_parser() -> argparse.ArgumentParser:
 
     r = sub.add_parser("run", help="Operational placeholder: validates the target")
     r.add_argument("path", nargs="?", default=".", help="Path inside repo (default: .)")
-    r.add_argument("--out", default=None, help="Write validator result JSON to this file")
+    r.add_argument(
+        "--out", default=None, help="Write validator result JSON to this file"
+    )
     r.add_argument(
         "--strict",
         action="store_true",
@@ -1929,12 +2032,16 @@ def build_parser() -> argparse.ArgumentParser:
     d = sub.add_parser("diff", help="Compare two validation receipts")
     d.add_argument("receipt1", help="Path to first receipt JSON file")
     d.add_argument("receipt2", help="Path to second receipt JSON file")
-    d.add_argument("--verbose", "-v", action="store_true", help="Show detailed differences")
+    d.add_argument(
+        "--verbose", "-v", action="store_true", help="Show detailed differences"
+    )
     d.set_defaults(func=_cmd_diff)
 
     h = sub.add_parser("health", help="Check system health and production readiness")
     h.add_argument("path", nargs="?", default=".", help="Path inside repo (default: .)")
-    h.add_argument("--json", action="store_true", help="Output as JSON for monitoring systems")
+    h.add_argument(
+        "--json", action="store_true", help="Output as JSON for monitoring systems"
+    )
     h.set_defaults(func=_cmd_health)
 
     return p
@@ -1949,7 +2056,7 @@ def main() -> int:
         print("[DEBUG] About to parse args")
         args = parser.parse_args()
         print(f"[DEBUG] Parsed args: {args}")
-        if not hasattr(args, 'func'):
+        if not hasattr(args, "func"):
             print("Error: No command provided. Use --help for usage.", file=sys.stderr)
             parser.print_help()
             return 2
