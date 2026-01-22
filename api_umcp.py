@@ -36,6 +36,7 @@ __version__ = "1.0.0"
 # Set your API key here (for demo; use env vars in production)
 import os
 import logging
+
 API_KEY = os.environ.get("UMCP_API_KEY", "your-api-key-here")
 
 # Configure basic logging
