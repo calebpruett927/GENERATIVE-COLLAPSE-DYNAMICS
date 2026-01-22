@@ -1,9 +1,5 @@
 """UMCP Public Audit API."""
 
-
-
-
-
 import csv
 import json
 from datetime import datetime
@@ -40,6 +36,7 @@ __version__ = "1.0.0"
 API_KEY = "your-api-key-here"
 
 api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
+
 
 def verify_api_key(api_key: str = Security(api_key_header)):
     if api_key != API_KEY:
@@ -257,10 +254,8 @@ async def get_current_regime(api_key: str = Depends(verify_api_key)):
         raise HTTPException(status_code=500, detail=f"Error loading regime: {e!s}") from e
 
 
-
-
-
 # --- Extension registration for UMCP ---
+
 
 class UMCPAuditAPI:
     """
@@ -272,6 +267,7 @@ class UMCPAuditAPI:
         description: Extension description
         requires: Required dependencies
     """
+
     name = "audit-api"
     version = "1.0.0"
     description = "Public REST API for UMCP validation receipts and regime statistics"
@@ -281,13 +277,15 @@ class UMCPAuditAPI:
     def install():
         """Install extension dependencies"""
         import subprocess
-        subprocess.check_call(["pip", "install", *UMCPAuditAPI.requires])
 
+        subprocess.check_call(["pip", "install", *UMCPAuditAPI.requires])
 
     @staticmethod
     def run():
         """Run the extension (not implemented)"""
-        raise NotImplementedError("run_server() is not implemented. Use 'uvicorn api_umcp:app --reload' to run the API.")
+        raise NotImplementedError(
+            "run_server() is not implemented. Use 'uvicorn api_umcp:app --reload' to run the API."
+        )
 
     @staticmethod
     def info():
