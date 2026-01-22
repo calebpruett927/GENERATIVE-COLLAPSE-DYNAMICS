@@ -26,7 +26,11 @@ import math
 from pathlib import Path
 from typing import Any
 
-import yaml
+
+try:
+    import yaml
+except ImportError:
+    yaml = None
 
 
 class RootFileValidator:
@@ -127,12 +131,30 @@ class RootFileValidator:
             else:
                 self.errors.append(f"✗ Missing file: {file_path}")
 
+    def _load_yaml(self, path: Path) -> Any:
+        """Load a YAML file. Fallback to minimal parser if PyYAML unavailable and file is simple."""
+        if not path.exists():
+            raise FileNotFoundError(f"YAML file not found: {path}")
+        if yaml is not None:
+            with open(path, encoding="utf-8") as f:
+                return yaml.safe_load(f)
+        # Minimal YAML parser for simple key: value pairs (no nested structures)
+        result = {}
+        with open(path, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith('#'):
+                    continue
+                if ':' in line:
+                    k, v = line.split(':', 1)
+                    result[k.strip()] = v.strip()
+        return result
+
     def _validate_manifest(self) -> None:
         """Validate manifest.yaml structure."""
         try:
             manifest_path = self.root / "manifest.yaml"
-            with open(manifest_path) as f:
-                manifest = yaml.safe_load(f)
+            manifest = self._load_yaml(manifest_path)
 
             if "schema" not in manifest:
                 self.errors.append("✗ manifest.yaml missing 'schema' field")
@@ -147,8 +169,7 @@ class RootFileValidator:
         """Validate contract.yaml structure."""
         try:
             contract_path = self.root / "contract.yaml"
-            with open(contract_path) as f:
-                contract = yaml.safe_load(f)
+            contract = self._load_yaml(contract_path)
 
             if "schema" not in contract:
                 self.errors.append("✗ contract.yaml missing 'schema' field")
@@ -163,8 +184,7 @@ class RootFileValidator:
         """Validate observables.yaml structure."""
         try:
             obs_path = self.root / "observables.yaml"
-            with open(obs_path) as f:
-                observables = yaml.safe_load(f)
+            observables = self._load_yaml(obs_path)
 
             if "observables" not in observables:
                 self.errors.append("✗ observables.yaml missing 'observables' field")

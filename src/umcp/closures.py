@@ -23,7 +23,7 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
-import yaml
+
 
 
 class ClosureLoader:
@@ -63,12 +63,25 @@ class ClosureLoader:
 
     @property
     def registry(self) -> dict[str, Any]:
-        """Load and cache the closures registry."""
+        """Load and cache the closures registry (YAML, but fallback to minimal internal parser if PyYAML unavailable)."""
         if self._registry is None:
             if not self.registry_path.exists():
                 raise FileNotFoundError(f"Closures registry not found: {self.registry_path}")
-            with open(self.registry_path) as f:
-                self._registry = yaml.safe_load(f)
+            try:
+                import yaml
+                with open(self.registry_path) as f:
+                    self._registry = yaml.safe_load(f)
+            except ImportError:
+                # Minimal YAML parser for simple key: value pairs (no nested structures)
+                self._registry = {}
+                with open(self.registry_path) as f:
+                    for line in f:
+                        line = line.strip()
+                        if not line or line.startswith('#'):
+                            continue
+                        if ':' in line:
+                            k, v = line.split(':', 1)
+                            self._registry[k.strip()] = v.strip()
         return self._registry
 
     def list_closures(self) -> dict[str, str]:

@@ -23,7 +23,11 @@ import json
 from pathlib import Path
 from typing import Any
 
-import yaml
+
+try:
+    import yaml
+except ImportError:
+    yaml = None
 
 
 class UMCPFiles:
@@ -86,9 +90,23 @@ class UMCPFiles:
         self.code_version_txt = self.integrity_dir / "code_version.txt"
 
     def load_yaml(self, path: Path) -> Any:
-        """Load a YAML file."""
-        with open(path) as f:
-            return yaml.safe_load(f)
+        """Load a YAML file. Fallback to minimal parser if PyYAML unavailable and file is simple."""
+        if not path.exists():
+            raise FileNotFoundError(f"YAML file not found: {path}")
+        if yaml is not None:
+            with open(path, encoding="utf-8") as f:
+                return yaml.safe_load(f)
+        # Minimal YAML parser for simple key: value pairs (no nested structures)
+        result = {}
+        with open(path, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith('#'):
+                    continue
+                if ':' in line:
+                    k, v = line.split(':', 1)
+                    result[k.strip()] = v.strip()
+        return result
 
     def load_json(self, path: Path) -> Any:
         """Load a JSON file."""

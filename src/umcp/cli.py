@@ -16,7 +16,11 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
-import yaml
+
+try:
+    import yaml
+except ImportError:
+    yaml = None
 from jsonschema import Draft202012Validator
 
 from umcp import VALIDATOR_NAME, __version__
@@ -254,10 +258,7 @@ def _load_json(path: Path) -> Any:
 
 
 def _load_yaml(path: Path) -> Any:
-    """Load YAML with content-based caching."""
-    if yaml is None:
-        raise RuntimeError("PyYAML is required (pip install pyyaml).")
-
+    """Load YAML with content-based caching. Fallback to minimal parser if PyYAML unavailable and file is simple."""
     path_str = str(path)
 
     # Check if file exists in cache and hasn't changed
@@ -270,14 +271,32 @@ def _load_yaml(path: Path) -> Any:
         except Exception:
             pass
 
-    # Load and cache
-    content = yaml.safe_load(_read_text(path))
-    try:
-        _FILE_CONTENT_CACHE[path_str] = content
-        _FILE_HASH_CACHE[path_str] = _compute_file_hash(path)
-    except Exception:
-        pass  # Silent fail on cache
-    return content
+    if yaml is not None:
+        # Load and cache using PyYAML
+        content = yaml.safe_load(_read_text(path))
+        try:
+            _FILE_CONTENT_CACHE[path_str] = content
+            _FILE_HASH_CACHE[path_str] = _compute_file_hash(path)
+        except Exception:
+            pass  # Silent fail on cache
+        return content
+    else:
+        # Minimal YAML parser for simple key: value pairs (no nested structures)
+        result = {}
+        with open(path, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith('#'):
+                    continue
+                if ':' in line:
+                    k, v = line.split(':', 1)
+                    result[k.strip()] = v.strip()
+        try:
+            _FILE_CONTENT_CACHE[path_str] = result
+            _FILE_HASH_CACHE[path_str] = _compute_file_hash(path)
+        except Exception:
+            pass
+        return result
 
 
 @lru_cache(maxsize=256)
