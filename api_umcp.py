@@ -1,54 +1,50 @@
-"""
-UMCP Public Audit API
+"""UMCP Public Audit API."""
 
-FastAPI endpoint exposing UMCP validation receipts and regime statistics.
 
-Usage:
-    uvicorn api_umcp:app --reload
 
-Endpoints:
-    GET /health - Health check
-    GET /latest-receipt - Latest validation receipt
-    GET /ledger - Historical validation ledger
-    GET /stats - Aggregate statistics
-    GET /regime - Current regime classification
 
-Authentication:
-    All endpoints are public by default. No API token required for local/dev use.
-    For production, add authentication (see QUICKSTART_EXTENSIONS.md for JWT example).
-"""
-#!/usr/bin/env python3
-
-__version__ = "1.0.0"
 
 import csv
 import json
-from datetime import UTC, datetime
+from datetime import datetime
+from datetime import timezone as UTC
 from pathlib import Path
 from typing import ClassVar
+
+from fastapi import Depends, FastAPI, HTTPException, Security
+from fastapi.responses import JSONResponse
+from fastapi.security import APIKeyHeader
+from pydantic import BaseModel
+
+# ---
+# FastAPI endpoint exposing UMCP validation receipts and regime statistics.
+#
+# Usage:
+#     uvicorn api_umcp:app --reload
+#
+# Endpoints:
+#     GET /health - Health check
+#     GET /latest-receipt - Latest validation receipt
+#     GET /ledger - Historical validation ledger
+#     GET /stats - Aggregate statistics
+#     GET /regime - Current regime classification
+#
+# Authentication:
+#     All endpoints are public by default. No API token required for local/dev use.
+#     For production, add authentication (see QUICKSTART_EXTENSIONS.md for JWT example).
+
+__version__ = "1.0.0"
 
 # --- API Key Authentication (Production) ---
 # Set your API key here (for demo; use env vars in production)
 API_KEY = "your-api-key-here"
 
-from fastapi import Depends, Security
-from fastapi.security import APIKeyHeader
-
 api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
-
 
 def verify_api_key(api_key: str = Security(api_key_header)):
     if api_key != API_KEY:
         raise HTTPException(status_code=401, detail="Invalid or missing API key")
     return api_key
-
-
-try:
-    from fastapi import FastAPI, HTTPException
-    from fastapi.responses import JSONResponse
-    from pydantic import BaseModel
-except ImportError as e:
-    raise ImportError("Please install FastAPI: pip install fastapi uvicorn") from e
 
 
 app = FastAPI(
@@ -261,24 +257,13 @@ async def get_current_regime(api_key: str = Depends(verify_api_key)):
         raise HTTPException(status_code=500, detail=f"Error loading regime: {e!s}") from e
 
 
-if __name__ == "__main__":
-    import uvicorn
-
-    uvicorn.run(app, host="0.0.0.0", port=8000)
 
 
-# UMCP Extension Entry Points
-def run_server():
-    """Entry point for umcp-api command"""
-    import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8000)
-
+# --- Extension registration for UMCP ---
 
 class UMCPAuditAPI:
-    """UMCP Extension: Public Audit API
-
-    Provides REST API access to UMCP validation receipts and regime statistics.
+    """
     Automatically registered with UMCP extension system.
 
     Attributes:
@@ -287,7 +272,6 @@ class UMCPAuditAPI:
         description: Extension description
         requires: Required dependencies
     """
-
     name = "audit-api"
     version = "1.0.0"
     description = "Public REST API for UMCP validation receipts and regime statistics"
@@ -297,13 +281,13 @@ class UMCPAuditAPI:
     def install():
         """Install extension dependencies"""
         import subprocess
-
         subprocess.check_call(["pip", "install", *UMCPAuditAPI.requires])
+
 
     @staticmethod
     def run():
-        """Run the extension"""
-        run_server()
+        """Run the extension (not implemented)"""
+        raise NotImplementedError("run_server() is not implemented. Use 'uvicorn api_umcp:app --reload' to run the API.")
 
     @staticmethod
     def info():
