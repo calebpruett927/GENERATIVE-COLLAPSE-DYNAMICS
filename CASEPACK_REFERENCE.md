@@ -6,9 +6,16 @@
 
 ---
 
+
 ## Overview
 
-A **CasePack** is the complete publishable unit in UMCP. It contains:
+A **CasePack** is the complete publishable unit in UMCP. The entire system is unified:
+- All core and extension code is under `src/umcp/`
+- All dependencies are managed in a single `pyproject.toml`
+- All scripts/utilities are in `scripts/`
+- No `requirements.txt` or `setup.py` is needed—use `pip install -e .[production]` for all dependencies
+
+It contains:
 
 1. **Interface files** (contract, closures, embedding, observables, return, weights)
 2. **Data** (trace.csv, measurements)

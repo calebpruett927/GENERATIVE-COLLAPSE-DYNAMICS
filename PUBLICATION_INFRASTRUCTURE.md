@@ -7,9 +7,16 @@
 
 ---
 
+
 ## Overview
 
-The **UMCP publication infrastructure** standardizes how results are packaged, cited, and published. It provides:
+The **UMCP publication infrastructure** is fully unified:
+- All core and extension code is under `src/umcp/`
+- All dependencies are managed in a single `pyproject.toml`
+- All scripts/utilities are in `scripts/`
+- No `requirements.txt` or `setup.py` is needed—use `pip install -e .[production]` for all dependencies
+
+It standardizes how results are packaged, cited, and published. It provides:
 
 1. **Publication rows**: Standardized CSV format for weld results with canonical headers
 2. **Case IDs**: Human-legible handles for published CasePacks (e.g., `CPOC-TOY-TRACE-0001`)

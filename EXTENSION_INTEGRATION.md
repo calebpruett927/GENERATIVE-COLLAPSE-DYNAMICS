@@ -1,8 +1,11 @@
 # UMCP Extension System - Complete Integration
 
+
 ## Overview
 
-The UMCP Extension System has been fully integrated with automatic discovery, registration, and formatting capabilities. All extensions are now unified under the core axiom: **What Returns Through Collapse Is Real** (`no_return_no_credit: true`).
+The UMCP Extension System is fully unified: all core and extension code is under `src/umcp/`, all dependencies are managed in a single `pyproject.toml`, and all scripts/utilities are in `scripts/`. No `requirements.txt` or `setup.py` is needed—use `pip install -e .[production]` or `pip install -e .[extensions]` for all dependencies.
+
+All extensions are now unified under the core axiom: **What Returns Through Collapse Is Real** (`no_return_no_credit: true`).
 
 ## Core Axiom Implementation
 
@@ -36,9 +39,10 @@ python umcp_autoformat.py --all
 
 ## Extension Auto-Discovery System
 
-### 1. Extension Registry (`umcp_extensions.py`)
 
-Python module providing programmatic access to all extensions:
+### 1. Extension Registry (`src/umcp/umcp_extensions.py`)
+
+Python module providing programmatic access to all extensions (import from `umcp_extensions`):
 
 ```python
 from umcp_extensions import list_extensions, load_extension
@@ -61,9 +65,10 @@ install_extension('api')
 - ✅ Continuous Ledger (automatic CSV logging)
 - ✅ Contract Auto-Formatter (validation + formatting)
 
+
 ### 2. Extension Manager CLI (`umcp-ext`)
 
-Command-line interface for managing extensions:
+Command-line interface for managing extensions (entry point defined in `pyproject.toml`):
 
 ```bash
 # List all extensions
@@ -82,9 +87,10 @@ Command-line interface for managing extensions:
 ./umcp-ext check api
 ```
 
-### 3. Auto-Formatter (`umcp_autoformat.py`)
 
-Automatic contract formatting and validation:
+### 3. Auto-Formatter (`src/umcp/umcp_autoformat.py`)
+
+Automatic contract formatting and validation (entry point: `umcp-format`):
 
 ```bash
 # Format all contracts
@@ -106,16 +112,17 @@ python umcp_autoformat.py contract.yaml -o formatted_contract.yaml
 
 ## Entry Points System
 
-### PyProject.toml Configuration
 
-All extensions registered with automatic entry points:
+### Unified PyProject.toml Configuration
+
+All extensions and CLI tools are registered with automatic entry points in a single `pyproject.toml`:
 
 ```toml
 [project.scripts]
 umcp = "umcp.cli:main"
 umcp-visualize = "visualize_umcp:main"
 umcp-api = "api_umcp:run_server"
-umcp-ext = "umcp-ext:main"
+umcp-ext = "umcp_extensions:main"
 umcp-format = "umcp_autoformat:main"
 
 [project.entry-points."umcp.extensions"]
@@ -135,7 +142,8 @@ rcft_closures = "closures.rcft:register"
 
 ### Extension Classes
 
-Each extension implements a standard interface:
+
+Each extension implements a standard interface (located in `src/umcp/`):
 
 ```python
 class UMCPVisualization:
@@ -159,6 +167,29 @@ class UMCPVisualization:
         """Return metadata"""
         return {...}
 ```
+
+
+---
+
+## Unified Project Structure
+
+```
+src/umcp/      # All core Python code (API, CLI, extensions, formatters)
+tests/         # All tests (pytest)
+scripts/       # Helper and utility scripts (runnable only)
+contracts/     # Contract YAMLs
+closures/      # Closure definitions and registry
+casepacks/     # Example and reference casepacks
+ledger/        # Validation ledger (return_log.csv)
+integrity/     # Integrity metadata (sha256.txt)
+outputs/       # Output artifacts (receipts, invariants, etc.)
+pyproject.toml # Single source of truth for dependencies and build
+```
+
+All entry points and CLI tools are defined in `pyproject.toml` under `[project.scripts]`.
+No requirements.txt or setup.py is needed—use `pip install -e .[production]` for all dependencies.
+
+---
 
 ## Contract Hierarchy and Formatting
 

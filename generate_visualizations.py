@@ -1,3 +1,4 @@
+This file has been moved to src/umcp/ and is no longer available here.
 """
 Generate PNG visualizations for UMCP system architecture and benchmarks.
 """

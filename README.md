@@ -13,22 +13,21 @@ cd UMCP-Metadata-Runnable-Code/UMCP-Metadata-Runnable-Code
 python3 -m venv .venv
 source .venv/bin/activate
 
-# 3. Install all required packages
-pip install -r requirements.txt
-# If requirements.txt is missing, install core dependencies:
-pip install numpy scipy psutil PyYAML jsonschema pytest
+# 3. Install all required packages (unified, modern build)
+pip install -e ".[production]"
 
-# 4. (Optional) Install extra packages for API and dashboard
-pip install fastapi pydantic matplotlib pandas plotly streamlit
+# 4. (Optional) Install all extensions (API, dashboard, etc.)
+pip install -e ".[extensions]"
 
 # 5. Update integrity metadata (required after code changes)
 python scripts/update_integrity.py
 
-# 6. Run the full test suite (all 325 tests should pass)
+# 6. Run the full test suite (all 325+ tests should pass)
 pytest
 ```
 
-You can now use all UMCP CLI tools and features as described below.
+
+You can now use all UMCP CLI tools and features as described below. All core code is under `src/umcp/`, tests in `tests/`, and scripts in `scripts/`.
 
 
 ## ✅ Verify Everything Yourself
@@ -38,14 +37,18 @@ You can now use all UMCP CLI tools and features as described below.
 ```bash
 pytest -v  # Should show 325 passing
 
+
 # Check UMCP validation (should show CONFORMANT, 0 errors)
-umcp validate .
+umcp validate
+
 
 # Check file integrity (should show 1 file)
 cat integrity/sha256.txt
 
+
 # Check version
-python -c "import tomli; print(tomli.load(open('pyproject.toml','rb'))['project']['version'])"
+python -c "import tomllib; print(tomllib.load(open('pyproject.toml','rb'))['project']['version'])"
+
 
 # Check CI status
 gh run list --limit 1
@@ -99,13 +102,15 @@ All metrics are **verifiable from source code** - no marketing hype.
      Skipping:   4/4 casepacks (unchanged)
      Learning:   Progressive acceleration
      
-  🔧 CLI Commands:
-     umcp validate           # Run validation
-     umcp-visualize         # Launch dashboard (port 8501)
-     umcp-api               # Start REST API (port 8000)
-     umcp-ext list          # List extensions
-     umcp-format --all      # Format contracts
+
+    🔧 CLI Commands:
+      umcp validate           # Run validation
+      umcp-visualize          # Launch dashboard (port 8501)
+      umcp-api                # Start REST API (port 8000)
+      umcp-ext list           # List extensions
+      umcp-format --all       # Format contracts
   
+
   📦 Ledger:      ledger/return_log.csv (continuous append)
   🧪 CasePacks:   hello_world | gcd_complete | rcft_complete
 
@@ -265,36 +270,37 @@ Raw Measurements → Invariants → Closures → Validation → Receipt
 │                         UMCP WORKFLOW                               │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
-│  1. INPUT                                                           │
-│     └─ raw_measurements.csv  (your experimental data)               │
-│                                                                     │
-│  2. INVARIANTS COMPUTATION                                          │
-│     ├─ ω (drift)                                                    │
-│     ├─ F (fidelity)                                                 │
-│     ├─ S (entropy)                                                  │
-│     └─ C (curvature)                                                │
-│                                                                     │
-│  3. CLOSURE EXECUTION (choose framework)                            │
-│     ┌─────────────────────┐      ┌──────────────────────┐           │
-│     │ GCD (Tier-1)        │      │ RCFT (Tier-2)        │           │
-│     ├─────────────────────┤      ├──────────────────────┤           │
-│     │ • Energy (E)        │  OR  │ • Fractal (D_f)      │           │
-│     │ • Collapse (Φ_c)    │      │ • Recursive (Ψ_r)    │           │
-│     │ • Flux (Φ_gen)      │      │ • Pattern (λ, Θ)     │           │
-│     │ • Resonance (R)     │      │ + all GCD closures   │           │
-│     └─────────────────────┘      └──────────────────────┘           │
-│                                                                     │
-│  4. VALIDATION                                                      │
-│     ├─ Contract conformance (schema validation)                     │
-│     ├─ Regime classification (Low/Medium/High, etc.)                │
-│     ├─ Mathematical identities (F = 1-ω, IC ≈ exp(κ), etc.)         │
-│     └─ Tolerance checks (within tol_seam, tol_id, etc.)             │
-│                                                                     │
-│  5. OUTPUT                                                          │
-│     ├─ invariants.json (computed metrics)                           │
-│     ├─ closure_results.json (GCD/RCFT outputs)                      │
-│     ├─ seam_receipt.json (validation status + SHA256)               │
-│     └─ CONFORMANT or NONCONFORMANT status                           │
+
+# 1. INPUT
+#    └─ raw_measurements.csv  (your experimental data)
+#
+# 2. INVARIANTS COMPUTATION
+#    ├─ ω (drift)
+#    ├─ F (fidelity)
+#    ├─ S (entropy)
+#    └─ C (curvature)
+#
+# 3. CLOSURE EXECUTION (choose framework)
+#    ┌─────────────────────┐      ┌──────────────────────┐
+#    │ GCD (Tier-1)        │      │ RCFT (Tier-2)        │
+#    ├─────────────────────┤      ├──────────────────────┤
+#    │ • Energy (E)        │  OR  │ • Fractal (D_f)      │
+#    │ • Collapse (Φ_c)    │      │ • Recursive (Ψ_r)    │
+#    │ • Flux (Φ_gen)      │      │ • Pattern (λ, Θ)     │
+#    │ • Resonance (R)     │      │ + all GCD closures   │
+#    └─────────────────────┘      └──────────────────────┘
+#
+# 4. VALIDATION
+#    ├─ Contract conformance (schema validation)
+#    ├─ Regime classification (Stable/Collapse/Watch)
+#    ├─ Mathematical identities (F = 1-ω, IC ≈ exp(κ), etc.)
+#    └─ Tolerance checks (within tol_seam, tol_id, etc.)
+#
+# 5. OUTPUT
+#    ├─ invariants.json (computed metrics)
+#    ├─ closure_results.json (GCD/RCFT outputs)
+#    ├─ seam_receipt.json (validation status + SHA256)
+#    └─ CONFORMANT or NONCONFORMANT status
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
 ```
@@ -302,6 +308,7 @@ Raw Measurements → Invariants → Closures → Validation → Receipt
 ---
 
 ## 🚀 Quick Start (5 Minutes)
+
 
 
 ### Installation
@@ -323,9 +330,11 @@ umcp health
 pytest
 # 325 tests passed
 
+
 # List available extensions
 umcp-ext list
 # ✓ 4 extensions registered
+
 
 # Update integrity after code/format changes
 python scripts/update_integrity.py
@@ -342,10 +351,10 @@ UMCP features an **auto-discovery extension system** with 4 built-in plugins:
 Interactive Streamlit dashboard for real-time monitoring:
 
 ```bash
+
 # Launch dashboard
 umcp-visualize
-# Or: streamlit run visualize_umcp.py
-
+# Or: streamlit run src/umcp/visualize_umcp.py
 # Opens on http://localhost:8501
 ```
 
@@ -356,10 +365,10 @@ umcp-visualize
 REST API for programmatic access:
 
 ```bash
+
 # Start API server
 umcp-api
-# Or: uvicorn api_umcp:app --reload
-
+# Or: uvicorn src.umcp.api_umcp:app --reload
 # Available at http://localhost:8000
 ```
 
@@ -387,6 +396,7 @@ cat ledger/return_log.csv
 Validate and format all contracts:
 
 ```bash
+
 # Format all contracts
 umcp-format --all
 
@@ -394,7 +404,28 @@ umcp-format --all
 umcp-format --validate contracts/GCD.INTSTACK.v1.yaml
 ```
 
+
 **See [EXTENSION_INTEGRATION.md](EXTENSION_INTEGRATION.md) for complete documentation.**
+
+---
+
+## Unified Project Structure
+
+```
+src/umcp/      # All core Python code (API, CLI, extensions, formatters)
+tests/         # All tests (pytest)
+scripts/       # Helper and utility scripts (runnable only)
+contracts/     # Contract YAMLs
+closures/      # Closure definitions and registry
+casepacks/     # Example and reference casepacks
+ledger/        # Validation ledger (return_log.csv)
+integrity/     # Integrity metadata (sha256.txt)
+outputs/       # Output artifacts (receipts, invariants, etc.)
+pyproject.toml # Single source of truth for dependencies and build
+```
+
+All entry points and CLI tools are defined in `pyproject.toml` under `[project.scripts]`.
+No requirements.txt or setup.py is needed—use `pip install -e .[production]` for all dependencies.
 
 ---
 

@@ -1,3 +1,4 @@
+This file has been moved to src/umcp/ and is no longer available here.
 #!/usr/bin/env python3
 """
 UMCP Visualization Dashboard - Production Edition
