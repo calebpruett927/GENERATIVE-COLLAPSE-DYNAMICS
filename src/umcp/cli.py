@@ -1,13 +1,5 @@
 from __future__ import annotations
 
-# Ensure src is in sys.path for absolute imports when running as a script
-import os
-import sys
-
-repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if repo_root not in sys.path:
-    sys.path.insert(0, repo_root)
-
 import argparse
 import csv
 import hashlib
@@ -29,6 +21,16 @@ from jsonschema import Draft202012Validator
 
 from umcp import VALIDATOR_NAME, __version__
 from umcp.logging_utils import HealthCheck, get_logger
+
+
+# Ensure src is in sys.path for absolute imports when running as a script
+def _ensure_repo_root_in_syspath():
+    repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    if repo_root not in sys.path:
+        sys.path.insert(0, repo_root)
+
+
+# ...existing code...
 
 # -----------------------------
 # Internal codes (stable)

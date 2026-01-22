@@ -34,10 +34,21 @@ __version__ = "1.0.0"
 # --- API Key Authentication (Production) ---
 
 # Set your API key here (for demo; use env vars in production)
-import os
+
 import logging
+import os
 
 API_KEY = os.environ.get("UMCP_API_KEY", "your-api-key-here")
+
+# --- API Key enforcement ---
+from fastapi import Security
+from fastapi.security import APIKeyHeader
+
+api_key_header = APIKeyHeader(name="X-API-Key", auto_error=True)
+
+def validate_api_key(api_key: str = Security(api_key_header)):
+    if api_key != API_KEY:
+        raise HTTPException(status_code=403, detail="Invalid API Key")
 
 # Configure basic logging
 logging.basicConfig(level=logging.INFO)
