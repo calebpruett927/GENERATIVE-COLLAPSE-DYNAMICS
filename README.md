@@ -2,6 +2,35 @@
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+## 🛠️ Full Environment Setup & Validation
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code.git
+cd UMCP-Metadata-Runnable-Code/UMCP-Metadata-Runnable-Code
+
+# 2. Create and activate a virtual environment
+python3 -m venv .venv
+source .venv/bin/activate
+
+# 3. Install all required packages
+pip install -r requirements.txt
+# If requirements.txt is missing, install core dependencies:
+pip install numpy scipy psutil PyYAML jsonschema pytest
+
+# 4. (Optional) Install extra packages for API and dashboard
+pip install fastapi pydantic matplotlib pandas plotly streamlit
+
+# 5. Update integrity metadata (required after code changes)
+python scripts/update_integrity.py
+
+# 6. Run the full test suite (all 325 tests should pass)
+pytest
+```
+
+You can now use all UMCP CLI tools and features as described below.
+
+
 ## ✅ Verify Everything Yourself
 
 **Don't trust badges - verify the code:**
