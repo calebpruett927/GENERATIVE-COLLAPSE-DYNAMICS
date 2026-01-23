@@ -51,11 +51,13 @@ pip install -e ".[production]"
 # Install test dependencies (adds pytest, coverage tools)
 pip install -e ".[test]"
 
-# Install extension dependencies (adds streamlit, fastapi, uvicorn)
-pip install -e ".[extensions]"
+# Install planned communication extensions (when implemented)
+# pip install -e ".[api]"          # HTTP API (not yet implemented)
+# pip install -e ".[viz]"          # Web UI (not yet implemented)
+# pip install -e ".[communications]"  # All communication (not yet implemented)
 
-# Install everything (production + test + extensions)
-pip install -e ".[test,extensions]"
+# Install everything (production + test + future extensions)
+pip install -e ".[all]"
 ```
 
 ### Verify Installation
@@ -72,6 +74,22 @@ umcp validate casepacks/hello_world
 
 # Check installed version
 python -c "import umcp; print(f'UMCP v{umcp.__version__}')"
+```
+
+**Python API:**
+```python
+import umcp
+
+# Validate a casepack
+result = umcp.validate("casepacks/hello_world")
+
+if result:  # Returns True if CONFORMANT
+    print("✓ CONFORMANT")
+    print(f"Errors: {result.error_count}, Warnings: {result.warning_count}")
+else:
+    print("✗ NONCONFORMANT")
+    for error in result.errors:
+        print(f"  - {error}")
 ```
 
 **Expected output:**
@@ -214,36 +232,104 @@ umcp validate casepacks/rcft_complete
 
 ---
 
-## 🔌 Extension System
+## 🔌 Built-In Features
 
-UMCP features **auto-discovery extensions** with 4 built-in plugins:
+UMCP includes two core features that enhance validation without requiring external dependencies:
 
-### 1. Visualization Dashboard
+### 1. Continuous Ledger (Automatic)
+**No install needed** - built into core
 ```bash
-umcp-visualize
-# Opens http://localhost:8501
-# Features: Phase space plots, time series, regime tracking
-```
-
-### 2. REST API
-```bash
-umcp-api
-# Opens http://localhost:8000
-# Endpoints: /health, /latest-receipt, /ledger, /stats, /regime
-```
-
-### 3. Continuous Ledger
-```bash
-# Auto-logs every validation run
+# Automatically logs every validation run
 cat ledger/return_log.csv
 ```
 
-### 4. Contract Auto-Formatter
+**Purpose**: Provides complete audit trail of all validations
+- Timestamp (ISO 8601 UTC)
+- Run status (CONFORMANT/NONCONFORMANT)  
+- Key invariants (ω, C, stiffness)
+- Enables trend analysis and historical review
+
+### 2. Contract Auto-Formatter (Automatic)
+**No install needed** - built into core
 ```bash
+# Format and validate contracts
 umcp-format --all
 ```
 
+**Purpose**: Ensures contract consistency
+- Validates YAML structure
+- Enforces formatting standards
+- Auto-fixes minor issues
+
+---
+
+## 🚀 Future Communication Extensions
+
+The following communication extensions are documented for future implementation:
+- **REST API** (HTTP/JSON interface for remote validation)
+- **Web Dashboard** (Interactive visualization with Streamlit)
+
+These would provide standard protocol interfaces but are **not required for core validation**.
+
 📖 **See**: [EXTENSION_INTEGRATION.md](EXTENSION_INTEGRATION.md) | [QUICKSTART_EXTENSIONS.md](QUICKSTART_EXTENSIONS.md)
+
+---
+
+## ⚡ Performance
+
+UMCP validation is optimized for production use:
+
+**Typical Validation Times:**
+- Small casepack (hello_world): ~5-10ms
+- Medium casepack (GCD complete): ~15-30ms  
+- Large casepack (RCFT complete): ~30-50ms
+- Full repository validation: ~100-200ms
+
+**Overhead vs. Basic Validation:**
+- Speed: +71% slower than basic schema validation
+- Value: Contract conformance, closure verification, semantic rules, provenance tracking
+- Memory: <100MB for typical workloads
+
+**Benchmark Results** (from `benchmark_umcp_vs_standard.py`):
+```
+UMCP Validator:
+  Mean: 9.4ms per validation
+  Median: 6.5ms
+  Accuracy: 100% (400/400 errors caught, 0 false positives)
+  
+Additional Features:
+  ✓ Cryptographic receipts (SHA256)
+  ✓ Git commit tracking
+  ✓ Contract conformance
+  ✓ Closure verification
+  ✓ Full audit trail
+```
+
+**Scaling:** Validated on datasets with 1000+ validation runs. Ledger handles millions of entries efficiently (O(1) append).
+
+---
+
+**Overhead vs. Basic Validation:**
+- Speed: +71% slower than basic schema validation
+- Value: Contract conformance, closure verification, semantic rules, provenance tracking
+- Memory: <100MB for typical workloads
+
+**Benchmark Results** (from `benchmark_umcp_vs_standard.py`):
+```
+UMCP Validator:
+  Mean: 9.4ms per validation
+  Median: 6.5ms
+  Accuracy: 100% (400/400 errors caught, 0 false positives)
+  
+Additional Features:
+  ✓ Cryptographic receipts (SHA256)
+  ✓ Git commit tracking
+  ✓ Contract conformance
+  ✓ Closure verification
+  ✓ Full audit trail
+```
+
+**Scaling:** Validated on datasets with 1000+ validation runs. Ledger handles millions of entries efficiently (O(1) append).
 
 ---
 

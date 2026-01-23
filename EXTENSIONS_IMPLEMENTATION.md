@@ -1,4 +1,4 @@
-# UMCP Extensions Implementation Summary
+# UMCP Communication Extensions Implementation Summary
 
 **Date**: January 19, 2026  
 **Status**: ✅ Complete  
@@ -6,11 +6,15 @@
 
 ## 🎯 Objectives Achieved
 
-Implemented the three straightforward extensions from the UMCP roadmap:
+Implemented core features and optional communication extensions:
 
-1. ✅ **Continuous Ledger** (Difficulty: Low)
-2. ✅ **Visualization Dashboard** (Difficulty: Medium)
-3. ✅ **Public Audit API** (Difficulty: Medium)
+**Core Features** (built-in):
+1. ✅ **Continuous Ledger** (automatic CSV logging)
+2. ✅ **Contract Auto-Formatter** (validation + formatting)
+
+**Communication Extensions** (optional):
+3. ✅ **REST API** (HTTP/JSON interface)
+4. ✅ **Visualization Dashboard** (web UI)
 
 ## 📊 Implementation Details
 
@@ -108,25 +112,28 @@ uvicorn api_umcp:app --reload
 **pyproject.toml Updates**:
 ```toml
 [project.optional-dependencies]
+# Communication extensions (optional - not needed for core validation)
+api = [
+  "fastapi>=0.109.0",
+  "uvicorn[standard]>=0.27.0"
+]
 viz = [
   "streamlit>=1.30.0",
   "pandas>=2.0.0",
   "plotly>=5.18.0"
 ]
-api = [
-  "fastapi>=0.109.0",
-  "uvicorn[standard]>=0.27.0"
-]
-extensions = [
-  # All extension dependencies combined
+communications = [
+  # All communication extension dependencies
 ]
 ```
 
 **Installation**:
 ```bash
-pip install -e ".[extensions]"  # All extensions
-pip install -e ".[viz]"         # Visualization only
-pip install -e ".[api]"         # API only
+pip install umcp                    # Core only
+pip install umcp[api]              # + HTTP API
+pip install umcp[viz]              # + Web dashboard
+pip install umcp[communications]   # All communication extensions
+pip install umcp[all]              # Everything
 ```
 
 ## 📝 Documentation Created

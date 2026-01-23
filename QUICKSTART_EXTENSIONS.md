@@ -1,21 +1,22 @@
-# UMCP Extensions Quick Start
+# UMCP Built-In Features Quick Start
 
-Get up and running with UMCP extensions in 5 minutes.
+Get started with UMCP's built-in core features in 5 minutes.
+
+**Note**: Communication extensions (HTTP API, web UI) are documented but not yet implemented. This guide covers the actual working features.
 
 ## 🚀 Installation
 
 ```bash
-# Install UMCP with all extensions
-pip install -e ".[extensions]"
+# Core UMCP includes all built-in features
+pip install umcp
 
-# Or install individually
-pip install -e ".[viz]"  # Visualization only
-pip install -e ".[api]"  # API only
+# Or install from repository
+pip install -e .
 ```
 
-## ✅ 1. Continuous Ledger (Zero Config)
+## ✅ 1. Continuous Ledger (Built-in Core Feature)
 
-The continuous ledger is **automatically enabled** - no configuration needed!
+The continuous ledger is **built into core UMCP** - no installation or configuration needed!
 
 ```bash
 # Run validation
@@ -32,9 +33,9 @@ timestamp,run_status,delta_kappa,stiffness,omega,curvature
 2026-01-19T00:17:49Z,CONFORMANT,,0.000000,0.000000,0.000000
 ```
 
-## 📊 2. Visualization Dashboard
+## 📊 2. Visualization Dashboard (Optional Communication Extension)
 
-Interactive Streamlit dashboard for exploring validation history.
+Interactive web UI for exploring validation history. **Requires**: `pip install umcp[viz]`
 
 ```bash
 # Start dashboard
@@ -51,9 +52,9 @@ streamlit run visualize_umcp.py
 
 **Screenshot**: See phase space transitions and stability trends over time.
 
-## 🔌 3. Public Audit API
+## 🔌 3. REST API (Optional Communication Extension)
 
-RESTful API for programmatic access to UMCP data.
+HTTP REST API for programmatic access to UMCP data. **Requires**: `pip install umcp[api]`
 
 ```bash
 # Start API server
@@ -90,19 +91,21 @@ curl http://localhost:8000/ledger
 }
 ```
 
-## 🔄 Complete Workflow
+## 🔄 Complete Workflow (With Communication Extensions)
+
+**Prerequisites**: `pip install umcp[communications]` (or `umcp[all]`)
 
 ```bash
-# 1. Run validation (creates ledger entry)
+# 1. Core validation (no extensions needed)
 umcp validate --out receipt.json
 
-# 2. View in dashboard
+# 2. Start web dashboard (optional)
 streamlit run visualize_umcp.py &
 
-# 3. Start API
+# 3. Start HTTP API (optional)
 uvicorn api_umcp:app --reload &
 
-# 4. Query API
+# 4. Query API remotely (optional)
 curl http://localhost:8000/stats | jq
 ```
 
@@ -254,12 +257,18 @@ ls outputs/invariants.csv
 
 ## 🎯 Next Steps
 
-1. **Adaptive Thresholds**: Auto-adjust regime boundaries based on rolling statistics
-2. **Distributed Validation**: Parallelize validation across multiple casepacks
-3. **ML Integration**: Train models to predict regime transitions
-4. **Epistemic Viz**: Animate return cycles as orbital plots
+**Core Features** (no additional installation):
+- ✅ Validation engine with mathematical contracts
+- ✅ Continuous ledger (automatic CSV logging)
+- ✅ Contract auto-formatter
 
-See [EXTENSIONS.md](EXTENSIONS.md) for implementation details.
+**Communication Extensions** (optional):
+1. **HTTP API** (`pip install umcp[api]`): Remote validation, system integration
+2. **Web Dashboard** (`pip install umcp[viz]`): Interactive exploration, presentations
+3. **Adaptive Thresholds**: Auto-adjust regime boundaries (future)
+4. **Distributed Validation**: Parallelize across casepacks (future)
+
+See [EXTENSION_INTEGRATION.md](EXTENSION_INTEGRATION.md) for implementation details.
 
 ## 📚 Resources
 

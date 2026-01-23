@@ -1,3 +1,20 @@
+"""STUB: Placeholder for future REST API communication extension.
+
+This file contains helper functions that would be used by a full FastAPI
+implementation. The actual REST API is planned but not yet implemented.
+
+For actual UMCP validation, use the core CLI:
+  umcp validate <path>
+  
+This stub exists to:
+1. Reserve the module name for future use
+2. Provide example helper functions for API development
+3. Support tests that check for optional dependencies
+
+STATUS: Not functional - helpers only
+FUTURE: Would require full FastAPI app with endpoints
+"""
+
 from datetime import datetime
 from pathlib import Path
 

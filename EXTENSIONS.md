@@ -1,15 +1,27 @@
-# UMCP Extensions
+# UMCP Core Features and Future Extensions
 
-This document describes the extensions added to the UMCP system for enhanced monitoring, visualization, and audit capabilities.
+This document describes the **implemented** built-in core features and **planned** communication extensions.
 
-## 🔧 Implemented Extensions
+## Implementation Status
+
+**✅ Implemented Core Features** (included, no extra installation):
+- ✅ Validation engine with mathematical contracts
+- ✅ Continuous ledger (automatic CSV logging)
+- ✅ Contract auto-formatter
+
+**🚧 Planned Communication Extensions** (not yet implemented):
+- 🚧 REST API (HTTP/JSON) - would require `pip install umcp[api]`
+- 🚧 Web Dashboard (Streamlit UI) - would require `pip install umcp[viz]`
+
+## 🔧 Implemented Built-In Features
 
 ### 1. Continuous Ledger ✅
 
-**Status**: Implemented  
-**Difficulty**: Low (3-5 lines)
+**Status**: ✅ Fully implemented and active
+**Type**: Core feature (no installation needed)
+**Evidence**: 29KB file with 300+ validation entries
 
-Automatically appends each CONFORMANT validation receipt to `ledger/return_log.csv` with:
+Automatically appends each validation receipt to `ledger/return_log.csv` with:
 - Timestamp (ISO 8601 UTC)
 - Run status (CONFORMANT/NONCONFORMANT)
 - Δκ (delta_kappa) - curvature drift
@@ -36,12 +48,12 @@ timestamp,run_status,delta_kappa,stiffness,omega,curvature
 2026-01-19T00:17:49Z,CONFORMANT,,0.000000,0.000000,0.000000
 ```
 
-### 2. Visualization Dashboard ✅
+### 2. Contract Auto-Formatter ✅
 
-**Status**: Implemented  
-**Difficulty**: Medium (~100 lines)
+**Status**: ✅ Fully implemented and active
+**Type**: Core feature (no installation needed)
 
-Streamlit web application for interactive visualization of UMCP validation history.
+Formats and validates YAML contract files for consistency.
 
 **Features**:
 - **Phase Space Plot**: ω vs C with regime color-coding (Stable/Watch/Collapse)
@@ -68,12 +80,35 @@ streamlit run visualize_umcp.py
 - Time series reveals stability trends
 - Interactive hover for detailed metrics
 
-### 3. Public Audit API ✅
+---
 
-**Status**: Implemented  
-**Difficulty**: Medium (~200 lines)
+## 🚧 Planned Future Extensions
 
-FastAPI REST endpoint exposing UMCP validation data for external systems.
+The following extensions are documented for future implementation:
+
+### 3. REST API (Planned)
+
+**Status**: 🚧 Not yet implemented (stub code exists)
+**Type**: HTTP API (standard REST/JSON protocol)  
+**Would require**: `pip install umcp[api]`
+
+**Planned Purpose**:
+- Remote validation requests over HTTP
+- Ledger queries via REST endpoints
+- System health monitoring
+- Integration with external systems
+
+### 4. Visualization Dashboard (Planned)
+
+**Status**: 🚧 Not yet implemented
+**Type**: Web UI (Streamlit)  
+**Would require**: `pip install umcp[viz]`
+
+**Planned Purpose**:
+- Interactive phase space plots (ω vs C)
+- Time series visualization
+- Ledger data exploration
+- Regime transition analysis
 
 **Endpoints**:
 - `GET /health` - Health check
@@ -174,17 +209,24 @@ curl http://localhost:8000/stats
 
 ## 📦 Installation
 
-To use the implemented extensions:
-
+**Core UMCP** (validation engine only):
 ```bash
-# Install UMCP with extensions
-pip install -e .
+pip install umcp
+```
 
-# Install visualization dependencies
-pip install streamlit pandas plotly
+**With communication extensions**:
+```bash
+# HTTP REST API
+pip install umcp[api]
 
-# Install API dependencies
-pip install fastapi uvicorn
+# Web visualization dashboard
+pip install umcp[viz]
+
+# All communication extensions
+pip install umcp[communications]
+
+# Development + all features
+pip install umcp[all]
 ```
 
 ## 🔍 Usage Examples

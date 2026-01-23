@@ -3,9 +3,19 @@
 
 ## Overview
 
-The UMCP Extension System is fully unified: all core and extension code is under `src/umcp/`, all dependencies are managed in a single `pyproject.toml`, and all scripts/utilities are in `scripts/`. No `requirements.txt` or `setup.py` is needed—use `pip install -e .[production]` or `pip install -e .[extensions]` for all dependencies.
+The UMCP system separates **core validation** (no external dependencies beyond NumPy/SciPy/YAML) from **planned communication extensions** (HTTP API, web UI). All code is under `src/umcp/`, all dependencies are managed in a single `pyproject.toml`.
 
-All extensions are now unified under the core axiom: **What Returns Through Collapse Is Real** (`no_return_no_credit: true`).
+**Core Installation**: `pip install umcp` (validation engine + built-in features)
+**Planned Extensions**: HTTP API and web visualization (not yet implemented)
+**Development**: `pip install umcp[dev]` (testing + linting)
+
+All components are unified under the core axiom: **What Returns Through Collapse Is Real** (`no_return_no_credit: true`).
+
+## Built-In Features (Included in Core)
+
+1. **Continuous Ledger** - Automatic validation logging to `ledger/return_log.csv`
+2. **Contract Auto-Formatter** - YAML contract validation and formatting
+3. **Validation Engine** - Mathematical contract enforcement with receipts
 
 ## Core Axiom Implementation
 
@@ -59,11 +69,14 @@ from umcp_extensions import install_extension
 install_extension('api')
 ```
 
-**Built-in Extensions:**
-- ✅ Interactive Visualization Dashboard (Streamlit)
-- ✅ Public Audit API (FastAPI)
+**Core Components (No Installation Required):**
 - ✅ Continuous Ledger (automatic CSV logging)
 - ✅ Contract Auto-Formatter (validation + formatting)
+- ✅ Validation Engine (mathematical contracts)
+
+**Communication Extensions (Optional Installation):**
+- 📡 Public Audit API (FastAPI) - `pip install umcp[api]`
+- 🖥️ Interactive Visualization Dashboard (Streamlit) - `pip install umcp[viz]`
 
 
 ### 2. Extension Manager CLI (`umcp-ext`)
@@ -310,8 +323,8 @@ umcp-format --strict contract.yaml
 git clone https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code.git
 cd UMCP-Metadata-Runnable-Code
 
-# Install core + all extensions
-pip install -e ".[extensions]"
+# Install core + all communication extensions
+pip install -e ".[communications]"
 
 # Or install selectively
 pip install -e ".[viz]"      # Visualization only
