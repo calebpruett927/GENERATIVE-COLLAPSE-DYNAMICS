@@ -24,30 +24,61 @@ UMCP is a **production-grade system** for creating, validating, and sharing repr
 
 ## 📊 Quick Start (5 Minutes)
 
+### Prerequisites
+
+- **Python 3.11+** (3.12+ recommended)
+- **pip** (Python package installer)
+- **git** (version control)
+
 ### Installation
 
 ```bash
+# 1. Clone the repository
 git clone https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code.git
 cd UMCP-Metadata-Runnable-Code
+
+# 2. Create and activate virtual environment
 python3 -m venv .venv
-source .venv/bin/activate
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# 3. Install production dependencies (includes numpy, scipy, pyyaml, jsonschema)
 pip install -e ".[production]"
+```
+
+**Optional installations:**
+
+```bash
+# Install test dependencies (adds pytest, coverage tools)
+pip install -e ".[test]"
+
+# Install extension dependencies (adds streamlit, fastapi, uvicorn)
+pip install -e ".[extensions]"
+
+# Install everything (production + test + extensions)
+pip install -e ".[test,extensions]"
 ```
 
 ### Verify Installation
 
 ```bash
-# System health check
+# System health check (should show HEALTHY status)
 umcp health
 
-# Run test suite (344 tests)
+# Run test suite (should show 344 tests passing)
 pytest
 
-# Validate a casepack
+# Quick validation test
 umcp validate casepacks/hello_world
 
-# Update integrity checksums
-python scripts/update_integrity.py
+# Check installed version
+python -c "import umcp; print(f'UMCP v{umcp.__version__}')"
+```
+
+**Expected output:**
+```
+Status: HEALTHY
+Schemas: 11
+344 passed in ~13s
 ```
 
 ### Launch Interactive Tools
