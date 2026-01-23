@@ -20,8 +20,8 @@ from __future__ import annotations
 import hashlib
 import subprocess
 import sys
+from collections.abc import Iterator
 from pathlib import Path
-from typing import Iterator
 
 
 def get_repo_root() -> Path:

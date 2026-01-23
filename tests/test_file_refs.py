@@ -1,6 +1,7 @@
-from src.umcp.file_refs import UMCPFiles, get_umcp_files
-import sys
 import json
+import sys
+
+from src.umcp.file_refs import UMCPFiles, get_umcp_files
 
 
 def test_umcpfiles_init():

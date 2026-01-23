@@ -9,16 +9,12 @@ api_key_header = APIKeyHeader(name="X-API-Key")
 
 def validate_api_key(api_key: str = Security(api_key_header)):
     # Example validation logic
-    if api_key == "expected_key":
-        return True
-    return False
+    return api_key == "expected_key"
 
 
 def verify_api_key(api_key: str = Security(api_key_header)):
     # Example verification logic
-    if api_key == "expected_key":
-        return True
-    return False
+    return api_key == "expected_key"
 
 
 def get_repo_root() -> Path:

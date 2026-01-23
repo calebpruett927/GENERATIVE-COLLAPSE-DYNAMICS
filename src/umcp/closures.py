@@ -1,4 +1,3 @@
-# encoding: utf-8
 """
 UMCP Closure Loading and Execution (repo-wide robust version)
 """
@@ -39,12 +38,12 @@ class ClosureLoader:
                 yaml = importlib.import_module("yaml")
                 if yaml is None or getattr(yaml, "safe_load", None) is None:
                     raise ImportError("yaml missing safe_load")
-                with open(self.registry_path, "r", encoding="utf-8") as f:
+                with open(self.registry_path, encoding="utf-8") as f:
                     loaded = yaml.safe_load(f)
                     self._registry = cast(dict[str, Any], loaded or {})
             except Exception:
                 self._registry = {}
-                with open(self.registry_path, "r", encoding="utf-8") as f:
+                with open(self.registry_path, encoding="utf-8") as f:
                     for line in f:
                         line = line.strip()
                         if not line or line.startswith("#"):

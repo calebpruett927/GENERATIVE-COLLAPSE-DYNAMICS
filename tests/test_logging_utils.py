@@ -1,5 +1,6 @@
 import pytest
-from src.umcp.logging_utils import StructuredLogger, get_logger, HealthCheck
+
+from src.umcp.logging_utils import HealthCheck, StructuredLogger, get_logger
 
 
 def test_structured_logger_basic():
@@ -13,9 +14,8 @@ def test_structured_logger_basic():
 
 def test_logger_operation_context_exception():
     logger = StructuredLogger(json_output=False)
-    with pytest.raises(ValueError):
-        with logger.operation("fail_operation"):
-            raise ValueError("fail")
+    with pytest.raises(ValueError), logger.operation("fail_operation"):
+        raise ValueError("fail")
 
 
 def test_get_logger():

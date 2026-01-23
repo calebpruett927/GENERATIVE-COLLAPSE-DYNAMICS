@@ -1,6 +1,8 @@
-import pytest
-from src.umcp.closures import ClosureLoader, get_closure_loader
 import sys
+
+import pytest
+
+from src.umcp.closures import ClosureLoader, get_closure_loader
 
 
 def test_closure_loader_init():
