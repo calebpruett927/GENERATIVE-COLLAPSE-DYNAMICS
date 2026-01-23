@@ -2,6 +2,7 @@
 """
 UMCP Closure Loading and Execution (repo-wide robust version)
 """
+
 from __future__ import annotations
 
 import importlib
@@ -10,6 +11,7 @@ import sys
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any, cast
+
 
 class ClosureLoader:
     def __init__(self, root_dir: Path | None = None):
@@ -93,6 +95,7 @@ class ClosureLoader:
             return True
         except (FileNotFoundError, ImportError):
             return False
+
 
 def get_closure_loader(root_dir: Path | None = None) -> ClosureLoader:
     return ClosureLoader(root_dir=root_dir)

@@ -1,4 +1,3 @@
-
 from __future__ import annotations
 
 import logging
@@ -11,6 +10,7 @@ def main():
     logger.debug(f"sys.argv: {sys.argv}")
     # ... actual minimal CLI logic ...
     return 0
+
 
 if __name__ == "__main__":
     sys.exit(main())

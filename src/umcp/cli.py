@@ -285,10 +285,10 @@ def _load_yaml(path: Path) -> Any:
         with open(path, encoding="utf-8") as f:
             for line in f:
                 line = line.strip()
-                if not line or line.startswith('#'):
+                if not line or line.startswith("#"):
                     continue
-                if ':' in line:
-                    k, v = line.split(':', 1)
+                if ":" in line:
+                    k, v = line.split(":", 1)
                     result[k.strip()] = v.strip()
         try:
             _FILE_CONTENT_CACHE[path_str] = result

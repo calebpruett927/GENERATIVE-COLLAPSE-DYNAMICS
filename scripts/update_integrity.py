@@ -14,6 +14,7 @@ It tracks:
 
 Files are automatically added/removed from the checksum manifest as they change.
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -45,7 +46,7 @@ def sha256sum(filepath: Path) -> str:
 def get_tracked_files(root: Path) -> Iterator[Path]:
     """
     Get all git-tracked files that should be checksummed.
-    
+
     Includes:
     - All Python files in src/umcp/
     - Contract YAML files in contracts/
@@ -56,15 +57,9 @@ def get_tracked_files(root: Path) -> Iterator[Path]:
     """
     try:
         # Get all git-tracked files
-        result = subprocess.run(
-            ["git", "ls-files"],
-            cwd=root,
-            capture_output=True,
-            text=True,
-            check=True
-        )
+        result = subprocess.run(["git", "ls-files"], cwd=root, capture_output=True, text=True, check=True)
         tracked = result.stdout.strip().split("\n")
-        
+
         # Filter to relevant files
         patterns = [
             "src/umcp/**/*.py",
@@ -76,22 +71,22 @@ def get_tracked_files(root: Path) -> Iterator[Path]:
             "visualize_umcp.py",
             "benchmark_umcp_vs_standard.py",
         ]
-        
+
         for filepath_str in tracked:
             filepath = root / filepath_str
             if not filepath.exists():
                 continue
-            
+
             # Check if file matches any pattern
             for pattern in patterns:
                 if filepath.match(pattern):
                     yield filepath
                     break
-    
+
     except subprocess.CalledProcessError:
         # Fallback: scan filesystem directly
         print("Warning: git not available, scanning filesystem directly", file=sys.stderr)
-        
+
         for pattern in [
             "src/umcp/**/*.py",
             "contracts/**/*.yaml",
@@ -100,7 +95,7 @@ def get_tracked_files(root: Path) -> Iterator[Path]:
             "scripts/**/*.py",
         ]:
             yield from root.glob(pattern)
-        
+
         # Add specific root files
         for name in ["api_umcp.py", "visualize_umcp.py", "benchmark_umcp_vs_standard.py"]:
             fpath = root / name
@@ -113,13 +108,13 @@ def main() -> int:
     root = get_repo_root()
     integrity_dir = root / "integrity"
     integrity_file = integrity_dir / "sha256.txt"
-    
+
     # Ensure integrity directory exists
     integrity_dir.mkdir(exist_ok=True)
-    
+
     # Compute checksums for all tracked files
     checksums: list[tuple[str, str]] = []  # (relative_path, checksum)
-    
+
     for filepath in sorted(get_tracked_files(root)):
         try:
             checksum = sha256sum(filepath)
@@ -128,11 +123,11 @@ def main() -> int:
         except Exception as e:
             print(f"Warning: Could not checksum {filepath}: {e}", file=sys.stderr)
             continue
-    
+
     if not checksums:
         print("Warning: No files found to checksum", file=sys.stderr)
         return 1
-    
+
     # Write checksums to integrity file
     with open(integrity_file, "w", encoding="utf-8") as f:
         f.write("# SHA256 checksums for UMCP repository files\n")
@@ -141,10 +136,10 @@ def main() -> int:
         f.write("#\n")
         f.write("# Format: <checksum> <relative_path>\n")
         f.write("#\n\n")
-        
+
         for rel_path, checksum in checksums:
             f.write(f"{checksum}  {rel_path}\n")
-    
+
     print(f"✓ Updated {integrity_file}")
     print(f"  Checksummed {len(checksums)} files")
     return 0
