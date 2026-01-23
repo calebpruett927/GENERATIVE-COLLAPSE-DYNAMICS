@@ -83,7 +83,7 @@ Each entry contains:
 
 **Where used:**
 - All Tier-1 computation
-- [casepacks/hello_world/derived/trace.csv](casepacks/hello_world/derived/trace.csv)
+- [derived/trace.csv](derived/trace.csv) (root workspace)
 - All GCD and RCFT computations
 
 **Status:** Canonical
@@ -229,7 +229,7 @@ See [canon/gcd_anchors.yaml](canon/gcd_anchors.yaml) for complete machine-readab
 **Where used:**
 - Regime gates: Stable (ω < 0.038), Collapse (ω ≥ 0.30)
 - Closures: Γ(ω; p, ε) for weld budgeting
-- [casepacks/hello_world/outputs/invariants.csv](casepacks/hello_world/outputs/invariants.csv)
+- [outputs/invariants.csv](outputs/invariants.csv) (root workspace or casepacks)
 
 **Status:** Canonical
 
@@ -682,7 +682,7 @@ See [canon/rcft_anchors.yaml](canon/rcft_anchors.yaml) for complete machine-read
 **Where defined:**
 - [canon/rcft_anchors.yaml](canon/rcft_anchors.yaml) (tier_2_extensions.lambda_pattern)
 - [docs/rcft_theory.md](docs/rcft_theory.md#resonance-patterns)
-- [closures/rcft/resonance_analysis.py](closures/rcft/resonance_analysis.py)
+- [closures/rcft/resonance_pattern.py](closures/rcft/resonance_pattern.py)
 
 **Where used:**
 - RCFT pattern classification

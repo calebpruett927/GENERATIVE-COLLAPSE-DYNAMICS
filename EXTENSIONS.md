@@ -56,29 +56,17 @@ timestamp,run_status,delta_kappa,stiffness,omega,curvature
 Formats and validates YAML contract files for consistency.
 
 **Features**:
-- **Phase Space Plot**: ω vs C with regime color-coding (Stable/Watch/Collapse)
-- **Time Series**: Invariants (ω, C, S) over time
-- **Latest Receipt**: Summary of most recent validation
-- **Current Invariants**: Real-time system state
-- **Ledger Explorer**: Browse and download historical data
-
-**Installation**:
-```bash
-pip install streamlit pandas plotly
-```
+- Consistent YAML formatting with standardized indentation
+- Contract schema validation against JSON schemas
+- Automatic field ordering per UMCP conventions
 
 **Usage**:
 ```bash
-streamlit run visualize_umcp.py
+umcp-format --all
 ```
 
-**Files Created**:
-- [visualize_umcp.py](visualize_umcp.py) - Complete Streamlit dashboard
-
-**Screenshots**:
-- Phase space shows regime transitions
-- Time series reveals stability trends
-- Interactive hover for detailed metrics
+**Files**:
+- [src/umcp/cli.py](src/umcp/cli.py) - `format` command implementation
 
 ---
 
@@ -86,7 +74,28 @@ streamlit run visualize_umcp.py
 
 The following extensions are documented for future implementation:
 
-### 3. REST API (Planned)
+### 3. Web Dashboard (Planned)
+
+**Status**: 🚧 Not yet implemented
+**Type**: Streamlit web UI (visualization)
+**Would require**: `pip install umcp[viz]`
+
+**Planned Features**:
+- **Phase Space Plot**: ω vs C with regime color-coding (Stable/Watch/Collapse)
+- **Time Series**: Invariants (ω, C, S) over time
+- **Latest Receipt**: Summary of most recent validation
+- **Current Invariants**: Real-time system state
+- **Ledger Explorer**: Browse and download historical data
+
+**Planned Usage**:
+```bash
+pip install umcp[viz]
+streamlit run visualize_umcp.py
+```
+
+---
+
+### 4. REST API (Planned)
 
 **Status**: 🚧 Not yet implemented (stub code exists)
 **Type**: HTTP API (standard REST/JSON protocol)  
@@ -98,64 +107,34 @@ The following extensions are documented for future implementation:
 - System health monitoring
 - Integration with external systems
 
-### 4. Visualization Dashboard (Planned)
-
-**Status**: 🚧 Not yet implemented
-**Type**: Web UI (Streamlit)  
-**Would require**: `pip install umcp[viz]`
-
-**Planned Purpose**:
-- Interactive phase space plots (ω vs C)
-- Time series visualization
-- Ledger data exploration
-- Regime transition analysis
-
-**Endpoints**:
+**Planned Endpoints**:
 - `GET /health` - Health check
 - `GET /latest-receipt` - Most recent validation receipt
 - `GET /ledger` - Historical validation ledger (all records)
 - `GET /stats` - Aggregate statistics (conformance rate, regime distribution)
 - `GET /regime` - Current regime classification with invariants
 
-**Installation**:
+**Planned Usage**:
 ```bash
-pip install fastapi uvicorn
-```
-
-**Usage**:
-```bash
-# Start API server
+pip install umcp[api]
 uvicorn api_umcp:app --reload
-
-# Query endpoints
 curl http://localhost:8000/health
-curl http://localhost:8000/regime
-curl http://localhost:8000/stats
 ```
 
-**Files Created**:
-- [api_umcp.py](api_umcp.py) - Complete FastAPI application
+---
 
-**Example Response** (`/stats`):
-```json
-{
-  "total_validations": 42,
-  "conformant_count": 40,
-  "nonconformant_count": 2,
-  "current_regime": "Stable",
-  "regime_distribution": {
-    "Stable": 38,
-    "Watch": 3,
-    "Collapse": 1,
-    "Unknown": 0
-  },
-  "latest_timestamp": "2026-01-19T00:17:49Z"
-}
-```
+### 5. Combined Communications (Planned)
+
+**Status**: 🚧 Not yet implemented
+**Would require**: `pip install umcp[communications]`
+
+Installs both REST API and Web Dashboard together.
+
+---
 
 ## 🚀 Potential Extensions (Not Yet Implemented)
 
-### 4. Adaptive Thresholds
+### 6. Adaptive Thresholds
 
 **Difficulty**: Medium  
 **Description**: Track rolling mean of s, ω to auto-adjust tolerance thresholds within bounds.
@@ -168,7 +147,7 @@ curl http://localhost:8000/stats
 
 **Estimated Effort**: 50-100 lines
 
-### 5. Distributed Validation
+### 7. Distributed Validation
 
 **Difficulty**: Medium  
 **Description**: Run validators in parallel on multiple datasets; collect and aggregate receipts.
@@ -181,7 +160,7 @@ curl http://localhost:8000/stats
 
 **Estimated Effort**: 100-150 lines
 
-### 6. Inference Integration
+### 8. Inference Integration
 
 **Difficulty**: Advanced  
 **Description**: Use UMCP receipts as labeled data for ML regression on stability/collapse prediction.
@@ -194,7 +173,7 @@ curl http://localhost:8000/stats
 
 **Estimated Effort**: 200-300 lines + model training
 
-### 7. Epistemic Visualization
+### 9. Epistemic Visualization
 
 **Difficulty**: Advanced (but fun!)  
 **Description**: Animate return cycles (τR) as orbital plots showing weld frequency.

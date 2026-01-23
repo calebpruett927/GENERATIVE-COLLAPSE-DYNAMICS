@@ -474,11 +474,11 @@ Tier-2 result → threshold check → seam weld → IF passes → New Tier-1 can
   - trace.csv with OOR flags
   - weights.yaml validation
   
-- ✅ **Tier-1**: Full support in [src/umcp/kernel.py](src/umcp/kernel.py)
+- ✅ **Tier-1**: Full support in [src/umcp/validator.py](src/umcp/validator.py) and [closures/](closures/)
   - Deterministic invariant computation
   - Reserved symbols: F, ω, S, C, κ, IC, τ_R
   - Regime gates: Stable, Watch, Collapse
-  - Output: derived/invariants.csv
+  - Output: outputs/invariants.csv
   
 - ⚠️ **Tier-1.5**: Partial support
   - closures/registry.yaml structure defined

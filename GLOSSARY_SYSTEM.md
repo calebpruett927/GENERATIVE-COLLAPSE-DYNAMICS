@@ -112,7 +112,7 @@ Each glossary entry contains **"Where defined"** and **"Where used"** fields tha
 1. Check [SYMBOL_INDEX.md](SYMBOL_INDEX.md#quick-reference-table) → finds ω = omega, Tier-1
 2. Click to [GLOSSARY.md#drift-ωt](GLOSSARY.md#drift-ωt) for full definition
 3. "Where defined" → [canon/gcd_anchors.yaml](canon/gcd_anchors.yaml)
-4. "Where used" → [casepacks/hello_world/outputs/invariants.csv](casepacks/hello_world/outputs/invariants.csv)
+4. "Where used" → [outputs/invariants.csv](outputs/invariants.csv) (after validation)
 
 ### Example 2: Term Lookup
 

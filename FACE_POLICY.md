@@ -54,7 +54,7 @@ oor_policy: clip_and_flag
 
 **Files**:
 - Policy declaration: [contract.yaml](contract.yaml)
-- Implementation: [src/umcp/kernel.py](src/umcp/kernel.py)
+- Implementation: [src/umcp/validator.py](src/umcp/validator.py)
 - Flags: `derived/trace.csv` (oor_flags column)
 
 ---
@@ -79,7 +79,7 @@ typed_censoring:
 
 **Files**:
 - Policy declaration: [contracts/UMA.INTSTACK.v1.yaml](contracts/UMA.INTSTACK.v1.yaml)
-- Implementation: [src/umcp/kernel.py](src/umcp/kernel.py) (return domain logic)
+- Implementation: [src/umcp/validator.py](src/umcp/validator.py) (return domain logic)
 
 ---
 
@@ -220,7 +220,7 @@ Before accepting a new face policy:
 
 ### Current UMCP Support
 
-- ✅ **pre_clip**: Fully implemented in [src/umcp/kernel.py](src/umcp/kernel.py)
+- ✅ **pre_clip**: Fully implemented in [src/umcp/validator.py](src/umcp/validator.py)
 - ✅ **oor_flags**: Exported in `derived/trace.csv`
 - ✅ **typed_censoring**: Supported for τ_R = ∞_rec
 - ✅ **Contract declaration**: `face_policy` field in UMA.INTSTACK.v1

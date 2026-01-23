@@ -555,10 +555,10 @@ This reference structure is governed by:
 See `casepacks/UMCP-REF-E2E-0001/` for a complete reference CasePack with all required and optional files.
 
 **Key files to inspect**:
-- [casepacks/UMCP-REF-E2E-0001/manifest.yaml](casepacks/UMCP-REF-E2E-0001/manifest.yaml)
-- [casepacks/UMCP-REF-E2E-0001/receipts/ss1m_receipt.json](casepacks/UMCP-REF-E2E-0001/receipts/ss1m_receipt.json)
-- [casepacks/UMCP-REF-E2E-0001/receipts/seam_receipt.json](casepacks/UMCP-REF-E2E-0001/receipts/seam_receipt.json)
-- [casepacks/UMCP-REF-E2E-0001/integrity/sha256.txt](casepacks/UMCP-REF-E2E-0001/integrity/sha256.txt)
+- [casepacks/UMCP-REF-E2E-0001/manifest.json](casepacks/UMCP-REF-E2E-0001/manifest.json)
+- [casepacks/UMCP-REF-E2E-0001/manifest/manifest.json](casepacks/UMCP-REF-E2E-0001/manifest/manifest.json)
+- [casepacks/UMCP-REF-E2E-0001/receipts/ss1m.json](casepacks/UMCP-REF-E2E-0001/receipts/ss1m.json)
+- [casepacks/UMCP-REF-E2E-0001/manifest/sha256sums.txt](casepacks/UMCP-REF-E2E-0001/manifest/sha256sums.txt)
 
 ---
 
