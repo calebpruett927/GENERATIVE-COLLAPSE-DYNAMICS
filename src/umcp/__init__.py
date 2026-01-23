@@ -23,10 +23,10 @@ from typing import Any
 __all__ = [
     "DEFAULT_TZ",
     "VALIDATOR_NAME",
-    "ValidationResult",
     "ClosureLoader",
     "RootFileValidator",
     "UMCPFiles",
+    "ValidationResult",
     "__version__",
     "get_closure_loader",
     "get_root_validator",
@@ -105,10 +105,11 @@ def validate(path: str | Path, strict: bool = False) -> ValidationResult:
         ...     print("✓ CONFORMANT")
         >>> print(f"Errors: {result.error_count}, Warnings: {result.warning_count}")
     """
-    from .cli import _cmd_validate
-    from argparse import Namespace
-    import tempfile
     import json
+    import tempfile
+    from argparse import Namespace
+
+    from .cli import _cmd_validate
 
     # Create temporary file for output
     with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
@@ -122,7 +123,7 @@ def validate(path: str | Path, strict: bool = False) -> ValidationResult:
         _cmd_validate(args)
 
         # Read result
-        with open(output_path, "r") as f:
+        with open(output_path) as f:
             result_data = json.load(f)
 
         return ValidationResult(result_data)

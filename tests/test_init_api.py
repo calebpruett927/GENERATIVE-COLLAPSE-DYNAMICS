@@ -1,10 +1,6 @@
 """Tests for umcp package-level API (ValidationResult and validate function)."""
 
-import json
-import tempfile
 from pathlib import Path
-
-import pytest
 
 import umcp
 
@@ -145,7 +141,7 @@ def test_validation_result_missing_fields():
 def test_validate_imports():
     """Test that validate function is properly exported."""
     # Should be able to import directly
-    from umcp import validate, ValidationResult
+    from umcp import ValidationResult, validate
 
     assert callable(validate)
     assert isinstance(ValidationResult, type)
