@@ -1,5 +1,8 @@
 import json
 import sys
+from pathlib import Path
+
+from _pytest.monkeypatch import MonkeyPatch
 
 from src.umcp.file_refs import UMCPFiles, get_umcp_files
 
@@ -10,20 +13,20 @@ def test_umcpfiles_init():
     assert hasattr(files, "root")
 
 
-def test_verify_all_exist(tmp_path):
+def test_verify_all_exist(tmp_path: Path):
     files = UMCPFiles(root_path=tmp_path)
     result = files.verify_all_exist()
     assert isinstance(result, dict)
     assert "manifest.yaml" in result
 
 
-def test_get_missing_files(tmp_path):
+def test_get_missing_files(tmp_path: Path):
     files = UMCPFiles(root_path=tmp_path)
     missing = files.get_missing_files()
     assert isinstance(missing, list)
 
 
-def test_load_yaml_minimal(tmp_path, monkeypatch):
+def test_load_yaml_minimal(tmp_path: Path, monkeypatch: MonkeyPatch):
     monkeypatch.setitem(sys.modules, "yaml", None)
     yaml_file = tmp_path / "test.yaml"
     yaml_file.write_text("key: value\n# comment\nother: 123\n")
@@ -33,7 +36,7 @@ def test_load_yaml_minimal(tmp_path, monkeypatch):
     assert result["other"] == 123 or result["other"] == "123"
 
 
-def test_load_json(tmp_path):
+def test_load_json(tmp_path: Path):
     json_file = tmp_path / "test.json"
     json_file.write_text(json.dumps({"a": 1}))
     files = UMCPFiles(root_path=tmp_path)
@@ -41,7 +44,7 @@ def test_load_json(tmp_path):
     assert result["a"] == 1
 
 
-def test_load_csv(tmp_path):
+def test_load_csv(tmp_path: Path):
     csv_file = tmp_path / "test.csv"
     csv_file.write_text("a,b\n1,2\n")
     files = UMCPFiles(root_path=tmp_path)
@@ -50,7 +53,7 @@ def test_load_csv(tmp_path):
     assert result[0]["b"] == "2"
 
 
-def test_load_text(tmp_path):
+def test_load_text(tmp_path: Path):
     txt_file = tmp_path / "test.txt"
     txt_file.write_text("hello world")
     files = UMCPFiles(root_path=tmp_path)

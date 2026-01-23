@@ -36,7 +36,7 @@ class ClosureLoader:
                 raise FileNotFoundError(f"Closures registry not found: {self.registry_path}")
             try:
                 yaml = importlib.import_module("yaml")
-                if yaml is None or getattr(yaml, "safe_load", None) is None:
+                if not hasattr(yaml, "safe_load") or not callable(yaml.safe_load):
                     raise ImportError("yaml missing safe_load")
                 with open(self.registry_path, encoding="utf-8") as f:
                     loaded = yaml.safe_load(f)
@@ -55,12 +55,13 @@ class ClosureLoader:
         return self._registry
 
     def list_closures(self) -> dict[str, str]:
-        registry_obj = self.registry.get("registry", {}) or {}
+        registry_obj = cast(dict[str, Any], self.registry.get("registry", {}) or {})
         closures_obj = cast(dict[str, Any], registry_obj.get("closures", {}) or {})
         result: dict[str, str] = {}
         for name, spec in closures_obj.items():
             if isinstance(spec, dict) and "path" in spec:
-                result[name] = spec["path"]
+                path_val = cast(Any, spec["path"])
+                result[name] = str(path_val)
         return result
 
     def load_closure_module(self, name: str) -> Any:

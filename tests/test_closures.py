@@ -1,6 +1,8 @@
 import sys
+from pathlib import Path
 
 import pytest
+from _pytest.monkeypatch import MonkeyPatch
 
 from src.umcp.closures import ClosureLoader, get_closure_loader
 
@@ -12,7 +14,7 @@ def test_closure_loader_init():
     assert hasattr(loader, "closures_dir")
 
 
-def test_registry_property_minimal_yaml(tmp_path, monkeypatch):
+def test_registry_property_minimal_yaml(tmp_path: Path, monkeypatch: MonkeyPatch):
     # Simulate missing PyYAML
     monkeypatch.setitem(sys.modules, "yaml", None)
     closures_dir = tmp_path / "closures"
@@ -27,7 +29,7 @@ def test_registry_property_minimal_yaml(tmp_path, monkeypatch):
     assert reg["key2"] == "value2"
 
 
-def test_list_closures_empty_registry(monkeypatch, tmp_path):
+def test_list_closures_empty_registry(monkeypatch: MonkeyPatch, tmp_path: Path):
     closures_dir = tmp_path / "closures"
     closures_dir.mkdir()
     registry_path = closures_dir / "registry.yaml"
@@ -40,13 +42,13 @@ def test_list_closures_empty_registry(monkeypatch, tmp_path):
     assert result == {}
 
 
-def test_load_closure_module_not_found(tmp_path):
+def test_load_closure_module_not_found(tmp_path: Path):
     loader = ClosureLoader(root_dir=tmp_path)
     with pytest.raises(FileNotFoundError):
         loader.load_closure_module("nonexistent")
 
 
-def test_get_closure_function_no_compute(tmp_path):
+def test_get_closure_function_no_compute(tmp_path: Path):
     closures_dir = tmp_path / "closures"
     closures_dir.mkdir()
     py_file = closures_dir / "testmod.py"
