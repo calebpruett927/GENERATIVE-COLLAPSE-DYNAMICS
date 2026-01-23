@@ -5,6 +5,47 @@ All notable changes to the UMCP validator and repository will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.6] - 2026-01-23
+
+### Added - Return-Based Canonization Architecture
+
+**Architectural Refinement**: Formalized mechanism for promoting Tier-2 results to Tier-1 canon through return validation.
+
+#### Core Documentation
+
+- **RETURN_BASED_CANONIZATION.md**: Complete specification of canonization process
+  - Step 1: Threshold validation (range, stability, determinism checks)
+  - Step 2: Seam weld computation (Δκ, IC ratio, tolerance validation)
+  - Step 3: Canon declaration (new contract version with provenance)
+  - Worked example: Fractal dimension promotion workflow
+  - Implementation checklists for developers, maintainers, validators
+
+#### Tier System Enhancement
+
+- **TIER_SYSTEM.md**: Clarified within-run vs cross-run dependency flow
+  - Within frozen run: NO FEEDBACK (preserves determinism)
+  - Across runs: RETURN-BASED CANONIZATION (enables evolution)
+  - Added nonconformance criteria for promotion without seam weld
+  - Updated dependency flow diagrams
+
+#### Axiom Embodiment
+
+- **AXIOM.md**: New section connecting axiom to architecture
+  - "Architectural Embodiment: Return-Based Canonization"
+  - Explains how tier promotion implements "cycle must return"
+  - Tier-2 exploration → validation → seam weld → canonization
+  - Example: Fractal dimension canonization process
+
+#### Navigation
+
+- **README.md**: Added RETURN_BASED_CANONIZATION.md to Core Protocol documentation
+
+### Changed
+
+**Philosophical Consistency**: System now embodies its own axiom—"What Returns Through Collapse Is Real" applies to the evolution of the protocol itself. Tier-2 discoveries must "return" (validate through seam welding) to become Tier-1 canon.
+
+---
+
 ## [1.3.0] - 2026-01-20
 
 ### Added - Performance Optimization System

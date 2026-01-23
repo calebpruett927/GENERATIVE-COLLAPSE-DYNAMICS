@@ -11,7 +11,7 @@
 
 The **UMCP tier system** establishes strict separation between interface (Tier-0), kernel computation (Tier-1), continuity accounting (Tier-1.5), and domain overlays (Tier-2). This separation makes claims auditable, falsifiable, and reproducible without narrative rescue.
 
-**Core Principle**: One-way dependency flow with no feedback from higher to lower tiers within a frozen run.
+**Core Principle**: One-way dependency flow within a frozen run, with return-based canonization between runs.
 
 ```
 Tier-0 (declare + freeze) 
@@ -21,7 +21,39 @@ Tier-1 (kernel compute)
 Tier-1.5 (weld compute) 
     ↓ 
 Tier-2 (diagnostics/models/narrative)
-    ✗ NO FEEDBACK TO ALTER TIER-0/1/1.5 OUTCOMES
+    ✗ NO FEEDBACK within frozen run
+    ✓ RETURN-BASED CANONIZATION across runs:
+      IF Tier-2 meets/surpasses threshold
+      THEN seam weld + declare new Tier-1 canon
+      ELSE no promotion ("the cycle must return or it's not real")
+```
+
+### Return-Based Canonization (Axiom Embodiment)
+
+**Rule**: Tier-2 results can be promoted to Tier-1 canon ONLY through formal validation:
+
+1. **Threshold Validation**: Tier-2 result must meet or surpass declared criteria
+2. **Seam Weld Required**: Compute continuity via Tier-1.5 machinery (Δκ, IC ratio, tolerance budget)
+3. **New Canon Declaration**: If weld passes, declare new contract version with updated Tier-1 semantics
+4. **No Ad-Hoc Promotion**: Results that don't "return" through validation remain Tier-2 overlays
+
+**Axiom Connection**: This embodies "What Returns Through Collapse Is Real":
+- Tier-2 exploration = hypothesis space
+- Return validation = collapse event (testing against Tier-1 invariants)
+- Seam weld = proof of continuity
+- Canon promotion = what survived becomes real/canonical
+
+**Example Flow**:
+```
+Run 1: Tier-2 discovers new metric M with improved stability
+       → Validate: Does M meet stability threshold?
+       → Compute seam: Δκ_M vs Δκ_old, tolerance check
+       → IF |residual| ≤ tol_seam: Promote M to Tier-1 in new contract
+       → ELSE: M remains Tier-2 diagnostic
+
+Run 2: Use new contract with M as Tier-1 invariant
+       → Entire system operates on new canon
+       → Previous M values are now kernel outputs
 ```
 
 ---
@@ -274,15 +306,29 @@ Tier-2 (overlays; explicitly subordinate):
 
 **Rule**: `/freeze` is a **hard gate**. Tier-0 declarations (observables, embedding, flags, weights, return settings) and closure registry (if weld is used) must be frozen **before** Tier-1 and Tier-1.5 compute. If `/freeze` is missing or incomplete, the run is **nonconformant**.
 
-### One-Way Dependency
+### One-Way Dependency Within Runs
 
 **Rule**: Tier-1 depends on Tier-0; Tier-1.5 depends on Tier-1 plus closures; Tier-2 may depend on all prior tiers but **cannot feed back** to alter their outcomes for a frozen run.
 
 ```
+WITHIN A FROZEN RUN:
 Tier-0 (frozen) → Tier-1 (kernel) → Tier-1.5 (weld) → Tier-2 (overlay)
                                                          ↓
                                                     NO FEEDBACK ✗
+
+ACROSS RUNS (Return-Based Canonization):
+Run N: Tier-2 result
+         ↓ threshold validation
+         ↓ seam weld computation
+         ↓ IF weld passes ("returns")
+Run N+1: New Tier-1 canon (promoted result)
+         ✓ FORMAL PROMOTION via contract versioning
 ```
+
+**Critical Distinction**:
+- **Within-run feedback**: PROHIBITED (breaks determinism, enables narrative rescue)
+- **Cross-run canonization**: ALLOWED via seam welding (embodies "cycle must return")
+- **Requirement**: Return validation is not optional - results that don't return remain non-canonical
 
 ### Audit Traceability
 
@@ -299,6 +345,8 @@ Tier-0 (frozen) → Tier-1 (kernel) → Tier-1.5 (weld) → Tier-2 (overlay)
 | **Any instance of symbol capture** | Automatic nonconformance |
 | **Using diagnostics as gates** | Automatic nonconformance |
 | **Post hoc changes to preprocessing/closures to force outcomes** | Automatic nonconformance |
+| **Promoting Tier-2 to Tier-1 without seam weld** | Automatic nonconformance. Canon promotion requires return validation |
+| **Claiming continuity without demonstrating return** | Automatic nonconformance. "The cycle must return or it's not real" |
 
 ---
 
@@ -396,9 +444,10 @@ Tier-2: Compute equator diagnostic as report-only diagnostic.
 | **1.5** | Weld accounting: ledger/budget/residual; PASS/FAIL under frozen closures | Post hoc tuning to force PASS; continuity claim without weld row; narrative repair | closures.yaml, welds.csv, SS1m receipts |
 | **2** | Diagnostics, models, controllers, narrative interpretation (explicitly labeled) | Symbol capture; overriding regime or weld PASS/FAIL; rescuing τ_R = ∞_rec | Separate overlay files, assumptions declared, distinct notation |
 
-### Dependency Flow (Tier-2 Cannot Feed Back)
+### Dependency Flow (Within-Run vs Cross-Run)
 
 ```
+WITHIN FROZEN RUN:
 Tier-0 (declare + freeze)
     ↓
 Tier-1 (kernel compute)
@@ -407,6 +456,11 @@ Tier-1.5 (weld compute)
     ↓ outputs: welds.csv + SS1m
 Tier-2 (diagnostics/models/narrative; may read anything above)
     ✗ Tier-2 may NOT feed back to alter Tier-0/1/1.5 outcomes
+
+ACROSS RUNS (Return-Based Canonization):
+Tier-2 result → threshold check → seam weld → IF passes → New Tier-1 canon
+                                            → IF fails → Remains Tier-2
+(Embodies: "The cycle must return or it's not real")
 ```
 
 ---

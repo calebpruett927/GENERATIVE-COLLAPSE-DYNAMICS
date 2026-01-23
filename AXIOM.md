@@ -275,6 +275,71 @@ timestamp,run_status,return_verified,seam_closed,delta_kappa
 
 ---
 
+## Architectural Embodiment: Return-Based Canonization
+
+### The Tier System as Axiom Implementation
+
+The UMCP tier system embodies the return axiom through **return-based canonization**:
+
+**Within a Frozen Run** (No Feedback):
+```
+Tier-0 (interface) → Tier-1 (kernel) → Tier-1.5 (weld) → Tier-2 (overlay)
+                                                            ✗ NO FEEDBACK
+```
+- Tier-2 diagnostics cannot alter Tier-1 outcomes within a run
+- This prevents narrative rescue and maintains determinism
+- Preserves auditability and falsifiability
+
+**Across Runs** (Return Validation):
+```
+Run N: Tier-2 explores new metric M
+         ↓ Does M meet threshold criteria?
+         ↓ Compute seam weld: Δκ_M, IC_M/IC_old, |residual|
+         ↓ IF |residual| ≤ tol_seam (M "returns" = validates)
+Run N+1: M promoted to Tier-1 canon in new contract version
+         ✓ M is now kernel invariant (what returned is real)
+         ✗ IF weld failed: M remains Tier-2 (didn't return = not canonical)
+```
+
+### Why This Embodies the Axiom
+
+1. **Collapse = Validation Event**
+   - Tier-2 hypothesis → Tier-1.5 seam weld = collapse test
+   - Only results that survive validation "return" to canonical status
+
+2. **Return = Demonstrated Continuity**
+   - Seam weld proves the new metric is continuous with existing canon
+   - Continuity = return to admissible neighborhood
+   - No continuity = no return = not real/canonical
+
+3. **Real = What Survives the Cycle**
+   - Tier-2 exploration → validation → canonization = complete cycle
+   - Results that complete the cycle become Tier-1 invariants
+   - Results that don't return remain hypothetical (Tier-2)
+
+4. **Formal Not Narrative**
+   - Return is computed (seam weld), not argued
+   - Thresholds are declared in advance, not adjusted post-hoc
+   - Promotion requires contract versioning (explicit, traceable)
+
+### Example: Fractal Dimension Canonization
+
+**Scenario**: RCFT (Tier-2) computes fractal dimension D_f
+
+**Question**: Should D_f become a Tier-1 kernel invariant?
+
+**Process**:
+1. **Threshold Check**: Does D_f ∈ [1,3] remain stable across traces?
+2. **Seam Weld**: Compute Δκ with vs without D_f, check |residual| ≤ tol_seam
+3. **Return Test**: Does system with D_f return to regime boundaries?
+4. **Decision**:
+   - ✓ IF weld passes: D_f → new contract version, becomes Tier-1 invariant
+   - ✗ IF weld fails: D_f remains RCFT-only diagnostic
+
+**Axiom Application**: "D_f is real" = "D_f returned through validation cycle"
+
+---
+
 ## Extensions and Applications
 
 ### 1. Intelligent Caching
