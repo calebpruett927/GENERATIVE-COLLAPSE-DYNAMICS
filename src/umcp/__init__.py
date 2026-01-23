@@ -35,7 +35,7 @@ __all__ = [
     "validate",
 ]
 
-__version__ = "1.4.0"
+__version__ = "1.4.7"
 
 VALIDATOR_NAME = "umcp-validator"
 DEFAULT_TZ = "America/Chicago"
