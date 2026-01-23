@@ -1,5 +1,8 @@
 name: publish
 
+# Triggered when a version tag (v*) is pushed
+# Example: git tag v1.4.0 && git push origin v1.4.0
+
 on:
   push:
     tags:
@@ -7,7 +10,7 @@ on:
 
 permissions:
   contents: read
-  id-token: write
+  id-token: write  # For trusted publishing (OIDC) - currently not used but available
 
 jobs:
   build-and-publish:
@@ -35,6 +38,10 @@ jobs:
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          password: ${{ secrets.PYPI_API_TOKEN }}
+          # Using API token for authentication
+          # Secret must be configured at: https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/settings/secrets/actions
+          # To use trusted publishing instead (OIDC), remove the password line below
+          # and configure publisher at: https://pypi.org/manage/account/publishing/
+          password: ${{ secrets.PYPI_API_TOKEN }}  # yamllint disable-line rule:line-length
 
 
