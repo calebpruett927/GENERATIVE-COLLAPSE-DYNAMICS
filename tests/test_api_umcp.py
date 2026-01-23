@@ -8,9 +8,7 @@ except ImportError:
     FASTAPI_AVAILABLE = False
     api_umcp = None  # type: ignore
 
-pytestmark = pytest.mark.skipif(
-    not FASTAPI_AVAILABLE, reason="fastapi not installed (optional dependency)"
-)
+pytestmark = pytest.mark.skipif(not FASTAPI_AVAILABLE, reason="fastapi not installed (optional dependency)")
 
 
 def test_validate_api_key():
