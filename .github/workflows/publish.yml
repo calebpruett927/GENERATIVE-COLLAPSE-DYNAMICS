@@ -37,11 +37,9 @@ jobs:
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          # Using API token for authentication
-          # Secret must be configured at: https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/settings/secrets/actions
-          # To use trusted publishing instead (OIDC), remove the password line below
-          # and configure publisher at: https://pypi.org/manage/account/publishing/
-          password: ${{ secrets.PYPI_API_TOKEN }}  # yamllint disable-line rule:line-length
+        # Uses OIDC trusted publishing (no password needed)
+        # Requires publisher configuration at: https://pypi.org/manage/account/publishing/
+        # Repository: calebpruett927/UMCP-Metadata-Runnable-Code
+        # Workflow: publish.yml
 
 
