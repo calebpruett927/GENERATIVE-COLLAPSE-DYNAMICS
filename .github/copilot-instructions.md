@@ -86,13 +86,13 @@ pip install umcp[all]
 - **Docker/Kubernetes**: See `docs/production_deployment.md` for deployment
 
 ## Key References
-- [README.md](../README.md): High-level overview, CLI commands, workflow, architecture diagrams.
-- [INFRASTRUCTURE_GEOMETRY.md](../INFRASTRUCTURE_GEOMETRY.md): Three-layer geometric architecture and what the infrastructure holds.
-- [EXTENSION_INTEGRATION.md](../EXTENSION_INTEGRATION.md): Extension system documentation.
-- [CASEPACK_REFERENCE.md](../CASEPACK_REFERENCE.md): CasePack structure and validation.
-- [KERNEL_SPECIFICATION.md](../KERNEL_SPECIFICATION.md): Formal specification and debugging guide.
-- [TIER_SYSTEM.md](../TIER_SYSTEM.md): System boundaries and dependency rules.
-- [PUBLICATION_INFRASTRUCTURE.md](../PUBLICATION_INFRASTRUCTURE.md): Publication formats and conventions.
+- README.md: High-level overview, CLI commands, workflow, architecture diagrams.
+- INFRASTRUCTURE_GEOMETRY.md: Three-layer geometric architecture and what the infrastructure holds.
+- EXTENSION_INTEGRATION.md: Extension system documentation.
+- CASEPACK_REFERENCE.md: CasePack structure and validation.
+- KERNEL_SPECIFICATION.md: Formal specification and debugging guide.
+- TIER_SYSTEM.md: System boundaries and dependency rules.
+- PUBLICATION_INFRASTRUCTURE.md: Publication formats and conventions.
 
 ## Example Workflow (Core Only - No Extensions)
 1. Prepare data (`raw_measurements.csv`).
