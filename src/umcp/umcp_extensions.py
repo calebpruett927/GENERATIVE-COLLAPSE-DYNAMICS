@@ -1,13 +1,10 @@
+"""UMCP Extensions - minimal stub for extension system."""
+from __future__ import annotations
 
-"""
-UMCP Extensions Module
-Minimal valid structure to resolve syntax errors.
-"""
+def list_extensions() -> list[str]:
+    """Return list of available extensions."""
+    return []
 
-def list_extensions():
-	"""List available UMCP extensions (stub)."""
-	return []
-
-def get_extension_info(name):
-	"""Get info for a UMCP extension (stub)."""
-	return {"name": name, "info": "No info available."}
+def get_extension_info(name: str) -> dict[str, str]:
+    """Get information about an extension."""
+    return {"name": name, "info": "No extension info available"}

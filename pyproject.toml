@@ -94,25 +94,12 @@ Changelog = "https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/blob/
 
 [project.scripts]
 umcp = "umcp.cli:main"
-umcp-visualize = "visualize_umcp:main"
-umcp-api = "api_umcp:run_server"
-umcp-ext = "umcp_extensions:main"
-umcp-format = "umcp_autoformat:main"
 
-# Extension discovery and plugin system
-[project.entry-points."umcp.extensions"]
-visualization = "visualize_umcp:UMCPVisualization"
-api = "api_umcp:UMCPAuditAPI"
-ledger = "umcp.cli:LedgerExtension"
-
+# Extension entry points for discovery
 [project.entry-points."umcp.contracts"]
-uma = "contracts.UMA.INTSTACK.v1:contract"
-gcd = "contracts.GCD.INTSTACK.v1:contract"
-rcft = "contracts.RCFT.INTSTACK.v1:contract"
-
-[project.entry-points."umcp.closures"]
-gcd_closures = "closures.gcd:register"
-rcft_closures = "closures.rcft:register"
+uma = "umcp.contracts.uma:get_contract"
+gcd = "umcp.contracts.gcd:get_contract"
+rcft = "umcp.contracts.rcft:get_contract"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

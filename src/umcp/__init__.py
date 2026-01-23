@@ -27,6 +27,7 @@ __all__ = [
     "get_closure_loader",
     "get_root_validator",
     "get_umcp_files",
+    "umcp_extensions",
 ]
 
 __version__ = "1.4.0"
@@ -38,3 +39,4 @@ DEFAULT_TZ = "America/Chicago"
 from .closures import ClosureLoader, get_closure_loader
 from .file_refs import UMCPFiles, get_umcp_files
 from .validator import RootFileValidator, get_root_validator
+from . import umcp_extensions
