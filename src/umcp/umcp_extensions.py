@@ -14,7 +14,7 @@ from __future__ import annotations
 
 def list_extensions() -> list[str]:
     """Return list of available extensions.
-    
+
     Currently returns empty list. Future plugin system would enumerate
     available communication extensions (HTTP API, web UI, etc.).
     """
@@ -23,15 +23,11 @@ def list_extensions() -> list[str]:
 
 def get_extension_info(name: str) -> dict[str, str]:
     """Get information about an extension.
-    
+
     Args:
         name: Extension name to query
-        
+
     Returns:
         Dictionary with extension metadata. Currently placeholder.
     """
-    return {
-        "name": name,
-        "status": "not_implemented",
-        "info": "Extension system reserved for future use"
-    }
+    return {"name": name, "status": "not_implemented", "info": "Extension system reserved for future use"}

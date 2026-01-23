@@ -5,7 +5,7 @@ implementation. The actual REST API is planned but not yet implemented.
 
 For actual UMCP validation, use the core CLI:
   umcp validate <path>
-  
+
 This stub exists to:
 1. Reserve the module name for future use
 2. Provide example helper functions for API development

@@ -8,18 +8,18 @@ The repository uses **token-based authentication** for PyPI publishing.
 
 1. When you push a tag like `v1.4.0`, GitHub Actions triggers
 2. The workflow builds the package (`python -m build`)
-3. It publishes to PyPI using the `PYPI_API_TOKEN` secret
+3. It publishes to PyPI using the `PYPI_PUBLISH_TOKEN` secret
 
 ### Secret Configuration
 
-The `PYPI_API_TOKEN` secret must be configured at:
+The `PYPI_PUBLISH_TOKEN` secret must be configured at:
 - **URL**: https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/settings/secrets/actions
-- **Name**: `PYPI_API_TOKEN`
+- **Name**: `PYPI_PUBLISH_TOKEN`
 - **Value**: Your PyPI API token from https://pypi.org/manage/account/token/
 
 ### VS Code Warning
 
-The warning `Context access might be invalid: PYPI_API_TOKEN` is **harmless**:
+The warning `Context access might be invalid: PYPI_PUBLISH_TOKEN` is **harmless**:
 - ✅ It's just a static analysis linter that can't verify secrets exist
 - ✅ The workflow will work correctly if the secret is configured
 - ✅ The warning does NOT affect CI/CD functionality
@@ -43,7 +43,7 @@ For enhanced security without managing tokens, you can switch to **Trusted Publi
    ```
 
 3. **Remove the token**:
-   - Delete the `password: ${{ secrets.PYPI_API_TOKEN }}` line
+   - Delete the `password: ${{ secrets.PYPI_PUBLISH_TOKEN }}` line
    - Delete the secret from GitHub repo settings (optional)
 
 ### Benefits of Trusted Publishing

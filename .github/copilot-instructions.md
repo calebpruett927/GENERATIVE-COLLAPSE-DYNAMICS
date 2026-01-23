@@ -75,6 +75,7 @@ pip install umcp[all]
 - **Publication Rows**: Use tools/scripts in `scripts/` and follow formats in `PUBLICATION_INFRASTRUCTURE.md`.
 - **Tier System**: See `TIER_SYSTEM.md` for interface/kernel/weld/overlay boundaries and dependency flow.
 - **Kernel Specification**: Mathematical invariants and implementation bounds in `KERNEL_SPECIFICATION.md`.
+- **Infrastructure Geometry**: See `INFRASTRUCTURE_GEOMETRY.md` for the three-layer geometric architecture (state space → projections → seam graph) and what the infrastructure "holds" (portable state, geometry, coordinates, partitions, continuity tests).
 
 ## Communication vs Core
 **IMPORTANT**: The REST API and visualization dashboard are **communication extensions** for standard interfaces (HTTP, web UI). They are NOT required for core validation functionality. UMCP core runs entirely with CLI commands and Python imports.
@@ -86,6 +87,7 @@ pip install umcp[all]
 
 ## Key References
 - [README.md](README.md): High-level overview, CLI commands, workflow, architecture diagrams.
+- [INFRASTRUCTURE_GEOMETRY.md](INFRASTRUCTURE_GEOMETRY.md): Three-layer geometric architecture and what the infrastructure holds.
 - [EXTENSION_INTEGRATION.md](EXTENSION_INTEGRATION.md): Extension system documentation.
 - [CASEPACK_REFERENCE.md](CASEPACK_REFERENCE.md): CasePack structure and validation.
 - [KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md): Formal specification and debugging guide.
