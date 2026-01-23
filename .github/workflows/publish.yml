@@ -39,6 +39,7 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           password: ${{ secrets.PYPI_API_TOKEN }}
+          attestations: false
         # Token-based authentication (requires PYPI_API_TOKEN secret)
         # To switch to OIDC: remove 'with:' section and configure at https://pypi.org/manage/account/publishing/
 
