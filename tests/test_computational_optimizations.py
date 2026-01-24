@@ -513,10 +513,13 @@ class TestReturnTimeOptimizations:
         """Load and instantiate the OptimizedReturnComputer."""
         import sys
         import importlib.util
+        from pathlib import Path
 
-        spec = importlib.util.spec_from_file_location(
-            "tau_R_optimized", "/workspaces/UMCP-Metadata-Runnable-Code/closures/tau_R_optimized.py"
-        )
+        # Use relative path from test file location
+        repo_root = Path(__file__).parent.parent
+        tau_r_path = repo_root / "closures" / "tau_R_optimized.py"
+
+        spec = importlib.util.spec_from_file_location("tau_R_optimized", str(tau_r_path))
         assert spec is not None and spec.loader is not None
         module = importlib.util.module_from_spec(spec)
         # Register module in sys.modules before exec to allow dataclass decorator
