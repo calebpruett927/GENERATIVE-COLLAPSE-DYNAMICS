@@ -61,7 +61,9 @@ dev = [
   "ruff==0.5.0",
   "mypy>=1.11.0",
   "pre-commit>=3.8.0",
-  "psutil>=5.9.0"
+  "psutil>=5.9.0",
+  "fastapi>=0.109.0",
+  "httpx>=0.27.0"
 ]
 
 # Testing suite
