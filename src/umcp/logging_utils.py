@@ -24,7 +24,7 @@ from typing import Any
 # psutil availability check
 _has_psutil = False
 try:
-    import psutil  # type: ignore[import-untyped]
+    import psutil
 
     _has_psutil = True
 except ImportError:
@@ -165,8 +165,9 @@ class JsonFormatter(logging.Formatter):
         }
 
         # Add context if available
-        if hasattr(record, "context"):
-            log_data["context"] = record.context  # type: ignore[attr-defined]
+        context = getattr(record, "context", None)
+        if context is not None:
+            log_data["context"] = context
 
         # Add exception info if present
         if record.exc_info:

@@ -216,7 +216,7 @@ class OptimizedKernelComputer:
         """
         if c <= 0 or c >= 1:
             return 0.0
-        return -c * np.log(c) - (1 - c) * np.log(1 - c)
+        return float(-c * np.log(c) - (1 - c) * np.log(1 - c))
 
     def _compute_entropy(self, c: np.ndarray, w: np.ndarray) -> float:
         """
@@ -329,7 +329,7 @@ class CoherenceAnalyzer:
     @staticmethod
     def compute_coherence_proxy(omega: float, S: float) -> float:
         """Compute coherence proxy (Lemma 26)."""
-        return (1 - omega) + S / np.log(2)
+        return float((1 - omega) + S / np.log(2))
 
     @staticmethod
     def classify_coherence(theta: float) -> str:
@@ -358,7 +358,7 @@ class ThresholdCalibrator:
         """
         gap = F - IC
         adaptive_threshold = base_threshold * (1 - 2 * gap)
-        return np.clip(adaptive_threshold, 0.1, 0.5)
+        return float(np.clip(adaptive_threshold, 0.1, 0.5))
 
 
 # Convenience functions for backward compatibility

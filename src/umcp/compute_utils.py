@@ -157,7 +157,8 @@ def normalize_weights(w: np.ndarray, validate: bool = True) -> np.ndarray:
     if w_sum == 0:
         raise ValueError("Weights sum to zero")
 
-    return w / w_sum
+    result: np.ndarray = w / w_sum
+    return result
 
 
 def validate_inputs(
@@ -241,7 +242,8 @@ def batch_validate_outputs(
         & np.isfinite(kappa)
     )
 
-    return valid
+    result: np.ndarray = valid
+    return result
 
 
 def preprocess_trace_row(

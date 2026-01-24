@@ -385,6 +385,6 @@ def validate_seam_residuals(residuals: list[float], max_growth_exp: float = 1.05
     log_cumsum = np.log(cumsum + 1e-10)
     log_K = np.log(K)
 
-    growth_exp = np.polyfit(log_K, log_cumsum, 1)[0]
+    growth_exp = float(np.polyfit(log_K, log_cumsum, 1)[0])
 
     return growth_exp < max_growth_exp
