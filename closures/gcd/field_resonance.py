@@ -26,6 +26,20 @@ Resonance regime thresholds:
 """
 
 import math
+import sys
+from pathlib import Path
+
+# Add src to path for optimization imports
+_src_path = Path(__file__).parent.parent.parent / "src"
+if str(_src_path) not in sys.path:
+    sys.path.insert(0, str(_src_path))
+
+# Import optimizations if available (OPT-1, Lemma 1 validation)
+try:
+    from umcp.kernel_optimized import validate_kernel_bounds
+    _HAS_OPTIMIZATIONS = True
+except ImportError:
+    _HAS_OPTIMIZATIONS = False
 
 
 def compute_field_resonance(omega: float, S: float, C: float, C_crit: float = 0.2) -> dict[str, float]:
@@ -49,6 +63,15 @@ def compute_field_resonance(omega: float, S: float, C: float, C_crit: float = 0.
     Raises:
         ValueError: If inputs violate constraints
     """
+    # OPT-1: Use optimized kernel validation if available (Lemma 1 bounds)
+    if _HAS_OPTIMIZATIONS:
+        # Approximate kernel tuple from ω for validation
+        IC = max(1 - abs(omega), 1e-10)
+        kappa = math.log(IC)
+        F = 1 - abs(omega)
+        C_clamped = min(C, 1.0)  # Clamp C to [0,1] for validation
+        validate_kernel_bounds(F, abs(omega), C_clamped, IC, kappa)
+
     # Input validation
     if abs(omega) > 1:
         raise ValueError(f"Drift |ω| must be ≤ 1, got {abs(omega)}")

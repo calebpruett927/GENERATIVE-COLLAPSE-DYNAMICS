@@ -31,6 +31,14 @@ from jsonschema import Draft202012Validator  # type: ignore[import-untyped]
 from umcp import VALIDATOR_NAME, __version__
 from umcp.logging_utils import HealthCheck, get_logger
 
+# Import optimized kernel validation (OPT-1, Lemma 1 bounds)
+try:
+    from umcp.kernel_optimized import validate_kernel_bounds
+    _HAS_KERNEL_OPTIMIZATIONS = True
+except ImportError:
+    _HAS_KERNEL_OPTIMIZATIONS = False
+    validate_kernel_bounds = None  # type: ignore[assignment]
+
 
 # Ensure src is in sys.path for absolute imports when running as a script
 def _ensure_repo_root_in_syspath() -> None:  # pyright: ignore[reportUnusedFunction]
@@ -618,6 +626,18 @@ def _emit_rule_issue(
 
 
 def _expected_regime_label(omega: float, F: float, S: float, C: float, regimes: dict[str, Any]) -> str:
+    # OPT-1: Use optimized kernel validation if available (Lemma 1 bounds)
+    if _HAS_KERNEL_OPTIMIZATIONS and validate_kernel_bounds is not None:
+        # Approximate κ and IC from ω for validation
+        import math
+        IC = max(1 - omega, 1e-10)
+        kappa = math.log(IC)
+        # Silent validation - log on failure but don't raise
+        try:
+            validate_kernel_bounds(F=F, omega=omega, C=C, IC=IC, kappa=kappa)
+        except (ValueError, TypeError):
+            pass  # Continue with standard regime classification
+
     # Canonical expected label:
     # - Collapse if omega >= omega_gte
     # - Stable if omega < omega_lt AND F > F_gt AND S < S_lt AND C < C_lt

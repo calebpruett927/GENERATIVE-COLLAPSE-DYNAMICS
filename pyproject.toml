@@ -155,7 +155,7 @@ umcp = [
 
 [tool.pytest.ini_options]
 minversion = "8.0"
-addopts = "-q"
+addopts = "-q --tb=short"
 testpaths = ["tests"]
 pythonpath = ["src"]
 filterwarnings = [
@@ -165,6 +165,9 @@ filterwarnings = [
 markers = [
   "slow: marks tests as slow (deselect with '-m \"not slow\"')"
 ]
+
+# Parallel execution hint: run with `pytest -n auto` for multi-core speedup
+# Uses pytest-xdist to distribute tests across CPU cores
 
 [tool.coverage.run]
 branch = true

@@ -9,6 +9,7 @@ Interconnections:
 - Implements: AXIOM-0 (no_return_no_credit), typed censoring rules
 - Used by: umcp CLI (umcp validate), tests/test_97_root_integration.py
 - Documentation: PROTOCOL_REFERENCE.md, docs/interconnected_architecture.md
+- Optimizations: Uses compute_utils (OPT-17,20), kernel_optimized (OPT-1,2,12)
 
 Validation layers:
 1. File existence (16 required files)
@@ -26,10 +27,16 @@ import math
 from pathlib import Path
 from typing import Any
 
+import numpy as np
+
 try:
     import yaml
 except ImportError:
     yaml = None
+
+# Import optimization utilities
+from .compute_utils import validate_inputs, clip_coordinates
+from .kernel_optimized import validate_kernel_bounds
 
 
 class RootFileValidator:
@@ -215,7 +222,7 @@ class RootFileValidator:
             self.errors.append(f"✗ Error validating weights.csv: {e}")
 
     def _validate_trace_bounds(self) -> None:
-        """Validate trace coordinates are in [0,1]."""
+        """Validate trace coordinates are in [0,1] using optimized utilities (OPT-20)."""
         try:
             trace_path = self.root / "derived" / "trace.csv"
             with open(trace_path) as f:
@@ -227,17 +234,22 @@ class RootFileValidator:
                 return
 
             row = rows[0]
-            coords = [float(row[k]) for k in row if k.startswith("c_")]
+            coords = np.array([float(row[k]) for k in sorted(row.keys()) if k.startswith("c_")])
 
-            if all(0.0 <= c <= 1.0 for c in coords):
-                self.passed.append(f"✓ All coordinates in [0,1]: {coords}")
+            # Use optimized clipping utility for diagnostics (OPT-20: vectorized)
+            clip_result = clip_coordinates(coords, epsilon=1e-6)
+
+            if clip_result.clip_count == 0:
+                self.passed.append(f"✓ All {len(coords)} coordinates in [ε, 1-ε]")
             else:
-                self.errors.append(f"✗ Coordinates out of bounds: {coords}")
+                # Report which coordinates are out of range
+                oor_info = f"{clip_result.clip_count} out-of-range at indices {clip_result.oor_indices}"
+                self.errors.append(f"✗ Coordinates require clipping: {oor_info}")
         except Exception as e:
             self.errors.append(f"✗ Error validating trace.csv: {e}")
 
     def _validate_invariant_identities(self) -> None:
-        """Validate F = 1-ω and IC ≈ exp(κ)."""
+        """Validate F = 1-ω and IC ≈ exp(κ) using optimized bounds (OPT-2, OPT-12)."""
         try:
             inv_path = self.root / "outputs" / "invariants.csv"
             with open(inv_path) as f:
@@ -253,15 +265,24 @@ class RootFileValidator:
             F = float(row["F"])
             kappa = float(row["kappa"])
             IC = float(row["IC"])
+            C = float(row.get("C", 0.0))
+            S = float(row.get("S", 0.0))
 
-            # Check F = 1 - ω
+            # Use optimized kernel validation (Lemma 1 bounds)
+            bounds_valid = validate_kernel_bounds(F, omega, C, IC, kappa)
+            if bounds_valid:
+                self.passed.append("✓ All kernel outputs satisfy Lemma 1 range bounds")
+            else:
+                self.errors.append("✗ Lemma 1 violation: kernel outputs outside valid ranges")
+
+            # Check F = 1 - ω (Tier-1 identity)
             expected_F = 1.0 - omega
             if abs(F - expected_F) < 1e-9:
                 self.passed.append(f"✓ F = 1-ω identity satisfied (|{F} - {expected_F}| < 1e-9)")
             else:
                 self.errors.append(f"✗ F ≠ 1-ω: F={F}, 1-ω={expected_F}, diff={abs(F - expected_F)}")
 
-            # Check IC ≈ exp(κ)
+            # Check IC ≈ exp(κ) (Lemma 2: IC is geometric mean)
             expected_IC = math.exp(kappa)
             if abs(IC - expected_IC) < 1e-6:
                 self.passed.append(f"✓ IC ≈ exp(κ) identity satisfied (|{IC} - {expected_IC:.6f}| < 1e-6)")
@@ -269,6 +290,13 @@ class RootFileValidator:
                 self.warnings.append(
                     f"⚠ IC ≈ exp(κ) slightly off: IC={IC}, exp(κ)={expected_IC:.6f}, diff={abs(IC - expected_IC)}"
                 )
+
+            # Check AM-GM inequality (Lemma 4: IC ≤ F)
+            if IC <= F + 1e-9:
+                self.passed.append(f"✓ Lemma 4 AM-GM satisfied: IC={IC:.6f} ≤ F={F:.6f}")
+            else:
+                self.errors.append(f"✗ Lemma 4 violated: IC={IC:.6f} > F={F:.6f}")
+
         except Exception as e:
             self.errors.append(f"✗ Error validating invariant identities: {e}")
 

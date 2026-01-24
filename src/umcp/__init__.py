@@ -34,6 +34,10 @@ __all__ = [
     "get_umcp_files",
     "umcp_extensions",
     "validate",
+    # Computational optimizations (KERNEL_SPECIFICATION.md Lemmas 1-34)
+    "OptimizedKernelComputer",
+    "SeamChainAccumulator",
+    "compute_utils",
 ]
 
 __version__ = "1.4.7"
@@ -43,8 +47,11 @@ DEFAULT_TZ = "America/Chicago"
 
 # Import utilities
 from . import umcp_extensions
+from . import compute_utils
 from .closures import ClosureLoader, get_closure_loader
 from .file_refs import UMCPFiles, get_umcp_files
+from .kernel_optimized import OptimizedKernelComputer
+from .seam_optimized import SeamChainAccumulator
 from .validator import RootFileValidator, get_root_validator
 
 

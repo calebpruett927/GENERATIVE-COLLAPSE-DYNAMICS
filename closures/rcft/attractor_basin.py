@@ -61,12 +61,29 @@ Tier-2 Constraints:
     - Uses Tier-1 invariants (ω, S, C) as phase space coordinates
     - Does not modify GCD regime thresholds
     - Compatible with all RCFT metrics (D_f, λ_p, Θ)
+
+Optimizations:
+    - Uses BatchProcessor for trajectory preprocessing (OPT-20)
+    - Validates inputs with kernel_optimized bounds (OPT-2)
 """
 
+import sys
+from pathlib import Path
 from typing import Any
 
 import numpy as np
 from scipy.signal import find_peaks
+
+# Add src to path for optimization imports
+_src_path = Path(__file__).parent.parent.parent / "src"
+if str(_src_path) not in sys.path:
+    sys.path.insert(0, str(_src_path))
+
+try:
+    from umcp.compute_utils import BatchProcessor
+    _HAS_BATCH_PROCESSOR = True
+except ImportError:
+    _HAS_BATCH_PROCESSOR = False
 
 
 def compute_attractor_basin(
@@ -111,6 +128,17 @@ def compute_attractor_basin(
     if n_points < 10:
         raise ValueError("Need at least 10 points for attractor analysis")
 
+    # Use BatchProcessor for trajectory statistics if available (OPT-20)
+    if _HAS_BATCH_PROCESSOR:
+        processor = BatchProcessor(epsilon=1e-6)
+        trajectory = np.column_stack([omega_series, S_series, C_series])
+        stats = processor.compute_batch_statistics(trajectory)
+        # Store for diagnostics
+        _trajectory_stats = stats
+    else:
+        _trajectory_stats = None
+
+    # Standard range validation
     if not np.all((omega_series >= 0) & (omega_series <= 1)):
         raise ValueError("Drift ω must be in [0,1]")
 

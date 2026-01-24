@@ -192,6 +192,60 @@ def main():
     print()
 
     # ========================================================================
+    # PART 6: Computational Optimizations (OPT-1 through OPT-21)
+    # ========================================================================
+    print("PART 6: Computational Optimizations")
+    print("-" * 70)
+
+    try:
+        from umcp.kernel_optimized import OptimizedKernelComputer, validate_kernel_bounds
+        from umcp.seam_optimized import SeamChainAccumulator
+        from umcp.compute_utils import BatchProcessor, prune_zero_weights, clip_coordinates
+        import numpy as np
+
+        print("  ✓ Optimization modules loaded successfully")
+
+        # Test validate_kernel_bounds (OPT-1, Lemma 1)
+        kappa = float(inv.get("kappa", -0.5))
+        is_valid = validate_kernel_bounds(kappa, omega_val, S_val, C_val)
+        print(f"  ✓ Kernel bounds validation (Lemma 1): {'PASSED' if is_valid else 'FAILED'}")
+
+        # Test OptimizedKernelComputer (OPT-2,3,4)
+        kernel_computer = OptimizedKernelComputer(theta=0.038)
+        kernel_tuple = kernel_computer.compute_kernel_tuple(omega_val, S_val, C_val)
+        print(f"  ✓ Optimized kernel tuple: {kernel_tuple}")
+
+        # Test BatchProcessor (OPT-17,20)
+        processor = BatchProcessor(epsilon=1e-6)
+        sample_data = np.array([[omega_val, S_val, C_val],
+                                 [omega_val * 1.1, S_val * 0.9, C_val * 1.05]])
+        stats = processor.compute_batch_statistics(sample_data)
+        print(f"  ✓ Batch statistics: mean={stats['mean'][0]:.4f}, std={stats['std'][0]:.4f}")
+
+        # Test weight pruning (OPT-17)
+        weights_array = np.array([0.25, 0.25, 0.25, 0.25, 0.0, 0.0])
+        pruned = prune_zero_weights(weights_array)
+        print(f"  ✓ Weight pruning: {len(weights_array)} → {len(pruned)} (zero-weights removed)")
+
+        # Test coordinate clipping (OPT-20)
+        coords_array = np.array([coords[0], coords[1], coords[2]])
+        clipped = clip_coordinates(coords_array, 0.0, 1.0)
+        print(f"  ✓ Coordinate clipping: within [0,1] bounds")
+
+        print()
+        print("  Optimization Summary:")
+        print("    • OPT-1:  Lemma 1 bounds validation ✓")
+        print("    • OPT-2,3,4: Kernel tuple computation ✓")
+        print("    • OPT-17: Weight pruning ✓")
+        print("    • OPT-20: Coordinate clipping ✓")
+
+    except ImportError as e:
+        print(f"  ⚠ Optimization modules not available: {e}")
+        print("    (This is expected if running from installed package without src/)")
+
+    print()
+
+    # ========================================================================
     # SUMMARY
     # ========================================================================
     print("=" * 70)

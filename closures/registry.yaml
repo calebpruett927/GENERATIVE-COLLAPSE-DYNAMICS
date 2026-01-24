@@ -69,3 +69,28 @@ registry:
         description: "Attractor basin topology: B = -∇²Ψ_r / ||∇Ψ_r||"
         inputs: ["omega_series", "S_series", "C_series", "psi_r_series"]
         outputs: ["n_attractors_found", "attractor_locations", "basin_strengths", "regime", "convergence_rates", "basin_volumes"]
+    optimizations:
+      - name: "tau_R_optimized"
+        path: "src/umcp/tau_R_optimized.py"
+        description: "Optimized return time computation (OPT-7,8,9): Domain caching, Karp cycle detection, vectorized bounds"
+        optimizations: ["OPT-7", "OPT-8", "OPT-9"]
+        inputs: ["trajectory", "theta", "bounds"]
+        outputs: ["tau_R", "cycle_info", "bounds"]
+      - name: "kernel_optimized"
+        path: "src/umcp/kernel_optimized.py"
+        description: "Optimized kernel computations (OPT-1,2,3,4,12,14,15): Lemma-based bounds validation, vectorized invariants"
+        optimizations: ["OPT-1", "OPT-2", "OPT-3", "OPT-4", "OPT-12", "OPT-14", "OPT-15"]
+        inputs: ["kappa", "omega", "S", "C", "F", "IC"]
+        outputs: ["validated", "invariants"]
+      - name: "seam_optimized"
+        path: "src/umcp/seam_optimized.py"
+        description: "Optimized seam chain accumulation (OPT-10,11): ε-closure caching, incremental updates"
+        optimizations: ["OPT-10", "OPT-11"]
+        inputs: ["seam_chain", "epsilon"]
+        outputs: ["accumulated_seam", "graph"]
+      - name: "compute_utils"
+        path: "src/umcp/compute_utils.py"
+        description: "General computational utilities (OPT-17,20): Weight pruning, coordinate clipping, batch processing"
+        optimizations: ["OPT-17", "OPT-20"]
+        inputs: ["weights", "coordinates", "batch"]
+        outputs: ["pruned", "clipped", "statistics"]

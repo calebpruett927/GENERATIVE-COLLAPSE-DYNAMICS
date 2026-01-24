@@ -13,6 +13,7 @@ import pytest
 REPO_ROOT = Path(__file__).parent.parent
 
 
+@pytest.mark.slow
 class TestBenchmark:
     """Test the benchmark functionality."""
 

@@ -10,6 +10,9 @@ from pathlib import Path
 
 import pytest
 
+# All tests in this module use subprocess - mark module as slow
+pytestmark = pytest.mark.slow
+
 REPO_ROOT = Path(__file__).parent.parent
 
 

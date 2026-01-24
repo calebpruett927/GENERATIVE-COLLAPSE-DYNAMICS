@@ -2,6 +2,9 @@
 
 This adds coverage for src/umcp/cli.py which currently has 0% coverage.
 Focus on key commands: validate, version, list-closures, etc.
+
+Note: CLI tests use subprocess and are marked @pytest.mark.slow.
+Run `pytest -m "not slow"` for fast iteration during development.
 """
 
 from __future__ import annotations
@@ -17,6 +20,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 HELLO_WORLD_CASEPACK = REPO_ROOT / "casepacks" / "hello_world"
 
 
+@pytest.mark.slow
 class TestCLIBasics:
     """Test basic CLI invocation and help."""
 
@@ -43,6 +47,7 @@ class TestCLIBasics:
         assert result.returncode in [0, 1, 2]
 
 
+@pytest.mark.slow
 class TestValidateCommand:
     """Test the validate subcommand."""
 
@@ -115,6 +120,7 @@ class TestValidateCommand:
         assert result.returncode in [0, 1, 2]
 
 
+@pytest.mark.slow
 class TestCLIIntegration:
     """Integration tests for CLI workflows."""
 

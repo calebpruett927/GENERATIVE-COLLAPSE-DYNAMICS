@@ -24,9 +24,23 @@ Tier-2 Constraints:
     - Augments GCD with field memory quantification
 """
 
+import sys
+from pathlib import Path
 from typing import Any
 
 import numpy as np
+
+# Add src to path for optimization imports
+_src_path = Path(__file__).parent.parent.parent / "src"
+if str(_src_path) not in sys.path:
+    sys.path.insert(0, str(_src_path))
+
+# Import optimizations if available (OPT-17, OPT-20)
+try:
+    from umcp.compute_utils import BatchProcessor, prune_zero_weights
+    _HAS_BATCH_PROCESSOR = True
+except ImportError:
+    _HAS_BATCH_PROCESSOR = False
 
 
 def compute_field_strength_single(S: float, C: float, F: float) -> float:

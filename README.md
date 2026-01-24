@@ -329,7 +329,7 @@ Additional Features:
 - **[INFRASTRUCTURE_GEOMETRY.md](INFRASTRUCTURE_GEOMETRY.md)** — Three-layer geometric architecture (state space, projections, seam graph)
 - **[TIER_SYSTEM.md](TIER_SYSTEM.md)** — Tier-0/1/1.5/2 boundaries, freeze gates
 - **[RETURN_BASED_CANONIZATION.md](RETURN_BASED_CANONIZATION.md)** — How Tier-2 results become Tier-1 canon
-- **[KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md)** — Formal definitions (19 lemmas)
+- **[KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md)** — Formal definitions (34 lemmas)
 - **[PUBLICATION_INFRASTRUCTURE.md](PUBLICATION_INFRASTRUCTURE.md)** — Publication standards
 - **[CASEPACK_REFERENCE.md](CASEPACK_REFERENCE.md)** — CasePack structure
 
@@ -445,7 +445,7 @@ python scripts/update_integrity.py
 
 **Complete Protocol Infrastructure**:
 - ✅ 8 major protocol documents (~5,500 lines)
-- ✅ Formal specification (19 lemmas, kernel definitions)
+- ✅ Formal specification (34 lemmas, kernel definitions)
 - ✅ Publication standards (CasePack structure)
 - ✅ 344 tests passing (GCD + RCFT frameworks)
 - ✅ Production ready (manuscript-aligned)

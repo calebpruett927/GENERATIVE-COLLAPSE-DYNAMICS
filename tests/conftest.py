@@ -5,6 +5,7 @@ import json
 import math
 import re
 from dataclasses import dataclass
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
@@ -19,6 +20,50 @@ try:
     from jsonschema import Draft202012Validator  # type: ignore
 except Exception:  # pragma: no cover
     Draft202012Validator = None  # type: ignore
+
+
+# =============================================================================
+# Lemma-based Test Optimizations (from COMPUTATIONAL_OPTIMIZATIONS.md)
+# =============================================================================
+
+# OPT-CACHE: Session-scoped file content caching
+_FILE_CACHE: dict[str, Any] = {}
+_SCHEMA_CACHE: dict[str, Any] = {}
+
+
+@lru_cache(maxsize=64)
+def _cached_file_content(path_str: str) -> str:
+    """Cache file reads across test session."""
+    return Path(path_str).read_text(encoding="utf-8")
+
+
+@lru_cache(maxsize=32)
+def _cached_json_parse(path_str: str) -> dict[str, Any]:
+    """Parse JSON once per file path."""
+    return json.loads(_cached_file_content(path_str))
+
+
+@lru_cache(maxsize=32)
+def _cached_yaml_parse(path_str: str) -> dict[str, Any]:
+    """Parse YAML once per file path."""
+    if yaml is None:
+        raise ImportError("PyYAML required")
+    return yaml.safe_load(_cached_file_content(path_str))
+
+
+@lru_cache(maxsize=16)
+def _cached_schema_validator(schema_path_str: str) -> Any:
+    """Compile JSON schema validator once per schema."""
+    if Draft202012Validator is None:
+        raise ImportError("jsonschema required")
+    schema = _cached_json_parse(schema_path_str)
+    Draft202012Validator.check_schema(schema)
+    return Draft202012Validator(schema)
+
+
+# =============================================================================
+# Original Code Below
+# =============================================================================
 
 
 RE_CK = re.compile(r"^c_[0-9]+$")
@@ -63,6 +108,35 @@ def repo_paths() -> RepoPaths:
         hello_invariants_json=root / "casepacks" / "hello_world" / "expected" / "invariants.json",
         hello_ss1m_receipt_json=root / "casepacks" / "hello_world" / "expected" / "ss1m_receipt.json",
     )
+
+
+# =============================================================================
+# Session-scoped Cached Fixtures (Lemma-based optimization)
+# Uses lru_cache to avoid re-parsing files within session
+# =============================================================================
+
+@pytest.fixture(scope="session")
+def cached_canon_anchors(repo_paths: RepoPaths) -> dict[str, Any]:
+    """Load canon/anchors.yaml once per session (OPT-CACHE)."""
+    return _cached_yaml_parse(str(repo_paths.canon_anchors))
+
+
+@pytest.fixture(scope="session")
+def cached_contract(repo_paths: RepoPaths) -> dict[str, Any]:
+    """Load contract once per session (OPT-CACHE)."""
+    return _cached_yaml_parse(str(repo_paths.contract))
+
+
+@pytest.fixture(scope="session")
+def cached_validator_rules(repo_paths: RepoPaths) -> dict[str, Any]:
+    """Load validator_rules.yaml once per session (OPT-CACHE)."""
+    return _cached_yaml_parse(str(repo_paths.validator_rules))
+
+
+@pytest.fixture(scope="session")
+def cached_closures_registry(repo_paths: RepoPaths) -> dict[str, Any]:
+    """Load closures/registry.yaml once per session (OPT-CACHE)."""
+    return _cached_yaml_parse(str(repo_paths.closures_registry))
 
 
 def require_file(path: Path) -> None:

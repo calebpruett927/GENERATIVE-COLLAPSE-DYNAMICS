@@ -8,11 +8,26 @@ Formula: E = ω² + α·S + β·C²
 where α and β are configurable damping factors.
 """
 
+import sys
+from pathlib import Path
 from typing import Any
+
+# Add src to path for optimization imports
+_src_path = Path(__file__).parent.parent.parent / "src"
+if str(_src_path) not in sys.path:
+    sys.path.insert(0, str(_src_path))
+
+# Import optimizations if available (OPT-1, Lemma 1 validation)
+try:
+    from umcp.kernel_optimized import validate_kernel_bounds
+    _has_optimizations = True
+except ImportError:
+    _has_optimizations = False
+    validate_kernel_bounds = None  # type: ignore[assignment]
 
 
 def compute_energy_potential(
-    omega: float, S: float, C: float, alpha: float = 1.0, beta: float = 0.5, **kwargs
+    omega: float, S: float, C: float, alpha: float = 1.0, beta: float = 0.5, **kwargs: Any
 ) -> dict[str, Any]:
     """
     Compute energy potential from Tier-1 invariants.
@@ -48,6 +63,15 @@ def compute_energy_potential(
     - E_curvature penalizes non-uniformity
     - Energy regimes: Low (E<0.01), Medium (0.01≤E<0.05), High (E≥0.05)
     """
+    # OPT-1: Use optimized kernel validation if available (Lemma 1 bounds)
+    if _has_optimizations and validate_kernel_bounds is not None:
+        # Approximate κ and IC from ω for validation
+        import math
+        IC = max(1 - omega, 1e-10)
+        kappa = math.log(IC)
+        F = 1 - omega
+        validate_kernel_bounds(F, omega, C, IC, kappa)
+
     # Validate inputs
     if not (0 <= omega <= 1):
         raise ValueError(f"omega must be in [0,1], got {omega}")

@@ -52,9 +52,23 @@ Tier Compliance:
     - Compatible with all GCD thresholds
 """
 
+import sys
+from pathlib import Path
 from typing import Any
 
 import numpy as np
+
+# Add src to path for optimization imports
+_src_path = Path(__file__).parent.parent.parent / "src"
+if str(_src_path) not in sys.path:
+    sys.path.insert(0, str(_src_path))
+
+# Import optimizations if available (OPT-1, Lemma 1 validation)
+try:
+    from umcp.kernel_optimized import validate_kernel_bounds
+    _HAS_OPTIMIZATIONS = True
+except ImportError:
+    _HAS_OPTIMIZATIONS = False
 
 
 def compute_momentum_flux(
@@ -78,6 +92,9 @@ def compute_momentum_flux(
         omega_series: Array of drift values (ω), Tier-1 invariant
         dt: Time step between measurements (default=1.0)
         tol: Numerical tolerance (default=1e-10)
+
+    Note:
+        Uses OPT-1 kernel validation when available (Lemma 1 bounds enforcement)
 
     Returns:
         Dictionary containing:

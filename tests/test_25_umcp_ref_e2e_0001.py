@@ -184,6 +184,7 @@ def test_e2e_kernel_summary_in_receipt():
         print("⚠ IC consistency metadata not present (legacy format)")
 
 
+@pytest.mark.slow
 def test_e2e_baseline_validation():
     """Verify E2E case passes baseline validation."""
     result = subprocess.run(
@@ -219,6 +220,7 @@ def test_e2e_baseline_validation():
         pytest.fail(f"Failed to parse validation output: {e}\n{output}")
 
 
+@pytest.mark.slow
 def test_e2e_strict_validation():
     """Verify E2E case passes strict validation."""
     result = subprocess.run(
