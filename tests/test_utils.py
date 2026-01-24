@@ -19,7 +19,6 @@ from typing import Any
 
 import numpy as np
 
-
 # =============================================================================
 # Lemma 10: Homogeneity Fast-Path for Test Data
 # =============================================================================
@@ -47,10 +46,7 @@ def generate_homogeneous_state(value: float = 0.9, n_coords: int = 4) -> dict[st
     C = 0.0
 
     # Entropy for homogeneous: h(F) = -F*log(F) - (1-F)*log(1-F)
-    if 0 < value < 1:
-        entropy = -value * np.log(value) - (1 - value) * np.log(1 - value)
-    else:
-        entropy = 0.0
+    entropy = -value * np.log(value) - (1 - value) * np.log(1 - value) if 0 < value < 1 else 0.0
 
     return {
         "coordinates": [value] * n_coords,

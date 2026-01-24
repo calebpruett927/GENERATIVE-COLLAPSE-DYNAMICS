@@ -17,7 +17,6 @@ import time
 
 import numpy as np
 import pytest
-
 from umcp.kernel_optimized import (
     CoherenceAnalyzer,
     OptimizedKernelComputer,
@@ -337,7 +336,7 @@ class TestSeamChainAccumulator:
                 )
 
             # Should detect failure before reaching 30 seams
-            assert False, "Should have raised ValueError"
+            raise AssertionError("Should have raised ValueError")
 
         except ValueError as e:
             assert "non-returning dynamics" in str(e)
@@ -511,8 +510,8 @@ class TestReturnTimeOptimizations:
     @pytest.fixture
     def return_computer(self):
         """Load and instantiate the OptimizedReturnComputer."""
-        import sys
         import importlib.util
+        import sys
         from pathlib import Path
 
         # Use relative path from test file location

@@ -22,7 +22,6 @@ from typing import Literal
 
 import numpy as np
 
-
 # Typed return outcomes (KERNEL_SPECIFICATION.md Definition 10)
 INF_REC = float("inf")
 UNIDENTIFIABLE = float("nan")

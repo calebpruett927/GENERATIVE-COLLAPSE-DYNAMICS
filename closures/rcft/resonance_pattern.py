@@ -22,6 +22,7 @@ Tier-2 Constraints:
     - Respects all GCD mathematical identities and tolerances
 """
 
+import importlib.util
 import sys
 from pathlib import Path
 from typing import Any
@@ -33,13 +34,8 @@ _src_path = Path(__file__).parent.parent.parent / "src"
 if str(_src_path) not in sys.path:
     sys.path.insert(0, str(_src_path))
 
-# Import optimizations if available (OPT-17, OPT-20)
-try:
-    from umcp.compute_utils import BatchProcessor
-
-    _HAS_BATCH_PROCESSOR = True
-except ImportError:
-    _HAS_BATCH_PROCESSOR = False
+# Check if optimizations are available (OPT-17, OPT-20)
+_HAS_BATCH_PROCESSOR = importlib.util.find_spec("umcp.compute_utils") is not None
 
 
 def compute_resonance_pattern(field_series: np.ndarray, dt: float = 1.0, tol: float = 1e-6) -> dict[str, Any]:

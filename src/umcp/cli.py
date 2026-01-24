@@ -630,15 +630,14 @@ def _expected_regime_label(omega: float, F: float, S: float, C: float, regimes: 
     # OPT-1: Use optimized kernel validation if available (Lemma 1 bounds)
     if _HAS_KERNEL_OPTIMIZATIONS and validate_kernel_bounds is not None:
         # Approximate κ and IC from ω for validation
+        import contextlib
         import math
 
         IC = max(1 - omega, 1e-10)
         kappa = math.log(IC)
         # Silent validation - log on failure but don't raise
-        try:
+        with contextlib.suppress(ValueError, TypeError):
             validate_kernel_bounds(F=F, omega=omega, C=C, IC=IC, kappa=kappa)
-        except (ValueError, TypeError):
-            pass  # Continue with standard regime classification
 
     # Canonical expected label:
     # - Collapse if omega >= omega_gte
@@ -717,7 +716,7 @@ def _apply_semantic_rules_to_casepack(
             F = _dot_get(row, F_path)
             jp = f"/rows/{i}"
 
-            if not isinstance(omega, (int, float)) or not isinstance(F, (int, float)):
+            if not isinstance(omega, int | float) or not isinstance(F, int | float):
                 if on_missing != "skip":
                     sev = "ERROR" if on_missing == "error" else rule["severity"]
                     hint = f"Missing or non-numeric fields for identity check. Required: omega, F. Observed omega={omega!r}, F={F!r}."
@@ -771,7 +770,7 @@ def _apply_semantic_rules_to_casepack(
             kappa = _dot_get(row, kappa_path)
             jp = f"/rows/{i}"
 
-            if not isinstance(IC, (int, float)) or not isinstance(kappa, (int, float)):
+            if not isinstance(IC, int | float) or not isinstance(kappa, int | float):
                 if on_missing != "skip":
                     sev = "ERROR" if on_missing == "error" else rule["severity"]
                     hint = f"Missing or non-numeric fields for identity check. Required: IC, kappa. Observed IC={IC!r}, kappa={kappa!r}."
@@ -850,7 +849,7 @@ def _apply_semantic_rules_to_casepack(
             S = _dot_get(row, S_path)
             C = _dot_get(row, C_path)
 
-            if not all(isinstance(x, (int, float)) for x in [omega, F, S, C]):
+            if not all(isinstance(x, int | float) for x in [omega, F, S, C]):
                 if on_missing_regime != "skip":
                     sev = "ERROR" if on_missing_regime == "error" else rule["severity"]
                     hint = (
@@ -928,7 +927,7 @@ def _apply_semantic_rules_to_casepack(
             IC_min = _dot_get(row, icmin_path)
             crit = _dot_get(row, crit_path)
 
-            if (IC_min is None) or (not isinstance(IC_min, (int, float))) or (not math.isfinite(float(IC_min))):
+            if (IC_min is None) or (not isinstance(IC_min, int | float)) or (not math.isfinite(float(IC_min))):
                 if on_missing_icmin in {"warn", "error"} and crit is not None:
                     sev = "ERROR" if on_missing_icmin == "error" else rule["severity"]
                     hint = (

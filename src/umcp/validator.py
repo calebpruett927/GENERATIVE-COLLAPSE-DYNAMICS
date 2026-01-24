@@ -35,7 +35,7 @@ except ImportError:
     yaml = None
 
 # Import optimization utilities
-from .compute_utils import validate_inputs, clip_coordinates
+from .compute_utils import clip_coordinates
 from .kernel_optimized import validate_kernel_bounds
 
 
@@ -266,7 +266,7 @@ class RootFileValidator:
             kappa = float(row["kappa"])
             IC = float(row["IC"])
             C = float(row.get("C", 0.0))
-            S = float(row.get("S", 0.0))
+            float(row.get("S", 0.0))
 
             # Use optimized kernel validation (Lemma 1 bounds)
             bounds_valid = validate_kernel_bounds(F, omega, C, IC, kappa)

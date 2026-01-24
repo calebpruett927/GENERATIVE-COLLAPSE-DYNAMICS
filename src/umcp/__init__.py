@@ -46,8 +46,7 @@ VALIDATOR_NAME = "umcp-validator"
 DEFAULT_TZ = "America/Chicago"
 
 # Import utilities
-from . import umcp_extensions
-from . import compute_utils
+from . import compute_utils, umcp_extensions
 from .closures import ClosureLoader, get_closure_loader
 from .file_refs import UMCPFiles, get_umcp_files
 from .kernel_optimized import OptimizedKernelComputer

@@ -193,7 +193,7 @@ def coerce_scalar(v: Any) -> Any:
     """
     if v is None:
         return None
-    if isinstance(v, (int, float, bool)):
+    if isinstance(v, int | float | bool):
         return v
 
     s = str(v).strip()

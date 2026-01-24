@@ -6,7 +6,6 @@ import csv
 from pathlib import Path
 
 import pytest
-
 from umcp.closures import ClosureLoader, get_closure_loader
 from umcp.file_refs import UMCPFiles, get_umcp_files
 from umcp.validator import RootFileValidator, get_root_validator
@@ -175,7 +174,7 @@ class TestFileRefsEdgeCases:
         if hasattr(files, "load_sha256"):
             try:
                 checksums = files.load_sha256()
-                assert isinstance(checksums, (str, dict, list))
+                assert isinstance(checksums, str | dict | list)
             except FileNotFoundError:
                 pass  # Expected if file doesn't exist
 

@@ -105,7 +105,7 @@ def test_W201_F_equals_one_minus_omega(repo_paths: RepoPaths) -> None:
         omega = dot_get(row, omega_path)
         F = dot_get(row, F_path)
 
-        if omega is None or F is None or not isinstance(omega, (int, float)) or not isinstance(F, (int, float)):
+        if omega is None or F is None or not isinstance(omega, int | float) or not isinstance(F, int | float):
             failures.append((i, "missing/non-numeric", omega, F))
             continue
 
@@ -148,7 +148,7 @@ def test_W202_IC_equals_exp_kappa(repo_paths: RepoPaths) -> None:
         IC = dot_get(row, IC_path)
         kappa = dot_get(row, kappa_path)
 
-        if IC is None or kappa is None or not isinstance(IC, (int, float)) or not isinstance(kappa, (int, float)):
+        if IC is None or kappa is None or not isinstance(IC, int | float) or not isinstance(kappa, int | float):
             failures.append((i, "missing/non-numeric", IC, kappa))
             continue
 
@@ -211,7 +211,7 @@ def test_W301_regime_label_consistency_with_canon(repo_paths: RepoPaths) -> None
         S = dot_get(row, S_path)
         C = dot_get(row, C_path)
 
-        if not all(isinstance(x, (int, float)) for x in (omega, F, S, C)):
+        if not all(isinstance(x, int | float) for x in (omega, F, S, C)):
             failures.append(
                 (
                     i,
@@ -250,7 +250,7 @@ def test_W301_regime_label_consistency_with_canon(repo_paths: RepoPaths) -> None
         IC_min = dot_get(row, icmin_path)
         crit = dot_get(row, crit_path)
 
-        if IC_min is None or not isinstance(IC_min, (int, float)) or not math.isfinite(float(IC_min)):
+        if IC_min is None or not isinstance(IC_min, int | float) or not math.isfinite(float(IC_min)):
             if on_missing_icmin != "skip" and crit is not None:
                 failures.append(
                     (

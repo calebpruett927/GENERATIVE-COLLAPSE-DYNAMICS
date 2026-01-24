@@ -534,7 +534,7 @@ def test_closure_get_closure_path():
         # Try to get a known closure
         try:
             path = loader.get_closure_path("gamma")  # type: ignore[attr-defined]
-            assert isinstance(path, (Path, type(None)))
+            assert isinstance(path, Path | type(None))
         except (KeyError, FileNotFoundError):
             pass  # Expected if closure doesn't exist
 

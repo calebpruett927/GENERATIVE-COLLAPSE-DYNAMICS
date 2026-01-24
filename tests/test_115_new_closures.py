@@ -234,7 +234,7 @@ class TestAttractorBasin:
 
         conv_rates = result["convergence_rates"]
         assert len(conv_rates) == result["n_attractors_found"]
-        assert all(isinstance(r, (int, float)) for r in conv_rates)
+        assert all(isinstance(r, int | float) for r in conv_rates)
 
     def test_trajectory_classification(self):
         """Trajectory classification should assign each point to an attractor."""

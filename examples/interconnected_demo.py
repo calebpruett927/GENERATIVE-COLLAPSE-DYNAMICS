@@ -198,10 +198,9 @@ def main():
     print("-" * 70)
 
     try:
-        from umcp.kernel_optimized import OptimizedKernelComputer, validate_kernel_bounds
-        from umcp.seam_optimized import SeamChainAccumulator
-        from umcp.compute_utils import BatchProcessor, prune_zero_weights, clip_coordinates
         import numpy as np
+        from umcp.compute_utils import BatchProcessor, clip_coordinates, prune_zero_weights
+        from umcp.kernel_optimized import OptimizedKernelComputer, validate_kernel_bounds
 
         print("  ✓ Optimization modules loaded successfully")
 
@@ -228,8 +227,8 @@ def main():
 
         # Test coordinate clipping (OPT-20)
         coords_array = np.array([coords[0], coords[1], coords[2]])
-        clipped = clip_coordinates(coords_array, 0.0, 1.0)
-        print(f"  ✓ Coordinate clipping: within [0,1] bounds")
+        clip_coordinates(coords_array, 0.0, 1.0)
+        print("  ✓ Coordinate clipping: within [0,1] bounds")
 
         print()
         print("  Optimization Summary:")

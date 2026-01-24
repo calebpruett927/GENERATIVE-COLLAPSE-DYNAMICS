@@ -123,10 +123,7 @@ def clip_coordinates(
     clip_count = int(np.sum(perturbations > 0))
     max_perturbation = float(np.max(perturbations)) if clip_count > 0 else 0.0
 
-    if w is not None:
-        clip_perturbation = float(np.sum(w * perturbations))
-    else:
-        clip_perturbation = float(np.sum(perturbations))
+    clip_perturbation = float(np.sum(w * perturbations)) if w is not None else float(np.sum(perturbations))
 
     oor_indices = list(np.where(perturbations > 0)[0])
 
@@ -233,14 +230,14 @@ def batch_validate_outputs(
 
     # Vectorized range checks
     valid = (
-        (0 <= F)
+        (F >= 0)
         & (F <= 1)
-        & (0 <= omega)
+        & (omega >= 0)
         & (omega <= 1)
-        & (0 <= C)
+        & (C >= 0)
         & (C <= 1)
         & (epsilon <= IC)
-        & (IC <= 1 - epsilon)
+        & (1 - epsilon >= IC)
         & np.isfinite(kappa)
     )
 

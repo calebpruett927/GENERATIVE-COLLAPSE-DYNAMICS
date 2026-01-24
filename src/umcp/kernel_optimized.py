@@ -103,12 +103,8 @@ class OptimizedKernelComputer:
         # OPT-1: Early homogeneity detection (Lemma 10, Lemma 4, Lemma 15)
         is_homogeneous, c_first = self._check_homogeneity(c)
 
-        if is_homogeneous:
-            # Fast path: Homogeneous coordinates
-            outputs = self._compute_homogeneous(c_first, w)
-        else:
-            # Full path: Heterogeneous coordinates
-            outputs = self._compute_heterogeneous(c, w)
+        # Fast path: Homogeneous coordinates, Full path: Heterogeneous coordinates
+        outputs = self._compute_homogeneous(c_first, w) if is_homogeneous else self._compute_heterogeneous(c, w)
 
         # OPT-2: Range validation (Lemma 1)
         if validate:
@@ -229,7 +225,7 @@ class OptimizedKernelComputer:
         Definition 6 from KERNEL_SPECIFICATION.md.
         """
         entropy = 0.0
-        for ci, wi in zip(c, w):
+        for ci, wi in zip(c, w, strict=False):
             if wi > 0:  # Skip zero-weight coordinates (OPT-17)
                 entropy += wi * self._bernoulli_entropy(ci)
         return entropy
