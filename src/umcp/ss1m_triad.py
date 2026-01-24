@@ -180,7 +180,7 @@ def encode_base32(value: int, length: int = 1) -> str:
     if value == 0:
         return CROCKFORD_ALPHABET[0] * length
 
-    result = []
+    result: list[str] = []
     while value > 0:
         result.append(CROCKFORD_ALPHABET[value % 32])
         value //= 32

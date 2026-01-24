@@ -110,7 +110,7 @@ class TestCostClosures:
         p = 3
         eps = 1e-8
         expected = omega**p / (1 - omega + eps)
-        assert gamma_omega(omega) == pytest.approx(expected)
+        np.testing.assert_allclose(gamma_omega(omega), expected)
 
     def test_gamma_omega_zero(self) -> None:
         """Γ(0) = 0."""
@@ -146,7 +146,7 @@ class TestBudgetCalculations:
         D_C = 0.05
         expected = R * tau_R - (D_omega + D_C)
         result = compute_budget_delta_kappa(R, tau_R, D_omega, D_C)
-        assert result == pytest.approx(expected)
+        np.testing.assert_allclose(result, expected)
 
     def test_seam_residual(self) -> None:
         """s = Δκ_budget - Δκ_ledger."""
@@ -154,7 +154,7 @@ class TestBudgetCalculations:
         delta_ledger = 0.48
         expected = delta_budget - delta_ledger
         result = compute_seam_residual(delta_budget, delta_ledger)
-        assert result == pytest.approx(expected)
+        np.testing.assert_allclose(result, expected)
 
 
 class TestSeamPassConditions:
@@ -219,7 +219,7 @@ class TestEquatorClosure:
         C = 0.1
         F = 1.00 - 0.75 * omega - 0.55 * C
         phi = equator_phi(omega, F, C)
-        assert phi == pytest.approx(0.0)
+        np.testing.assert_allclose(phi, 0.0, atol=1e-10)
 
     def test_equator_above(self) -> None:
         """Φ > 0 above equator (high fidelity)."""
@@ -286,21 +286,21 @@ class TestKernelComputation:
         w = np.array([0.5, 0.3, 0.2])
         kernel = compute_kernel(c, w, tau_R=1.0)
         expected_F = 0.5 * 0.9 + 0.3 * 0.8 + 0.2 * 0.7
-        assert pytest.approx(expected_F) == kernel.F
+        np.testing.assert_allclose(kernel.F, expected_F)
 
     def test_kernel_drift(self) -> None:
         """ω = 1 - F."""
         c = np.array([0.9, 0.8, 0.7])
         w = np.array([0.5, 0.3, 0.2])
         kernel = compute_kernel(c, w, tau_R=1.0)
-        assert kernel.omega == pytest.approx(1 - kernel.F)
+        np.testing.assert_allclose(kernel.omega, 1 - kernel.F)
 
     def test_kernel_integrity(self) -> None:
         """IC = exp(κ)."""
         c = np.array([0.9, 0.8, 0.7])
         w = np.array([0.5, 0.3, 0.2])
         kernel = compute_kernel(c, w, tau_R=1.0)
-        assert pytest.approx(np.exp(kernel.kappa)) == kernel.IC
+        np.testing.assert_allclose(kernel.IC, np.exp(kernel.kappa))
 
     def test_kernel_entropy_bounds(self) -> None:
         """0 ≤ S ≤ ln(2) for binary entropy."""

@@ -294,9 +294,9 @@ class TestMathematicalProperties:
         w = np.array([0.5, 0.5])
 
         # Independent
-        V_ind = np.array([[0.01, 0], [0, 0.01]])
+        V_ind = np.array([[0.01, 0.0], [0.0, 0.01]], dtype=np.float64)
         # Positively correlated
-        V_corr = np.array([[0.01, 0.008], [0.008, 0.01]])
+        V_corr = np.array([[0.01, 0.008], [0.008, 0.01]], dtype=np.float64)
 
         bounds_ind = propagate_uncertainty(c, w, V_ind)
         bounds_corr = propagate_uncertainty(c, w, V_corr)
