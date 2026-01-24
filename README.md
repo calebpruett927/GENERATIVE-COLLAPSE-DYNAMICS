@@ -4,7 +4,7 @@
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Tests: 344 passing](https://img.shields.io/badge/tests-344%20passing-brightgreen.svg)](tests/)
-[![Version: 1.4.7](https://img.shields.io/badge/version-1.4.7-blue.svg)](CHANGELOG.md)
+[![Version: 1.4.8](https://img.shields.io/badge/version-1.4.8-blue.svg)](CHANGELOG.md)
 
 **UMCP transforms computational experiments into auditable artifacts** based on a foundational principle:
 
@@ -376,7 +376,7 @@ UMCP-Metadata-Runnable-Code/
 ├── ledger/                # Validation log (continuous append)
 ├── integrity/             # Integrity metadata (SHA256)
 ├── docs/                  # Documentation
-└── pyproject.toml         # Project configuration (v1.4.0)
+└── pyproject.toml         # Project configuration (v1.4.8)
 ```
 
 ---
@@ -441,14 +441,16 @@ python scripts/update_integrity.py
 
 ---
 
-## 📊 What's New in v1.4.0
+## 📊 What's New in v1.4.8
 
 **Complete Protocol Infrastructure**:
 - ✅ 8 major protocol documents (~5,500 lines)
 - ✅ Formal specification (34 lemmas, kernel definitions)
 - ✅ Publication standards (CasePack structure)
-- ✅ 344 tests passing (GCD + RCFT frameworks)
+- ✅ 463 tests passing (GCD + RCFT frameworks)
 - ✅ Production ready (manuscript-aligned)
+- ✅ Computational optimizations (OPT-1 through OPT-21)
+- ✅ ~4x test speedup with `pytest -m "not slow"`
 
 📖 **See**: [CHANGELOG.md](CHANGELOG.md) | [IMMUTABLE_RELEASE.md](IMMUTABLE_RELEASE.md)
 
@@ -518,9 +520,9 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 **Framework**: UMCP (Universal Measurement Contract Protocol)  
 **Author**: Clement Paulus  
-**Version**: 1.4.0  
-**Release**: January 23, 2026  
-**Tests**: 344 passing  
+**Version**: 1.4.8  
+**Release**: January 24, 2026  
+**Tests**: 463 passing  
 **Integrity**: SHA256 verified  
 
 **Frameworks**:

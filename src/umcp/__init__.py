@@ -40,7 +40,7 @@ __all__ = [
     "compute_utils",
 ]
 
-__version__ = "1.4.7"
+__version__ = "1.4.8"
 
 VALIDATOR_NAME = "umcp-validator"
 DEFAULT_TZ = "America/Chicago"

@@ -5,6 +5,80 @@ All notable changes to the UMCP validator and repository will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.8] - 2026-01-24
+
+### Added - Computational Optimizations and Test Speed Improvements
+
+**Performance Enhancement**: 21 computational optimizations based on 34 formal lemmas, plus ~4x test speed improvement.
+
+#### New Optimization Modules
+
+- **kernel_optimized.py**: OPT-1,2,3,4,12,14,15
+  - Homogeneity detection via Lemma 10 (40% speedup on uniform data)
+  - Log-space κ computation for numerical stability
+  - Lemma 1 bounds validation
+  - AM-GM gap analysis for heterogeneity quantification
+
+- **seam_optimized.py**: OPT-10,11
+  - ε-closure caching for seam chain accumulation
+  - Incremental seam updates
+
+- **compute_utils.py**: OPT-17,20
+  - BatchProcessor for trajectory preprocessing
+  - Weight pruning (zero-weight elimination)
+  - Coordinate clipping (vectorized bounds enforcement)
+
+- **tau_R_optimized.py**: OPT-7,8,9
+  - Domain membership caching
+  - Karp's algorithm for cycle detection
+  - Vectorized return bounds
+
+#### Formal Lemmas (20-34) in KERNEL_SPECIFICATION.md
+
+- Lemma 20: Component-wise bounds on κ
+- Lemma 21-23: Lipschitz continuity for F, ω, κ
+- Lemma 24-25: S monotonicity and bounds
+- Lemma 26-27: AM-GM gap properties
+- Lemma 28-30: C convergence and extremal bounds
+- Lemma 31-34: Weighted power mean generalizations
+
+#### GCD/RCFT Closure Integrations
+
+- entropic_collapse.py, generative_flux.py, energy_potential.py: validate_kernel_bounds()
+- field_resonance.py, momentum_flux.py: Lemma 1 compliance
+- attractor_basin.py, recursive_field.py, resonance_pattern.py, fractal_dimension.py: BatchProcessor
+
+#### Test Speed Improvements (~4x)
+
+- Added `@pytest.mark.slow` to 20 subprocess-heavy CLI tests
+- Session-scoped caching in conftest.py for file I/O
+- tests/test_utils.py: Lemma-based test data generators
+- Run `pytest -m "not slow"` for ~11s vs ~43s full suite
+
+#### Documentation
+
+- COMPUTATIONAL_OPTIMIZATIONS.md: 21 optimizations with complexity analysis
+- OPTIMIZATION_CROSS_REFERENCE.md: Integration roadmap
+- OPTIMIZATION_INTEGRATION_GUIDE.md: Step-by-step integration guide
+
+### Changed
+
+- closures/registry.yaml: Added optimizations section under extensions
+- src/umcp/__init__.py: Exported optimization modules
+- validator.py: Integrated clip_coordinates and validate_kernel_bounds
+- cli.py: Added kernel validation in regime classification
+
+### Fixed
+
+- All 7 linting errors resolved (constant redefinition, unbound variables)
+
+### Stats
+
+- **Tests**: 463 passing (up from 436)
+- **New test file**: test_computational_optimizations.py (27 tests)
+
+---
+
 ## [1.4.7] - 2026-01-24
 
 ### Fixed - CI/CD and Code Quality
