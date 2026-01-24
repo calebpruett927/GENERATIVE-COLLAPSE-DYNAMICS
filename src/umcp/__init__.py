@@ -38,19 +38,37 @@ __all__ = [
     "OptimizedKernelComputer",
     "SeamChainAccumulator",
     "compute_utils",
+    # Mathematical architecture (MATHEMATICAL_ARCHITECTURE.md)
+    "ss1m_triad",
+    "uncertainty",
+    "EditionTriad",
+    "compute_triad",
+    "verify_triad",
+    "triad_to_eid12",
+    "KernelGradients",
+    "UncertaintyBounds",
+    "compute_kernel_gradients",
+    "propagate_uncertainty",
 ]
 
-__version__ = "1.4.8"
+__version__ = "1.4.9"
 
 VALIDATOR_NAME = "umcp-validator"
 DEFAULT_TZ = "America/Chicago"
 
 # Import utilities
-from . import compute_utils, umcp_extensions
+from . import compute_utils, ss1m_triad, umcp_extensions, uncertainty
 from .closures import ClosureLoader, get_closure_loader
 from .file_refs import UMCPFiles, get_umcp_files
 from .kernel_optimized import OptimizedKernelComputer
 from .seam_optimized import SeamChainAccumulator
+from .ss1m_triad import EditionTriad, compute_triad, triad_to_eid12, verify_triad
+from .uncertainty import (
+    KernelGradients,
+    UncertaintyBounds,
+    compute_kernel_gradients,
+    propagate_uncertainty,
+)
 from .validator import RootFileValidator, get_root_validator
 
 
