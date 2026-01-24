@@ -18,6 +18,18 @@ from pathlib import Path
 
 import pytest
 
+# Check if fastapi is available (optional dependency for api_umcp tests)
+try:
+    import fastapi  # noqa: F401
+    FASTAPI_AVAILABLE = True
+except ImportError:
+    FASTAPI_AVAILABLE = False
+
+# Skip decorator for api_umcp tests
+skip_if_no_fastapi = pytest.mark.skipif(
+    not FASTAPI_AVAILABLE, reason="fastapi not installed (optional dependency)"
+)
+
 # =============================================================================
 # __main__.py tests (0% → 100%)
 # =============================================================================
@@ -69,9 +81,11 @@ def test_minimal_cli_as_script():
 
 # =============================================================================
 # api_umcp.py tests (0% → 100%)
+# Note: These tests are skipped when fastapi is not installed
 # =============================================================================
 
 
+@skip_if_no_fastapi
 def test_api_get_repo_root():
     """Test get_repo_root function."""
     from umcp.api_umcp import get_repo_root
@@ -81,6 +95,7 @@ def test_api_get_repo_root():
     assert root.exists()
 
 
+@skip_if_no_fastapi
 def test_api_classify_regime_positive():
     """Test regime classification with all positive values."""
     from umcp.api_umcp import classify_regime
@@ -89,6 +104,7 @@ def test_api_classify_regime_positive():
     assert result == "regime-positive"
 
 
+@skip_if_no_fastapi
 def test_api_classify_regime_negative():
     """Test regime classification with negative values."""
     from umcp.api_umcp import classify_regime
@@ -97,6 +113,7 @@ def test_api_classify_regime_negative():
     assert result == "regime-negative"
 
 
+@skip_if_no_fastapi
 def test_api_classify_regime_unknown():
     """Test regime classification with zero values."""
     from umcp.api_umcp import classify_regime
@@ -105,6 +122,7 @@ def test_api_classify_regime_unknown():
     assert result == "regime-unknown"
 
 
+@skip_if_no_fastapi
 def test_api_get_current_time():
     """Test get_current_time function."""
     from umcp.api_umcp import get_current_time
@@ -114,6 +132,7 @@ def test_api_get_current_time():
     assert "T" in time_str  # ISO format
 
 
+@skip_if_no_fastapi
 def test_api_validate_api_key():
     """Test API key validation functions exist."""
     from umcp.api_umcp import validate_api_key, verify_api_key
