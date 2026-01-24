@@ -6,44 +6,38 @@ UMCP is a production-grade system for creating, validating, and sharing reproduc
 ## Architecture & Key Components
 
 ### Core System (No External Dependencies Beyond NumPy/SciPy/YAML/JSON)
-- **Core Python Files**: `umcp_autoformat.py`, `umcp_extensions.py`, core validation engine
+- **Core Python Files**: `src/umcp/validator.py`, `src/umcp/cli.py`, `src/umcp/umcp_extensions.py`
 - **Contracts**: Versioned YAML files in `contracts/` (e.g., `UMA.INTSTACK.v1.yaml`).
 - **Closures**: Explicit closure sets in `closures/` with registry in `closures/registry.yaml`.
 - **Casepacks**: Reference implementations and manifests in `casepacks/`.
 - **Ledger**: Continuous append log in `ledger/return_log.csv`.
 - **Schemas**: JSON schema definitions for contracts and closures in `schemas/`.
-- **Tests**: Comprehensive suite in `tests/` (pytest, 325+ tests).
+- **Tests**: Comprehensive suite in `tests/` (pytest, 344+ tests).
 - **Validation Engine**: Pure Python validation with mathematical contract enforcement.
 
-### Communication Extensions (Optional - Not Required for Core Validation)
-- **REST API**: FastAPI server (`api_umcp.py`) for remote validation and ledger access
-  - Install with: `pip install umcp[api]`
-  - Run with: `umcp-api` or `uvicorn api_umcp:app --reload`
-  - Endpoints: `/health`, `/latest-receipt`, `/ledger`, `/stats`, `/regime`
-- **Visualization**: Streamlit dashboard for interactive exploration
-  - Install with: `pip install umcp[viz]`
-  - Run with: `streamlit run umcp-ext/streamlit_viz.py`
-- **All Communications**: Install with `pip install umcp[communications]`
+### Communication Extensions (Optional - Planned, Not Yet Implemented)
+- **REST API**: 🚧 Planned - FastAPI server for remote validation and ledger access
+  - Would install with: `pip install umcp[api]`
+  - Stub code exists in `src/umcp/api_umcp.py`
+- **Visualization**: 🚧 Planned - Streamlit dashboard for interactive exploration
+  - Would install with: `pip install umcp[viz]`
+- **All Communications**: Would install with `pip install umcp[communications]`
 
 ### Extensions Directory (Auto-Discovery Plugins)
-- **Extensions**: Auto-discovery plugins in `umcp-ext/`
+- **Extensions**: `src/umcp/umcp_extensions.py` provides extension registry
 - **Extensions Command**: `umcp-ext list` to enumerate available plugins
 
 ## Developer Workflows
 
 ### Core Validation (No Extensions Required)
 - **Validation**: `umcp validate` or `python scripts/update_integrity.py` (run after changes to core files).
-- **Formatting**: `umcp-format --all` to auto-format contracts.
 - **Testing**: `pytest`, `pytest -v`, `pytest -k "gcd"`, `pytest --cov`.
 - **CI/CD**: Automated via GitHub Actions (`.github/workflows/validate.yml`).
-- **Code Style**: Enforced with `ruff` and `black`.
+- **Code Style**: Enforced with `ruff`.
 
-### Optional Communication Extensions
-- **API Server**: Requires `pip install umcp[api]` first
-  - `umcp-api` or `uvicorn api_umcp:app --reload` (port 8000)
-  - Used for: Remote validation, ledger queries, health checks
-- **Visualization**: Requires `pip install umcp[viz]` first
-  - Used for: Interactive exploration, receipt visualization, trend analysis
+### Optional Communication Extensions (🚧 Planned)
+- **API Server**: 🚧 Not yet implemented
+- **Visualization**: 🚧 Not yet implemented
 - **Extensions**: `umcp-ext list` to enumerate plugins
 
 ## Installation Options
@@ -97,13 +91,12 @@ pip install umcp[all]
 ## Example Workflow (Core Only - No Extensions)
 1. Prepare data (`raw_measurements.csv`).
 2. Validate with `umcp validate`.
-3. Format contracts with `umcp-format --all`.
-4. Run tests with `pytest`.
-5. Update integrity with `python scripts/update_integrity.py`.
+3. Run tests with `pytest`.
+4. Update integrity with `python scripts/update_integrity.py`.
 
-## Example Workflow (With API Communication Extension)
+## Example Workflow (With API Communication Extension - 🚧 Planned)
 1. Install API extension: `pip install umcp[api]`
-2. Start API server: `umcp-api`
+2. Start API server: `uvicorn umcp.api_umcp:app --reload`
 3. Query remotely: `curl http://localhost:8000/health`
 
 ---

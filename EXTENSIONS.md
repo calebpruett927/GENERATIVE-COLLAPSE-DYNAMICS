@@ -48,25 +48,20 @@ timestamp,run_status,delta_kappa,stiffness,omega,curvature
 2026-01-19T00:17:49Z,CONFORMANT,,0.000000,0.000000,0.000000
 ```
 
-### 2. Contract Auto-Formatter ✅
+### 2. Contract Auto-Formatter (🚧 Planned)
 
-**Status**: ✅ Fully implemented and active
-**Type**: Core feature (no installation needed)
+**Status**: 🚧 Not yet implemented
+**Type**: Planned core feature
 
-Formats and validates YAML contract files for consistency.
-
-**Features**:
+**Planned Features**:
 - Consistent YAML formatting with standardized indentation
 - Contract schema validation against JSON schemas
 - Automatic field ordering per UMCP conventions
 
-**Usage**:
+**Planned Usage**:
 ```bash
 umcp-format --all
 ```
-
-**Files**:
-- [src/umcp/cli.py](src/umcp/cli.py) - `format` command implementation
 
 ---
 

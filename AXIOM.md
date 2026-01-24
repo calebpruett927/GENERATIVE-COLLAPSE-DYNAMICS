@@ -237,16 +237,16 @@ This has profound implications:
 
 ### Test Suite
 
-The UMCP test suite includes 233 tests validating return behavior:
+The UMCP test suite includes 344+ tests validating return behavior:
 
 ```bash
 # Run all tests
 pytest
 
 # Run axiom-specific tests
-pytest tests/test_010_canon.py::test_no_return_no_credit
-pytest tests/test_100_gcd_axioms.py::test_collapse_is_generative
-pytest tests/test_110_rcft_canon.py::test_recursive_memory
+pytest tests/test_10_canon_contract_closures_validate.py
+pytest tests/test_100_gcd_canon.py::test_gcd_axioms
+pytest tests/test_110_rcft_canon.py
 ```
 
 ### Benchmark

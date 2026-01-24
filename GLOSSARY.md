@@ -51,7 +51,7 @@ Each entry contains:
 
 **Where defined:**
 - [canon/anchors.yaml](canon/anchors.yaml) (Tier-0 interface)
-- [docs/interconnected_architecture.md](docs/interconnected_architecture.md#observables)
+- [docs/interconnected_architecture.md](docs/interconnected_architecture.md#2-observables--trace--invariants)
 
 **Where used:**
 - All CasePacks: `observables.yaml`
@@ -224,7 +224,7 @@ See [canon/gcd_anchors.yaml](canon/gcd_anchors.yaml) for complete machine-readab
 
 **Where defined:**
 - [canon/gcd_anchors.yaml](canon/gcd_anchors.yaml) (reserved_symbols.omega)
-- [docs/rcft_theory.md](docs/rcft_theory.md#gcd-foundation)
+- [docs/rcft_theory.md](docs/rcft_theory.md#theoretical-foundation)
 
 **Where used:**
 - Regime gates: Stable (ω < 0.038), Collapse (ω ≥ 0.30)
@@ -453,7 +453,7 @@ See [canon/gcd_anchors.yaml](canon/gcd_anchors.yaml) for complete machine-readab
 
 **Where defined:**
 - [contracts/GCD.INTSTACK.v1.yaml](contracts/GCD.INTSTACK.v1.yaml) (seam_accounting)
-- [docs/interconnected_architecture.md](docs/interconnected_architecture.md#seam-weld-calculus)
+- [docs/interconnected_architecture.md](docs/interconnected_architecture.md#component-hierarchy)
 
 **Where used:**
 - All continuity claims
@@ -831,7 +831,7 @@ See [canon/rcft_anchors.yaml](canon/rcft_anchors.yaml) for complete machine-read
 
 **Where defined:**
 - [AXIOM.md](AXIOM.md#diagnostic-vs-gate)
-- [docs/interconnected_architecture.md](docs/interconnected_architecture.md#gate-diagnostic-boundary)
+- [docs/interconnected_architecture.md](docs/interconnected_architecture.md#4-invariants--regimes)
 
 **Where used:**
 - All reporting

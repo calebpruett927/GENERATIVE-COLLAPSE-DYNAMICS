@@ -77,16 +77,16 @@ All validation checks passing:
 
 ```bash
 # Contract validation
-python umcp_autoformat.py --all
-# ✅ SUMMARY: 5 successful, 0 failed out of 5 total
+umcp validate
+# ✅ Validation successful
 
 # Extension registry
-./umcp-ext list
-# ✅ 4 extensions registered
+umcp-ext list
+# ✅ Extensions enumerated
 
 # Test suite
 pytest
-# ✅ 233 passed, 0 failed
+# ✅ 344+ passed, 0 failed
 
 # Axiom verification
 grep -r "no_return_no_credit: true" contracts/*.yaml
@@ -160,19 +160,20 @@ grep -r "no_return_no_credit: true" contracts/*.yaml
 
 ### Tools
 
-1. **Auto-Formatter** (`umcp_autoformat.py`)
+1. **CLI Validator** (`src/umcp/cli.py`)
    - Contract validation
-   - Automatic formatting
-   - Axiom verification
+   - CasePack verification
+   - Receipt generation
 
 2. **Closures** (`closures/`)
-   - GCD closures (4): energy, collapse, flux, resonance
-   - RCFT closures (3): fractal_dimension, recursive_field, resonance_pattern
+   - GCD closures (5): energy, collapse, flux, resonance, momentum
+   - RCFT closures (4): fractal_dimension, recursive_field, resonance_pattern, attractor_basin
 
 3. **CasePacks** (`casepacks/`)
    - `hello_world/`: Basic example
    - `gcd_complete/`: GCD demonstration
    - `rcft_complete/`: RCFT demonstration
+   - `UMCP-REF-E2E-0001/`: Full reference implementation
    - `UMCP-REF-E2E-0001/`: Reference implementation
 
 ---

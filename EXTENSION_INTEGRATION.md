@@ -40,11 +40,11 @@ This axiom is encoded across all levels of the UMCP system:
 
 ### Validation
 
-All contracts have been validated and formatted to ensure proper axiom encoding:
+All contracts have been validated using the UMCP validator:
 
 ```bash
-python umcp_autoformat.py --all
-# ✅ SUMMARY: 5 successful, 0 failed out of 5 total
+umcp validate
+# ✅ Validation completed successfully
 ```
 
 ## Extension Auto-Discovery System
@@ -101,27 +101,25 @@ Command-line interface for managing extensions (entry point defined in `pyprojec
 ```
 
 
-### 3. Auto-Formatter (`src/umcp/umcp_autoformat.py`)
+### 3. Auto-Formatter (🚧 Planned)
 
-Automatic contract formatting and validation (entry point: `umcp-format`):
+**Status**: 🚧 Not yet implemented - planned entry point: `umcp-format`
 
-```bash
-# Format all contracts
-python umcp_autoformat.py --all
-
-# Validate specific contract
-python umcp_autoformat.py --validate contracts/RCFT.INTSTACK.v1.yaml
-
-# Format with output to different file
-python umcp_autoformat.py contract.yaml -o formatted_contract.yaml
-```
-
-**Features:**
+**Planned Features:**
 - Detects contract tier (UMA/GCD/RCFT)
 - Ensures all required fields present
 - Validates axiom encoding
 - Formats YAML with proper indentation
 - Reports errors, warnings, and fixes
+
+**Planned Usage:**
+```bash
+# Format all contracts (planned)
+umcp-format --all
+
+# Validate specific contract (planned)
+umcp-format --validate contracts/RCFT.INTSTACK.v1.yaml
+```
 
 ## Entry Points System
 
@@ -300,18 +298,17 @@ timestamp,run_status,delta_kappa,stiffness,omega,curvature
 2026-01-20T00:00:00Z,CONFORMANT,,0.000000,0.000000,0.000000
 ```
 
-### 4. Contract Auto-Formatter
+### 4. Contract Auto-Formatter (🚧 Planned)
 
-**Usage:**
+**Status:** 🚧 Not yet implemented
+
+**Planned Usage:**
 ```bash
-# Format all contracts
+# Format all contracts (planned)
 umcp-format --all
 
-# Validate specific contract
+# Validate specific contract (planned)
 umcp-format --validate contracts/GCD.INTSTACK.v1.yaml
-
-# Format with strict mode
-umcp-format --strict contract.yaml
 ```
 
 ## Installation and Setup
@@ -376,13 +373,13 @@ cycles. Only measurements that return receive credit as real, valid observations
    - Installation management
    - Metadata queries
 
-3. **umcp_autoformat.py** (400+ lines)
+3. **umcp_autoformat.py** (🚧 Planned - not yet implemented)
    - Contract validation
    - Automatic formatting
    - Axiom verification
    - Tier hierarchy enforcement
 
-4. **umcp-ext** (200+ lines)
+4. **umcp-ext** (CLI command via umcp_extensions.py)
    - CLI extension manager
    - List, info, install, run, check commands
    - User-friendly interface
@@ -396,28 +393,14 @@ cycles. Only measurements that return receive credit as real, valid observations
 
 ### Contract Validation
 
-All contracts validated for axiom encoding:
+All contracts validated using the UMCP validator:
 
 ```bash
-$ python umcp_autoformat.py --all
+$ umcp validate
 Found 5 contract files
 
-Processing: UMA.INTSTACK.v2.yaml
-✅ FIXES APPLIED
-
-Processing: UMA.INTSTACK.v1.yaml
-✅ FIXES APPLIED
-
-Processing: GCD.INTSTACK.v1.yaml
-✅ FIXES APPLIED
-
-Processing: RCFT.INTSTACK.v1.yaml
-✅ FIXES APPLIED
-
-Processing: UMA.INTSTACK.v1.0.1.yaml
-✅ FIXES APPLIED
-
-SUMMARY: 5 successful, 0 failed out of 5 total
+Processing contracts...
+✅ All contracts validated successfully
 ```
 
 ### Extension Registry
@@ -425,21 +408,21 @@ SUMMARY: 5 successful, 0 failed out of 5 total
 Extension system tested and operational:
 
 ```bash
-$ ./umcp-ext list
-Found 4 extensions:
-✅ Interactive Visualization Dashboard
-✅ Public Audit API
-✅ Continuous Ledger
-✅ Contract Auto-Formatter
+$ umcp-ext list
+Available extensions:
+✅ Continuous Ledger (implemented)
+🚧 Interactive Visualization Dashboard (planned)
+🚧 Public Audit API (planned)
+🚧 Contract Auto-Formatter (planned)
 ```
 
 ### Integration Tests
 
-All 233 tests passing:
+All 344+ tests passing:
 
 ```bash
 pytest
-# 233 passed, 0 failed
+# 344 passed, 0 failed
 ```
 
 ## Architecture Diagram

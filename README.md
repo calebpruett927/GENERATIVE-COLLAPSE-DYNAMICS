@@ -249,23 +249,12 @@ cat ledger/return_log.csv
 - Key invariants (ω, C, stiffness)
 - Enables trend analysis and historical review
 
-### 2. Contract Auto-Formatter (Automatic)
-**No install needed** - built into core
-```bash
-# Format and validate contracts
-umcp-format --all
-```
-
-**Purpose**: Ensures contract consistency
-- Validates YAML structure
-- Enforces formatting standards
-- Auto-fixes minor issues
-
 ---
 
 ## 🚀 Future Communication Extensions
 
-The following communication extensions are documented for future implementation:
+The following communication extensions are planned for future implementation:
+- **Contract Auto-Formatter** (Entry point: `umcp-format` - not yet implemented)
 - **REST API** (HTTP/JSON interface for remote validation)
 - **Web Dashboard** (Interactive visualization with Streamlit)
 

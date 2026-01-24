@@ -52,7 +52,7 @@ def get_tracked_files(root: Path) -> Iterator[Path]:
     - Contract YAML files in contracts/
     - Closure Python files in closures/
     - Schema JSON files in schemas/
-    - Key root-level Python files (api_umcp.py, visualize_umcp.py, etc.)
+    - Key root-level Python files (benchmark_umcp_vs_standard.py, etc.)
     - Script files in scripts/
     """
     try:
@@ -67,8 +67,6 @@ def get_tracked_files(root: Path) -> Iterator[Path]:
             "closures/**/*.py",
             "schemas/**/*.json",
             "scripts/**/*.py",
-            "api_umcp.py",
-            "visualize_umcp.py",
             "benchmark_umcp_vs_standard.py",
         ]
 
@@ -97,7 +95,7 @@ def get_tracked_files(root: Path) -> Iterator[Path]:
             yield from root.glob(pattern)
 
         # Add specific root files
-        for name in ["api_umcp.py", "visualize_umcp.py", "benchmark_umcp_vs_standard.py"]:
+        for name in ["benchmark_umcp_vs_standard.py"]:
             fpath = root / name
             if fpath.exists():
                 yield fpath
