@@ -20,7 +20,7 @@ from typing import Any
 
 # psutil availability check
 try:
-    import psutil
+    import psutil  # type: ignore[import-untyped]
 
     HAS_PSUTIL = True
 except ImportError:
@@ -181,11 +181,13 @@ class HealthCheck:
 
         Returns comprehensive health status suitable for monitoring endpoints.
         """
-        health = {
+        checks: dict[str, Any] = {}
+        metrics: dict[str, Any] = {}
+        health: dict[str, Any] = {
             "status": "healthy",
             "timestamp": datetime.now(UTC).isoformat(),
-            "checks": {},
-            "metrics": {},
+            "checks": checks,
+            "metrics": metrics,
         }
 
         # Check: Required directories exist
@@ -193,12 +195,12 @@ class HealthCheck:
             required_dirs = ["schemas", "contracts", "closures"]
             for dir_name in required_dirs:
                 dir_path = repo_root / dir_name
-                health["checks"][f"dir_{dir_name}"] = {
+                checks[f"dir_{dir_name}"] = {
                     "status": "pass" if dir_path.exists() else "fail",
                     "exists": dir_path.exists(),
                 }
         except Exception as e:
-            health["checks"]["directories"] = {"status": "fail", "error": str(e)}
+            checks["directories"] = {"status": "fail", "error": str(e)}
             health["status"] = "unhealthy"
 
         # Check: Schemas loadable
@@ -206,32 +208,30 @@ class HealthCheck:
             schemas_dir = repo_root / "schemas"
             if schemas_dir.exists():
                 schema_count = len(list(schemas_dir.glob("*.json")))
-                health["checks"]["schemas"] = {
+                checks["schemas"] = {
                     "status": "pass" if schema_count > 0 else "fail",
                     "count": schema_count,
                 }
-                health["metrics"]["schemas_count"] = schema_count
+                metrics["schemas_count"] = schema_count
         except Exception as e:
-            health["checks"]["schemas"] = {"status": "fail", "error": str(e)}
+            checks["schemas"] = {"status": "fail", "error": str(e)}
             health["status"] = "degraded"
 
         # System metrics
         if HAS_PSUTIL:
             with suppress(Exception):
-                health["metrics"]["system"] = {
+                metrics["system"] = {
                     "cpu_percent": psutil.cpu_percent(interval=0.1),
                     "memory_percent": psutil.virtual_memory().percent,
                     "disk_percent": psutil.disk_usage("/").percent,
                 }
 
         # Overall status
-        failed_checks = sum(
-            1 for check in health["checks"].values() if isinstance(check, dict) and check.get("status") == "fail"
-        )
+        failed_checks = sum(1 for check in checks.values() if isinstance(check, dict) and check.get("status") == "fail")
 
         if failed_checks > 0:
             health["status"] = "unhealthy"
-        elif any(check.get("status") == "degraded" for check in health["checks"].values() if isinstance(check, dict)):
+        elif any(check.get("status") == "degraded" for check in checks.values() if isinstance(check, dict)):
             health["status"] = "degraded"
 
         return health

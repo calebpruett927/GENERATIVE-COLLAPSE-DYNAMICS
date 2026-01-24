@@ -126,27 +126,27 @@ class UMCPFiles:
 
     def load_manifest(self) -> dict[str, Any]:
         """Load manifest.yaml from root."""
-        return self.load_yaml(self.manifest_yaml)
+        return dict(self.load_yaml(self.manifest_yaml))
 
     def load_contract(self) -> dict[str, Any]:
         """Load contract.yaml from root."""
-        return self.load_yaml(self.contract_yaml)
+        return dict(self.load_yaml(self.contract_yaml))
 
     def load_observables(self) -> dict[str, Any]:
         """Load observables.yaml from root."""
-        return self.load_yaml(self.observables_yaml)
+        return dict(self.load_yaml(self.observables_yaml))
 
     def load_embedding(self) -> dict[str, Any]:
         """Load embedding.yaml from root."""
-        return self.load_yaml(self.embedding_yaml)
+        return dict(self.load_yaml(self.embedding_yaml))
 
     def load_return(self) -> dict[str, Any]:
         """Load return.yaml from root."""
-        return self.load_yaml(self.return_yaml)
+        return dict(self.load_yaml(self.return_yaml))
 
     def load_closures(self) -> dict[str, Any]:
         """Load closures.yaml from root."""
-        return self.load_yaml(self.closures_yaml)
+        return dict(self.load_yaml(self.closures_yaml))
 
     def load_weights(self) -> list[dict[str, Any]]:
         """Load weights.csv from root."""
@@ -160,7 +160,7 @@ class UMCPFiles:
 
     def load_trace_meta(self) -> dict[str, Any]:
         """Load derived/trace_meta.yaml."""
-        return self.load_yaml(self.trace_meta_yaml)
+        return dict(self.load_yaml(self.trace_meta_yaml))
 
     # Outputs methods
 

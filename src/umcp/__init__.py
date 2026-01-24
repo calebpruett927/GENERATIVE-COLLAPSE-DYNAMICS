@@ -79,7 +79,8 @@ class ValidationResult:
 
     def __bool__(self) -> bool:
         """Returns True if validation passed (CONFORMANT)."""
-        return self.status == "CONFORMANT"
+        result: bool = self.status == "CONFORMANT"
+        return result
 
     def __repr__(self) -> str:
         return f"ValidationResult(status={self.status!r}, errors={self.error_count}, warnings={self.warning_count})"

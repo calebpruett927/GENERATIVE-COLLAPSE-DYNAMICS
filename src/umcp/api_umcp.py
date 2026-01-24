@@ -18,18 +18,22 @@ FUTURE: Would require full FastAPI app with endpoints
 from datetime import datetime
 from pathlib import Path
 
-from fastapi import Security
-from fastapi.security import APIKeyHeader
+from fastapi import Security  # type: ignore[import-not-found]
+from fastapi.security import APIKeyHeader  # type: ignore[import-not-found]
 
 api_key_header = APIKeyHeader(name="X-API-Key")
 
 
-def validate_api_key(api_key: str = Security(api_key_header)):
-    return api_key == "expected_key"
+def validate_api_key(api_key: str = Security(api_key_header)) -> bool:
+    """Validate API key."""
+    result: bool = api_key == "expected_key"
+    return result
 
 
-def verify_api_key(api_key: str = Security(api_key_header)):
-    return api_key == "expected_key"
+def verify_api_key(api_key: str = Security(api_key_header)) -> bool:
+    """Verify API key."""
+    result: bool = api_key == "expected_key"
+    return result
 
 
 def get_repo_root() -> Path:

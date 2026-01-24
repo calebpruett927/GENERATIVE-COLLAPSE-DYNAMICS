@@ -20,14 +20,14 @@ try:
     import yaml
 except ImportError:
     yaml = None
-from jsonschema import Draft202012Validator
+from jsonschema import Draft202012Validator  # type: ignore[import-untyped]
 
 from umcp import VALIDATOR_NAME, __version__
 from umcp.logging_utils import HealthCheck, get_logger
 
 
 # Ensure src is in sys.path for absolute imports when running as a script
-def _ensure_repo_root_in_syspath():
+def _ensure_repo_root_in_syspath() -> None:
     repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
@@ -81,7 +81,12 @@ def _load_cache_metadata(repo_root: Path) -> dict[str, Any]:
     if cache_file.exists():
         try:
             with open(cache_file, "rb") as f:
-                return pickle.load(f)
+                data = pickle.load(f)
+                return (
+                    dict(data)
+                    if isinstance(data, dict)
+                    else {"file_hashes": {}, "schema_hashes": {}, "stats": {"total_runs": 0}}
+                )
         except Exception:
             pass
     return {"file_hashes": {}, "schema_hashes": {}, "stats": {"total_runs": 0}}
@@ -115,7 +120,7 @@ class LazySchemaLoader:
         self.repo_root = repo_root
         self.repo_target = repo_target
         self._schemas: dict[str, dict[str, Any] | None] = {}
-        self._loaded = set()
+        self._loaded: set[str] = set()
 
     def get(self, schema_name: str) -> dict[str, Any] | None:
         """Load and validate schema on first access."""
@@ -431,7 +436,7 @@ def _validate_schema_json(target: TargetResult, repo_root: Path, schema_path: Pa
             )
         )
         return None
-    return schema
+    return dict(schema)
 
 
 def _validate_instance_against_schema(
@@ -502,7 +507,7 @@ def _parse_csv_rows(path: Path) -> list[dict[str, Any]]:
 def _infer_psi_format(rows: list[dict[str, Any]]) -> str:
     if not rows:
         return "psi_trace_csv_long"
-    keys_union = set()
+    keys_union: set[str] = set()
     for r in rows:
         keys_union.update(r.keys())
     if "dim" in keys_union and "c" in keys_union:
@@ -571,13 +576,14 @@ def _load_validator_rules(
     )
     if target.counts["errors"] > 0:
         return None
-    return rules_doc
+    return dict(rules_doc)
 
 
 def _rule_by_id(rules_doc: dict[str, Any], rule_id: str) -> dict[str, Any] | None:
     for r in rules_doc.get("rules", []):
         if r.get("id") == rule_id:
-            return r
+            result: dict[str, Any] = dict(r)
+            return result
     return None
 
 
@@ -639,7 +645,7 @@ def _apply_semantic_rules_to_casepack(
         rows = _parse_csv_rows(psi_csv_path)
         fmt = _infer_psi_format(rows)
         if fmt == "psi_trace_csv_wide":
-            keys_union = set()
+            keys_union: set[str] = set()
             for r in rows:
                 keys_union.update(r.keys())
             pattern = rule["check"]["pattern"]
@@ -971,7 +977,8 @@ def _should_skip_casepack(cache_metadata: dict[str, Any], manifest_path: Path, c
         current_hash = _compute_file_hash(manifest_path)
         cached_hash = cached_entry.get("manifest_hash")
 
-        return current_hash == cached_hash
+        result: bool = current_hash == cached_hash
+        return result
     except Exception:
         return False
 
@@ -1545,7 +1552,8 @@ def _validate_repo(repo_root: Path, fail_on_warning: bool) -> dict[str, Any]:
     cache_metadata["cache_stats"] = _CACHE_STATS.copy()
     _save_cache_metadata(repo_root, cache_metadata)
 
-    result = {
+    targets_data: list[dict[str, Any]] = [repo_target.to_json(), *[t.to_json() for t in casepack_targets]]
+    result: dict[str, Any] = {
         "schema": "schemas/validator.result.schema.json",
         "created_utc": _utc_now_iso(),
         "validator": {
@@ -1582,7 +1590,7 @@ def _validate_repo(repo_root: Path, fail_on_warning: bool) -> dict[str, Any]:
                 "total_validation_runs": cache_metadata["stats"]["total_runs"],
             },
         },
-        "targets": [repo_target.to_json(), *[t.to_json() for t in casepack_targets]],
+        "targets": targets_data,
         "issues": [],  # optional flattened list; leaving empty avoids duplication
         "notes": "UMCP repository validation",
     }
@@ -1623,8 +1631,8 @@ def _validate_repo(repo_root: Path, fail_on_warning: bool) -> dict[str, Any]:
             repo_target.finalize_status(fail_on_warning=fail_on_warning)
             result["run_status"] = "NON_EVALUABLE"
             result["summary"]["counts"]["errors"] += 1
-            # Update repo target in result
-            result["targets"][0] = repo_target.to_json()
+            # Update repo target in result - targets_data was defined earlier with proper typing
+            targets_data[0] = repo_target.to_json()
 
     return result
 
@@ -1827,7 +1835,7 @@ def _cmd_diff(args: argparse.Namespace) -> int:
         return 1
 
 
-def _compare_field(dict1: dict, dict2: dict, key: str, label: str) -> None:
+def _compare_field(dict1: dict[str, Any], dict2: dict[str, Any], key: str, label: str) -> None:
     """Compare a single field between two dictionaries."""
     val1 = dict1.get(key)
     val2 = dict2.get(key)
@@ -1838,7 +1846,7 @@ def _compare_field(dict1: dict, dict2: dict, key: str, label: str) -> None:
         print(f"  {label}: {val1} → {val2}")
 
 
-def _compare_dict_field(dict1: dict, dict2: dict, key: str, label: str) -> None:
+def _compare_dict_field(dict1: dict[str, Any], dict2: dict[str, Any], key: str, label: str) -> None:
     """Compare a nested field between two dictionaries."""
     val1 = dict1.get(key)
     val2 = dict2.get(key)
@@ -1972,7 +1980,8 @@ def main() -> int:
             parser.print_help()
             return 2
         print("[DEBUG] About to call command handler")
-        return args.func(args)
+        result: int = args.func(args)
+        return result
     except Exception as e:
         print(f"CLI error: {e}", file=sys.stderr)
         return 1
