@@ -15,6 +15,8 @@ Design:
 - Provides standardized paths for all UMCP artifacts
 - Supports YAML, JSON, CSV, and text file loading
 """
+# pyright: reportUnknownMemberType=false
+# pyright: reportUnknownVariableType=false
 
 from __future__ import annotations
 

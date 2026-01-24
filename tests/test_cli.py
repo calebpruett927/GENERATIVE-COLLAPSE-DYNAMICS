@@ -80,7 +80,7 @@ class TestValidateCommand:
         # Should succeed
         assert result.returncode == 0
 
-    def test_validate_with_json_output(self, tmp_path):
+    def test_validate_with_json_output(self, tmp_path: Path) -> None:
         """Test validate with JSON output file."""
         output_file = tmp_path / "result.json"
         result = subprocess.run(

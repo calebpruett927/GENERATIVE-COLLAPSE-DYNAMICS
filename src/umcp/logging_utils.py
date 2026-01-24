@@ -4,6 +4,9 @@ Production-grade structured logging for UMCP validator.
 Provides JSON-structured logging with performance metrics, error context,
 and observability hooks for production deployment.
 """
+# pyright: reportUnknownMemberType=false
+# pyright: reportUnknownArgumentType=false
+# pyright: reportUnknownVariableType=false
 
 from __future__ import annotations
 
@@ -19,12 +22,13 @@ from pathlib import Path
 from typing import Any
 
 # psutil availability check
+_has_psutil = False
 try:
     import psutil  # type: ignore[import-untyped]
 
-    HAS_PSUTIL = True
+    _has_psutil = True
 except ImportError:
-    HAS_PSUTIL = False
+    psutil = None  # type: ignore[assignment]
 
 
 @dataclass
@@ -162,7 +166,7 @@ class JsonFormatter(logging.Formatter):
 
         # Add context if available
         if hasattr(record, "context"):
-            log_data["context"] = record.context
+            log_data["context"] = record.context  # type: ignore[attr-defined]
 
         # Add exception info if present
         if record.exc_info:
@@ -218,7 +222,7 @@ class HealthCheck:
             health["status"] = "degraded"
 
         # System metrics
-        if HAS_PSUTIL:
+        if _has_psutil and psutil is not None:
             with suppress(Exception):
                 metrics["system"] = {
                     "cpu_percent": psutil.cpu_percent(interval=0.1),

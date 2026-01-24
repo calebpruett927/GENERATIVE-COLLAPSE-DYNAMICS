@@ -14,6 +14,7 @@ This package intentionally does not implement a full numerical “engine” for 
 Tier-1 invariants from arbitrary raw measurements yet. The current deliverable is a validator
 and repo conformance toolchain.
 """
+# pyright: reportPrivateUsage=false
 
 from __future__ import annotations
 
@@ -110,7 +111,7 @@ def validate(path: str | Path, strict: bool = False) -> ValidationResult:
     import tempfile
     from argparse import Namespace
 
-    from .cli import _cmd_validate
+    from .cli import _cmd_validate  # pyright: ignore[reportPrivateUsage]
 
     # Create temporary file for output
     with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:

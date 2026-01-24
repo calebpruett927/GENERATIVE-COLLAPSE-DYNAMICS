@@ -16,7 +16,13 @@ refs:
   # Canonical specifications (Tier-1 symbol definitions)
   canon_anchors:
     path: "canon/anchors.yaml"
-    notes: "Tier-1 GCD framework specifications"
+    notes: "Base UMCP framework specifications"
+  canon_gcd:
+    path: "canon/gcd_anchors.yaml"
+    notes: "Tier-1 GCD framework (frozen invariants)"
+  canon_rcft:
+    path: "canon/rcft_anchors.yaml"
+    notes: "Tier-2 RCFT overlay (extension symbols)"
   # Contract enforcement (frozen rules and invariants)
   contract:
     id: "UMA.INTSTACK.v1"
