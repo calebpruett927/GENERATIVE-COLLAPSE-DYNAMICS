@@ -33,8 +33,6 @@ def _ensure_repo_root_in_syspath():
         sys.path.insert(0, repo_root)
 
 
-# ...existing code...
-
 # -----------------------------
 # Internal codes (stable)
 # -----------------------------

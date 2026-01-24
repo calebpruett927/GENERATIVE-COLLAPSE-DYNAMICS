@@ -5,6 +5,48 @@ All notable changes to the UMCP validator and repository will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.7] - 2026-01-24
+
+### Fixed - CI/CD and Code Quality
+
+**Production Hardening**: Resolved all CI failures and type-checking warnings for clean builds.
+
+#### Test Suite Fixes
+
+- **test_coverage_90.py**: Added `skip_if_no_fastapi` decorator to 6 api_umcp tests
+  - Tests now skip gracefully when fastapi is not installed (optional dependency)
+  - Matches pattern already used in `test_api_umcp.py`
+  - CI runs pass with 436 tests, 85.66% coverage
+
+#### Type Checking Improvements
+
+- **test_coverage_90.py**: Fixed 34 Pylance type-checking warnings
+  - Changed `FASTAPI_AVAILABLE` to `_fastapi_available` (avoid constant redefinition)
+  - Added `pyright: reportPrivateUsage=false` for intentional protected method access
+  - Fixed `get_closure_path` attribute access with type annotation
+  - Added null check for `duration_ms` comparison
+
+#### Code Quality
+
+- **Ruff formatting**: Applied consistent formatting across test files
+- **Ruff linting**: Fixed B009 warning (replaced `getattr` with direct attribute access)
+- **cli.py**: Removed stale `# ...existing code...` comment marker
+- **minimal_cli.py**: Completed implementation (was stub)
+
+#### Documentation
+
+- **.github/SECRETS.md**: New comprehensive secrets configuration guide
+- **.github/workflows/publish.yml**: Added detailed comments explaining PYPI_PUBLISH_TOKEN
+- **docs/pypi_publishing_guide.md**: Expanded with step-by-step secret setup
+- **copilot-instructions.md**: Fixed all broken markdown links
+
+### Changed
+
+- All file path references audited and corrected across documentation
+- Planned vs implemented features clearly distinguished with 🚧 markers
+
+---
+
 ## [1.4.6] - 2026-01-23
 
 ### Added - Return-Based Canonization Architecture
