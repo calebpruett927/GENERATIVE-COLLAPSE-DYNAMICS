@@ -81,9 +81,7 @@ class OptimizedKernelComputer:
         self.L_kappa = 1.0 / epsilon
         self.L_S = np.log((1 - epsilon) / epsilon)
 
-    def compute(
-        self, c: np.ndarray, w: np.ndarray, validate: bool = True
-    ) -> KernelOutputs:
+    def compute(self, c: np.ndarray, w: np.ndarray, validate: bool = True) -> KernelOutputs:
         """
         Compute kernel outputs with optimizations.
 
@@ -282,9 +280,7 @@ class OptimizedKernelComputer:
             raise ValueError(f"C out of range [0,1]: {outputs.C}")
 
         if not (self.epsilon <= outputs.IC <= 1 - self.epsilon):
-            raise ValueError(
-                f"IC out of range [{self.epsilon}, {1-self.epsilon}]: {outputs.IC}"
-            )
+            raise ValueError(f"IC out of range [{self.epsilon}, {1 - self.epsilon}]: {outputs.IC}")
 
         if not np.isfinite(outputs.kappa):
             raise ValueError(f"kappa non-finite: {outputs.kappa}")
@@ -370,9 +366,7 @@ class ThresholdCalibrator:
 
 
 # Convenience functions for backward compatibility
-def compute_kernel_outputs(
-    c: np.ndarray, w: np.ndarray, epsilon: float = 1e-6
-) -> dict[str, Any]:
+def compute_kernel_outputs(c: np.ndarray, w: np.ndarray, epsilon: float = 1e-6) -> dict[str, Any]:
     """
     Compute kernel outputs (legacy interface).
 

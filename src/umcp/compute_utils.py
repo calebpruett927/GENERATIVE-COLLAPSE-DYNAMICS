@@ -197,7 +197,7 @@ def validate_inputs(
     # Coordinate range check
     if np.any(c < epsilon) or np.any(c > 1 - epsilon):
         oor_count = int(np.sum((c < epsilon) | (c > 1 - epsilon)))
-        errors.append(f"{oor_count} coordinates outside [{epsilon}, {1-epsilon}]")
+        errors.append(f"{oor_count} coordinates outside [{epsilon}, {1 - epsilon}]")
 
     # NaN/Inf check
     if np.any(~np.isfinite(c)):
@@ -233,11 +233,15 @@ def batch_validate_outputs(
 
     # Vectorized range checks
     valid = (
-        (0 <= F) & (F <= 1) &
-        (0 <= omega) & (omega <= 1) &
-        (0 <= C) & (C <= 1) &
-        (epsilon <= IC) & (IC <= 1 - epsilon) &
-        np.isfinite(kappa)
+        (0 <= F)
+        & (F <= 1)
+        & (0 <= omega)
+        & (omega <= 1)
+        & (0 <= C)
+        & (C <= 1)
+        & (epsilon <= IC)
+        & (IC <= 1 - epsilon)
+        & np.isfinite(kappa)
     )
 
     return valid
@@ -338,10 +342,7 @@ class BatchProcessor:
         # Count clipping per row
         clip_counts = np.sum(trace != trace_clipped, axis=1)
 
-        diagnostics = [
-            {"row": t, "clip_count": int(clip_counts[t])}
-            for t in range(T)
-        ]
+        diagnostics = [{"row": t, "clip_count": int(clip_counts[t])} for t in range(T)]
 
         return trace_clipped, weights_2d, diagnostics
 

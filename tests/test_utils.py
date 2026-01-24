@@ -24,17 +24,18 @@ import numpy as np
 # Lemma 10: Homogeneity Fast-Path for Test Data
 # =============================================================================
 
+
 def generate_homogeneous_state(value: float = 0.9, n_coords: int = 4) -> dict[str, Any]:
     """
     Generate a homogeneous test state using Lemma 10 fast-path.
-    
+
     Lemma 10: When all coordinates equal, C = 0 and F = IC.
     This allows skipping full kernel computation in tests.
-    
+
     Args:
         value: Coordinate value (default 0.9 for Stable regime)
         n_coords: Number of coordinates (default 4)
-    
+
     Returns:
         State dict with pre-computed invariants
     """
@@ -44,13 +45,13 @@ def generate_homogeneous_state(value: float = 0.9, n_coords: int = 4) -> dict[st
     IC = value
     kappa = np.log(value)
     C = 0.0
-    
+
     # Entropy for homogeneous: h(F) = -F*log(F) - (1-F)*log(1-F)
     if 0 < value < 1:
         entropy = -value * np.log(value) - (1 - value) * np.log(1 - value)
     else:
         entropy = 0.0
-    
+
     return {
         "coordinates": [value] * n_coords,
         "weights": [1.0 / n_coords] * n_coords,
@@ -78,25 +79,26 @@ def _classify_regime(omega: float, F: float, S: float, C: float) -> str:
 # Lemma 1: Bounds Validation for Quick Tests
 # =============================================================================
 
+
 def quick_bounds_check(omega: float, F: float, S: float, C: float) -> bool:
     """
     Fast Lemma 1 bounds validation without full kernel computation.
-    
+
     Lemma 1 constraints:
     - 0 ≤ F ≤ 1
     - 0 ≤ ω ≤ 1 (with ω = 1 - F)
     - 0 ≤ S ≤ ln(n) (capped at 1 for normalized)
     - 0 ≤ C ≤ 1
-    
+
     Returns:
         True if all bounds satisfied
     """
     return (
-        0 <= F <= 1 and
-        0 <= omega <= 1 and
-        abs(omega - (1 - F)) < 1e-9 and  # Identity check
-        0 <= S <= 1 and
-        0 <= C <= 1
+        0 <= F <= 1
+        and 0 <= omega <= 1
+        and abs(omega - (1 - F)) < 1e-9  # Identity check
+        and 0 <= S <= 1
+        and 0 <= C <= 1
     )
 
 
@@ -104,17 +106,15 @@ def quick_bounds_check(omega: float, F: float, S: float, C: float) -> bool:
 # Lemma 23: Lipschitz Approximate Comparison
 # =============================================================================
 
+
 def approx_equal_lipschitz(
-    value1: float, 
-    value2: float, 
-    perturbation: float = 0.01,
-    lipschitz_constant: float = 1.0
+    value1: float, value2: float, perturbation: float = 0.01, lipschitz_constant: float = 1.0
 ) -> bool:
     """
     Use Lipschitz bound (Lemma 23) for approximate comparison.
-    
+
     Lemma 23: |f(x) - f(y)| ≤ L · |x - y|
-    
+
     For small perturbations, outputs should differ by at most L * perturbation.
     This allows faster approximate validation in tests.
     """
@@ -124,6 +124,7 @@ def approx_equal_lipschitz(
 # =============================================================================
 # Session-Scoped Caching for I/O Operations
 # =============================================================================
+
 
 @lru_cache(maxsize=32)
 def cached_load_json(path_str: str) -> dict[str, Any]:
@@ -136,6 +137,7 @@ def cached_load_json(path_str: str) -> dict[str, Any]:
 def cached_load_yaml(path_str: str) -> dict[str, Any]:
     """Load YAML file with caching - call once per session."""
     import yaml
+
     path = Path(path_str)
     return yaml.safe_load(path.read_text(encoding="utf-8"))
 
@@ -144,6 +146,7 @@ def cached_load_yaml(path_str: str) -> dict[str, Any]:
 def cached_compile_schema(schema_path_str: str) -> Any:
     """Compile JSON schema validator with caching."""
     from jsonschema import Draft202012Validator
+
     schema = cached_load_json(schema_path_str)
     Draft202012Validator.check_schema(schema)
     return Draft202012Validator(schema)
@@ -153,10 +156,11 @@ def cached_compile_schema(schema_path_str: str) -> Any:
 # Fast Test Data Generators
 # =============================================================================
 
+
 def generate_regime_test_cases() -> list[dict[str, Any]]:
     """
     Generate minimal test cases for each regime using Lemma 10 fast-path.
-    
+
     Returns:
         List of pre-computed states for Stable, Watch, and Collapse regimes
     """
@@ -170,7 +174,7 @@ def generate_regime_test_cases() -> list[dict[str, Any]]:
 def generate_boundary_test_cases() -> list[dict[str, Any]]:
     """
     Generate boundary condition test cases.
-    
+
     Uses Lemma 1 bounds to ensure valid edge cases.
     """
     return [

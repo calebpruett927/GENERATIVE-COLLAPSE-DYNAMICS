@@ -37,6 +37,7 @@ if str(_src_path) not in sys.path:
 # Import optimizations if available (OPT-1, Lemma 1 validation)
 try:
     from umcp.kernel_optimized import validate_kernel_bounds
+
     _HAS_OPTIMIZATIONS = True
 except ImportError:
     _HAS_OPTIMIZATIONS = False

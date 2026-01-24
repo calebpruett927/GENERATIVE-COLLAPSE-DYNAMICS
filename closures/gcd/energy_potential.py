@@ -20,6 +20,7 @@ if str(_src_path) not in sys.path:
 # Import optimizations if available (OPT-1, Lemma 1 validation)
 try:
     from umcp.kernel_optimized import validate_kernel_bounds
+
     _has_optimizations = True
 except ImportError:
     _has_optimizations = False
@@ -67,6 +68,7 @@ def compute_energy_potential(
     if _has_optimizations and validate_kernel_bounds is not None:
         # Approximate κ and IC from ω for validation
         import math
+
         IC = max(1 - omega, 1e-10)
         kappa = math.log(IC)
         F = 1 - omega

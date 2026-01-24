@@ -242,15 +242,11 @@ class TestThresholdCalibrator:
     def test_threshold_calibration(self):
         """Verify drift threshold calibration via AM-GM gap."""
         # Homogeneous case: gap = 0 → no adjustment
-        threshold_homo = ThresholdCalibrator.calibrate_omega_threshold(
-            F=0.5, IC=0.5, base_threshold=0.3
-        )
+        threshold_homo = ThresholdCalibrator.calibrate_omega_threshold(F=0.5, IC=0.5, base_threshold=0.3)
         assert abs(threshold_homo - 0.3) < 1e-10
 
         # Heterogeneous case: gap > 0 → tighten threshold
-        threshold_hetero = ThresholdCalibrator.calibrate_omega_threshold(
-            F=0.6, IC=0.4, base_threshold=0.3
-        )
+        threshold_hetero = ThresholdCalibrator.calibrate_omega_threshold(F=0.6, IC=0.4, base_threshold=0.3)
         # gap = 0.2, adjustment = base * (1 - 2*0.2) = 0.3 * 0.6 = 0.18
         assert threshold_hetero < 0.3
         assert threshold_hetero >= 0.1  # Clipped lower bound
@@ -289,13 +285,13 @@ class TestSeamChainAccumulator:
             kappa_t0 = k * 0.01
             kappa_t1 = (k + 1) * 0.01  # Clean growth
             tau_R = 10.0
-            
+
             # Budget model: make R match the ledger change + small noise
             # This ensures residuals are small and zero-mean
             ledger_change = kappa_t1 - kappa_t0  # = 0.01
             R = ledger_change / tau_R  # = 0.001 exactly
             noise = np.random.normal(0, 0.0001)  # Very small noise
-            
+
             try:
                 chain.add_seam(
                     t0=k * 10,
@@ -311,11 +307,10 @@ class TestSeamChainAccumulator:
 
         # Check final metrics - should show returning dynamics
         metrics = chain.get_metrics()
-        
+
         # Random walk growth: expect exponent around 0.5-1.2 depending on sample
         # The key is it's not strongly superlinear (> 1.5)
-        assert metrics.growth_exponent < 1.5, \
-            f"Growth exponent {metrics.growth_exponent:.3f} too high (>1.5)"        
+        assert metrics.growth_exponent < 1.5, f"Growth exponent {metrics.growth_exponent:.3f} too high (>1.5)"
         # Mean residual should be small
         assert metrics.mean_residual < 0.01
 
@@ -356,9 +351,7 @@ class TestSeamChainAccumulator:
         chain.add_seam(t0=20, t1=30, kappa_t0=0.25, kappa_t1=0.4, tau_R=7.0)
 
         # Validate composition
-        result = SeamCompositionAnalyzer.validate_composition_law(
-            chain, t0_chain=0, t2_chain=30
-        )
+        result = SeamCompositionAnalyzer.validate_composition_law(chain, t0_chain=0, t2_chain=30)
 
         assert result["valid"]
         assert abs(result["composed_total"] - result["direct_total"]) < 1e-10
@@ -520,9 +513,9 @@ class TestReturnTimeOptimizations:
         """Load and instantiate the OptimizedReturnComputer."""
         import sys
         import importlib.util
+
         spec = importlib.util.spec_from_file_location(
-            "tau_R_optimized",
-            "/workspaces/UMCP-Metadata-Runnable-Code/closures/tau_R_optimized.py"
+            "tau_R_optimized", "/workspaces/UMCP-Metadata-Runnable-Code/closures/tau_R_optimized.py"
         )
         assert spec is not None and spec.loader is not None
         module = importlib.util.module_from_spec(spec)
@@ -534,11 +527,13 @@ class TestReturnTimeOptimizations:
     def test_early_exit_with_margin(self, return_computer):  # type: ignore[no-untyped-def]
         """OPT-7: Verify margin-based early exit."""
         # Create a trace where current state matches a past state exactly
-        trace = np.array([
-            [0.5, 0.5, 0.5],  # t=0
-            [0.6, 0.5, 0.5],  # t=1 - moved
-            [0.5, 0.5, 0.5],  # t=2 - back to origin
-        ])
+        trace = np.array(
+            [
+                [0.5, 0.5, 0.5],  # t=0
+                [0.6, 0.5, 0.5],  # t=1 - moved
+                [0.5, 0.5, 0.5],  # t=2 - back to origin
+            ]
+        )
         psi_t = np.array([0.5, 0.5, 0.5])
 
         result = return_computer.compute_tau_R(psi_t, trace, t=2)  # type: ignore[misc]
@@ -549,11 +544,13 @@ class TestReturnTimeOptimizations:
     def test_coverage_caching(self, return_computer):  # type: ignore[no-untyped-def]
         """OPT-8: Verify coverage set caching."""
         # Create a simple trace
-        trace = np.array([
-            [0.5, 0.5, 0.5],
-            [0.5, 0.5, 0.5],
-            [0.5, 0.5, 0.5],
-        ])
+        trace = np.array(
+            [
+                [0.5, 0.5, 0.5],
+                [0.5, 0.5, 0.5],
+                [0.5, 0.5, 0.5],
+            ]
+        )
 
         # Get coverage - should cache result
         coverage = return_computer.get_coverage_set(trace, t=2)  # type: ignore[misc]
@@ -566,13 +563,15 @@ class TestReturnTimeOptimizations:
     def test_binary_search_eta(self, return_computer):  # type: ignore[no-untyped-def]
         """OPT-9: Verify binary search for minimal η via find_minimal_eta."""
         # Create a trajectory that returns
-        trajectory = np.array([
-            [0.5, 0.5, 0.5],  # Start at center
-            [0.6, 0.5, 0.5],  # Move away
-            [0.7, 0.5, 0.5],  # Further away
-            [0.55, 0.5, 0.5],  # Start returning
-            [0.5, 0.5, 0.5],  # Back at center
-        ])
+        trajectory = np.array(
+            [
+                [0.5, 0.5, 0.5],  # Start at center
+                [0.6, 0.5, 0.5],  # Move away
+                [0.7, 0.5, 0.5],  # Further away
+                [0.55, 0.5, 0.5],  # Start returning
+                [0.5, 0.5, 0.5],  # Back at center
+            ]
+        )
         psi_t = trajectory[4]  # Current state
 
         # Use the find_minimal_eta method

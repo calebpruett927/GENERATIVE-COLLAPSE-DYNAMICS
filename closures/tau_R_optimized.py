@@ -170,9 +170,7 @@ class OptimizedReturnComputer:
             candidates_checked=candidates_checked,
         )
 
-    def _compute_distance(
-        self, psi_t: np.ndarray, psi_u: np.ndarray, t: int, u: int
-    ) -> float:
+    def _compute_distance(self, psi_t: np.ndarray, psi_u: np.ndarray, t: int, u: int) -> float:
         """Compute distance with caching."""
         cache_key = (t, u)
         if cache_key in self._distance_cache:
@@ -203,9 +201,7 @@ class OptimizedReturnComputer:
         D_theta = list(range(max(0, t - self.H_rec), t))
         psi_t = trace[t]
 
-        coverage = [
-            u for u in D_theta if self._compute_distance(psi_t, trace[u], t, u) <= self.eta
-        ]
+        coverage = [u for u in D_theta if self._compute_distance(psi_t, trace[u], t, u) <= self.eta]
 
         self._coverage_cache[t] = coverage
         return coverage
@@ -240,9 +236,7 @@ class OptimizedReturnComputer:
             return None
 
         # Find minimum distance to any candidate
-        min_dist = min(
-            self._compute_distance(psi_t, trace[u], t, u) for u in D_theta
-        )
+        min_dist = min(self._compute_distance(psi_t, trace[u], t, u) for u in D_theta)
 
         if min_dist >= eta_max:
             return None  # No return possible within eta_max
@@ -254,9 +248,7 @@ class OptimizedReturnComputer:
             eta_mid = (eta_min + eta_test) / 2
 
             # Check if return exists at eta_mid
-            has_return = any(
-                self._compute_distance(psi_t, trace[u], t, u) < eta_mid for u in D_theta
-            )
+            has_return = any(self._compute_distance(psi_t, trace[u], t, u) < eta_mid for u in D_theta)
 
             if has_return:
                 eta_test = eta_mid
@@ -355,8 +347,10 @@ if __name__ == "__main__":
 
     for t in [20, 50, 80]:
         result = computer.compute_tau_R(trace[t], trace, t)
-        print(f"t={t}: τ_R={result.tau_R:.1f}, mode={result.computation_mode}, "
-              f"checked={result.candidates_checked}/{min(t, 32)}")
+        print(
+            f"t={t}: τ_R={result.tau_R:.1f}, mode={result.computation_mode}, "
+            f"checked={result.candidates_checked}/{min(t, 32)}"
+        )
 
     # Demo binary search for minimal η
     print("\nMinimal η search:")

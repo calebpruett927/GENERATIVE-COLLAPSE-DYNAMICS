@@ -246,9 +246,7 @@ class SeamCompositionAnalyzer:
     """
 
     @staticmethod
-    def validate_composition_law(
-        seam_chain: SeamChainAccumulator, t0_chain: int, t2_chain: int
-    ) -> dict[str, Any]:
+    def validate_composition_law(seam_chain: SeamChainAccumulator, t0_chain: int, t2_chain: int) -> dict[str, Any]:
         """
         Validate that seam composition follows Lemma 20.
 
@@ -258,11 +256,7 @@ class SeamCompositionAnalyzer:
             return {"valid": False, "reason": "Empty chain"}
 
         # Find seams in range [t0_chain, t2_chain]
-        relevant_seams = [
-            s
-            for s in seam_chain.seam_history
-            if s.t0 >= t0_chain and s.t1 <= t2_chain
-        ]
+        relevant_seams = [s for s in seam_chain.seam_history if s.t0 >= t0_chain and s.t1 <= t2_chain]
 
         if not relevant_seams:
             return {"valid": False, "reason": "No seams in range"}

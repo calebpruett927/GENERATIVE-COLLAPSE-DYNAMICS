@@ -115,6 +115,7 @@ def repo_paths() -> RepoPaths:
 # Uses lru_cache to avoid re-parsing files within session
 # =============================================================================
 
+
 @pytest.fixture(scope="session")
 def cached_canon_anchors(repo_paths: RepoPaths) -> dict[str, Any]:
     """Load canon/anchors.yaml once per session (OPT-CACHE)."""

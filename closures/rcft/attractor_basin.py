@@ -81,6 +81,7 @@ if str(_src_path) not in sys.path:
 
 try:
     from umcp.compute_utils import BatchProcessor
+
     _HAS_BATCH_PROCESSOR = True
 except ImportError:
     _HAS_BATCH_PROCESSOR = False

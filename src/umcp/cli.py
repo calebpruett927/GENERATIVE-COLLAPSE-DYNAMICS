@@ -34,6 +34,7 @@ from umcp.logging_utils import HealthCheck, get_logger
 # Import optimized kernel validation (OPT-1, Lemma 1 bounds)
 try:
     from umcp.kernel_optimized import validate_kernel_bounds
+
     _HAS_KERNEL_OPTIMIZATIONS = True
 except ImportError:
     _HAS_KERNEL_OPTIMIZATIONS = False
@@ -630,6 +631,7 @@ def _expected_regime_label(omega: float, F: float, S: float, C: float, regimes: 
     if _HAS_KERNEL_OPTIMIZATIONS and validate_kernel_bounds is not None:
         # Approximate κ and IC from ω for validation
         import math
+
         IC = max(1 - omega, 1e-10)
         kappa = math.log(IC)
         # Silent validation - log on failure but don't raise

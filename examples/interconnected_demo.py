@@ -217,8 +217,7 @@ def main():
 
         # Test BatchProcessor (OPT-17,20)
         processor = BatchProcessor(epsilon=1e-6)
-        sample_data = np.array([[omega_val, S_val, C_val],
-                                 [omega_val * 1.1, S_val * 0.9, C_val * 1.05]])
+        sample_data = np.array([[omega_val, S_val, C_val], [omega_val * 1.1, S_val * 0.9, C_val * 1.05]])
         stats = processor.compute_batch_statistics(sample_data)
         print(f"  ✓ Batch statistics: mean={stats['mean'][0]:.4f}, std={stats['std'][0]:.4f}")
 

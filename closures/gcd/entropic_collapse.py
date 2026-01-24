@@ -38,6 +38,7 @@ if str(_src_path) not in sys.path:
 
 try:
     from umcp.kernel_optimized import validate_kernel_bounds
+
     _HAS_OPTIMIZATIONS = True
 except ImportError:
     _HAS_OPTIMIZATIONS = False
@@ -75,7 +76,7 @@ def compute_entropic_collapse(S: float, F: float, tau_R: float, tau_0: float = 1
         # Silent check - don't fail on edge cases, let standard validation handle
         if not validate_kernel_bounds(F=F, omega=omega, C=0.0, IC=IC_clamped, kappa=kappa):
             pass  # Continue with standard validation
-    
+
     # Standard range checks
     if not (0 <= S <= 1):
         raise ValueError(f"Entropy S must be in [0,1], got {S}")
