@@ -4,7 +4,7 @@
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Tests: 344 passing](https://img.shields.io/badge/tests-344%20passing-brightgreen.svg)](tests/)
-[![Version: 1.4.0](https://img.shields.io/badge/version-1.4.0-blue.svg)](CHANGELOG.md)
+[![Version: 1.4.7](https://img.shields.io/badge/version-1.4.7-blue.svg)](CHANGELOG.md)
 
 **UMCP transforms computational experiments into auditable artifacts** based on a foundational principle:
 
