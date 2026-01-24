@@ -631,12 +631,12 @@ python scripts/update_integrity.py
   - Type safety: 0 Pylance errors
 
 **Quality & Testing**:
-- ✅ 557 tests passing (+213 from v1.4.8)
+- ✅ 557 tests passing (+213 from v1.4.0)
 - ✅ Zero type warnings (Pylance clean)
 - ✅ All formulas match canonical specification
 - ✅ Full test coverage of new modules
 
-**Previous (v1.4.8)**:
+**Previous (v1.4.0)**:
 - ✅ 8 major protocol documents (~5,500 lines)
 - ✅ Formal specification (34 lemmas, kernel definitions)
 - ✅ Publication standards (CasePack structure)

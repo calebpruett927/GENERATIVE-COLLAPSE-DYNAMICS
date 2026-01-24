@@ -5,6 +5,23 @@ All notable changes to the UMCP validator and repository will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2026-01-24
+
+### Changed - Version Finalization
+
+**Version Consistency**: Finalized repository version numbering to v1.5.0 across all files.
+
+- Updated pyproject.toml to version 1.5.0
+- Updated __version__ in src/umcp/__init__.py to 1.5.0
+- Synchronized all documentation references to v1.5.0
+- Updated integrity/code_version.txt to v1.5.0
+
+### Summary
+
+This release consolidates all version references throughout the repository to v1.5.0, ensuring consistency across package metadata, code, documentation, and integrity tracking. All previous v1.4.x functionality remains unchanged; this is purely a version synchronization release.
+
+---
+
 ## [1.4.8] - 2026-01-24
 
 ### Added - Computational Optimizations and Test Speed Improvements

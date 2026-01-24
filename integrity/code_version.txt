@@ -1,6 +1,6 @@
-v1.3.1-1-g92a414d
-commit: 92a414d6a9ff9a9bc00e32a286ebee8c1b097532
+v1.5.0
+commit: latest
 author: Clement Paulus <calebpruett003@gmail.com>
-date: 2026-01-20 04:32:53 +0000
+date: 2026-01-24 00:00:00 +0000
 branch: HEAD -> main
-message: feat: Complete UMCP extension system integration with core axiom
+message: release: Version 1.5.0 - Finalize repository version consistency

@@ -500,7 +500,7 @@ See [SYMBOL_INDEX.md](SYMBOL_INDEX.md) for the authoritative mapping table inclu
 
 ## Implementation Status
 
-### Current Support (v1.4.0)
+### Current Support (v1.5.0)
 
 - ✅ **Publication row CSV structure**: Defined in repository
   - Canonical header documented

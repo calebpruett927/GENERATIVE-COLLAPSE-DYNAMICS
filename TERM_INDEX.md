@@ -422,7 +422,7 @@ Quick alphabetical index of all protocol terms with definitions and file locatio
 - Canon: [canon/anchors.yaml](canon/anchors.yaml)
 - Contract: [contracts/UMA.INTSTACK.v1.yaml](contracts/UMA.INTSTACK.v1.yaml)
 - Docs: [README.md](README.md), [AXIOM.md](AXIOM.md)
-- Package: [pyproject.toml](pyproject.toml) (v1.3.2)
+- Package: [pyproject.toml](pyproject.toml) (v1.5.0)
 
 **Unknown — hint** - Gap reporting convention
 - Format: "unknown — <cause>; hint: <action>"

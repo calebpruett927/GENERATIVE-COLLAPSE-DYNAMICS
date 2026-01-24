@@ -1,4 +1,4 @@
-# Performance Optimization & Framework Extensions - v1.4.0
+# Performance Optimization & Framework Extensions - v1.5.0
 
 **Date**: 2026-01-21  
 **Status**: ✅ COMPLETE
@@ -399,4 +399,4 @@ print(f"Dominant attractor at: {attractor_result['attractor_locations'][0]}")
 
 ---
 
-**Status**: ✅ Ready for commit and release as v1.4.0
+**Status**: ✅ Ready for commit and release as v1.5.0

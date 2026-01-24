@@ -6,7 +6,7 @@ The repository uses **token-based authentication** for PyPI publishing.
 
 ### How It Works
 
-1. When you push a tag like `v1.4.0`, GitHub Actions triggers
+1. When you push a tag like `v1.5.0`, GitHub Actions triggers
 2. The workflow builds the package (`python -m build`)
 3. It publishes to PyPI using the `PYPI_PUBLISH_TOKEN` secret
 
@@ -59,10 +59,10 @@ Context access might be invalid: PYPI_PUBLISH_TOKEN
 To confirm the secret is configured:
 ```bash
 # You cannot read secrets locally, but you can verify the workflow works:
-git tag v1.4.8-test
-git push origin v1.4.8-test
+git tag v1.5.0-test
+git push origin v1.5.0-test
 # Watch: https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/actions
-# If successful, delete test tag: git push --delete origin v1.4.8-test
+# If successful, delete test tag: git push --delete origin v1.5.0-test
 ```
 
 ## Alternative: Trusted Publishing (OIDC)

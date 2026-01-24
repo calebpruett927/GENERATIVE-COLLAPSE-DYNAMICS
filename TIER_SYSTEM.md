@@ -467,7 +467,7 @@ Tier-2 result → threshold check → seam weld → IF passes → New Tier-1 can
 
 ## Implementation Status in UMCP
 
-### Current Support (v1.4.0)
+### Current Support (v1.5.0)
 
 - ✅ **Tier-0**: Full support in [src/umcp/validator.py](src/umcp/validator.py)
   - contract.yaml, observables.yaml, embedding.yaml parsing
