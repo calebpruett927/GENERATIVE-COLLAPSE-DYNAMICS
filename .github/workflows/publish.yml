@@ -40,7 +40,13 @@ jobs:
         with:
           password: ${{ secrets.PYPI_PUBLISH_TOKEN }}
           attestations: false
-        # Token-based authentication (requires PYPI_PUBLISH_TOKEN secret)
-        # To switch to OIDC: remove 'with:' section and configure at https://pypi.org/manage/account/publishing/
+        # NOTE: The PYPI_PUBLISH_TOKEN secret MUST be configured in GitHub repo settings:
+        # https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/settings/secrets/actions
+        # 
+        # VS Code may show "Context access might be invalid" warning - this is HARMLESS.
+        # The linter cannot verify GitHub secrets exist, but the workflow will work correctly.
+        #
+        # To switch to OIDC (no token needed): remove 'with:' section and configure at
+        # https://pypi.org/manage/account/publishing/
 
 

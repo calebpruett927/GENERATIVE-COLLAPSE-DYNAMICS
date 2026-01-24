@@ -12,17 +12,58 @@ The repository uses **token-based authentication** for PyPI publishing.
 
 ### Secret Configuration
 
-The `PYPI_PUBLISH_TOKEN` secret must be configured at:
-- **URL**: https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/settings/secrets/actions
-- **Name**: `PYPI_PUBLISH_TOKEN`
-- **Value**: Your PyPI API token from https://pypi.org/manage/account/token/
+**REQUIRED**: The `PYPI_PUBLISH_TOKEN` secret must be configured in GitHub repository settings.
 
-### VS Code Warning
+#### Step-by-Step Setup
 
-The warning `Context access might be invalid: PYPI_PUBLISH_TOKEN` is **harmless**:
-- ✅ It's just a static analysis linter that can't verify secrets exist
-- ✅ The workflow will work correctly if the secret is configured
-- ✅ The warning does NOT affect CI/CD functionality
+1. **Create PyPI API token**:
+   - Go to https://pypi.org/manage/account/token/
+   - Click "Add API token"
+   - Token name: `UMCP GitHub Actions`
+   - Scope: Select "Project: umcp" (or "Entire account")
+   - Click "Create token"
+   - **COPY THE TOKEN** (shown only once!)
+
+2. **Add secret to GitHub**:
+   - Go to https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/settings/secrets/actions
+   - Click "New repository secret"
+   - Name: `PYPI_PUBLISH_TOKEN`
+   - Value: Paste the PyPI token
+   - Click "Add secret"
+
+### VS Code Warning - HOW TO RESOLVE
+
+**The Issue:**
+```
+Context access might be invalid: PYPI_PUBLISH_TOKEN
+```
+
+**Why It Happens:**
+- VS Code's GitHub Actions linter performs static analysis
+- It cannot verify GitHub repository secrets (they're stored securely on GitHub servers)
+- This is a **linter limitation**, not an actual error
+
+**How to Resolve:**
+
+**Option 1: Ignore It (Recommended if token is configured)**
+- ✅ The warning is harmless and cosmetic
+- ✅ Your workflow will work correctly if the secret exists in GitHub
+- ✅ CI/CD is NOT affected by this warning
+- Just ensure the secret is configured in GitHub repo settings (step 2 above)
+
+**Option 2: Switch to Trusted Publishing (Removes Warning Permanently)**
+- See "Alternative: Trusted Publishing (OIDC)" section below
+- This eliminates tokens entirely and the warning disappears
+
+**Verification:**
+To confirm the secret is configured:
+```bash
+# You cannot read secrets locally, but you can verify the workflow works:
+git tag v1.4.8-test
+git push origin v1.4.8-test
+# Watch: https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/actions
+# If successful, delete test tag: git push --delete origin v1.4.8-test
+```
 
 ## Alternative: Trusted Publishing (OIDC)
 
