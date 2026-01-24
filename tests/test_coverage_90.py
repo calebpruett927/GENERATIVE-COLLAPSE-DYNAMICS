@@ -23,14 +23,13 @@ import pytest
 # Check if fastapi is available (optional dependency for api_umcp tests)
 try:
     import fastapi  # noqa: F401  # pyright: ignore[reportUnusedImport]
+
     _fastapi_available = True
 except ImportError:
     _fastapi_available = False
 
 # Skip decorator for api_umcp tests
-skip_if_no_fastapi = pytest.mark.skipif(
-    not _fastapi_available, reason="fastapi not installed (optional dependency)"
-)
+skip_if_no_fastapi = pytest.mark.skipif(not _fastapi_available, reason="fastapi not installed (optional dependency)")
 
 # =============================================================================
 # __main__.py tests (0% → 100%)
