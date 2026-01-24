@@ -9,13 +9,13 @@ publication editions using prime-field arithmetic.
 
 Mathematical Foundation:
     - Modulus 97 (largest 2-digit prime) for human readability
-    - Prime coefficients {2, 3, 5, 7} ensure linear independence
+    - Prime coefficients {1, 2, 3, 5, 7} ensure linear independence
     - Three checksums provide redundancy for error detection
 
-Formulas:
-    C1 = (P + F) mod 97
-    C2 = (P + 2F + 3T + 5E + 7R) mod 97
-    C3 = (P * F + T) mod 97
+Canonical Formulas (The Episteme of Return):
+    C1 = (P + F + T + E + R) mod 97          # Sum checksum
+    C2 = (P + 2F + 3T + 5E + 7R) mod 97      # Weighted checksum
+    C3 = (P·F + T·E + R) mod 97              # Product checksum
 
 Where:
     P = page count
@@ -23,6 +23,8 @@ Where:
     T = table count
     E = equation count
     R = reference count
+
+Reference: SeamStamp v1-mini (SS1m), Clement Paulus, October 25, 2025
 """
 
 from __future__ import annotations
@@ -96,8 +98,9 @@ def compute_triad(counts: EditionCounts) -> EditionTriad:
     """
     P, F, T, E, R = counts
 
-    # C1: Simple additive (P + F) mod 97
-    c1 = (P + F) % TRIAD_MODULUS
+    # C1: Sum checksum (P + F + T + E + R) mod 97
+    # Canonical: The Episteme of Return
+    c1 = (P + F + T + E + R) % TRIAD_MODULUS
 
     # C2: Weighted sum with prime coefficients
     # C2 = (1*P + 2*F + 3*T + 5*E + 7*R) mod 97
@@ -109,8 +112,9 @@ def compute_triad(counts: EditionCounts) -> EditionTriad:
         + PRIME_COEFFICIENTS[4] * R
     ) % TRIAD_MODULUS
 
-    # C3: Multiplicative (P * F + T) mod 97
-    c3 = (P * F + T) % TRIAD_MODULUS
+    # C3: Product checksum (P·F + T·E + R) mod 97
+    # Canonical: The Episteme of Return
+    c3 = (P * F + T * E + R) % TRIAD_MODULUS
 
     return EditionTriad(c1=c1, c2=c2, c3=c3)
 

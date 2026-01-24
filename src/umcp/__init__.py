@@ -49,17 +49,37 @@ __all__ = [
     "UncertaintyBounds",
     "compute_kernel_gradients",
     "propagate_uncertainty",
+    # Frozen contract (The Physics of Coherence)
+    "frozen_contract",
+    "FrozenContract",
+    "DEFAULT_CONTRACT",
+    "Regime",
+    "classify_regime",
+    "gamma_omega",
+    "check_seam_pass",
+    "compute_kernel",
+    "KernelOutput",
 ]
 
-__version__ = "1.4.9"
+__version__ = "1.5.0"
 
 VALIDATOR_NAME = "umcp-validator"
 DEFAULT_TZ = "America/Chicago"
 
 # Import utilities
-from . import compute_utils, ss1m_triad, umcp_extensions, uncertainty
+from . import compute_utils, frozen_contract, ss1m_triad, umcp_extensions, uncertainty
 from .closures import ClosureLoader, get_closure_loader
 from .file_refs import UMCPFiles, get_umcp_files
+from .frozen_contract import (
+    DEFAULT_CONTRACT,
+    FrozenContract,
+    KernelOutput,
+    Regime,
+    check_seam_pass,
+    classify_regime,
+    compute_kernel,
+    gamma_omega,
+)
 from .kernel_optimized import OptimizedKernelComputer
 from .seam_optimized import SeamChainAccumulator
 from .ss1m_triad import EditionTriad, compute_triad, triad_to_eid12, verify_triad

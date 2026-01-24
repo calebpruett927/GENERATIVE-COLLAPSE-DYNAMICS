@@ -64,10 +64,11 @@ class TestTriadComputation:
             assert 0 <= triad.c3 < 97, f"c3={triad.c3} out of range"
 
     def test_c1_formula(self) -> None:
-        """C1 = (P + F) mod 97."""
-        counts = EditionCounts(pages=50, figures=47, tables=0, equations=0, references=0)
+        """C1 = (P + F + T + E + R) mod 97 (canonical sum checksum)."""
+        counts = EditionCounts(pages=10, figures=5, tables=3, equations=2, references=4)
         triad = compute_triad(counts)
-        assert triad.c1 == (50 + 47) % 97
+        # Canonical: C1 = (P + F + T + E + R) mod 97
+        assert triad.c1 == (10 + 5 + 3 + 2 + 4) % 97
 
     def test_c2_formula(self) -> None:
         """C2 = (1*P + 2*F + 3*T + 5*E + 7*R) mod 97."""
@@ -77,10 +78,11 @@ class TestTriadComputation:
         assert triad.c2 == expected_c2
 
     def test_c3_formula(self) -> None:
-        """C3 = (P * F + T) mod 97."""
-        counts = EditionCounts(pages=10, figures=8, tables=5, equations=0, references=0)
+        """C3 = (P·F + T·E + R) mod 97 (canonical product checksum)."""
+        counts = EditionCounts(pages=10, figures=8, tables=5, equations=3, references=7)
         triad = compute_triad(counts)
-        assert triad.c3 == (10 * 8 + 5) % 97
+        # Canonical: C3 = (P·F + T·E + R) mod 97
+        assert triad.c3 == (10 * 8 + 5 * 3 + 7) % 97
 
 
 class TestTriadVerification:
