@@ -9,6 +9,8 @@ Targets uncovered code in:
 - src/umcp/logging_utils.py (87% → 95%+)
 - src/umcp/validator.py (82% → 90%+)
 """
+# pyright: reportPrivateUsage=false
+# Tests intentionally access protected methods to verify internal behavior
 
 import json
 import subprocess
@@ -20,14 +22,14 @@ import pytest
 
 # Check if fastapi is available (optional dependency for api_umcp tests)
 try:
-    import fastapi  # noqa: F401
-    FASTAPI_AVAILABLE = True
+    import fastapi  # noqa: F401  # pyright: ignore[reportUnusedImport]
+    _fastapi_available = True
 except ImportError:
-    FASTAPI_AVAILABLE = False
+    _fastapi_available = False
 
 # Skip decorator for api_umcp tests
 skip_if_no_fastapi = pytest.mark.skipif(
-    not FASTAPI_AVAILABLE, reason="fastapi not installed (optional dependency)"
+    not _fastapi_available, reason="fastapi not installed (optional dependency)"
 )
 
 # =============================================================================
@@ -532,7 +534,7 @@ def test_closure_get_closure_path():
     if hasattr(loader, "get_closure_path"):
         # Try to get a known closure
         try:
-            path = loader.get_closure_path("gamma")
+            path = getattr(loader, "get_closure_path")("gamma")
             assert isinstance(path, (Path, type(None)))
         except (KeyError, FileNotFoundError):
             pass  # Expected if closure doesn't exist
@@ -733,7 +735,7 @@ def test_performance_metrics():
     metrics.finish()
 
     assert metrics.end_time is not None
-    assert metrics.duration_ms > 0
+    assert metrics.duration_ms is not None and metrics.duration_ms > 0
 
     # Test to_dict
     data = metrics.to_dict()
