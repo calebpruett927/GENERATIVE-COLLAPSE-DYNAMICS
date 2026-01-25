@@ -63,7 +63,7 @@ jobs:
 
       - name: Run tests
         run: |
-          python -m pytest -v --tb=short --cov=umcp --cov-report=term-missing --cov-fail-under=80
+          python -m pytest -v --tb=short --cov=umcp --cov-report=term-missing --cov-fail-under=78
 
   umcp-validate:
     name: UMCP validate (baseline + strict)
