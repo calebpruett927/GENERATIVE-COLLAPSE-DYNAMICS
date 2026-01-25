@@ -95,7 +95,10 @@ def load_weights(root: Path) -> np.ndarray:
     with open(weights_path) as f:
         reader = csv.DictReader(f)
         rows = list(reader)
-    return np.array([float(r["weight"]) for r in rows])
+    # New format: columns are observable names, single row with weights
+    if rows:
+        return np.array([float(v) for v in rows[0].values()])
+    return np.array([1.0 / 3, 1.0 / 3, 1.0 / 3])
 
 
 def compute_kernel(
