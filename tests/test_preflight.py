@@ -18,7 +18,7 @@ class TestPreflightValidator:
 
     def test_import(self) -> None:
         """Test that preflight module can be imported."""
-        from umcp.preflight import PreflightValidator, PreflightReport, FailureHit
+        from umcp.preflight import FailureHit, PreflightReport, PreflightValidator
 
         assert PreflightValidator is not None
         assert PreflightReport is not None
@@ -26,7 +26,7 @@ class TestPreflightValidator:
 
     def test_preflight_report_structure(self) -> None:
         """Test PreflightReport dataclass structure."""
-        from umcp.preflight import PreflightReport, FailureHit
+        from umcp.preflight import FailureHit, PreflightReport
 
         hit = FailureHit(
             node_id="FN-001",
@@ -50,7 +50,7 @@ class TestPreflightValidator:
 
     def test_preflight_exit_codes(self) -> None:
         """Test exit code mapping."""
-        from umcp.preflight import PreflightReport, FailureHit
+        from umcp.preflight import FailureHit, PreflightReport
 
         # ERROR status -> exit code 2
         report_error = PreflightReport(
@@ -82,7 +82,7 @@ class TestPreflightValidator:
 
     def test_preflight_report_json(self) -> None:
         """Test JSON serialization of preflight report."""
-        from umcp.preflight import PreflightReport, FailureHit
+        from umcp.preflight import FailureHit, PreflightReport
 
         hit = FailureHit(
             node_id="FN-007",
@@ -117,7 +117,7 @@ class TestPreflightValidator:
             if (current / "pyproject.toml").exists():
                 break
             current = current.parent
-        
+
         validator = PreflightValidator(root_dir=current)
         report = validator.validate()
 
@@ -173,7 +173,7 @@ class TestFailureNodeAtlas:
 
         validator = Draft202012Validator(schema)
         errors = list(validator.iter_errors(atlas))  # type: ignore[arg-type]
-        
+
         assert len(errors) == 0, f"Atlas validation errors: {[e.message for e in errors]}"
 
     def test_atlas_has_required_nodes(self) -> None:
@@ -193,7 +193,7 @@ class TestFailureNodeAtlas:
         node_ids = [n["id"] for n in nodes]
 
         expected_ids = [f"FN-{i:03d}" for i in range(1, 15)]
-        
+
         for expected_id in expected_ids:
             assert expected_id in node_ids, f"Missing node: {expected_id}"
 
@@ -211,7 +211,7 @@ class TestFailureNodeAtlas:
             atlas = yaml.safe_load(f)
 
         nodes = atlas["atlas"]["nodes"]
-        
+
         for node in nodes:
             assert node["phase"] in ("A", "B", "C"), f"Invalid phase for {node['id']}"
 
@@ -229,7 +229,7 @@ class TestFailureNodeAtlas:
             atlas = yaml.safe_load(f)
 
         nodes = atlas["atlas"]["nodes"]
-        
+
         for node in nodes:
             assert node["severity"] in ("ERROR", "WARN", "INFO"), f"Invalid severity for {node['id']}"
 
@@ -310,17 +310,21 @@ class TestPreflightCLI:
         from umcp.cli import build_parser
 
         parser = build_parser()
-        
+
         # Test with all options
-        args = parser.parse_args([
-            "preflight",
-            ".",
-            "--freeze-dir", "/tmp/freeze",
-            "--output", "/tmp/report.json",
-            "--verbose",
-            "--json",
-        ])
-        
+        args = parser.parse_args(
+            [
+                "preflight",
+                ".",
+                "--freeze-dir",
+                "/tmp/freeze",
+                "--output",
+                "/tmp/report.json",
+                "--verbose",
+                "--json",
+            ]
+        )
+
         assert args.path == "."
         assert args.freeze_dir == "/tmp/freeze"
         assert args.output == "/tmp/report.json"

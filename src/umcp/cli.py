@@ -1936,7 +1936,7 @@ def _cmd_health(args: argparse.Namespace) -> int:
 
 def _cmd_preflight(args: argparse.Namespace) -> int:
     """Run preflight validation against Failure Node Atlas.
-    
+
     Exit codes:
         0 = PASS (no hits above INFO)
         1 = WARN (interpretation allowed only with explicit warning banner)

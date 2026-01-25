@@ -21,7 +21,7 @@ import csv
 import json
 import math
 import sys
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
@@ -29,23 +29,26 @@ from typing import Any
 TOL_SEAM = 0.005  # Maximum allowable residual for audit pass
 CRITICAL_INTEGRITY = 0.30  # I < 0.30 flags integrity collapse
 
+
 @dataclass
 class AuditRow:
     """Single audit row in Collapse Integrity grammar."""
+
     event_id: str
     face: str
-    tau_R: float        # Return delay (signed)
-    D_C: float          # Curvature change (signed)
-    D_omega: float      # Drift cost
-    omega: float        # Drift load
-    R: float            # Return credit [0, 1]
+    tau_R: float  # Return delay (signed)
+    D_C: float  # Curvature change (signed)
+    D_omega: float  # Drift cost
+    omega: float  # Drift load
+    R: float  # Return credit [0, 1]
     delta_kappa: float  # Budget: Δκ = R·τ_R − (D_ω + D_C)
-    s: float            # Residual seam discrepancy
-    kappa: float        # Log-integrity
-    I: float            # Integrity dial: I = exp(κ)
-    seam_type: str      # Type I, II, or III
-    status: str         # Pass or Fail
-    ax0_pass: bool      # AX-0 compliance
+    s: float  # Residual seam discrepancy
+    kappa: float  # Log-integrity
+    I: float  # Integrity dial: I = exp(κ)
+    seam_type: str  # Type I, II, or III
+    status: str  # Pass or Fail
+    ax0_pass: bool  # AX-0 compliance
+
 
 def compute_audit(
     tau_R: float,
@@ -54,17 +57,17 @@ def compute_audit(
     R: float = 1.0,
     event_id: str = "UNNAMED",
     face: str = "default",
-    lambda_drift: float = 0.2
+    lambda_drift: float = 0.2,
 ) -> AuditRow:
     """
     Compute Collapse Integrity audit for a single event.
-    
+
     Budget equation:
         Δκ = R·τ_R − (D_ω + D_C)
-    
+
     Where:
         D_ω = λ · ω  (drift cost)
-    
+
     Seam classification:
         Type I:   Δκ = 0, s = 0  (Return Without Loss)
         Type II:  Δκ < 0, |s| ≤ tol  (Return With Loss)
@@ -72,24 +75,24 @@ def compute_audit(
     """
     # Compute drift cost
     D_omega = lambda_drift * omega
-    
+
     # Budget equation: Δκ = R·τ_R − (D_ω + D_C)
     delta_kappa = R * tau_R - (D_omega + D_C)
-    
+
     # For this physics case, κ is the accumulated log-integrity
     # In a Type I seam with full return, κ = 0
     # The residual s measures budget discrepancy
     s = delta_kappa  # Residual is the budget imbalance
-    
+
     # Compute kappa based on whether budget balances
     if abs(s) <= TOL_SEAM:
         kappa = 0.0  # Budget balanced
     else:
         kappa = delta_kappa  # Integrity shift
-    
+
     # Integrity dial
     I = math.exp(kappa)
-    
+
     # Seam classification
     if abs(delta_kappa) <= TOL_SEAM and abs(s) <= TOL_SEAM:
         seam_type = "Type I"
@@ -100,18 +103,18 @@ def compute_audit(
     else:
         seam_type = "Type III"
         status = "Fail"
-    
+
     # AX-0: Only that which returns through collapse is real
     ax0_pass = (status == "Pass") and (abs(s) <= TOL_SEAM)
-    
+
     # Regime classification based on omega (for future use)
     # regime = "Stable" if omega < 0.038 else ("Watch" if omega < 0.3 else "Collapse")
     _ = omega  # Regime calculation available for future extension
-    
+
     # Critical overlay check
     if I < CRITICAL_INTEGRITY:
         status = f"{status} (Critical)"
-    
+
     return AuditRow(
         event_id=event_id,
         face=face,
@@ -126,8 +129,9 @@ def compute_audit(
         I=round(I, 6),
         seam_type=seam_type,
         status=status,
-        ax0_pass=ax0_pass
+        ax0_pass=ax0_pass,
     )
+
 
 def classify_return(tau_R: float, D_C: float) -> str:
     """Classify return type based on τ_R and D_C."""
@@ -137,38 +141,45 @@ def classify_return(tau_R: float, D_C: float) -> str:
         return "Class IIa: Curvature-Reversed Retro-Coherent Return"
     elif tau_R < 0 and D_C > 0:
         return "Class IIb: Anomalous Backward Return"
-    elif tau_R == float('inf') or tau_R == float('-inf'):
+    elif tau_R == float("inf") or tau_R == float("-inf"):
         return "Class III: No Return (Unweldable)"
     else:
         return "Class I: Neutral"
 
+
 def print_seamstamp(audit: AuditRow) -> None:
     """Print SeamStamp format as in the paper."""
-    print(f"\nSS1m | {audit.event_id} | Face: {audit.face} | "
-          f"τ_R = {audit.tau_R:.2f} | D_C = {audit.D_C:.2f} | ω = {audit.omega} | "
-          f"R = {audit.R}")
-    print(f"| Δκ = {audit.delta_kappa} | s = {audit.s:.3f} | κ = {audit.kappa} | "
-          f"I = {audit.I:.3f} | {audit.seam_type} Weld | "
-          f"AX-0 {'Pass' if audit.ax0_pass else 'Fail'}")
+    print(
+        f"\nSS1m | {audit.event_id} | Face: {audit.face} | "
+        f"τ_R = {audit.tau_R:.2f} | D_C = {audit.D_C:.2f} | ω = {audit.omega} | "
+        f"R = {audit.R}"
+    )
+    print(
+        f"| Δκ = {audit.delta_kappa} | s = {audit.s:.3f} | κ = {audit.kappa} | "
+        f"I = {audit.I:.3f} | {audit.seam_type} Weld | "
+        f"AX-0 {'Pass' if audit.ax0_pass else 'Fail'}"
+    )
+
 
 def run_batch_audit(input_file: Path) -> list[AuditRow]:
     """Run audit on batch of events from CSV."""
     results: list[AuditRow] = []
-    
-    with open(input_file, 'r') as f:
+
+    with open(input_file) as f:
         reader = csv.DictReader(f)
         for row in reader:
             audit = compute_audit(
-                tau_R=float(row.get('tau_R', row.get('τ_R', 0))),
-                D_C=float(row.get('D_C', row.get('DC', 0))),
-                omega=float(row.get('omega', row.get('ω', 0))),
-                R=float(row.get('R', 1.0)),
-                event_id=row.get('event_id', row.get('id', 'UNNAMED')),
-                face=row.get('face', 'default')
+                tau_R=float(row.get("tau_R", row.get("τ_R", 0))),
+                D_C=float(row.get("D_C", row.get("DC", 0))),
+                omega=float(row.get("omega", row.get("ω", 0))),
+                R=float(row.get("R", 1.0)),
+                event_id=row.get("event_id", row.get("id", "UNNAMED")),
+                face=row.get("face", "default"),
             )
             results.append(audit)
-    
+
     return results
+
 
 def generate_example_data() -> None:
     """Generate example physics data CSV."""
@@ -179,18 +190,19 @@ def generate_example_data() -> None:
         {"event_id": "PHYS-07", "face": "delayed-choice", "tau_R": -0.3, "D_C": -0.35, "omega": 0.01, "R": 1.0},
         {"event_id": "PHYS-08", "face": "weak-measurement", "tau_R": -0.1, "D_C": -0.1, "omega": 0, "R": 1.0},
     ]
-    
+
     output_file = Path("physics_audit_example.csv")
-    with open(output_file, 'w', newline='') as f:
+    with open(output_file, "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=["event_id", "face", "tau_R", "D_C", "omega", "R"])
         writer.writeheader()
         writer.writerows(example_data)
-    
+
     print(f"Created example file: {output_file}")
     print("\nContents:")
     print("event_id,face,tau_R,D_C,omega,R")
     for row in example_data:
         print(f"{row['event_id']},{row['face']},{row['tau_R']},{row['D_C']},{row['omega']},{row['R']}")
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -214,42 +226,37 @@ Seam Types:
   Type I:   Δκ = 0, s = 0  (Return Without Loss)
   Type II:  Δκ < 0, |s| ≤ tol  (Return With Loss)  
   Type III: |s| > tol  (Irreconcilable Collapse)
-        """
+        """,
     )
-    
-    parser.add_argument('--input', '-i', type=Path, help='Input CSV file with physics data')
-    parser.add_argument('--single', action='store_true', help='Single event audit mode')
-    parser.add_argument('--tau-R', type=float, help='Return delay τ_R (signed)')
-    parser.add_argument('--D-C', type=float, help='Curvature change D_C (signed)')
-    parser.add_argument('--omega', type=float, default=0.0, help='Drift load ω [0, 1]')
-    parser.add_argument('--R', type=float, default=1.0, help='Return credit R [0, 1]')
-    parser.add_argument('--event-id', type=str, default='UNNAMED', help='Event identifier')
-    parser.add_argument('--face', type=str, default='default', help='Observational face')
-    parser.add_argument('--example', action='store_true', help='Generate example CSV')
-    parser.add_argument('--json', action='store_true', help='Output as JSON')
-    
+
+    parser.add_argument("--input", "-i", type=Path, help="Input CSV file with physics data")
+    parser.add_argument("--single", action="store_true", help="Single event audit mode")
+    parser.add_argument("--tau-R", type=float, help="Return delay τ_R (signed)")
+    parser.add_argument("--D-C", type=float, help="Curvature change D_C (signed)")
+    parser.add_argument("--omega", type=float, default=0.0, help="Drift load ω [0, 1]")
+    parser.add_argument("--R", type=float, default=1.0, help="Return credit R [0, 1]")
+    parser.add_argument("--event-id", type=str, default="UNNAMED", help="Event identifier")
+    parser.add_argument("--face", type=str, default="default", help="Observational face")
+    parser.add_argument("--example", action="store_true", help="Generate example CSV")
+    parser.add_argument("--json", action="store_true", help="Output as JSON")
+
     args = parser.parse_args()
-    
+
     if args.example:
         generate_example_data()
         return 0
-    
+
     if args.single:
         if args.tau_R is None or args.D_C is None:
             print("Error: --single mode requires --tau-R and --D-C")
             return 1
-        
+
         audit = compute_audit(
-            tau_R=args.tau_R,
-            D_C=args.D_C,
-            omega=args.omega,
-            R=args.R,
-            event_id=args.event_id,
-            face=args.face
+            tau_R=args.tau_R, D_C=args.D_C, omega=args.omega, R=args.R, event_id=args.event_id, face=args.face
         )
-        
+
         return_class = classify_return(args.tau_R, args.D_C)
-        
+
         if args.json:
             print(json.dumps(asdict(audit), indent=2))
         else:
@@ -268,7 +275,7 @@ Seam Types:
             print(f"  R   = {audit.R:.4f}  (return credit)")
             print()
             print("Budget Reconciliation:")
-            print(f"  Δκ = R·τ_R − (D_ω + D_C)")
+            print("  Δκ = R·τ_R − (D_ω + D_C)")
             print(f"  Δκ = {audit.R}×{audit.tau_R:.2f} − ({audit.D_omega:.2f} + {audit.D_C:.2f})")
             print(f"  Δκ = {audit.delta_kappa}")
             print()
@@ -279,31 +286,31 @@ Seam Types:
             print(f"  Seam Type: {audit.seam_type}")
             print(f"  Status: {audit.status}")
             print(f"  AX-0: {'✓ PASS' if audit.ax0_pass else '✗ FAIL'}")
-            
+
             print_seamstamp(audit)
-        
+
         return 0 if audit.status == "Pass" else 1
-    
+
     if args.input:
         if not args.input.exists():
             print(f"Error: File not found: {args.input}")
             return 1
-        
+
         results = run_batch_audit(args.input)
-        
+
         print("=" * 70)
         print("COLLAPSE INTEGRITY BATCH AUDIT")
         print("=" * 70)
         print(f"\nProcessed {len(results)} events from {args.input}")
         print()
-        
+
         # Summary
         type_i = sum(1 for r in results if r.seam_type == "Type I")
         type_ii = sum(1 for r in results if r.seam_type == "Type II")
         type_iii = sum(1 for r in results if r.seam_type == "Type III")
         passed = sum(1 for r in results if r.status == "Pass")
         ax0_passed = sum(1 for r in results if r.ax0_pass)
-        
+
         print("Summary:")
         print(f"  Type I (Return Without Loss): {type_i}")
         print(f"  Type II (Return With Loss):   {type_ii}")
@@ -311,24 +318,27 @@ Seam Types:
         print(f"  Audit Pass Rate: {passed}/{len(results)} ({100*passed/len(results):.1f}%)")
         print(f"  AX-0 Compliance: {ax0_passed}/{len(results)} ({100*ax0_passed/len(results):.1f}%)")
         print()
-        
+
         # Individual results
         print("Individual Results:")
         print("-" * 70)
         for audit in results:
             return_class = classify_return(audit.tau_R, audit.D_C)
             status_symbol = "✓" if audit.status == "Pass" else "✗"
-            print(f"{status_symbol} {audit.event_id:12} | {audit.seam_type:8} | "
-                  f"τ_R={audit.tau_R:+.2f} | D_C={audit.D_C:+.2f} | "
-                  f"Δκ={audit.delta_kappa:+.4f} | I={audit.I:.3f}")
-        
+            print(
+                f"{status_symbol} {audit.event_id:12} | {audit.seam_type:8} | "
+                f"τ_R={audit.tau_R:+.2f} | D_C={audit.D_C:+.2f} | "
+                f"Δκ={audit.delta_kappa:+.4f} | I={audit.I:.3f}"
+            )
+
         for audit in results:
             print_seamstamp(audit)
-        
+
         return 0 if all(r.status == "Pass" for r in results) else 1
-    
+
     parser.print_help()
     return 1
+
 
 if __name__ == "__main__":
     sys.exit(main())
