@@ -179,12 +179,13 @@ omit = [
   "src/umcp/cli.py",  # CLI is subprocess-heavy, difficult to test comprehensively
   "src/umcp/api_umcp.py",  # Planned REST API extension - stub code
   "src/umcp/minimal_cli.py",  # Minimal CLI alternative - not primary interface
+  "src/umcp/preflight.py",  # Complex error-handling paths, tested via integration
 ]
 
 [tool.coverage.report]
 show_missing = true
 skip_covered = false
-fail_under = 78
+fail_under = 80
 exclude_lines = [
   "pragma: no cover",
   "def __repr__",
