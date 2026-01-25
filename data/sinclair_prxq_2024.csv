@@ -1,0 +1,22 @@
+# Sinclair et al. PRX Quantum 3, 010314 (2024)
+# "Measuring the time atoms spend in the excited state due to a photon they do not absorb"
+#
+# Extracted experimental data for Collapse Integrity audit
+#
+# Key result: τ_T/τ_0 = 0.77 ± 0.16
+# - τ_T = excitation time for transmitted photons
+# - τ_0 = excitation time for average incident photon
+# - τ_sp = 26.5 ns (atomic spontaneous lifetime)
+#
+# τ_R (return delay) = τ_T - τ_0 (normalized to τ_0 = 1)
+# D_C (curvature) derived from phase geometry φ_T/φ_0
+#
+event_id,face,tau_R,D_C,omega,R,photon_number,probe_detuning_MHz,OD,notes
+PHYS-04-A,postselected-transmit,-0.23,-0.23,0,1.0,34,-5.6,4.0,Red-detuned probe; φ_0=-20.0μrad
+PHYS-04-B,postselected-transmit,-0.23,-0.23,0,1.0,34,+4.7,4.0,Blue-detuned probe; φ_0=+16.4μrad
+PHYS-04-C,postselected-transmit,-0.23,-0.23,0,1.0,134,-5.6,4.0,Higher photon number red
+PHYS-04-D,postselected-transmit,-0.23,-0.23,0,1.0,134,+4.7,4.0,Higher photon number blue
+PHYS-04-E,postselected-transmit,-0.23,-0.23,0,1.0,588,-5.6,4.0,Proportional noise calibration
+PHYS-04-F,postselected-transmit,-0.23,-0.23,0,1.0,898,-5.6,4.0,Proportional noise calibration
+PHYS-04-G,postselected-transmit,-0.23,-0.23,0,1.0,1527,-5.6,4.0,Proportional noise calibration
+PHYS-04-H,postselected-transmit,-0.23,-0.23,0,1.0,3040,-5.6,4.0,Proportional noise calibration

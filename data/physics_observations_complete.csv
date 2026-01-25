@@ -1,0 +1,39 @@
+event_id,face,tau_R,D_C,omega,R,paper,year,obs_type,likelihood,regime,notes
+SINCLAIR-2022-134-BLUE,postselected-transmit,-0.23,-0.23,0.0,1.0,Sinclair PRX Quantum,2022,experiment,0.95,superluminal,1-3-4 cascade blue photons
+SINCLAIR-2022-134-RED,postselected-transmit,-0.23,-0.23,0.0,1.0,Sinclair PRX Quantum,2022,experiment,0.95,superluminal,1-3-4 cascade red photons
+SINCLAIR-2022-34-BLUE,postselected-transmit,-0.23,-0.23,0.0,1.0,Sinclair PRX Quantum,2022,experiment,0.95,superluminal,3-4 transition blue photons F=3→F'=4
+SINCLAIR-2022-34-RED,postselected-transmit,-0.23,-0.23,0.0,1.0,Sinclair PRX Quantum,2022,experiment,0.95,superluminal,3-4 transition red photons F=3→F'=4
+SINCLAIR-2022-MAIN,postselected-transmit,-0.23,-0.23,0.0,1.0,Sinclair PRX Quantum,2022,experiment,0.95,superluminal,φ_T/φ_0=0.77±0.16 broad-band OD~4 MAIN RESULT
+THOMPSON-2025-SUMRULE,unconditioned-average,0.0,0.0,0.0,1.0,Thompson APL Quantum,2025,theory,0.95,null,τ_unc = P_S·τ_S + P_T·τ_T probability sum rule IDENTITY
+BANERJEE-2022-ANOMALOUS-D900,EIT-fast-light,-0.86,-0.86,0.0,1.0,Banerjee Phys Rev Research,2022,experiment,0.92,superluminal,ANOMALOUS drag δ=900Hz τ=-3.0μs OPPOSITE to medium motion
+BANERJEE-2022-NORMAL-D0,EIT-slow-light,1.0,1.0,0.0,1.0,Banerjee Phys Rev Research,2022,experiment,0.92,subluminal,Normal drag δ=0Hz τ=+3.5μs slow-light polariton
+BANERJEE-2022-ANOM-V+200,EIT-fast-light,-0.86,-0.86,0.0,1.0,Banerjee Phys Rev Research,2022,experiment,0.9,superluminal,v₀=+200mm/s x=-40μm OPPOSITE displacement Fig4c
+BANERJEE-2022-ANOM-V-200,EIT-fast-light,-0.86,-0.86,0.0,1.0,Banerjee Phys Rev Research,2022,experiment,0.9,superluminal,v₀=-200mm/s x=+40μm OPPOSITE displacement Fig4c
+BANERJEE-2022-NORM-V+200,EIT-slow-light,1.0,1.0,0.0,1.0,Banerjee Phys Rev Research,2022,experiment,0.9,subluminal,v₀=+200mm/s x=+40μm displacement WITH motion Fig4a
+BANERJEE-2022-NORM-V-200,EIT-slow-light,1.0,1.0,0.0,1.0,Banerjee Phys Rev Research,2022,experiment,0.9,subluminal,v₀=-200mm/s x=-40μm displacement WITH motion Fig4a
+BANERJEE-2022-NULL-D425,EIT-null,0.0,0.0,0.0,1.0,Banerjee Phys Rev Research,2022,experiment,0.88,null,Null drag δ=425Hz τ=0 exact ng=1/n NO DRAG at any velocity
+THOMPSON-2025-BROAD-OD4,postselected-transmit,-0.6,-0.6,0.0,1.0,Thompson APL Quantum,2025,theory,0.88,superluminal,Broad-band OD=4 prediction τ_T/τ_0≈0.4 matches Sinclair
+THOMPSON-2025-NARROW-OD05,postselected-transmit,-0.5,-0.5,0.0,1.0,Thompson APL Quantum,2025,theory,0.845,superluminal,Narrow-band on-resonance η₀=0.5
+THOMPSON-2025-NARROW-OD1,postselected-transmit,-1.0,-1.0,0.0,1.0,Thompson APL Quantum,2025,theory,0.84,superluminal,Narrow-band on-resonance η₀=1.0
+THOMPSON-2025-NARROW-OD2,postselected-transmit,-2.0,-2.0,0.0,1.0,Thompson APL Quantum,2025,theory,0.83,superluminal,Narrow-band on-resonance η₀=2.0
+THOMPSON-2025-NARROW-OD4,postselected-transmit,-4.0,-4.0,0.0,1.0,Thompson APL Quantum,2025,theory,0.8099999999999999,superluminal,Narrow-band on-resonance η₀=4.0 ANOMALOUS WEAK VALUE τ=-106ns
+THOMPSON-2025-SCATTERED-OD1,scattered-sidemode,0.58,0.58,0.0,1.0,Thompson APL Quantum,2025,theory,0.8,subluminal,τ_S/τ_sp=1.58 for η₀→0 Wigner delay dominates
+THOMPSON-2025-NARROW-OD6,postselected-transmit,-6.0,-6.0,0.0,1.0,Thompson APL Quantum,2025,theory,0.79,superluminal,Narrow-band on-resonance η₀=6.0
+THOMPSON-2025-SCATTERED-OD4,scattered-sidemode,0.07,0.07,0.0,1.0,Thompson APL Quantum,2025,theory,0.78,subluminal,τ_S/τ_sp=1.07 for η₀=4 delays nearly cancel
+THOMPSON-2025-NARROW-OD8,postselected-transmit,-8.0,-8.0,0.0,1.0,Thompson APL Quantum,2025,theory,0.77,superluminal,Narrow-band on-resonance η₀=8.0
+THOMPSON-2025-NARROW-OD10,postselected-transmit,-10.0,-10.0,0.0,1.0,Thompson APL Quantum,2025,theory,0.75,superluminal,Narrow-band on-resonance η₀=10.0
+PAULUS-2025-M87-SHADOW,postselected-transmit,1.0,0.05,0.09,1.0,Paulus EHT Analysis,2025,observation,0.95,subluminal,M87* shadow D=42±3μas spin=0.94 MAD-favored SS1m-stamped
+PAULUS-2025-SGRA-SHADOW,postselected-transmit,1.0,0.05,0.09,1.0,Paulus EHT Analysis,2025,observation,0.9,subluminal,SgrA* shadow D=51.8±2.3μas rapid variability scattering-corrected
+PAULUS-2025-DM-LIMIT,shadow-core,1.0,0.05,0.09,1.0,Paulus EHT Analysis,2025,constraint,0.85,subluminal,DM annihilation ⟨σv⟩<1e-27cm³/s I_center/I_ring<10%
+EHT-2019-M87-RING,photon-ring,1.0,0.05,0.09,1.0,EHT Collaboration ApJL,2019,experiment,0.98,subluminal,First image of black hole shadow 6.5e9 M☉ ring circularity<10%
+EHT-2022-SGRA-RING,photon-ring,1.0,0.05,0.09,1.0,EHT Collaboration ApJL,2022,experiment,0.92,subluminal,Milky Way SMBH shadow 4.0e6 M☉ multi-epoch synthesis
+CLIFF-2025-BASELINE,edge-anchored,1.30,0.099,0.035,1.0,Paulus,2025,astrophysical,high,intermediate,The Cliff LRD z=3.55 baseline F=0.965 kappa=-0.336
+CLIFF-2025-TIGHTENED,edge-anchored,2.00,0.081,0.017,1.0,Paulus,2025,astrophysical,high,stable,The Cliff tightened F=0.983 kappa=-0.189 PASSES Stable gate
+CLIFF-2025-TWIN,edge-anchored,0.00,0.296,0.123,1.0,Paulus,2025,astrophysical,medium,pre-stable,Cliff-like twin F=0.877 kappa=-1.328
+ANYON-2025-GATE-INIT,topological-qc,0.286,0.336,0.336,1.0,Paulus,2025,topological,medium,watch,Ising anyon gate leakage initial omega=0.286 I_C=0.364
+ANYON-2025-GATE-R1,topological-qc,0.001914,0.00192,0.00192,1.0,Paulus,2025,topological,high,stable,Ising anyon after 1st recursion I_C=0.994
+ANYON-2025-GATE-R2,topological-qc,2.565e-14,2.565e-14,2.565e-14,1.0,Paulus,2025,topological,very-high,stable,Ising anyon after 2nd recursion I_C=1.000
+ANYON-2025-M12-C0,topological-qc,0.085,0.089,0.089,1.0,Paulus,2025,topological,medium,watch,Matrix entry drift cycle 0 I_C=0.828
+ANYON-2025-M12-C1,topological-qc,0.0042,0.0042,0.0042,1.0,Paulus,2025,topological,high,stable,Matrix entry drift cycle 1 I_C=0.987
+ANYON-2025-PHASE,topological-qc,0.09,0.09,0.09,1.0,Paulus,2025,topological,medium,watch,Phase drift delta_theta=0.09 exceeds threshold
+ANYON-2025-DIM-NEG,topological-qc,-3.75,-3.75,-3.75,1.0,Paulus,2025,topological,low,collapse,Negative quantum dimension d_alpha=-3.75 noncomputational

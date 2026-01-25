@@ -1,0 +1,21 @@
+{
+  "run_id": "BASELINE-2026-01-25",
+  "frozen_utc": "2026-01-25T02:34:43.364645+00:00",
+  "hashes": {
+    "embedding.yaml": "29ddec8b7e51a8d9502feea88d2d3ec3572690aeef4df99cfc15ef28158b3f6d",
+    "return.yaml": "0ace77b2f3cfc0b8a0de6be297f82800956eadbc351e59953962fc0048cca0b2",
+    "contract.yaml": "7e3970cea147c08df2df7b37b6dbcd604f05bb7e34bce626d3c1f613160dc667",
+    "weights.csv": "121771007e38cc3f3fdc54b1124474b043e87d17713c25f7efef2ee3c2e36087",
+    "observables.yaml": "818a3a2e26470b6519f1b532f980848b266a903b966c824b6f38ed577b9d56bc",
+    "closures/registry.yaml": "791e5496a036982b5f2f32926a2f6a66869727c97dfa700390de6fdc40df316e"
+  },
+  "files_frozen": [
+    "embedding.yaml",
+    "return.yaml",
+    "contract.yaml",
+    "weights.csv",
+    "observables.yaml",
+    "closures/registry.yaml"
+  ],
+  "purpose": "Baseline for drift detection and seam accounting"
+}

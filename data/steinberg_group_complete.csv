@@ -1,0 +1,16 @@
+event_id,face,tau_R,D_C,omega,R,paper,notes
+SINCLAIR-2022-MAIN,postselected-transmit,-0.23,-0.23,0,1.0,Sinclair PRX Quantum 2022,φ_T/φ_0=0.77±0.16 broad-band OD~4
+SINCLAIR-2022-34-RED,postselected-transmit,-0.23,-0.23,0,1.0,Sinclair PRX Quantum 2022,3-4 transition red photons
+SINCLAIR-2022-34-BLUE,postselected-transmit,-0.23,-0.23,0,1.0,Sinclair PRX Quantum 2022,3-4 transition blue photons
+SINCLAIR-2022-134-RED,postselected-transmit,-0.23,-0.23,0,1.0,Sinclair PRX Quantum 2022,1-3-4 transition red photons
+SINCLAIR-2022-134-BLUE,postselected-transmit,-0.23,-0.23,0,1.0,Sinclair PRX Quantum 2022,1-3-4 transition blue photons
+THOMPSON-2025-NARROW-OD05,postselected-transmit,-0.50,-0.50,0,1.0,Thompson APL Quantum 2025,Narrow-band on-resonance η₀=0.5
+THOMPSON-2025-NARROW-OD1,postselected-transmit,-1.00,-1.00,0,1.0,Thompson APL Quantum 2025,Narrow-band on-resonance η₀=1.0
+THOMPSON-2025-NARROW-OD2,postselected-transmit,-2.00,-2.00,0,1.0,Thompson APL Quantum 2025,Narrow-band on-resonance η₀=2.0
+THOMPSON-2025-NARROW-OD4,postselected-transmit,-4.00,-4.00,0,1.0,Thompson APL Quantum 2025,Narrow-band on-resonance η₀=4.0 (ANOMALOUS WEAK VALUE)
+THOMPSON-2025-NARROW-OD6,postselected-transmit,-6.00,-6.00,0,1.0,Thompson APL Quantum 2025,Narrow-band on-resonance η₀=6.0
+THOMPSON-2025-NARROW-OD8,postselected-transmit,-8.00,-8.00,0,1.0,Thompson APL Quantum 2025,Narrow-band on-resonance η₀=8.0
+THOMPSON-2025-NARROW-OD10,postselected-transmit,-10.00,-10.00,0,1.0,Thompson APL Quantum 2025,Narrow-band on-resonance η₀=10.0
+THOMPSON-2025-BROAD-OD4,postselected-transmit,-0.60,-0.60,0,1.0,Thompson APL Quantum 2025,Theoretical broad-band prediction OD=4
+THOMPSON-2025-SCATTERED-OD1,scattered-sidemode,0.58,0.58,0,1.0,Thompson APL Quantum 2025,τ_S/τ_sp=1.58 for η₀→0 (Wigner delay dominates)
+THOMPSON-2025-SCATTERED-OD4,scattered-sidemode,0.07,0.07,0,1.0,Thompson APL Quantum 2025,τ_S/τ_sp=1.07 for η₀=4.0
