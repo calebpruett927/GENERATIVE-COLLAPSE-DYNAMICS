@@ -42,6 +42,11 @@ contract:
       tol_seam: 0.005
       tol_id: 1.0e-9
 
+  rounding_policy:
+    precision: 6
+    mode: "round_half_even"
+    notes: "IEEE 754 round-half-to-even for reproducible presentation"
+
   typed_censoring:
     tau_R_special_values:
       - "INF_REC"

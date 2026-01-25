@@ -1,0 +1,461 @@
+# Failure Node Atlas v1
+# Canonical enumeration of meaning-drift failure nodes for UMCP protocol
+#
+# Cross-references:
+#   - docs/FAILURE_NODE_ATLAS.md (human-readable documentation)
+#   - schemas/failure_node_atlas.schema.json (schema validation)
+#   - src/umcp/preflight.py (mechanical enforcement)
+#   - KERNEL_SPECIFICATION.md, TIER_SYSTEM.md, INFRASTRUCTURE_GEOMETRY.md
+#
+# Severity taxonomy:
+#   ERROR  = Nonconformance. Outputs are inadmissible. Do not interpret.
+#   WARN   = Suspicious. Interpretation allowed only with explicit warning banner.
+#   INFO   = Recorded for audit trail. No enforcement action.
+
+schema: "schemas/failure_node_atlas.schema.json"
+
+atlas:
+  id: "UMCP.FAILURE_NODE_ATLAS.v1"
+  version: "1.0.0"
+  created_utc: "2026-01-25T00:00:00Z"
+  description: |
+    The Failure Node Atlas enumerates the recurring ways meaning can accidentally
+    drift in computational workflows. Each node is a named, detectable choke point
+    where contract violation or comparability loss can occur. The validator treats
+    them as either hard nonconformance (ERROR) or structured warnings (WARN).
+
+  nodes:
+    - id: "FN-001"
+      name: "Adapter drift (Ψ meaning drift)"
+      phase: "B"
+      severity: "ERROR"
+      definition: |
+        N_K / Adapter_ID changes (or any embedding logic changes) while reusing
+        the same Run_ID or while claiming comparability without a new baseline.
+      artifact_trigger:
+        - "adapter.yaml differs from frozen hash"
+        - "Adapter_ID string differs"
+        - "embedding parameters differ"
+      kernel_symptom: |
+        Discontinuities in ω/S/C/IC unrelated to any declared intervention;
+        distribution shifts in Ψ coordinates.
+      seam_symptom: |
+        Weld residual s fails to close; identity check breaks intermittently;
+        "mysterious" Δκ changes on otherwise similar runs.
+      rule: |
+        ERROR if adapter hash differs and Run_ID not updated / no new baseline declared;
+        WARN if adapter differs but a new baseline exists and weld not attempted.
+      checks:
+        - type: "hash_compare"
+          source: "embedding.yaml"
+          freeze_ref: "freeze/embedding.yaml.sha256"
+        - type: "field_compare"
+          field: "adapter_id"
+          source: "embedding.yaml"
+          freeze_ref: "freeze/adapter_id"
+
+    - id: "FN-002"
+      name: "Bounds drift (comparability intervals K change)"
+      phase: "B"
+      severity: "ERROR"
+      definition: |
+        Coordinate bounds (ℓ_i, u_i) change midstream or across runs without
+        explicit seam/baseline.
+      artifact_trigger:
+        - "bounds array differs from freeze/adapter schema"
+        - "bounds recorded in two places disagree"
+      kernel_symptom: |
+        Abrupt changes in kernel scale; regime label flips without matching
+        raw behavior.
+      seam_symptom: |
+        Systematic residual bias (not noise); repeated FAIL clustered at
+        boundary-crossing segments.
+      rule: |
+        ERROR if bounds differ without new baseline;
+        WARN if bounds differ with baseline but no disclosure in report header.
+      checks:
+        - type: "bounds_compare"
+          source: "observables.yaml"
+          freeze_ref: "freeze/bounds.json"
+
+    - id: "FN-003"
+      name: "Silent clipping / missing OOR flags"
+      phase: "A"
+      severity: "ERROR"
+      definition: |
+        Values are clipped or imputed without emitting OOR/missingness flags
+        as part of the measured object.
+      artifact_trigger:
+        - "face policy says clip, but no OOR flag columns exist"
+        - "OOR counts always zero despite boundary hits"
+        - "missingness handled without flags"
+      kernel_symptom: |
+        "Too-stable" appearance; reduced variability; suspiciously low stress
+        signatures.
+      seam_symptom: |
+        False PASS risk (manufactured calm); later welds fail when compared to
+        properly flagged runs.
+      rule: |
+        ERROR if OOR policy requires flags and flags absent;
+        WARN if flags exist but OOR rate is implausibly low given distribution.
+      checks:
+        - type: "oor_policy_check"
+          policy_source: "observables.yaml"
+          data_source: "derived/trace.csv"
+        - type: "oor_rate_plausibility"
+          data_source: "derived/trace.csv"
+          threshold_field: "bounds"
+
+    - id: "FN-004"
+      name: "Undeclared smoothing/filtering/resampling of Ψ(t)"
+      phase: "C"
+      severity: "WARN"
+      definition: |
+        Smoothing, denoising, moving averages, downsampling, interpolation
+        applied without being declared as part of Tier-0 pipeline.
+      artifact_trigger:
+        - "preprocessing_steps missing/empty but derived traces show non-physical autocorrelation"
+        - "cadence differs from declared sampling"
+        - "kernel computed from a file that is not the direct embedding output"
+      kernel_symptom: |
+        τ_R artificially decreases; returns become unusually dense; curvature/roughness
+        attenuated.
+      seam_symptom: |
+        Spurious continuity claims (return manufactured); seams may PASS locally but
+        fail under recomputation with declared pipeline.
+      rule: |
+        ERROR if any preprocessing is detected/declared mismatch;
+        WARN if statistical tests indicate smoothing but metadata claims none (forces human audit).
+      checks:
+        - type: "autocorrelation_test"
+          data_source: "derived/trace.csv"
+          threshold: 0.95
+        - type: "cadence_consistency"
+          declared_source: "observables.yaml"
+          actual_source: "derived/trace.csv"
+
+    - id: "FN-005"
+      name: "Timebase drift (timestamp semantics change)"
+      phase: "A"
+      severity: "ERROR"
+      definition: |
+        Timezone, timestamp parsing, alignment, or indexing changes; "t" is no
+        longer the same variable.
+      artifact_trigger:
+        - "timezone mismatch between ingest header and files"
+        - "non-monotone timestamps"
+        - "duplicated timestamps"
+        - "inconsistent sampling interval without disclosure"
+      kernel_symptom: |
+        Apparent regime changes aligned to calendar artifacts; sudden ω spikes
+        at DST/time parsing edges.
+      seam_symptom: |
+        Weld comparisons invalid because t0/t1 not comparable; FAILs cluster at
+        timebase discontinuities.
+      rule: |
+        ERROR for non-monotone/duplicate timestamps (unless explicitly allowed);
+        WARN for cadence change without disclosure.
+      checks:
+        - type: "timestamp_monotone"
+          data_source: "derived/trace.csv"
+          column: "t"
+        - type: "timestamp_unique"
+          data_source: "derived/trace.csv"
+          column: "t"
+        - type: "timezone_consistency"
+          manifest_source: "manifest.yaml"
+          data_source: "derived/trace.csv"
+
+    - id: "FN-006"
+      name: "Unit drift before embedding"
+      phase: "C"
+      severity: "WARN"
+      definition: |
+        Unit conversion or sensor calibration changes without update to ingest
+        declaration.
+      artifact_trigger:
+        - "units metadata differs from ingest"
+        - "calibration version differs"
+        - "raw ranges shift dramatically without corresponding adapter change"
+      kernel_symptom: |
+        Distribution shifts that look like drift in the world but are actually
+        drift in measurement.
+      seam_symptom: |
+        Residual shows structured bias; repeated failures at known calibration
+        update points.
+      rule: |
+        ERROR if units unspecified or conflict;
+        WARN if calibration version changes without new baseline.
+      checks:
+        - type: "units_declared"
+          source: "observables.yaml"
+        - type: "distribution_shift_detection"
+          data_source: "derived/trace.csv"
+          baseline_source: "freeze/distribution_baseline.json"
+
+    - id: "FN-007"
+      name: "Weight drift (w_i changes)"
+      phase: "A"
+      severity: "ERROR"
+      definition: |
+        Weights change without being frozen/minted as a new run or without seam
+        procedure.
+      artifact_trigger:
+        - "weights.yaml hash differs from freeze"
+        - "weights sum ≠ 1"
+        - "weights file missing"
+      kernel_symptom: |
+        IC/κ changes in scale and sensitivity; regime classification shifts.
+      seam_symptom: |
+        Identity ratio ir mismatches expected exp(Δκ); residual s shifts
+        systematically.
+      rule: |
+        ERROR if weights differ without new baseline;
+        ERROR if weights don't sum to 1 within tolerance;
+        WARN if weights are present but not referenced in manifest.
+      checks:
+        - type: "file_exists"
+          source: "weights.csv"
+        - type: "weights_sum_check"
+          source: "weights.csv"
+          tolerance: 0.000000001
+        - type: "hash_compare"
+          source: "weights.csv"
+          freeze_ref: "freeze/weights.csv.sha256"
+
+    - id: "FN-008"
+      name: "Norm / distance function drift (‖·‖ or Dθ changes)"
+      phase: "B"
+      severity: "ERROR"
+      definition: |
+        Change in norm or metric generator used for return detection or kernel
+        computation.
+      artifact_trigger:
+        - "contract says one norm but code/config uses another"
+        - "Dθ closure registry hash differs"
+      kernel_symptom: |
+        τ_R distribution changes; ω sensitivity changes; "return deserts" shift.
+      seam_symptom: |
+        PASS/FAIL becomes irreproducible across machines.
+      rule: |
+        ERROR if norm/Dθ mismatch vs freeze;
+        WARN if multiple norms used in one run without separation.
+      checks:
+        - type: "closure_hash_compare"
+          closure_id: "norms"
+          registry_source: "closures/registry.yaml"
+          freeze_ref: "freeze/norms_closure.sha256"
+        - type: "contract_norm_consistency"
+          contract_source: "contract.yaml"
+          closure_source: "closures/registry.yaml"
+
+    - id: "FN-009"
+      name: "Return settings drift (η, H_rec, τ_R definition)"
+      phase: "B"
+      severity: "ERROR"
+      definition: |
+        Return threshold η, horizon H_rec, or τ_R rule changes without seam/baseline.
+      artifact_trigger:
+        - "return_settings.yaml differs"
+        - "τ_R computed with different horizon than declared"
+      kernel_symptom: |
+        τ_R shifts sharply; censoring frequency changes; return credit effectively
+        redefined.
+      seam_symptom: |
+        Weld budgets inconsistent because R·τ_R meaning changes; residual s becomes
+        nonstationary.
+      rule: |
+        ERROR if return settings differ without new baseline;
+        WARN if censoring rate changes drastically vs baseline (forces audit).
+      checks:
+        - type: "hash_compare"
+          source: "return.yaml"
+          freeze_ref: "freeze/return.yaml.sha256"
+        - type: "return_parameter_compare"
+          source: "return.yaml"
+          freeze_ref: "freeze/return_params.json"
+
+    - id: "FN-010"
+      name: "Closure registry incompleteness or mismatch"
+      phase: "A"
+      severity: "ERROR"
+      definition: |
+        Missing or inconsistent closure definitions for any claimed seam or
+        published kernel outputs.
+      artifact_trigger:
+        - "closures.yaml absent"
+        - "closure fields missing"
+        - "hashes inconsistent"
+        - "a closure referenced in text not present in registry"
+      kernel_symptom: |
+        Not recomputable; outputs become "story dependent."
+      seam_symptom: |
+        Cannot be evaluated; or fails because terms can't be reconstructed.
+      rule: |
+        ERROR for any continuity claim without complete closure registry;
+        WARN for exploratory runs.
+      checks:
+        - type: "file_exists"
+          source: "closures/registry.yaml"
+        - type: "closure_completeness"
+          registry_source: "closures/registry.yaml"
+          contract_source: "contract.yaml"
+        - type: "closure_hash_integrity"
+          registry_source: "closures/registry.yaml"
+
+    - id: "FN-011"
+      name: "Diagnostic laundering into gates"
+      phase: "A"
+      severity: "ERROR"
+      definition: |
+        Tier-2 overlays used as decision gates or presented as regime truth.
+      artifact_trigger:
+        - "report labels show overlay score as gate"
+        - "regime label derived from non-kernel symbols"
+        - "reserved-symbol linter flags O.* or J.* in gate path"
+      kernel_symptom: |
+        May look fine, but interpretation is invalid.
+      seam_symptom: |
+        Not directly; this is a governance failure that corrupts claims.
+      rule: |
+        ERROR if any gate references non-kernel symbols;
+        WARN if overlays appear near gate section without explicit "diagnostic only" labels.
+      reserved_symbols:
+        tier2_overlay_prefixes:
+          - "O."
+          - "O_"
+        tier2_diagnostic_prefixes:
+          - "J."
+          - "J_"
+        tier1_kernel_symbols:
+          - "omega"
+          - "ω"
+          - "S"
+          - "C"
+          - "F"
+          - "IC"
+          - "kappa"
+          - "κ"
+          - "tau_R"
+          - "τ_R"
+      checks:
+        - type: "gate_symbol_lint"
+          source: "outputs/report.txt"
+          reserved_prefixes: ["O.", "O_", "J.", "J_"]
+        - type: "regime_derivation_check"
+          source: "outputs/regimes.csv"
+          allowed_symbols: ["omega", "S", "C", "F", "IC", "kappa", "tau_R"]
+
+    - id: "FN-012"
+      name: "Post hoc window selection / leakage"
+      phase: "C"
+      severity: "ERROR"
+      definition: |
+        Evaluation windows adjusted after outcomes; training/test contamination;
+        forecasts generated after seeing future labels.
+      artifact_trigger:
+        - "forecast receipts missing issuance timestamps"
+        - "model fit window overlaps test window"
+        - "commit timestamps after outcome window but claims 'ex ante'"
+      kernel_symptom: |
+        None necessarily; this is a validity failure.
+      seam_symptom: |
+        None; but predictive claims become inadmissible.
+      rule: |
+        ERROR for leakage detected;
+        WARN if receipts exist but window policy ambiguous.
+      checks:
+        - type: "receipt_timestamp_check"
+          source: "outputs/*.receipt.json"
+        - type: "window_overlap_check"
+          fit_window_source: "manifest.yaml"
+          test_window_source: "manifest.yaml"
+
+    - id: "FN-013"
+      name: "Rounding / formatting drift that breaks recomputation"
+      phase: "C"
+      severity: "WARN"
+      definition: |
+        Published numbers cannot be recomputed due to inconsistent rounding rules
+        or unit presentation drift.
+      artifact_trigger:
+        - "rounding policy missing"
+        - "different rounding across tables"
+        - "published SS1m values not reproducible from stored high-precision values"
+      kernel_symptom: |
+        Small differences that accumulate into different regime edges.
+      seam_symptom: |
+        False FAIL or false PASS at tolerance boundaries.
+      rule: |
+        WARN when SS1m recomputation mismatch within a "presentation tolerance";
+        ERROR if mismatch exceeds declared tolerance.
+      checks:
+        - type: "ss1m_recomputation"
+          published_source: "outputs/ss1m_receipt.json"
+          computed_source: "derived/trace.csv"
+          tolerance: 0.000001
+        - type: "rounding_policy_declared"
+          source: "contract.yaml"
+
+    - id: "FN-014"
+      name: "Manifest/hash integrity failure"
+      phase: "A"
+      severity: "ERROR"
+      definition: |
+        Published artifacts aren't the ones computed; bytes changed post-compute.
+      artifact_trigger:
+        - "sha256 mismatch"
+        - "manifest missing"
+        - "missing environment pin"
+      kernel_symptom: |
+        May match locally but cannot be trusted externally.
+      seam_symptom: |
+        Receipts untrustworthy because referenced artifacts aren't stable.
+      rule: |
+        ERROR on any hash mismatch or missing manifest for a claimed result.
+      checks:
+        - type: "file_exists"
+          source: "manifest.yaml"
+        - type: "integrity_file_exists"
+          source: "integrity/sha256.txt"
+        - type: "hash_verification"
+          manifest_source: "manifest.yaml"
+          integrity_source: "integrity/sha256.txt"
+        - type: "environment_pin_exists"
+          source: "integrity/env.txt"
+
+  # Phase definitions for validator wiring
+  phases:
+    A:
+      name: "Structural conformance"
+      description: |
+        Fast, deterministic checks. Required files exist; schemas validate;
+        manifest present; hashes match; weights sum to 1; timestamps monotone;
+        required flags present.
+      nodes: ["FN-003", "FN-005", "FN-007", "FN-010", "FN-011", "FN-014"]
+      
+    B:
+      name: "Drift conformance"
+      description: |
+        Comparability protection. Compare adapter/bounds/weights/norm/return
+        settings/closures hashes to the frozen snapshot for this Run_ID.
+      nodes: ["FN-001", "FN-002", "FN-008", "FN-009"]
+      requires_freeze: true
+      
+    C:
+      name: "Statistical sentinels"
+      description: |
+        Suspicion detectors. Abrupt distribution shifts in Ψ; sudden τ_R density
+        change; OOR spikes; unexpected autocorrelation consistent with smoothing;
+        calibration-like jumps. WARNs that force human review.
+      nodes: ["FN-004", "FN-006", "FN-012", "FN-013"]
+
+  # Exit code policy
+  exit_codes:
+    error: 2
+    warn: 1
+    pass: 0
+    description: |
+      Exit 2: Any ERROR hit exists (nonconformant; do not interpret outputs)
+      Exit 1: WARN-only (interpretation allowed only with explicit warning banner)
+      Exit 0: PASS (no hits above INFO)

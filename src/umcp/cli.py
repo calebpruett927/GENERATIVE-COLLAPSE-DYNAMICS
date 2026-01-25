@@ -1934,6 +1934,79 @@ def _cmd_health(args: argparse.Namespace) -> int:
     return 0 if health["status"] == "healthy" else 1
 
 
+def _cmd_preflight(args: argparse.Namespace) -> int:
+    """Run preflight validation against Failure Node Atlas.
+    
+    Exit codes:
+        0 = PASS (no hits above INFO)
+        1 = WARN (interpretation allowed only with explicit warning banner)
+        2 = ERROR (nonconformant; do not interpret outputs)
+    """
+    from umcp.preflight import PreflightValidator
+
+    start = Path(args.path).resolve()
+    repo_root = _find_repo_root(start)
+    if repo_root is None:
+        print(
+            "ERROR: Could not find repo root (no pyproject.toml found in parents).",
+            file=sys.stderr,
+        )
+        return 2
+
+    freeze_dir = Path(args.freeze_dir).resolve() if args.freeze_dir else None
+    output_path = Path(args.output).resolve() if args.output else None
+
+    validator = PreflightValidator(
+        root_dir=repo_root,
+        freeze_dir=freeze_dir,
+    )
+    report = validator.validate()
+
+    # Save report if output path specified
+    if output_path:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(report.to_json())
+        if args.verbose:
+            print(f"Preflight report written to: {output_path}")
+
+    # Output format
+    if args.json:
+        print(report.to_json())
+    else:
+        # Human-readable output
+        print("=" * 80)
+        print("UMCP Preflight Validation - Failure Node Atlas")
+        print("=" * 80)
+        print(f"Run ID: {report.run_id}")
+        print(f"Atlas Version: {report.atlas_version}")
+        print(f"Status: {report.status}")
+        print()
+        print(f"Summary: {report.error_count} errors, {report.warn_count} warnings, {report.info_count} info")
+        print()
+
+        if report.hits:
+            print("Hits:")
+            for hit in report.hits:
+                severity_symbol = "✗" if hit.severity == "ERROR" else "⚠" if hit.severity == "WARN" else "ℹ"
+                print(f"  {severity_symbol} [{hit.severity}] {hit.node_id} (Phase {hit.phase})")
+                print(f"    Action: {hit.action}")
+                if args.verbose and hit.evidence:
+                    print(f"    Evidence: {hit.evidence}")
+            print()
+
+        # Exit code explanation
+        if report.status == "ERROR":
+            print("RESULT: NONCONFORMANT - Do not interpret outputs")
+        elif report.status == "WARN":
+            print("RESULT: Interpretation allowed only with explicit warning banner")
+        else:
+            print("RESULT: PASS - Outputs admissible")
+
+        print("=" * 80)
+
+    return report.exit_code
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="umcp", description="UMCP contract-first validator CLI")
     p.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
@@ -1989,6 +2062,18 @@ def build_parser() -> argparse.ArgumentParser:
     h.add_argument("path", nargs="?", default=".", help="Path inside repo (default: .)")
     h.add_argument("--json", action="store_true", help="Output as JSON for monitoring systems")
     h.set_defaults(func=_cmd_health)
+
+    # Preflight command - Failure Node Atlas validation
+    pf = sub.add_parser(
+        "preflight",
+        help="Run preflight validation against Failure Node Atlas",
+    )
+    pf.add_argument("path", nargs="?", default=".", help="Path inside repo (default: .)")
+    pf.add_argument("--freeze-dir", default=None, help="Path to freeze directory for drift detection")
+    pf.add_argument("--output", "-o", default=None, help="Write preflight report JSON to this file")
+    pf.add_argument("--verbose", "-v", action="store_true", help="Show detailed preflight output")
+    pf.add_argument("--json", action="store_true", help="Output report as JSON to stdout")
+    pf.set_defaults(func=_cmd_preflight)
 
     return p
 

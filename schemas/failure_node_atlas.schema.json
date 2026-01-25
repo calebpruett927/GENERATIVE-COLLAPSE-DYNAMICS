@@ -1,0 +1,299 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/failure_node_atlas.schema.json",
+  "title": "UMCP Failure Node Atlas Schema",
+  "description": "Schema for validating the Failure Node Atlas - canonical enumeration of meaning-drift failure nodes",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "atlas"],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "schemas/failure_node_atlas.schema.json"
+    },
+    "atlas": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "version", "nodes", "phases", "exit_codes"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^UMCP\\.FAILURE_NODE_ATLAS\\.v[0-9]+$",
+          "description": "Atlas identifier with version"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "description": "Semantic version of the atlas"
+        },
+        "created_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "type": "string"
+        },
+        "nodes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/failureNode"
+          }
+        },
+        "phases": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["A", "B", "C"],
+          "properties": {
+            "A": { "$ref": "#/$defs/phase" },
+            "B": { "$ref": "#/$defs/phase" },
+            "C": { "$ref": "#/$defs/phase" }
+          }
+        },
+        "exit_codes": {
+          "$ref": "#/$defs/exitCodes"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "failureNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "phase", "severity", "definition", "rule", "checks"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^FN-[0-9]{3}$",
+          "description": "Failure node identifier (e.g., FN-001)"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Human-readable name of the failure node"
+        },
+        "phase": {
+          "type": "string",
+          "enum": ["A", "B", "C"],
+          "description": "Validation phase: A=Structural, B=Drift, C=Statistical"
+        },
+        "severity": {
+          "type": "string",
+          "enum": ["ERROR", "WARN", "INFO"],
+          "description": "Severity level determining admissibility"
+        },
+        "definition": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Formal definition of the failure condition"
+        },
+        "artifact_trigger": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Observable artifact conditions that trigger this node"
+        },
+        "kernel_symptom": {
+          "type": "string",
+          "description": "How this failure manifests in kernel computations"
+        },
+        "seam_symptom": {
+          "type": "string",
+          "description": "How this failure manifests in seam/weld operations"
+        },
+        "rule": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The enforcement rule with severity conditions"
+        },
+        "reserved_symbols": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Symbol prefixes and lists for linting (FN-011 specific)"
+        },
+        "checks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/check"
+          },
+          "description": "Mechanical checks to detect this failure"
+        }
+      }
+    },
+    "check": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "file_exists",
+            "hash_compare",
+            "hash_verification",
+            "field_compare",
+            "bounds_compare",
+            "oor_policy_check",
+            "oor_rate_plausibility",
+            "autocorrelation_test",
+            "cadence_consistency",
+            "timestamp_monotone",
+            "timestamp_unique",
+            "timezone_consistency",
+            "units_declared",
+            "distribution_shift_detection",
+            "weights_sum_check",
+            "closure_hash_compare",
+            "closure_completeness",
+            "closure_hash_integrity",
+            "contract_norm_consistency",
+            "return_parameter_compare",
+            "gate_symbol_lint",
+            "regime_derivation_check",
+            "receipt_timestamp_check",
+            "window_overlap_check",
+            "ss1m_recomputation",
+            "rounding_policy_declared",
+            "integrity_file_exists",
+            "environment_pin_exists"
+          ],
+          "description": "Type of check to perform"
+        },
+        "source": {
+          "type": "string",
+          "description": "Primary source file or pattern for the check"
+        },
+        "data_source": {
+          "type": "string",
+          "description": "Data file to check"
+        },
+        "freeze_ref": {
+          "type": "string",
+          "description": "Reference to frozen/baseline value"
+        },
+        "field": {
+          "type": "string",
+          "description": "Specific field to compare"
+        },
+        "column": {
+          "type": "string",
+          "description": "CSV column name"
+        },
+        "tolerance": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Numeric tolerance for comparisons"
+        },
+        "threshold": {
+          "type": "number",
+          "description": "Statistical threshold"
+        },
+        "threshold_field": {
+          "type": "string",
+          "description": "Field containing threshold values"
+        },
+        "policy_source": {
+          "type": "string"
+        },
+        "declared_source": {
+          "type": "string"
+        },
+        "actual_source": {
+          "type": "string"
+        },
+        "manifest_source": {
+          "type": "string"
+        },
+        "registry_source": {
+          "type": "string"
+        },
+        "contract_source": {
+          "type": "string"
+        },
+        "closure_source": {
+          "type": "string"
+        },
+        "closure_id": {
+          "type": "string"
+        },
+        "baseline_source": {
+          "type": "string"
+        },
+        "published_source": {
+          "type": "string"
+        },
+        "computed_source": {
+          "type": "string"
+        },
+        "integrity_source": {
+          "type": "string"
+        },
+        "fit_window_source": {
+          "type": "string"
+        },
+        "test_window_source": {
+          "type": "string"
+        },
+        "reserved_prefixes": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "allowed_symbols": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "phase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "description", "nodes"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string"
+        },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^FN-[0-9]{3}$"
+          }
+        },
+        "requires_freeze": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether this phase requires a freeze snapshot"
+        }
+      }
+    },
+    "exitCodes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["error", "warn", "pass"],
+      "properties": {
+        "error": {
+          "type": "integer",
+          "const": 2,
+          "description": "Exit code when ERROR hits exist"
+        },
+        "warn": {
+          "type": "integer",
+          "const": 1,
+          "description": "Exit code when only WARN hits exist"
+        },
+        "pass": {
+          "type": "integer",
+          "const": 0,
+          "description": "Exit code when no hits above INFO"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
