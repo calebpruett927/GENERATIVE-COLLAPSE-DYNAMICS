@@ -901,6 +901,109 @@ See [canon/rcft_anchors.yaml](canon/rcft_anchors.yaml) for complete machine-read
 
 ---
 
+## Kinematics Extension (Tier-1)
+
+The Kinematics Extension (KIN.INTSTACK.v1) provides physics-based motion analysis within UMCP. See [KINEMATICS_SPECIFICATION.md](KINEMATICS_SPECIFICATION.md) for complete mathematical foundations.
+
+### Position (x)
+
+**Tier tag:** Tier-1 (Kinematics)
+
+**Definition:** Normalized position in phase space, x ∈ [0,1]. Maps physical position to bounded domain via x̃ = x / L_ref.
+
+**Not to be confused with:**
+- Raw position in meters
+- Observable traces (Tier-0)
+- Coordinate indices
+
+**Inputs/outputs:**
+- Consumes: Physical position, reference length L_ref
+- Produces: Normalized position for phase space analysis
+
+**Where defined:**
+- [contracts/KIN.INTSTACK.v1.yaml](contracts/KIN.INTSTACK.v1.yaml)
+- [canon/kin_anchors.yaml](canon/kin_anchors.yaml)
+
+**Status:** Canonical
+
+### Velocity (v)
+
+**Tier tag:** Tier-1 (Kinematics)
+
+**Definition:** Normalized velocity, v ∈ [0,1]. Maps physical velocity to bounded domain via ṽ = v / v_ref.
+
+**Not to be confused with:**
+- Physical velocity in m/s
+- Drift ω (different quantity)
+- Rate of change of kernel quantities
+
+**Where defined:**
+- [contracts/KIN.INTSTACK.v1.yaml](contracts/KIN.INTSTACK.v1.yaml)
+- [canon/kin_anchors.yaml](canon/kin_anchors.yaml)
+
+**Status:** Canonical
+
+### Kinematic Return Time (τ_kin)
+
+**Tier tag:** Tier-1 (Kinematics)
+
+**Definition:** The time for a trajectory to return to within η_phase of its initial phase space point: τ_kin = inf{t > δ : d(γ(t), γ₀) < η_phase}. Finite τ_kin indicates periodic/oscillatory motion.
+
+**Not to be confused with:**
+- τ_R (return time in abstract state space)
+- Physical period T
+- Damping time constants
+
+**Inputs/outputs:**
+- Consumes: Phase space trajectory γ(t) = (x(t), v(t)), tolerance η_phase
+- Produces: Return time or INF_KIN if non-returning
+
+**Where defined:**
+- [closures/kinematics/phase_space_return.py](closures/kinematics/phase_space_return.py)
+- [KINEMATICS_SPECIFICATION.md](KINEMATICS_SPECIFICATION.md#return-axiom-mapping)
+
+**Status:** Canonical
+
+### Kinematic Stability Index (K_stability)
+
+**Tier tag:** Tier-1 (Kinematics)
+
+**Definition:** A normalized index K_stability ∈ [0,1] measuring dynamic stability. K_stability → 1 indicates convergence to equilibrium; K_stability → 0 indicates instability.
+
+**Not to be confused with:**
+- IC (integrity composite from base UMCP)
+- Lyapunov exponents (related but different)
+- Energy stability
+
+**Inputs/outputs:**
+- Consumes: Position, velocity, acceleration series
+- Produces: Stability index and regime classification
+
+**Where defined:**
+- [closures/kinematics/kinematic_stability.py](closures/kinematics/kinematic_stability.py)
+- [canon/kin_anchors.yaml](canon/kin_anchors.yaml)
+
+**Status:** Canonical
+
+### Phase Space (Γ_kin)
+
+**Tier tag:** Tier-1 (Kinematics)
+
+**Definition:** The 2D space of (position, velocity) pairs: Γ_kin = {(x, v) : x ∈ [0,1], v ∈ [0,1]}. Kinematic dynamics trace paths through this space.
+
+**Not to be confused with:**
+- Full state space Ψ (higher dimensional)
+- Configuration space (position only)
+- Momentum space
+
+**Where defined:**
+- [KINEMATICS_SPECIFICATION.md](KINEMATICS_SPECIFICATION.md#phase-space)
+- [canon/kin_anchors.yaml](canon/kin_anchors.yaml)
+
+**Status:** Canonical
+
+---
+
 ## Artifact Integrity
 
 ### EID (Artifact Structural Fingerprint)

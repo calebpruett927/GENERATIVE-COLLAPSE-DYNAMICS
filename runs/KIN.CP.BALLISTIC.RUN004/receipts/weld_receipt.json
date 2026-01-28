@@ -1,0 +1,19 @@
+{
+  "seam_id": "KIN.SEAM.IMP.001",
+  "contract": "UMA.INTSTACK.v1",
+  "t_s": 3.5399999999999467,
+  "IC_pre": 0.7893471962496089,
+  "IC_post": 0.8454413586132731,
+  "integrity_ratio": 1.0710639778281876,
+  "delta_kappa_ledger": 0.0686525262157115,
+  "kappa_cum_pre": -1.2017530710907494,
+  "kappa_cum_post": -1.2445982831186755,
+  "delta_kappa_cum": 0.04284521202792613,
+  "tau_R_closure": "always_censored",
+  "tau_R_finite_percent": 0.0,
+  "seam_residual": 0.0,
+  "tol_seam": 0.005,
+  "result": "INTEGRITY_ONLY",
+  "weld_type": "NON_RECURRENT_BY_DESIGN",
+  "timestamp_utc": "2026-01-27T04:29:55.410342+00:00"
+}

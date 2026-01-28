@@ -1,0 +1,108 @@
+{
+  "casepack_id": "KIN.CP.SHM",
+  "run_id": "KIN.CP.SHM.RUN004",
+  "created_utc": "2026-01-27T04:29:55.304696+00:00",
+  "contract": "UMA.INTSTACK.v1",
+  "timezone": "America/Chicago",
+  "git_commit": "abc123def456",
+  "package_version": "1.0.0",
+  "pipeline": "shm_oscillator",
+  "adapter": {
+    "name": "SHM.ADAPTER",
+    "dt": 0.01,
+    "T": 10.0,
+    "f0": 1.0,
+    "omega_0": 6.283185307179586,
+    "A": 1.0,
+    "noise_sigma": 0.005
+  },
+  "return": {
+    "format": "csv",
+    "columns": [
+      "t",
+      "omega",
+      "F",
+      "S",
+      "C",
+      "tau_R",
+      "IC",
+      "kappa",
+      "kappa_cum"
+    ]
+  },
+  "tier1_identities": {
+    "omega_definition": "||\u03a8(t) - \u03a8(t-\u0394t)|| / max, normalized to [0,1]",
+    "F_identity": "F := clip(1 - \u03c9, 0, 1) [HARD-ENFORCED]",
+    "kappa_identity": "\u03ba := ln(IC + \u03b5) [HARD-ENFORCED]",
+    "C_normalization": "C := C_raw / (C_raw + C_0), C_0 = median(C_raw)",
+    "S_normalization": "S := (S_raw - S_min) / (S_max - S_min)",
+    "tau_R_method": "phase_anchor_hysteresis_interpolation",
+    "IC_method": "smooth_contribution_geometric_aggregation (p99 scale)"
+  },
+  "frozen_scales": {
+    "omega_max": 0.013455992851388049,
+    "C_0": 45.08309484864714,
+    "S_min": 3.7876948402779385,
+    "S_max": 4.569168104168213,
+    "h_hysteresis": 0.05,
+    "IC_min": 0.7,
+    "IC_scale_quantile": 0.99
+  },
+  "identity_validation": {
+    "F_identity_valid": true,
+    "F_max_error": 0.0,
+    "kappa_identity_valid": true,
+    "kappa_max_error": 0.0,
+    "all_valid": true
+  },
+  "IC_pass_rate": 0.865,
+  "weights": {
+    "omega": 1.0,
+    "F": 1.0,
+    "S": 1.0,
+    "C": 1.0,
+    "tau_R": 1.0
+  },
+  "closures": [
+    "gamma.default.v1",
+    "norms.l2_eta1e-3.v1"
+  ],
+  "artifacts": [
+    {
+      "path": "kernel/kernel.csv",
+      "sha256": "12b1603f5be3da393d362a691a51d7030fd7ca045ee04cb8f6e352ffca7c0b3c",
+      "role": "kernel",
+      "bytes": 165773
+    },
+    {
+      "path": "derived/psi.csv",
+      "sha256": "3d4b6a123875ab1f4b876786907f972ad68ae3847e4812064971922d2e117557",
+      "role": "derived",
+      "bytes": 67947
+    },
+    {
+      "path": "tables/tauR_series.csv",
+      "sha256": "a01a917e9a6ca7d4a170e93450de2e911a27c31f11a2c5775b124db4e196961c",
+      "role": "table",
+      "bytes": 29134
+    },
+    {
+      "path": "logs/oor.csv",
+      "sha256": "901f32993454423812f48e5af47e846843e07c0726ccefabc8ac1202a503c682",
+      "role": "log",
+      "bytes": 18605
+    },
+    {
+      "path": "logs/censor.csv",
+      "sha256": "51babba9a34874f67ce5a421c0db0d2eeddd6ad1401b1aac52737e4c39a8d60e",
+      "role": "log",
+      "bytes": 22610
+    },
+    {
+      "path": "config/frozen.json",
+      "sha256": "a67be02db2699e1c743fc3bab45d62c9991a2cfd910864b990f9ce9a79a8d3d7",
+      "role": "config",
+      "bytes": 1434
+    }
+  ]
+}

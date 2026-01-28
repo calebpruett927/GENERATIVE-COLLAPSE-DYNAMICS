@@ -196,6 +196,38 @@ IC = exp(κ)         (exact inverse)
 
 ---
 
+## Tier-1: Kinematics Extension Symbols
+
+### Phase Space and Motion
+
+| Symbol | ASCII | Formula | Regime Classification |
+|--------|-------|---------|----------------------|
+| **x** | x | x̃ = x / L_ref | Normalized position [0,1] |
+| **v** | v | ṽ = v / v_ref | Normalized velocity [0,1] |
+| **a** | a | ã = a / a_ref | Normalized acceleration [0,1] |
+| **θ** | theta | Angular position | Radians [0, 2π) |
+| **ω_rot** | omega_rot | Angular velocity | Normalized |
+| **α** | alpha | Angular acceleration | Normalized |
+| **p** | p | p = m·v | Normalized momentum |
+| **E_kin** | E_kin | E_kin = ½mv² | Normalized kinetic energy |
+| **E_pot** | E_pot | Potential energy | Normalized [0,1] |
+| **E_mech** | E_mech | E_mech = E_kin + E_pot | Mechanical energy |
+| **τ_kin** | tau_kin | Phase space return time | INF_KIN = no return |
+| **K_stability** | K_stability | Stability index ∈ [0,1] | Stable: K > 0.7<br>Watch: 0.3-0.7<br>Unstable: K < 0.3 |
+| **Γ_kin** | Gamma_kin | {(x,v) : x,v ∈ [0,1]} | Phase space domain |
+
+**Kinematics Principle:** These symbols extend UMA.INTSTACK.v1 for physics-based motion analysis. All base Tier-1 symbols remain frozen.
+
+**File Locations:**
+- Definitions: [canon/kin_anchors.yaml](canon/kin_anchors.yaml)
+- Theory: [KINEMATICS_SPECIFICATION.md](KINEMATICS_SPECIFICATION.md)
+- Contract: [contracts/KIN.INTSTACK.v1.yaml](contracts/KIN.INTSTACK.v1.yaml)
+- Implementations: [closures/kinematics/](closures/kinematics/)
+- CasePacks: [casepacks/kinematics_complete/](casepacks/kinematics_complete/)
+- Tests: [tests/test_120_kinematics_closures.py](tests/test_120_kinematics_closures.py)
+
+---
+
 ## Tier-2: RCFT Extension Symbols
 
 ### Geometric and Recursive Metrics

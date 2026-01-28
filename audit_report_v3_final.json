@@ -1,0 +1,70 @@
+{
+  "umcp_kin_extract_version": "1.0",
+  "repo_root": "/workspaces/UMCP-Metadata-Runnable-Code",
+  "generated_utc": "2026-01-27T04:04:57.341912+00:00",
+  "runs": [
+    {
+      "identity": {
+        "casepack_id": null,
+        "run_id": "RUN002",
+        "created_utc": null,
+        "timezone": "America/Chicago",
+        "code_provenance": {
+          "git_commit": null,
+          "package_version": null
+        },
+        "contract": null,
+        "pipeline": null,
+        "adapter": null,
+        "return": null,
+        "weights": null,
+        "closures": null
+      },
+      "hashes": {
+        "frozen_json": "/workspaces/UMCP-Metadata-Runnable-Code/RUN002/config/frozen.json",
+        "manifest_json": "/workspaces/UMCP-Metadata-Runnable-Code/RUN002/manifest.json",
+        "kernel_csv": "/workspaces/UMCP-Metadata-Runnable-Code/RUN002/kernel/kernel.csv",
+        "psi_csv": "/workspaces/UMCP-Metadata-Runnable-Code/RUN002/derived/psi.csv",
+        "tauR_series_csv": null
+      },
+      "artifacts": [],
+      "columns": {
+        "kernel": null,
+        "psi": null,
+        "tauR_series": null
+      },
+      "kernel_column_map": {},
+      "kernel_stats": {},
+      "tauR_coverage": {
+        "finite_coverage_percent": null,
+        "censoring_percent": null
+      },
+      "tauR_distribution_stats": null,
+      "logs": {
+        "oor": {
+          "overall": null,
+          "by_channel": {}
+        },
+        "censor": {
+          "overall": null,
+          "by_channel": {}
+        }
+      },
+      "seams": {
+        "seam_ledger_row": null
+      },
+      "receipts": {
+        "weld_receipt_row": null
+      },
+      "gaps": [
+        "config/frozen.json missing",
+        "kernel missing or unreadable: /workspaces/UMCP-Metadata-Runnable-Code/RUN002/kernel/kernel.csv",
+        "logs/censor.csv missing/unreadable",
+        "logs/oor.csv missing/unreadable",
+        "manifest.json missing",
+        "psi missing or unreadable: /workspaces/UMCP-Metadata-Runnable-Code/RUN002/derived/psi.csv",
+        "tauR_series.csv missing/unreadable (checked run-local tables/derived)"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "schema": "schemas/invariants.schema.json",
+  "format": "tier1_invariants",
+  "contract_id": "KIN.INTSTACK.v1",
+  "closure_registry_id": "UMCP.CLOSURES.KINEMATICS.v1",
+  "rows": [
+    {
+      "t": 0,
+      "omega": 0.01,
+      "F": 0.99,
+      "S": 0.056,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": -0.01005033585350145,
+      "IC": 0.99,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": 1,
+      "omega": 0.02,
+      "F": 0.98,
+      "S": 0.112,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": -0.02020270731751947,
+      "IC": 0.98,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": 2,
+      "omega": 0.05,
+      "F": 0.95,
+      "S": 0.168,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": -0.05129329438755058,
+      "IC": 0.95,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": 3,
+      "omega": 0.10,
+      "F": 0.90,
+      "S": 0.224,
+      "C": 0.0,
+      "tau_R": 6.283185307,
+      "kappa": -0.10536051565782628,
+      "IC": 0.90,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": 4,
+      "omega": 0.15,
+      "F": 0.85,
+      "S": 0.280,
+      "C": 0.0,
+      "tau_R": 6.283185307,
+      "kappa": -0.1625189294977749,
+      "IC": 0.85,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      }
+    }
+  ],
+  "notes": "Kinematics invariant rows following UMCP tier-1 identities: F = 1 - omega, IC = exp(kappa)."
+}

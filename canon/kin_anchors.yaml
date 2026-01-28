@@ -1,0 +1,194 @@
+# Kinematics Canon Anchor (UMCP.KIN.v1)
+# Kinematics Extension - Physics-Based Motion Layer
+#
+# Interconnections:
+# - Referenced by: contracts/KIN.INTSTACK.v1.yaml, casepacks/kinematics_complete/
+# - Parent: canon/anchors.yaml (UMCP.CANON.v1)
+# - Sibling: canon/gcd_anchors.yaml (GCD Tier-1), canon/rcft_anchors.yaml (RCFT Tier-2)
+# - Implements: Tier-1 kinematics invariants (x, v, a, E_kin, τ_kin, K_stability)
+# - Documentation: GLOSSARY.md#kinematics, KINEMATICS_SPECIFICATION.md
+# - Related: closures/kinematics/*.py (computational implementations)
+#
+# Complete term definitions: ../GLOSSARY.md#kinematics-reserved-symbols
+# Symbol lookup: ../SYMBOL_INDEX.md#kinematics-symbols
+
+schema: canon.anchors.schema.json
+id: UMCP.KIN.v1
+version: "1.0.0"
+created: "2026-01-27"
+
+scope:
+  hierarchy: "KIN > UMA (kinematics extension)"
+  tier: 1
+  description: |
+    Kinematics Extension provides a physics-based layer for motion within UMCP.
+    Maps classical mechanics (position, velocity, acceleration, energy, momentum)
+    to UMCP's return axiom via phase space (x,v).
+
+axioms:
+  - id: KIN-AX-0
+    statement: "Phase Space Closure"
+    description: |
+      Every kinematic observable must map to a point in phase space Γ_kin.
+      Γ_kin = {(x, v) : x ∈ [0,1], v ∈ [0,1]}
+  
+  - id: KIN-AX-1
+    statement: "Return Time Finiteness"
+    description: |
+      For periodic motion: τ_kin < ∞ (motion returns through phase space).
+      For drifting motion: τ_kin = INF_KIN (motion never returns).
+      This connects to UMCP's core axiom: "What returns is real."
+  
+  - id: KIN-AX-2
+    statement: "Conservation Closure"
+    description: |
+      Conserved quantities (momentum, mechanical energy in conservative systems)
+      define invariant subspaces in phase space.
+  
+  - id: KIN-AX-3
+    statement: "Stability Finiteness"
+    description: |
+      Stable motion satisfies K_stability ∈ [0, 1].
+      K_stability → 1 indicates equilibrium convergence.
+      K_stability → 0 indicates instability/divergence.
+
+tier_1_invariants:
+  description: "Kinematics-specific frozen symbols - extend UMA.INTSTACK.v1"
+  
+  reserved_symbols:
+    position:
+      ascii: "x"
+      unicode: "x"
+      domain: "[0, 1]"
+      description: "Normalized position"
+    velocity:
+      ascii: "v"
+      unicode: "v"
+      domain: "[0, 1]"
+      description: "Normalized velocity"
+    acceleration:
+      ascii: "a"
+      unicode: "a"
+      domain: "[0, 1]"
+      description: "Normalized acceleration"
+    angular_position:
+      ascii: "theta"
+      unicode: "θ"
+      domain: "[0, 2π] mod 2π"
+      description: "Angular position"
+    angular_velocity:
+      ascii: "omega_rot"
+      unicode: "ω_rot"
+      domain: "[-1, 1]"
+      description: "Angular velocity (normalized)"
+    angular_acceleration:
+      ascii: "alpha"
+      unicode: "α"
+      domain: "[-1, 1]"
+      description: "Angular acceleration (normalized)"
+    momentum:
+      ascii: "p"
+      unicode: "p"
+      domain: "[0, 1]"
+      description: "Normalized linear momentum"
+    kinetic_energy:
+      ascii: "E_kin"
+      unicode: "E_kin"
+      domain: "[0, 1]"
+      description: "Normalized kinetic energy"
+    potential_energy:
+      ascii: "E_pot"
+      unicode: "E_pot"
+      domain: "[0, 1]"
+      description: "Normalized potential energy"
+    mechanical_energy:
+      ascii: "E_mech"
+      unicode: "E_mech"
+      domain: "[0, 1]"
+      description: "Normalized mechanical energy"
+    kinematic_return_time:
+      ascii: "tau_kin"
+      unicode: "τ_kin"
+      domain: "R>=0 union {INF_KIN}"
+      description: "Phase space return time"
+    stability_index:
+      ascii: "K_stability"
+      unicode: "K_stability"
+      domain: "[0, 1]"
+      description: "Kinematic stability index"
+
+frozen_parameters:
+  # Reference scales for normalization
+  L_ref: 1.0              # Reference length [m]
+  v_ref: 1.0              # Reference velocity [m/s]
+  a_ref: 9.81             # Reference acceleration (g) [m/s²]
+  m_ref: 1.0              # Reference mass [kg]
+  t_ref: 1.0              # Reference time [s]
+  
+  # Damping coefficients
+  gamma_v: 0.1            # Velocity damping
+  gamma_a: 0.05           # Acceleration damping
+  
+  # Stability thresholds
+  v_stable_max: 0.8       # Stable velocity threshold
+  a_stable_max: 0.5       # Stable acceleration threshold
+  E_stable_max: 0.7       # Stable energy threshold
+  
+  # Return detection
+  eta_position: 0.01      # Position return tolerance
+  eta_velocity: 0.05      # Velocity return tolerance
+  H_rec_kin: 64           # Kinematic return horizon
+
+regimes:
+  Stable:
+    condition: "K_stability > 0.7 AND τ_kin < ∞"
+    description: "Motion is bounded, periodic, or converging to equilibrium"
+  Watch:
+    condition: "0.3 ≤ K_stability ≤ 0.7 OR τ_kin very large"
+    description: "Motion shows quasi-periodic or slow-returning behavior"
+  Unstable:
+    condition: "K_stability < 0.3 OR τ_kin = INF_KIN"
+    description: "Motion is drifting, diverging, or chaotic"
+
+closures:
+  - name: "linear_kinematics"
+    path: "closures/kinematics/linear_kinematics.py"
+    description: "Linear position, velocity, acceleration"
+  - name: "rotational_kinematics"
+    path: "closures/kinematics/rotational_kinematics.py"
+    description: "Angular kinematics and rotational dynamics"
+  - name: "energy_mechanics"
+    path: "closures/kinematics/energy_mechanics.py"
+    description: "Energy calculations and conservation"
+  - name: "momentum_dynamics"
+    path: "closures/kinematics/momentum_dynamics.py"
+    description: "Momentum conservation and collision dynamics"
+  - name: "phase_space_return"
+    path: "closures/kinematics/phase_space_return.py"
+    description: "Phase space τ_kin computation"
+  - name: "kinematic_stability"
+    path: "closures/kinematics/kinematic_stability.py"
+    description: "K_stability index and regime classification"
+
+mathematical_identities:
+  - id: "KIN-ID-1"
+    name: "Kinetic Energy"
+    formula: "E_kin = (1/2) * m * v²"
+  - id: "KIN-ID-2"
+    name: "Gravitational Potential"
+    formula: "E_pot = m * g * h"
+  - id: "KIN-ID-3"
+    name: "Mechanical Energy Conservation"
+    formula: "E_mech = E_kin + E_pot = const (conservative)"
+  - id: "KIN-ID-4"
+    name: "Momentum Definition"
+    formula: "p = m * v"
+  - id: "KIN-ID-5"
+    name: "Impulse-Momentum"
+    formula: "J = Δp = F * Δt"
+  - id: "KIN-ID-6"
+    name: "Angular Momentum"
+    formula: "L = I * ω"
+  - id: "KIN-ID-7"
+    name: "Phase Magnitude"
+    formula: "|γ| = √(x² + v²)"

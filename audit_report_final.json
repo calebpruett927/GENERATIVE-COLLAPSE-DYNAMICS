@@ -1,0 +1,3236 @@
+{
+  "umcp_kin_extract_version": "1.0",
+  "repo_root": "/workspaces/UMCP-Metadata-Runnable-Code",
+  "generated_utc": "2026-01-27T04:34:56.027228+00:00",
+  "runs": [
+    {
+      "identity": {
+        "casepack_id": "KIN.CP.BALLISTIC",
+        "run_id": "KIN.CP.BALLISTIC.RUN001",
+        "created_utc": "2026-01-27T03:48:13.008793+00:00",
+        "timezone": "America/Chicago",
+        "code_provenance": {
+          "git_commit": "abc123def456",
+          "package_version": "1.0.0"
+        },
+        "contract": "UMA.INTSTACK.v1",
+        "pipeline": "ballistic_with_bounce",
+        "adapter": {
+          "name": "BALLISTIC.ADAPTER",
+          "dt": 0.005,
+          "g": 9.81,
+          "v0": 20.0,
+          "theta_deg": 59.99999999999999,
+          "restitution": 0.7
+        },
+        "return": {
+          "format": "csv",
+          "columns": [
+            "t",
+            "omega",
+            "F",
+            "S",
+            "C",
+            "tau_R",
+            "IC",
+            "kappa"
+          ]
+        },
+        "weights": {
+          "omega": 1.0,
+          "F": 1.0,
+          "S": 1.0,
+          "C": 1.0,
+          "tau_R": 1.0
+        },
+        "closures": [
+          "gamma.default.v1",
+          "norms.l2_eta1e-3.v1"
+        ],
+        "frozen_scales": null,
+        "identity_validation": null,
+        "tier1_identities": null,
+        "IC_pass_rate": null
+      },
+      "hashes": {
+        "frozen_json": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.BALLISTIC.RUN001/config/frozen.json",
+        "manifest_json": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.BALLISTIC.RUN001/manifest.json",
+        "kernel_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.BALLISTIC.RUN001/kernel/kernel.csv",
+        "psi_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.BALLISTIC.RUN001/derived/psi.csv",
+        "tauR_series_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.BALLISTIC.RUN001/tables/tauR_series.csv"
+      },
+      "artifacts": [
+        {
+          "path": "kernel/kernel.csv",
+          "sha256": "e6433493096437ae69a46e51a7f942b0150436fd1b6b5a0d311a5fa969666547",
+          "role": "kernel",
+          "bytes": 137382
+        },
+        {
+          "path": "derived/psi.csv",
+          "sha256": "fe7b4b91910876e8bbc50f187df5844a74f2d4a00d07ad5cba8912159783b140",
+          "role": "derived",
+          "bytes": 138452
+        },
+        {
+          "path": "tables/tauR_series.csv",
+          "sha256": "636ae3a53b5b11f4d94dd8bea0f273f3dc11ab4f783c74af0f2ebfa56f3fb89d",
+          "role": "table",
+          "bytes": 31784
+        },
+        {
+          "path": "logs/oor.csv",
+          "sha256": "a0c56a5272d83105d9bd3a356c5640880291d8562fdbad887a5457c1673e2aaa",
+          "role": "log",
+          "bytes": 36603
+        },
+        {
+          "path": "logs/censor.csv",
+          "sha256": "0c3d08d881fc941f268db8e54182894bce2aa1bec617ef7cf9dcb9f1cb95267c",
+          "role": "log",
+          "bytes": 41416
+        },
+        {
+          "path": "seams/seam_ledger.csv",
+          "sha256": "19973ad8abb6aa29fdb5c676effe377bf889c964230288bbbfc2133e6892a34e",
+          "role": "seam",
+          "bytes": 214
+        },
+        {
+          "path": "receipts/weld_receipt.json",
+          "sha256": "4b4a4f4821367df1d274044b181546f544b60338289dd13b54641fe033ffa639",
+          "role": "receipt",
+          "bytes": 379
+        },
+        {
+          "path": "config/frozen.json",
+          "sha256": "46de884c6df8ff2da7f845a2cdc13250000b9a9492fcc601a0d2f625688e140d",
+          "role": "config",
+          "bytes": 582
+        }
+      ],
+      "columns": {
+        "kernel": [
+          "t",
+          "omega",
+          "F",
+          "S",
+          "C",
+          "tau_R",
+          "IC",
+          "kappa"
+        ],
+        "psi": [
+          "t",
+          "x",
+          "y",
+          "vx",
+          "vy",
+          "psi"
+        ],
+        "tauR_series": [
+          "t",
+          "tau_R"
+        ]
+      },
+      "kernel_column_map": {
+        "t": "t",
+        "omega": "omega",
+        "F": "F",
+        "S": "S",
+        "C": "C",
+        "tau_R": "tau_R",
+        "IC": "IC",
+        "kappa": "kappa"
+      },
+      "kernel_stats": {
+        "omega": {
+          "n": 1202,
+          "min": 0.087002608551252,
+          "max": 10.170789100863544,
+          "median": 0.21613538841625865,
+          "q25": 0.1684024815232154,
+          "q75": 0.42041879979522795,
+          "iqr": 0.25201631827201254,
+          "p05": 0.12382942516796545,
+          "p95": 2.9071526007363726
+        },
+        "F": {
+          "n": 1202,
+          "min": 0.5,
+          "max": 0.95,
+          "median": 0.95,
+          "q25": 0.95,
+          "q75": 0.95,
+          "iqr": 0.0,
+          "p05": 0.95,
+          "p95": 0.95
+        },
+        "S": {
+          "n": 1202,
+          "min": 2.843102394771768,
+          "max": 3.7420391038903698,
+          "median": 3.7109445587227246,
+          "q25": 3.704117948935076,
+          "q75": 3.7156753900098938,
+          "iqr": 0.01155744107481782,
+          "p05": 3.686703038157618,
+          "p95": 3.7210999093093413
+        },
+        "C": {
+          "n": 1202,
+          "min": 0.2323936757069124,
+          "max": 417.6371188735746,
+          "median": 85.25101551460881,
+          "q25": 35.93958187919563,
+          "q75": 145.6332676381532,
+          "iqr": 109.69368575895757,
+          "p05": 5.956653361444537,
+          "p95": 245.2532560424011
+        },
+        "tau_R": {
+          "n": 0,
+          "min": null,
+          "max": null,
+          "median": null,
+          "q25": null,
+          "q75": null,
+          "iqr": null
+        },
+        "IC": {
+          "n": 1202,
+          "min": 1.0,
+          "max": 1.0,
+          "median": 1.0,
+          "q25": 1.0,
+          "q75": 1.0,
+          "iqr": 0.0,
+          "p05": 1.0,
+          "p95": 1.0
+        },
+        "kappa": {
+          "n": 1202,
+          "min": 4.9999999446126455e-11,
+          "max": 6.009999933424264e-08,
+          "median": 3.007499966684476e-08,
+          "q25": 1.5062499833145657e-08,
+          "q75": 4.50874995005437e-08,
+          "iqr": 3.002499966739804e-08,
+          "p05": 3.0524999661860183e-09,
+          "p95": 5.7097499367502855e-08
+        }
+      },
+      "tauR_coverage": {
+        "finite_coverage_percent": 0.0,
+        "censoring_percent": 100.0
+      },
+      "tauR_distribution_stats": {
+        "n": 0,
+        "min": null,
+        "max": null,
+        "median": null,
+        "q25": null,
+        "q75": null,
+        "iqr": null
+      },
+      "logs": {
+        "oor": {
+          "overall": 0.0,
+          "by_channel": {
+            "y": 0.0
+          }
+        },
+        "censor": {
+          "overall": 1.0,
+          "by_channel": {
+            "tau_R": 1.0
+          }
+        }
+      },
+      "seams": {
+        "seam_ledger_row": {
+          "seam_id": "KIN.SEAM.IMP.001",
+          "type": "impact",
+          "t_s": 3.5399999999999467,
+          "x_s": 35.40000000000013,
+          "y_s": 0.0,
+          "vy_pre": -17.357841924311114,
+          "vy_post": 12.18482434701778,
+          "restitution": 0.7,
+          "description": "Ground impact with elastic restitution"
+        }
+      },
+      "receipts": {
+        "weld_receipt_row": {
+          "seam_id": "KIN.SEAM.IMP.001",
+          "contract": "UMA.INTSTACK.v1",
+          "t_s": 3.5399999999999467,
+          "IC_pre": 1.0,
+          "IC_post": 1.0,
+          "kappa_pre": 3.539999960785704e-08,
+          "kappa_post": 3.7949999579609395e-08,
+          "delta_kappa": 2.5499999717523575e-09,
+          "tau_R_finite_percent_post": 0.0,
+          "seam_residual": 0.0,
+          "tol_seam": 0.005,
+          "result": "PASS",
+          "timestamp_utc": "2026-01-27T03:48:12.946772+00:00"
+        }
+      },
+      "gaps": []
+    },
+    {
+      "identity": {
+        "casepack_id": "KIN.CP.BALLISTIC",
+        "run_id": "KIN.CP.BALLISTIC.RUN002",
+        "created_utc": "2026-01-27T04:04:49.706041+00:00",
+        "timezone": "America/Chicago",
+        "code_provenance": {
+          "git_commit": "abc123def456",
+          "package_version": "1.0.0"
+        },
+        "contract": "UMA.INTSTACK.v1",
+        "pipeline": "ballistic_with_bounce",
+        "adapter": {
+          "name": "BALLISTIC.ADAPTER",
+          "dt": 0.005,
+          "g": 9.81,
+          "v0": 20.0,
+          "theta_deg": 59.99999999999999,
+          "restitution": 0.7
+        },
+        "return": {
+          "format": "csv",
+          "columns": [
+            "t",
+            "omega",
+            "F",
+            "S",
+            "C",
+            "tau_R",
+            "IC",
+            "kappa"
+          ]
+        },
+        "weights": {
+          "omega": 1.0,
+          "F": 1.0,
+          "S": 1.0,
+          "C": 1.0,
+          "tau_R": 1.0
+        },
+        "closures": [
+          "gamma.default.v1",
+          "norms.l2_eta1e-3.v1"
+        ],
+        "frozen_scales": null,
+        "identity_validation": null,
+        "tier1_identities": {
+          "F_identity": "F = clip(1 - omega, 0, 1)",
+          "kappa_identity": "kappa = cumsum(ln(IC + epsilon)) * dt",
+          "omega_definition": "omega = |d/dt ln(psi)|",
+          "C_normalization": "C = C_raw / (C_raw + C_0)"
+        },
+        "IC_pass_rate": null
+      },
+      "hashes": {
+        "frozen_json": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.BALLISTIC.RUN002/config/frozen.json",
+        "manifest_json": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.BALLISTIC.RUN002/manifest.json",
+        "kernel_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.BALLISTIC.RUN002/kernel/kernel.csv",
+        "psi_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.BALLISTIC.RUN002/derived/psi.csv",
+        "tauR_series_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.BALLISTIC.RUN002/tables/tauR_series.csv"
+      },
+      "artifacts": [
+        {
+          "path": "kernel/kernel.csv",
+          "sha256": "e2bc4bf1110c0265cfa210e2b820c10aa73b20fe8df662652c2663e8ea9634c5",
+          "role": "kernel",
+          "bytes": 149413
+        },
+        {
+          "path": "derived/psi.csv",
+          "sha256": "fe7b4b91910876e8bbc50f187df5844a74f2d4a00d07ad5cba8912159783b140",
+          "role": "derived",
+          "bytes": 138452
+        },
+        {
+          "path": "tables/tauR_series.csv",
+          "sha256": "0c4d3af7d96f8bd50acc34fbaf40a63ffa707a01baa5b4f3357d4b82c9ae1a93",
+          "role": "table",
+          "bytes": 31910
+        },
+        {
+          "path": "logs/oor.csv",
+          "sha256": "a0c56a5272d83105d9bd3a356c5640880291d8562fdbad887a5457c1673e2aaa",
+          "role": "log",
+          "bytes": 36603
+        },
+        {
+          "path": "logs/censor.csv",
+          "sha256": "7dc96bf7a118422d23d64f54efc0e404694052e526faa53b83a8db0dc73b6379",
+          "role": "log",
+          "bytes": 41416
+        },
+        {
+          "path": "seams/seam_ledger.csv",
+          "sha256": "19973ad8abb6aa29fdb5c676effe377bf889c964230288bbbfc2133e6892a34e",
+          "role": "seam",
+          "bytes": 214
+        },
+        {
+          "path": "receipts/weld_receipt.json",
+          "sha256": "34a83527c69f90cdd87a182c8ca8fa1b8a114711cf88b8d47ffde7bf7213cb7c",
+          "role": "receipt",
+          "bytes": 440
+        },
+        {
+          "path": "config/frozen.json",
+          "sha256": "1d6e649cbcfd556383926165e4453f8751076951be44cb215efd0154cbfcc058",
+          "role": "config",
+          "bytes": 920
+        }
+      ],
+      "columns": {
+        "kernel": [
+          "t",
+          "omega",
+          "F",
+          "S",
+          "C",
+          "tau_R",
+          "IC",
+          "kappa"
+        ],
+        "psi": [
+          "t",
+          "x",
+          "y",
+          "vx",
+          "vy",
+          "psi"
+        ],
+        "tauR_series": [
+          "t",
+          "tau_R"
+        ]
+      },
+      "kernel_column_map": {
+        "t": "t",
+        "omega": "omega",
+        "F": "F",
+        "S": "S",
+        "C": "C",
+        "tau_R": "tau_R",
+        "IC": "IC",
+        "kappa": "kappa"
+      },
+      "kernel_stats": {
+        "omega": {
+          "n": 1202,
+          "min": 0.043501304275626,
+          "max": 5.085394550431772,
+          "median": 0.10806769420812931,
+          "q25": 0.08420124076160768,
+          "q75": 0.21020939989761395,
+          "iqr": 0.12600815913600627,
+          "p05": 0.06191471258398273,
+          "p95": 1.4535763003681863
+        },
+        "F": {
+          "n": 1202,
+          "min": 0.0,
+          "max": 0.956498695724374,
+          "median": 0.8919323057918707,
+          "q25": 0.789790600102386,
+          "q75": 0.9157987592383923,
+          "iqr": 0.12600815913600627,
+          "p05": 0.0,
+          "p95": 0.9380852874160172
+        },
+        "S": {
+          "n": 1202,
+          "min": 2.843102394771768,
+          "max": 3.7420391038903698,
+          "median": 3.7109445587227246,
+          "q25": 3.704117948935076,
+          "q75": 3.7156753900098938,
+          "iqr": 0.01155744107481782,
+          "p05": 3.686703038157618,
+          "p95": 3.7210999093093413
+        },
+        "C": {
+          "n": 1202,
+          "min": 0.636710689383863,
+          "max": 0.9996826066462388,
+          "median": 0.9984470400466172,
+          "q25": 0.9963241085495065,
+          "q75": 0.9990903383775269,
+          "iqr": 0.002766229828020439,
+          "p05": 0.9782243599357636,
+          "p95": 0.9994596330635923
+        },
+        "tau_R": {
+          "n": 125,
+          "min": 0.05,
+          "max": 0.055,
+          "median": 0.05,
+          "q25": 0.05,
+          "q75": 0.05,
+          "iqr": 0.0,
+          "p05": 0.05,
+          "p95": 0.05
+        },
+        "IC": {
+          "n": 1202,
+          "min": 0.0,
+          "max": 1.0,
+          "median": 1.0,
+          "q25": 1.0,
+          "q75": 1.0,
+          "iqr": 0.0,
+          "p05": 0.0,
+          "p95": 1.0
+        },
+        "kappa": {
+          "n": 1202,
+          "min": -9.8550641977145,
+          "max": 9.999999889225291e-11,
+          "median": -9.85506416768982,
+          "q25": -9.85506418270216,
+          "q75": -9.855064152677478,
+          "iqr": 3.002468140778092e-08,
+          "p05": -9.855064194712032,
+          "p95": -5.438705989551934
+        }
+      },
+      "tauR_coverage": {
+        "finite_coverage_percent": 10.399334442595674,
+        "censoring_percent": 89.60066555740433
+      },
+      "tauR_distribution_stats": {
+        "n": 125,
+        "min": 0.05,
+        "max": 0.055,
+        "median": 0.05,
+        "q25": 0.05,
+        "q75": 0.05,
+        "iqr": 0.0,
+        "p05": 0.05,
+        "p95": 0.05
+      },
+      "logs": {
+        "oor": {
+          "overall": 0.0,
+          "by_channel": {
+            "y": 0.0
+          }
+        },
+        "censor": {
+          "overall": 1.0,
+          "by_channel": {
+            "tau_R": 1.0
+          }
+        }
+      },
+      "seams": {
+        "seam_ledger_row": {
+          "seam_id": "KIN.SEAM.IMP.001",
+          "type": "impact",
+          "t_s": 3.5399999999999467,
+          "x_s": 35.40000000000013,
+          "y_s": 0.0,
+          "vy_pre": -17.357841924311114,
+          "vy_post": 12.18482434701778,
+          "restitution": 0.7,
+          "description": "Ground impact with elastic restitution"
+        }
+      },
+      "receipts": {
+        "weld_receipt_row": {
+          "seam_id": "KIN.SEAM.IMP.001",
+          "contract": "UMA.INTSTACK.v1",
+          "t_s": 3.5399999999999467,
+          "IC_pre": 1.0,
+          "IC_post": 1.0,
+          "kappa_pre": -9.855064167964816,
+          "kappa_post": -9.855064165414843,
+          "delta_kappa": 2.5499726774569353e-09,
+          "tau_R_finite_percent_post": 0.0,
+          "rho_min_required": 50.0,
+          "seam_residual": 0.0,
+          "tol_seam": 0.005,
+          "result": "INTEGRITY_ONLY",
+          "weld_type": "RETURN_CENSORED",
+          "timestamp_utc": "2026-01-27T04:04:49.626705+00:00"
+        }
+      },
+      "gaps": []
+    },
+    {
+      "identity": {
+        "casepack_id": "KIN.CP.BALLISTIC",
+        "run_id": "KIN.CP.BALLISTIC.RUN003",
+        "created_utc": "2026-01-27T04:17:54.407457+00:00",
+        "timezone": "America/Chicago",
+        "code_provenance": {
+          "git_commit": "abc123def456",
+          "package_version": "1.0.0"
+        },
+        "contract": "UMA.INTSTACK.v1",
+        "pipeline": "ballistic_with_bounce",
+        "adapter": {
+          "name": "BALLISTIC.ADAPTER",
+          "dt": 0.005,
+          "g": 9.81,
+          "v0": 20.0,
+          "theta_deg": 59.99999999999999,
+          "restitution": 0.7
+        },
+        "return": {
+          "format": "csv",
+          "columns": [
+            "t",
+            "omega",
+            "F",
+            "S",
+            "C",
+            "tau_R",
+            "IC",
+            "kappa",
+            "kappa_cum"
+          ]
+        },
+        "weights": {
+          "omega": 1.0,
+          "F": 1.0,
+          "S": 1.0,
+          "C": 1.0,
+          "tau_R": 1.0
+        },
+        "closures": [
+          "gamma.default.v1",
+          "norms.l2_eta1e-3.v1"
+        ],
+        "frozen_scales": {
+          "omega_scale": 0.0844580249951718,
+          "C_0": 642.9316085273387
+        },
+        "identity_validation": null,
+        "tier1_identities": {
+          "omega_definition": "||\u03a8(t) - \u03a8(t-\u0394t)|| (trace jitter)",
+          "F_identity": "F = clip(1 - \u03c9/scale, 0, 1)",
+          "kappa_identity": "\u03ba = ln(IC + \u03b5) [instantaneous]",
+          "C_normalization": "C = C_raw / (C_raw + C_0), C_0 = median(C_raw)",
+          "tau_R_closure": "always_censored (non-recurrent by design)",
+          "IC_method": "smooth_contribution_geometric_aggregation"
+        },
+        "IC_pass_rate": null
+      },
+      "hashes": {
+        "frozen_json": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.BALLISTIC.RUN003/config/frozen.json",
+        "manifest_json": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.BALLISTIC.RUN003/manifest.json",
+        "kernel_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.BALLISTIC.RUN003/kernel/kernel.csv",
+        "psi_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.BALLISTIC.RUN003/derived/psi.csv",
+        "tauR_series_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.BALLISTIC.RUN003/tables/tauR_series.csv"
+      },
+      "artifacts": [
+        {
+          "path": "kernel/kernel.csv",
+          "sha256": "e681a312fac4544fbe8bd32f6ad6d482eb83bbcb3f15c85efb3f29169b6eee0b",
+          "role": "kernel",
+          "bytes": 194928
+        },
+        {
+          "path": "derived/psi.csv",
+          "sha256": "fe7b4b91910876e8bbc50f187df5844a74f2d4a00d07ad5cba8912159783b140",
+          "role": "derived",
+          "bytes": 138452
+        },
+        {
+          "path": "tables/tauR_series.csv",
+          "sha256": "636ae3a53b5b11f4d94dd8bea0f273f3dc11ab4f783c74af0f2ebfa56f3fb89d",
+          "role": "table",
+          "bytes": 31784
+        },
+        {
+          "path": "logs/oor.csv",
+          "sha256": "a0c56a5272d83105d9bd3a356c5640880291d8562fdbad887a5457c1673e2aaa",
+          "role": "log",
+          "bytes": 36603
+        },
+        {
+          "path": "logs/censor.csv",
+          "sha256": "0c3d08d881fc941f268db8e54182894bce2aa1bec617ef7cf9dcb9f1cb95267c",
+          "role": "log",
+          "bytes": 41416
+        },
+        {
+          "path": "seams/seam_ledger.csv",
+          "sha256": "19973ad8abb6aa29fdb5c676effe377bf889c964230288bbbfc2133e6892a34e",
+          "role": "seam",
+          "bytes": 214
+        },
+        {
+          "path": "receipts/weld_receipt.json",
+          "sha256": "04979eb419f86b3ceeb3b1ea3405273a2712811cc9db423475ab97b1a2b7c744",
+          "role": "receipt",
+          "bytes": 498
+        },
+        {
+          "path": "config/frozen.json",
+          "sha256": "1402dea2e5c6bf939d9491fcc5efe1b1ec5be2cf66c7d4f52c6bb132a66b018f",
+          "role": "config",
+          "bytes": 1070
+        }
+      ],
+      "columns": {
+        "kernel": [
+          "t",
+          "omega",
+          "F",
+          "S",
+          "C",
+          "tau_R",
+          "IC",
+          "kappa",
+          "kappa_cum"
+        ],
+        "psi": [
+          "t",
+          "x",
+          "y",
+          "vx",
+          "vy",
+          "psi"
+        ],
+        "tauR_series": [
+          "t",
+          "tau_R"
+        ]
+      },
+      "kernel_column_map": {
+        "t": "t",
+        "omega": "omega",
+        "F": "F",
+        "S": "S",
+        "C": "C",
+        "tau_R": "tau_R",
+        "IC": "IC",
+        "kappa": "kappa"
+      },
+      "kernel_stats": {
+        "omega": {
+          "n": 1202,
+          "min": 0.0041757378949502,
+          "max": 0.0937372958700564,
+          "median": 0.037461321622735896,
+          "q25": 0.032198325691362,
+          "q75": 0.047078189919474725,
+          "iqr": 0.014879864228112723,
+          "p05": 0.0239644524604614,
+          "p95": 0.08445801499517176
+        },
+        "F": {
+          "n": 1202,
+          "min": 0.0,
+          "max": 0.9505584236052288,
+          "median": 0.5564504187153617,
+          "q25": 0.4425847641811884,
+          "q75": 0.6187653489031655,
+          "iqr": 0.17618058472197706,
+          "p05": 0.00021392403207173824,
+          "p95": 0.7162560637449029
+        },
+        "S": {
+          "n": 1202,
+          "min": 2.843102394771768,
+          "max": 3.7420391038903698,
+          "median": 3.7109445587227246,
+          "q25": 3.704117948935076,
+          "q75": 3.7156753900098938,
+          "iqr": 0.01155744107481782,
+          "p05": 3.686703038157618,
+          "p95": 3.7210999093093413
+        },
+        "C": {
+          "n": 1202,
+          "min": 0.0027185822126714,
+          "max": 0.8304771783501577,
+          "median": 0.4999999999027285,
+          "q25": 0.2965541706483088,
+          "q75": 0.6307627069801006,
+          "iqr": 0.3342085363317918,
+          "p05": 0.06530868987994656,
+          "p95": 0.742056605314799
+        },
+        "tau_R": {
+          "n": 0,
+          "min": null,
+          "max": null,
+          "median": null,
+          "q25": null,
+          "q75": null,
+          "iqr": null
+        },
+        "IC": {
+          "n": 1202,
+          "min": 0.2917646079577597,
+          "max": 0.9975585158061376,
+          "median": 0.8214072647840136,
+          "q25": 0.732925104914967,
+          "q75": 0.8647283540233373,
+          "iqr": 0.13180324910837027,
+          "p05": 0.3678798817347551,
+          "p95": 0.9226451037844958
+        },
+        "kappa": {
+          "n": 1202,
+          "min": -1.2318079046738777,
+          "max": -0.0024444594519254,
+          "median": -0.196736222260964,
+          "q25": -0.31071176658748983,
+          "q75": -0.14533985294267585,
+          "iqr": 0.165371913644814,
+          "p05": -1.0000006994017043,
+          "p95": -0.0805106105231329
+        }
+      },
+      "tauR_coverage": {
+        "finite_coverage_percent": 0.0,
+        "censoring_percent": 100.0
+      },
+      "tauR_distribution_stats": {
+        "n": 0,
+        "min": null,
+        "max": null,
+        "median": null,
+        "q25": null,
+        "q75": null,
+        "iqr": null
+      },
+      "logs": {
+        "oor": {
+          "overall": 0.0,
+          "by_channel": {
+            "y": 0.0
+          }
+        },
+        "censor": {
+          "overall": 1.0,
+          "by_channel": {
+            "tau_R": 1.0
+          }
+        }
+      },
+      "seams": {
+        "seam_ledger_row": {
+          "seam_id": "KIN.SEAM.IMP.001",
+          "type": "impact",
+          "t_s": 3.5399999999999467,
+          "x_s": 35.40000000000013,
+          "y_s": 0.0,
+          "vy_pre": -17.357841924311114,
+          "vy_post": 12.18482434701778,
+          "restitution": 0.7,
+          "description": "Ground impact with elastic restitution"
+        }
+      },
+      "receipts": {
+        "weld_receipt_row": {
+          "seam_id": "KIN.SEAM.IMP.001",
+          "contract": "UMA.INTSTACK.v1",
+          "t_s": 3.5399999999999467,
+          "IC_pre": 0.7656127629914774,
+          "IC_post": 0.827255468544934,
+          "kappa_cum_pre": -1.3582152771180975,
+          "kappa_cum_post": -1.4066387204682582,
+          "delta_kappa_cum": 0.04842344335016069,
+          "tau_R_finite_percent_post": 0.0,
+          "tau_R_closure": "always_censored",
+          "seam_residual": 0.0,
+          "tol_seam": 0.005,
+          "result": "INTEGRITY_ONLY",
+          "weld_type": "NON_RECURRENT_BY_DESIGN",
+          "timestamp_utc": "2026-01-27T04:17:54.320616+00:00"
+        }
+      },
+      "gaps": []
+    },
+    {
+      "identity": {
+        "casepack_id": "KIN.CP.BALLISTIC",
+        "run_id": "KIN.CP.BALLISTIC.RUN004",
+        "created_utc": "2026-01-27T04:29:55.618862+00:00",
+        "timezone": "America/Chicago",
+        "code_provenance": {
+          "git_commit": "abc123def456",
+          "package_version": "1.0.0"
+        },
+        "contract": "UMA.INTSTACK.v1",
+        "pipeline": "ballistic_with_bounce",
+        "adapter": {
+          "name": "BALLISTIC.ADAPTER",
+          "dt": 0.005,
+          "g": 9.81,
+          "v0": 20.0,
+          "theta_deg": 59.99999999999999,
+          "restitution": 0.7
+        },
+        "return": {
+          "format": "csv",
+          "columns": [
+            "t",
+            "omega",
+            "F",
+            "S",
+            "C",
+            "tau_R",
+            "IC",
+            "kappa",
+            "kappa_cum"
+          ]
+        },
+        "weights": {
+          "omega": 1.0,
+          "F": 1.0,
+          "S": 1.0,
+          "C": 1.0,
+          "tau_R": 1.0
+        },
+        "closures": [
+          "gamma.default.v1",
+          "norms.l2_eta1e-3.v1"
+        ],
+        "frozen_scales": {
+          "omega_max": 0.09373730587005641,
+          "C_0": 642.9316085273387,
+          "S_min": 2.843102394771768,
+          "S_max": 3.7420391038903698,
+          "IC_min": 0.7,
+          "IC_scale_quantile": 0.99
+        },
+        "identity_validation": {
+          "F_identity_valid": true,
+          "F_max_error": 0.0,
+          "kappa_identity_valid": true,
+          "kappa_max_error": 0.0,
+          "all_valid": true
+        },
+        "tier1_identities": {
+          "omega_definition": "||\u03a8(t) - \u03a8(t-\u0394t)|| / max, normalized to [0,1]",
+          "F_identity": "F := clip(1 - \u03c9, 0, 1) [HARD-ENFORCED]",
+          "kappa_identity": "\u03ba := ln(IC + \u03b5) [HARD-ENFORCED]",
+          "C_normalization": "C := C_raw / (C_raw + C_0), C_0 = median(C_raw)",
+          "S_normalization": "S := (S_raw - S_min) / (S_max - S_min)",
+          "tau_R_closure": "always_censored (non-recurrent by design)",
+          "IC_method": "smooth_contribution_geometric_aggregation (p99 scale)"
+        },
+        "IC_pass_rate": 0.8053244592346089
+      },
+      "hashes": {
+        "frozen_json": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.BALLISTIC.RUN004/config/frozen.json",
+        "manifest_json": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.BALLISTIC.RUN004/manifest.json",
+        "kernel_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.BALLISTIC.RUN004/kernel/kernel.csv",
+        "psi_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.BALLISTIC.RUN004/derived/psi.csv",
+        "tauR_series_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.BALLISTIC.RUN004/tables/tauR_series.csv"
+      },
+      "artifacts": [
+        {
+          "path": "kernel/kernel.csv",
+          "sha256": "e35e60ce21b7b512fec6fc54da4f450cade1164aa3d0ff94c072dc382f843747",
+          "role": "kernel",
+          "bytes": 195161
+        },
+        {
+          "path": "derived/psi.csv",
+          "sha256": "fe7b4b91910876e8bbc50f187df5844a74f2d4a00d07ad5cba8912159783b140",
+          "role": "derived",
+          "bytes": 138452
+        },
+        {
+          "path": "tables/tauR_series.csv",
+          "sha256": "636ae3a53b5b11f4d94dd8bea0f273f3dc11ab4f783c74af0f2ebfa56f3fb89d",
+          "role": "table",
+          "bytes": 31784
+        },
+        {
+          "path": "logs/oor.csv",
+          "sha256": "a0c56a5272d83105d9bd3a356c5640880291d8562fdbad887a5457c1673e2aaa",
+          "role": "log",
+          "bytes": 36603
+        },
+        {
+          "path": "logs/censor.csv",
+          "sha256": "0c3d08d881fc941f268db8e54182894bce2aa1bec617ef7cf9dcb9f1cb95267c",
+          "role": "log",
+          "bytes": 41416
+        },
+        {
+          "path": "seams/seam_ledger.csv",
+          "sha256": "19973ad8abb6aa29fdb5c676effe377bf889c964230288bbbfc2133e6892a34e",
+          "role": "seam",
+          "bytes": 214
+        },
+        {
+          "path": "receipts/weld_receipt.json",
+          "sha256": "8df77e2109f5830e170c26376195c809bd7737b54ef047e3495a2abe00b5adf6",
+          "role": "receipt",
+          "bytes": 575
+        },
+        {
+          "path": "config/frozen.json",
+          "sha256": "51b889ff1953feae9599d71c509bf8c4d517e2016dcabd76233e70577eaba49b",
+          "role": "config",
+          "bytes": 1446
+        }
+      ],
+      "columns": {
+        "kernel": [
+          "t",
+          "omega",
+          "F",
+          "S",
+          "C",
+          "tau_R",
+          "IC",
+          "kappa",
+          "kappa_cum"
+        ],
+        "psi": [
+          "t",
+          "x",
+          "y",
+          "vx",
+          "vy",
+          "psi"
+        ],
+        "tauR_series": [
+          "t",
+          "tau_R"
+        ]
+      },
+      "kernel_column_map": {
+        "t": "t",
+        "omega": "omega",
+        "F": "F",
+        "S": "S",
+        "C": "C",
+        "tau_R": "tau_R",
+        "IC": "IC",
+        "kappa": "kappa"
+      },
+      "kernel_stats": {
+        "omega": {
+          "n": 1202,
+          "min": 0.0445472360891075,
+          "max": 0.9999998933188884,
+          "median": 0.39964154372717753,
+          "q25": 0.3434953180326844,
+          "q75": 0.5022353638447539,
+          "iqr": 0.15874004581206946,
+          "p05": 0.2556554430280107,
+          "p95": 0.9010074933479733
+        },
+        "F": {
+          "n": 1202,
+          "min": 1.0668111161127315e-07,
+          "max": 0.9554527639108924,
+          "median": 0.6003584562728225,
+          "q25": 0.49776463615524613,
+          "q75": 0.6565046819673155,
+          "iqr": 0.15874004581206935,
+          "p05": 0.0989925066520268,
+          "p95": 0.7443445569719893
+        },
+        "S": {
+          "n": 1202,
+          "min": 0.0,
+          "max": 0.9999999888757464,
+          "median": 0.9654096283906023,
+          "q25": 0.9578155345656864,
+          "q75": 0.9706723250705285,
+          "iqr": 0.01285679050484212,
+          "p05": 0.9384427462402377,
+          "p95": 0.9767066978846305
+        },
+        "C": {
+          "n": 1202,
+          "min": 0.0027185822126714,
+          "max": 0.8304771783501577,
+          "median": 0.4999999999027285,
+          "q25": 0.2965541706483088,
+          "q75": 0.6307627069801006,
+          "iqr": 0.3342085363317918,
+          "p05": 0.06530868987994656,
+          "p95": 0.742056605314799
+        },
+        "tau_R": {
+          "n": 0,
+          "min": null,
+          "max": null,
+          "median": null,
+          "q25": null,
+          "q75": null,
+          "iqr": null
+        },
+        "IC": {
+          "n": 1202,
+          "min": 0.3362476049363606,
+          "max": 0.997839463180165,
+          "median": 0.8402357034593203,
+          "q25": 0.7596338590112589,
+          "q75": 0.8793281227109292,
+          "iqr": 0.11969426369967029,
+          "p05": 0.41279580498514773,
+          "p95": 0.9312420496834984
+        },
+        "kappa": {
+          "n": 1202,
+          "min": -1.0899074412173098,
+          "max": -0.0021628641250517,
+          "median": -0.17407281628803822,
+          "q25": -0.27491873015697443,
+          "q75": -0.12859714987781515,
+          "iqr": 0.14632158027915929,
+          "p05": -0.8848037088941926,
+          "p95": -0.0712360358390827
+        }
+      },
+      "tauR_coverage": {
+        "finite_coverage_percent": 0.0,
+        "censoring_percent": 100.0
+      },
+      "tauR_distribution_stats": {
+        "n": 0,
+        "min": null,
+        "max": null,
+        "median": null,
+        "q25": null,
+        "q75": null,
+        "iqr": null
+      },
+      "logs": {
+        "oor": {
+          "overall": 0.0,
+          "by_channel": {
+            "y": 0.0
+          }
+        },
+        "censor": {
+          "overall": 1.0,
+          "by_channel": {
+            "tau_R": 1.0
+          }
+        }
+      },
+      "seams": {
+        "seam_ledger_row": {
+          "seam_id": "KIN.SEAM.IMP.001",
+          "type": "impact",
+          "t_s": 3.5399999999999467,
+          "x_s": 35.40000000000013,
+          "y_s": 0.0,
+          "vy_pre": -17.357841924311114,
+          "vy_post": 12.18482434701778,
+          "restitution": 0.7,
+          "description": "Ground impact with elastic restitution"
+        }
+      },
+      "receipts": {
+        "weld_receipt_row": {
+          "seam_id": "KIN.SEAM.IMP.001",
+          "contract": "UMA.INTSTACK.v1",
+          "t_s": 3.5399999999999467,
+          "IC_pre": 0.7893471962496089,
+          "IC_post": 0.8454413586132731,
+          "integrity_ratio": 1.0710639778281876,
+          "delta_kappa_ledger": 0.0686525262157115,
+          "kappa_cum_pre": -1.2017530710907494,
+          "kappa_cum_post": -1.2445982831186755,
+          "delta_kappa_cum": 0.04284521202792613,
+          "tau_R_closure": "always_censored",
+          "tau_R_finite_percent": 0.0,
+          "seam_residual": 0.0,
+          "tol_seam": 0.005,
+          "result": "INTEGRITY_ONLY",
+          "weld_type": "NON_RECURRENT_BY_DESIGN",
+          "timestamp_utc": "2026-01-27T04:29:55.410342+00:00"
+        }
+      },
+      "gaps": []
+    },
+    {
+      "identity": {
+        "casepack_id": "KIN.CP.GAIT",
+        "run_id": "KIN.CP.GAIT.RUN001",
+        "created_utc": "2026-01-27T03:48:13.355317+00:00",
+        "timezone": "America/Chicago",
+        "code_provenance": {
+          "git_commit": "abc123def456",
+          "package_version": "1.0.0"
+        },
+        "contract": "UMA.INTSTACK.v1",
+        "pipeline": "imu_gait_analysis",
+        "adapter": {
+          "name": "GAIT.ADAPTER",
+          "fs": 100,
+          "T": 30.0,
+          "f_gait": 1.8,
+          "channels": [
+            "ax",
+            "ay",
+            "az",
+            "gx",
+            "gy",
+            "gz"
+          ]
+        },
+        "return": {
+          "format": "csv",
+          "columns": [
+            "t",
+            "omega",
+            "F",
+            "S",
+            "C",
+            "tau_R",
+            "IC",
+            "kappa"
+          ]
+        },
+        "weights": {
+          "omega": 1.0,
+          "F": 1.5,
+          "S": 1.0,
+          "C": 0.5,
+          "tau_R": 2.0
+        },
+        "closures": [
+          "gamma.default.v1",
+          "norms.l2_eta1e-3.v1",
+          "return_domain.window64.v1"
+        ],
+        "frozen_scales": null,
+        "identity_validation": null,
+        "tier1_identities": null,
+        "IC_pass_rate": null
+      },
+      "hashes": {
+        "frozen_json": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.GAIT.RUN001/config/frozen.json",
+        "manifest_json": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.GAIT.RUN001/manifest.json",
+        "kernel_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.GAIT.RUN001/kernel/kernel.csv",
+        "psi_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.GAIT.RUN001/derived/psi.csv",
+        "tauR_series_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.GAIT.RUN001/tables/tauR_series.csv"
+      },
+      "artifacts": [
+        {
+          "path": "kernel/kernel.csv",
+          "sha256": "1156a44a6f89e92951465ed6d9e69a1cc961dbd65100789df9c9f8fa4649c01e",
+          "role": "kernel",
+          "bytes": 350359
+        },
+        {
+          "path": "derived/psi.csv",
+          "sha256": "68ac781d135df3a68c76204b9033298af45313fb254817b12a612bf3ab5519ec",
+          "role": "derived",
+          "bytes": 454833
+        },
+        {
+          "path": "tables/tauR_series.csv",
+          "sha256": "40e2e05a9d1ed00c6da7c51c00b46a55c4bf15962bd62c112ea8cc2388107523",
+          "role": "table",
+          "bytes": 53450
+        },
+        {
+          "path": "logs/oor.csv",
+          "sha256": "60800bd2e58e451fe88de28280959a685d074c7f0cb490f68a971c4e11a9bad0",
+          "role": "log",
+          "bytes": 63057
+        },
+        {
+          "path": "logs/censor.csv",
+          "sha256": "44063b7525f6d47de50f521fe45dbe45807a186f117ac9eef77df3ab039ad0a0",
+          "role": "log",
+          "bytes": 72062
+        },
+        {
+          "path": "config/frozen.json",
+          "sha256": "70fa143fa6c456bd518117afb7b6080f1988cede0a28f6c5e191a23e33f4fa50",
+          "role": "config",
+          "bytes": 591
+        }
+      ],
+      "columns": {
+        "kernel": [
+          "t",
+          "omega",
+          "F",
+          "S",
+          "C",
+          "tau_R",
+          "IC",
+          "kappa"
+        ],
+        "psi": [
+          "t",
+          "ax",
+          "ay",
+          "az",
+          "gx",
+          "gy",
+          "gz",
+          "psi"
+        ],
+        "tauR_series": [
+          "t",
+          "tau_R"
+        ]
+      },
+      "kernel_column_map": {
+        "t": "t",
+        "omega": "omega",
+        "F": "F",
+        "S": "S",
+        "C": "C",
+        "tau_R": "tau_R",
+        "IC": "IC",
+        "kappa": "kappa"
+      },
+      "kernel_stats": {
+        "omega": {
+          "n": 3000,
+          "min": -8.689543555452126,
+          "max": 11.175684610893288,
+          "median": -1.1163073692748675,
+          "q25": -2.7845063265602303,
+          "q75": 2.5007744789947486,
+          "iqr": 5.285280805554979,
+          "p05": -4.5145742750537305,
+          "p95": 7.4479520861606625
+        },
+        "F": {
+          "n": 3000,
+          "min": 0.6934826760517101,
+          "max": 0.7652587371326918,
+          "median": 0.7332388528694064,
+          "q25": 0.7305294008101404,
+          "q75": 0.7361788223528185,
+          "iqr": 0.0056494215426781125,
+          "p05": 0.7259271122872939,
+          "p95": 0.7407822415968631
+        },
+        "S": {
+          "n": 3000,
+          "min": 3.075665189053141,
+          "max": 3.8777849491575,
+          "median": 3.7926193915422592,
+          "q25": 3.7711840608241753,
+          "q75": 3.810627830319433,
+          "iqr": 0.03944376949525763,
+          "p05": 3.740101920452551,
+          "p95": 3.840795922060336
+        },
+        "C": {
+          "n": 3000,
+          "min": 0.0107867238655885,
+          "max": 394.5389675848922,
+          "median": 85.84264342850553,
+          "q25": 41.1634226072566,
+          "q75": 144.35810964206328,
+          "iqr": 103.19468703480669,
+          "p05": 7.397998593468899,
+          "p95": 243.81967174911617
+        },
+        "tau_R": {
+          "n": 2960,
+          "min": 0.16,
+          "max": 1.09,
+          "median": 0.41,
+          "q25": 0.26,
+          "q75": 0.52,
+          "iqr": 0.26,
+          "p05": 0.16,
+          "p95": 0.55
+        },
+        "IC": {
+          "n": 3000,
+          "min": 0.0,
+          "max": 1.0,
+          "median": 1.0,
+          "q25": 1.0,
+          "q75": 1.0,
+          "iqr": 0.0,
+          "p05": 1.0,
+          "p95": 1.0
+        },
+        "kappa": {
+          "n": 3000,
+          "min": -0.736826996858076,
+          "max": 5.599999937966162e-09,
+          "median": -0.552620306368562,
+          "q25": -0.5526203813435682,
+          "q75": -0.5526202313935558,
+          "iqr": 1.4995001240691863e-07,
+          "p05": -0.7368269818630854,
+          "p95": -0.1842068004345236
+        }
+      },
+      "tauR_coverage": {
+        "finite_coverage_percent": 98.66666666666667,
+        "censoring_percent": 1.3333333333333286
+      },
+      "tauR_distribution_stats": {
+        "n": 2960,
+        "min": 0.16,
+        "max": 1.09,
+        "median": 0.41,
+        "q25": 0.26,
+        "q75": 0.52,
+        "iqr": 0.26,
+        "p05": 0.16,
+        "p95": 0.55
+      },
+      "logs": {
+        "oor": {
+          "overall": 0.0,
+          "by_channel": {
+            "az": 0.0
+          }
+        },
+        "censor": {
+          "overall": 1.0,
+          "by_channel": {
+            "tau_R": 1.0
+          }
+        }
+      },
+      "seams": {
+        "seam_ledger_row": null
+      },
+      "receipts": {
+        "weld_receipt_row": null
+      },
+      "gaps": []
+    },
+    {
+      "identity": {
+        "casepack_id": "KIN.CP.GAIT",
+        "run_id": "KIN.CP.GAIT.RUN002",
+        "created_utc": "2026-01-27T04:04:49.937214+00:00",
+        "timezone": "America/Chicago",
+        "code_provenance": {
+          "git_commit": "abc123def456",
+          "package_version": "1.0.0"
+        },
+        "contract": "UMA.INTSTACK.v1",
+        "pipeline": "imu_gait_analysis",
+        "adapter": {
+          "name": "GAIT.ADAPTER",
+          "fs": 100,
+          "T": 30.0,
+          "f_gait": 1.8,
+          "expected_period": 0.5555555555555556,
+          "channels": [
+            "ax",
+            "ay",
+            "az",
+            "gx",
+            "gy",
+            "gz"
+          ]
+        },
+        "return": {
+          "format": "csv",
+          "columns": [
+            "t",
+            "omega",
+            "F",
+            "S",
+            "C",
+            "tau_R",
+            "IC",
+            "kappa"
+          ]
+        },
+        "weights": {
+          "omega": 1.0,
+          "F": 1.5,
+          "S": 1.0,
+          "C": 0.5,
+          "tau_R": 2.0
+        },
+        "closures": [
+          "gamma.default.v1",
+          "norms.l2_eta1e-3.v1",
+          "return_domain.window64.v1"
+        ],
+        "frozen_scales": null,
+        "identity_validation": null,
+        "tier1_identities": {
+          "F_identity": "F = clip(1 - omega, 0, 1)",
+          "kappa_identity": "kappa = cumsum(ln(IC + epsilon)) * dt",
+          "omega_definition": "omega = |d/dt ln(psi)|",
+          "C_normalization": "C = C_raw / (C_raw + C_0)",
+          "tau_R_method": "min_lag_constrained"
+        },
+        "IC_pass_rate": null
+      },
+      "hashes": {
+        "frozen_json": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.GAIT.RUN002/config/frozen.json",
+        "manifest_json": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.GAIT.RUN002/manifest.json",
+        "kernel_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.GAIT.RUN002/kernel/kernel.csv",
+        "psi_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.GAIT.RUN002/derived/psi.csv",
+        "tauR_series_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.GAIT.RUN002/tables/tauR_series.csv"
+      },
+      "artifacts": [
+        {
+          "path": "kernel/kernel.csv",
+          "sha256": "9c8dc048aca6d248da99d16aacc0eb600116430669e8d7642f27d3fc458411af",
+          "role": "kernel",
+          "bytes": 346867
+        },
+        {
+          "path": "derived/psi.csv",
+          "sha256": "ee87447ad51ad157fbdd32c5185f12c1c11edb286d6ca4ba72aecfa71bc2c969",
+          "role": "derived",
+          "bytes": 457781
+        },
+        {
+          "path": "tables/tauR_series.csv",
+          "sha256": "97d1f53538ea197421cd6f41ce1013104773a7a71ead59125778c0cfeb5c56dc",
+          "role": "table",
+          "bytes": 53899
+        },
+        {
+          "path": "logs/oor.csv",
+          "sha256": "60800bd2e58e451fe88de28280959a685d074c7f0cb490f68a971c4e11a9bad0",
+          "role": "log",
+          "bytes": 63057
+        },
+        {
+          "path": "logs/censor.csv",
+          "sha256": "e0d0a1ff21a93a1a069f93fa9c472101abebbbfac2d01ad16664df5a0f0161c6",
+          "role": "log",
+          "bytes": 72062
+        },
+        {
+          "path": "config/frozen.json",
+          "sha256": "14073a48d9a7b18a9010b725c1496994468a1de48876b53c4fe37298337c8553",
+          "role": "config",
+          "bytes": 887
+        }
+      ],
+      "columns": {
+        "kernel": [
+          "t",
+          "omega",
+          "F",
+          "S",
+          "C",
+          "tau_R",
+          "IC",
+          "kappa"
+        ],
+        "psi": [
+          "t",
+          "ax",
+          "ay",
+          "az",
+          "gx",
+          "gy",
+          "gz",
+          "psi"
+        ],
+        "tauR_series": [
+          "t",
+          "tau_R"
+        ]
+      },
+      "kernel_column_map": {
+        "t": "t",
+        "omega": "omega",
+        "F": "F",
+        "S": "S",
+        "C": "C",
+        "tau_R": "tau_R",
+        "IC": "IC",
+        "kappa": "kappa"
+      },
+      "kernel_stats": {
+        "omega": {
+          "n": 3000,
+          "min": 0.000256843723549,
+          "max": 1.8307741589534208,
+          "median": 0.4998708149260322,
+          "q25": 0.2677912564188813,
+          "q75": 0.7600671671750283,
+          "iqr": 0.492275910756147,
+          "p05": 0.05136152949090151,
+          "p95": 1.164213524571833
+        },
+        "F": {
+          "n": 3000,
+          "min": 0.0,
+          "max": 0.999743156276451,
+          "median": 0.5001291850739679,
+          "q25": 0.23993283282497166,
+          "q75": 0.7322087435811186,
+          "iqr": 0.49227591075614696,
+          "p05": 0.0,
+          "p95": 0.9486384705090984
+        },
+        "S": {
+          "n": 3000,
+          "min": 3.077648960011281,
+          "max": 3.848674450079843,
+          "median": 3.780488716023393,
+          "q25": 3.761345434151094,
+          "q75": 3.7987174155712,
+          "iqr": 0.03737198142010589,
+          "p05": 3.732796879793505,
+          "p95": 3.8215744638420177
+        },
+        "C": {
+          "n": 3000,
+          "min": 0.003016694775861,
+          "max": 0.999714801662714,
+          "median": 0.9983241583057494,
+          "q25": 0.9961874771314557,
+          "q75": 0.9990548305166446,
+          "iqr": 0.002867353385188842,
+          "p05": 0.9783697086945015,
+          "p95": 0.9994686193732772
+        },
+        "tau_R": {
+          "n": 2957,
+          "min": 0.38,
+          "max": 1.09,
+          "median": 0.45,
+          "q25": 0.38,
+          "q75": 0.5,
+          "iqr": 0.12,
+          "p05": 0.38,
+          "p95": 0.54
+        },
+        "IC": {
+          "n": 3000,
+          "min": 0.0,
+          "max": 1.0,
+          "median": 1.0,
+          "q25": 0.0,
+          "q75": 1.0,
+          "iqr": 1.0,
+          "p05": 0.0,
+          "p95": 1.0
+        },
+        "kappa": {
+          "n": 3000,
+          "min": -276.1260042017353,
+          "max": -0.1842068074395236,
+          "median": -135.20779658396032,
+          "q25": -205.5747969892295,
+          "q75": -70.1827935976336,
+          "iqr": 135.3920033915959,
+          "p05": -261.2144631464022,
+          "p95": -14.358920631755938
+        }
+      },
+      "tauR_coverage": {
+        "finite_coverage_percent": 98.56666666666666,
+        "censoring_percent": 1.4333333333333371
+      },
+      "tauR_distribution_stats": {
+        "n": 2957,
+        "min": 0.38,
+        "max": 1.09,
+        "median": 0.45,
+        "q25": 0.38,
+        "q75": 0.5,
+        "iqr": 0.12,
+        "p05": 0.38,
+        "p95": 0.54
+      },
+      "logs": {
+        "oor": {
+          "overall": 0.0,
+          "by_channel": {
+            "az": 0.0
+          }
+        },
+        "censor": {
+          "overall": 1.0,
+          "by_channel": {
+            "tau_R": 1.0
+          }
+        }
+      },
+      "seams": {
+        "seam_ledger_row": null
+      },
+      "receipts": {
+        "weld_receipt_row": null
+      },
+      "gaps": []
+    },
+    {
+      "identity": {
+        "casepack_id": "KIN.CP.GAIT",
+        "run_id": "KIN.CP.GAIT.RUN003",
+        "created_utc": "2026-01-27T04:17:54.733149+00:00",
+        "timezone": "America/Chicago",
+        "code_provenance": {
+          "git_commit": "abc123def456",
+          "package_version": "1.0.0"
+        },
+        "contract": "UMA.INTSTACK.v1",
+        "pipeline": "imu_gait_analysis",
+        "adapter": {
+          "name": "GAIT.ADAPTER",
+          "fs": 100,
+          "T": 30.0,
+          "f_gait": 1.8,
+          "expected_period": 0.5555555555555556,
+          "channels": [
+            "ax",
+            "ay",
+            "az",
+            "gx",
+            "gy",
+            "gz"
+          ]
+        },
+        "return": {
+          "format": "csv",
+          "columns": [
+            "t",
+            "omega",
+            "F",
+            "S",
+            "C",
+            "tau_R",
+            "IC",
+            "kappa",
+            "kappa_cum"
+          ]
+        },
+        "weights": {
+          "omega": 1.0,
+          "F": 1.5,
+          "S": 1.0,
+          "C": 0.5,
+          "tau_R": 2.0
+        },
+        "closures": [
+          "gamma.default.v1",
+          "norms.l2_eta1e-3.v1",
+          "return_domain.window64.v1"
+        ],
+        "frozen_scales": {
+          "omega_scale": 0.08395779873810427,
+          "C_0": 595.7153019426738,
+          "min_interval": 0.4444444444444445
+        },
+        "identity_validation": null,
+        "tier1_identities": {
+          "omega_definition": "||\u03a8(t) - \u03a8(t-\u0394t)|| (trace jitter)",
+          "F_identity": "F = clip(1 - \u03c9/scale, 0, 1)",
+          "kappa_identity": "\u03ba = ln(IC + \u03b5) [instantaneous]",
+          "C_normalization": "C = C_raw / (C_raw + C_0), C_0 = median(C_raw)",
+          "tau_R_method": "event_anchor_az_peaks",
+          "IC_method": "smooth_contribution_geometric_aggregation"
+        },
+        "IC_pass_rate": null
+      },
+      "hashes": {
+        "frozen_json": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.GAIT.RUN003/config/frozen.json",
+        "manifest_json": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.GAIT.RUN003/manifest.json",
+        "kernel_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.GAIT.RUN003/kernel/kernel.csv",
+        "psi_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.GAIT.RUN003/derived/psi.csv",
+        "tauR_series_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.GAIT.RUN003/tables/tauR_series.csv"
+      },
+      "artifacts": [
+        {
+          "path": "kernel/kernel.csv",
+          "sha256": "e4ad8745b4eb9af488b976957fcc094ae6531a7dc6ac07e061c622aaa3090cdc",
+          "role": "kernel",
+          "bytes": 494549
+        },
+        {
+          "path": "derived/psi.csv",
+          "sha256": "ee87447ad51ad157fbdd32c5185f12c1c11edb286d6ca4ba72aecfa71bc2c969",
+          "role": "derived",
+          "bytes": 457781
+        },
+        {
+          "path": "tables/tauR_series.csv",
+          "sha256": "0b33d5eae2f87624ba066dd4c347300d5a557eed59ce5a01c58a77f32dd39ce6",
+          "role": "table",
+          "bytes": 89223
+        },
+        {
+          "path": "logs/oor.csv",
+          "sha256": "60800bd2e58e451fe88de28280959a685d074c7f0cb490f68a971c4e11a9bad0",
+          "role": "log",
+          "bytes": 63057
+        },
+        {
+          "path": "logs/censor.csv",
+          "sha256": "b4ff0dd7b2e84b015fc43badad3de2231c5784a7d29ea6e6b50cc681c2ac742b",
+          "role": "log",
+          "bytes": 72062
+        },
+        {
+          "path": "config/frozen.json",
+          "sha256": "cf48188ffed7c8bcb6f53e31d38c57ee85c67d4737a9026c010984f39bf0ad35",
+          "role": "config",
+          "bytes": 1186
+        }
+      ],
+      "columns": {
+        "kernel": [
+          "t",
+          "omega",
+          "F",
+          "S",
+          "C",
+          "tau_R",
+          "IC",
+          "kappa",
+          "kappa_cum"
+        ],
+        "psi": [
+          "t",
+          "ax",
+          "ay",
+          "az",
+          "gx",
+          "gy",
+          "gz",
+          "psi"
+        ],
+        "tauR_series": [
+          "t",
+          "tau_R"
+        ]
+      },
+      "kernel_column_map": {
+        "t": "t",
+        "omega": "omega",
+        "F": "F",
+        "S": "S",
+        "C": "C",
+        "tau_R": "tau_R",
+        "IC": "IC",
+        "kappa": "kappa"
+      },
+      "kernel_stats": {
+        "omega": {
+          "n": 3000,
+          "min": 0.001347225103099,
+          "max": 0.1495189121138714,
+          "median": 0.0372677075146922,
+          "q25": 0.0253736266428281,
+          "q75": 0.05392367610855135,
+          "iqr": 0.028550049465723253,
+          "p05": 0.01229026676692066,
+          "p95": 0.0839577887381042
+        },
+        "F": {
+          "n": 3000,
+          "min": 0.0,
+          "max": 0.983953544240702,
+          "median": 0.5561138086654211,
+          "q25": 0.35772880043270944,
+          "q75": 0.6977811826394118,
+          "iqr": 0.34005238220670236,
+          "p05": 1.191074581186058e-07,
+          "p95": 0.8536137565342958
+        },
+        "S": {
+          "n": 3000,
+          "min": 3.077648960011281,
+          "max": 3.848674450079843,
+          "median": 3.780488716023393,
+          "q25": 3.761345434151094,
+          "q75": 3.7987174155712,
+          "iqr": 0.03737198142010589,
+          "p05": 3.732796879793505,
+          "p95": 3.8215744638420177
+        },
+        "C": {
+          "n": 3000,
+          "min": 5.079284317006876e-06,
+          "max": 0.8547406828562004,
+          "median": 0.4999999520131152,
+          "q25": 0.3048906583713456,
+          "q75": 0.639556053771412,
+          "iqr": 0.3346653954000664,
+          "p05": 0.07056993334640858,
+          "p95": 0.7594629834859111
+        },
+        "tau_R": {
+          "n": 2952,
+          "min": 0.49,
+          "max": 0.6299999999999999,
+          "median": 0.5500000000000007,
+          "q25": 0.54,
+          "q75": 0.5799999999999983,
+          "iqr": 0.03999999999999826,
+          "p05": 0.5099999999999998,
+          "p95": 0.5999999999999996
+        },
+        "IC": {
+          "n": 3000,
+          "min": 0.134505786818109,
+          "max": 0.9965427922609128,
+          "median": 0.7530830144782292,
+          "q25": 0.6118401683136774,
+          "q75": 0.8943021817286549,
+          "iqr": 0.28246201341497756,
+          "p05": 0.4438576274674804,
+          "p95": 0.9729632489869885
+        },
+        "kappa": {
+          "n": 3000,
+          "min": -2.006147981849581,
+          "max": -0.0034631876567286,
+          "median": -0.2835798039202873,
+          "q25": -0.49128417855670165,
+          "q75": -0.11171155619413581,
+          "iqr": 0.37957262236256584,
+          "p05": -0.8122514109754617,
+          "p95": -0.027408958094027738
+        }
+      },
+      "tauR_coverage": {
+        "finite_coverage_percent": 98.4,
+        "censoring_percent": 1.5999999999999943
+      },
+      "tauR_distribution_stats": {
+        "n": 2952,
+        "min": 0.49,
+        "max": 0.6299999999999999,
+        "median": 0.5500000000000007,
+        "q25": 0.54,
+        "q75": 0.5799999999999983,
+        "iqr": 0.03999999999999826,
+        "p05": 0.5099999999999998,
+        "p95": 0.5999999999999996
+      },
+      "logs": {
+        "oor": {
+          "overall": 0.0,
+          "by_channel": {
+            "az": 0.0
+          }
+        },
+        "censor": {
+          "overall": 1.0,
+          "by_channel": {
+            "tau_R": 1.0
+          }
+        }
+      },
+      "seams": {
+        "seam_ledger_row": null
+      },
+      "receipts": {
+        "weld_receipt_row": null
+      },
+      "gaps": []
+    },
+    {
+      "identity": {
+        "casepack_id": "KIN.CP.GAIT",
+        "run_id": "KIN.CP.GAIT.RUN004",
+        "created_utc": "2026-01-27T04:29:56.418401+00:00",
+        "timezone": "America/Chicago",
+        "code_provenance": {
+          "git_commit": "abc123def456",
+          "package_version": "1.0.0"
+        },
+        "contract": "UMA.INTSTACK.v1",
+        "pipeline": "imu_gait_analysis",
+        "adapter": {
+          "name": "GAIT.ADAPTER",
+          "fs": 100,
+          "T": 30.0,
+          "f_gait": 1.8,
+          "expected_period": 0.5555555555555556,
+          "channels": [
+            "ax",
+            "ay",
+            "az",
+            "gx",
+            "gy",
+            "gz"
+          ]
+        },
+        "return": {
+          "format": "csv",
+          "columns": [
+            "t",
+            "omega",
+            "F",
+            "S",
+            "C",
+            "tau_R",
+            "IC",
+            "kappa",
+            "kappa_cum"
+          ]
+        },
+        "weights": {
+          "omega": 1.0,
+          "F": 1.5,
+          "S": 1.0,
+          "C": 0.5,
+          "tau_R": 2.0
+        },
+        "closures": [
+          "gamma.default.v1",
+          "norms.l2_eta1e-3.v1",
+          "return_domain.window64.v1"
+        ],
+        "frozen_scales": {
+          "omega_max": 0.14951892211387147,
+          "C_0": 595.7153019426738,
+          "S_min": 3.077648960011281,
+          "S_max": 3.848674450079843,
+          "min_interval": 0.4444444444444445,
+          "IC_min": 0.7,
+          "IC_scale_quantile": 0.99
+        },
+        "identity_validation": {
+          "F_identity_valid": true,
+          "F_max_error": 0.0,
+          "kappa_identity_valid": true,
+          "kappa_max_error": 0.0,
+          "all_valid": true
+        },
+        "tier1_identities": {
+          "omega_definition": "||\u03a8(t) - \u03a8(t-\u0394t)|| / max, normalized to [0,1]",
+          "F_identity": "F := clip(1 - \u03c9, 0, 1) [HARD-ENFORCED]",
+          "kappa_identity": "\u03ba := ln(IC + \u03b5) [HARD-ENFORCED]",
+          "C_normalization": "C := C_raw / (C_raw + C_0), C_0 = median(C_raw)",
+          "S_normalization": "S := (S_raw - S_min) / (S_max - S_min)",
+          "tau_R_method": "event_anchor_az_peaks",
+          "IC_method": "smooth_contribution_geometric_aggregation (p99 scale)"
+        },
+        "IC_pass_rate": 0.716
+      },
+      "hashes": {
+        "frozen_json": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.GAIT.RUN004/config/frozen.json",
+        "manifest_json": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.GAIT.RUN004/manifest.json",
+        "kernel_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.GAIT.RUN004/kernel/kernel.csv",
+        "psi_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.GAIT.RUN004/derived/psi.csv",
+        "tauR_series_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.GAIT.RUN004/tables/tauR_series.csv"
+      },
+      "artifacts": [
+        {
+          "path": "kernel/kernel.csv",
+          "sha256": "fc01ac3a8666c67601719915123e7fd782fae5eaed01a7f984914e8ce451176e",
+          "role": "kernel",
+          "bytes": 495777
+        },
+        {
+          "path": "derived/psi.csv",
+          "sha256": "ee87447ad51ad157fbdd32c5185f12c1c11edb286d6ca4ba72aecfa71bc2c969",
+          "role": "derived",
+          "bytes": 457781
+        },
+        {
+          "path": "tables/tauR_series.csv",
+          "sha256": "0b33d5eae2f87624ba066dd4c347300d5a557eed59ce5a01c58a77f32dd39ce6",
+          "role": "table",
+          "bytes": 89223
+        },
+        {
+          "path": "logs/oor.csv",
+          "sha256": "60800bd2e58e451fe88de28280959a685d074c7f0cb490f68a971c4e11a9bad0",
+          "role": "log",
+          "bytes": 63057
+        },
+        {
+          "path": "logs/censor.csv",
+          "sha256": "b4ff0dd7b2e84b015fc43badad3de2231c5784a7d29ea6e6b50cc681c2ac742b",
+          "role": "log",
+          "bytes": 72062
+        },
+        {
+          "path": "config/frozen.json",
+          "sha256": "442855290f80fa4156a47c2b6d7e4ddf40514b0211bb4ec4bcbe67f4f04b5cca",
+          "role": "config",
+          "bytes": 1547
+        }
+      ],
+      "columns": {
+        "kernel": [
+          "t",
+          "omega",
+          "F",
+          "S",
+          "C",
+          "tau_R",
+          "IC",
+          "kappa",
+          "kappa_cum"
+        ],
+        "psi": [
+          "t",
+          "ax",
+          "ay",
+          "az",
+          "gx",
+          "gy",
+          "gz",
+          "psi"
+        ],
+        "tauR_series": [
+          "t",
+          "tau_R"
+        ]
+      },
+      "kernel_column_map": {
+        "t": "t",
+        "omega": "omega",
+        "F": "F",
+        "S": "S",
+        "C": "C",
+        "tau_R": "tau_R",
+        "IC": "IC",
+        "kappa": "kappa"
+      },
+      "kernel_stats": {
+        "omega": {
+          "n": 3000,
+          "min": 0.0090103987110943,
+          "max": 0.9999999331188332,
+          "median": 0.2492507770107496,
+          "q25": 0.16970177609696757,
+          "q75": 0.3606478387229402,
+          "iqr": 0.19094606262597263,
+          "p05": 0.08219873841493201,
+          "p95": 0.5615194889792158
+        },
+        "F": {
+          "n": 3000,
+          "min": 6.688116693798207e-08,
+          "max": 0.9909896012889056,
+          "median": 0.7507492229892504,
+          "q25": 0.6393521612770596,
+          "q75": 0.8302982239030323,
+          "iqr": 0.1909460626259727,
+          "p05": 0.4384805110207842,
+          "p95": 0.9178012615850679
+        },
+        "S": {
+          "n": 3000,
+          "min": 0.0,
+          "max": 0.9999999870302604,
+          "median": 0.9115648651693273,
+          "q25": 0.8867365269748106,
+          "q75": 0.935207013900058,
+          "iqr": 0.04847048692524736,
+          "p05": 0.8497097952324089,
+          "p95": 0.9648520104258343
+        },
+        "C": {
+          "n": 3000,
+          "min": 5.079284317006876e-06,
+          "max": 0.8547406828562004,
+          "median": 0.4999999520131152,
+          "q25": 0.3048906583713456,
+          "q75": 0.639556053771412,
+          "iqr": 0.3346653954000664,
+          "p05": 0.07056993334640858,
+          "p95": 0.7594629834859111
+        },
+        "tau_R": {
+          "n": 2952,
+          "min": 0.49,
+          "max": 0.6299999999999999,
+          "median": 0.5500000000000007,
+          "q25": 0.54,
+          "q75": 0.5799999999999983,
+          "iqr": 0.03999999999999826,
+          "p05": 0.5099999999999998,
+          "p95": 0.5999999999999996
+        },
+        "IC": {
+          "n": 3000,
+          "min": 0.2254873944719335,
+          "max": 0.9974670585206864,
+          "median": 0.8044062638981115,
+          "q25": 0.683677940825969,
+          "q75": 0.9196047536480599,
+          "iqr": 0.23592681282209094,
+          "p05": 0.5360325571862434,
+          "p95": 0.9793389890766845
+        },
+        "kappa": {
+          "n": 3000,
+          "min": -1.4894909775997032,
+          "max": -0.0025361447774425,
+          "median": -0.21765084489151953,
+          "q25": -0.38026831292306174,
+          "q75": -0.08381131082909962,
+          "iqr": 0.2964570020939621,
+          "p05": -0.6235603603931735,
+          "p95": -0.020877425710636093
+        }
+      },
+      "tauR_coverage": {
+        "finite_coverage_percent": 98.4,
+        "censoring_percent": 1.5999999999999943
+      },
+      "tauR_distribution_stats": {
+        "n": 2952,
+        "min": 0.49,
+        "max": 0.6299999999999999,
+        "median": 0.5500000000000007,
+        "q25": 0.54,
+        "q75": 0.5799999999999983,
+        "iqr": 0.03999999999999826,
+        "p05": 0.5099999999999998,
+        "p95": 0.5999999999999996
+      },
+      "logs": {
+        "oor": {
+          "overall": 0.0,
+          "by_channel": {
+            "az": 0.0
+          }
+        },
+        "censor": {
+          "overall": 1.0,
+          "by_channel": {
+            "tau_R": 1.0
+          }
+        }
+      },
+      "seams": {
+        "seam_ledger_row": null
+      },
+      "receipts": {
+        "weld_receipt_row": null
+      },
+      "gaps": []
+    },
+    {
+      "identity": {
+        "casepack_id": "KIN.CP.SHM",
+        "run_id": "KIN.CP.SHM.RUN001",
+        "created_utc": "2026-01-27T03:48:12.641194+00:00",
+        "timezone": "America/Chicago",
+        "code_provenance": {
+          "git_commit": "abc123def456",
+          "package_version": "1.0.0"
+        },
+        "contract": "UMA.INTSTACK.v1",
+        "pipeline": "shm_oscillator",
+        "adapter": {
+          "name": "SHM.ADAPTER",
+          "dt": 0.01,
+          "T": 10.0,
+          "f0": 1.0,
+          "omega_0": 6.283185307179586,
+          "A": 1.0,
+          "noise_sigma": 0.005
+        },
+        "return": {
+          "format": "csv",
+          "columns": [
+            "t",
+            "omega",
+            "F",
+            "S",
+            "C",
+            "tau_R",
+            "IC",
+            "kappa"
+          ]
+        },
+        "weights": {
+          "omega": 1.0,
+          "F": 1.0,
+          "S": 1.0,
+          "C": 1.0,
+          "tau_R": 1.0
+        },
+        "closures": [
+          "gamma.default.v1",
+          "norms.l2_eta1e-3.v1"
+        ],
+        "frozen_scales": null,
+        "identity_validation": null,
+        "tier1_identities": null,
+        "IC_pass_rate": null
+      },
+      "hashes": {
+        "frozen_json": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.SHM.RUN001/config/frozen.json",
+        "manifest_json": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.SHM.RUN001/manifest.json",
+        "kernel_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.SHM.RUN001/kernel/kernel.csv",
+        "psi_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.SHM.RUN001/derived/psi.csv",
+        "tauR_series_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.SHM.RUN001/tables/tauR_series.csv"
+      },
+      "artifacts": [
+        {
+          "path": "kernel/kernel.csv",
+          "sha256": "fc1209520bd4af80498d022772aa27c1b525d05e2ce1f25db116b148214e840a",
+          "role": "kernel",
+          "bytes": 116923
+        },
+        {
+          "path": "derived/psi.csv",
+          "sha256": "3d4b6a123875ab1f4b876786907f972ad68ae3847e4812064971922d2e117557",
+          "role": "derived",
+          "bytes": 67947
+        },
+        {
+          "path": "tables/tauR_series.csv",
+          "sha256": "91dad60536108e7c9c620060a80bcae8db993224c95ede9d17cc41a7bea48c6d",
+          "role": "table",
+          "bytes": 14594
+        },
+        {
+          "path": "logs/oor.csv",
+          "sha256": "901f32993454423812f48e5af47e846843e07c0726ccefabc8ac1202a503c682",
+          "role": "log",
+          "bytes": 18605
+        },
+        {
+          "path": "logs/censor.csv",
+          "sha256": "fafeeb81e4398ca8cd8ce765410bfceef7a66a0dd6fb4bec266eba3fb9b9bbe4",
+          "role": "log",
+          "bytes": 22610
+        },
+        {
+          "path": "config/frozen.json",
+          "sha256": "3f12ed737c9a3ef5ec61bcd54b804d6aa28776866d6fa766f458bda57d81ed1a",
+          "role": "config",
+          "bytes": 565
+        }
+      ],
+      "columns": {
+        "kernel": [
+          "t",
+          "omega",
+          "F",
+          "S",
+          "C",
+          "tau_R",
+          "IC",
+          "kappa"
+        ],
+        "psi": [
+          "t",
+          "x",
+          "v",
+          "psi"
+        ],
+        "tauR_series": [
+          "t",
+          "tau_R"
+        ]
+      },
+      "kernel_column_map": {
+        "t": "t",
+        "omega": "omega",
+        "F": "F",
+        "S": "S",
+        "C": "C",
+        "tau_R": "tau_R",
+        "IC": "IC",
+        "kappa": "kappa"
+      },
+      "kernel_stats": {
+        "omega": {
+          "n": 1000,
+          "min": -0.2439529691704868,
+          "max": 0.2073339165730871,
+          "median": -0.00064856822273445,
+          "q25": -0.03628256120401148,
+          "q75": 0.03788120667628088,
+          "iqr": 0.07416376788029236,
+          "p05": -0.11475066547415753,
+          "p95": 0.11328640258523251
+        },
+        "F": {
+          "n": 1000,
+          "min": 0.9962766323550516,
+          "max": 0.9970524289992464,
+          "median": 0.9967061583509472,
+          "q25": 0.9965787695000361,
+          "q75": 0.9967947870406592,
+          "iqr": 0.0002160175406230591,
+          "p05": 0.9963805260414224,
+          "p95": 0.9969725098917752
+        },
+        "S": {
+          "n": 1000,
+          "min": 3.7876948402779385,
+          "max": 4.569168104168213,
+          "median": 4.536278290638885,
+          "q25": 4.521062062973485,
+          "q75": 4.552997193279468,
+          "iqr": 0.031935130305983606,
+          "p05": 4.218008351587077,
+          "p95": 4.566849749156241
+        },
+        "C": {
+          "n": 1000,
+          "min": 0.053109209397188,
+          "max": 273.2104186278404,
+          "median": 37.31450356538109,
+          "q25": 15.675007755758244,
+          "q75": 72.12631741928931,
+          "iqr": 56.45130966353106,
+          "p05": 3.1357958593760147,
+          "p95": 138.7599714237
+        },
+        "tau_R": {
+          "n": 970,
+          "min": 0.3,
+          "max": 0.3,
+          "median": 0.3,
+          "q25": 0.3,
+          "q75": 0.3,
+          "iqr": 0.0,
+          "p05": 0.3,
+          "p95": 0.3
+        },
+        "IC": {
+          "n": 1000,
+          "min": 1.0,
+          "max": 1.0,
+          "median": 1.0,
+          "q25": 1.0,
+          "q75": 1.0,
+          "iqr": 0.0,
+          "p05": 1.0,
+          "p95": 1.0
+        },
+        "kappa": {
+          "n": 1000,
+          "min": 9.999999889225291e-11,
+          "max": 9.99999988922509e-08,
+          "median": 5.0049999445572336e-08,
+          "q25": 2.5074999722232507e-08,
+          "q75": 7.502499916891161e-08,
+          "iqr": 4.994999944667911e-08,
+          "p05": 5.094999943560287e-09,
+          "p95": 9.500499894758305e-08
+        }
+      },
+      "tauR_coverage": {
+        "finite_coverage_percent": 97.0,
+        "censoring_percent": 3.0
+      },
+      "tauR_distribution_stats": {
+        "n": 970,
+        "min": 0.3,
+        "max": 0.3,
+        "median": 0.3,
+        "q25": 0.3,
+        "q75": 0.3,
+        "iqr": 0.0,
+        "p05": 0.3,
+        "p95": 0.3
+      },
+      "logs": {
+        "oor": {
+          "overall": 0.0,
+          "by_channel": {
+            "x": 0.0
+          }
+        },
+        "censor": {
+          "overall": 1.0,
+          "by_channel": {
+            "tau_R": 1.0
+          }
+        }
+      },
+      "seams": {
+        "seam_ledger_row": null
+      },
+      "receipts": {
+        "weld_receipt_row": null
+      },
+      "gaps": []
+    },
+    {
+      "identity": {
+        "casepack_id": "KIN.CP.SHM",
+        "run_id": "KIN.CP.SHM.RUN002",
+        "created_utc": "2026-01-27T04:04:49.321347+00:00",
+        "timezone": "America/Chicago",
+        "code_provenance": {
+          "git_commit": "abc123def456",
+          "package_version": "1.0.0"
+        },
+        "contract": "UMA.INTSTACK.v1",
+        "pipeline": "shm_oscillator",
+        "adapter": {
+          "name": "SHM.ADAPTER",
+          "dt": 0.01,
+          "T": 10.0,
+          "f0": 1.0,
+          "omega_0": 6.283185307179586,
+          "A": 1.0,
+          "noise_sigma": 0.005
+        },
+        "return": {
+          "format": "csv",
+          "columns": [
+            "t",
+            "omega",
+            "F",
+            "S",
+            "C",
+            "tau_R",
+            "IC",
+            "kappa"
+          ]
+        },
+        "weights": {
+          "omega": 1.0,
+          "F": 1.0,
+          "S": 1.0,
+          "C": 1.0,
+          "tau_R": 1.0
+        },
+        "closures": [
+          "gamma.default.v1",
+          "norms.l2_eta1e-3.v1"
+        ],
+        "frozen_scales": null,
+        "identity_validation": null,
+        "tier1_identities": {
+          "F_identity": "F = clip(1 - omega, 0, 1)",
+          "kappa_identity": "kappa = cumsum(ln(IC + epsilon)) * dt",
+          "omega_definition": "omega = |d/dt ln(psi)|",
+          "C_normalization": "C = C_raw / (C_raw + C_0)",
+          "tau_R_method": "phase_anchor_poincare"
+        },
+        "IC_pass_rate": null
+      },
+      "hashes": {
+        "frozen_json": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.SHM.RUN002/config/frozen.json",
+        "manifest_json": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.SHM.RUN002/manifest.json",
+        "kernel_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.SHM.RUN002/kernel/kernel.csv",
+        "psi_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.SHM.RUN002/derived/psi.csv",
+        "tauR_series_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.SHM.RUN002/tables/tauR_series.csv"
+      },
+      "artifacts": [
+        {
+          "path": "kernel/kernel.csv",
+          "sha256": "0392fca60ecdf35f5a752ad1571f42285a4a936f1490025153622a470452a1db",
+          "role": "kernel",
+          "bytes": 123045
+        },
+        {
+          "path": "derived/psi.csv",
+          "sha256": "3d4b6a123875ab1f4b876786907f972ad68ae3847e4812064971922d2e117557",
+          "role": "derived",
+          "bytes": 67947
+        },
+        {
+          "path": "tables/tauR_series.csv",
+          "sha256": "2b0eb80e712992c22155dc4d08a0c354d7f70653fa1acb44d9d88efd8b2f9ef5",
+          "role": "table",
+          "bytes": 20969
+        },
+        {
+          "path": "logs/oor.csv",
+          "sha256": "901f32993454423812f48e5af47e846843e07c0726ccefabc8ac1202a503c682",
+          "role": "log",
+          "bytes": 18605
+        },
+        {
+          "path": "logs/censor.csv",
+          "sha256": "0ad362555f4066074d061c416a4386836f857476f87d402a685b4872e1e6aaea",
+          "role": "log",
+          "bytes": 22610
+        },
+        {
+          "path": "config/frozen.json",
+          "sha256": "056373f95f7b493e00e8d1a7e37cd595e7de4d02e051265767c4687765ced913",
+          "role": "config",
+          "bytes": 824
+        }
+      ],
+      "columns": {
+        "kernel": [
+          "t",
+          "omega",
+          "F",
+          "S",
+          "C",
+          "tau_R",
+          "IC",
+          "kappa"
+        ],
+        "psi": [
+          "t",
+          "x",
+          "v",
+          "psi"
+        ],
+        "tauR_series": [
+          "t",
+          "tau_R"
+        ]
+      },
+      "kernel_column_map": {
+        "t": "t",
+        "omega": "omega",
+        "F": "F",
+        "S": "S",
+        "C": "C",
+        "tau_R": "tau_R",
+        "IC": "IC",
+        "kappa": "kappa"
+      },
+      "kernel_stats": {
+        "omega": {
+          "n": 1000,
+          "min": 5.404558380146807e-05,
+          "max": 0.4879059383409737,
+          "median": 0.07359406518078834,
+          "q25": 0.035037621396716304,
+          "q75": 0.14637462632464662,
+          "iqr": 0.11133700492793032,
+          "p05": 0.005932554326876094,
+          "p95": 0.26789718116242317
+        },
+        "F": {
+          "n": 1000,
+          "min": 0.5120940616590263,
+          "max": 0.9999459544161984,
+          "median": 0.9264059348192117,
+          "q25": 0.8536253736753534,
+          "q75": 0.9649623786032836,
+          "iqr": 0.1113370049279302,
+          "p05": 0.7321028188375768,
+          "p95": 0.9940674456731238
+        },
+        "S": {
+          "n": 1000,
+          "min": 3.7876948402779385,
+          "max": 4.569168104168213,
+          "median": 4.536278290638885,
+          "q25": 4.521062062973485,
+          "q75": 4.552997193279468,
+          "iqr": 0.031935130305983606,
+          "p05": 4.218008351587077,
+          "p95": 4.566849749156241
+        },
+        "C": {
+          "n": 1000,
+          "min": 0.0602971041546406,
+          "max": 0.99697967973587,
+          "median": 0.9783000679390232,
+          "q25": 0.949845560291156,
+          "q75": 0.988654722696101,
+          "iqr": 0.03880916240494503,
+          "p05": 0.7911672547070218,
+          "p95": 0.9940704796311397
+        },
+        "tau_R": {
+          "n": 925,
+          "min": 0.9900000000000002,
+          "max": 1.0100000000000002,
+          "median": 1.0,
+          "q25": 1.0,
+          "q75": 1.0,
+          "iqr": 0.0,
+          "p05": 0.9900000000000002,
+          "p95": 1.0100000000000002
+        },
+        "IC": {
+          "n": 1000,
+          "min": 1.0,
+          "max": 1.0,
+          "median": 1.0,
+          "q25": 1.0,
+          "q75": 1.0,
+          "iqr": 0.0,
+          "p05": 1.0,
+          "p95": 1.0
+        },
+        "kappa": {
+          "n": 1000,
+          "min": 9.999999889225291e-11,
+          "max": 9.99999988922509e-08,
+          "median": 5.0049999445572336e-08,
+          "q25": 2.5074999722232507e-08,
+          "q75": 7.502499916891161e-08,
+          "iqr": 4.994999944667911e-08,
+          "p05": 5.094999943560287e-09,
+          "p95": 9.500499894758305e-08
+        }
+      },
+      "tauR_coverage": {
+        "finite_coverage_percent": 92.5,
+        "censoring_percent": 7.5
+      },
+      "tauR_distribution_stats": {
+        "n": 925,
+        "min": 0.9900000000000002,
+        "max": 1.0100000000000002,
+        "median": 1.0,
+        "q25": 1.0,
+        "q75": 1.0,
+        "iqr": 0.0,
+        "p05": 0.9900000000000002,
+        "p95": 1.0100000000000002
+      },
+      "logs": {
+        "oor": {
+          "overall": 0.0,
+          "by_channel": {
+            "x": 0.0
+          }
+        },
+        "censor": {
+          "overall": 0.0,
+          "by_channel": {
+            "tau_R": 0.0
+          }
+        }
+      },
+      "seams": {
+        "seam_ledger_row": null
+      },
+      "receipts": {
+        "weld_receipt_row": null
+      },
+      "gaps": []
+    },
+    {
+      "identity": {
+        "casepack_id": "KIN.CP.SHM",
+        "run_id": "KIN.CP.SHM.RUN003",
+        "created_utc": "2026-01-27T04:17:54.261648+00:00",
+        "timezone": "America/Chicago",
+        "code_provenance": {
+          "git_commit": "abc123def456",
+          "package_version": "1.0.0"
+        },
+        "contract": "UMA.INTSTACK.v1",
+        "pipeline": "shm_oscillator",
+        "adapter": {
+          "name": "SHM.ADAPTER",
+          "dt": 0.01,
+          "T": 10.0,
+          "f0": 1.0,
+          "omega_0": 6.283185307179586,
+          "A": 1.0,
+          "noise_sigma": 0.005
+        },
+        "return": {
+          "format": "csv",
+          "columns": [
+            "t",
+            "omega",
+            "F",
+            "S",
+            "C",
+            "tau_R",
+            "IC",
+            "kappa",
+            "kappa_cum"
+          ]
+        },
+        "weights": {
+          "omega": 1.0,
+          "F": 1.0,
+          "S": 1.0,
+          "C": 1.0,
+          "tau_R": 1.0
+        },
+        "closures": [
+          "gamma.default.v1",
+          "norms.l2_eta1e-3.v1"
+        ],
+        "frozen_scales": {
+          "omega_scale": 0.007057118481858942,
+          "C_0": 45.08309484864714,
+          "h_hysteresis": 0.05
+        },
+        "identity_validation": null,
+        "tier1_identities": {
+          "omega_definition": "||\u03a8(t) - \u03a8(t-\u0394t)|| (trace jitter)",
+          "F_identity": "F = clip(1 - \u03c9/scale, 0, 1)",
+          "kappa_identity": "\u03ba = ln(IC + \u03b5) [instantaneous]",
+          "C_normalization": "C = C_raw / (C_raw + C_0), C_0 = median(C_raw)",
+          "tau_R_method": "phase_anchor_hysteresis_interpolation",
+          "IC_method": "smooth_contribution_geometric_aggregation"
+        },
+        "IC_pass_rate": null
+      },
+      "hashes": {
+        "frozen_json": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.SHM.RUN003/config/frozen.json",
+        "manifest_json": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.SHM.RUN003/manifest.json",
+        "kernel_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.SHM.RUN003/kernel/kernel.csv",
+        "psi_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.SHM.RUN003/derived/psi.csv",
+        "tauR_series_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.SHM.RUN003/tables/tauR_series.csv"
+      },
+      "artifacts": [
+        {
+          "path": "kernel/kernel.csv",
+          "sha256": "c7e651031af0658d14f0cebeb13ef8295dd2187455bd1185545d80d31d726e02",
+          "role": "kernel",
+          "bytes": 165856
+        },
+        {
+          "path": "derived/psi.csv",
+          "sha256": "3d4b6a123875ab1f4b876786907f972ad68ae3847e4812064971922d2e117557",
+          "role": "derived",
+          "bytes": 67947
+        },
+        {
+          "path": "tables/tauR_series.csv",
+          "sha256": "a01a917e9a6ca7d4a170e93450de2e911a27c31f11a2c5775b124db4e196961c",
+          "role": "table",
+          "bytes": 29134
+        },
+        {
+          "path": "logs/oor.csv",
+          "sha256": "901f32993454423812f48e5af47e846843e07c0726ccefabc8ac1202a503c682",
+          "role": "log",
+          "bytes": 18605
+        },
+        {
+          "path": "logs/censor.csv",
+          "sha256": "51babba9a34874f67ce5a421c0db0d2eeddd6ad1401b1aac52737e4c39a8d60e",
+          "role": "log",
+          "bytes": 22610
+        },
+        {
+          "path": "config/frozen.json",
+          "sha256": "8678359c3c24486fe731790afe7b1ebca6b6d346d9b20426d410d30af57fd978",
+          "role": "config",
+          "bytes": 1072
+        }
+      ],
+      "columns": {
+        "kernel": [
+          "t",
+          "omega",
+          "F",
+          "S",
+          "C",
+          "tau_R",
+          "IC",
+          "kappa",
+          "kappa_cum"
+        ],
+        "psi": [
+          "t",
+          "x",
+          "v",
+          "psi"
+        ],
+        "tauR_series": [
+          "t",
+          "tau_R"
+        ]
+      },
+      "kernel_column_map": {
+        "t": "t",
+        "omega": "omega",
+        "F": "F",
+        "S": "S",
+        "C": "C",
+        "tau_R": "tau_R",
+        "IC": "IC",
+        "kappa": "kappa"
+      },
+      "kernel_stats": {
+        "omega": {
+          "n": 1000,
+          "min": 9.980159779221508e-05,
+          "max": 0.013455982851388,
+          "median": 0.002631442069623,
+          "q25": 0.001565665268323375,
+          "q75": 0.004320101365078125,
+          "iqr": 0.00275443609675475,
+          "p05": 0.0006928607788627,
+          "p95": 0.007057108481858925
+        },
+        "F": {
+          "n": 1000,
+          "min": 0.0,
+          "max": 0.9858580243411292,
+          "median": 0.6271223054583164,
+          "q25": 0.3878377731387884,
+          "q75": 0.7781438313175386,
+          "iqr": 0.3903060581787502,
+          "p05": 4.8050748324146724e-05,
+          "p95": 0.901821008015688
+        },
+        "S": {
+          "n": 1000,
+          "min": 3.7876948402779385,
+          "max": 4.569168104168213,
+          "median": 4.536278290638885,
+          "q25": 4.521062062973485,
+          "q75": 4.552997193279468,
+          "iqr": 0.031935130305983606,
+          "p05": 4.218008351587077,
+          "p95": 4.566849749156241
+        },
+        "C": {
+          "n": 1000,
+          "min": 0.0014212631057146,
+          "max": 0.8798341102249928,
+          "median": 0.49999999639750214,
+          "q25": 0.29581337418435094,
+          "q75": 0.6590439115688016,
+          "iqr": 0.36323053738445066,
+          "p05": 0.07752196781881437,
+          "p95": 0.7880746441223064
+        },
+        "tau_R": {
+          "n": 976,
+          "min": 0.9970768118729092,
+          "max": 1.0031016043263588,
+          "median": 1.000328505228078,
+          "q25": 0.9996456037733844,
+          "q75": 1.0009163152309104,
+          "iqr": 0.001270711457525997,
+          "p05": 0.9970768118729092,
+          "p95": 1.0031016043263588
+        },
+        "IC": {
+          "n": 1000,
+          "min": 0.0263681225731571,
+          "max": 0.9998000245222258,
+          "median": 0.8701951442337768,
+          "q25": 0.6874661844451916,
+          "q75": 0.9519711050190002,
+          "iqr": 0.2645049205738086,
+          "p05": 0.36788050065294753,
+          "p95": 0.9904071928900556
+        },
+        "kappa": {
+          "n": 1000,
+          "min": -3.63559909746291,
+          "max": -0.0001999854735359,
+          "median": -0.13903778254733265,
+          "q25": -0.37474275707033183,
+          "q75": -0.04922063354144465,
+          "iqr": 0.3255221235288872,
+          "p05": -0.9999971847238768,
+          "p95": -0.0096391043701984
+        }
+      },
+      "tauR_coverage": {
+        "finite_coverage_percent": 97.6,
+        "censoring_percent": 2.4000000000000057
+      },
+      "tauR_distribution_stats": {
+        "n": 976,
+        "min": 0.9970768118729092,
+        "max": 1.0031016043263588,
+        "median": 1.000328505228078,
+        "q25": 0.9996456037733844,
+        "q75": 1.0009163152309104,
+        "iqr": 0.001270711457525997,
+        "p05": 0.9970768118729092,
+        "p95": 1.0031016043263588
+      },
+      "logs": {
+        "oor": {
+          "overall": 0.0,
+          "by_channel": {
+            "x": 0.0
+          }
+        },
+        "censor": {
+          "overall": 1.0,
+          "by_channel": {
+            "tau_R": 1.0
+          }
+        }
+      },
+      "seams": {
+        "seam_ledger_row": null
+      },
+      "receipts": {
+        "weld_receipt_row": null
+      },
+      "gaps": []
+    },
+    {
+      "identity": {
+        "casepack_id": "KIN.CP.SHM",
+        "run_id": "KIN.CP.SHM.RUN004",
+        "created_utc": "2026-01-27T04:29:55.304696+00:00",
+        "timezone": "America/Chicago",
+        "code_provenance": {
+          "git_commit": "abc123def456",
+          "package_version": "1.0.0"
+        },
+        "contract": "UMA.INTSTACK.v1",
+        "pipeline": "shm_oscillator",
+        "adapter": {
+          "name": "SHM.ADAPTER",
+          "dt": 0.01,
+          "T": 10.0,
+          "f0": 1.0,
+          "omega_0": 6.283185307179586,
+          "A": 1.0,
+          "noise_sigma": 0.005
+        },
+        "return": {
+          "format": "csv",
+          "columns": [
+            "t",
+            "omega",
+            "F",
+            "S",
+            "C",
+            "tau_R",
+            "IC",
+            "kappa",
+            "kappa_cum"
+          ]
+        },
+        "weights": {
+          "omega": 1.0,
+          "F": 1.0,
+          "S": 1.0,
+          "C": 1.0,
+          "tau_R": 1.0
+        },
+        "closures": [
+          "gamma.default.v1",
+          "norms.l2_eta1e-3.v1"
+        ],
+        "frozen_scales": {
+          "omega_max": 0.013455992851388049,
+          "C_0": 45.08309484864714,
+          "S_min": 3.7876948402779385,
+          "S_max": 4.569168104168213,
+          "h_hysteresis": 0.05,
+          "IC_min": 0.7,
+          "IC_scale_quantile": 0.99
+        },
+        "identity_validation": {
+          "F_identity_valid": true,
+          "F_max_error": 0.0,
+          "kappa_identity_valid": true,
+          "kappa_max_error": 0.0,
+          "all_valid": true
+        },
+        "tier1_identities": {
+          "omega_definition": "||\u03a8(t) - \u03a8(t-\u0394t)|| / max, normalized to [0,1]",
+          "F_identity": "F := clip(1 - \u03c9, 0, 1) [HARD-ENFORCED]",
+          "kappa_identity": "\u03ba := ln(IC + \u03b5) [HARD-ENFORCED]",
+          "C_normalization": "C := C_raw / (C_raw + C_0), C_0 = median(C_raw)",
+          "S_normalization": "S := (S_raw - S_min) / (S_max - S_min)",
+          "tau_R_method": "phase_anchor_hysteresis_interpolation",
+          "IC_method": "smooth_contribution_geometric_aggregation (p99 scale)"
+        },
+        "IC_pass_rate": 0.865
+      },
+      "hashes": {
+        "frozen_json": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.SHM.RUN004/config/frozen.json",
+        "manifest_json": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.SHM.RUN004/manifest.json",
+        "kernel_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.SHM.RUN004/kernel/kernel.csv",
+        "psi_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.SHM.RUN004/derived/psi.csv",
+        "tauR_series_csv": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.SHM.RUN004/tables/tauR_series.csv"
+      },
+      "artifacts": [
+        {
+          "path": "kernel/kernel.csv",
+          "sha256": "12b1603f5be3da393d362a691a51d7030fd7ca045ee04cb8f6e352ffca7c0b3c",
+          "role": "kernel",
+          "bytes": 165773
+        },
+        {
+          "path": "derived/psi.csv",
+          "sha256": "3d4b6a123875ab1f4b876786907f972ad68ae3847e4812064971922d2e117557",
+          "role": "derived",
+          "bytes": 67947
+        },
+        {
+          "path": "tables/tauR_series.csv",
+          "sha256": "a01a917e9a6ca7d4a170e93450de2e911a27c31f11a2c5775b124db4e196961c",
+          "role": "table",
+          "bytes": 29134
+        },
+        {
+          "path": "logs/oor.csv",
+          "sha256": "901f32993454423812f48e5af47e846843e07c0726ccefabc8ac1202a503c682",
+          "role": "log",
+          "bytes": 18605
+        },
+        {
+          "path": "logs/censor.csv",
+          "sha256": "51babba9a34874f67ce5a421c0db0d2eeddd6ad1401b1aac52737e4c39a8d60e",
+          "role": "log",
+          "bytes": 22610
+        },
+        {
+          "path": "config/frozen.json",
+          "sha256": "a67be02db2699e1c743fc3bab45d62c9991a2cfd910864b990f9ce9a79a8d3d7",
+          "role": "config",
+          "bytes": 1434
+        }
+      ],
+      "columns": {
+        "kernel": [
+          "t",
+          "omega",
+          "F",
+          "S",
+          "C",
+          "tau_R",
+          "IC",
+          "kappa",
+          "kappa_cum"
+        ],
+        "psi": [
+          "t",
+          "x",
+          "v",
+          "psi"
+        ],
+        "tauR_series": [
+          "t",
+          "tau_R"
+        ]
+      },
+      "kernel_column_map": {
+        "t": "t",
+        "omega": "omega",
+        "F": "F",
+        "S": "S",
+        "C": "C",
+        "tau_R": "tau_R",
+        "IC": "IC",
+        "kappa": "kappa"
+      },
+      "kernel_stats": {
+        "omega": {
+          "n": 1000,
+          "min": 0.007416888437327,
+          "max": 0.999999256836704,
+          "median": 0.1955591162008995,
+          "q25": 0.11635449614272847,
+          "q75": 0.3210540770042504,
+          "iqr": 0.20469958086152196,
+          "p05": 0.0514908700171684,
+          "p95": 0.5244584000452236
+        },
+        "F": {
+          "n": 1000,
+          "min": 7.431632961241164e-07,
+          "max": 0.992583111562673,
+          "median": 0.8044408837991004,
+          "q25": 0.6789459229957495,
+          "q75": 0.8836455038572715,
+          "iqr": 0.20469958086152196,
+          "p05": 0.47554159995477635,
+          "p95": 0.9485091299828315
+        },
+        "S": {
+          "n": 1000,
+          "min": 0.0,
+          "max": 0.999999987203657,
+          "median": 0.9579130539351671,
+          "q25": 0.9384418472109097,
+          "q75": 0.9793071350882625,
+          "iqr": 0.040865287877352774,
+          "p05": 0.5506439256290654,
+          "p95": 0.9970333406279777
+        },
+        "C": {
+          "n": 1000,
+          "min": 0.0014212631057146,
+          "max": 0.8798341102249928,
+          "median": 0.49999999639750214,
+          "q25": 0.29581337418435094,
+          "q75": 0.6590439115688016,
+          "iqr": 0.36323053738445066,
+          "p05": 0.07752196781881437,
+          "p95": 0.7880746441223064
+        },
+        "tau_R": {
+          "n": 976,
+          "min": 0.9970768118729092,
+          "max": 1.0031016043263588,
+          "median": 1.000328505228078,
+          "q25": 0.9996456037733844,
+          "q75": 1.0009163152309104,
+          "iqr": 0.001270711457525997,
+          "p05": 0.9970768118729092,
+          "p95": 1.0031016043263588
+        },
+        "IC": {
+          "n": 1000,
+          "min": 0.1120146161576726,
+          "max": 0.9998795827427208,
+          "median": 0.9196890255932171,
+          "q25": 0.7980004438535341,
+          "q75": 0.9707973717292279,
+          "iqr": 0.17279692787569378,
+          "p05": 0.5476414745409,
+          "p95": 0.9942127516244618
+        },
+        "kappa": {
+          "n": 1000,
+          "min": -2.1891258255197594,
+          "max": -0.0001204145068148,
+          "median": -0.0837196727763205,
+          "q25": -0.22564616163691548,
+          "q75": -0.029637519386978974,
+          "iqr": 0.1960086422499365,
+          "p05": -0.6021344647407899,
+          "p95": -0.0058040493302572
+        }
+      },
+      "tauR_coverage": {
+        "finite_coverage_percent": 97.6,
+        "censoring_percent": 2.4000000000000057
+      },
+      "tauR_distribution_stats": {
+        "n": 976,
+        "min": 0.9970768118729092,
+        "max": 1.0031016043263588,
+        "median": 1.000328505228078,
+        "q25": 0.9996456037733844,
+        "q75": 1.0009163152309104,
+        "iqr": 0.001270711457525997,
+        "p05": 0.9970768118729092,
+        "p95": 1.0031016043263588
+      },
+      "logs": {
+        "oor": {
+          "overall": 0.0,
+          "by_channel": {
+            "x": 0.0
+          }
+        },
+        "censor": {
+          "overall": 1.0,
+          "by_channel": {
+            "tau_R": 1.0
+          }
+        }
+      },
+      "seams": {
+        "seam_ledger_row": null
+      },
+      "receipts": {
+        "weld_receipt_row": null
+      },
+      "gaps": []
+    }
+  ]
+}

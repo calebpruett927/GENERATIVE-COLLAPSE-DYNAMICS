@@ -117,6 +117,13 @@ umcp_canon:
       enabled: true
       note: "Diagnostic only; never used as a gate."
 
+  # Extension canon anchors documented in canon/README.md:
+  # - canon/gcd_anchors.yaml (UMCP.GCD.v1) - Tier-1 GCD framework
+  # - canon/kin_anchors.yaml (UMCP.KIN.v1) - Tier-1 Kinematics extension
+  # - canon/rcft_anchors.yaml (UMCP.RCFT.v1) - Tier-2 RCFT overlay
+
   change_control:
     mutation_policy: "append-only; bump canon_id on any semantic change"
     provenance_reference: "Provenance & Canon Note 1.0.1"
+
+

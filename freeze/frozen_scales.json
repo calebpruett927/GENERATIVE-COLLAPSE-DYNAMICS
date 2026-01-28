@@ -1,0 +1,32 @@
+{
+  "frozen_from": "/workspaces/UMCP-Metadata-Runnable-Code/runs/KIN.CP.SHM.RUN004/kernel/kernel.csv",
+  "frozen_at": "2026-01-27T04:52:41.619733+00:00",
+  "contract": "UMA.INTSTACK.v1",
+  "control_casepack": "KIN.CP.SHM",
+  "legacy_thresholds": {
+    "omega_stable": 0.038,
+    "S_stable": 0.15,
+    "C_stable": 0.14
+  },
+  "p95_raw": {
+    "omega": 0.5244584000452236,
+    "S": 0.9970333406279777,
+    "C": 0.7880746441223064
+  },
+  "median_raw": {
+    "omega": 0.1955591162008995,
+    "S": 0.9579130539351671,
+    "C": 0.49999999639750214
+  },
+  "frozen_scales": {
+    "Omega": 13.801536843295358,
+    "Sigma": 6.646888937519852,
+    "Cal_C": 5.6291046008736165
+  },
+  "interpretation": {
+    "gate_aligned_omega": "clip(omega_raw / 13.801537, 0, 1)",
+    "gate_aligned_S": "clip(S_raw / 6.646889, 0, 1)",
+    "gate_aligned_C": "clip(C_raw / 5.629105, 0, 1)",
+    "stable_if": "gate_aligned < 1.0 for all three measures"
+  }
+}

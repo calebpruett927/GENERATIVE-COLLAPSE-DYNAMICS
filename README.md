@@ -252,14 +252,14 @@ R·τ_R = D_ω + D_C + Δκ
 │     └─ Budget: R·τ_R = D_ω + D_C + Δκ                              │
 │                                                                     │
 │  4. FRAMEWORK SELECTION                                             │
-│     ┌─────────────────┐      ┌──────────────────┐                 │
-│     │ GCD (Tier-1)    │  OR  │ RCFT (Tier-2)    │                 │
-│     ├─────────────────┤      ├──────────────────┤                 │
-│     │ • Energy (E)    │      │ • Fractal (Dꜰ)   │                 │
-│     │ • Collapse (Φ)  │      │ • Recursive (Ψᵣ) │                 │
-│     │ • Flux (Φ_gen)  │      │ • Pattern (λ, Θ) │                 │
-│     │ • Resonance (R) │      │ + all GCD        │                 │
-│     └─────────────────┘      └──────────────────┘                 │
+│     ┌─────────────────┐      ┌──────────────────┐      ┌──────────────────┐
+│     │ GCD (Tier-1)    │  OR  │ KIN (Tier-1)     │  OR  │ RCFT (Tier-2)    │
+│     ├─────────────────┤      ├──────────────────┤      ├──────────────────┤
+│     │ • Energy (E)    │      │ • Position (x,v) │      │ • Fractal (Dꜰ)   │
+│     │ • Collapse (Φ)  │      │ • E_kin/E_pot    │      │ • Recursive (Ψᵣ) │
+│     │ • Flux (Φ_gen)  │      │ • τ_kin (return) │      │ • Pattern (λ, Θ) │
+│     │ • Resonance (R) │      │ • K_stability    │      │ + all GCD        │
+│     └─────────────────┘      └──────────────────┘      └──────────────────┘
 │                                                                     │
 │  5. VALIDATION (Seam Tests)                                        │
 │     ├─ Budget conservation: |s| ≤ 0.005                            │
@@ -306,6 +306,23 @@ coherence to dynamical systems recurrence (Poincaré-style).
 umcp validate casepacks/gcd_complete
 ```
 
+### Kinematics (KIN) - Tier-1 Extension
+
+**Best for**: Physics-based motion analysis, phase space return detection, mechanical systems
+
+**Closures** (6):
+- `linear_kinematics`: Position, velocity, acceleration
+- `rotational_kinematics`: Angular motion, torque, angular momentum
+- `energy_mechanics`: Kinetic/potential energy, work, power
+- `momentum_dynamics`: Linear momentum, impulse, collisions
+- `phase_space_return`: τ_kin computation in (x,v) space
+- `kinematic_stability`: K_stability index, regime classification
+
+**Example**:
+```bash
+umcp validate casepacks/kinematics_complete
+```
+
 ### RCFT (Recursive Collapse Field Theory) - Tier-2
 
 **Best for**: Trajectory complexity, memory effects, oscillatory patterns, multi-scale analysis
@@ -326,6 +343,7 @@ umcp validate casepacks/rcft_complete
 | Need | Framework | Why |
 |------|-----------|-----|
 | Basic energy/collapse | GCD | Simpler, faster, foundational |
+| Physics/motion analysis | Kinematics | Phase space return, energy conservation |
 | Trajectory complexity | RCFT | Box-counting fractal dimension |
 | History/memory | RCFT | Exponential decay field |
 | Oscillation detection | RCFT | FFT-based pattern analysis |
@@ -334,6 +352,7 @@ umcp validate casepacks/rcft_complete
 ---
 
 ## 🔌 Built-In Features
+
 
 UMCP includes two core features that enhance validation without requiring external dependencies:
 
@@ -447,6 +466,8 @@ Additional Features:
 
 ### Framework Documentation
 - **[GCD Theory](canon/gcd_anchors.yaml)** — Tier-1 specification
+- **[Kinematics Theory](canon/kin_anchors.yaml)** — Physics-based motion extension
+- **[KINEMATICS_SPECIFICATION.md](KINEMATICS_SPECIFICATION.md)** — Complete kinematics layer documentation
 - **[RCFT Theory](docs/rcft_theory.md)** — Tier-2 mathematical foundations
 - **[RCFT Usage](docs/rcft_usage.md)** — Practical examples
 

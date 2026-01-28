@@ -1,0 +1,56 @@
+{
+  "casepack_id": "KIN.CP.SHM",
+  "run_id": "KIN.CP.SHM.RUN003",
+  "contract": "UMA.INTSTACK.v1",
+  "timezone": "America/Chicago",
+  "git_commit": "abc123def456",
+  "package_version": "1.0.0",
+  "pipeline": "shm_oscillator",
+  "adapter": {
+    "name": "SHM.ADAPTER",
+    "dt": 0.01,
+    "T": 10.0,
+    "f0": 1.0,
+    "omega_0": 6.283185307179586,
+    "A": 1.0,
+    "noise_sigma": 0.005
+  },
+  "return": {
+    "format": "csv",
+    "columns": [
+      "t",
+      "omega",
+      "F",
+      "S",
+      "C",
+      "tau_R",
+      "IC",
+      "kappa",
+      "kappa_cum"
+    ]
+  },
+  "tier1_identities": {
+    "omega_definition": "||\u03a8(t) - \u03a8(t-\u0394t)|| (trace jitter)",
+    "F_identity": "F = clip(1 - \u03c9/scale, 0, 1)",
+    "kappa_identity": "\u03ba = ln(IC + \u03b5) [instantaneous]",
+    "C_normalization": "C = C_raw / (C_raw + C_0), C_0 = median(C_raw)",
+    "tau_R_method": "phase_anchor_hysteresis_interpolation",
+    "IC_method": "smooth_contribution_geometric_aggregation"
+  },
+  "frozen_scales": {
+    "omega_scale": 0.007057118481858942,
+    "C_0": 45.08309484864714,
+    "h_hysteresis": 0.05
+  },
+  "weights": {
+    "omega": 1.0,
+    "F": 1.0,
+    "S": 1.0,
+    "C": 1.0,
+    "tau_R": 1.0
+  },
+  "closures": [
+    "gamma.default.v1",
+    "norms.l2_eta1e-3.v1"
+  ]
+}

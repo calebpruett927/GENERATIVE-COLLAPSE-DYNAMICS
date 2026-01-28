@@ -1,0 +1,105 @@
+{
+  "casepack_id": "KIN.CP.BALLISTIC",
+  "run_id": "KIN.CP.BALLISTIC.RUN003",
+  "created_utc": "2026-01-27T04:17:54.407457+00:00",
+  "contract": "UMA.INTSTACK.v1",
+  "timezone": "America/Chicago",
+  "git_commit": "abc123def456",
+  "package_version": "1.0.0",
+  "pipeline": "ballistic_with_bounce",
+  "adapter": {
+    "name": "BALLISTIC.ADAPTER",
+    "dt": 0.005,
+    "g": 9.81,
+    "v0": 20.0,
+    "theta_deg": 59.99999999999999,
+    "restitution": 0.7
+  },
+  "return": {
+    "format": "csv",
+    "columns": [
+      "t",
+      "omega",
+      "F",
+      "S",
+      "C",
+      "tau_R",
+      "IC",
+      "kappa",
+      "kappa_cum"
+    ]
+  },
+  "tier1_identities": {
+    "omega_definition": "||\u03a8(t) - \u03a8(t-\u0394t)|| (trace jitter)",
+    "F_identity": "F = clip(1 - \u03c9/scale, 0, 1)",
+    "kappa_identity": "\u03ba = ln(IC + \u03b5) [instantaneous]",
+    "C_normalization": "C = C_raw / (C_raw + C_0), C_0 = median(C_raw)",
+    "tau_R_closure": "always_censored (non-recurrent by design)",
+    "IC_method": "smooth_contribution_geometric_aggregation"
+  },
+  "frozen_scales": {
+    "omega_scale": 0.0844580249951718,
+    "C_0": 642.9316085273387
+  },
+  "weights": {
+    "omega": 1.0,
+    "F": 1.0,
+    "S": 1.0,
+    "C": 1.0,
+    "tau_R": 1.0
+  },
+  "closures": [
+    "gamma.default.v1",
+    "norms.l2_eta1e-3.v1"
+  ],
+  "artifacts": [
+    {
+      "path": "kernel/kernel.csv",
+      "sha256": "e681a312fac4544fbe8bd32f6ad6d482eb83bbcb3f15c85efb3f29169b6eee0b",
+      "role": "kernel",
+      "bytes": 194928
+    },
+    {
+      "path": "derived/psi.csv",
+      "sha256": "fe7b4b91910876e8bbc50f187df5844a74f2d4a00d07ad5cba8912159783b140",
+      "role": "derived",
+      "bytes": 138452
+    },
+    {
+      "path": "tables/tauR_series.csv",
+      "sha256": "636ae3a53b5b11f4d94dd8bea0f273f3dc11ab4f783c74af0f2ebfa56f3fb89d",
+      "role": "table",
+      "bytes": 31784
+    },
+    {
+      "path": "logs/oor.csv",
+      "sha256": "a0c56a5272d83105d9bd3a356c5640880291d8562fdbad887a5457c1673e2aaa",
+      "role": "log",
+      "bytes": 36603
+    },
+    {
+      "path": "logs/censor.csv",
+      "sha256": "0c3d08d881fc941f268db8e54182894bce2aa1bec617ef7cf9dcb9f1cb95267c",
+      "role": "log",
+      "bytes": 41416
+    },
+    {
+      "path": "seams/seam_ledger.csv",
+      "sha256": "19973ad8abb6aa29fdb5c676effe377bf889c964230288bbbfc2133e6892a34e",
+      "role": "seam",
+      "bytes": 214
+    },
+    {
+      "path": "receipts/weld_receipt.json",
+      "sha256": "04979eb419f86b3ceeb3b1ea3405273a2712811cc9db423475ab97b1a2b7c744",
+      "role": "receipt",
+      "bytes": 498
+    },
+    {
+      "path": "config/frozen.json",
+      "sha256": "1402dea2e5c6bf939d9491fcc5efe1b1ec5be2cf66c7d4f52c6bb132a66b018f",
+      "role": "config",
+      "bytes": 1070
+    }
+  ]
+}

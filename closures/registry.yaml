@@ -94,3 +94,40 @@ registry:
         optimizations: ["OPT-17", "OPT-20"]
         inputs: ["weights", "coordinates", "batch"]
         outputs: ["pruned", "clipped", "statistics"]
+    kinematics:
+      - name: "linear_kinematics"
+        path: "closures/kinematics/linear_kinematics.py"
+        description: "Linear kinematics: position, velocity, acceleration with predictions"
+        contract: "KIN.INTSTACK.v1"
+        inputs: ["x", "v", "a", "dt"]
+        outputs: ["position", "velocity", "acceleration", "phase_magnitude", "phase_angle", "predicted_x_next", "predicted_v_next", "regime"]
+      - name: "rotational_kinematics"
+        path: "closures/kinematics/rotational_kinematics.py"
+        description: "Rotational kinematics: angular position, velocity, acceleration, torque"
+        contract: "KIN.INTSTACK.v1"
+        inputs: ["theta", "omega_rot", "alpha", "I_normalized", "dt"]
+        outputs: ["theta", "omega_rot", "alpha", "angular_momentum", "torque", "E_rotational", "regime"]
+      - name: "energy_mechanics"
+        path: "closures/kinematics/energy_mechanics.py"
+        description: "Energy mechanics: kinetic, potential, mechanical energy, work, power"
+        contract: "KIN.INTSTACK.v1"
+        inputs: ["v", "h", "m_normalized", "F_net", "displacement"]
+        outputs: ["E_kinetic", "E_potential", "E_mechanical", "W", "P_power", "regime"]
+      - name: "momentum_dynamics"
+        path: "closures/kinematics/momentum_dynamics.py"
+        description: "Momentum dynamics: linear momentum, impulse, collisions, conservation"
+        contract: "KIN.INTSTACK.v1"
+        inputs: ["v", "m_normalized", "F_net", "dt"]
+        outputs: ["p", "J", "collision_results", "momentum_conserved", "regime"]
+      - name: "phase_space_return"
+        path: "closures/kinematics/phase_space_return.py"
+        description: "Phase space return: τ_kin computation in (x,v) space"
+        contract: "KIN.INTSTACK.v1"
+        inputs: ["x_series", "v_series", "eta_phase", "H_rec_kin"]
+        outputs: ["tau_kin", "return_status", "return_rate", "dynamics_regime"]
+      - name: "kinematic_stability"
+        path: "closures/kinematics/kinematic_stability.py"
+        description: "Kinematic stability: K_stability index, regime classification"
+        contract: "KIN.INTSTACK.v1"
+        inputs: ["x_series", "v_series", "a_series"]
+        outputs: ["K_stability", "S_kin", "C_kin", "omega_kin", "regime", "motion_regime"]

@@ -1,0 +1,80 @@
+{
+  "casepack_id": "KIN.CP.GAIT",
+  "run_id": "KIN.CP.GAIT.RUN004",
+  "contract": "UMA.INTSTACK.v1",
+  "timezone": "America/Chicago",
+  "git_commit": "abc123def456",
+  "package_version": "1.0.0",
+  "pipeline": "imu_gait_analysis",
+  "adapter": {
+    "name": "GAIT.ADAPTER",
+    "fs": 100,
+    "T": 30.0,
+    "f_gait": 1.8,
+    "expected_period": 0.5555555555555556,
+    "channels": [
+      "ax",
+      "ay",
+      "az",
+      "gx",
+      "gy",
+      "gz"
+    ]
+  },
+  "return": {
+    "format": "csv",
+    "columns": [
+      "t",
+      "omega",
+      "F",
+      "S",
+      "C",
+      "tau_R",
+      "IC",
+      "kappa",
+      "kappa_cum"
+    ]
+  },
+  "tier1_identities": {
+    "omega_definition": "||\u03a8(t) - \u03a8(t-\u0394t)|| / max, normalized to [0,1]",
+    "F_identity": "F := clip(1 - \u03c9, 0, 1) [HARD-ENFORCED]",
+    "kappa_identity": "\u03ba := ln(IC + \u03b5) [HARD-ENFORCED]",
+    "C_normalization": "C := C_raw / (C_raw + C_0), C_0 = median(C_raw)",
+    "S_normalization": "S := (S_raw - S_min) / (S_max - S_min)",
+    "tau_R_method": "event_anchor_az_peaks",
+    "IC_method": "smooth_contribution_geometric_aggregation (p99 scale)"
+  },
+  "frozen_scales": {
+    "omega_max": 0.14951892211387147,
+    "C_0": 595.7153019426738,
+    "S_min": 3.077648960011281,
+    "S_max": 3.848674450079843,
+    "min_interval": 0.4444444444444445,
+    "IC_min": 0.7,
+    "IC_scale_quantile": 0.99
+  },
+  "identity_validation": {
+    "F_identity_valid": true,
+    "F_max_error": 0.0,
+    "kappa_identity_valid": true,
+    "kappa_max_error": 0.0,
+    "all_valid": true
+  },
+  "IC_pass_rate": 0.716,
+  "IC_channels": {
+    "omega": 0.5,
+    "az_deviation": 0.5
+  },
+  "weights": {
+    "omega": 1.0,
+    "F": 1.5,
+    "S": 1.0,
+    "C": 0.5,
+    "tau_R": 2.0
+  },
+  "closures": [
+    "gamma.default.v1",
+    "norms.l2_eta1e-3.v1",
+    "return_domain.window64.v1"
+  ]
+}

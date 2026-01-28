@@ -1,0 +1,106 @@
+{
+  "casepack_id": "KIN.CP.GAIT",
+  "run_id": "KIN.CP.GAIT.RUN003",
+  "created_utc": "2026-01-27T04:17:54.733149+00:00",
+  "contract": "UMA.INTSTACK.v1",
+  "timezone": "America/Chicago",
+  "git_commit": "abc123def456",
+  "package_version": "1.0.0",
+  "pipeline": "imu_gait_analysis",
+  "adapter": {
+    "name": "GAIT.ADAPTER",
+    "fs": 100,
+    "T": 30.0,
+    "f_gait": 1.8,
+    "expected_period": 0.5555555555555556,
+    "channels": [
+      "ax",
+      "ay",
+      "az",
+      "gx",
+      "gy",
+      "gz"
+    ]
+  },
+  "return": {
+    "format": "csv",
+    "columns": [
+      "t",
+      "omega",
+      "F",
+      "S",
+      "C",
+      "tau_R",
+      "IC",
+      "kappa",
+      "kappa_cum"
+    ]
+  },
+  "tier1_identities": {
+    "omega_definition": "||\u03a8(t) - \u03a8(t-\u0394t)|| (trace jitter)",
+    "F_identity": "F = clip(1 - \u03c9/scale, 0, 1)",
+    "kappa_identity": "\u03ba = ln(IC + \u03b5) [instantaneous]",
+    "C_normalization": "C = C_raw / (C_raw + C_0), C_0 = median(C_raw)",
+    "tau_R_method": "event_anchor_az_peaks",
+    "IC_method": "smooth_contribution_geometric_aggregation"
+  },
+  "frozen_scales": {
+    "omega_scale": 0.08395779873810427,
+    "C_0": 595.7153019426738,
+    "min_interval": 0.4444444444444445
+  },
+  "IC_channels": {
+    "omega": 0.5,
+    "az_deviation": 0.5
+  },
+  "weights": {
+    "omega": 1.0,
+    "F": 1.5,
+    "S": 1.0,
+    "C": 0.5,
+    "tau_R": 2.0
+  },
+  "closures": [
+    "gamma.default.v1",
+    "norms.l2_eta1e-3.v1",
+    "return_domain.window64.v1"
+  ],
+  "artifacts": [
+    {
+      "path": "kernel/kernel.csv",
+      "sha256": "e4ad8745b4eb9af488b976957fcc094ae6531a7dc6ac07e061c622aaa3090cdc",
+      "role": "kernel",
+      "bytes": 494549
+    },
+    {
+      "path": "derived/psi.csv",
+      "sha256": "ee87447ad51ad157fbdd32c5185f12c1c11edb286d6ca4ba72aecfa71bc2c969",
+      "role": "derived",
+      "bytes": 457781
+    },
+    {
+      "path": "tables/tauR_series.csv",
+      "sha256": "0b33d5eae2f87624ba066dd4c347300d5a557eed59ce5a01c58a77f32dd39ce6",
+      "role": "table",
+      "bytes": 89223
+    },
+    {
+      "path": "logs/oor.csv",
+      "sha256": "60800bd2e58e451fe88de28280959a685d074c7f0cb490f68a971c4e11a9bad0",
+      "role": "log",
+      "bytes": 63057
+    },
+    {
+      "path": "logs/censor.csv",
+      "sha256": "b4ff0dd7b2e84b015fc43badad3de2231c5784a7d29ea6e6b50cc681c2ac742b",
+      "role": "log",
+      "bytes": 72062
+    },
+    {
+      "path": "config/frozen.json",
+      "sha256": "cf48188ffed7c8bcb6f53e31d38c57ee85c67d4737a9026c010984f39bf0ad35",
+      "role": "config",
+      "bytes": 1186
+    }
+  ]
+}

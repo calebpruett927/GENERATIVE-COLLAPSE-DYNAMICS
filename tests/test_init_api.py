@@ -1,13 +1,14 @@
 """Tests for umcp package-level API (ValidationResult and validate function)."""
 
 from pathlib import Path
+from typing import Any
 
 import umcp
 
 
 def test_validation_result_conformant():
     """Test ValidationResult with CONFORMANT status."""
-    data = {
+    data: dict[str, Any] = {
         "run_status": "CONFORMANT",
         "summary": {"counts": {"errors": 0, "warnings": 2}},
         "targets": [
@@ -29,7 +30,7 @@ def test_validation_result_conformant():
 
 def test_validation_result_nonconformant():
     """Test ValidationResult with NONCONFORMANT status."""
-    data = {
+    data: dict[str, Any] = {
         "run_status": "NONCONFORMANT",
         "summary": {"counts": {"errors": 3, "warnings": 1}},
         "targets": [
@@ -58,7 +59,7 @@ def test_validation_result_nonconformant():
 
 def test_validation_result_empty():
     """Test ValidationResult with minimal data."""
-    data = {"run_status": "UNKNOWN", "summary": {}, "targets": []}
+    data: dict[str, Any] = {"run_status": "UNKNOWN", "summary": {}, "targets": []}
 
     result = umcp.ValidationResult(data)
 
@@ -110,7 +111,7 @@ def test_validate_nonexistent_path():
 
 def test_validation_result_data_access():
     """Test that ValidationResult provides access to full data."""
-    data = {
+    data: dict[str, Any] = {
         "run_status": "CONFORMANT",
         "summary": {"counts": {"errors": 0, "warnings": 0}},
         "targets": [],
@@ -127,7 +128,7 @@ def test_validation_result_data_access():
 def test_validation_result_missing_fields():
     """Test ValidationResult handles missing fields gracefully."""
     # Minimal data with missing summary/targets
-    data = {"run_status": "CONFORMANT"}
+    data: dict[str, Any] = {"run_status": "CONFORMANT"}
 
     result = umcp.ValidationResult(data)
 

@@ -1,0 +1,67 @@
+{
+  "casepack_id": "KIN.CP.BALLISTIC",
+  "run_id": "KIN.CP.BALLISTIC.RUN004",
+  "contract": "UMA.INTSTACK.v1",
+  "timezone": "America/Chicago",
+  "git_commit": "abc123def456",
+  "package_version": "1.0.0",
+  "pipeline": "ballistic_with_bounce",
+  "adapter": {
+    "name": "BALLISTIC.ADAPTER",
+    "dt": 0.005,
+    "g": 9.81,
+    "v0": 20.0,
+    "theta_deg": 59.99999999999999,
+    "restitution": 0.7
+  },
+  "return": {
+    "format": "csv",
+    "columns": [
+      "t",
+      "omega",
+      "F",
+      "S",
+      "C",
+      "tau_R",
+      "IC",
+      "kappa",
+      "kappa_cum"
+    ]
+  },
+  "tier1_identities": {
+    "omega_definition": "||\u03a8(t) - \u03a8(t-\u0394t)|| / max, normalized to [0,1]",
+    "F_identity": "F := clip(1 - \u03c9, 0, 1) [HARD-ENFORCED]",
+    "kappa_identity": "\u03ba := ln(IC + \u03b5) [HARD-ENFORCED]",
+    "C_normalization": "C := C_raw / (C_raw + C_0), C_0 = median(C_raw)",
+    "S_normalization": "S := (S_raw - S_min) / (S_max - S_min)",
+    "tau_R_closure": "always_censored (non-recurrent by design)",
+    "IC_method": "smooth_contribution_geometric_aggregation (p99 scale)"
+  },
+  "frozen_scales": {
+    "omega_max": 0.09373730587005641,
+    "C_0": 642.9316085273387,
+    "S_min": 2.843102394771768,
+    "S_max": 3.7420391038903698,
+    "IC_min": 0.7,
+    "IC_scale_quantile": 0.99
+  },
+  "identity_validation": {
+    "F_identity_valid": true,
+    "F_max_error": 0.0,
+    "kappa_identity_valid": true,
+    "kappa_max_error": 0.0,
+    "all_valid": true
+  },
+  "IC_pass_rate": 0.8053244592346089,
+  "weights": {
+    "omega": 1.0,
+    "F": 1.0,
+    "S": 1.0,
+    "C": 1.0,
+    "tau_R": 1.0
+  },
+  "closures": [
+    "gamma.default.v1",
+    "norms.l2_eta1e-3.v1"
+  ]
+}

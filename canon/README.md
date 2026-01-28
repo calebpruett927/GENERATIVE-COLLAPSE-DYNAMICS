@@ -10,6 +10,7 @@ canon/
 ├── anchors.yaml           # UMCP.CANON.v1 - Base framework
 ├── gcd_anchors.yaml       # UMCP.GCD.v1 - Tier-1 framework (GCD)
 ├── rcft_anchors.yaml      # UMCP.RCFT.v1 - Tier-2 overlay (RCFT)
+├── kin_anchors.yaml       # UMCP.KIN.v1 - Kinematics extension
 └── docs/
     └── validator_usage.md # Validation guidance
 ```
@@ -20,6 +21,7 @@ canon/
 |------|------------|-----------|-------------|
 | Base | [anchors.yaml](anchors.yaml) | UMCP.CANON.v1 | Base framework: hygiene rules, DOI anchors, contract defaults |
 | 1 | [gcd_anchors.yaml](gcd_anchors.yaml) | UMCP.GCD.v1 | Generative Collapse Dynamics: frozen invariants (ω, F, S, C, τ_R, κ, IC) |
+| 1 | [kin_anchors.yaml](kin_anchors.yaml) | UMCP.KIN.v1 | Kinematics: physics-based motion (x, v, a, E_kin, τ_kin, K_stability) |
 | 2 | [rcft_anchors.yaml](rcft_anchors.yaml) | UMCP.RCFT.v1 | Recursive Collapse Field Theory: overlay extensions (D_f, Ψ_r, λ_p, Θ) |
 
 ## Key Principles
@@ -56,6 +58,16 @@ The Tier-1 GCD anchor defines:
 - **Tolerances**: tol_seam = 0.005, tol_identity = 1e-9
 - **Typed censoring**: INF_REC, UNIDENTIFIABLE
 
+### kin_anchors.yaml (UMCP.KIN.v1)
+
+The Tier-1 Kinematics extension defines:
+- **Axioms**: KIN-AX-0 (Phase Space Closure), KIN-AX-1 (Return Time Finiteness), KIN-AX-2 (Conservation Closure), KIN-AX-3 (Stability Finiteness)
+- **Reserved symbols**: x, v, a, θ, ω_rot, α, p, E_kin, E_pot, E_mech, τ_kin, K_stability
+- **Mathematical identities**: E_kin = ½mv², p = mv, E_mech = E_kin + E_pot
+- **Phase space**: Γ_kin = {(x, v) : x ∈ [0,1], v ∈ [0,1]}
+- **Return time**: τ_kin - phase space return detection
+- **Stability index**: K_stability ∈ [0, 1]
+
 ### rcft_anchors.yaml (UMCP.RCFT.v1)
 
 The Tier-2 RCFT overlay defines:
@@ -70,16 +82,23 @@ The Tier-2 RCFT overlay defines:
 manifest.yaml
     └── refs.canon_anchors → canon/anchors.yaml
                                  ├── relates → canon/gcd_anchors.yaml (Tier-1)
+                                 ├── relates → canon/kin_anchors.yaml (Tier-1)
                                  └── relates → canon/rcft_anchors.yaml (Tier-2)
 
 contracts/GCD.INTSTACK.v1.yaml
     └── refs.canonical_anchor → canon/gcd_anchors.yaml
+
+contracts/KIN.INTSTACK.v1.yaml
+    └── refs.canonical_anchor → canon/kin_anchors.yaml
 
 contracts/RCFT.INTSTACK.v1.yaml
     └── refs.canonical_anchor → canon/rcft_anchors.yaml
 
 casepacks/gcd_complete/manifest.json
     └── refs.canon_anchors → canon/gcd_anchors.yaml
+
+casepacks/kinematics_complete/manifest.json
+    └── refs.canon_anchors → canon/kin_anchors.yaml
 
 casepacks/rcft_complete/manifest.json
     └── refs.canon_anchors → canon/rcft_anchors.yaml
@@ -96,6 +115,7 @@ umcp validate .
 # Strict mode (publication-grade)
 umcp validate . --strict
 ```
+
 
 Canon validation checks:
 - ✅ Canon anchor files exist and match schema

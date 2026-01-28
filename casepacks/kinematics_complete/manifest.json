@@ -1,0 +1,63 @@
+{
+  "schema": "schemas/manifest.schema.json",
+  "casepack": {
+    "id": "kinematics_complete",
+    "version": "1.0.0",
+    "title": "Kinematics Complete CasePack",
+    "description": "Complete kinematics casepack demonstrating all kinematic closures: linear motion, rotational motion, energy, momentum, phase space return, and stability analysis.",
+    "created_utc": "2026-01-27T00:00:00Z",
+    "timezone": "America/Chicago",
+    "authors": ["UMCP Contributors"]
+  },
+  "refs": {
+    "canon_anchors": { "path": "canon/kin_anchors.yaml" },
+    "contract": { "id": "KIN.INTSTACK.v1", "path": "contracts/KIN.INTSTACK.v1.yaml" },
+    "closures_registry": { "id": "UMCP.CLOSURES.KINEMATICS.v1", "path": "closures/registry.yaml" }
+  },
+  "artifacts": {
+    "raw_measurements": {
+      "path": "raw_measurements.csv",
+      "format": "csv"
+    },
+    "expected": {
+      "invariants_json": { "path": "expected/invariants.json" }
+    }
+  },
+  "run_intent": {
+    "notes": "This CasePack validates kinematics closures for projectile motion, harmonic oscillator, damped oscillator, circular motion, and elastic collision scenarios."
+  },
+  "extensions": {
+    "scenarios": [
+      {
+        "id": "projectile_motion",
+        "name": "Projectile Motion",
+        "description": "2D projectile motion under gravity"
+      },
+      {
+        "id": "simple_harmonic_oscillator",
+        "name": "Simple Harmonic Oscillator",
+        "description": "1D harmonic oscillation demonstrating periodic motion"
+      },
+      {
+        "id": "damped_oscillator",
+        "name": "Damped Harmonic Oscillator",
+        "description": "1D damped oscillation showing energy dissipation"
+      },
+      {
+        "id": "uniform_circular_motion",
+        "name": "Uniform Circular Motion",
+        "description": "Constant angular velocity, centripetal acceleration"
+      },
+      {
+        "id": "elastic_collision",
+        "name": "Elastic Collision",
+        "description": "1D elastic collision demonstrating conservation laws"
+      }
+    ],
+    "validation": {
+      "energy_conservation_tolerance": 0.01,
+      "momentum_conservation_tolerance": 0.01,
+      "kinematic_consistency_tolerance": 0.01
+    }
+  }
+}

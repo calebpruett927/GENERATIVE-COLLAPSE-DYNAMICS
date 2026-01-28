@@ -1,0 +1,2 @@
+seam_id,type,t_s,x_s,y_s,vy_pre,vy_post,restitution,description
+KIN.SEAM.IMP.001,impact,3.5399999999999467,35.40000000000013,0.0,-17.357841924311114,12.184824347017779,0.7,Ground impact with elastic restitution

@@ -1,0 +1,132 @@
+# Kinematics CasePack Observables
+# Defines raw physical quantities before normalization
+
+schema: "schemas/observables.schema.json"
+
+observables:
+  # Linear Motion Observables
+  position_x:
+    name: "Position (x-component)"
+    symbol: "x_phys"
+    unit: "m"
+    description: "Physical x-position in meters"
+    sampling_rate: 100  # Hz
+    range: [0, 10]  # meters
+    
+  position_y:
+    name: "Position (y-component)"
+    symbol: "y_phys"
+    unit: "m"
+    description: "Physical y-position in meters"
+    sampling_rate: 100  # Hz
+    range: [0, 10]  # meters
+    
+  velocity_x:
+    name: "Velocity (x-component)"
+    symbol: "v_x"
+    unit: "m/s"
+    description: "Physical x-velocity in m/s"
+    sampling_rate: 100  # Hz
+    range: [-10, 10]  # m/s
+    
+  velocity_y:
+    name: "Velocity (y-component)"
+    symbol: "v_y"
+    unit: "m/s"
+    description: "Physical y-velocity in m/s"
+    sampling_rate: 100  # Hz
+    range: [-10, 10]  # m/s
+    
+  acceleration_x:
+    name: "Acceleration (x-component)"
+    symbol: "a_x"
+    unit: "m/s²"
+    description: "Physical x-acceleration in m/s²"
+    sampling_rate: 100  # Hz
+    range: [-20, 20]  # m/s²
+    
+  acceleration_y:
+    name: "Acceleration (y-component)"
+    symbol: "a_y"
+    unit: "m/s²"
+    description: "Physical y-acceleration in m/s²"
+    sampling_rate: 100  # Hz
+    range: [-20, 20]  # m/s²
+
+  # Rotational Motion Observables
+  theta:
+    name: "Angular Position"
+    symbol: "θ"
+    unit: "rad"
+    description: "Angular position in radians"
+    sampling_rate: 100  # Hz
+    range: [0, 6.283185]  # 0 to 2π
+    
+  omega:
+    name: "Angular Velocity"
+    symbol: "ω_rot"
+    unit: "rad/s"
+    description: "Angular velocity in rad/s"
+    sampling_rate: 100  # Hz
+    range: [0, 10]  # rad/s
+    
+  alpha:
+    name: "Angular Acceleration"
+    symbol: "α"
+    unit: "rad/s²"
+    description: "Angular acceleration in rad/s²"
+    sampling_rate: 100  # Hz
+    range: [-10, 10]  # rad/s²
+
+  # Mass and Energy Observables
+  mass:
+    name: "Mass"
+    symbol: "m"
+    unit: "kg"
+    description: "Object mass in kilograms"
+    range: [0.1, 100]  # kg
+    
+  height:
+    name: "Height"
+    symbol: "h"
+    unit: "m"
+    description: "Height above reference level"
+    range: [0, 10]  # meters
+
+scenarios:
+  projectile:
+    description: "Projectile motion under gravity"
+    initial_conditions:
+      x0: 0.0  # m
+      y0: 1.0  # m
+      vx0: 5.0  # m/s
+      vy0: 5.0  # m/s
+    constants:
+      g: 9.81  # m/s²
+      
+  harmonic_oscillator:
+    description: "Simple harmonic oscillation"
+    initial_conditions:
+      x0: 0.5  # normalized amplitude
+      v0: 0.0  # starts at rest
+    constants:
+      omega_natural: 2.0  # rad/s
+      amplitude: 0.3  # normalized
+      
+  damped_oscillator:
+    description: "Damped harmonic oscillation"
+    initial_conditions:
+      x0: 0.5  # normalized amplitude
+      v0: 0.0  # starts at rest
+    constants:
+      omega_natural: 2.0  # rad/s
+      damping_ratio: 0.1  # γ
+      amplitude: 0.3  # normalized
+
+  circular_motion:
+    description: "Uniform circular motion"
+    initial_conditions:
+      theta0: 0.0  # rad
+      omega0: 1.0  # rad/s
+    constants:
+      radius: 1.0  # normalized

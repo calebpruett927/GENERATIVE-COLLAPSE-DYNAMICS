@@ -1,0 +1,138 @@
+% umcp_casepacks.sty - UMCP CasePack LaTeX integration (RUN004)
+% Generated: 2026-01-27
+% Contract: UMA.INTSTACK.v1
+%
+% This file provides:
+%   1. PGFPlots preamble for direct CSV rendering
+%   2. Run path macros
+%   3. Frozen gate scale macros
+%   4. Drop-in CasePack sections with real RUN004 data
+%
+% Usage: \usepackage{umcp_casepacks} in your paper preamble
+
+\ProvidesPackage{umcp_casepacks}[2026/01/27 UMCP CasePack LaTeX integration]
+
+% ============================================================================
+% REQUIRED PACKAGES
+% ============================================================================
+\RequirePackage{tikz}
+\RequirePackage{pgfplots}
+\RequirePackage{pgfplotstable}
+\usepgfplotslibrary{groupplots,statistics}
+\pgfplotsset{compat=1.18}
+
+\RequirePackage{booktabs}
+\RequirePackage{float}
+\RequirePackage{cleveref}
+
+% ============================================================================
+% RUN PATH MACROS (adjust prefix based on paper location relative to runs/)
+% ============================================================================
+% If your paper is in docs/, use ../runs/...
+% If your paper is in the repo root, use runs/...
+\newcommand{\RUNROOT}{runs}
+\newcommand{\RUNSHM}{\RUNROOT/KIN.CP.SHM.RUN004}
+\newcommand{\RUNGAIT}{\RUNROOT/KIN.CP.GAIT.RUN004}
+\newcommand{\RUNBALL}{\RUNROOT/KIN.CP.BALLISTIC.RUN004}
+
+% ============================================================================
+% CONTRACT MACROS
+% ============================================================================
+\newcommand{\ContractName}{\texttt{UMA.INTSTACK.v1}}
+\newcommand{\ContractEpsilon}{$10^{-8}$}
+\newcommand{\ContractEta}{$10^{-3}$}
+\newcommand{\ContractICmin}{0.70}
+\newcommand{\ContractTolId}{$10^{-6}$}
+
+% ============================================================================
+% FROZEN GATE SCALES (computed from SHM control)
+% ============================================================================
+% These are the frozen normalization scales for gate alignment
+% Computed as: Scale = p95(raw) / legacy_threshold
+\newcommand{\FrozenOmega}{13.8015}       % Ω = p95(ω) / 0.038
+\newcommand{\FrozenSigma}{6.6469}        % Σ = p95(S) / 0.15
+\newcommand{\FrozenCalC}{5.6291}         % 𝒞 = p95(C) / 0.14
+
+% p95 raw values from SHM
+\newcommand{\SHMpOmega}{0.5245}
+\newcommand{\SHMpS}{0.9970}
+\newcommand{\SHMpC}{0.7881}
+
+% ============================================================================
+% SEAM CONSTANTS
+% ============================================================================
+\newcommand{\BallisticSeamTime}{3.5400}
+\newcommand{\BallisticSeamX}{35.4}
+
+% ============================================================================
+% RUN004 KERNEL STATISTICS
+% ============================================================================
+% SHM statistics
+\newcommand{\SHMomegaMed}{0.1956}
+\newcommand{\SHMomegaPfive}{0.0515}
+\newcommand{\SHMomegaPninetyfive}{0.5245}
+\newcommand{\SHMFMed}{0.8044}
+\newcommand{\SHMSMed}{0.9579}
+\newcommand{\SHMCMed}{0.5000}
+\newcommand{\SHMtauRMed}{1.0003}
+\newcommand{\SHMICMed}{0.9197}
+\newcommand{\SHMkappaMed}{-0.0837}
+\newcommand{\SHMICpassrate}{86.5}
+
+% GAIT statistics
+\newcommand{\GAITomegaMed}{0.2493}
+\newcommand{\GAITFMed}{0.7507}
+\newcommand{\GAITSMed}{0.9116}
+\newcommand{\GAITCMed}{0.5000}
+\newcommand{\GAITtauRMed}{0.5500}
+\newcommand{\GAITICMed}{0.8044}
+\newcommand{\GAITkappaMed}{-0.2177}
+\newcommand{\GAITICpassrate}{71.6}
+
+% BALLISTIC statistics
+\newcommand{\BALLomegaMed}{0.3996}
+\newcommand{\BALLFMed}{0.6004}
+\newcommand{\BALLSMed}{0.9654}
+\newcommand{\BALLCMed}{0.5000}
+\newcommand{\BALLICMed}{0.8402}
+\newcommand{\BALLkappaMed}{-0.1741}
+\newcommand{\BALLICpassrate}{80.5}
+
+% Identity check max errors (all PASS)
+\newcommand{\IDFomegaMaxErr}{$2.22 \times 10^{-16}$}
+\newcommand{\IDkappaMaxErr}{$8.84 \times 10^{-8}$}
+
+% ============================================================================
+% TIER-1 IDENTITY STATEMENT (for manuscript text)
+% ============================================================================
+\newcommand{\TierOneIdentities}{%
+\noindent\textbf{Tier-1 Identities (Hard-Enforced):}
+\begin{itemize}
+  \item $F(t) = 1 - \omega(t)$ \quad (max error \IDFomegaMaxErr, PASS)
+  \item $\kappa(t) = \ln(\mathrm{clip}(IC(t), \varepsilon, 1-\varepsilon))$ \quad (max error \IDkappaMaxErr, PASS)
+\end{itemize}
+These identities are validator invariants and are mechanically enforced by the kernel.
+}
+
+% ============================================================================
+% GATE ALIGNMENT STATEMENT (for manuscript text)
+% ============================================================================
+\newcommand{\GateAlignmentNote}{%
+\noindent\textbf{Gate Alignment Note:}
+Regime thresholds are defined on the gate-aligned normalization of $(\omega, S, C)$, with scales frozen from the SHM control:
+\[
+\Omega = \FrozenOmega, \quad \Sigma = \FrozenSigma, \quad \mathcal{C} = \FrozenCalC
+\]
+Gate-aligned values are computed as $\omega_{\mathrm{gate}} = \mathrm{clip}(\omega_{\mathrm{raw}}/\Omega, 0, 1)$, etc.
+A point classifies as \emph{Stable} if all three gate-aligned values are $< 1.0$.
+}
+
+% ============================================================================
+% NON-RECURRENCE STATEMENT (for BALLISTIC)
+% ============================================================================
+\newcommand{\NonRecurrenceNote}{%
+\noindent\textbf{Non-Recurrence Declaration:}
+This CasePack is typed \texttt{NON\_RECURRENT\_BY\_DESIGN}. Return time $\tau_R$ is censored (reported as $\infty_{\mathrm{rec}}$), and weld outputs are \texttt{INTEGRITY\_ONLY}. No continuity claim is made.
+}
+
+\endinput

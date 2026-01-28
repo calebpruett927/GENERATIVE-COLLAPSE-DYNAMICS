@@ -1,0 +1,254 @@
+schema: schemas/contract.schema.json
+contract:
+  id: KIN.INTSTACK.v1
+  version: 1.0.0
+  timezone: America/Chicago
+  parent_contract: UMA.INTSTACK.v1
+  tier_level: 1
+  
+  # Kinematics-specific embedding: maps physical quantities to [0,1]
+  embedding:
+    interval:
+    - 0.0
+    - 1.0
+    face: pre_clip
+    oor_policy: clip_and_flag
+    epsilon: 1.0e-08
+
+  # Explicit Ψ(t) observable channel vector definition (contract-level)
+  # This is the Tier-0 observable fed to the kernel.
+  psi_observable:
+    channels:
+      - x           # position (magnitude)
+      - v           # velocity (magnitude)
+      - a           # acceleration (magnitude)
+      - E_kin       # kinetic energy (computed raw, then normalized)
+      - p           # momentum (magnitude)
+    dimension: 5
+    weights:
+      x: 0.25
+      v: 0.25
+      a: 0.15
+      E_kin: 0.20
+      p: 0.15
+      # Sum = 1.0 (enforced by weights_policy)
+    # Signed observable convention (FROZEN)
+    signed_convention: magnitude_only
+    # All kinematic channels use magnitudes: x := |x|, v := |v|, a := |a|, p := |p|
+    # This discards directional information in favor of bounded [0,1] embedding.
+    # Signed embeddings (preserving direction) are NOT supported in v1.
+    # E_kin computation order: E_kin = 0.5*m*v² in physical units, then clip(E_kin/E_ref)
+    E_kin_computation_order: raw_then_normalize
+      
+  tier_1_kernel:
+    reserved_symbols:
+    # Base UMCP symbols (inherited)
+    - "\u03C9"      # omega - drift
+    - F             # fidelity
+    - S             # entropy
+    - C             # curvature
+    - "\u03C4_R"    # tau_R - return time
+    - "\u03BA"      # kappa - log-integrity
+    - IC            # integrity composite
+    - omega
+    - tau_R
+    - kappa
+    # Kinematics-specific symbols
+    - x             # position vector (normalized)
+    - v             # velocity vector (normalized)
+    - a             # acceleration vector (normalized)
+    - p             # momentum vector (normalized)
+    - E_kin         # kinetic energy (normalized)
+    - E_pot         # potential energy (normalized)
+    - E_mech        # mechanical energy (normalized)
+    - L             # angular momentum (normalized)
+    - T             # torque (normalized)
+    - "\u03B8"      # theta - angular position
+    - "\u03C9_rot"  # omega_rot - angular velocity
+    - "\u03B1"      # alpha - angular acceleration
+    - F_net         # net force (normalized)
+    - W             # work (normalized)
+    - P_power       # power (normalized)
+    - "\u0394v"     # delta_v - velocity change
+    - "\u0394x"     # delta_x - displacement
+    - "\u03C4_kin"  # tau_kin - kinematic return time
+    - "\u03A6_kin"  # phi_kin - kinematic flux
+    - K_stability   # kinematic stability index
+    
+    weights_policy: nonnegative_sum_to_one
+    
+    frozen_parameters:
+      # Required base UMCP parameters (inherited from UMA.INTSTACK.v1)
+      p: 3                    # Norm order for Lp distance
+      alpha: 1.0              # Base curvature weight
+      lambda: 0.2             # Regularization parameter
+      eta: 0.001              # Neighborhood tolerance for return detection
+      # Reference scales for normalization (bounded embedding)
+      L_ref: 1.0              # Reference length [m]
+      v_ref: 1.0              # Reference velocity [m/s]
+      a_ref: 9.81             # Reference acceleration (g) [m/s²]
+      m_ref: 1.0              # Reference mass [kg]
+      t_ref: 1.0              # Reference time [s]
+      # Bounded embedding parameters (ALL channels clipped)
+      epsilon_log: 1.0e-08    # Log-safety guard: clip([ε, 1-ε], q̃)
+      oor_policy: clip_and_flag  # Out-of-range handling for ALL channels including time
+      # Kinematic damping coefficients
+      gamma_v: 0.1            # Velocity damping
+      gamma_a: 0.05           # Acceleration damping
+      # Stability thresholds
+      v_stable_max: 0.8       # Stable velocity threshold
+      a_stable_max: 0.5       # Stable acceleration threshold
+      E_stable_max: 0.7       # Stable energy threshold
+      # Return detection (FROZEN METRIC: squared-L2)
+      phase_metric: squared_l2  # d² = (Δx)² + (Δv)²
+      eta_phase: 0.01         # SQUARED distance tolerance (not L2!)
+      eta_position: 0.01      # Position return tolerance
+      eta_velocity: 0.05      # Velocity return tolerance
+      # Return-domain generator (FROZEN, discrete-time)
+      H_rec_kin: 64           # Kinematic return horizon (window size W)
+      delta_debounce: 3       # Debounce lag δ: prevents spurious rapid re-triggers (lag=0 already excluded)
+      return_domain_type: window  # D_W(t) = {u : 0 < t - u ≤ W}
+      # NOTE: Effective domain size is DERIVED as W - δ + 1 in code/tests, not frozen here
+      # Return rate thresholds
+      return_rate_threshold: 0.1  # return_rate ≤ 0.1 → credit = 0
+      T_crit: 10.0            # Critical return time for rate computation
+      
+    tolerances:
+      tol_seam: 0.005
+      tol_id: 1.0e-09
+      tol_energy: 1.0e-06
+      tol_momentum: 1.0e-06
+      tol_position: 1.0e-06
+      tol_velocity: 1.0e-05
+
+  axioms:
+  - id: KIN-AX-0
+    statement: "Conservation governs dynamics"
+    description: >
+      Mechanical energy is conserved in closed systems: E_mech = E_kin + E_pot = const.
+      Deviations measure dissipation or external work. Energy return validates system closure.
+  - id: KIN-AX-1
+    statement: "Momentum transfer preserves coherence"
+    description: >
+      Momentum p = mv is conserved in isolated systems. The rate of change dp/dt = F_net
+      defines force as the coherence-preserving mechanism of state change.
+  - id: KIN-AX-2
+    statement: "Return through phase space is real motion"
+    description: >
+      A trajectory returns if it re-enters an η-neighborhood in phase space (x,v).
+      Only returning trajectories receive kinematic credit (τ_kin < ∞_rec).
+  - id: KIN-AX-3
+    statement: "Acceleration bounds define stability"
+    description: >
+      Systems with |a| < a_stable_max maintain kinematic stability.
+      Exceeding this threshold transitions to kinematic collapse regime.
+
+  regime_classification:
+    kinetic_energy:
+      low:
+        threshold: 0.1
+        condition: "E_kin < 0.1"
+      moderate:
+        threshold: 0.5
+        condition: "0.1 ≤ E_kin < 0.5"
+      high:
+        threshold: null
+        condition: "E_kin ≥ 0.5"
+    velocity:
+      stable:
+        threshold: 0.3
+        condition: "v < 0.3"
+      transitional:
+        threshold: 0.8
+        condition: "0.3 ≤ v < 0.8"
+      critical:
+        threshold: null
+        condition: "v ≥ 0.8"
+    acceleration:
+      gentle:
+        threshold: 0.2
+        condition: "a < 0.2"
+      moderate:
+        threshold: 0.5
+        condition: "0.2 ≤ a < 0.5"
+      aggressive:
+        threshold: null
+        condition: "a ≥ 0.5"
+    stability:
+      stable:
+        threshold: 0.7
+        condition: "K_stability ≥ 0.7"
+      watch:
+        threshold: 0.3
+        condition: "0.3 ≤ K_stability < 0.7"
+      unstable:
+        threshold: null
+        condition: "K_stability < 0.3"
+
+  mathematical_identities:
+  - name: "Newton's Second Law"
+    formula: "F_net = m * a"
+    tolerance: 1.0e-09
+  - name: "Kinetic Energy"
+    formula: "E_kin = 0.5 * m * v²"
+    tolerance: 1.0e-09
+  - name: "Momentum Definition"
+    formula: "p = m * v"
+    tolerance: 1.0e-09
+  - name: "Work-Energy Theorem"
+    formula: "W = ΔE_kin"
+    tolerance: 1.0e-06
+  - name: "Power Definition"
+    formula: "P_power = F · v"
+    tolerance: 1.0e-06
+  - name: "Kinematics Integration"
+    formula: "v = v₀ + a*t; x = x₀ + v₀*t + 0.5*a*t²"
+    tolerance: 1.0e-06
+  - name: "Angular Kinematics"
+    formula: "ω_rot = dθ/dt; α = dω_rot/dt"
+    tolerance: 1.0e-06
+  - name: "Rotational Kinetic Energy"
+    formula: "E_rot = 0.5 * I * ω_rot²"
+    tolerance: 1.0e-09
+  - name: "Angular Momentum"
+    formula: "L = I * ω_rot = r × p"
+    tolerance: 1.0e-09
+  - name: "Torque Definition"
+    formula: "T = I * α = r × F"
+    tolerance: 1.0e-09
+
+  typed_censoring:
+    tau_R_special_values:
+    - INF_REC
+    - UNIDENTIFIABLE
+    tau_kin_special_values:
+    - INF_KIN              # Typed sentinel: no return detected (distinct from IEEE Inf)
+    - UNIDENTIFIABLE_KIN   # Typed sentinel: cannot determine return
+    # IMPORTANT: Untyped IEEE Inf/NaN are REJECTED by KIN-AX-1
+    reject_ieee_infinity: true
+    reject_ieee_nan: true
+    run_status_enum:
+    - CONFORMANT
+    - NONCONFORMANT
+    - NON_EVALUABLE
+    no_return_no_credit: true
+    kinematic_return_required: true
+
+  notes: >
+    KIN.INTSTACK.v1 extends UMA.INTSTACK.v1 with a complete kinematics layer.
+    It provides mathematical foundations for position, velocity, acceleration,
+    momentum, and energy within the UMCP framework. Trajectories are validated
+    against conservation laws and return conditions in phase space. All quantities
+    are normalized to [0,1] using reference scales (L_ref, v_ref, a_ref, m_ref).
+    Kinematic closures compute derived quantities and validate physical constraints.
+
+  extensions:
+    kinematics:
+      description: "Full kinematics layer with 1D/2D/3D support"
+      closures:
+      - linear_kinematics
+      - rotational_kinematics
+      - energy_mechanics
+      - momentum_dynamics
+      - phase_space_return
+      - kinematic_stability
