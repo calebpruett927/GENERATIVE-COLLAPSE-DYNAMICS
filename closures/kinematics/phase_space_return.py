@@ -27,15 +27,39 @@ NOTE: This is a DOMAIN CLOSURE (return overlay), not UMCP Tier-1.5 weld.
 from __future__ import annotations
 
 import math
-from typing import Any
+from enum import Enum
+from typing import Any, Union
 
 import numpy as np
 
 
-# Typed infinity values (following UMCP pattern)
-# These are REQUIRED for Axiom-0 compliance - untyped infinities forbidden
-INF_KIN = float("inf")
-UNIDENTIFIABLE_KIN = None
+# =============================================================================
+# TYPED SENTINELS (KIN-AX-1: IEEE Inf/NaN forbidden)
+# =============================================================================
+
+class KinSpecialValue(Enum):
+    """Typed sentinel values for τ_kin (replaces IEEE Inf/NaN)."""
+    INF_KIN = "INF_KIN"                    # No return detected
+    UNIDENTIFIABLE_KIN = "UNIDENTIFIABLE"  # Cannot determine return
+
+
+# Type alias for τ_kin: positive integer OR typed sentinel
+TauKin = Union[int, KinSpecialValue]
+
+
+# Legacy compatibility (deprecated - use KinSpecialValue instead)
+INF_KIN = KinSpecialValue.INF_KIN
+UNIDENTIFIABLE_KIN = KinSpecialValue.UNIDENTIFIABLE_KIN
+
+
+# =============================================================================
+# FROZEN CONSTANTS (from spec)
+# =============================================================================
+
+W_DEFAULT = 64       # Window size in samples
+DELTA_DEFAULT = 3    # Debounce lag in samples
+T_CRIT = 10.0        # Critical return time threshold
+ETA_PHASE_DEFAULT = 0.01  # Phase space tolerance (squared-L2)
 
 
 def compute_phase_distance(
@@ -60,20 +84,22 @@ def compute_phase_distance(
 def compute_kinematic_return(
     x_series: np.ndarray,
     v_series: np.ndarray,
-    eta_phase: float = 0.1,
-    debounce: int = 3,
+    eta_phase: float = ETA_PHASE_DEFAULT,
+    debounce: int = DELTA_DEFAULT,
+    window: int = W_DEFAULT,
 ) -> dict[str, Any]:
     """
     Compute kinematic return time in phase space.
 
-    The return time τ_kin is the first time the system re-enters an
-    η-neighborhood of a previous state.
+    The return time τ_kin is the minimum delay to a previous state within
+    η_phase tolerance. Uses squared-L2 distance with strict inequality.
 
     Args:
-        x_series: Time series of positions
-        v_series: Time series of velocities
-        eta_phase: Phase space neighborhood radius
-        debounce: Minimum steps before counting as return
+        x_series: Time series of normalized positions (x̃)
+        v_series: Time series of normalized velocities (ṽ)
+        eta_phase: Phase space squared-distance tolerance (strict <)
+        debounce: Minimum lag δ (samples) before counting as return
+        window: Window size W (samples)
 
     Returns:
         Dictionary with return statistics.
@@ -82,36 +108,69 @@ def compute_kinematic_return(
     v_series = np.asarray(v_series, dtype=float)
     
     n = len(x_series)
-    if n < debounce + 1:
+    t = n - 1  # Current time index (last point)
+    
+    # =================================================================
+    # Patch 3: Three-case domain size formula
+    # |D_{W,δ}(t)| = 0 if t < δ
+    #             = t - δ + 1 if δ ≤ t < W
+    #             = W - δ + 1 if t ≥ W
+    # =================================================================
+    if t < debounce:
+        domain_size = 0
+    elif t < window:
+        domain_size = t - debounce + 1
+    else:
+        domain_size = window - debounce + 1
+    
+    # =================================================================
+    # Patch 4: Empty domain → return_rate = 0 (no divide-by-zero)
+    # =================================================================
+    if domain_size == 0:
         return {
-            "tau_kin": INF_KIN,
+            "tau_kin": KinSpecialValue.INF_KIN,
             "return_count": 0,
             "return_rate": 0.0,
             "dynamics_regime": "Non_Returning",
+            "kinematic_credit": 0.0,
+            "domain_size": 0,
+            "startup": True,
         }
     
-    # Track returns
-    return_times: list[int] = []
-    return_count = 0
+    # Build effective domain D_{W,δ}(t)
+    lower_bound = max(0, t - window)
+    D_W_delta = [u for u in range(lower_bound, t) if (t - u) >= debounce]
     
-    for i in range(n):
-        x0, v0 = x_series[i], v_series[i]
-        
-        # Look for returns after debounce
-        for j in range(i + debounce, n):
-            d = compute_phase_distance(x0, v0, x_series[j], v_series[j])
-            if d < eta_phase:
-                return_times.append(j - i)
-                return_count += 1
-                break  # Only count first return from each point
+    # =================================================================
+    # Patch 1: Phase metric uses tilde variables (already normalized)
+    # d²(γ1, γ2) = (x̃2 - x̃1)² + (ṽ2 - ṽ1)²
+    # =================================================================
+    gamma_t = (x_series[t], v_series[t])
     
-    # Compute statistics
+    # Find valid returns U(t) with STRICT inequality d² < η_phase
+    valid_returns: list[int] = []
+    for u in D_W_delta:
+        if u < len(x_series):
+            gamma_u = (x_series[u], v_series[u])
+            d_squared = (gamma_t[0] - gamma_u[0])**2 + (gamma_t[1] - gamma_u[1])**2
+            if d_squared < eta_phase:  # STRICT inequality per spec
+                valid_returns.append(u)
+    
+    return_count = len(valid_returns)
+    
+    # =================================================================
+    # Patch 5: τ_kin is positive INTEGER or typed sentinel
+    # =================================================================
+    tau_kin: TauKin
     if return_count > 0:
-        tau_kin = float(np.mean(return_times))
-        return_rate = return_count / max(1, n - debounce)
+        # τ_kin = min delay (most recent return)
+        delays: list[int] = [t - u for u in valid_returns]
+        tau_kin = min(delays)  # Integer
     else:
-        tau_kin = INF_KIN
-        return_rate = 0.0
+        tau_kin = KinSpecialValue.INF_KIN  # Typed sentinel
+    
+    # Return rate = |U| / |D|
+    return_rate = return_count / domain_size
     
     # Classify dynamics
     if return_rate > 0.5:
@@ -124,26 +183,32 @@ def compute_kinematic_return(
         dynamics_regime = "Non_Returning"
     
     # AXIOM-0 ENFORCEMENT: no_return_no_credit
-    # Kinematic credit is only granted to returning motion
-    if tau_kin == INF_KIN:
-        kinematic_credit = 0.0  # Non-returning → no credit
-    else:
-        # Credit inversely proportional to return time (faster return = more credit)
-        kinematic_credit = 1.0 / (1.0 + tau_kin / 10.0)
+    kinematic_credit = _compute_credit(tau_kin, return_rate)
     
     return {
         "tau_kin": tau_kin,
         "return_count": return_count,
         "return_rate": return_rate,
         "dynamics_regime": dynamics_regime,
-        "kinematic_credit": kinematic_credit,  # Axiom-0 compliant
+        "kinematic_credit": kinematic_credit,
         "eta_phase": eta_phase,
+        "domain_size": domain_size,
         "n_points": n,
+        "startup": False,
     }
 
 
+def _compute_credit(tau_kin: TauKin, return_rate: float) -> float:
+    """Internal credit computation with Axiom-0 enforcement."""
+    if isinstance(tau_kin, KinSpecialValue):
+        return 0.0
+    if return_rate <= 0.1:
+        return 0.0
+    return (1.0 / (1.0 + tau_kin / T_CRIT)) * return_rate
+
+
 def compute_kinematic_credit(
-    tau_kin: float,
+    tau_kin: TauKin,
     return_rate: float = 0.0,
 ) -> dict[str, Any]:
     """
@@ -154,28 +219,32 @@ def compute_kinematic_credit(
     - τ_kin = INF_KIN → motion does not return → NO credit
 
     Args:
-        tau_kin: Kinematic return time
+        tau_kin: Kinematic return time (positive int or KinSpecialValue)
         return_rate: Fraction of trajectory that returns
 
     Returns:
         Dictionary with credit computation.
     """
     # no_return_no_credit enforcement
-    if tau_kin == INF_KIN or tau_kin < 0:
+    if isinstance(tau_kin, KinSpecialValue):
         kinematic_credit = 0.0
         credit_status = "NO_CREDIT"
-        reason = "no_return_no_credit: τ_kin = INF_KIN"
+        reason = f"no_return_no_credit: τ_kin = {tau_kin.value}"
+    elif tau_kin <= 0:
+        kinematic_credit = 0.0
+        credit_status = "NO_CREDIT"
+        reason = "no_return_no_credit: invalid τ_kin"
     elif return_rate <= 0.1:
         kinematic_credit = 0.0
         credit_status = "NO_CREDIT"
         reason = "no_return_no_credit: return_rate ≤ 0.1"
     else:
         # Credit formula: faster returns and higher return rate = more credit
-        time_factor = 1.0 / (1.0 + tau_kin / 10.0)
+        time_factor = 1.0 / (1.0 + tau_kin / T_CRIT)
         rate_factor = return_rate
         kinematic_credit = time_factor * rate_factor
         credit_status = "CREDITED"
-        reason = f"τ_kin={tau_kin:.2f}, return_rate={return_rate:.2f}"
+        reason = f"τ_kin={tau_kin}, return_rate={return_rate:.2f}"
     
     return {
         "kinematic_credit": kinematic_credit,

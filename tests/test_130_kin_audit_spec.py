@@ -25,11 +25,9 @@ Sections:
 import pytest
 import math
 import hashlib
-import yaml
 from enum import Enum
 from pathlib import Path
 from typing import Set, Dict, Any, Optional, List, Tuple
-from dataclasses import dataclass
 
 
 # =============================================================================
@@ -184,7 +182,7 @@ def compute_valid_return_set(
     gamma_t = gamma_history[t]
     D = compute_D_W_delta(t, W, delta)
     
-    U = set()
+    U: Set[int] = set()
     for u in D:
         if u in gamma_history:
             d2 = squared_l2_distance(gamma_t, gamma_history[u])
@@ -327,12 +325,12 @@ def compute_K_stability(
     # w_τ = return_rate
     w_tau = return_rate
     
-    K = sigma_factor * v_factor * w_tau
+    k_val = sigma_factor * v_factor * w_tau
     
     # Ensure K ∈ [0, 1]
-    K = clip(K, 0.0, 1.0)
+    k_val = clip(k_val, 0.0, 1.0)
     
-    return K, sigma_oor, v_oor
+    return k_val, sigma_oor, v_oor
 
 
 def classify_stability_regime(K: float) -> str:
@@ -368,7 +366,7 @@ class TestContractFreezeInvariants:
         Keys present, values exact, no unknown keys.
         """
         # Expected frozen values
-        expected = {
+        expected: Dict[str, Any] = {
             "W": 64,
             "delta": 3,
             "T_crit": 10.0,
@@ -774,12 +772,12 @@ class TestStabilityK:
     def test_stability_startup_ddof_guard(self):
         """H21. When |D_W(t)| < 2, K = 0 (startup guard)."""
         # Empty list
-        K, _, _ = compute_K_stability([], [], 0.5)
-        assert K == 0.0
+        k_val, _, _ = compute_K_stability([], [], 0.5)
+        assert k_val == 0.0
         
         # Single element (ddof=1 undefined)
-        K, _, _ = compute_K_stability([0.5], [0.3], 0.5)
-        assert K == 0.0
+        k_val, _, _ = compute_K_stability([0.5], [0.3], 0.5)
+        assert k_val == 0.0
     
     def test_stability_components_and_clipping(self):
         """H22. K computation with clipping caps."""
@@ -796,7 +794,7 @@ class TestStabilityK:
         
         # Case where sigma exceeds cap
         x_high_var = [0.0, 1.0, 0.0, 1.0, 0.0]  # high variance
-        K_high, sigma_oor_high, _ = compute_K_stability(x_high_var, v_values, return_rate)
+        K_high, _, _ = compute_K_stability(x_high_var, v_values, return_rate)
         
         # sigma_x will be high, factor should clip
         assert 0.0 <= K_high <= 1.0
