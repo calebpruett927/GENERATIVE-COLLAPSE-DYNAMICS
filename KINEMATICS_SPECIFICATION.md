@@ -85,6 +85,8 @@ $$\tilde{E}_{kin}(t) = \text{clip}_{[0,1]}\left(\frac{E_{kin}(t)}{E_{ref}}\right
 
 This ensures E_kin reflects actual energy, not an artifact of clipped velocity.
 
+**Mass Assumption (FROZEN for v1)**: $m(t)$ is assumed constant and equal to $m_{ref}$ unless an external measurement pipeline for $m(t)$ is explicitly declared. Variable-mass systems (rockets, conveyor loading, etc.) are **out-of-scope for KIN.INTSTACK.v1**. The Ψ channel vector does not include a mass channel; mass is a frozen reference constant, not a measured observable.
+
 ### 2. Phase Space
 
 The kinematic phase space is the 2D space (x, v):
@@ -111,13 +113,22 @@ UMCP's return axiom "What Returns Through Collapse Is Real" maps to phase space 
 
 #### 3.0 Return-Domain Generator (FROZEN)
 
+**Time Units (FROZEN)**: All temporal quantities in this section are expressed in **sample steps** (discrete index units), NOT seconds:
+- $W = 64$ — window size in samples
+- $\delta = 3$ — debounce lag in samples
+- $\tau_{kin}$ — return time in samples
+- $T_{crit} = 10.0$ — critical return threshold in samples
+
+If physical time is needed, define the sample period $\Delta t_{sample}$ (seconds per sample) and convert:
+$$\tau_{kin,seconds} = \tau_{kin} \cdot \Delta t_{sample}$$
+
 The return-domain generator defines where to search for returns:
 
 $$D_W(t) = \{u : 0 < t - u \leq W\}$$
 
 where:
-- $W = H_{rec,kin} = 64$ (window size, frozen)
-- $\delta = 3$ (debounce lag: prevents spurious rapid re-triggers; note that lag=0 is already excluded by $0 < t-u$)
+- $W = H_{rec,kin} = 64$ (window size in samples, frozen)
+- $\delta = 3$ (debounce lag in samples: prevents spurious rapid re-triggers; note that lag=0 is already excluded by $0 < t-u$)
 
 **Effective Domain (with debounce lag, discrete-time inclusive)**:
 
@@ -126,7 +137,18 @@ $$D_{W,\delta}(t) = \{u \in D_W(t) : (t - u) \geq \delta\}$$
 For discrete integer-indexed time with both endpoints included:
 $$|D_{W,\delta}(t)| = W - \delta + 1 = 62 \quad \text{(for } W=64, \delta=3\text{, when } t \geq W\text{)}$$
 
-**Startup Truncation**: For early times $t < W$, the domain truncates to available history. Code defines $D_W(t) := \{u : \max(0, t-W) < u < t\}$ and applies the same δ filter. The effective domain size $|D_{W,\delta}(t)|$ is computed per $t$ and may be smaller than 62 during startup.
+**Startup-Truncated Domain (FORMAL DEFINITION)**:
+
+For all $t \geq 0$, including startup ($t < W$):
+
+$$D_W(t) := \{ u \in \mathbb{Z} : \max(0, t-W) \leq u \leq t-1 \}$$
+
+$$D_{W,\delta}(t) := \{ u \in D_W(t) : (t - u) \geq \delta \}$$
+
+**Effective Domain Size**:
+$$|D_{W,\delta}(t)| = \begin{cases} \max(0, t - \delta) & \text{if } t < W \\ W - \delta + 1 = 62 & \text{if } t \geq W \end{cases}$$
+
+This makes `return_rate` and `τ_kin` fully well-posed for all $t \geq 0$, including during startup when $|D_{W,\delta}(t)| < 62$.
 
 **Kinematic Return Time (τ_kin)** — Discrete-Time Definition:
 
@@ -251,12 +273,17 @@ $$\tau_{kin} \in \mathbb{R}^+ \cup \{\text{INF\_KIN}, \text{UNIDENTIFIABLE\_KIN}
 
 **Test**: `isinstance(tau_kin, (float, KinSpecialValue))` and reject raw `float('inf')` or `float('nan')`.
 
-### KIN-AX-2: Conservation Laws (ENFORCEMENT)
-For closed systems:
-- Total momentum is conserved: dp/dt = 0 when F_ext = 0
-- Mechanical energy is conserved: dE_mech/dt = 0 when non-conservative forces = 0
+### KIN-AX-2: Conservation Laws (CONDITIONAL ENFORCEMENT)
+Conservation laws are **conditional**, not universal:
 
-**Test**: `verify_momentum_conservation()` and `verify_energy_conservation()` with frozen tolerances.
+- **Momentum**: If $F_{ext} = 0$ then $dp/dt = 0$ (within tolerance $\epsilon_p$)
+- **Energy**: If $W_{nc} = 0$ (no non-conservative work) then $dE_{mech}/dt = 0$ (within tolerance $\epsilon_E$)
+
+**Frozen Tolerances**:
+- $\epsilon_p = 10^{-6}$ (momentum conservation tolerance)
+- $\epsilon_E = 10^{-6}$ (energy conservation tolerance)
+
+**Test**: `verify_momentum_conservation(F_ext=0)` and `verify_energy_conservation(W_nc=0)` must pass. If the preconditions ($F_{ext}=0$ or $W_{nc}=0$) are not met, conservation tests are **not applicable** and should not be run as enforcement gates.
 
 ### KIN-AX-3: Stability Index Boundedness (ENFORCEMENT)
 The kinematic stability index satisfies K_stability ∈ [0,1], where:
@@ -322,6 +349,13 @@ The contract `KIN.INTSTACK.v1.yaml` contains prose axiom statements that describ
 - `verify_momentum_conservation(p_series, tol)` → conservation status
 - `compute_momentum_flux(p, v)` → flux tensor
 
+**Collision Equations Disclaimer (magnitude_only)**: The collision equations (elastic/inelastic) included in this closure are **classical reference identities** that assume signed velocities with directionality. Under `signed_convention=magnitude_only` (frozen in §1), directional information is discarded before normalization. Therefore:
+1. Collision resolution is **not physically complete** under magnitude_only
+2. Collision equations are **not used as enforcement gates** in KIN.INTSTACK.v1
+3. Tests using collision identities are **illustrative only**, not conformance tests
+
+If physically complete collision handling is required, define a separate extension with `signed_convention=signed`.
+
 ### 5. phase_space_return.py (KIN-Domain Closure B - Return Overlay)
 **Purpose**: Implement UMCP return axiom in (x,v) phase space.
 
@@ -360,10 +394,22 @@ Symbols S_kin, C_kin, R_kin are KIN-namespace only, not kernel S, C.
 **K_stability Computation**:
 $$K_{stability} = (1 - σ_x/σ_{max}) \cdot (1 - v_{mean}/v_{max}) \cdot w_{τ}$$
 
-where:
-- σ_x = position variance
-- v_mean = mean velocity
-- w_τ = return weight based on τ_kin
+**Frozen Definitions for K_stability** (v1):
+
+| Component | Definition | Frozen Value/Policy |
+|-----------|------------|--------------------|
+| $\sigma_x(t)$ | Sample standard deviation of $\tilde{x}_\epsilon$ over $D_W(t)$ | Population formula with Bessel correction (ddof=1) |
+| $\sigma_{max}$ | Fixed constant (not data-derived) | $\sigma_{max} = 0.5$ |
+| $v_{mean}(t)$ | Arithmetic mean of $\tilde{v}_\epsilon$ over $D_W(t)$ | Standard mean |
+| $v_{max}$ | Fixed constant (not data-derived) | $v_{max} = 1.0$ |
+| $w_\tau$ | Return weight mapping | $w_\tau = \text{return\_rate}(t)$ (from §3.1.1) |
+
+**Clip+Flag Policy for K_stability**: If any ratio $(\sigma_x/\sigma_{max})$ or $(v_{mean}/v_{max})$ exceeds 1.0:
+1. Clip the ratio to 1.0
+2. Emit an OOR flag
+3. The corresponding factor becomes 0, forcing $K_{stability} = 0$
+
+This prevents $K_{stability}$ from going negative and ensures bounded output $\in [0,1]$.
 
 ## Casepack: kinematics_complete
 
