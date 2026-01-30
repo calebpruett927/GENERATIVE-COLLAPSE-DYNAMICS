@@ -1,4 +1,2 @@
-cat > casepacks/hello_world/raw_measurements.csv <<'EOF'
 t,x1_si,x2_si,x3_si,units,notes
 0,9.9,9.9,9.9,arbitrary,"Hello-world raw values intended to embed to c_k = x_k/10 = 0.99 under bounds [0,10]."
-EOF
