@@ -52,6 +52,7 @@ select_phase_anchor = kin_ref_phase.select_phase_anchor
 # FIXTURES
 # =============================================================================
 
+
 @pytest.fixture
 def casepack_dir() -> Path:
     """Get the KIN.REF.PHASE casepack directory."""
@@ -64,13 +65,13 @@ def raw_measurements(casepack_dir: Path) -> tuple[list[float], list[float]]:
     csv_path = casepack_dir / "raw_measurements.csv"
     x_series: list[float] = []
     v_series: list[float] = []
-    
-    with open(csv_path, "r", newline="") as f:
+
+    with open(csv_path, newline="") as f:
         reader = csv.DictReader(f)
         for row in reader:
             x_series.append(float(row["x"]))
             v_series.append(float(row["v"]))
-    
+
     return x_series, v_series
 
 
@@ -79,19 +80,21 @@ def expected_results(casepack_dir: Path) -> list[dict[str, Any]]:
     """Load expected results from CSV."""
     csv_path = casepack_dir / "expected" / "ref_phase_expected.csv"
     results: list[dict[str, Any]] = []
-    
-    with open(csv_path, "r", newline="") as f:
+
+    with open(csv_path, newline="") as f:
         reader = csv.DictReader(f)
         for row in reader:
-            results.append({
-                "idx": int(row["idx"]),
-                "phi": float(row["phi"]),
-                "eligible_count": int(row["eligible_count"]),
-                "anchor_u": int(row["anchor_u"]) if row["anchor_u"] else None,
-                "delta_phi": float(row["delta_phi"]) if row["delta_phi"] else None,
-                "undefined_reason": row["undefined_reason"],
-            })
-    
+            results.append(
+                {
+                    "idx": int(row["idx"]),
+                    "phi": float(row["phi"]),
+                    "eligible_count": int(row["eligible_count"]),
+                    "anchor_u": int(row["anchor_u"]) if row["anchor_u"] else None,
+                    "delta_phi": float(row["delta_phi"]) if row["delta_phi"] else None,
+                    "undefined_reason": row["undefined_reason"],
+                }
+            )
+
     return results
 
 
@@ -99,16 +102,17 @@ def expected_results(casepack_dir: Path) -> list[dict[str, Any]]:
 def expected_censors(casepack_dir: Path) -> list[dict[str, Any]]:
     """Load expected censor events from JSON."""
     json_path = casepack_dir / "expected" / "censor_expected.json"
-    
-    with open(json_path, "r") as f:
+
+    with open(json_path) as f:
         data = json.load(f)
-    
+
     return data["censors"]
 
 
 # =============================================================================
 # UNIT TESTS: Core Functions
 # =============================================================================
+
 
 class TestComputePhase:
     """Tests for compute_phase function."""
@@ -205,13 +209,14 @@ class TestBuildEligibleSet:
 # INTEGRATION TESTS: Full Selection
 # =============================================================================
 
+
 class TestSelectPhaseAnchor:
     """Tests for select_phase_anchor function."""
 
     def test_empty_eligible_returns_censor(self, raw_measurements: tuple[list[float], list[float]]) -> None:
         """Test that empty eligible set produces EMPTY_ELIGIBLE."""
         x_series, v_series = raw_measurements
-        
+
         for t in [0, 1, 2]:
             result = select_phase_anchor(x_series, v_series, t)
             assert result.undefined_reason == UndefinedReason.EMPTY_ELIGIBLE
@@ -223,13 +228,14 @@ class TestSelectPhaseAnchor:
     ) -> None:
         """Test that defined anchors match expected."""
         x_series, v_series = raw_measurements
-        
+
         for expected in expected_results:
             if expected["anchor_u"] is not None:
                 result = select_phase_anchor(x_series, v_series, expected["idx"])
-                assert result.anchor_u == expected["anchor_u"], \
-                    f"Anchor mismatch at idx={expected['idx']}: " \
+                assert result.anchor_u == expected["anchor_u"], (
+                    f"Anchor mismatch at idx={expected['idx']}: "
                     f"got {result.anchor_u}, expected {expected['anchor_u']}"
+                )
 
 
 class TestTieBreaker:
@@ -238,47 +244,47 @@ class TestTieBreaker:
     def test_most_recent_u_selected_on_tie(self, raw_measurements: tuple[list[float], list[float]]) -> None:
         """Test that when Δφ ties, the most recent u (largest u) is selected."""
         x_series, v_series = raw_measurements
-        
+
         # Find rows where phi is exactly the same
         # From expected: rows 12, 13 both have phi = 0.0000000000
         # and both select anchor_u = 3 (because that's the best match)
-        
+
         # We need to verify the tie-breaker logic specifically
         # Let's check consecutive rows with same phi
         result_12 = select_phase_anchor(x_series, v_series, 12)
         result_13 = select_phase_anchor(x_series, v_series, 13)
-        
+
         # Both should find anchor with matching phase
         assert result_12.anchor_u is not None
         assert result_13.anchor_u is not None
-        
+
         # The key test: when there are multiple eligible anchors with same delta_phi,
         # the most recent one (largest u) should be chosen
         # Row 13 should select anchor >= row 12's anchor (if tie-breaker applies)
-        
+
         # Let's verify by checking if there were multiple candidates with same delta_phi
         # If delta_phi is 0 for both, then the most recent should be selected
         if abs(result_12.delta_phi) < 1e-9 and abs(result_13.delta_phi) < 1e-9:
             # Both have perfect matches - verify most recent selection
-            assert result_13.anchor_u >= result_12.anchor_u, \
-                f"Tie-breaker failed: row 13 selected u={result_13.anchor_u}, " \
+            assert result_13.anchor_u >= result_12.anchor_u, (
+                f"Tie-breaker failed: row 13 selected u={result_13.anchor_u}, "
                 f"row 12 selected u={result_12.anchor_u}"
+            )
 
     def test_tie_breaker_explicit(self) -> None:
         """Test tie-breaker with explicit data designed to create a tie."""
         # Create data with exact phase matches
         x_series = [0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8]  # All same
         v_series = [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]  # All same
-        
+
         # At t=6, eligible set is {0, 1, 2, 3}
         # All have phi = 0.0 (same as t=6)
         # All have delta_phi = 0.0
         # Tie-breaker (ii): choose most recent u = 3
-        
+
         result = select_phase_anchor(x_series, v_series, 6)
-        
-        assert result.anchor_u == 3, \
-            f"Tie-breaker should select most recent u=3, got {result.anchor_u}"
+
+        assert result.anchor_u == 3, f"Tie-breaker should select most recent u=3, got {result.anchor_u}"
 
 
 class TestPhaseMismatch:
@@ -289,19 +295,17 @@ class TestPhaseMismatch:
     ) -> None:
         """Test that phase mismatch produces PHASE_MISMATCH censor."""
         x_series, v_series = raw_measurements
-        
+
         # Get phase mismatch indices from expected censors
-        mismatch_indices: list[int] = [
-            c["idx"] for c in expected_censors 
-            if c["reason"] == "PHASE_MISMATCH"
-        ]
-        
+        mismatch_indices: list[int] = [c["idx"] for c in expected_censors if c["reason"] == "PHASE_MISMATCH"]
+
         assert len(mismatch_indices) > 0, "Test data should include phase mismatch cases"
-        
+
         for idx in mismatch_indices:
             result = select_phase_anchor(x_series, v_series, idx)
-            assert result.undefined_reason == UndefinedReason.PHASE_MISMATCH, \
-                f"Expected PHASE_MISMATCH at idx={idx}, got {result.undefined_reason}"
+            assert (
+                result.undefined_reason == UndefinedReason.PHASE_MISMATCH
+            ), f"Expected PHASE_MISMATCH at idx={idx}, got {result.undefined_reason}"
             assert result.anchor_u is None
             assert result.eligible_count > 0  # Has eligible anchors, but none within threshold
 
@@ -309,6 +313,7 @@ class TestPhaseMismatch:
 # =============================================================================
 # END-TO-END TESTS
 # =============================================================================
+
 
 class TestEndToEnd:
     """End-to-end tests for full trajectory processing."""
@@ -319,22 +324,26 @@ class TestEndToEnd:
         """Test that all computed results match expected outputs."""
         x_series, v_series = raw_measurements
         results, _censors = process_trajectory(x_series, v_series)
-        
-        assert len(results) == len(expected_results), \
-            f"Result count mismatch: {len(results)} vs {len(expected_results)}"
-        
-        for i, (result, expected) in enumerate(zip(results, expected_results)):
+
+        assert len(results) == len(
+            expected_results
+        ), f"Result count mismatch: {len(results)} vs {len(expected_results)}"
+
+        for i, (result, expected) in enumerate(zip(results, expected_results, strict=False)):
             assert result.idx == expected["idx"]
-            assert abs(result.phi - expected["phi"]) < 1e-8, \
-                f"Phi mismatch at idx={i}: {result.phi} vs {expected['phi']}"
+            assert (
+                abs(result.phi - expected["phi"]) < 1e-8
+            ), f"Phi mismatch at idx={i}: {result.phi} vs {expected['phi']}"
             assert result.eligible_count == expected["eligible_count"]
-            assert result.anchor_u == expected["anchor_u"], \
-                f"Anchor mismatch at idx={i}: {result.anchor_u} vs {expected['anchor_u']}"
-            
+            assert (
+                result.anchor_u == expected["anchor_u"]
+            ), f"Anchor mismatch at idx={i}: {result.anchor_u} vs {expected['anchor_u']}"
+
             if result.delta_phi is not None and expected["delta_phi"] is not None:
-                assert abs(result.delta_phi - expected["delta_phi"]) < 1e-8, \
-                    f"Delta_phi mismatch at idx={i}: {result.delta_phi} vs {expected['delta_phi']}"
-            
+                assert (
+                    abs(result.delta_phi - expected["delta_phi"]) < 1e-8
+                ), f"Delta_phi mismatch at idx={i}: {result.delta_phi} vs {expected['delta_phi']}"
+
             assert result.undefined_reason.value == expected["undefined_reason"]
 
     def test_censor_events_match_expected(
@@ -343,11 +352,12 @@ class TestEndToEnd:
         """Test that all censor events match expected."""
         x_series, v_series = raw_measurements
         _results, censors = process_trajectory(x_series, v_series)
-        
-        assert len(censors) == len(expected_censors), \
-            f"Censor count mismatch: {len(censors)} vs {len(expected_censors)}"
-        
-        for censor, expected in zip(censors, expected_censors):
+
+        assert len(censors) == len(
+            expected_censors
+        ), f"Censor count mismatch: {len(censors)} vs {len(expected_censors)}"
+
+        for censor, expected in zip(censors, expected_censors, strict=False):
             assert censor.idx == expected["idx"]
             assert abs(censor.phi - expected["phi"]) < 1e-8
             assert censor.reason == expected["reason"]
@@ -360,14 +370,14 @@ class TestDeterminism:
     def test_two_runs_identical(self, raw_measurements: tuple[list[float], list[float]]) -> None:
         """Test that two runs produce identical output."""
         x_series, v_series = raw_measurements
-        
+
         results1, censors1 = process_trajectory(x_series, v_series)
         results2, censors2 = process_trajectory(x_series, v_series)
-        
+
         assert len(results1) == len(results2)
         assert len(censors1) == len(censors2)
-        
-        for r1, r2 in zip(results1, results2):
+
+        for r1, r2 in zip(results1, results2, strict=False):
             assert r1 == r2, f"Determinism failure: {r1} != {r2}"
 
     def test_frozen_config_hash_stable(self) -> None:
@@ -381,57 +391,61 @@ class TestDeterminism:
         """Test that regenerating expected outputs produces no diff."""
         csv_path = casepack_dir / "expected" / "ref_phase_expected.csv"
         json_path = casepack_dir / "expected" / "censor_expected.json"
-        
+
         # Compute hashes of committed files
         with open(csv_path, "rb") as f:
             csv_hash_before = hashlib.sha256(f.read()).hexdigest()
         with open(json_path, "rb") as f:
             _json_hash_before = hashlib.sha256(f.read()).hexdigest()
-        
+
         # Load data and regenerate
         x_series: list[float] = []
         v_series: list[float] = []
         raw_csv = casepack_dir / "raw_measurements.csv"
-        
-        with open(raw_csv, "r", newline="") as f:
+
+        with open(raw_csv, newline="") as f:
             reader = csv.DictReader(f)
             for row in reader:
                 x_series.append(float(row["x"]))
                 v_series.append(float(row["v"]))
-        
+
         results, _censors = process_trajectory(x_series, v_series)
-        
+
         # Write to temp file and compare
         import tempfile
-        
+
         with tempfile.NamedTemporaryFile(mode="w", suffix=".csv", delete=False) as f:
             fieldnames = ["idx", "phi", "eligible_count", "anchor_u", "delta_phi", "undefined_reason"]
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
-            
+
             for r in results:
-                writer.writerow({
-                    "idx": r.idx,
-                    "phi": f"{r.phi:.10f}",
-                    "eligible_count": r.eligible_count,
-                    "anchor_u": r.anchor_u if r.anchor_u is not None else "",
-                    "delta_phi": f"{r.delta_phi:.10f}" if r.delta_phi is not None else "",
-                    "undefined_reason": r.undefined_reason.value,
-                })
+                writer.writerow(
+                    {
+                        "idx": r.idx,
+                        "phi": f"{r.phi:.10f}",
+                        "eligible_count": r.eligible_count,
+                        "anchor_u": r.anchor_u if r.anchor_u is not None else "",
+                        "delta_phi": f"{r.delta_phi:.10f}" if r.delta_phi is not None else "",
+                        "undefined_reason": r.undefined_reason.value,
+                    }
+                )
             temp_csv_path = f.name
-        
+
         with open(temp_csv_path, "rb") as f:
             csv_hash_after = hashlib.sha256(f.read()).hexdigest()
-        
+
         Path(temp_csv_path).unlink()
-        
-        assert csv_hash_before == csv_hash_after, \
-            "CSV regeneration produced different output - expected outputs may be stale"
+
+        assert (
+            csv_hash_before == csv_hash_after
+        ), "CSV regeneration produced different output - expected outputs may be stale"
 
 
 # =============================================================================
 # FROZEN PARAMETERS TESTS
 # =============================================================================
+
 
 class TestFrozenParameters:
     """Tests for frozen parameter values."""

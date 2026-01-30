@@ -34,9 +34,9 @@ def compute_linear_momentum(
     """
     v = max(0.0, min(1.0, v))
     m_normalized = max(0.0, min(1.0, m_normalized))
-    
+
     p = m_normalized * v
-    
+
     return {
         "p": p,
         "v": v,
@@ -60,9 +60,9 @@ def compute_impulse(
     """
     F_net = max(0.0, min(1.0, F_net))
     dt = max(0.0, dt)
-    
+
     J = F_net * dt
-    
+
     return {
         "J": J,
         "F_net": F_net,
@@ -94,36 +94,36 @@ def compute_collision_1d(
     m2 = max(0.01, min(1.0, m2))
     v1_initial = max(0.0, min(1.0, v1_initial))
     v2_initial = max(0.0, min(1.0, v2_initial))
-    
+
     # Total momentum
     p_total = m1 * v1_initial + m2 * v2_initial
-    
+
     # Total kinetic energy (initial)
     E_initial = 0.5 * m1 * v1_initial**2 + 0.5 * m2 * v2_initial**2
-    
+
     if collision_type == "elastic":
         # Elastic collision formulas
         v1_final = ((m1 - m2) * v1_initial + 2 * m2 * v2_initial) / (m1 + m2)
         v2_final = ((m2 - m1) * v2_initial + 2 * m1 * v1_initial) / (m1 + m2)
-        
+
         # Clamp to valid range
         v1_final = max(0.0, min(1.0, v1_final))
         v2_final = max(0.0, min(1.0, v2_final))
-        
+
         E_final = 0.5 * m1 * v1_final**2 + 0.5 * m2 * v2_final**2
         energy_loss = 0.0
         energy_conserved = True
-        
+
     elif collision_type == "perfectly_inelastic":
         # Objects stick together
         v_common = p_total / (m1 + m2)
         v1_final = v_common
         v2_final = v_common
-        
+
         E_final = 0.5 * (m1 + m2) * v_common**2
         energy_loss = E_initial - E_final
         energy_conserved = False
-        
+
     else:
         # Unknown collision type
         v1_final = v1_initial
@@ -131,11 +131,11 @@ def compute_collision_1d(
         E_final = E_initial
         energy_loss = 0.0
         energy_conserved = True
-    
+
     # Verify momentum conservation
     p_final = m1 * v1_final + m2 * v2_final
     momentum_conserved = abs(p_total - p_final) < 0.01
-    
+
     return {
         "v1_final": v1_final,
         "v2_final": v2_final,
@@ -165,16 +165,16 @@ def verify_momentum_conservation(
         Dictionary with conservation verification.
     """
     p_series = np.asarray(p_series, dtype=float)
-    
+
     if len(p_series) < 2:
         return {"is_conserved": True, "error": "Need at least 2 points"}
-    
+
     p_mean = float(np.mean(p_series))
     p_std = float(np.std(p_series))
     max_deviation = float(np.max(np.abs(p_series - p_mean)))
-    
+
     is_conserved = max_deviation < tol
-    
+
     return {
         "is_conserved": is_conserved,
         "p_mean": p_mean,
@@ -200,9 +200,9 @@ def compute_momentum_flux(
     """
     p = max(0.0, min(1.0, p))
     v = max(0.0, min(1.0, v))
-    
+
     flux = p * v
-    
+
     return {
         "momentum_flux": flux,
         "p": p,

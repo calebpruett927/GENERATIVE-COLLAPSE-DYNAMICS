@@ -1741,30 +1741,30 @@ def _cmd_run(args: argparse.Namespace) -> int:
 def _cmd_test(args: argparse.Namespace) -> int:
     """Run tests with pytest."""
     import subprocess
-    
+
     cmd = ["python", "-m", "pytest"]
-    
+
     # Build pytest arguments
     if args.verbose:
         cmd.append("-v")
     else:
         cmd.append("-q")
-    
+
     if args.coverage:
         cmd.extend(["--cov=src/umcp", "--cov-report=term-missing"])
-    
+
     if args.parallel:
         cmd.extend(["-n", "auto"])
-    
+
     if args.markers:
         cmd.extend(["-m", args.markers])
-    
+
     if args.pattern:
         cmd.extend(["-k", args.pattern])
-    
+
     if args.path:
         cmd.append(args.path)
-    
+
     print(f"Running: {' '.join(cmd)}")
     result = subprocess.run(cmd, cwd=Path.cwd())
     return result.returncode
@@ -1773,37 +1773,37 @@ def _cmd_test(args: argparse.Namespace) -> int:
 def _cmd_casepack(args: argparse.Namespace) -> int:
     """Run a specific casepack and display results."""
     import importlib.util
-    
+
     casepack_path = Path(args.path)
     if not casepack_path.exists():
         # Try looking in casepacks/ directory
         casepack_path = Path("casepacks") / args.path
-    
+
     if not casepack_path.exists():
         print(f"Error: Casepack not found: {args.path}", file=sys.stderr)
         return 1
-    
+
     manifest_path = casepack_path / "manifest.json"
     if not manifest_path.exists():
         print(f"Error: No manifest.json found in {casepack_path}", file=sys.stderr)
         return 1
-    
+
     # Load manifest
     with open(manifest_path) as f:
         manifest = json.load(f)
-    
+
     print("=" * 70)
     print(f"CASEPACK: {manifest['casepack']['id']}")
     print(f"Title: {manifest['casepack']['title']}")
     print(f"Version: {manifest['casepack']['version']}")
     print("=" * 70)
-    
+
     # Load raw measurements
     raw_path = casepack_path / manifest["artifacts"]["raw_measurements"]["path"]
     if not raw_path.exists():
         print(f"Error: Raw measurements not found: {raw_path}", file=sys.stderr)
         return 1
-    
+
     # Try to find a closure to run
     closures_dir = casepack_path / "closures"
     if closures_dir.exists():
@@ -1811,50 +1811,48 @@ def _cmd_casepack(args: argparse.Namespace) -> int:
         if closure_files:
             closure_file = closure_files[0]
             print(f"\nLoading closure: {closure_file.name}")
-            
+
             # Load the closure dynamically
             spec = importlib.util.spec_from_file_location("closure", closure_file)
             if spec and spec.loader:
                 closure_module = importlib.util.module_from_spec(spec)
                 spec.loader.exec_module(closure_module)
-                
+
                 # Check for process_trajectory or similar
                 if hasattr(closure_module, "process_trajectory"):
                     # Load CSV data
                     x_series: list[float] = []
                     v_series: list[float] = []
-                    
+
                     with open(raw_path, newline="") as f:
                         reader = csv.DictReader(f)
                         for row in reader:
                             if "x" in row and "v" in row:
                                 x_series.append(float(row["x"]))
                                 v_series.append(float(row["v"]))
-                    
+
                     if x_series:
                         print(f"Loaded {len(x_series)} measurements")
                         results, censors = closure_module.process_trajectory(x_series, v_series)
-                        
+
                         print(f"\nResults: {len(results)} rows processed")
                         defined = sum(1 for r in results if r.anchor_u is not None)
                         print(f"  Defined: {defined}")
                         print(f"  Censored: {len(censors)}")
-                        
+
                         if args.verbose:
                             print("\nDetailed Results:")
                             for r in results:
                                 anchor = r.anchor_u if r.anchor_u is not None else "-"
                                 reason = r.undefined_reason.value if r.undefined_reason.value != "DEFINED" else ""
                                 print(f"  idx={r.idx}: anchor={anchor} {reason}")
-    
+
     # Validate the casepack
     if args.validate:
         print("\nRunning validation...")
         # Use internal validation
         result = subprocess.run(
-            ["python", "-m", "umcp.cli", "validate", str(casepack_path)],
-            capture_output=True,
-            text=True
+            ["python", "-m", "umcp.cli", "validate", str(casepack_path)], capture_output=True, text=True
         )
         if "CONFORMANT" in result.stdout:
             print("Validation: CONFORMANT ✓")
@@ -1862,14 +1860,14 @@ def _cmd_casepack(args: argparse.Namespace) -> int:
             print("Validation: NONCONFORMANT ✗")
             if args.verbose:
                 print(result.stdout)
-    
+
     return 0
 
 
 def _cmd_list(args: argparse.Namespace) -> int:
     """List available casepacks, closures, or contracts."""
     repo_root = Path.cwd()
-    
+
     if args.what == "casepacks" or args.what == "all":
         casepacks_dir = repo_root / "casepacks"
         print("\nCASEPACKS:")
@@ -1888,7 +1886,7 @@ def _cmd_list(args: argparse.Namespace) -> int:
                             print(f"    {title}")
                     else:
                         print(f"  {cp.name:30} (no manifest)")
-    
+
     if args.what == "closures" or args.what == "all":
         closures_dir = repo_root / "closures"
         print("\nCLOSURES:")
@@ -1908,7 +1906,7 @@ def _cmd_list(args: argparse.Namespace) -> int:
                     print(f"  {cf.stem}")
                 for cf in sorted(closures_dir.glob("*.yaml")):
                     print(f"  {cf.stem}")
-    
+
     if args.what == "contracts" or args.what == "all":
         contracts_dir = repo_root / "contracts"
         print("\nCONTRACTS:")
@@ -1916,7 +1914,7 @@ def _cmd_list(args: argparse.Namespace) -> int:
         if contracts_dir.exists():
             for cf in sorted(contracts_dir.glob("*.yaml")):
                 print(f"  {cf.stem}")
-    
+
     if args.what == "schemas" or args.what == "all":
         schemas_dir = repo_root / "schemas"
         print("\nSCHEMAS:")
@@ -1924,30 +1922,30 @@ def _cmd_list(args: argparse.Namespace) -> int:
         if schemas_dir.exists():
             for sf in sorted(schemas_dir.glob("*.json")):
                 print(f"  {sf.stem}")
-    
+
     return 0
 
 
 def _cmd_integrity(args: argparse.Namespace) -> int:
     """Verify integrity of artifacts using SHA256 hashes."""
     target_path = Path(args.path)
-    
+
     if not target_path.exists():
         print(f"Error: Path not found: {args.path}", file=sys.stderr)
         return 1
-    
+
     # Check if it's a casepack
     manifest_path = target_path / "manifest.json"
     if manifest_path.exists():
         with open(manifest_path) as f:
             manifest = json.load(f)
-        
+
         print(f"Verifying integrity: {manifest['casepack']['id']}")
         print("-" * 60)
-        
+
         # Get expected hashes from extensions
         expected_hashes = manifest.get("extensions", {}).get("artifact_hashes", {})
-        
+
         all_valid = True
         for name, expected in expected_hashes.items():
             file_path = target_path / name
@@ -1962,16 +1960,16 @@ def _cmd_integrity(args: argparse.Namespace) -> int:
             else:
                 status = "✗ MISSING"
                 all_valid = False
-            
+
             print(f"  {name:40} {status}")
-        
+
         if all_valid:
             print("\nIntegrity: ALL VERIFIED ✓")
             return 0
         else:
             print("\nIntegrity: FAILED ✗")
             return 1
-    
+
     # Generic file/directory hash
     if target_path.is_file():
         with open(target_path, "rb") as f:
@@ -1984,20 +1982,20 @@ def _cmd_integrity(args: argparse.Namespace) -> int:
                     h = hashlib.sha256(fh.read()).hexdigest()
                 rel_path = f.relative_to(target_path)
                 print(f"  {rel_path}: {h[:16]}...")
-    
+
     return 0
 
 
 def _cmd_report(args: argparse.Namespace) -> int:
     """Generate audit reports."""
     repo_root = Path.cwd()
-    
+
     report: dict[str, Any] = {
         "schema": "umcp.audit.report.v1",
         "generated_utc": datetime.now(UTC).isoformat(),
         "validator_version": __version__,
     }
-    
+
     # Collect casepacks
     casepacks_dir = repo_root / "casepacks"
     casepacks: list[dict[str, Any]] = []
@@ -2008,44 +2006,46 @@ def _cmd_report(args: argparse.Namespace) -> int:
                 if manifest.exists():
                     with open(manifest) as f:
                         m = json.load(f)
-                    casepacks.append({
-                        "id": m.get("casepack", {}).get("id"),
-                        "version": m.get("casepack", {}).get("version"),
-                        "title": m.get("casepack", {}).get("title"),
-                        "path": str(cp),
-                    })
-    
+                    casepacks.append(
+                        {
+                            "id": m.get("casepack", {}).get("id"),
+                            "version": m.get("casepack", {}).get("version"),
+                            "title": m.get("casepack", {}).get("title"),
+                            "path": str(cp),
+                        }
+                    )
+
     report["casepacks"] = casepacks
     report["casepack_count"] = len(casepacks)
-    
+
     # Collect closures
     closures_dir = repo_root / "closures"
     closure_count = 0
     if closures_dir.exists():
         closure_count = len(list(closures_dir.glob("*.py"))) + len(list(closures_dir.glob("*.yaml")))
     report["closure_count"] = closure_count
-    
+
     # Collect contracts
     contracts_dir = repo_root / "contracts"
     contract_count = 0
     if contracts_dir.exists():
         contract_count = len(list(contracts_dir.glob("*.yaml")))
     report["contract_count"] = contract_count
-    
+
     # Collect test count
     tests_dir = repo_root / "tests"
     test_count = 0
     if tests_dir.exists():
         test_count = len(list(tests_dir.rglob("test_*.py")))
     report["test_file_count"] = test_count
-    
+
     if args.output:
         with open(args.output, "w") as f:
             json.dump(report, f, indent=2)
         print(f"Report written to: {args.output}")
     else:
         print(json.dumps(report, indent=2))
-    
+
     return 0
 
 
@@ -2406,9 +2406,13 @@ def build_parser() -> argparse.ArgumentParser:
 
     # List command - list casepacks, closures, contracts
     ls = sub.add_parser("list", help="List casepacks, closures, contracts, or schemas")
-    ls.add_argument("what", nargs="?", default="all", 
-                    choices=["casepacks", "closures", "contracts", "schemas", "all"],
-                    help="What to list (default: all)")
+    ls.add_argument(
+        "what",
+        nargs="?",
+        default="all",
+        choices=["casepacks", "closures", "contracts", "schemas", "all"],
+        help="What to list (default: all)",
+    )
     ls.add_argument("-v", "--verbose", action="store_true", help="Show detailed info")
     ls.set_defaults(func=_cmd_list)
 

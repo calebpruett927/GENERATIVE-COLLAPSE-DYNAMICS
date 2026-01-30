@@ -26,7 +26,7 @@ from __future__ import annotations
 
 import argparse
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -36,8 +36,8 @@ import pandas as pd
 # Default legacy regime thresholds (from original kernel spec)
 LEGACY_THRESHOLDS = {
     "omega": 0.038,  # Stable if ω < 0.038
-    "S": 0.15,       # Stable if S < 0.15
-    "C": 0.14,       # Stable if C < 0.14
+    "S": 0.15,  # Stable if S < 0.15
+    "C": 0.14,  # Stable if C < 0.14
 }
 
 
@@ -83,7 +83,7 @@ def compute_frozen_scales(
 
     return {
         "frozen_from": str(shm_kernel_csv),
-        "frozen_at": datetime.now(timezone.utc).isoformat(),
+        "frozen_at": datetime.now(UTC).isoformat(),
         "contract": "UMA.INTSTACK.v1",
         "control_casepack": "KIN.CP.SHM",
         "legacy_thresholds": {
@@ -164,9 +164,7 @@ def apply_gate_alignment(
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(
-        description="Compute and freeze gate alignment scales from SHM control"
-    )
+    parser = argparse.ArgumentParser(description="Compute and freeze gate alignment scales from SHM control")
     parser.add_argument(
         "--run",
         default="RUN004",
@@ -230,9 +228,15 @@ def main() -> None:
             # Report regime distribution
             regime_counts = df["regime_gate"].value_counts()
             print(f"\n  {cp}:")
-            print(f"    Stable:       {regime_counts.get('Stable', 0):4d} ({100*regime_counts.get('Stable', 0)/len(df):.1f}%)")
-            print(f"    Transitional: {regime_counts.get('Transitional', 0):4d} ({100*regime_counts.get('Transitional', 0)/len(df):.1f}%)")
-            print(f"    Drift:        {regime_counts.get('Drift', 0):4d} ({100*regime_counts.get('Drift', 0)/len(df):.1f}%)")
+            print(
+                f"    Stable:       {regime_counts.get('Stable', 0):4d} ({100*regime_counts.get('Stable', 0)/len(df):.1f}%)"
+            )
+            print(
+                f"    Transitional: {regime_counts.get('Transitional', 0):4d} ({100*regime_counts.get('Transitional', 0)/len(df):.1f}%)"
+            )
+            print(
+                f"    Drift:        {regime_counts.get('Drift', 0):4d} ({100*regime_counts.get('Drift', 0)/len(df):.1f}%)"
+            )
 
 
 if __name__ == "__main__":

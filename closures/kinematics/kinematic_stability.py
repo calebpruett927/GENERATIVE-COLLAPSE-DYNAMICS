@@ -48,28 +48,28 @@ def compute_kinematic_stability(
     """
     x_series = np.asarray(x_series, dtype=float)
     v_series = np.asarray(v_series, dtype=float)
-    
+
     if len(x_series) < 2:
         return {"K_stability": 1.0, "regime": "Stable"}
-    
+
     # Position variance
     sigma_x = float(np.std(x_series))
-    
+
     # Mean velocity
     v_mean = float(np.mean(v_series))
-    
+
     # Velocity variance
     sigma_v = float(np.std(v_series))
-    
+
     # Stability components
     position_stability = max(0.0, 1.0 - sigma_x / max(sigma_max, 1e-10))
     velocity_stability = max(0.0, 1.0 - v_mean / max(v_max, 1e-10))
     smoothness = max(0.0, 1.0 - sigma_v / max(v_max, 1e-10))
-    
+
     # Combined stability index
     K_stability = (position_stability + velocity_stability + smoothness) / 3.0
     K_stability = max(0.0, min(1.0, K_stability))
-    
+
     # Regime classification
     if K_stability > 0.7:
         regime = "Stable"
@@ -77,7 +77,7 @@ def compute_kinematic_stability(
         regime = "Watch"
     else:
         regime = "Unstable"
-    
+
     return {
         "K_stability": K_stability,
         "position_stability": position_stability,
@@ -105,14 +105,14 @@ def compute_stability_margin(
         Dictionary with margin info.
     """
     margin = K_stability - stable_threshold
-    
+
     if margin > 0:
         margin_status = "Positive"
     elif margin > -0.1:
         margin_status = "Marginal"
     else:
         margin_status = "Negative"
-    
+
     return {
         "margin": margin,
         "margin_status": margin_status,
@@ -134,22 +134,22 @@ def compute_stability_trend(
         Dictionary with trend analysis.
     """
     K_series = np.asarray(K_series, dtype=float)
-    
+
     if len(K_series) < 2:
         return {"trend_direction": "Unknown", "trend_slope": 0.0}
-    
+
     # Linear regression for trend
     n = len(K_series)
     t = np.arange(n)
     slope = float(np.polyfit(t, K_series, 1)[0])
-    
+
     if slope > 0.01:
         trend_direction = "Improving"
     elif slope < -0.01:
         trend_direction = "Degrading"
     else:
         trend_direction = "Stable"
-    
+
     return {
         "trend_direction": trend_direction,
         "trend_slope": slope,
@@ -182,13 +182,13 @@ def classify_motion_regime(
         motion_regime = "Static"
     elif a_mean < 0.05:
         motion_regime = "Uniform"
-    elif tau_kin < float('inf') and tau_kin < 100:
+    elif tau_kin < float("inf") and tau_kin < 100:
         motion_regime = "Oscillatory"
     elif K_stability < 0.4:
         motion_regime = "Chaotic"
     else:
         motion_regime = "Transient"
-    
+
     return {
         "motion_regime": motion_regime,
         "v_mean": v_mean,
@@ -228,19 +228,19 @@ def compute_kinematic_budget(
     """
     # AXIOM-0: no_return_no_credit
     # If tau_kin is infinite, motion does not return → no credit
-    if tau_kin == float('inf') or tau_kin < 0:
+    if tau_kin == float("inf") or tau_kin < 0:
         R_kin_effective = 0.0
         return_credited = False
     else:
         R_kin_effective = R_kin
         return_credited = True
-    
+
     delta_K_ledger = K_stability_t1 - K_stability_t0
     delta_K_budget = S_kin - C_kin + R_kin_effective
     residual = delta_K_ledger - delta_K_budget
-    
+
     budget_balanced = abs(residual) < 0.01
-    
+
     return {
         "delta_K_ledger": delta_K_ledger,
         "delta_K_budget": delta_K_budget,

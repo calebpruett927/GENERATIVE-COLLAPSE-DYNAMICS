@@ -43,18 +43,18 @@ def compute_linear_kinematics(
     x_oor = x < 0.0 or x > 1.0
     v_oor = v < 0.0 or v > 1.0
     a_oor = a < 0.0 or a > 1.0
-    
+
     x = max(0.0, min(1.0, x))
     v = max(0.0, min(1.0, v))
     a = max(0.0, min(1.0, a))
-    
+
     # Phase space magnitude: ||(x,v)||
     phase_magnitude = math.sqrt(x**2 + v**2)
-    
+
     # Predict next state
     predicted_v_next = max(0.0, min(1.0, v + a * dt))
     predicted_x_next = max(0.0, min(1.0, x + v * dt + 0.5 * a * dt**2))
-    
+
     # Regime classification
     if v < 0.3 and a < 0.2:
         regime = "Stable"
@@ -62,7 +62,7 @@ def compute_linear_kinematics(
         regime = "Watch"
     else:
         regime = "Critical"
-    
+
     return {
         "position": x,
         "velocity": v,
@@ -100,22 +100,22 @@ def compute_trajectory(
     x_series = np.clip(np.asarray(x_series), 0.0, 1.0)
     v_series = np.clip(np.asarray(v_series), 0.0, 1.0)
     a_series = np.clip(np.asarray(a_series), 0.0, 1.0)
-    
+
     n = len(x_series)
     if n < 2:
         return {"error": "Need at least 2 points"}
-    
+
     total_displacement = float(x_series[-1] - x_series[0])
     mean_velocity = float(np.mean(v_series))
     mean_acceleration = float(np.mean(a_series))
-    
+
     if mean_velocity < 0.3 and mean_acceleration < 0.2:
         regime = "Stable"
     elif mean_velocity < 0.6:
         regime = "Watch"
     else:
         regime = "Critical"
-    
+
     return {
         "total_displacement": total_displacement,
         "mean_velocity": mean_velocity,
@@ -148,16 +148,16 @@ def verify_kinematic_consistency(
     x_series = np.asarray(x_series, dtype=float)
     v_series = np.asarray(v_series, dtype=float)
     a_series = np.asarray(a_series, dtype=float)
-    
+
     if len(x_series) < 2:
         return {"velocity_consistent": False, "acceleration_consistent": False}
-    
+
     dx_dt = np.diff(x_series) / dt
     dv_dt = np.diff(v_series) / dt
-    
+
     v_error = np.abs(dx_dt - v_series[:-1])
     a_error = np.abs(dv_dt - a_series[:-1])
-    
+
     return {
         "velocity_consistent": bool(np.max(v_error) < tol),
         "acceleration_consistent": bool(np.max(a_error) < tol),

@@ -47,20 +47,20 @@ def compute_rotational_kinematics(
     omega_rot = max(0.0, min(1.0, omega_rot))
     alpha = max(0.0, min(1.0, alpha))
     I_normalized = max(0.0, min(1.0, I_normalized))
-    
+
     # Angular momentum: L = I * omega
     angular_momentum = I_normalized * omega_rot
-    
+
     # Torque: T = I * alpha
     torque = I_normalized * alpha
-    
+
     # Rotational kinetic energy: E_rot = 0.5 * I * omega^2
     E_rotational = 0.5 * I_normalized * omega_rot**2
-    
+
     # Predicted next state
     omega_next = max(0.0, min(1.0, omega_rot + alpha * dt))
     theta_next = (theta + omega_rot * dt + 0.5 * alpha * dt**2) % 1.0
-    
+
     # Regime classification
     if omega_rot < 0.3 and alpha < 0.2:
         regime = "Stable"
@@ -68,7 +68,7 @@ def compute_rotational_kinematics(
         regime = "Watch"
     else:
         regime = "Critical"
-    
+
     return {
         "theta": theta,
         "omega_rot": omega_rot,
@@ -102,16 +102,16 @@ def compute_centripetal(
     omega_rot = max(0.0, min(1.0, omega_rot))
     r_normalized = max(0.0, min(1.0, r_normalized))
     m_normalized = max(0.0, min(1.0, m_normalized))
-    
+
     # Centripetal acceleration: a_c = omega^2 * r
     a_centripetal = omega_rot**2 * r_normalized
-    
+
     # Centripetal force: F_c = m * omega^2 * r
     F_centripetal = m_normalized * omega_rot**2 * r_normalized
-    
+
     # Tangential velocity: v = omega * r
     v_tangential = omega_rot * r_normalized
-    
+
     return {
         "a_centripetal": a_centripetal,
         "F_centripetal": F_centripetal,
@@ -145,27 +145,27 @@ def compute_rotational_trajectory(
     theta_series = np.asarray(theta_series, dtype=float)
     omega_series = np.clip(np.asarray(omega_series), 0.0, 1.0)
     alpha_series = np.clip(np.asarray(alpha_series), 0.0, 1.0)
-    
+
     n = len(theta_series)
     if n < 2:
         return {"error": "Need at least 2 points"}
-    
+
     # Total angular displacement
     total_rotation = float(theta_series[-1] - theta_series[0])
-    
+
     # Number of complete rotations
     n_rotations = int(abs(total_rotation))
-    
+
     # Mean angular velocity
     mean_omega = float(np.mean(omega_series))
-    
+
     # Mean angular momentum
     mean_L = float(I_normalized * np.mean(omega_series))
-    
+
     # Total rotational energy over time
     E_rot_series = 0.5 * I_normalized * omega_series**2
     mean_E_rot = float(np.mean(E_rot_series))
-    
+
     return {
         "total_rotation": total_rotation,
         "n_rotations": n_rotations,

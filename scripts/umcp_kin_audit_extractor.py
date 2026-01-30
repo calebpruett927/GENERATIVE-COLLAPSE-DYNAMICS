@@ -22,38 +22,42 @@ from __future__ import annotations
 import argparse
 import json
 import math
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import numpy as np
 import pandas as pd
-
 
 # ----------------------------
 # Helpers
 # ----------------------------
 
-def read_json(path: Path) -> Optional[Dict[str, Any]]:
+
+def read_json(path: Path) -> dict[str, Any] | None:
     if not path.exists():
         return None
     with path.open("r", encoding="utf-8") as f:
         return json.load(f)
 
+
 def safe_float_series(s: pd.Series) -> pd.Series:
     """Convert series to numeric, coercing strings like 'inf', 'Infinity', 'nan'."""
     return pd.to_numeric(s, errors="coerce")
 
+
 def is_finite_array(a: np.ndarray) -> np.ndarray:
     return np.isfinite(a)
 
-def quantiles(a: np.ndarray, qs: tuple[float, ...] = (0.25, 0.5, 0.75, 0.05, 0.95)) -> Dict[str, float]:
-    if a.size == 0:
-        return { "q25": math.nan, "median": math.nan, "q75": math.nan, "p05": math.nan, "p95": math.nan }
-    q25, med, q75, p05, p95 = np.quantile(a, [0.25, 0.5, 0.75, 0.05, 0.95])
-    return { "q25": float(q25), "median": float(med), "q75": float(q75), "p05": float(p05), "p95": float(p95) }
 
-def stat_block(a: np.ndarray) -> Dict[str, Any]:
+def quantiles(a: np.ndarray, qs: tuple[float, ...] = (0.25, 0.5, 0.75, 0.05, 0.95)) -> dict[str, float]:
+    if a.size == 0:
+        return {"q25": math.nan, "median": math.nan, "q75": math.nan, "p05": math.nan, "p95": math.nan}
+    q25, med, q75, p05, p95 = np.quantile(a, [0.25, 0.5, 0.75, 0.05, 0.95])
+    return {"q25": float(q25), "median": float(med), "q75": float(q75), "p05": float(p05), "p95": float(p95)}
+
+
+def stat_block(a: np.ndarray) -> dict[str, Any]:
     if a.size == 0:
         return {"n": 0, "min": None, "max": None, "median": None, "q25": None, "q75": None, "iqr": None}
     q = quantiles(a, qs=(0.25, 0.5, 0.75, 0.05, 0.95))
@@ -71,13 +75,15 @@ def stat_block(a: np.ndarray) -> Dict[str, Any]:
         "p95": q["p95"],
     }
 
-def find_first_existing(paths: List[Path]) -> Optional[Path]:
+
+def find_first_existing(paths: list[Path]) -> Path | None:
     for p in paths:
         if p.exists():
             return p
     return None
 
-def discover_run_dirs(repo_root: Path) -> List[Path]:
+
+def discover_run_dirs(repo_root: Path) -> list[Path]:
     runs_root = repo_root / "runs"
     if not runs_root.exists():
         return []
@@ -85,7 +91,8 @@ def discover_run_dirs(repo_root: Path) -> List[Path]:
     frozen_files = list(runs_root.glob("**/config/frozen.json"))
     return sorted({p.parent.parent for p in frozen_files})
 
-def normalize_columns(cols: List[str]) -> Dict[str, str]:
+
+def normalize_columns(cols: list[str]) -> dict[str, str]:
     """
     Heuristic mapping from your CSV headers to canonical names we want.
     We never guess values, only names.
@@ -93,17 +100,18 @@ def normalize_columns(cols: List[str]) -> Dict[str, str]:
     # Lowercase normalized
     lower = {c: c.strip().lower() for c in cols}
 
-    def pick(candidates: List[str]) -> Optional[str]:
+    def pick(candidates: list[str]) -> str | None:
         for cand in candidates:
             for orig, low in lower.items():
                 if low == cand:
                     return orig
         return None
 
-    mapping: Dict[str, str] = {}
+    mapping: dict[str, str] = {}
     # time
     t = pick(["t", "time", "timestamp"])
-    if t: mapping["t"] = t
+    if t:
+        mapping["t"] = t
 
     mapping_candidates = {
         "omega": ["omega", "komega", "ω"],
@@ -122,7 +130,8 @@ def normalize_columns(cols: List[str]) -> Dict[str, str]:
 
     return mapping
 
-def load_csv(path: Path) -> Optional[pd.DataFrame]:
+
+def load_csv(path: Path) -> pd.DataFrame | None:
     if not path.exists():
         return None
     # Try comma, then fallback to tab
@@ -134,13 +143,14 @@ def load_csv(path: Path) -> Optional[pd.DataFrame]:
         except Exception:
             return None
 
-def extract_log_rates(df: pd.DataFrame) -> Dict[str, Any]:
+
+def extract_log_rates(df: pd.DataFrame) -> dict[str, Any]:
     """
     Flexible: supports either
       - row-per-sample with boolean columns
       - row-per-channel summary with rate fields
     """
-    out: Dict[str, Any] = {"overall": None, "by_channel": {}}
+    out: dict[str, Any] = {"overall": None, "by_channel": {}}
     if df.empty:
         return out
 
@@ -194,8 +204,9 @@ def extract_log_rates(df: pd.DataFrame) -> Dict[str, Any]:
 # Main extractor
 # ----------------------------
 
-def extract_run(run_dir: Path) -> Dict[str, Any]:
-    gaps: List[str] = []
+
+def extract_run(run_dir: Path) -> dict[str, Any]:
+    gaps: list[str] = []
 
     frozen = read_json(run_dir / "config" / "frozen.json")
     if frozen is None:
@@ -219,13 +230,15 @@ def extract_run(run_dir: Path) -> Dict[str, Any]:
         gaps.append(f"psi missing or unreadable: {psi_path}")
 
     # tauR series location (try both patterns)
-    tauR_path = find_first_existing([
-        run_dir / "tables" / "tauR_series.csv",
-        run_dir / "tables" / "taur_series.csv",
-        run_dir / "derived" / "tauR_series.csv",
-        run_dir / "derived" / "taur_series.csv",
-        run_dir / "casepacks" / "KIN.CP.SHM" / "tables" / "tauR_series.csv",  # legacy fallback
-    ])
+    tauR_path = find_first_existing(
+        [
+            run_dir / "tables" / "tauR_series.csv",
+            run_dir / "tables" / "taur_series.csv",
+            run_dir / "derived" / "tauR_series.csv",
+            run_dir / "derived" / "taur_series.csv",
+            run_dir / "casepacks" / "KIN.CP.SHM" / "tables" / "tauR_series.csv",  # legacy fallback
+        ]
+    )
     tauR_df = load_csv(tauR_path) if tauR_path else None
     if tauR_df is None:
         gaps.append("tauR_series.csv missing/unreadable (checked run-local tables/derived)")
@@ -276,15 +289,17 @@ def extract_run(run_dir: Path) -> Dict[str, Any]:
     artifacts = []
     if isinstance(manifest.get("artifacts"), list):
         for a in manifest["artifacts"]:
-            artifacts.append({
-                "path": a.get("path"),
-                "sha256": a.get("sha256"),
-                "role": a.get("role"),
-                "bytes": a.get("bytes"),
-            })
+            artifacts.append(
+                {
+                    "path": a.get("path"),
+                    "sha256": a.get("sha256"),
+                    "role": a.get("role"),
+                    "bytes": a.get("bytes"),
+                }
+            )
 
     # Column maps
-    columns: Dict[str, Any] = {}
+    columns: dict[str, Any] = {}
     kernel_map = {}
     if kernel_df is not None:
         columns["kernel"] = list(kernel_df.columns)
@@ -303,8 +318,8 @@ def extract_run(run_dir: Path) -> Dict[str, Any]:
         columns["tauR_series"] = None
 
     # Summary stats from kernel
-    kernel_stats: Dict[str, Any] = {}
-    tauR_coverage: Dict[str, Any] = {"finite_coverage_percent": None, "censoring_percent": None}
+    kernel_stats: dict[str, Any] = {}
+    tauR_coverage: dict[str, Any] = {"finite_coverage_percent": None, "censoring_percent": None}
 
     if kernel_df is not None and kernel_map:
         # Stats for invariants
@@ -352,14 +367,13 @@ def extract_run(run_dir: Path) -> Dict[str, Any]:
 
     # Ballistic seam/weld extraction (if present)
     seam_row = None
-    if seam_df is not None and not seam_df.empty:
+    if seam_df is not None and not seam_df.empty and "seam_id" in seam_df.columns:
         # Try to find KIN.SEAM.IMP.001 first, else first IMP row
-        if "seam_id" in seam_df.columns:
-            hit = seam_df[seam_df["seam_id"].astype(str) == "KIN.SEAM.IMP.001"]
-            if hit.empty:
-                hit = seam_df[seam_df["seam_id"].astype(str).str.contains("IMP", na=False)]
-            if not hit.empty:
-                seam_row = hit.iloc[0].to_dict()
+        hit = seam_df[seam_df["seam_id"].astype(str) == "KIN.SEAM.IMP.001"]
+        if hit.empty:
+            hit = seam_df[seam_df["seam_id"].astype(str).str.contains("IMP", na=False)]
+        if not hit.empty:
+            seam_row = hit.iloc[0].to_dict()
 
     weld_row = None
     if weld_df is not None and not weld_df.empty:
@@ -404,9 +418,7 @@ def extract_run(run_dir: Path) -> Dict[str, Any]:
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(
-        description="UMCP.KIN audit extractor - extract run data to JSON report"
-    )
+    ap = argparse.ArgumentParser(description="UMCP.KIN audit extractor - extract run data to JSON report")
     ap.add_argument("--repo", type=str, default=".", help="Path to repo root (default: .)")
     ap.add_argument("--run", type=str, default=None, help="Specific run dir (e.g., runs/<Run_ID>)")
     ap.add_argument("--casepack", type=str, default=None, help="Filter by casepack_id substring (e.g., KIN.CP.SHM)")
@@ -432,7 +444,7 @@ def main() -> None:
     out_obj = {
         "umcp_kin_extract_version": "1.0",
         "repo_root": str(repo_root),
-        "generated_utc": datetime.now(timezone.utc).isoformat(),
+        "generated_utc": datetime.now(UTC).isoformat(),
         "runs": reports,
     }
 

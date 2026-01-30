@@ -36,9 +36,9 @@ def compute_kinetic_energy(
     """
     v = max(0.0, min(1.0, v))
     m_normalized = max(0.0, min(1.0, m_normalized))
-    
+
     E_kinetic = 0.5 * m_normalized * v**2
-    
+
     return {
         "E_kinetic": E_kinetic,
         "v": v,
@@ -74,7 +74,7 @@ def compute_potential_energy(
     h = max(0.0, min(1.0, h))
     m_normalized = max(0.0, min(1.0, m_normalized))
     g_normalized = max(0.0, min(1.0, g_normalized))
-    
+
     if potential_type == "gravitational":
         E_potential = m_normalized * g_normalized * h
     elif potential_type == "spring":
@@ -83,7 +83,7 @@ def compute_potential_energy(
         E_potential = 0.5 * k_normalized * x_spring**2
     else:
         E_potential = 0.0
-    
+
     return {
         "E_potential": E_potential,
         "potential_type": potential_type,
@@ -115,11 +115,11 @@ def compute_mechanical_energy(
     h = max(0.0, min(1.0, h))
     m_normalized = max(0.0, min(1.0, m_normalized))
     g_normalized = max(0.0, min(1.0, g_normalized))
-    
+
     E_kinetic = 0.5 * m_normalized * v**2
     E_potential = m_normalized * g_normalized * h
     E_mechanical = E_kinetic + E_potential
-    
+
     return {
         "E_mechanical": E_mechanical,
         "E_kinetic": E_kinetic,
@@ -147,9 +147,9 @@ def compute_work(
     """
     F_net = max(0.0, min(1.0, F_net))
     displacement = max(0.0, min(1.0, displacement))
-    
+
     W = F_net * displacement * math.cos(angle)
-    
+
     return {
         "W": W,
         "F_net": F_net,
@@ -174,9 +174,9 @@ def compute_power(
     """
     F_net = max(0.0, min(1.0, F_net))
     v = max(0.0, min(1.0, v))
-    
+
     P_power = F_net * v
-    
+
     return {
         "P_power": P_power,
         "F_net": F_net,
@@ -199,16 +199,16 @@ def verify_energy_conservation(
         Dictionary with conservation verification.
     """
     E_series = np.asarray(E_series, dtype=float)
-    
+
     if len(E_series) < 2:
         return {"is_conserved": True, "error": "Need at least 2 points"}
-    
+
     E_mean = float(np.mean(E_series))
     E_std = float(np.std(E_series))
     max_deviation = float(np.max(np.abs(E_series - E_mean)))
-    
+
     is_conserved = max_deviation < tol
-    
+
     return {
         "is_conserved": is_conserved,
         "E_mean": E_mean,
@@ -239,7 +239,7 @@ def verify_work_energy_theorem(
     delta_E_kin = E_kin_final - E_kin_initial
     residual = abs(W_net - delta_E_kin)
     is_valid = residual < tol
-    
+
     return {
         "is_valid": is_valid,
         "W_net": W_net,

@@ -12,11 +12,11 @@ METRIC SPECIFICATION (FROZEN):
 
 AXIOM-0 ENFORCEMENT (Core Protocol):
   "Collapse is generative; only what returns is real."
-  
+
   This closure is the kinematics embodiment of Axiom-0:
   - τ_kin < ∞ → motion returns → kinematic credit granted
   - τ_kin = INF_KIN → motion does not return → NO credit (no_return_no_credit)
-  
+
   Non-returning motion (drifting, divergent, chaotic) receives τ_kin = INF_KIN
   and is classified as "Non_Returning" with kinematic_credit = 0.
 
@@ -28,23 +28,24 @@ from __future__ import annotations
 
 import math
 from enum import Enum
-from typing import Any, Union
+from typing import Any
 
 import numpy as np
-
 
 # =============================================================================
 # TYPED SENTINELS (KIN-AX-1: IEEE Inf/NaN forbidden)
 # =============================================================================
 
+
 class KinSpecialValue(Enum):
     """Typed sentinel values for τ_kin (replaces IEEE Inf/NaN)."""
-    INF_KIN = "INF_KIN"                    # No return detected
+
+    INF_KIN = "INF_KIN"  # No return detected
     UNIDENTIFIABLE_KIN = "UNIDENTIFIABLE"  # Cannot determine return
 
 
 # Type alias for τ_kin: positive integer OR typed sentinel
-TauKin = Union[int, KinSpecialValue]
+TauKin = int | KinSpecialValue
 
 
 # Legacy compatibility (deprecated - use KinSpecialValue instead)
@@ -56,9 +57,9 @@ UNIDENTIFIABLE_KIN = KinSpecialValue.UNIDENTIFIABLE_KIN
 # FROZEN CONSTANTS (from spec)
 # =============================================================================
 
-W_DEFAULT = 64       # Window size in samples
-DELTA_DEFAULT = 3    # Debounce lag in samples
-T_CRIT = 10.0        # Critical return time threshold
+W_DEFAULT = 64  # Window size in samples
+DELTA_DEFAULT = 3  # Debounce lag in samples
+T_CRIT = 10.0  # Critical return time threshold
 ETA_PHASE_DEFAULT = 0.01  # Phase space tolerance (squared-L2)
 
 
@@ -78,7 +79,7 @@ def compute_phase_distance(
     Returns:
         Distance between points.
     """
-    return math.sqrt((x2 - x1)**2 + (v2 - v1)**2)
+    return math.sqrt((x2 - x1) ** 2 + (v2 - v1) ** 2)
 
 
 def compute_kinematic_return(
@@ -106,10 +107,10 @@ def compute_kinematic_return(
     """
     x_series = np.asarray(x_series, dtype=float)
     v_series = np.asarray(v_series, dtype=float)
-    
+
     n = len(x_series)
     t = n - 1  # Current time index (last point)
-    
+
     # =================================================================
     # Patch 3: Three-case domain size formula
     # |D_{W,δ}(t)| = 0 if t < δ
@@ -122,7 +123,7 @@ def compute_kinematic_return(
         domain_size = t - debounce + 1
     else:
         domain_size = window - debounce + 1
-    
+
     # =================================================================
     # Patch 4: Empty domain → return_rate = 0 (no divide-by-zero)
     # =================================================================
@@ -136,28 +137,28 @@ def compute_kinematic_return(
             "domain_size": 0,
             "startup": True,
         }
-    
+
     # Build effective domain D_{W,δ}(t)
     lower_bound = max(0, t - window)
     D_W_delta = [u for u in range(lower_bound, t) if (t - u) >= debounce]
-    
+
     # =================================================================
     # Patch 1: Phase metric uses tilde variables (already normalized)
     # d²(γ1, γ2) = (x̃2 - x̃1)² + (ṽ2 - ṽ1)²
     # =================================================================
     gamma_t = (x_series[t], v_series[t])
-    
+
     # Find valid returns U(t) with STRICT inequality d² < η_phase
     valid_returns: list[int] = []
     for u in D_W_delta:
         if u < len(x_series):
             gamma_u = (x_series[u], v_series[u])
-            d_squared = (gamma_t[0] - gamma_u[0])**2 + (gamma_t[1] - gamma_u[1])**2
+            d_squared = (gamma_t[0] - gamma_u[0]) ** 2 + (gamma_t[1] - gamma_u[1]) ** 2
             if d_squared < eta_phase:  # STRICT inequality per spec
                 valid_returns.append(u)
-    
+
     return_count = len(valid_returns)
-    
+
     # =================================================================
     # Patch 5: τ_kin is positive INTEGER or typed sentinel
     # =================================================================
@@ -168,10 +169,10 @@ def compute_kinematic_return(
         tau_kin = min(delays)  # Integer
     else:
         tau_kin = KinSpecialValue.INF_KIN  # Typed sentinel
-    
+
     # Return rate = |U| / |D|
     return_rate = return_count / domain_size
-    
+
     # Classify dynamics
     if return_rate > 0.5:
         dynamics_regime = "Returning"
@@ -181,10 +182,10 @@ def compute_kinematic_return(
         dynamics_regime = "Weakly_Returning"
     else:
         dynamics_regime = "Non_Returning"
-    
+
     # AXIOM-0 ENFORCEMENT: no_return_no_credit
     kinematic_credit = _compute_credit(tau_kin, return_rate)
-    
+
     return {
         "tau_kin": tau_kin,
         "return_count": return_count,
@@ -245,7 +246,7 @@ def compute_kinematic_credit(
         kinematic_credit = time_factor * rate_factor
         credit_status = "CREDITED"
         reason = f"τ_kin={tau_kin}, return_rate={return_rate:.2f}"
-    
+
     return {
         "kinematic_credit": kinematic_credit,
         "credit_status": credit_status,
@@ -271,31 +272,29 @@ def compute_phase_trajectory(
     """
     x_series = np.asarray(x_series, dtype=float)
     v_series = np.asarray(v_series, dtype=float)
-    
+
     n = len(x_series)
     if n < 2:
         return {"error": "Need at least 2 points"}
-    
+
     # Path length in phase space
     dx = np.diff(x_series)
     dv = np.diff(v_series)
     segment_lengths = np.sqrt(dx**2 + dv**2)
     path_length = float(np.sum(segment_lengths))
-    
+
     # Approximate enclosed area using shoelace formula
     # For non-closed curves, this gives signed area
-    enclosed_area = 0.5 * abs(float(
-        np.sum(x_series[:-1] * v_series[1:] - x_series[1:] * v_series[:-1])
-    ))
-    
+    enclosed_area = 0.5 * abs(float(np.sum(x_series[:-1] * v_series[1:] - x_series[1:] * v_series[:-1])))
+
     # Centroid
     centroid_x = float(np.mean(x_series))
     centroid_v = float(np.mean(v_series))
-    
+
     # Bounding box
     x_range = float(np.max(x_series) - np.min(x_series))
     v_range = float(np.max(v_series) - np.min(v_series))
-    
+
     return {
         "path_length": path_length,
         "enclosed_area": enclosed_area,
@@ -324,36 +323,36 @@ def detect_oscillation(
     """
     x_series = np.asarray(x_series, dtype=float)
     v_series = np.asarray(v_series, dtype=float)
-    
+
     n = len(x_series)
     if n < 4:
         return {"oscillation_type": "Unknown", "sign_changes": 0}
-    
+
     # Deviation from mean
     x_centered = x_series - np.mean(x_series)
     v_centered = v_series - np.mean(v_series)
-    
+
     # Count sign changes (zero crossings)
     x_sign_changes = int(np.sum(np.diff(np.sign(x_centered)) != 0))
     v_sign_changes = int(np.sum(np.diff(np.sign(v_centered)) != 0))
     sign_changes = x_sign_changes + v_sign_changes
-    
+
     # Estimate period from autocorrelation
     if n > 10:
         # Simple autocorrelation
-        x_autocorr = np.correlate(x_centered, x_centered, mode='full')
-        x_autocorr = x_autocorr[n-1:]  # Keep positive lags
-        
+        x_autocorr = np.correlate(x_centered, x_centered, mode="full")
+        x_autocorr = x_autocorr[n - 1 :]  # Keep positive lags
+
         # Find first peak after lag 0
         peaks: list[int] = []
         for i in range(1, len(x_autocorr) - 1):
-            if x_autocorr[i] > x_autocorr[i-1] and x_autocorr[i] > x_autocorr[i+1]:
+            if x_autocorr[i] > x_autocorr[i - 1] and x_autocorr[i] > x_autocorr[i + 1]:
                 peaks.append(i)
-        
+
         period_estimate = float(peaks[0]) if peaks else float(n)
     else:
         period_estimate = float(n)
-    
+
     # Classify oscillation type
     if sign_changes > n // 2:
         oscillation_type = "Periodic"
@@ -363,7 +362,7 @@ def detect_oscillation(
         oscillation_type = "Damped"
     else:
         oscillation_type = "Non_Oscillatory"
-    
+
     return {
         "oscillation_type": oscillation_type,
         "sign_changes": sign_changes,
@@ -391,42 +390,36 @@ def compute_lyapunov_estimate(
     """
     x_series = np.asarray(x_series, dtype=float)
     v_series = np.asarray(v_series, dtype=float)
-    
+
     n = len(x_series)
     if n < 10:
         return {"lambda_max": 0.0, "stable": True, "n_pairs": 0}
-    
+
     # Find nearby trajectory pairs and track divergence
     divergences: list[float] = []
-    
+
     for i in range(n // 2):
         x0, v0 = x_series[i], v_series[i]
-        
+
         # Find nearest neighbor after debounce
-        min_dist = float('inf')
+        min_dist = float("inf")
         j_min = -1
         for j in range(i + 5, min(i + n // 2, n)):
             d = compute_phase_distance(x0, v0, x_series[j], v_series[j])
             if eps < d < min_dist:
                 min_dist = d
                 j_min = j
-        
+
         if j_min > 0 and i + 5 < n and j_min + 5 < n:
             # Track how separation evolves
-            d_later = compute_phase_distance(
-                x_series[i + 5], v_series[i + 5],
-                x_series[j_min + 5], v_series[j_min + 5]
-            )
+            d_later = compute_phase_distance(x_series[i + 5], v_series[i + 5], x_series[j_min + 5], v_series[j_min + 5])
             if min_dist > 0:
                 divergences.append(math.log(max(d_later, eps) / min_dist) / 5)
-    
-    if divergences:
-        lambda_max = float(np.mean(divergences))
-    else:
-        lambda_max = 0.0
-    
+
+    lambda_max = float(np.mean(divergences)) if divergences else 0.0
+
     stable = lambda_max < 0.1
-    
+
     return {
         "lambda_max": lambda_max,
         "stable": stable,
