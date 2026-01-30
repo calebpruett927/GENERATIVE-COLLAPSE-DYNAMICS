@@ -191,7 +191,8 @@ class PreflightValidator:
         """Load the Failure Node Atlas."""
         atlas_path = self.root / "specs" / "failure_node_atlas_v1.yaml"
         if atlas_path.exists():
-            return self._load_yaml(atlas_path)
+            result = self._load_yaml(atlas_path)
+            return result if isinstance(result, dict) else {}
         return {}
 
     def _load_yaml(self, path: Path) -> Any:
@@ -1027,6 +1028,7 @@ class PreflightValidator:
         self.phase_c_statistical()
 
         # Determine overall status
+        status: Literal["ERROR", "WARN", "PASS"]
         if any(h.severity == "ERROR" for h in self.hits):
             status = "ERROR"
         elif any(h.severity == "WARN" for h in self.hits):

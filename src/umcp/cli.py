@@ -1950,8 +1950,8 @@ def _cmd_integrity(args: argparse.Namespace) -> int:
         for name, expected in expected_hashes.items():
             file_path = target_path / name
             if file_path.exists():
-                with open(file_path, "rb") as f:
-                    actual = hashlib.sha256(f.read()).hexdigest()
+                with open(file_path, "rb") as hash_file:
+                    actual = hashlib.sha256(hash_file.read()).hexdigest()
                 if actual == expected:
                     status = "✓ VALID"
                 else:
@@ -1972,15 +1972,15 @@ def _cmd_integrity(args: argparse.Namespace) -> int:
 
     # Generic file/directory hash
     if target_path.is_file():
-        with open(target_path, "rb") as f:
-            h = hashlib.sha256(f.read()).hexdigest()
+        with open(target_path, "rb") as target_file:
+            h = hashlib.sha256(target_file.read()).hexdigest()
         print(f"{target_path.name}: {h}")
     elif target_path.is_dir():
-        for f in sorted(target_path.rglob("*")):
-            if f.is_file() and not f.name.startswith("."):
-                with open(f, "rb") as fh:
-                    h = hashlib.sha256(fh.read()).hexdigest()
-                rel_path = f.relative_to(target_path)
+        for item in sorted(target_path.rglob("*")):
+            if item.is_file() and not item.name.startswith("."):
+                with open(item, "rb") as item_file:
+                    h = hashlib.sha256(item_file.read()).hexdigest()
+                rel_path = item.relative_to(target_path)
                 print(f"  {rel_path}: {h[:16]}...")
 
     return 0
