@@ -411,6 +411,60 @@ $$K_{stability} = (1 - σ_x/σ_{max}) \cdot (1 - v_{mean}/v_{max}) \cdot w_{τ}$
 
 This prevents $K_{stability}$ from going negative and ensures bounded output $\in [0,1]$.
 
+### 7. kin_ref_phase.py (KIN-Domain Closure C - Phase-Anchor Selection)
+
+**Purpose**: Deterministic phase-anchor selection for oscillatory motion.
+
+**NOTE**: This is a Tier-0/Tier-2 kinematics closure, NOT Tier-1 kernel. Does not redefine Tier-1 symbols {ω, F, S, C, τ_R, IC, κ}.
+
+**CasePack**: `casepacks/kin_ref_phase_oscillator/`
+
+**Main Functions**:
+- `compute_phase(x, v)` → φ (phase angle in [0, 2π))
+- `circular_distance(a, b)` → Δφ (circular distance in [0, π])
+- `build_eligible_set(t)` → list of eligible anchor indices
+- `select_phase_anchor(x_series, v_series, t)` → anchor_u, delta_phi, undefined_reason
+
+#### Phase Mapping φ(u) (FROZEN)
+
+Given normalized phase-space coordinates (x, v) ∈ [0,1]²:
+
+$$x' = 2x - 1 \quad \text{(center to [-1,1])}$$
+$$v' = 2v - 1 \quad \text{(center to [-1,1])}$$
+$$\phi = \text{atan2}(v', x') \quad \text{(wrapped to [0, 2π))}$$
+
+#### Circular Distance Δφ(a, b) (FROZEN)
+
+$$\Delta\phi(a, b) = \min(|a - b|, 2\pi - |a - b|)$$
+
+Result is in [0, π].
+
+#### Selector Rule
+
+1. Build eligible set: $\mathcal{E}(t) = D_{W,\delta}(t)$
+2. If $\mathcal{E}(t) = \emptyset$: **undefined** (EMPTY_ELIGIBLE)
+3. For each $u \in \mathcal{E}(t)$, compute $\Delta\phi(\phi(t), \phi(u))$
+4. Find $\Delta\phi_{min} = \min\{\Delta\phi(\phi(t), \phi(u)) : u \in \mathcal{E}(t)\}$
+5. If $\Delta\phi_{min} > \delta\phi_{max}$: **undefined** (PHASE_MISMATCH)
+6. Otherwise, select anchor via tie-breakers:
+   - (i) Minimize $\Delta\phi$
+   - (ii) If tied: choose most recent $u$ (largest $u$)
+   - (iii) If still tied: minimize $d(\Psi(t), \Psi(u))$ (Euclidean distance in phase space)
+
+#### Frozen Parameters
+
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| $\delta\phi_{max}$ | 0.5235987756 ($\pi/6$) | Maximum phase mismatch (30°) |
+| $W$ | 20 | Window size (samples) |
+| $\delta$ | 3 | Debounce lag (samples) |
+
+#### Edge Cases
+
+- **EMPTY_ELIGIBLE**: $t < \delta$ (startup phase), no eligible anchors
+- **PHASE_MISMATCH**: All eligible anchors exceed $\delta\phi_{max}$ threshold
+- **Tie-breaker**: Multiple anchors with identical $\Delta\phi$ → select most recent $u$
+
 ## Casepack: kinematics_complete
 
 ### Scenarios

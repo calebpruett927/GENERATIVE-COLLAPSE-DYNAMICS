@@ -1,0 +1,76 @@
+# KIN.REF.PHASE Oscillator CasePack Observables
+# Defines raw physical quantities for phase-anchor selection
+
+schema: "schemas/observables.schema.json"
+
+observables:
+  # Position observable (x-coordinate in phase space)
+  position_x:
+    name: "Position (x-component)"
+    symbol: "x"
+    unit: "normalized"
+    description: "Normalized x-position in [0,1]"
+    sampling_rate: 10  # Hz (for oscillator demo)
+    range: [0.0, 1.0]
+    
+  # Velocity observable (v-coordinate in phase space)
+  velocity_x:
+    name: "Velocity (x-component)"
+    symbol: "v"
+    unit: "normalized"
+    description: "Normalized x-velocity in [0,1]"
+    sampling_rate: 10  # Hz
+    range: [0.0, 1.0]
+
+  # Derived observables for phase computation
+  phase_angle:
+    name: "Phase Angle"
+    symbol: "phi"
+    unit: "radians"
+    description: "Phase angle computed via atan2(v_centered, x_centered)"
+    domain: [0.0, 6.283185307]  # [0, 2π)
+    derived_from: ["position_x", "velocity_x"]
+    computation: "atan2(2*v - 1, 2*x - 1), wrapped to [0, 2π)"
+
+  # Anchor selection result
+  anchor_u:
+    name: "Reference Anchor Index"
+    symbol: "u"
+    unit: "index"
+    description: "Selected reference anchor index, or null if undefined"
+    domain: "integer >= 0 or null"
+
+  # Phase distance
+  delta_phi:
+    name: "Circular Phase Distance"
+    symbol: "delta_phi"
+    unit: "radians"
+    description: "Circular distance between current phase and anchor phase"
+    domain: [0.0, 3.141592654]  # [0, π]
+    computation: "min(|phi(t) - phi(u)|, 2π - |phi(t) - phi(u)|)"
+
+# Phase computation specification (FROZEN)
+phase_mapping:
+  id: "KIN.REF.PHASE.PHI.v1"
+  description: "Phase angle from centered (x, v) coordinates"
+  
+  # Centering: map [0,1] to [-1,1]
+  centering:
+    x_centered: "2 * x - 1"
+    v_centered: "2 * v - 1"
+  
+  # Phase computation
+  phi_formula: "atan2(v_centered, x_centered)"
+  
+  # Wrapping to [0, 2π)
+  wrapping: "phi_raw + 2π if phi_raw < 0 else phi_raw"
+  
+  # Result domain
+  domain: "[0, 2π)"
+
+# Circular distance specification (FROZEN)
+circular_distance:
+  id: "KIN.REF.PHASE.DELTA.v1"
+  description: "Circular distance on the unit circle"
+  formula: "min(|a - b|, 2π - |a - b|)"
+  domain: "[0, π]"

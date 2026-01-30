@@ -1,0 +1,73 @@
+{
+  "schema": "schemas/manifest.schema.json",
+  "casepack": {
+    "id": "kin_ref_phase_oscillator",
+    "version": "1.0.0",
+    "title": "KIN.REF.PHASE Oscillator Test Vector CasePack",
+    "description": "Canonical test vector for KIN.REF.PHASE closure implementing deterministic phase-anchor selection for oscillatory motion. Includes edge cases: tie-breakers, empty eligible sets, and phase mismatch censoring.",
+    "created_utc": "2026-01-30T00:00:00Z",
+    "timezone": "America/Chicago",
+    "authors": ["UMCP Contributors"]
+  },
+  "refs": {
+    "canon_anchors": { "path": "canon/kin_anchors.yaml" },
+    "contract": { "id": "KIN.INTSTACK.v1", "path": "contracts/KIN.INTSTACK.v1.yaml" },
+    "closures_registry": { "id": "UMCP.CLOSURES.KIN_REF_PHASE.v1", "path": "casepacks/kin_ref_phase_oscillator/closures/closure_registry.yaml" }
+  },
+  "artifacts": {
+    "raw_measurements": {
+      "path": "raw_measurements.csv",
+      "format": "csv"
+    },
+    "expected": {
+      "invariants_json": { "path": "expected/ref_phase_expected.csv" },
+      "censor_json": { "path": "expected/censor_expected.json" }
+    }
+  },
+  "run_intent": {
+    "notes": "This CasePack validates the KIN.REF.PHASE closure for deterministic phase-anchor selection. Test vectors include: (1) tie-breaker case where two anchors have identical phase distance - must choose most recent u, (2) empty eligible set during startup/debounce - typed censor EMPTY_ELIGIBLE, (3) phase mismatch exceeding delta_phi_max - typed censor PHASE_MISMATCH."
+  },
+  "extensions": {
+    "frozen_config": {
+      "delta_phi_max": 0.5235987756,
+      "window": 20,
+      "debounce": 3,
+      "frozen_config_sha256": "c14872d87ebeb96a22ecdfda5dad0dafdbf6a37080af20a2c4870c0da578b32e"
+    },
+    "artifact_hashes": {
+      "raw_measurements.csv": "de77af5aaba974d35740f7e9d437253b7389a66a1331a5872326ae5b1d4620d8",
+      "closures/kin_ref_phase.py": "ac278522eb2fae3503bc0a74b5f2294f4998660ef875c1a28a52b0fec8671878",
+      "closures/closure_registry.yaml": "73c961a8a0aec98806eaeef24761a8a2ad502155c1facdbfbd3571d4858c953d",
+      "expected/ref_phase_expected.csv": "65a7b4dc799810e6f820f31db51ddbf446e6e9504114bbb624f4acc9373e79de",
+      "expected/censor_expected.json": "5fa33b19a34a7a6e556210b8a1c7c8b116e56a59d1bd287ddb9bb6131dd79782"
+    },
+    "edge_cases": {
+      "tie_breaker": {
+        "rows": [12, 13, 14, 15, 16, 26, 27],
+        "description": "Multiple rows with identical phi forcing tie-breaker selection"
+      },
+      "empty_eligible": {
+        "rows": [0, 1, 2],
+        "description": "Startup phase with no eligible anchors due to debounce"
+      },
+      "phase_mismatch": {
+        "rows": [19, 20],
+        "description": "Phase far from all eligible anchors exceeds delta_phi_max"
+      }
+    },
+    "test_coverage": {
+      "pytest_file": "tests/closures/test_kin_ref_phase.py",
+      "test_count": 27,
+      "categories": [
+        "phase_computation",
+        "circular_distance",
+        "eligible_set_construction",
+        "anchor_selection",
+        "tie_breaker",
+        "censor_events",
+        "determinism",
+        "frozen_parameters"
+      ]
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "schema": "KIN.REF.PHASE.CENSOR.v1",
+  "description": "Typed censor events for undefined reference anchors",
+  "parameters": {
+    "delta_phi_max": 0.5235987756,
+    "window": 20,
+    "debounce": 3
+  },
+  "censors": [
+    {
+      "idx": 0,
+      "phi": 0.0,
+      "reason": "EMPTY_ELIGIBLE",
+      "eligible_count": 0
+    },
+    {
+      "idx": 1,
+      "phi": 0.0,
+      "reason": "EMPTY_ELIGIBLE",
+      "eligible_count": 0
+    },
+    {
+      "idx": 2,
+      "phi": 0.0,
+      "reason": "EMPTY_ELIGIBLE",
+      "eligible_count": 0
+    },
+    {
+      "idx": 19,
+      "phi": 2.3561944902,
+      "reason": "PHASE_MISMATCH",
+      "eligible_count": 17
+    },
+    {
+      "idx": 20,
+      "phi": 2.3561944902,
+      "reason": "PHASE_MISMATCH",
+      "eligible_count": 18
+    }
+  ],
+  "total_censored": 5
+}

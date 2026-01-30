@@ -1,0 +1,65 @@
+# KIN.REF.PHASE Oscillator CasePack Embedding Configuration
+# Defines normalization mapping from raw to bounded [0,1] coordinates
+
+schema: "schemas/embedding.schema.json"
+
+embedding:
+  id: "KIN.REF.PHASE.EMBEDDING.v1"
+  contract: "KIN.INTSTACK.v1"
+  description: "Normalization embedding for phase-anchor oscillator observables"
+  
+  # Domain bounds
+  domain:
+    interval: [0.0, 1.0]
+    face: "pre_clip"
+    oor_policy: "clip_and_flag"
+    epsilon: 1.0e-8
+
+  # Reference scales (for this oscillator demo, already normalized)
+  reference_scales:
+    x_ref: 1.0       # Position reference (data already in [0,1])
+    v_ref: 1.0       # Velocity reference (data already in [0,1])
+    phi_ref: 6.283185307  # 2π for phase angle
+
+  # Coordinate mappings
+  mappings:
+    # Position: already normalized in [0,1]
+    position:
+      formula: "x_norm = clip(x, 0, 1)"
+      inverse: "x = x_norm"
+      notes: "Position assumed already normalized in raw data"
+      
+    # Velocity: already normalized in [0,1]
+    velocity:
+      formula: "v_norm = clip(v, 0, 1)"
+      inverse: "v = v_norm"
+      notes: "Velocity assumed already normalized in raw data"
+      
+    # Phase: computed from centered coordinates
+    phase:
+      formula: "phi = atan2(2*v - 1, 2*x - 1), wrapped to [0, 2π)"
+      notes: "Phase angle from centered phase space coordinates"
+
+  # Coordinate weights (for Ψ distance when needed)
+  weights:
+    default:
+      description: "Equal weights for phase space coordinates"
+      x: 0.5
+      v: 0.5
+
+  # Phase-anchor specific parameters (FROZEN)
+  phase_anchor_settings:
+    # Maximum phase mismatch tolerance (π/6 radians = 30°)
+    delta_phi_max: 0.5235987756
+    
+    # Return-domain window size (samples)
+    window: 20
+    
+    # Debounce lag (minimum delay before eligibility)
+    debounce: 3
+    
+    # Tie-breaker order
+    tie_breakers:
+      - "minimize_delta_phi"
+      - "choose_most_recent_u"
+      - "minimize_psi_distance"

@@ -131,3 +131,14 @@ registry:
         contract: "KIN.INTSTACK.v1"
         inputs: ["x_series", "v_series", "a_series"]
         outputs: ["K_stability", "S_kin", "C_kin", "omega_kin", "regime", "motion_regime"]
+      - name: "kin_ref_phase"
+        path: "casepacks/kin_ref_phase_oscillator/closures/kin_ref_phase.py"
+        description: "KIN.REF.PHASE: Deterministic phase-anchor selection for oscillatory motion"
+        contract: "KIN.INTSTACK.v1"
+        inputs: ["x_series", "v_series", "t"]
+        outputs: ["anchor_u", "delta_phi", "undefined_reason", "phi", "eligible_count"]
+        frozen_params:
+          delta_phi_max: 0.5235987756
+          window: 20
+          debounce: 3
+
