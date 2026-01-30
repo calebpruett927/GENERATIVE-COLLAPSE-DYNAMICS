@@ -3,7 +3,7 @@
 [![CI](https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/actions/workflows/validate.yml/badge.svg)](https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/actions/workflows/validate.yml)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Tests: 557 passing](https://img.shields.io/badge/tests-557%20passing-brightgreen.svg)](tests/)
+[![Tests: 690 passing](https://img.shields.io/badge/tests-690%20passing-brightgreen.svg)](tests/)
 [![Version: 1.5.0](https://img.shields.io/badge/version-1.5.0-blue.svg)](CHANGELOG.md)
 
 **UMCP transforms computational experiments into auditable artifacts** with formal mathematical foundations based on a foundational principle:
@@ -83,11 +83,14 @@ pip install -e ".[all]"
 # System health check (should show HEALTHY status)
 umcp health
 
-# Run test suite (should show 557 tests passing)
+# Run test suite (should show 690 tests passing)
 pytest
 
 # Quick validation test
 umcp validate casepacks/hello_world
+
+# List available casepacks
+umcp list casepacks
 
 # Check installed version
 python -c "import umcp; print(f'UMCP v{umcp.__version__}')"
@@ -134,11 +137,33 @@ print(f"Regime: {regime.name}")
 ```
 Status: HEALTHY
 Schemas: 11
-557 passed in ~41s
+690 passed in ~25s
 Drift: 0.1280
 Fidelity: 0.8720
 Integrity: 0.8720
 Regime: STABLE
+```
+
+### CLI Commands
+
+UMCP provides 10 built-in CLI commands:
+
+```bash
+# Core validation
+umcp validate [path]        # Validate repo artifacts, CasePacks, schemas
+umcp run [path]             # Operational placeholder (validates target)
+umcp diff file1 file2       # Compare two validation receipts
+umcp health                 # Check system health and production readiness
+umcp preflight              # Run preflight validation
+
+# Testing and execution
+umcp test                   # Run tests with pytest (supports --coverage, -k, -m)
+umcp casepack <name>        # Run a specific casepack by name
+
+# Discovery and inspection
+umcp list <type>            # List casepacks, closures, contracts, or schemas
+umcp integrity <path>       # Verify artifact SHA256 hashes against manifest
+umcp report [path]          # Generate audit reports (JSON output)
 ```
 
 ### Launch Interactive Tools
@@ -311,16 +336,22 @@ umcp validate casepacks/gcd_complete
 **Best for**: Physics-based motion analysis, phase space return detection, mechanical systems
 
 **Closures** (6):
-- `linear_kinematics`: Position, velocity, acceleration
+- `linear_kinematics`: Position, velocity, acceleration with OOR clipping
 - `rotational_kinematics`: Angular motion, torque, angular momentum
-- `energy_mechanics`: Kinetic/potential energy, work, power
-- `momentum_dynamics`: Linear momentum, impulse, collisions
-- `phase_space_return`: τ_kin computation in (x,v) space
-- `kinematic_stability`: K_stability index, regime classification
+- `energy_mechanics`: Kinetic/potential energy, work, power conservation
+- `momentum_dynamics`: Linear momentum, impulse, elastic/inelastic collisions
+- `phase_space_return`: τ_kin computation in (x,v) phase space
+- `kinematic_stability`: K_stability index, Lyapunov estimation, regime classification
+
+**Reference CasePack** (NEW):
+- `kin_ref_phase_oscillator`: Deterministic phase-anchor oscillator (31 rows, 26 defined anchors, 5 censor events)
+  - Frozen params: δφ_max=π/6, window=20, debounce=3
+  - frozen_config_sha256: `c14872d87ebeb96a22ecdfda5dad0dafdbf6a37080af20a2c4870c0da578b32e`
 
 **Example**:
 ```bash
 umcp validate casepacks/kinematics_complete
+umcp casepack kin_ref_phase_oscillator
 ```
 
 ### RCFT (Recursive Collapse Field Theory) - Tier-2
@@ -493,13 +524,17 @@ UMCP-Metadata-Runnable-Code/
 │   ├── ss1m_triad.py      # Mod-97 checksums (v1.5.0)
 │   ├── uncertainty.py     # Delta-method propagation (v1.5.0)
 │   ├── validator.py       # Core validation engine
-│   ├── cli.py             # Command-line interface
+│   ├── cli.py             # Command-line interface (10 commands)
 │   └── umcp_extensions.py # Extension registry
-├── tests/                 # Test suite (557 tests)
+├── tests/                 # Test suite (690 tests)
 │   ├── test_frozen_contract.py  # 36 tests (v1.5.0)
 │   ├── test_ss1m_triad.py       # 24 tests (v1.5.0)
 │   ├── test_uncertainty.py      # 42 tests (v1.5.0)
-│   └── ...                      # 455 additional tests
+│   ├── test_120_kinematics_closures.py  # Kinematics closure tests
+│   ├── test_130_kin_audit_spec.py       # KIN audit specification
+│   ├── closures/                        # Closure-specific tests
+│   │   └── test_kin_ref_phase.py        # KIN.REF.PHASE tests (27 tests)
+│   └── ...                              # Additional tests
 ├── scripts/               # Utility scripts
 │   ├── update_integrity.py      # SHA256 checksums
 │   └── check_merge_status.sh    # Git merge checker
@@ -507,20 +542,29 @@ UMCP-Metadata-Runnable-Code/
 │   ├── UMA.INTSTACK.v1.yaml     # Primary contract
 │   ├── GCD.INTSTACK.v1.yaml     # GCD framework
 │   └── RCFT.INTSTACK.v1.yaml    # RCFT framework
-├── closures/              # Computational functions (7 closures)
+├── closures/              # Computational functions (13 closures)
 │   ├── registry.yaml      # Closure registry
 │   ├── gcd/              # 4 GCD closures
 │   │   ├── energy_potential.py
 │   │   ├── entropic_collapse.py
 │   │   ├── generative_flux.py
 │   │   └── field_resonance.py
+│   ├── kinematics/       # 6 Kinematics closures (NEW)
+│   │   ├── linear_kinematics.py
+│   │   ├── rotational_kinematics.py
+│   │   ├── energy_mechanics.py
+│   │   ├── momentum_dynamics.py
+│   │   ├── phase_space_return.py
+│   │   └── kinematic_stability.py
 │   └── rcft/             # 3 RCFT closures
 │       ├── fractal_dimension.py
 │       ├── recursive_field.py
 │       └── resonance_pattern.py
-├── casepacks/             # Reproducible examples
+├── casepacks/             # Reproducible examples (6 casepacks)
 │   ├── hello_world/      # Zero entropy baseline
 │   ├── gcd_complete/     # GCD validation
+│   ├── kinematics_complete/    # Full kinematics validation
+│   ├── kin_ref_phase_oscillator/  # KIN.REF.PHASE reference (NEW)
 │   ├── rcft_complete/    # RCFT validation
 │   └── UMCP-REF-E2E-0001/  # End-to-end reference
 ├── schemas/               # JSON schemas (11 schemas)
@@ -544,20 +588,28 @@ UMCP-Metadata-Runnable-Code/
 ## 🧪 Testing
 
 ```bash
-# All tests (557 total, ~41s)
+# All tests (690 total, ~25s)
 pytest
 
 # Verbose output
 pytest -v
 
+# Using UMCP CLI
+umcp test                    # Run all tests
+umcp test --coverage         # With coverage report
+umcp test -k "gcd"          # Pattern matching
+umcp test -m "not slow"     # Skip slow tests
+
 # Specific modules (v1.5.0)
 pytest tests/test_frozen_contract.py    # 36 tests - canonical constants
 pytest tests/test_ss1m_triad.py         # 24 tests - mod-97 checksums
 pytest tests/test_uncertainty.py        # 42 tests - delta-method
+pytest tests/closures/test_kin_ref_phase.py  # 27 tests - KIN.REF.PHASE
 
 # Specific framework
-pytest -k "gcd"    # GCD tests
-pytest -k "rcft"   # RCFT tests
+pytest -k "gcd"         # GCD tests
+pytest -k "rcft"        # RCFT tests
+pytest -k "kinematics"  # Kinematics tests
 
 # Coverage report
 pytest --cov
@@ -567,23 +619,25 @@ pytest --cov --cov-report=html  # HTML report in htmlcov/
 pytest -m "not slow"
 ```
 
-**Test Structure**: 557 tests = 344 original + 36 frozen_contract + 24 ss1m_triad + 42 uncertainty + 111 integration/coverage
-
-**Test Categories**:
+**Test Structure**: 690 tests total
 - Schema validation: 50 tests
 - Kernel invariants: 84 tests
 - GCD framework: 92 tests
+- Kinematics framework: 133 tests (NEW)
 - RCFT framework: 78 tests
-- Frozen contract: 36 tests (NEW v1.5.0)
-- SS1m triads: 24 tests (NEW v1.5.0)
-- Uncertainty: 42 tests (NEW v1.5.0)
+- Frozen contract: 36 tests
+- SS1m triads: 24 tests
+- Uncertainty: 42 tests
 - Integration: 151 tests
 
 ---
 
 ## 🚀 Production Features
 
-- ✅ **557 tests** passing (100% success rate)
+- ✅ **690 tests** passing (100% success rate)
+- ✅ **10 CLI commands** for validation, testing, and inspection
+- ✅ **6 casepacks** with reproducible examples
+- ✅ **13 closures** across GCD, Kinematics, and RCFT frameworks
 - ✅ **Frozen contracts**: Mathematical constants as versioned artifacts
 - ✅ **Budget conservation**: R·τ_R = D_ω + D_C + Δκ validation
 - ✅ **Return time tracking**: τ_R for temporal coherence
@@ -595,6 +649,7 @@ pytest -m "not slow"
 - ✅ **Performance metrics**: Duration, memory, CPU tracking
 - ✅ **Container ready**: Docker + Kubernetes support
 - ✅ **Cryptographic receipts**: SHA256 verification
+- ✅ **PyPI ready**: Package builds pass twine check
 - ✅ **Zero technical debt**: No TODO/FIXME/HACK markers
 - ✅ **<50ms validation**: Fast for typical repositories
 
@@ -616,14 +671,32 @@ python scripts/update_integrity.py
 ```
 
 **Automated**:
-- ✅ 344 tests on every commit (CI/CD)
-- ✅ Code formatting (ruff, black)
+- ✅ 690 tests on every commit (CI/CD)
+- ✅ Code formatting (ruff format)
+- ✅ Linting (ruff check)
 - ✅ Type checking (mypy)
 - ✅ SHA256 tracking (12 files)
 
 ---
 
 ## 📊 What's New in v1.5.0
+
+**Kinematics Framework Complete** (NEW):
+- ✅ **6 Kinematics Closures**: Phase space return, energy mechanics, momentum dynamics
+- ✅ **KIN.REF.PHASE Reference CasePack**: Deterministic phase-anchor oscillator
+  - 31 time-series rows, 26 defined anchors, 5 censor events
+  - Frozen params: δφ_max=π/6, window=20, debounce=3
+  - 27 comprehensive tests with edge case coverage
+- ✅ **τ_kin Return Time**: Phase space recurrence in (x,v) coordinates
+- ✅ **K_stability Index**: Lyapunov-based kinematic stability
+
+**CLI Expansion** (NEW):
+- ✅ **10 CLI Commands**: validate, run, diff, health, preflight, test, casepack, list, integrity, report
+- ✅ **`umcp test`**: Run pytest with coverage, parallel, marker options
+- ✅ **`umcp casepack`**: Execute casepacks directly by name
+- ✅ **`umcp list`**: Discover casepacks, closures, contracts, schemas
+- ✅ **`umcp integrity`**: Verify SHA256 hashes against manifest
+- ✅ **`umcp report`**: Generate JSON audit reports
 
 **Mathematical Foundations Complete**:
 - ✅ **Frozen Contract Module**: Canonical constants from "The Physics of Coherence"
@@ -652,10 +725,11 @@ python scripts/update_integrity.py
   - Type safety: 0 Pylance errors
 
 **Quality & Testing**:
-- ✅ 557 tests passing (+213 from v1.4.0)
+- ✅ 690 tests passing (+133 kinematics, +213 from v1.4.0)
 - ✅ Zero type warnings (Pylance clean)
 - ✅ All formulas match canonical specification
 - ✅ Full test coverage of new modules
+- ✅ PyPI package builds verified (twine check PASSED)
 
 **Previous (v1.4.0)**:
 - ✅ 8 major protocol documents (~5,500 lines)
@@ -724,8 +798,9 @@ MIT License - see [LICENSE](LICENSE) for details.
                    Seam: |s| ≤ tol_seam
   
   📊 Status:       CONFORMANT ✅
-  🧪 Tests:        557 passing
-  📦 Casepacks:    4 validated
+  🧪 Tests:        690 passing
+  📦 Casepacks:    6 validated
+  🔧 CLI:          10 commands
   🔒 Integrity:    10 files checksummed
   🌐 Timezone:     America/Chicago
 
@@ -741,8 +816,8 @@ MIT License - see [LICENSE](LICENSE) for details.
 **Framework**: UMCP (Universal Measurement Contract Protocol)  
 **Author**: Clement Paulus  
 **Version**: 1.5.0  
-**Release**: January 24, 2026  
-**Tests**: 557 passing  
+**Release**: January 30, 2026  
+**Tests**: 690 passing  
 **Integrity**: SHA256 verified  
 
 **Mathematical Foundations**:
@@ -753,9 +828,18 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 **Frameworks**:
 - **Tier-1**: GCD (Generative Collapse Dynamics) - 4 closures
-- **Tier-2**: RCFT (Recursive Collapse Field Theory) - 7 closures
+- **Tier-1**: Kinematics (KIN) - 6 closures (phase space return, energy, momentum)
+- **Tier-2**: RCFT (Recursive Collapse Field Theory) - 3 closures
 
-**Key Innovation**: Return time τ_R as temporal coherence metric, connecting information theory to dynamical systems recurrence.
+**Casepacks** (6):
+- `hello_world` - Zero entropy baseline
+- `gcd_complete` - Full GCD validation
+- `kinematics_complete` - Full kinematics validation
+- `kin_ref_phase_oscillator` - KIN.REF.PHASE reference implementation
+- `rcft_complete` - Full RCFT validation
+- `UMCP-REF-E2E-0001` - End-to-end reference
+
+**Key Innovation**: Return time τ_R as temporal coherence metric, connecting information theory to dynamical systems recurrence (Poincaré-style).
 
 ---
 
