@@ -1159,7 +1159,7 @@ async def get_latex_table(
     repo_root = get_repo_root()
     ledger_path = repo_root / "ledger" / "return_log.csv"
 
-    rows = []
+    rows: list[dict[str, Any]] = []
     if ledger_path.exists():
         with open(ledger_path) as f:
             import csv as csv_module

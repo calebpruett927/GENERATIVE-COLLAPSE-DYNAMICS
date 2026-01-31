@@ -634,10 +634,10 @@ class SARIFGenerator:
         issues: list[dict[str, Any]],
     ) -> dict[str, Any]:
         """Generate SARIF report from validation issues."""
-        results = []
+        results: list[dict[str, Any]] = []
 
         for issue in issues:
-            result = {
+            result: dict[str, Any] = {
                 "ruleId": issue.get("code", "UMCP001"),
                 "level": "error" if issue.get("severity") == "ERROR" else "warning",
                 "message": {
@@ -905,7 +905,7 @@ def main() -> None:
     print(MermaidGenerator.regime_state_diagram())
 
     print("\n### LaTeX Table ###")
-    rows = [
+    rows: list[dict[str, Any]] = [
         {"t": 0, "omega": 0.45, "F": 0.55, "kappa": 0.001, "s": 0.002, "regime": "STABLE"},
         {"t": 1, "omega": 0.52, "F": 0.48, "kappa": 0.002, "s": 0.001, "regime": "STABLE"},
     ]
