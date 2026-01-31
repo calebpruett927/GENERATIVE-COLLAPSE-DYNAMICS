@@ -76,10 +76,10 @@ except ImportError:
 # ============================================================================
 
 REGIME_COLORS = {
-    "STABLE": "#28a745",      # Green
-    "WATCH": "#ffc107",       # Yellow/Amber
-    "COLLAPSE": "#dc3545",    # Red
-    "CRITICAL": "#6f42c1",    # Purple
+    "STABLE": "#28a745",  # Green
+    "WATCH": "#ffc107",  # Yellow/Amber
+    "COLLAPSE": "#dc3545",  # Red
+    "CRITICAL": "#6f42c1",  # Purple
 }
 
 KERNEL_SYMBOLS = {
@@ -194,6 +194,7 @@ def load_casepacks() -> list[dict[str, Any]]:
                         manifest = json.load(f)
                 else:
                     import yaml
+
                     with open(manifest_path) as f:
                         manifest = yaml.safe_load(f)
 
@@ -233,13 +234,15 @@ def load_contracts() -> list[dict[str, Any]]:
         # Get file size
         size_bytes = contract_path.stat().st_size
 
-        contracts.append({
-            "id": filename,
-            "domain": domain,
-            "version": version,
-            "path": str(contract_path),
-            "size_bytes": size_bytes,
-        })
+        contracts.append(
+            {
+                "id": filename,
+                "domain": domain,
+                "version": version,
+                "path": str(contract_path),
+                "size_bytes": size_bytes,
+            }
+        )
 
     return contracts
 
@@ -275,14 +278,16 @@ def load_closures() -> list[dict[str, Any]]:
         with open(closure_path) as f:
             lines = len(f.readlines())
 
-        closures.append({
-            "name": name,
-            "domain": domain,
-            "path": str(closure_path),
-            "type": "python",
-            "size_bytes": size_bytes,
-            "lines": lines,
-        })
+        closures.append(
+            {
+                "name": name,
+                "domain": domain,
+                "path": str(closure_path),
+                "type": "python",
+                "size_bytes": size_bytes,
+                "lines": lines,
+            }
+        )
 
     # YAML closures
     for closure_path in sorted(closures_dir.glob("*.yaml")):
@@ -298,14 +303,16 @@ def load_closures() -> list[dict[str, Any]]:
         elif "kin" in name.lower():
             domain = "KIN"
 
-        closures.append({
-            "name": name,
-            "domain": domain,
-            "path": str(closure_path),
-            "type": "yaml",
-            "size_bytes": size_bytes,
-            "lines": 0,
-        })
+        closures.append(
+            {
+                "name": name,
+                "domain": domain,
+                "path": str(closure_path),
+                "type": "yaml",
+                "size_bytes": size_bytes,
+                "lines": 0,
+            }
+        )
 
     return closures
 
@@ -447,7 +454,7 @@ def render_overview_page() -> None:
                 showlegend=True,
                 legend={"orientation": "h", "yanchor": "bottom", "y": -0.2},
             )
-            fig.update_traces(textposition='inside', textinfo='percent+label')
+            fig.update_traces(textposition="inside", textinfo="percent+label")
             st.plotly_chart(fig, use_container_width=True)
 
     with center_col:
@@ -459,18 +466,22 @@ def render_overview_page() -> None:
             numeric_cols = [c for c in ["omega", "curvature", "stiffness", "kappa"] if c in df.columns]
 
             if numeric_cols:
-                selected_metric = st.selectbox("Select Metric", numeric_cols, format_func=lambda x: KERNEL_SYMBOLS.get(x, x) or x)
+                selected_metric = st.selectbox(
+                    "Select Metric", numeric_cols, format_func=lambda x: KERNEL_SYMBOLS.get(x, x) or x
+                )
                 fig = go.Figure()
-                fig.add_trace(go.Scatter(
-                    x=df_sorted["timestamp"],
-                    y=df_sorted[selected_metric],
-                    mode="lines+markers",
-                    name=KERNEL_SYMBOLS.get(selected_metric, selected_metric) or selected_metric,
-                    marker={"size": 4},
-                    line={"width": 2},
-                    fill="tozeroy",
-                    fillcolor="rgba(0,123,255,0.1)",
-                ))
+                fig.add_trace(
+                    go.Scatter(
+                        x=df_sorted["timestamp"],
+                        y=df_sorted[selected_metric],
+                        mode="lines+markers",
+                        name=KERNEL_SYMBOLS.get(selected_metric, selected_metric) or selected_metric,
+                        marker={"size": 4},
+                        line={"width": 2},
+                        fill="tozeroy",
+                        fillcolor="rgba(0,123,255,0.1)",
+                    )
+                )
                 fig.update_layout(
                     height=280,
                     margin={"t": 10, "b": 30, "l": 40, "r": 10},
@@ -518,13 +529,16 @@ def render_overview_page() -> None:
                     ts = ts.strftime("%m/%d %H:%M")
                 omega_val = row.get("omega", None)
                 omega_str = f"ω={omega_val:.3f}" if omega_val is not None else ""
-                st.markdown(f"""
+                st.markdown(
+                    f"""
                 <div style="padding:8px; border-radius:8px; background-color: {STATUS_COLORS.get(status, '#ccc')}22; border-left: 3px solid {STATUS_COLORS.get(status, '#ccc')};">
                     <strong>{emoji} {status}</strong><br/>
                     <small>{ts}</small><br/>
                     <small>{omega_str}</small>
                 </div>
-                """, unsafe_allow_html=True)
+                """,
+                    unsafe_allow_html=True,
+                )
     else:
         st.info("No recent activity to display.")
 
@@ -572,7 +586,9 @@ def render_ledger_page() -> None:
         if numeric_cols and "omega" in numeric_cols:
             omega_filter = st.slider("Omega Range", 0.0, 1.0, (0.0, 1.0), 0.01)
             if "omega" in filtered_df.columns:
-                filtered_df = filtered_df[(filtered_df["omega"] >= omega_filter[0]) & (filtered_df["omega"] <= omega_filter[1])]
+                filtered_df = filtered_df[
+                    (filtered_df["omega"] >= omega_filter[0]) & (filtered_df["omega"] <= omega_filter[1])
+                ]
 
     with filter_cols[3]:
         max_rows = st.slider("Max Rows", 10, 1000, 100)
@@ -586,7 +602,9 @@ def render_ledger_page() -> None:
         filtered_df = filtered_df.sort_values("timestamp", ascending=ascending)
 
     # ========== Data Display ==========
-    st.caption(f"Showing {min(max_rows, len(filtered_df))} of {len(filtered_df)} entries (filtered from {len(df)} total)")
+    st.caption(
+        f"Showing {min(max_rows, len(filtered_df))} of {len(filtered_df)} entries (filtered from {len(df)} total)"
+    )
 
     display_df = filtered_df.tail(max_rows) if not ascending else filtered_df.head(max_rows)
     st.dataframe(display_df, use_container_width=True, height=400)
@@ -619,9 +637,11 @@ def render_ledger_page() -> None:
                 st.plotly_chart(fig, use_container_width=True)
             with col2:
                 fig = px.histogram(
-                    filtered_df, x=selected, nbins=30,
+                    filtered_df,
+                    x=selected,
+                    nbins=30,
                     title=f"{KERNEL_SYMBOLS.get(selected, selected)} Histogram",
-                    marginal="rug"
+                    marginal="rug",
                 )
                 fig.update_layout(height=350)
                 st.plotly_chart(fig, use_container_width=True)
@@ -642,24 +662,25 @@ def render_ledger_page() -> None:
 
                     # Visualize
                     fig = go.Figure()
-                    fig.add_trace(go.Scatter(
-                        x=filtered_df.index,
-                        y=filtered_df[selected],
-                        mode='lines',
-                        name='Normal',
-                        line={'color': '#007bff'},
-                    ))
-                    fig.add_trace(go.Scatter(
-                        x=anomaly_df.index,
-                        y=anomaly_df[selected],
-                        mode='markers',
-                        name='Anomaly',
-                        marker={'color': 'red', 'size': 10},
-                    ))
-                    fig.update_layout(
-                        title=f"Anomalies in {KERNEL_SYMBOLS.get(selected, selected)}",
-                        height=300
+                    fig.add_trace(
+                        go.Scatter(
+                            x=filtered_df.index,
+                            y=filtered_df[selected],
+                            mode="lines",
+                            name="Normal",
+                            line={"color": "#007bff"},
+                        )
                     )
+                    fig.add_trace(
+                        go.Scatter(
+                            x=anomaly_df.index,
+                            y=anomaly_df[selected],
+                            mode="markers",
+                            name="Anomaly",
+                            marker={"color": "red", "size": 10},
+                        )
+                    )
+                    fig.update_layout(title=f"Anomalies in {KERNEL_SYMBOLS.get(selected, selected)}", height=300)
                     st.plotly_chart(fig, use_container_width=True)
             else:
                 st.info("Not enough data for anomaly detection (need > 3 samples).")
@@ -711,7 +732,11 @@ def render_casepacks_page() -> None:
     filtered_casepacks = casepacks
     if search:
         search_lower = search.lower()
-        filtered_casepacks = [cp for cp in casepacks if search_lower in cp["id"].lower() or search_lower in str(cp.get("description", "")).lower()]
+        filtered_casepacks = [
+            cp
+            for cp in casepacks
+            if search_lower in cp["id"].lower() or search_lower in str(cp.get("description", "")).lower()
+        ]
 
     st.caption(f"Showing {len(filtered_casepacks)} casepacks")
 
@@ -937,14 +962,16 @@ def render_regime_page() -> None:
     col1, col2 = st.columns(2)
 
     with col1:
-        omega = st.slider("Overlap Fraction (ω)", 0.0, 1.0, 0.5, 0.01,
-                          help="Fraction of overlapping state between iterations")
+        omega = st.slider(
+            "Overlap Fraction (ω)", 0.0, 1.0, 0.5, 0.01, help="Fraction of overlapping state between iterations"
+        )
         freshness = 1.0 - omega
         st.markdown(f"**Freshness (F = 1 - ω)**: `{freshness:.3f}`")
 
     with col2:
-        seam = st.slider("Seam Residual (s)", -0.05, 0.05, 0.0, 0.001, format="%.3f",
-                         help="Budget deviation at seam boundaries")
+        seam = st.slider(
+            "Seam Residual (s)", -0.05, 0.05, 0.0, 0.001, format="%.3f", help="Budget deviation at seam boundaries"
+        )
 
     # Compute regime
     regime = classify_regime(omega, seam)
@@ -966,8 +993,7 @@ def render_regime_page() -> None:
     st.subheader("📊 Regime Phase Space")
 
     with st.expander("⚙️ Visualization Settings"):
-        resolution = st.slider("Resolution", 50, 200, 100,
-                               help="Higher resolution = more detail but slower rendering")
+        resolution = st.slider("Resolution", 50, 200, 100, help="Higher resolution = more detail but slower rendering")
         show_boundaries = st.checkbox("Show Regime Boundaries", value=True)
         show_trajectory = st.checkbox("Simulate Trajectory", value=False)
 
@@ -987,29 +1013,33 @@ def render_regime_page() -> None:
     fig = go.Figure()
 
     # Heatmap
-    fig.add_trace(go.Heatmap(
-        z=regime_map,
-        x=seam_range,
-        y=omega_range,
-        colorscale=[
-            [0, REGIME_COLORS["STABLE"]],
-            [0.33, REGIME_COLORS["WATCH"]],
-            [0.66, REGIME_COLORS["COLLAPSE"]],
-            [1.0, REGIME_COLORS["CRITICAL"]],
-        ],
-        showscale=False,
-        hovertemplate="ω: %{y:.3f}<br>s: %{x:.4f}<extra></extra>",
-    ))
+    fig.add_trace(
+        go.Heatmap(
+            z=regime_map,
+            x=seam_range,
+            y=omega_range,
+            colorscale=[
+                [0, REGIME_COLORS["STABLE"]],
+                [0.33, REGIME_COLORS["WATCH"]],
+                [0.66, REGIME_COLORS["COLLAPSE"]],
+                [1.0, REGIME_COLORS["CRITICAL"]],
+            ],
+            showscale=False,
+            hovertemplate="ω: %{y:.3f}<br>s: %{x:.4f}<extra></extra>",
+        )
+    )
 
     # Current point
-    fig.add_trace(go.Scatter(
-        x=[seam],
-        y=[omega],
-        mode="markers",
-        marker={"size": 18, "color": "white", "line": {"width": 3, "color": "black"}},
-        name="Current",
-        hovertemplate=f"ω: {omega:.3f}<br>s: {seam:.4f}<br>Regime: {regime}<extra></extra>",
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=[seam],
+            y=[omega],
+            mode="markers",
+            marker={"size": 18, "color": "white", "line": {"width": 3, "color": "black"}},
+            name="Current",
+            hovertemplate=f"ω: {omega:.3f}<br>s: {seam:.4f}<br>Regime: {regime}<extra></extra>",
+        )
+    )
 
     # Regime boundaries
     if show_boundaries:
@@ -1023,13 +1053,15 @@ def render_regime_page() -> None:
         t = np.linspace(0, 4 * np.pi, 100)
         traj_omega = 0.5 + 0.3 * np.sin(t / 2)
         traj_seam = 0.008 * np.sin(t)
-        fig.add_trace(go.Scatter(
-            x=traj_seam,
-            y=traj_omega,
-            mode="lines",
-            line={"color": "white", "width": 2, "dash": "dot"},
-            name="Trajectory",
-        ))
+        fig.add_trace(
+            go.Scatter(
+                x=traj_seam,
+                y=traj_omega,
+                mode="lines",
+                line={"color": "white", "width": 2, "dash": "dot"},
+                name="Trajectory",
+            )
+        )
 
     fig.update_layout(
         height=500,
@@ -1052,7 +1084,7 @@ def render_regime_page() -> None:
                 f"""<div style='background-color:{regime_color}; padding:10px;
                 border-radius:5px; text-align:center; color:{text_color};'>
                 <b>{regime_name}</b></div>""",
-                unsafe_allow_html=True
+                unsafe_allow_html=True,
             )
 
     st.divider()
@@ -1078,30 +1110,34 @@ def render_regime_page() -> None:
         fig2 = go.Figure()
 
         # Background heatmap
-        fig2.add_trace(go.Heatmap(
-            z=regime_map,
-            x=seam_range,
-            y=omega_range,
-            colorscale=[
-                [0, REGIME_COLORS["STABLE"]],
-                [0.33, REGIME_COLORS["WATCH"]],
-                [0.66, REGIME_COLORS["COLLAPSE"]],
-                [1.0, REGIME_COLORS["CRITICAL"]],
-            ],
-            showscale=False,
-            opacity=0.5,
-        ))
+        fig2.add_trace(
+            go.Heatmap(
+                z=regime_map,
+                x=seam_range,
+                y=omega_range,
+                colorscale=[
+                    [0, REGIME_COLORS["STABLE"]],
+                    [0.33, REGIME_COLORS["WATCH"]],
+                    [0.66, REGIME_COLORS["COLLAPSE"]],
+                    [1.0, REGIME_COLORS["CRITICAL"]],
+                ],
+                showscale=False,
+                opacity=0.5,
+            )
+        )
 
         # Scatter points
         for regime_name in plot_df["regime"].unique():
             regime_data = plot_df[plot_df["regime"] == regime_name]
-            fig2.add_trace(go.Scatter(
-                x=regime_data["seam_residual"],
-                y=regime_data["omega"],
-                mode="markers",
-                name=regime_name,
-                marker={"color": REGIME_COLORS.get(regime_name, "#999"), "size": 8},
-            ))
+            fig2.add_trace(
+                go.Scatter(
+                    x=regime_data["seam_residual"],
+                    y=regime_data["omega"],
+                    mode="markers",
+                    name=regime_name,
+                    marker={"color": REGIME_COLORS.get(regime_name, "#999"), "size": 8},
+                )
+            )
 
         fig2.update_layout(
             height=400,
@@ -1198,7 +1234,8 @@ def render_metrics_page() -> None:
                         line={"width": 1},
                         opacity=0.4,
                     ),
-                    row=i, col=1,
+                    row=i,
+                    col=1,
                 )
             # Moving average
             if ma_window > 1:
@@ -1211,7 +1248,8 @@ def render_metrics_page() -> None:
                         name=f"{metric} (MA-{ma_window})",
                         line={"width": 2},
                     ),
-                    row=i, col=1,
+                    row=i,
+                    col=1,
                 )
             else:
                 fig.add_trace(
@@ -1222,7 +1260,8 @@ def render_metrics_page() -> None:
                         name=metric,
                         line={"width": 2},
                     ),
-                    row=i, col=1,
+                    row=i,
+                    col=1,
                 )
 
         fig.update_layout(
@@ -1246,13 +1285,15 @@ def render_metrics_page() -> None:
         with dist_cols[i % 3]:
             if dist_type == "Violin":
                 fig = go.Figure()
-                fig.add_trace(go.Violin(
-                    y=df[metric].dropna(),
-                    name=metric,
-                    box_visible=True,
-                    meanline_visible=True,
-                    fillcolor='lightblue',
-                ))
+                fig.add_trace(
+                    go.Violin(
+                        y=df[metric].dropna(),
+                        name=metric,
+                        box_visible=True,
+                        meanline_visible=True,
+                        fillcolor="lightblue",
+                    )
+                )
             elif dist_type == "Box":
                 fig = px.box(df, y=metric)
             else:
@@ -1286,7 +1327,8 @@ def render_metrics_page() -> None:
                 color_continuous_scale="RdBu_r",
                 aspect="auto",
                 text_auto=True,
-                zmin=-1, zmax=1,
+                zmin=-1,
+                zmax=1,
             )
             fig.update_layout(title="Correlation Matrix", height=400)
             st.plotly_chart(fig, use_container_width=True)
@@ -1294,13 +1336,15 @@ def render_metrics_page() -> None:
             # Insights
             st.markdown("**Correlation Insights:**")
             for i in range(len(selected_metrics)):
-                for j in range(i+1, len(selected_metrics)):
+                for j in range(i + 1, len(selected_metrics)):
                     corr_val = corr.iloc[i, j]
                     m1, m2 = selected_metrics[i], selected_metrics[j]
                     if abs(corr_val) > 0.7:
                         strength = "strongly" if abs(corr_val) > 0.85 else "moderately"
                         direction = "positively" if corr_val > 0 else "negatively"
-                        st.markdown(f"- **{KERNEL_SYMBOLS.get(m1, m1)}** and **{KERNEL_SYMBOLS.get(m2, m2)}** are {strength} {direction} correlated (r={corr_val:.2f})")
+                        st.markdown(
+                            f"- **{KERNEL_SYMBOLS.get(m1, m1)}** and **{KERNEL_SYMBOLS.get(m2, m2)}** are {strength} {direction} correlated (r={corr_val:.2f})"
+                        )
 
         with tab2:
             if len(selected_metrics) >= 2:
@@ -1320,7 +1364,7 @@ def render_metrics_page() -> None:
     stats = df[selected_metrics].describe()
     stats.loc["range"] = stats.loc["max"] - stats.loc["min"]
     stats.loc["iqr"] = stats.loc["75%"] - stats.loc["25%"]
-    stats.loc["cv%"] = (stats.loc["std"] / stats.loc["mean"] * 100)
+    stats.loc["cv%"] = stats.loc["std"] / stats.loc["mean"] * 100
 
     # Rename index for display
     index_map = {
@@ -1334,7 +1378,7 @@ def render_metrics_page() -> None:
         "max": "Max",
         "range": "Range",
         "iqr": "IQR",
-        "cv%": "CV %"
+        "cv%": "CV %",
     }
 
     def _rename_index(x: Any) -> str:
@@ -1342,10 +1386,7 @@ def render_metrics_page() -> None:
 
     stats.index = stats.index.map(_rename_index)
 
-    st.dataframe(
-        stats.T.style.format("{:.4f}").background_gradient(cmap="Blues", axis=0),
-        use_container_width=True
-    )
+    st.dataframe(stats.T.style.format("{:.4f}").background_gradient(cmap="Blues", axis=0), use_container_width=True)
 
 
 def render_health_page() -> None:
@@ -1365,64 +1406,80 @@ def render_health_page() -> None:
 
     # pyproject.toml
     pyproject = repo_root / "pyproject.toml"
-    checks.append({
-        "Component": "pyproject.toml",
-        "Status": "✅ Found" if pyproject.exists() else "❌ Missing",
-        "Details": str(pyproject) if pyproject.exists() else "Required for package configuration",
-    })
+    checks.append(
+        {
+            "Component": "pyproject.toml",
+            "Status": "✅ Found" if pyproject.exists() else "❌ Missing",
+            "Details": str(pyproject) if pyproject.exists() else "Required for package configuration",
+        }
+    )
 
     # Schemas
     schemas_dir = repo_root / "schemas"
     schema_count = len(list(schemas_dir.glob("*.json"))) if schemas_dir.exists() else 0
-    checks.append({
-        "Component": "Schemas",
-        "Status": f"✅ {schema_count} schemas" if schema_count > 0 else "⚠️ No schemas",
-        "Details": str(schemas_dir),
-    })
+    checks.append(
+        {
+            "Component": "Schemas",
+            "Status": f"✅ {schema_count} schemas" if schema_count > 0 else "⚠️ No schemas",
+            "Details": str(schemas_dir),
+        }
+    )
 
     # Contracts
     contracts_dir = repo_root / "contracts"
     contract_count = len(list(contracts_dir.glob("*.yaml"))) if contracts_dir.exists() else 0
-    checks.append({
-        "Component": "Contracts",
-        "Status": f"✅ {contract_count} contracts" if contract_count > 0 else "⚠️ No contracts",
-        "Details": str(contracts_dir),
-    })
+    checks.append(
+        {
+            "Component": "Contracts",
+            "Status": f"✅ {contract_count} contracts" if contract_count > 0 else "⚠️ No contracts",
+            "Details": str(contracts_dir),
+        }
+    )
 
     # Closures
     closures_dir = repo_root / "closures"
-    closure_count = len(list(closures_dir.glob("*.py"))) + len(list(closures_dir.glob("*.yaml"))) if closures_dir.exists() else 0
-    checks.append({
-        "Component": "Closures",
-        "Status": f"✅ {closure_count} closures" if closure_count > 0 else "⚠️ No closures",
-        "Details": str(closures_dir),
-    })
+    closure_count = (
+        len(list(closures_dir.glob("*.py"))) + len(list(closures_dir.glob("*.yaml"))) if closures_dir.exists() else 0
+    )
+    checks.append(
+        {
+            "Component": "Closures",
+            "Status": f"✅ {closure_count} closures" if closure_count > 0 else "⚠️ No closures",
+            "Details": str(closures_dir),
+        }
+    )
 
     # Casepacks
     casepacks_dir = repo_root / "casepacks"
     casepack_count = len([d for d in casepacks_dir.iterdir() if d.is_dir()]) if casepacks_dir.exists() else 0
-    checks.append({
-        "Component": "Casepacks",
-        "Status": f"✅ {casepack_count} casepacks" if casepack_count > 0 else "⚠️ No casepacks",
-        "Details": str(casepacks_dir),
-    })
+    checks.append(
+        {
+            "Component": "Casepacks",
+            "Status": f"✅ {casepack_count} casepacks" if casepack_count > 0 else "⚠️ No casepacks",
+            "Details": str(casepacks_dir),
+        }
+    )
 
     # Ledger
     ledger_path = repo_root / "ledger" / "return_log.csv"
     if ledger_path.exists():
         with open(ledger_path) as f:
             ledger_lines = max(0, sum(1 for _ in f) - 1)
-        checks.append({
-            "Component": "Ledger",
-            "Status": f"✅ {ledger_lines} entries",
-            "Details": str(ledger_path),
-        })
+        checks.append(
+            {
+                "Component": "Ledger",
+                "Status": f"✅ {ledger_lines} entries",
+                "Details": str(ledger_path),
+            }
+        )
     else:
-        checks.append({
-            "Component": "Ledger",
-            "Status": "⚠️ Not initialized",
-            "Details": "Run `umcp validate` to create ledger",
-        })
+        checks.append(
+            {
+                "Component": "Ledger",
+                "Status": "⚠️ Not initialized",
+                "Details": "Run `umcp validate` to create ledger",
+            }
+        )
 
     # Display checks as table
     checks_df = pd.DataFrame(checks)

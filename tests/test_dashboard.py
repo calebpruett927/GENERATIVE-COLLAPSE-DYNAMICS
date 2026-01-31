@@ -268,7 +268,6 @@ class TestDashboardNewFunctions:
             assert "type" in c
             assert c["type"] in ["python", "yaml"]
 
-
     def test_closures_paths_exist(self) -> None:
         """Test that closure paths exist."""
         closures = load_closures()
