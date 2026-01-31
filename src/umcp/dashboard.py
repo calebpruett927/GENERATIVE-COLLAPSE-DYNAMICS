@@ -45,21 +45,21 @@ from typing import TYPE_CHECKING, Any
 # Try to import visualization dependencies
 try:
     import numpy as np
-    import pandas as pd  # type: ignore[import-untyped]
-    import plotly.express as px  # type: ignore[import-untyped]
-    import plotly.graph_objects as go  # type: ignore[import-untyped]
-    import streamlit as st  # type: ignore[import-untyped]
-    from plotly.subplots import make_subplots  # type: ignore[import-untyped]
+    import pandas as pd
+    import plotly.express as px
+    import plotly.graph_objects as go
+    import streamlit as st
+    from plotly.subplots import make_subplots
 
     HAS_VIZ_DEPS = True
 except ImportError:
-    HAS_VIZ_DEPS = False  # type: ignore[misc]
-    np = None  # type: ignore[assignment]
-    pd = None  # type: ignore[assignment]
-    px = None  # type: ignore[assignment]
-    go = None  # type: ignore[assignment]
-    st = None  # type: ignore[assignment]
-    make_subplots = None  # type: ignore[assignment]
+    HAS_VIZ_DEPS = False
+    np = None
+    pd = None
+    px = None
+    go = None
+    st = None
+    make_subplots = None
 
 if TYPE_CHECKING:
     import pandas as pd
@@ -1600,8 +1600,8 @@ def main() -> None:
         print("━" * 60)
         sys.exit(1)
 
-    if st is None:
-        return
+    # st is guaranteed to be available here since HAS_VIZ_DEPS is True
+    assert st is not None  # for type narrowing
 
     # Page configuration
     st.set_page_config(

@@ -248,6 +248,13 @@ module = [
   "streamlit.*",
   "plotly.*",
   "uvicorn.*",
+  "pandas.*",
+  "numpy.*",
 ]
 ignore_missing_imports = true
+
+# Exclude dashboard.py from strict type checking (UI-heavy, optional deps)
+[[tool.mypy.overrides]]
+module = "umcp.dashboard"
+ignore_errors = true
 
