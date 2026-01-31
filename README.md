@@ -83,7 +83,7 @@ pip install -e ".[all]"
 # System health check (should show HEALTHY status)
 umcp health
 
-# Run test suite (should show 690 tests passing)
+# Run test suite (should show 730 tests passing)
 pytest
 
 # Quick validation test
@@ -136,8 +136,8 @@ print(f"Regime: {regime.name}")
 **Expected output:**
 ```
 Status: HEALTHY
-Schemas: 11
-690 passed in ~25s
+Schemas: 12
+730 passed in ~26s
 Drift: 0.1280
 Fidelity: 0.8720
 Integrity: 0.8720
@@ -626,7 +626,7 @@ UMCP-Metadata-Runnable-Code/
 │   ├── validator.py       # Core validation engine
 │   ├── cli.py             # Command-line interface (10 commands)
 │   └── umcp_extensions.py # Extension registry
-├── tests/                 # Test suite (690 tests)
+├── tests/                 # Test suite (730 tests)
 │   ├── test_frozen_contract.py  # 36 tests (v1.5.0)
 │   ├── test_ss1m_triad.py       # 24 tests (v1.5.0)
 │   ├── test_uncertainty.py      # 42 tests (v1.5.0)
@@ -642,9 +642,9 @@ UMCP-Metadata-Runnable-Code/
 │   ├── UMA.INTSTACK.v1.yaml     # Primary contract
 │   ├── GCD.INTSTACK.v1.yaml     # GCD framework
 │   └── RCFT.INTSTACK.v1.yaml    # RCFT framework
-├── closures/              # Computational functions (13 closures)
+├── closures/              # Computational functions (16 closures)
 │   ├── registry.yaml      # Closure registry
-│   ├── gcd/              # 4 GCD closures
+│   ├── gcd/              # 5 GCD closures
 │   │   ├── energy_potential.py
 │   │   ├── entropic_collapse.py
 │   │   ├── generative_flux.py
@@ -656,7 +656,7 @@ UMCP-Metadata-Runnable-Code/
 │   │   ├── momentum_dynamics.py
 │   │   ├── phase_space_return.py
 │   │   └── kinematic_stability.py
-│   └── rcft/             # 3 RCFT closures
+│   └── rcft/             # 4 RCFT closures
 │       ├── fractal_dimension.py
 │       ├── recursive_field.py
 │       └── resonance_pattern.py
@@ -667,14 +667,14 @@ UMCP-Metadata-Runnable-Code/
 │   ├── kin_ref_phase_oscillator/  # KIN.REF.PHASE reference (NEW)
 │   ├── rcft_complete/    # RCFT validation
 │   └── UMCP-REF-E2E-0001/  # End-to-end reference
-├── schemas/               # JSON schemas (11 schemas)
+├── schemas/               # JSON schemas (12 schemas)
 ├── canon/                 # Canonical anchors
 │   ├── gcd_anchors.yaml  # GCD specification
 │   └── rcft_anchors.yaml # RCFT specification
 ├── ledger/                # Validation log (continuous append)
-│   └── return_log.csv    # 1085+ conformance records
+│   └── return_log.csv    # 1900+ conformance records
 ├── integrity/             # SHA256 checksums
-│   └── sha256.txt        # 10 tracked files
+│   └── sha256.txt        # 23 tracked files
 ├── docs/                  # Documentation
 │   ├── MATHEMATICAL_ARCHITECTURE.md  # v1.5.0 math spec
 │   ├── quickstart.md
@@ -688,7 +688,7 @@ UMCP-Metadata-Runnable-Code/
 ## 🧪 Testing
 
 ```bash
-# All tests (690 total, ~25s)
+# All tests (730 total, ~26s)
 pytest
 
 # Verbose output
@@ -719,25 +719,27 @@ pytest --cov --cov-report=html  # HTML report in htmlcov/
 pytest -m "not slow"
 ```
 
-**Test Structure**: 690 tests total
+**Test Structure**: 730 tests total
 - Schema validation: 50 tests
 - Kernel invariants: 84 tests
 - GCD framework: 92 tests
-- Kinematics framework: 133 tests (NEW)
+- Kinematics framework: 133 tests
 - RCFT framework: 78 tests
 - Frozen contract: 36 tests
-- SS1m triads: 24 tests
-- Uncertainty: 42 tests
-- Integration: 151 tests
+- SS1m triads: 35 tests
+- Uncertainty: 23 tests
+- Dashboard: 30 tests
+- API: 17 tests
+- Integration: 152 tests
 
 ---
 
 ## 🚀 Production Features
 
-- ✅ **690 tests** passing (100% success rate)
+- ✅ **730 tests** passing (100% success rate)
 - ✅ **10 CLI commands** for validation, testing, and inspection
 - ✅ **6 casepacks** with reproducible examples
-- ✅ **13 closures** across GCD, Kinematics, and RCFT frameworks
+- ✅ **16 closures** across GCD, Kinematics, and RCFT frameworks
 - ✅ **Frozen contracts**: Mathematical constants as versioned artifacts
 - ✅ **Budget conservation**: R·τ_R = D_ω + D_C + Δκ validation
 - ✅ **Return time tracking**: τ_R for temporal coherence
@@ -771,11 +773,11 @@ python scripts/update_integrity.py
 ```
 
 **Automated**:
-- ✅ 690 tests on every commit (CI/CD)
+- ✅ 730 tests on every commit (CI/CD)
 - ✅ Code formatting (ruff format)
 - ✅ Linting (ruff check)
 - ✅ Type checking (mypy)
-- ✅ SHA256 tracking (12 files)
+- ✅ SHA256 tracking (23 files)
 
 ---
 
@@ -825,7 +827,7 @@ python scripts/update_integrity.py
   - Type safety: 0 Pylance errors
 
 **Quality & Testing**:
-- ✅ 690 tests passing (+133 kinematics, +213 from v1.4.0)
+- ✅ 730 tests passing (+40 API/Dashboard tests from v1.4.0)
 - ✅ Zero type warnings (Pylance clean)
 - ✅ All formulas match canonical specification
 - ✅ Full test coverage of new modules
@@ -898,7 +900,7 @@ MIT License - see [LICENSE](LICENSE) for details.
                    Seam: |s| ≤ tol_seam
   
   📊 Status:       CONFORMANT ✅
-  🧪 Tests:        690 passing
+  🧪 Tests:        730 passing
   📦 Casepacks:    6 validated
   🔧 CLI:          10 commands
   🔒 Integrity:    10 files checksummed
@@ -916,8 +918,8 @@ MIT License - see [LICENSE](LICENSE) for details.
 **Framework**: UMCP (Universal Measurement Contract Protocol)  
 **Author**: Clement Paulus  
 **Version**: 1.5.0  
-**Release**: January 30, 2026  
-**Tests**: 690 passing  
+**Release**: January 31, 2026  
+**Tests**: 730 passing  
 **Integrity**: SHA256 verified  
 
 **Mathematical Foundations**:
@@ -927,9 +929,9 @@ MIT License - see [LICENSE](LICENSE) for details.
 - **Uncertainty**: Delta-method propagation through kernel invariants
 
 **Frameworks**:
-- **Tier-1**: GCD (Generative Collapse Dynamics) - 4 closures
+- **Tier-1**: GCD (Generative Collapse Dynamics) - 5 closures
 - **Tier-1**: Kinematics (KIN) - 6 closures (phase space return, energy, momentum)
-- **Tier-2**: RCFT (Recursive Collapse Field Theory) - 3 closures
+- **Tier-2**: RCFT (Recursive Collapse Field Theory) - 4 closures
 
 **Casepacks** (6):
 - `hello_world` - Zero entropy baseline
