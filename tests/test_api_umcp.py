@@ -202,6 +202,7 @@ def test_convert_measurements_zscore(client, auth_headers):
     assert len(data["converted"]) == 5
     # Mean should be ~0 for z-scores
     import numpy as np
+
     assert abs(np.mean(data["converted"])) < 1e-10
 
 

@@ -1501,9 +1501,7 @@ async def compute_kernel(
     else:
         w = np.array(request.weights)
         if len(w) != n:
-            raise HTTPException(
-                status_code=400, detail=f"Weights length {len(w)} != coordinates length {n}"
-            )
+            raise HTTPException(status_code=400, detail=f"Weights length {len(w)} != coordinates length {n}")
         if not np.isclose(w.sum(), 1.0, atol=1e-6):
             raise HTTPException(status_code=400, detail=f"Weights must sum to 1.0, got {w.sum()}")
 
@@ -1780,12 +1778,14 @@ async def analyze_timeseries(
         z_scores = (omega - omega_mean) / omega_std
         for i, z in enumerate(z_scores):
             if abs(z) > 3:
-                anomalies.append({
-                    "index": i,
-                    "omega": float(omega[i]),
-                    "z_score": float(z),
-                    "type": "high" if z > 0 else "low",
-                })
+                anomalies.append(
+                    {
+                        "index": i,
+                        "omega": float(omega[i]),
+                        "z_score": float(z),
+                        "type": "high" if z > 0 else "low",
+                    }
+                )
 
     # Return time analysis
     avg_return_time: float | None = None
@@ -1896,14 +1896,14 @@ async def compute_statistics(
     # Skewness: E[(X-μ)³] / σ³
     if n > 2 and std > 0:
         m3 = float(np.mean((data - mean) ** 3))
-        skewness = m3 / (std ** 3)
+        skewness = m3 / (std**3)
     else:
         skewness = 0.0
 
     # Kurtosis (excess): E[(X-μ)⁴] / σ⁴ - 3
     if n > 3 and std > 0:
         m4 = float(np.mean((data - mean) ** 4))
-        kurtosis = m4 / (std ** 4) - 3.0
+        kurtosis = m4 / (std**4) - 3.0
     else:
         kurtosis = 0.0
 
@@ -1955,13 +1955,13 @@ async def compute_correlation(
     x_centered = x - np.mean(x)
     y_centered = y - np.mean(y)
     cov_xy = float(np.sum(x_centered * y_centered))
-    std_x = float(np.sqrt(np.sum(x_centered ** 2)))
-    std_y = float(np.sqrt(np.sum(y_centered ** 2)))
+    std_x = float(np.sqrt(np.sum(x_centered**2)))
+    std_y = float(np.sqrt(np.sum(y_centered**2)))
     pearson_r = cov_xy / (std_x * std_y) if std_x > 0 and std_y > 0 else 0.0
 
     # Approximate p-value using t-distribution approximation
     if abs(pearson_r) < 1.0 and n > 2:
-        t_stat = pearson_r * np.sqrt((n - 2) / (1 - pearson_r ** 2))
+        t_stat = pearson_r * np.sqrt((n - 2) / (1 - pearson_r**2))
         # Approximate p-value (two-tailed) - simplified
         pearson_p = 2.0 * (1.0 - min(0.5 + 0.5 * np.tanh(abs(t_stat) / 1.5), 0.9999))
     else:
@@ -1973,21 +1973,21 @@ async def compute_correlation(
     x_rank_centered = x_ranks - np.mean(x_ranks)
     y_rank_centered = y_ranks - np.mean(y_ranks)
     cov_ranks = float(np.sum(x_rank_centered * y_rank_centered))
-    std_x_ranks = float(np.sqrt(np.sum(x_rank_centered ** 2)))
-    std_y_ranks = float(np.sqrt(np.sum(y_rank_centered ** 2)))
+    std_x_ranks = float(np.sqrt(np.sum(x_rank_centered**2)))
+    std_y_ranks = float(np.sqrt(np.sum(y_rank_centered**2)))
     spearman_r = cov_ranks / (std_x_ranks * std_y_ranks) if std_x_ranks > 0 and std_y_ranks > 0 else 0.0
 
     # Approximate p-value for Spearman
     if abs(spearman_r) < 1.0 and n > 2:
-        t_stat_sp = spearman_r * np.sqrt((n - 2) / (1 - spearman_r ** 2))
+        t_stat_sp = spearman_r * np.sqrt((n - 2) / (1 - spearman_r**2))
         spearman_p = 2.0 * (1.0 - min(0.5 + 0.5 * np.tanh(abs(t_stat_sp) / 1.5), 0.9999))
     else:
         spearman_p = 0.0 if abs(spearman_r) >= 0.9999 else 1.0
 
     # Linear regression (least squares)
-    slope = cov_xy / (std_x ** 2) if std_x > 0 else 0.0
+    slope = cov_xy / (std_x**2) if std_x > 0 else 0.0
     intercept = float(np.mean(y)) - slope * float(np.mean(x))
-    r_squared = pearson_r ** 2
+    r_squared = pearson_r**2
 
     return CorrelationResponse(
         n=n,
@@ -2061,6 +2061,7 @@ async def analyze_ledger(
     timestamps: list[str] = []
 
     import contextlib
+
     for e in entries:
         if e.get("omega"):
             with contextlib.suppress(ValueError):
