@@ -130,6 +130,9 @@ Changelog = "https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/blob/
 
 [project.scripts]
 umcp = "umcp.cli:main"
+umcp-ext = "umcp.umcp_extensions:main"
+umcp-api = "umcp.api_umcp:run_server"
+umcp-dashboard = "umcp.dashboard:main"
 
 # Note: Contract discovery is built into core validation engine.
 # These entry points are for external tool integration only.
@@ -137,6 +140,11 @@ umcp = "umcp.cli:main"
 uma = "umcp.contracts.uma:get_contract"
 gcd = "umcp.contracts.gcd:get_contract"
 rcft = "umcp.contracts.rcft:get_contract"
+
+# Extension entry points for plugin discovery
+[project.entry-points."umcp.extensions"]
+api = "umcp.api_umcp:app"
+visualization = "umcp.dashboard:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

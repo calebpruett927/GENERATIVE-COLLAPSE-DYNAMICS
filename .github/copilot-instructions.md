@@ -12,20 +12,24 @@ UMCP is a production-grade system for creating, validating, and sharing reproduc
 - **Casepacks**: Reference implementations and manifests in `casepacks/`.
 - **Ledger**: Continuous append log in `ledger/return_log.csv`.
 - **Schemas**: JSON schema definitions for contracts and closures in `schemas/`.
-- **Tests**: Comprehensive suite in `tests/` (pytest, 344+ tests).
+- **Tests**: Comprehensive suite in `tests/` (pytest, 740+ tests).
 - **Validation Engine**: Pure Python validation with mathematical contract enforcement.
 
-### Communication Extensions (Optional - Planned, Not Yet Implemented)
-- **REST API**: 🚧 Planned - FastAPI server for remote validation and ledger access
-  - Would install with: `pip install umcp[api]`
-  - Stub code exists in `src/umcp/api_umcp.py`
-- **Visualization**: 🚧 Planned - Streamlit dashboard for interactive exploration
-  - Would install with: `pip install umcp[viz]`
-- **All Communications**: Would install with `pip install umcp[communications]`
+### Communication Extensions (Optional - Fully Implemented)
+- **REST API**: ✅ FastAPI server for remote validation and ledger access
+  - Install with: `pip install umcp[api]`
+  - Run with: `umcp-api` or `uvicorn umcp.api_umcp:app --reload`
+  - Endpoints: `/health`, `/validate`, `/casepacks`, `/ledger`, `/contracts`, `/closures`
+- **Visualization**: ✅ Streamlit dashboard for interactive exploration
+  - Install with: `pip install umcp[viz]`
+  - Run with: `umcp-dashboard` or `streamlit run src/umcp/dashboard.py`
+  - 8 pages: Overview, Ledger, Casepacks, Contracts, Closures, Regime, Metrics, Health
+- **All Communications**: Install with `pip install umcp[communications]`
 
-### Extensions Directory (Auto-Discovery Plugins)
-- **Extensions**: `src/umcp/umcp_extensions.py` provides extension registry
-- **Extensions Command**: `umcp-ext list` to enumerate available plugins
+### Extensions System (Fully Implemented)
+- **Extension Registry**: `src/umcp/umcp_extensions.py` - complete plugin system
+- **Extension CLI**: `umcp-ext list|info|check|install|run`
+- **Available Extensions**: api, visualization, ledger, formatter
 
 ## Developer Workflows
 
@@ -35,10 +39,11 @@ UMCP is a production-grade system for creating, validating, and sharing reproduc
 - **CI/CD**: Automated via GitHub Actions (`.github/workflows/validate.yml`).
 - **Code Style**: Enforced with `ruff`.
 
-### Optional Communication Extensions (🚧 Planned)
-- **API Server**: 🚧 Not yet implemented
-- **Visualization**: 🚧 Not yet implemented
-- **Extensions**: `umcp-ext list` to enumerate plugins
+### Communication Extensions
+- **API Server**: `umcp-api` or `umcp-ext run api`
+- **Dashboard**: `umcp-dashboard` or `umcp-ext run visualization`
+- **List Extensions**: `umcp-ext list`
+- **Check Dependencies**: `umcp-ext check api`
 
 ## Installation Options
 
@@ -75,7 +80,8 @@ pip install umcp[all]
 **IMPORTANT**: The REST API and visualization dashboard are **communication extensions** for standard interfaces (HTTP, web UI). They are NOT required for core validation functionality. UMCP core runs entirely with CLI commands and Python imports.
 
 ## Integration Points
-- **REST API** (Optional Extension): Endpoints for remote systems
+- **REST API** (Optional Extension): Full REST endpoints for remote systems at `http://localhost:8000`
+- **Streamlit Dashboard** (Optional Extension): Interactive UI at `http://localhost:8501`
 - **Structured Logging**: JSON logs for ELK/Splunk/CloudWatch
 - **Docker/Kubernetes**: See `docs/production_deployment.md` for deployment
 
@@ -94,10 +100,16 @@ pip install umcp[all]
 3. Run tests with `pytest`.
 4. Update integrity with `python scripts/update_integrity.py`.
 
-## Example Workflow (With API Communication Extension - 🚧 Planned)
+## Example Workflow (With API Communication Extension)
 1. Install API extension: `pip install umcp[api]`
-2. Start API server: `uvicorn umcp.api_umcp:app --reload`
+2. Start API server: `umcp-api` or `uvicorn umcp.api_umcp:app --reload`
 3. Query remotely: `curl http://localhost:8000/health`
+4. View docs: `http://localhost:8000/docs`
+
+## Example Workflow (With Visualization Dashboard)
+1. Install viz extension: `pip install umcp[viz]`
+2. Start dashboard: `umcp-dashboard` or `streamlit run src/umcp/dashboard.py`
+3. Open browser: `http://localhost:8501`
 
 ---
 For unclear or incomplete sections, please provide feedback to improve these instructions.

@@ -1261,14 +1261,962 @@ async def get_json_ld(
 
 
 # ============================================================================
+# Measurement Conversion Endpoints
+# ============================================================================
+
+
+class MeasurementConversionRequest(BaseModel):
+    """Request for measurement conversion."""
+
+    values: list[float] = Field(..., description="Raw measurement values")
+    source_unit: str = Field("raw", description="Source unit type")
+    target_unit: str = Field("normalized", description="Target unit type")
+
+
+class MeasurementConversionResponse(BaseModel):
+    """Response with converted measurements."""
+
+    original: list[float]
+    converted: list[float]
+    source_unit: str
+    target_unit: str
+    conversion_factor: float
+    notes: str | None = None
+
+
+class CoordinateEmbeddingRequest(BaseModel):
+    """Request for embedding coordinates into [0,1] domain."""
+
+    values: list[float] = Field(..., description="Values to embed")
+    method: str = Field("minmax", description="Embedding method: minmax, sigmoid, tanh")
+    min_bound: float | None = Field(None, description="Minimum bound for minmax")
+    max_bound: float | None = Field(None, description="Maximum bound for minmax")
+    epsilon: float = Field(1e-8, description="Clipping epsilon")
+
+
+class CoordinateEmbeddingResponse(BaseModel):
+    """Response with embedded coordinates."""
+
+    original: list[float]
+    embedded: list[float]
+    method: str
+    domain: list[float] = Field(default_factory=lambda: [0.0, 1.0])
+    epsilon: float
+    clipped_count: int = 0
+
+
+@app.post("/convert/measurements", response_model=MeasurementConversionResponse, tags=["Conversion"])
+async def convert_measurements(
+    request: MeasurementConversionRequest,
+    api_key: str = Security(validate_api_key),
+) -> MeasurementConversionResponse:
+    """
+    Convert measurements between unit types.
+
+    Supported conversions:
+    - raw → normalized (z-score normalization)
+    - raw → scaled (0-1 scaling)
+    - percentage → fraction (divide by 100)
+    - fraction → percentage (multiply by 100)
+    - log → linear (exp transform)
+    - linear → log (log transform)
+    - celsius → fahrenheit
+    - fahrenheit → celsius
+
+    Requires API key authentication.
+    """
+    import numpy as np
+
+    values = np.array(request.values)
+    source = request.source_unit.lower()
+    target = request.target_unit.lower()
+
+    conversion_factor = 1.0
+    notes: str | None = None
+
+    if source == "raw" and target == "normalized":
+        mean = np.mean(values)
+        std = np.std(values)
+        if std > 0:
+            converted = (values - mean) / std
+            notes = f"z-score: mean={mean:.4f}, std={std:.4f}"
+        else:
+            converted = np.zeros_like(values)
+            notes = "constant input, std=0"
+    elif source == "raw" and target == "scaled":
+        vmin, vmax = np.min(values), np.max(values)
+        if vmax > vmin:
+            converted = (values - vmin) / (vmax - vmin)
+            notes = f"min-max scaling: [{vmin:.4f}, {vmax:.4f}] → [0, 1]"
+        else:
+            converted = np.ones_like(values) * 0.5
+            notes = "constant input"
+    elif source == "percentage" and target == "fraction":
+        converted = values / 100.0
+        conversion_factor = 0.01
+    elif source == "fraction" and target == "percentage":
+        converted = values * 100.0
+        conversion_factor = 100.0
+    elif source == "log" and target == "linear":
+        converted = np.exp(values)
+        notes = "exponential transform"
+    elif source == "linear" and target == "log":
+        safe_values = np.maximum(values, 1e-10)
+        converted = np.log(safe_values)
+        notes = "natural log transform"
+    elif source == "celsius" and target == "fahrenheit":
+        converted = values * 9 / 5 + 32
+        conversion_factor = 1.8
+    elif source == "fahrenheit" and target == "celsius":
+        converted = (values - 32) * 5 / 9
+        conversion_factor = 5 / 9
+    else:
+        # Identity conversion
+        converted = values.copy()
+        notes = f"no conversion defined for {source} → {target}"
+
+    return MeasurementConversionResponse(
+        original=request.values,
+        converted=converted.tolist(),
+        source_unit=request.source_unit,
+        target_unit=request.target_unit,
+        conversion_factor=conversion_factor,
+        notes=notes,
+    )
+
+
+@app.post("/convert/embed", response_model=CoordinateEmbeddingResponse, tags=["Conversion"])
+async def embed_coordinates(
+    request: CoordinateEmbeddingRequest,
+    api_key: str = Security(validate_api_key),
+) -> CoordinateEmbeddingResponse:
+    """
+    Embed values into UMCP coordinate domain [ε, 1-ε].
+
+    Methods:
+    - minmax: Linear scaling to [ε, 1-ε] (requires bounds)
+    - sigmoid: Sigmoid transform 1/(1+exp(-x))
+    - tanh: Tanh transform scaled to [0,1]
+
+    All methods apply ε-clipping to ensure numerical stability.
+    Requires API key authentication.
+    """
+    import numpy as np
+
+    values = np.array(request.values)
+    eps = request.epsilon
+    method = request.method.lower()
+    clipped_count = 0
+
+    if method == "minmax":
+        vmin = request.min_bound if request.min_bound is not None else np.min(values)
+        vmax = request.max_bound if request.max_bound is not None else np.max(values)
+        embedded = (values - vmin) / (vmax - vmin) if vmax > vmin else np.ones_like(values) * 0.5
+    elif method == "sigmoid":
+        embedded = 1.0 / (1.0 + np.exp(-values))
+    elif method == "tanh":
+        embedded = (np.tanh(values) + 1.0) / 2.0
+    else:
+        embedded = values.copy()
+
+    # ε-clipping (KERNEL_SPECIFICATION Lemma 3)
+    pre_clip = embedded.copy()
+    embedded = np.clip(embedded, eps, 1 - eps)
+    clipped_count = int(np.sum(pre_clip != embedded))
+
+    return CoordinateEmbeddingResponse(
+        original=request.values,
+        embedded=embedded.tolist(),
+        method=method,
+        domain=[eps, 1 - eps],
+        epsilon=eps,
+        clipped_count=clipped_count,
+    )
+
+
+# ============================================================================
+# Kernel Computation Endpoints
+# ============================================================================
+
+
+class KernelComputeRequest(BaseModel):
+    """Request for kernel computation."""
+
+    coordinates: list[float] = Field(..., description="Coordinate values in [ε, 1-ε]")
+    weights: list[float] | None = Field(None, description="Weights (uniform if not specified)")
+    epsilon: float = Field(1e-8, description="Clipping tolerance")
+
+
+class KernelComputeResponse(BaseModel):
+    """Response with kernel outputs."""
+
+    F: float = Field(..., description="Fidelity (arithmetic mean)")
+    omega: float = Field(..., description="Drift = 1 - F")
+    S: float = Field(..., description="Shannon entropy")
+    C: float = Field(..., description="Curvature (normalized std)")
+    kappa: float = Field(..., description="Log-integrity")
+    IC: float = Field(..., description="Integrity composite (geometric mean)")
+    amgm_gap: float = Field(..., description="F - IC (heterogeneity measure)")
+    regime: str = Field(..., description="Regime classification")
+    is_homogeneous: bool = Field(..., description="Whether all coordinates equal")
+
+
+class BudgetIdentityResponse(BaseModel):
+    """Response with budget identity verification."""
+
+    R: float = Field(..., description="Return indicator")
+    tau_R: float = Field(..., description="Return time")
+    D_omega: float = Field(..., description="Omega drift component")
+    D_C: float = Field(..., description="Curvature drift component")
+    delta_kappa: float = Field(..., description="Ledger delta κ")
+    lhs: float = Field(..., description="R × τ_R (left-hand side)")
+    rhs: float = Field(..., description="D_ω + D_C + Δκ (right-hand side)")
+    seam_residual: float = Field(..., description="|LHS - RHS| (should be ≤ 0.005)")
+    seam_pass: bool = Field(..., description="Whether seam test passes")
+
+
+@app.post("/kernel/compute", response_model=KernelComputeResponse, tags=["Kernel"])
+async def compute_kernel(
+    request: KernelComputeRequest,
+    api_key: str = Security(validate_api_key),
+) -> KernelComputeResponse:
+    """
+    Compute UMCP kernel invariants from coordinates and weights.
+
+    Implements the kernel function Ψ(c,w) → (F, ω, S, C, κ, IC) as defined
+    in KERNEL_SPECIFICATION.md.
+
+    Requires API key authentication.
+    """
+    import numpy as np
+
+    from .kernel_optimized import OptimizedKernelComputer
+
+    c = np.array(request.coordinates)
+    n = len(c)
+
+    # Use uniform weights if not specified
+    if request.weights is None:
+        w = np.ones(n) / n
+    else:
+        w = np.array(request.weights)
+        if len(w) != n:
+            raise HTTPException(
+                status_code=400, detail=f"Weights length {len(w)} != coordinates length {n}"
+            )
+        if not np.isclose(w.sum(), 1.0, atol=1e-6):
+            raise HTTPException(status_code=400, detail=f"Weights must sum to 1.0, got {w.sum()}")
+
+    # ε-clip coordinates
+    c = np.clip(c, request.epsilon, 1 - request.epsilon)
+
+    # Compute kernel
+    kernel = OptimizedKernelComputer(epsilon=request.epsilon)
+    outputs = kernel.compute(c, w)
+
+    return KernelComputeResponse(
+        F=float(outputs.F),
+        omega=float(outputs.omega),
+        S=float(outputs.S),
+        C=float(outputs.C),
+        kappa=float(outputs.kappa),
+        IC=float(outputs.IC),
+        amgm_gap=float(outputs.amgm_gap),
+        regime=outputs.regime,
+        is_homogeneous=outputs.is_homogeneous,
+    )
+
+
+@app.post("/kernel/budget", response_model=BudgetIdentityResponse, tags=["Kernel"])
+async def verify_budget_identity(
+    R: float = Query(..., description="Return indicator (0 or 1)"),
+    tau_R: float = Query(..., description="Return time"),
+    D_omega: float = Query(..., description="Omega drift component"),
+    D_C: float = Query(..., description="Curvature drift component"),
+    delta_kappa: float = Query(..., description="Ledger delta κ"),
+    api_key: str = Security(validate_api_key),
+) -> BudgetIdentityResponse:
+    """
+    Verify the UMCP budget identity: R·τ_R = D_ω + D_C + Δκ
+
+    The budget identity is the core conservation law of UMCP.
+    The seam residual |LHS - RHS| should be ≤ 0.005 for conformance.
+
+    Requires API key authentication.
+    """
+    lhs = R * tau_R
+    rhs = D_omega + D_C + delta_kappa
+    seam_residual = abs(lhs - rhs)
+    seam_pass = seam_residual <= 0.005
+
+    return BudgetIdentityResponse(
+        R=R,
+        tau_R=tau_R,
+        D_omega=D_omega,
+        D_C=D_C,
+        delta_kappa=delta_kappa,
+        lhs=lhs,
+        rhs=rhs,
+        seam_residual=seam_residual,
+        seam_pass=seam_pass,
+    )
+
+
+# ============================================================================
+# Uncertainty Propagation Endpoints
+# ============================================================================
+
+
+class UncertaintyRequest(BaseModel):
+    """Request for uncertainty propagation."""
+
+    coordinates: list[float] = Field(..., description="Coordinate values")
+    weights: list[float] | None = Field(None, description="Weights (uniform if not specified)")
+    coordinate_variances: list[float] = Field(..., description="Variance for each coordinate")
+    epsilon: float = Field(1e-8, description="Clipping tolerance")
+
+
+class UncertaintyResponse(BaseModel):
+    """Response with propagated uncertainties."""
+
+    # Kernel outputs
+    F: float
+    omega: float
+    S: float
+    kappa: float
+    C: float
+
+    # Standard deviations (1σ)
+    std_F: float
+    std_omega: float
+    std_S: float
+    std_kappa: float
+    std_C: float
+
+    # Confidence intervals (95%)
+    ci_F: list[float]
+    ci_omega: list[float]
+    ci_S: list[float]
+    ci_kappa: list[float]
+    ci_C: list[float]
+
+
+@app.post("/uncertainty/propagate", response_model=UncertaintyResponse, tags=["Uncertainty"])
+async def propagate_uncertainty(
+    request: UncertaintyRequest,
+    api_key: str = Security(validate_api_key),
+) -> UncertaintyResponse:
+    """
+    Propagate measurement uncertainty through the kernel.
+
+    Uses delta-method (first-order Taylor expansion) to compute
+    output variances from input coordinate variances.
+
+    Reference: KERNEL_SPECIFICATION.md Lemmas 3, 11, 12, 13, 17, 18
+
+    Requires API key authentication.
+    """
+    import numpy as np
+
+    from .kernel_optimized import OptimizedKernelComputer
+    from .uncertainty import propagate_independent_uncertainty
+
+    c = np.array(request.coordinates)
+    var_c = np.array(request.coordinate_variances)
+    n = len(c)
+
+    if len(var_c) != n:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Variance length {len(var_c)} != coordinates length {n}",
+        )
+
+    # Use uniform weights if not specified
+    w = np.ones(n) / n if request.weights is None else np.array(request.weights)
+
+    # ε-clip
+    eps = request.epsilon
+    c = np.clip(c, eps, 1 - eps)
+
+    # Compute kernel outputs
+    kernel = OptimizedKernelComputer(epsilon=eps)
+    outputs = kernel.compute(c, w)
+
+    # Propagate uncertainty
+    bounds = propagate_independent_uncertainty(c, w, var_c, eps)
+
+    # 95% confidence intervals (±1.96σ)
+    z = 1.96
+
+    return UncertaintyResponse(
+        F=float(outputs.F),
+        omega=float(outputs.omega),
+        S=float(outputs.S),
+        kappa=float(outputs.kappa),
+        C=float(outputs.C),
+        std_F=bounds.std_F,
+        std_omega=bounds.std_omega,
+        std_S=bounds.std_S,
+        std_kappa=bounds.std_kappa,
+        std_C=bounds.std_C,
+        ci_F=[float(outputs.F) - z * bounds.std_F, float(outputs.F) + z * bounds.std_F],
+        ci_omega=[float(outputs.omega) - z * bounds.std_omega, float(outputs.omega) + z * bounds.std_omega],
+        ci_S=[float(outputs.S) - z * bounds.std_S, float(outputs.S) + z * bounds.std_S],
+        ci_kappa=[float(outputs.kappa) - z * bounds.std_kappa, float(outputs.kappa) + z * bounds.std_kappa],
+        ci_C=[float(outputs.C) - z * bounds.std_C, float(outputs.C) + z * bounds.std_C],
+    )
+
+
+# ============================================================================
+# Time Series Analysis Endpoints
+# ============================================================================
+
+
+class TimeSeriesRequest(BaseModel):
+    """Request for time series analysis."""
+
+    timestamps: list[str] | None = Field(None, description="ISO timestamps")
+    omega_series: list[float] = Field(..., description="Omega values over time")
+    F_series: list[float] | None = Field(None, description="F values (computed from omega if missing)")
+    kappa_series: list[float] | None = Field(None, description="Kappa values")
+
+
+class TimeSeriesResponse(BaseModel):
+    """Response with time series analysis."""
+
+    n_points: int
+    duration_hours: float | None
+
+    # Summary statistics
+    omega_mean: float
+    omega_std: float
+    omega_min: float
+    omega_max: float
+    omega_trend: float  # Linear trend coefficient
+
+    # Regime analysis
+    regime_counts: dict[str, int]
+    regime_transitions: int
+    stability_score: float  # Fraction in STABLE regime
+
+    # Anomaly detection
+    anomalies: list[dict[str, Any]]
+
+    # Return time analysis (if kappa provided)
+    avg_return_time: float | None = None
+    return_rate: float | None = None
+
+
+@app.post("/analysis/timeseries", response_model=TimeSeriesResponse, tags=["Analysis"])
+async def analyze_timeseries(
+    request: TimeSeriesRequest,
+    api_key: str = Security(validate_api_key),
+) -> TimeSeriesResponse:
+    """
+    Analyze a time series of kernel invariants.
+
+    Computes:
+    - Summary statistics (mean, std, min, max, trend)
+    - Regime distribution and transitions
+    - Stability score
+    - Anomaly detection (3σ outliers)
+
+    Requires API key authentication.
+    """
+    from datetime import datetime as dt
+
+    import numpy as np
+
+    omega = np.array(request.omega_series)
+    n = len(omega)
+
+    # Parse timestamps if provided
+    duration_hours: float | None = None
+    if request.timestamps and len(request.timestamps) >= 2:
+        try:
+            t0 = dt.fromisoformat(request.timestamps[0].replace("Z", "+00:00"))
+            t1 = dt.fromisoformat(request.timestamps[-1].replace("Z", "+00:00"))
+            duration_hours = (t1 - t0).total_seconds() / 3600
+        except (ValueError, TypeError):
+            pass
+
+    # Summary statistics
+    omega_mean = float(np.mean(omega))
+    omega_std = float(np.std(omega))
+    omega_min = float(np.min(omega))
+    omega_max = float(np.max(omega))
+
+    # Linear trend (slope of linear regression)
+    t = np.arange(n)
+    if n > 1:
+        coeffs = np.polyfit(t, omega, 1)
+        omega_trend = float(coeffs[0])
+    else:
+        omega_trend = 0.0
+
+    # Regime classification
+    def classify(w: float) -> str:
+        if w < 0.1 or w > 0.9:
+            return "COLLAPSE"
+        elif 0.3 <= w <= 0.7:
+            return "STABLE"
+        else:
+            return "WATCH"
+
+    regimes = [classify(w) for w in omega]
+    regime_counts = {"STABLE": 0, "WATCH": 0, "COLLAPSE": 0}
+    for r in regimes:
+        regime_counts[r] += 1
+
+    # Count transitions
+    transitions = sum(1 for i in range(1, len(regimes)) if regimes[i] != regimes[i - 1])
+
+    # Stability score
+    stability_score = regime_counts["STABLE"] / n if n > 0 else 0.0
+
+    # Anomaly detection (3σ)
+    anomalies: list[dict[str, Any]] = []
+    if omega_std > 0:
+        z_scores = (omega - omega_mean) / omega_std
+        for i, z in enumerate(z_scores):
+            if abs(z) > 3:
+                anomalies.append({
+                    "index": i,
+                    "omega": float(omega[i]),
+                    "z_score": float(z),
+                    "type": "high" if z > 0 else "low",
+                })
+
+    # Return time analysis
+    avg_return_time: float | None = None
+    return_rate: float | None = None
+    if request.kappa_series and len(request.kappa_series) > 1:
+        kappa = np.array(request.kappa_series)
+        # Estimate return times from kappa changes
+        dk = np.abs(np.diff(kappa))
+        avg_return_time = float(np.mean(dk)) if len(dk) > 0 else None
+        return_rate = stability_score  # Use stability as proxy
+
+    return TimeSeriesResponse(
+        n_points=n,
+        duration_hours=duration_hours,
+        omega_mean=omega_mean,
+        omega_std=omega_std,
+        omega_min=omega_min,
+        omega_max=omega_max,
+        omega_trend=omega_trend,
+        regime_counts=regime_counts,
+        regime_transitions=transitions,
+        stability_score=stability_score,
+        anomalies=anomalies,
+        avg_return_time=avg_return_time,
+        return_rate=return_rate,
+    )
+
+
+# ============================================================================
+# Data Analysis Endpoints
+# ============================================================================
+
+
+class StatisticsRequest(BaseModel):
+    """Request for statistical analysis."""
+
+    data: list[float] = Field(..., description="Data values")
+    weights: list[float] | None = Field(None, description="Observation weights")
+
+
+class StatisticsResponse(BaseModel):
+    """Response with statistical analysis."""
+
+    n: int
+    mean: float
+    std: float
+    var: float
+    min: float
+    max: float
+    median: float
+    q25: float
+    q75: float
+    iqr: float
+    skewness: float
+    kurtosis: float
+    cv: float  # Coefficient of variation
+
+
+class CorrelationRequest(BaseModel):
+    """Request for correlation analysis."""
+
+    x: list[float] = Field(..., description="First variable")
+    y: list[float] = Field(..., description="Second variable")
+
+
+class CorrelationResponse(BaseModel):
+    """Response with correlation analysis."""
+
+    n: int
+    pearson_r: float
+    pearson_p: float
+    spearman_r: float
+    spearman_p: float
+    regression_slope: float
+    regression_intercept: float
+    r_squared: float
+
+
+@app.post("/analysis/statistics", response_model=StatisticsResponse, tags=["Analysis"])
+async def compute_statistics(
+    request: StatisticsRequest,
+    api_key: str = Security(validate_api_key),
+) -> StatisticsResponse:
+    """
+    Compute comprehensive descriptive statistics.
+
+    Includes moments, quantiles, and distribution shape measures.
+    Uses pure numpy implementations to minimize dependencies.
+    Requires API key authentication.
+    """
+    import numpy as np
+
+    data = np.array(request.data, dtype=np.float64)
+    n = len(data)
+
+    if n == 0:
+        raise HTTPException(status_code=400, detail="Empty data array")
+
+    mean = float(np.mean(data))
+    std = float(np.std(data, ddof=1)) if n > 1 else 0.0
+    var = float(np.var(data, ddof=1)) if n > 1 else 0.0
+
+    # Quantiles
+    q25, median, q75 = float(np.percentile(data, 25)), float(np.percentile(data, 50)), float(np.percentile(data, 75))
+    iqr = q75 - q25
+
+    # Shape measures (pure numpy implementation)
+    # Skewness: E[(X-μ)³] / σ³
+    if n > 2 and std > 0:
+        m3 = float(np.mean((data - mean) ** 3))
+        skewness = m3 / (std ** 3)
+    else:
+        skewness = 0.0
+
+    # Kurtosis (excess): E[(X-μ)⁴] / σ⁴ - 3
+    if n > 3 and std > 0:
+        m4 = float(np.mean((data - mean) ** 4))
+        kurtosis = m4 / (std ** 4) - 3.0
+    else:
+        kurtosis = 0.0
+
+    # Coefficient of variation
+    cv = std / abs(mean) if mean != 0 else 0.0
+
+    return StatisticsResponse(
+        n=n,
+        mean=mean,
+        std=std,
+        var=var,
+        min=float(np.min(data)),
+        max=float(np.max(data)),
+        median=median,
+        q25=q25,
+        q75=q75,
+        iqr=iqr,
+        skewness=skewness,
+        kurtosis=kurtosis,
+        cv=cv,
+    )
+
+
+@app.post("/analysis/correlation", response_model=CorrelationResponse, tags=["Analysis"])
+async def compute_correlation(
+    request: CorrelationRequest,
+    api_key: str = Security(validate_api_key),
+) -> CorrelationResponse:
+    """
+    Compute correlation and regression between two variables.
+
+    Returns Pearson and Spearman correlations, plus linear regression.
+    Uses pure numpy implementations to minimize dependencies.
+    Requires API key authentication.
+    """
+    import numpy as np
+
+    x = np.array(request.x, dtype=np.float64)
+    y = np.array(request.y, dtype=np.float64)
+
+    if len(x) != len(y):
+        raise HTTPException(status_code=400, detail="x and y must have same length")
+
+    n = len(x)
+    if n < 3:
+        raise HTTPException(status_code=400, detail="Need at least 3 points")
+
+    # Pearson correlation (pure numpy)
+    x_centered = x - np.mean(x)
+    y_centered = y - np.mean(y)
+    cov_xy = float(np.sum(x_centered * y_centered))
+    std_x = float(np.sqrt(np.sum(x_centered ** 2)))
+    std_y = float(np.sqrt(np.sum(y_centered ** 2)))
+    pearson_r = cov_xy / (std_x * std_y) if std_x > 0 and std_y > 0 else 0.0
+
+    # Approximate p-value using t-distribution approximation
+    if abs(pearson_r) < 1.0 and n > 2:
+        t_stat = pearson_r * np.sqrt((n - 2) / (1 - pearson_r ** 2))
+        # Approximate p-value (two-tailed) - simplified
+        pearson_p = 2.0 * (1.0 - min(0.5 + 0.5 * np.tanh(abs(t_stat) / 1.5), 0.9999))
+    else:
+        pearson_p = 0.0 if abs(pearson_r) >= 0.9999 else 1.0
+
+    # Spearman correlation (rank-based)
+    x_ranks = np.argsort(np.argsort(x)).astype(np.float64) + 1
+    y_ranks = np.argsort(np.argsort(y)).astype(np.float64) + 1
+    x_rank_centered = x_ranks - np.mean(x_ranks)
+    y_rank_centered = y_ranks - np.mean(y_ranks)
+    cov_ranks = float(np.sum(x_rank_centered * y_rank_centered))
+    std_x_ranks = float(np.sqrt(np.sum(x_rank_centered ** 2)))
+    std_y_ranks = float(np.sqrt(np.sum(y_rank_centered ** 2)))
+    spearman_r = cov_ranks / (std_x_ranks * std_y_ranks) if std_x_ranks > 0 and std_y_ranks > 0 else 0.0
+
+    # Approximate p-value for Spearman
+    if abs(spearman_r) < 1.0 and n > 2:
+        t_stat_sp = spearman_r * np.sqrt((n - 2) / (1 - spearman_r ** 2))
+        spearman_p = 2.0 * (1.0 - min(0.5 + 0.5 * np.tanh(abs(t_stat_sp) / 1.5), 0.9999))
+    else:
+        spearman_p = 0.0 if abs(spearman_r) >= 0.9999 else 1.0
+
+    # Linear regression (least squares)
+    slope = cov_xy / (std_x ** 2) if std_x > 0 else 0.0
+    intercept = float(np.mean(y)) - slope * float(np.mean(x))
+    r_squared = pearson_r ** 2
+
+    return CorrelationResponse(
+        n=n,
+        pearson_r=pearson_r,
+        pearson_p=pearson_p,
+        spearman_r=spearman_r,
+        spearman_p=spearman_p,
+        regression_slope=slope,
+        regression_intercept=intercept,
+        r_squared=r_squared,
+    )
+
+
+class LedgerAnalysisResponse(BaseModel):
+    """Comprehensive ledger analysis response."""
+
+    total_entries: int
+    date_range: dict[str, str | None]
+
+    # Overall statistics
+    conformant_rate: float
+    avg_omega: float
+    avg_kappa: float
+    omega_trend: float
+
+    # Regime distribution
+    regime_distribution: dict[str, float]
+
+    # Health indicators
+    stability_index: float  # 0-1, higher is better
+    drift_indicator: float  # Absolute trend magnitude
+    anomaly_count: int
+
+    # Recent performance (last 10 entries)
+    recent_conformant_rate: float
+    recent_avg_omega: float
+
+
+@app.get("/analysis/ledger", response_model=LedgerAnalysisResponse, tags=["Analysis"])
+async def analyze_ledger(
+    api_key: str = Security(validate_api_key),
+) -> LedgerAnalysisResponse:
+    """
+    Comprehensive analysis of the validation ledger.
+
+    Provides health indicators, regime distribution, and trend analysis.
+    Requires API key authentication.
+    """
+    import numpy as np
+
+    repo_root = get_repo_root()
+    ledger_path = repo_root / "ledger" / "return_log.csv"
+
+    if not ledger_path.exists():
+        raise HTTPException(status_code=404, detail="Ledger not found")
+
+    # Read ledger
+    entries: list[dict[str, Any]] = []
+    with open(ledger_path) as f:
+        reader = csv.DictReader(f)
+        entries = list(reader)
+
+    n = len(entries)
+    if n == 0:
+        raise HTTPException(status_code=404, detail="Ledger is empty")
+
+    # Extract values
+    statuses: list[str] = [e.get("run_status", e.get("status", "")) for e in entries]
+    omegas: list[float] = []
+    kappas: list[float] = []
+    timestamps: list[str] = []
+
+    import contextlib
+    for e in entries:
+        if e.get("omega"):
+            with contextlib.suppress(ValueError):
+                omegas.append(float(e["omega"]))
+        if e.get("curvature") or e.get("delta_kappa"):
+            with contextlib.suppress(ValueError):
+                kappas.append(float(e.get("curvature", e.get("delta_kappa", 0))))
+        if e.get("timestamp"):
+            timestamps.append(str(e["timestamp"]))
+
+    # Conformant rate
+    conformant_count = sum(1 for s in statuses if s == "CONFORMANT")
+    conformant_rate = conformant_count / n
+
+    # Statistics
+    omega_arr = np.array(omegas) if omegas else np.array([0.5])
+    kappa_arr = np.array(kappas) if kappas else np.array([0.0])
+
+    avg_omega = float(np.mean(omega_arr))
+    avg_kappa = float(np.mean(kappa_arr))
+
+    # Trend
+    if len(omega_arr) > 1:
+        t = np.arange(len(omega_arr))
+        coeffs = np.polyfit(t, omega_arr, 1)
+        omega_trend = float(coeffs[0])
+    else:
+        omega_trend = 0.0
+
+    # Regime distribution
+    def classify(w: float) -> str:
+        if w < 0.1 or w > 0.9:
+            return "COLLAPSE"
+        elif 0.3 <= w <= 0.7:
+            return "STABLE"
+        else:
+            return "WATCH"
+
+    regimes = [classify(w) for w in omega_arr]
+    regime_dist = {
+        "STABLE": regimes.count("STABLE") / len(regimes) if regimes else 0,
+        "WATCH": regimes.count("WATCH") / len(regimes) if regimes else 0,
+        "COLLAPSE": regimes.count("COLLAPSE") / len(regimes) if regimes else 0,
+    }
+
+    # Health indicators
+    stability_index = regime_dist["STABLE"]
+    drift_indicator = abs(omega_trend)
+
+    # Anomalies (3σ outliers)
+    anomaly_count = 0
+    if len(omega_arr) > 2:
+        std = float(np.std(omega_arr))
+        mean = float(np.mean(omega_arr))
+        if std > 0:
+            z_scores = np.abs((omega_arr - mean) / std)
+            anomaly_count = int(np.sum(z_scores > 3))
+
+    # Recent performance
+    recent_n = min(10, n)
+    recent_statuses = statuses[-recent_n:]
+    recent_omegas = omega_arr[-recent_n:] if len(omega_arr) >= recent_n else omega_arr
+
+    recent_conformant = sum(1 for s in recent_statuses if s == "CONFORMANT")
+    recent_conformant_rate = recent_conformant / recent_n
+    recent_avg_omega = float(np.mean(recent_omegas))
+
+    return LedgerAnalysisResponse(
+        total_entries=n,
+        date_range={
+            "first": timestamps[0] if timestamps else None,
+            "last": timestamps[-1] if timestamps else None,
+        },
+        conformant_rate=conformant_rate,
+        avg_omega=avg_omega,
+        avg_kappa=avg_kappa,
+        omega_trend=omega_trend,
+        regime_distribution=regime_dist,
+        stability_index=stability_index,
+        drift_indicator=drift_indicator,
+        anomaly_count=anomaly_count,
+        recent_conformant_rate=recent_conformant_rate,
+        recent_avg_omega=recent_avg_omega,
+    )
+
+
+# ============================================================================
 # CLI Entry Point
 # ============================================================================
 
-if __name__ == "__main__":
+
+def run_server(
+    host: str = "0.0.0.0",
+    port: int = 8000,
+    reload: bool = False,
+) -> None:
+    """Run the UMCP API server.
+
+    Args:
+        host: Host to bind to (default: 0.0.0.0)
+        port: Port to listen on (default: 8000)
+        reload: Enable auto-reload for development (default: False)
+    """
     try:
         import uvicorn  # type: ignore[import-untyped]
-
-        uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)  # type: ignore[no-untyped-call]
     except ImportError:
-        print("uvicorn not installed. Run: pip install umcp[api]")
+        print("=" * 60)
+        print("ERROR: uvicorn not installed")
+        print("=" * 60)
+        print("The API extension requires additional dependencies.")
+        print("Install with: pip install umcp[api]")
+        print("=" * 60)
         sys.exit(1)
+
+    print("=" * 60)
+    print("UMCP REST API Server")
+    print("=" * 60)
+    print(f"Version:  {__version__}")
+    print(f"API:      v{API_VERSION}")
+    print(f"Host:     {host}")
+    print(f"Port:     {port}")
+    print(f"Docs:     http://{host}:{port}/docs")
+    print(f"ReDoc:    http://{host}:{port}/redoc")
+    print("=" * 60)
+    print("\nPress Ctrl+C to stop the server\n")
+
+    uvicorn.run(  # type: ignore[no-untyped-call]
+        "umcp.api_umcp:app",
+        host=host,
+        port=port,
+        reload=reload,
+    )
+
+
+def main() -> None:
+    """CLI entry point for umcp-api command."""
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="UMCP REST API Server",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  umcp-api                          # Start on default port 8000
+  umcp-api --port 9000              # Start on custom port
+  umcp-api --reload                 # Enable auto-reload for development
+  umcp-api --host 127.0.0.1         # Bind to localhost only
+""",
+    )
+    parser.add_argument("--host", default="0.0.0.0", help="Host to bind to")
+    parser.add_argument("--port", type=int, default=8000, help="Port to listen on")
+    parser.add_argument("--reload", action="store_true", help="Enable auto-reload")
+
+    args = parser.parse_args()
+    run_server(host=args.host, port=args.port, reload=args.reload)
+
+
+if __name__ == "__main__":
+    main()

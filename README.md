@@ -3,8 +3,9 @@
 [![CI](https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/actions/workflows/validate.yml/badge.svg)](https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/actions/workflows/validate.yml)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Tests: 730 passing](https://img.shields.io/badge/tests-730%20passing-brightgreen.svg)](tests/)
+[![Tests: 755 passing](https://img.shields.io/badge/tests-755%20passing-brightgreen.svg)](tests/)
 [![Version: 1.5.0](https://img.shields.io/badge/version-1.5.0-blue.svg)](CHANGELOG.md)
+[![API: 30+ endpoints](https://img.shields.io/badge/API-30%2B%20endpoints-orange.svg)](src/umcp/api_umcp.py)
 
 **UMCP transforms computational experiments into auditable artifacts** with formal mathematical foundations based on a foundational principle:
 
@@ -68,12 +69,12 @@ pip install -e ".[production]"
 # Install test dependencies (adds pytest, coverage tools)
 pip install -e ".[test]"
 
-# Install planned communication extensions (when implemented)
-# pip install -e ".[api]"          # HTTP API (not yet implemented)
-# pip install -e ".[viz]"          # Web UI (not yet implemented)
-# pip install -e ".[communications]"  # All communication (not yet implemented)
+# Install communication extensions
+pip install -e ".[api]"            # REST API (FastAPI/uvicorn)
+pip install -e ".[viz]"            # Streamlit dashboard
+pip install -e ".[communications]" # All communication extensions
 
-# Install everything (production + test + future extensions)
+# Install everything (production + test + extensions)
 pip install -e ".[all]"
 ```
 
@@ -83,7 +84,7 @@ pip install -e ".[all]"
 # System health check (should show HEALTHY status)
 umcp health
 
-# Run test suite (should show 730 tests passing)
+# Run test suite (should show 755 tests passing)
 pytest
 
 # Quick validation test
@@ -91,6 +92,9 @@ umcp validate casepacks/hello_world
 
 # List available casepacks
 umcp list casepacks
+
+# List available extensions
+umcp-ext list
 
 # Check installed version
 python -c "import umcp; print(f'UMCP v{umcp.__version__}')"
@@ -137,7 +141,7 @@ print(f"Regime: {regime.name}")
 ```
 Status: HEALTHY
 Schemas: 12
-730 passed in ~26s
+755 passed in ~21s
 Drift: 0.1280
 Fidelity: 0.8720
 Integrity: 0.8720
@@ -404,34 +408,99 @@ cat ledger/return_log.csv
 
 ## 🌐 REST API Extension
 
-UMCP includes a production-ready REST API built with FastAPI:
+UMCP includes a production-ready REST API built with FastAPI with **30+ endpoints**:
 
 ```bash
 # Install API dependencies
 pip install -e ".[api]"
 
 # Start the API server
-uvicorn umcp.api_umcp:app --host 0.0.0.0 --port 8000
-
-# Or use reload for development
-uvicorn umcp.api_umcp:app --reload
+umcp-api
+# Or: uvicorn umcp.api_umcp:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-### API Endpoints
+### API Endpoint Categories
 
-| Endpoint | Method | Auth | Description |
-|----------|--------|------|-------------|
-| `/` | GET | No | API info and version |
-| `/health` | GET | No | System health check |
-| `/version` | GET | No | Version information |
-| `/validate` | POST | Yes | Validate a casepack or repository |
-| `/casepacks` | GET | Yes | List all casepacks |
-| `/casepacks/{id}` | GET | Yes | Get casepack details |
-| `/casepacks/{id}/run` | POST | Yes | Run a casepack |
-| `/ledger` | GET | Yes | Query the return log |
-| `/contracts` | GET | Yes | List available contracts |
-| `/closures` | GET | Yes | List available closures |
-| `/regime/classify` | POST | Yes | Classify computational regime |
+| Category | Endpoints | Description |
+|----------|-----------|-------------|
+| **System** | `/`, `/health`, `/version` | Health monitoring, version info |
+| **Validation** | `/validate` | Run UMCP validation |
+| **Casepacks** | `/casepacks`, `/casepacks/{id}`, `/casepacks/{id}/run` | Browse and execute |
+| **Ledger** | `/ledger`, `/analysis/ledger` | Query validation history |
+| **Contracts** | `/contracts` | List available contracts |
+| **Closures** | `/closures` | List closure functions |
+| **Analysis** | `/regime/classify`, `/analysis/statistics`, `/analysis/correlation`, `/analysis/timeseries` | Data analysis |
+| **Conversion** | `/convert/measurements`, `/convert/embed` | Unit conversion, coordinate embedding |
+| **Kernel** | `/kernel/compute`, `/kernel/budget`, `/uncertainty/propagate` | Kernel computation with uncertainty |
+| **Outputs** | `/badge/*.svg`, `/output/markdown/report`, `/output/junit`, `/output/jsonld`, etc. | Multiple output formats |
+
+### Complete Endpoint Reference
+
+#### System Endpoints
+| Method | Path | Auth | Description |
+|--------|------|------|-------------|
+| GET | `/` | No | API info and version |
+| GET | `/health` | No | System health check with metrics |
+| GET | `/version` | No | Version information |
+
+#### Validation Endpoints
+| Method | Path | Auth | Description |
+|--------|------|------|-------------|
+| POST | `/validate` | Yes | Validate a casepack or repository |
+
+#### Casepack Endpoints
+| Method | Path | Auth | Description |
+|--------|------|------|-------------|
+| GET | `/casepacks` | Yes | List all casepacks |
+| GET | `/casepacks/{id}` | Yes | Get casepack details |
+| POST | `/casepacks/{id}/run` | Yes | Execute a casepack |
+
+#### Ledger Endpoints
+| Method | Path | Auth | Description |
+|--------|------|------|-------------|
+| GET | `/ledger` | Yes | Query the return log with pagination |
+| GET | `/analysis/ledger` | Yes | Comprehensive ledger analysis |
+
+#### Contract & Closure Endpoints
+| Method | Path | Auth | Description |
+|--------|------|------|-------------|
+| GET | `/contracts` | Yes | List available contracts |
+| GET | `/closures` | Yes | List available closures |
+
+#### Analysis Endpoints
+| Method | Path | Auth | Description |
+|--------|------|------|-------------|
+| POST | `/regime/classify` | Yes | Classify computational regime (STABLE/WATCH/COLLAPSE) |
+| POST | `/analysis/statistics` | Yes | Compute descriptive statistics (mean, std, skewness, kurtosis) |
+| POST | `/analysis/correlation` | Yes | Compute Pearson/Spearman correlation and regression |
+| POST | `/analysis/timeseries` | Yes | Time series analysis with trend detection |
+
+#### Conversion Endpoints
+| Method | Path | Auth | Description |
+|--------|------|------|-------------|
+| POST | `/convert/measurements` | Yes | Unit conversion (SI ↔ Imperial) |
+| POST | `/convert/embed` | Yes | Coordinate embedding (minmax/sigmoid/tanh) |
+
+#### Kernel Computation Endpoints
+| Method | Path | Auth | Description |
+|--------|------|------|-------------|
+| POST | `/kernel/compute` | Yes | Compute ω, F, S, C, κ, IC from coordinates |
+| POST | `/kernel/budget` | Yes | Verify budget identity R·τ_R = D_ω + D_C + Δκ |
+| POST | `/uncertainty/propagate` | Yes | Propagate measurement uncertainty through kernel |
+
+#### Output Format Endpoints
+| Method | Path | Auth | Description |
+|--------|------|------|-------------|
+| GET | `/badge/status.svg` | Yes | Status badge SVG |
+| GET | `/badge/regime.svg` | Yes | Regime badge SVG |
+| GET | `/output/ascii/gauge` | Yes | ASCII gauge visualization |
+| GET | `/output/ascii/sparkline` | Yes | ASCII sparkline chart |
+| GET | `/output/markdown/report` | Yes | Markdown report |
+| GET | `/output/mermaid/regime` | Yes | Mermaid diagram |
+| GET | `/output/html/card` | Yes | HTML dashboard card |
+| GET | `/output/latex/invariants` | Yes | LaTeX invariants |
+| GET | `/output/junit` | Yes | JUnit XML format |
+| GET | `/output/jsonld` | Yes | JSON-LD semantic format |
 
 ### Authentication
 
@@ -448,7 +517,7 @@ curl -H "X-API-Key: your-secret-key" http://localhost:8000/casepacks
 # Health check (no auth required)
 curl http://localhost:8000/health
 
-# List casepacks (auth required)
+# List casepacks
 curl -H "X-API-Key: umcp-dev-key" http://localhost:8000/casepacks
 
 # Validate a casepack
@@ -457,59 +526,84 @@ curl -X POST -H "X-API-Key: umcp-dev-key" \
   -d '{"path": "casepacks/hello_world"}' \
   http://localhost:8000/validate
 
-# Query ledger with pagination
-curl -H "X-API-Key: umcp-dev-key" "http://localhost:8000/ledger?limit=10&offset=0"
+# Compute kernel outputs
+curl -X POST -H "X-API-Key: umcp-dev-key" \
+  -H "Content-Type: application/json" \
+  -d '{"coordinates": [0.3, 0.5, 0.7], "weights": [0.33, 0.34, 0.33]}' \
+  http://localhost:8000/kernel/compute
+
+# Comprehensive ledger analysis
+curl -H "X-API-Key: umcp-dev-key" http://localhost:8000/analysis/ledger
+
+# Compute statistics on data
+curl -X POST -H "X-API-Key: umcp-dev-key" \
+  -H "Content-Type: application/json" \
+  -d '{"data": [1.2, 2.3, 3.1, 2.8, 1.9]}' \
+  http://localhost:8000/analysis/statistics
 ```
 
 📖 **Interactive docs**: http://localhost:8000/docs (Swagger UI)
 
 ---
 
-## � Visualization Dashboard
+## 📊 Visualization Dashboard
 
-UMCP includes an interactive Streamlit dashboard for exploring validation data:
+UMCP includes an interactive Streamlit dashboard with **8 pages** for exploring validation data:
 
 ```bash
 # Install visualization dependencies
 pip install -e ".[viz]"
 
 # Start the dashboard
-streamlit run src/umcp/dashboard.py
-
-# Or from command line
-python -m umcp.dashboard
+umcp-dashboard
+# Or: streamlit run src/umcp/dashboard.py
 ```
 
 ### Dashboard Pages
 
 | Page | Description |
 |------|-------------|
-| **Overview** | Summary metrics, status distribution, recent activity timeline |
-| **Ledger** | Filter and explore validation history with statistics |
-| **Casepacks** | Browse available casepacks with details |
-| **Contracts** | View contracts grouped by domain |
+| **Overview** | System status, quick metrics, recent validations |
+| **Ledger** | Interactive ledger browser with filtering and statistics |
+| **Casepacks** | Browse available casepacks with details and run options |
+| **Contracts** | View contracts grouped by domain with schema details |
+| **Closures** | Closure function browser with documentation |
 | **Regime** | Interactive regime classifier with phase space visualization |
 | **Metrics** | Time series, distributions, and correlations of kernel metrics |
+| **Health** | System health monitoring and diagnostics |
 
 ### Features
 
 - 📈 **Interactive Charts**: Plotly-powered visualizations
-- 🔍 **Filtering**: Filter ledger by status, limit rows
+- 🔍 **Filtering**: Filter ledger by status, date range, limit rows
 - 📥 **Export**: Download filtered data as CSV
 - 🌡️ **Regime Phase Space**: Visual mapping of ω × s → regime
 - 📊 **Correlation Analysis**: Identify metric relationships
+- ⚡ **Real-time Updates**: Live system health monitoring
 
 📖 **Dashboard URL**: http://localhost:8501
 
 ---
 
-## �🚀 Future Extensions
+## 🔌 Extension System
 
-The following extensions are planned for future implementation:
-- **Contract Auto-Formatter** (Entry point: `umcp-format` - not yet implemented)
+UMCP includes a complete extension system for optional features:
 
+**Available Extensions:**
+```bash
+umcp-ext list              # List all extensions
+umcp-ext info api          # Show extension details
+umcp-ext check api         # Check if installed
+umcp-ext install api       # Install dependencies
+umcp-ext run visualization # Run an extension
+```
 
-These would provide additional interfaces but are **not required for core validation**.
+| Extension | Type | Description | Command |
+|-----------|------|-------------|---------|
+| `api` | REST API | FastAPI server | `umcp-api` |
+| `visualization` | Dashboard | Streamlit UI | `umcp-dashboard` |
+| `ledger` | Logging | Audit trail | Built-in |
+| `formatter` | Tool | Contract formatting | Built-in |
 
 📖 **See**: [EXTENSION_INTEGRATION.md](EXTENSION_INTEGRATION.md) | [QUICKSTART_EXTENSIONS.md](QUICKSTART_EXTENSIONS.md)
 
@@ -625,11 +719,16 @@ UMCP-Metadata-Runnable-Code/
 │   ├── uncertainty.py     # Delta-method propagation (v1.5.0)
 │   ├── validator.py       # Core validation engine
 │   ├── cli.py             # Command-line interface (10 commands)
-│   └── umcp_extensions.py # Extension registry
-├── tests/                 # Test suite (730 tests)
+│   ├── api_umcp.py        # REST API (30+ endpoints)
+│   ├── dashboard.py       # Streamlit dashboard (8 pages)
+│   ├── umcp_extensions.py # Extension registry (4 extensions)
+│   └── kernel_optimized.py # Optimized kernel computation
+├── tests/                 # Test suite (755 tests)
 │   ├── test_frozen_contract.py  # 36 tests (v1.5.0)
-│   ├── test_ss1m_triad.py       # 24 tests (v1.5.0)
-│   ├── test_uncertainty.py      # 42 tests (v1.5.0)
+│   ├── test_ss1m_triad.py       # 35 tests (v1.5.0)
+│   ├── test_uncertainty.py      # 23 tests (v1.5.0)
+│   ├── test_api_umcp.py         # 32 tests (REST API)
+│   ├── test_umcp_extensions.py  # 12 tests (extensions)
 │   ├── test_120_kinematics_closures.py  # Kinematics closure tests
 │   ├── test_130_kin_audit_spec.py       # KIN audit specification
 │   ├── closures/                        # Closure-specific tests
@@ -649,7 +748,7 @@ UMCP-Metadata-Runnable-Code/
 │   │   ├── entropic_collapse.py
 │   │   ├── generative_flux.py
 │   │   └── field_resonance.py
-│   ├── kinematics/       # 6 Kinematics closures (NEW)
+│   ├── kinematics/       # 6 Kinematics closures
 │   │   ├── linear_kinematics.py
 │   │   ├── rotational_kinematics.py
 │   │   ├── energy_mechanics.py
@@ -664,7 +763,7 @@ UMCP-Metadata-Runnable-Code/
 │   ├── hello_world/      # Zero entropy baseline
 │   ├── gcd_complete/     # GCD validation
 │   ├── kinematics_complete/    # Full kinematics validation
-│   ├── kin_ref_phase_oscillator/  # KIN.REF.PHASE reference (NEW)
+│   ├── kin_ref_phase_oscillator/  # KIN.REF.PHASE reference
 │   ├── rcft_complete/    # RCFT validation
 │   └── UMCP-REF-E2E-0001/  # End-to-end reference
 ├── schemas/               # JSON schemas (12 schemas)
@@ -688,7 +787,7 @@ UMCP-Metadata-Runnable-Code/
 ## 🧪 Testing
 
 ```bash
-# All tests (730 total, ~26s)
+# All tests (755 total, ~21s)
 pytest
 
 # Verbose output
@@ -702,14 +801,16 @@ umcp test -m "not slow"     # Skip slow tests
 
 # Specific modules (v1.5.0)
 pytest tests/test_frozen_contract.py    # 36 tests - canonical constants
-pytest tests/test_ss1m_triad.py         # 24 tests - mod-97 checksums
-pytest tests/test_uncertainty.py        # 42 tests - delta-method
+pytest tests/test_ss1m_triad.py         # 35 tests - mod-97 checksums
+pytest tests/test_uncertainty.py        # 23 tests - delta-method
+pytest tests/test_api_umcp.py           # 32 tests - REST API endpoints
 pytest tests/closures/test_kin_ref_phase.py  # 27 tests - KIN.REF.PHASE
 
 # Specific framework
 pytest -k "gcd"         # GCD tests
 pytest -k "rcft"        # RCFT tests
 pytest -k "kinematics"  # Kinematics tests
+pytest -k "api"         # API tests
 
 # Coverage report
 pytest --cov
@@ -719,7 +820,7 @@ pytest --cov --cov-report=html  # HTML report in htmlcov/
 pytest -m "not slow"
 ```
 
-**Test Structure**: 730 tests total
+**Test Structure**: 755 tests total
 - Schema validation: 50 tests
 - Kernel invariants: 84 tests
 - GCD framework: 92 tests
@@ -729,15 +830,18 @@ pytest -m "not slow"
 - SS1m triads: 35 tests
 - Uncertainty: 23 tests
 - Dashboard: 30 tests
-- API: 17 tests
-- Integration: 152 tests
+- API: 32 tests
+- Extensions: 12 tests
+- Integration: 150 tests
 
 ---
 
 ## 🚀 Production Features
 
-- ✅ **730 tests** passing (100% success rate)
+- ✅ **755 tests** passing (100% success rate)
 - ✅ **10 CLI commands** for validation, testing, and inspection
+- ✅ **30+ API endpoints** with FastAPI (optional extension)
+- ✅ **8-page dashboard** with Streamlit (optional extension)
 - ✅ **6 casepacks** with reproducible examples
 - ✅ **16 closures** across GCD, Kinematics, and RCFT frameworks
 - ✅ **Frozen contracts**: Mathematical constants as versioned artifacts
@@ -752,7 +856,8 @@ pytest -m "not slow"
 - ✅ **Container ready**: Docker + Kubernetes support
 - ✅ **Cryptographic receipts**: SHA256 verification
 - ✅ **PyPI ready**: Package builds pass twine check
-- ✅ **Zero technical debt**: No TODO/FIXME/HACK markers
+- ✅ **Zero linting errors**: All ruff checks pass
+- ✅ **Zero type errors**: Pylance clean
 - ✅ **<50ms validation**: Fast for typical repositories
 
 📖 **See**: [Production Deployment Guide](docs/production_deployment.md)
@@ -783,7 +888,30 @@ python scripts/update_integrity.py
 
 ## 📊 What's New in v1.5.0
 
-**Kinematics Framework Complete** (NEW):
+**REST API Extension Complete** (NEW):
+- ✅ **30+ Endpoints**: Full REST API with FastAPI
+- ✅ **8 Endpoint Categories**: System, Validation, Casepacks, Ledger, Analysis, Conversion, Kernel, Outputs
+- ✅ **Kernel Computation**: `/kernel/compute`, `/kernel/budget` for ω, κ, IC computation
+- ✅ **Uncertainty Propagation**: `/uncertainty/propagate` for delta-method bounds
+- ✅ **Data Analysis**: `/analysis/statistics`, `/analysis/correlation`, `/analysis/timeseries`
+- ✅ **Measurement Conversion**: `/convert/measurements`, `/convert/embed`
+- ✅ **Multiple Output Formats**: SVG badges, Markdown, HTML, LaTeX, JUnit, JSON-LD
+- ✅ **Pure NumPy Implementation**: Minimal dependencies (no scipy required for API)
+- ✅ **32 API Tests**: Comprehensive endpoint coverage
+
+**Visualization Dashboard Complete** (NEW):
+- ✅ **8-Page Dashboard**: Overview, Ledger, Casepacks, Contracts, Closures, Regime, Metrics, Health
+- ✅ **Interactive Charts**: Plotly-powered visualizations
+- ✅ **Real-time Health Monitoring**: System diagnostics
+- ✅ **Export Capabilities**: Download data as CSV
+
+**Extension System Complete** (NEW):
+- ✅ **4 Built-in Extensions**: api, visualization, ledger, formatter
+- ✅ **Extension CLI**: `umcp-ext list|info|check|install|run`
+- ✅ **Plugin Registry**: Extensible architecture for custom extensions
+- ✅ **Dependency Management**: Automatic checking and installation
+
+**Kinematics Framework Complete**:
 - ✅ **6 Kinematics Closures**: Phase space return, energy mechanics, momentum dynamics
 - ✅ **KIN.REF.PHASE Reference CasePack**: Deterministic phase-anchor oscillator
   - 31 time-series rows, 26 defined anchors, 5 censor events
@@ -792,7 +920,7 @@ python scripts/update_integrity.py
 - ✅ **τ_kin Return Time**: Phase space recurrence in (x,v) coordinates
 - ✅ **K_stability Index**: Lyapunov-based kinematic stability
 
-**CLI Expansion** (NEW):
+**CLI Expansion**:
 - ✅ **10 CLI Commands**: validate, run, diff, health, preflight, test, casepack, list, integrity, report
 - ✅ **`umcp test`**: Run pytest with coverage, parallel, marker options
 - ✅ **`umcp casepack`**: Execute casepacks directly by name
@@ -812,33 +940,21 @@ python scripts/update_integrity.py
   - Corrected formulas: C1=(P+F+T+E+R)mod97, C3=(P·F+T·E+R)mod97
   - Prime-field arithmetic for error detection
   - Crockford Base32 encoding for EID12 format
-  - 24 comprehensive tests
+  - 35 comprehensive tests
 
 - ✅ **Uncertainty Propagation**: Delta-method through kernel invariants
   - Gradients: ∂F/∂c, ∂ω/∂c, ∂κ/∂c, ∂S/∂c, ∂C/∂c
   - Var(F) = w^T V w covariance propagation
   - Sensitivity bounds: ‖∂κ/∂c‖ ≤ max(w)/ε
-  - 42 comprehensive tests
-
-- ✅ **Mathematical Architecture**: Complete specification document
-  - Tier separation with clean boundaries
-  - Conservation laws and budget identity
-  - Regime thresholds with formal definitions
-  - Type safety: 0 Pylance errors
+  - 23 comprehensive tests
 
 **Quality & Testing**:
-- ✅ 730 tests passing (+40 API/Dashboard tests from v1.4.0)
-- ✅ Zero type warnings (Pylance clean)
+- ✅ 755 tests passing (+25 from v1.4.0)
+- ✅ Zero linting warnings (ruff clean)
+- ✅ Zero type errors (Pylance clean)
 - ✅ All formulas match canonical specification
 - ✅ Full test coverage of new modules
 - ✅ PyPI package builds verified (twine check PASSED)
-
-**Previous (v1.4.0)**:
-- ✅ 8 major protocol documents (~5,500 lines)
-- ✅ Formal specification (34 lemmas, kernel definitions)
-- ✅ Publication standards (CasePack structure)
-- ✅ Production ready (manuscript-aligned)
-- ✅ Computational optimizations (OPT-1 through OPT-21)
 
 📖 **See**: [CHANGELOG.md](CHANGELOG.md) | [IMMUTABLE_RELEASE.md](IMMUTABLE_RELEASE.md)
 
@@ -900,9 +1016,12 @@ MIT License - see [LICENSE](LICENSE) for details.
                    Seam: |s| ≤ tol_seam
   
   📊 Status:       CONFORMANT ✅
-  🧪 Tests:        730 passing
+  🧪 Tests:        755 passing
   📦 Casepacks:    6 validated
   🔧 CLI:          10 commands
+  🌐 API:          30+ endpoints
+  📈 Dashboard:    8 pages
+  🔌 Extensions:   4 available (api, viz, ledger, formatter)
   🔒 Integrity:    10 files checksummed
   🌐 Timezone:     America/Chicago
 
@@ -919,7 +1038,8 @@ MIT License - see [LICENSE](LICENSE) for details.
 **Author**: Clement Paulus  
 **Version**: 1.5.0  
 **Release**: January 31, 2026  
-**Tests**: 730 passing  
+**Tests**: 755 passing  
+**API**: 30+ endpoints  
 **Integrity**: SHA256 verified  
 
 **Mathematical Foundations**:
@@ -932,6 +1052,11 @@ MIT License - see [LICENSE](LICENSE) for details.
 - **Tier-1**: GCD (Generative Collapse Dynamics) - 5 closures
 - **Tier-1**: Kinematics (KIN) - 6 closures (phase space return, energy, momentum)
 - **Tier-2**: RCFT (Recursive Collapse Field Theory) - 4 closures
+
+**Communication Extensions** (Optional):
+- **REST API**: FastAPI with 30+ endpoints (`pip install umcp[api]`)
+- **Dashboard**: Streamlit with 8 pages (`pip install umcp[viz]`)
+- **Extension System**: 4 built-in extensions
 
 **Casepacks** (6):
 - `hello_world` - Zero entropy baseline
