@@ -3,7 +3,7 @@
 [![CI](https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/actions/workflows/validate.yml/badge.svg)](https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/actions/workflows/validate.yml)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Tests: 775 passing](https://img.shields.io/badge/tests-755%20passing-brightgreen.svg)](tests/)
+[![Tests: 755 passing](https://img.shields.io/badge/tests-755%20passing-brightgreen.svg)](tests/)
 [![Version: 1.5.0](https://img.shields.io/badge/version-1.5.0-blue.svg)](CHANGELOG.md)
 [![API: 30+ endpoints](https://img.shields.io/badge/API-30%2B%20endpoints-orange.svg)](src/umcp/api_umcp.py)
 
