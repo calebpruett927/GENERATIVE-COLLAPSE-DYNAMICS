@@ -565,7 +565,7 @@ def render_ledger_page() -> None:
 
     with filter_cols[0]:
         if "run_status" in filtered_df.columns:
-            status_options = ["All"] + filtered_df["run_status"].unique().tolist()
+            status_options = ["All", *filtered_df["run_status"].unique().tolist()]
             status_filter = st.selectbox("Status", status_options)
             if status_filter != "All":
                 filtered_df = filtered_df[filtered_df["run_status"] == status_filter]
@@ -746,39 +746,38 @@ def render_casepacks_page() -> None:
         for j, col in enumerate(cols):
             if i + j < len(filtered_casepacks):
                 cp = filtered_casepacks[i + j]
-                with col:
-                    with st.container(border=True):
-                        # Header
-                        st.subheader(f"📦 {cp['id']}")
+                with col, st.container(border=True):
+                    # Header
+                    st.subheader(f"📦 {cp['id']}")
 
-                        # Metadata badges
-                        badge_html = f"""
-                        <span style="background:#007bff; color:white; padding:2px 8px; border-radius:4px; font-size:12px;">v{cp['version']}</span>
-                        """
-                        if cp.get("contract"):
-                            badge_html += f""" <span style="background:#28a745; color:white; padding:2px 8px; border-radius:4px; font-size:12px;">📜 {cp['contract']}</span>"""
-                        st.markdown(badge_html, unsafe_allow_html=True)
+                    # Metadata badges
+                    badge_html = f"""
+                    <span style="background:#007bff; color:white; padding:2px 8px; border-radius:4px; font-size:12px;">v{cp['version']}</span>
+                    """
+                    if cp.get("contract"):
+                        badge_html += f""" <span style="background:#28a745; color:white; padding:2px 8px; border-radius:4px; font-size:12px;">📜 {cp['contract']}</span>"""
+                    st.markdown(badge_html, unsafe_allow_html=True)
 
-                        # Description
-                        if cp.get("title"):
-                            st.markdown(f"**{cp['title']}**")
-                        if cp.get("description"):
-                            desc = cp["description"]
-                            if len(desc) > 150:
-                                desc = desc[:150] + "..."
-                            st.markdown(desc)
+                    # Description
+                    if cp.get("title"):
+                        st.markdown(f"**{cp['title']}**")
+                    if cp.get("description"):
+                        desc = cp["description"]
+                        if len(desc) > 150:
+                            desc = desc[:150] + "..."
+                        st.markdown(desc)
 
-                        # Metrics row
-                        m_cols = st.columns(3)
-                        with m_cols[0]:
-                            st.metric("Closures", cp["closures_count"])
-                        with m_cols[1]:
-                            st.metric("Test Vectors", cp["test_vectors"])
-                        with m_cols[2]:
-                            st.metric("Files", cp["files_count"])
+                    # Metrics row
+                    m_cols = st.columns(3)
+                    with m_cols[0]:
+                        st.metric("Closures", cp["closures_count"])
+                    with m_cols[1]:
+                        st.metric("Test Vectors", cp["test_vectors"])
+                    with m_cols[2]:
+                        st.metric("Files", cp["files_count"])
 
-                        # Path
-                        st.caption(f"📁 `{cp['path']}`")
+                    # Path
+                    st.caption(f"📁 `{cp['path']}`")
 
 
 def render_contracts_page() -> None:
@@ -817,7 +816,7 @@ def render_contracts_page() -> None:
     # ========== Domain tabs ==========
     domain_tabs = st.tabs(list(domains.keys()))
 
-    for tab, (domain, domain_contracts) in zip(domain_tabs, domains.items()):
+    for tab, (domain, domain_contracts) in zip(domain_tabs, domains.items(), strict=False):
         with tab:
             st.subheader(f"🏷️ {domain} Domain")
             st.caption(f"{len(domain_contracts)} contract(s)")
@@ -878,7 +877,7 @@ def render_closures_page() -> None:
     with filter_cols[0]:
         type_filter = st.radio("Type", ["All", "Python", "YAML"], horizontal=True)
     with filter_cols[1]:
-        domain_options = ["All"] + sorted(set(c["domain"] for c in closures))
+        domain_options = ["All", *sorted({c["domain"] for c in closures})]
         domain_filter = st.selectbox("Domain", domain_options)
     with filter_cols[2]:
         search = st.text_input("Search", placeholder="Filter by name...")

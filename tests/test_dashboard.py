@@ -14,8 +14,10 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-
 from umcp.dashboard import (
+    KERNEL_SYMBOLS,
+    REGIME_COLORS,
+    STATUS_COLORS,
     classify_regime,
     detect_anomalies,
     format_bytes,
@@ -26,9 +28,6 @@ from umcp.dashboard import (
     load_closures,
     load_contracts,
     load_ledger,
-    KERNEL_SYMBOLS,
-    REGIME_COLORS,
-    STATUS_COLORS,
 )
 
 
