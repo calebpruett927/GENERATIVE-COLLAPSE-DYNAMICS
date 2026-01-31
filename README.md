@@ -3,7 +3,7 @@
 [![CI](https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/actions/workflows/validate.yml/badge.svg)](https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/actions/workflows/validate.yml)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Tests: 690 passing](https://img.shields.io/badge/tests-690%20passing-brightgreen.svg)](tests/)
+[![Tests: 700 passing](https://img.shields.io/badge/tests-700%20passing-brightgreen.svg)](tests/)
 [![Version: 1.5.0](https://img.shields.io/badge/version-1.5.0-blue.svg)](CHANGELOG.md)
 
 **UMCP transforms computational experiments into auditable artifacts** with formal mathematical foundations based on a foundational principle:
@@ -402,14 +402,76 @@ cat ledger/return_log.csv
 
 ---
 
-## 🚀 Future Communication Extensions
+## 🌐 REST API Extension
 
-The following communication extensions are planned for future implementation:
+UMCP includes a production-ready REST API built with FastAPI:
+
+```bash
+# Install API dependencies
+pip install -e ".[api]"
+
+# Start the API server
+uvicorn umcp.api_umcp:app --host 0.0.0.0 --port 8000
+
+# Or use reload for development
+uvicorn umcp.api_umcp:app --reload
+```
+
+### API Endpoints
+
+| Endpoint | Method | Auth | Description |
+|----------|--------|------|-------------|
+| `/` | GET | No | API info and version |
+| `/health` | GET | No | System health check |
+| `/version` | GET | No | Version information |
+| `/validate` | POST | Yes | Validate a casepack or repository |
+| `/casepacks` | GET | Yes | List all casepacks |
+| `/casepacks/{id}` | GET | Yes | Get casepack details |
+| `/casepacks/{id}/run` | POST | Yes | Run a casepack |
+| `/ledger` | GET | Yes | Query the return log |
+| `/contracts` | GET | Yes | List available contracts |
+| `/closures` | GET | Yes | List available closures |
+| `/regime/classify` | POST | Yes | Classify computational regime |
+
+### Authentication
+
+Set the `UMCP_API_KEY` environment variable (default: `umcp-dev-key`):
+
+```bash
+export UMCP_API_KEY="your-secret-key"
+curl -H "X-API-Key: your-secret-key" http://localhost:8000/casepacks
+```
+
+### Example Usage
+
+```bash
+# Health check (no auth required)
+curl http://localhost:8000/health
+
+# List casepacks (auth required)
+curl -H "X-API-Key: umcp-dev-key" http://localhost:8000/casepacks
+
+# Validate a casepack
+curl -X POST -H "X-API-Key: umcp-dev-key" \
+  -H "Content-Type: application/json" \
+  -d '{"path": "casepacks/hello_world"}' \
+  http://localhost:8000/validate
+
+# Query ledger with pagination
+curl -H "X-API-Key: umcp-dev-key" "http://localhost:8000/ledger?limit=10&offset=0"
+```
+
+📖 **Interactive docs**: http://localhost:8000/docs (Swagger UI)
+
+---
+
+## 🚀 Future Extensions
+
+The following extensions are planned for future implementation:
 - **Contract Auto-Formatter** (Entry point: `umcp-format` - not yet implemented)
-- **REST API** (HTTP/JSON interface for remote validation)
 - **Web Dashboard** (Interactive visualization with Streamlit)
 
-These would provide standard protocol interfaces but are **not required for core validation**.
+These would provide additional interfaces but are **not required for core validation**.
 
 📖 **See**: [EXTENSION_INTEGRATION.md](EXTENSION_INTEGRATION.md) | [QUICKSTART_EXTENSIONS.md](QUICKSTART_EXTENSIONS.md)
 

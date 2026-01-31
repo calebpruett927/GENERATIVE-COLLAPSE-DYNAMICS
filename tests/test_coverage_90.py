@@ -98,29 +98,32 @@ def test_api_get_repo_root():
 
 @skip_if_no_fastapi
 def test_api_classify_regime_positive():
-    """Test regime classification with all positive values."""
+    """Test regime classification with stable values (STABLE regime)."""
     from umcp.api_umcp import classify_regime
 
-    result = classify_regime(0.5, 0.5, 0.5, 0.5)
-    assert result == "regime-positive"
+    # omega=0.5 in [0.3, 0.7] with small seam = STABLE
+    result = classify_regime(0.5, 0.5, 0.001, 0.5)
+    assert result == "STABLE"
 
 
 @skip_if_no_fastapi
 def test_api_classify_regime_negative():
-    """Test regime classification with negative values."""
+    """Test regime classification with extreme omega (COLLAPSE regime)."""
     from umcp.api_umcp import classify_regime
 
-    result = classify_regime(-0.1, 0.5, 0.5, 0.5)
-    assert result == "regime-negative"
+    # omega < 0.1 = COLLAPSE
+    result = classify_regime(0.05, 0.5, 0.001, 0.5)
+    assert result == "COLLAPSE"
 
 
 @skip_if_no_fastapi
 def test_api_classify_regime_unknown():
-    """Test regime classification with zero values."""
+    """Test regime classification with large seam (CRITICAL regime)."""
     from umcp.api_umcp import classify_regime
 
-    result = classify_regime(0, 0, 0, 0)
-    assert result == "regime-unknown"
+    # |S| > 0.01 = CRITICAL
+    result = classify_regime(0.5, 0.5, 0.02, 0.5)
+    assert result == "CRITICAL"
 
 
 @skip_if_no_fastapi

@@ -1,52 +1,920 @@
-"""STUB: Placeholder for future REST API communication extension.
+"""
+UMCP REST API - FastAPI Communication Extension
 
-This file contains helper functions that would be used by a full FastAPI
-implementation. The actual REST API is planned but not yet implemented.
+Provides HTTP endpoints for remote validation, ledger access, and system health.
+This is an optional extension that requires: pip install umcp[api]
 
-For actual UMCP validation, use the core CLI:
-  umcp validate <path>
+Endpoints:
+  GET  /health           - System health check
+  GET  /version          - API and validator version info
+  POST /validate         - Validate a casepack or repository
+  GET  /casepacks        - List available casepacks
+  GET  /casepacks/{id}   - Get casepack details
+  POST /casepacks/{id}/run - Run a casepack
+  GET  /ledger           - Query the return log ledger
+  GET  /contracts        - List available contracts
+  GET  /closures         - List available closures
 
-This stub exists to:
-1. Reserve the module name for future use
-2. Provide example helper functions for API development
-3. Support tests that check for optional dependencies
+Usage:
+  uvicorn umcp.api_umcp:app --reload --host 0.0.0.0 --port 8000
 
-STATUS: Not functional - helpers only
-FUTURE: Would require full FastAPI app with endpoints
+Cross-references:
+  - EXTENSION_INTEGRATION.md (extension architecture)
+  - src/umcp/cli.py (CLI commands this mirrors)
+  - src/umcp/validator.py (validation engine)
+  - src/umcp/preflight.py (preflight validation)
 """
 
-from datetime import datetime
+from __future__ import annotations
+
+import csv
+import hashlib
+import json
+import os
+import subprocess
+import sys
+from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any, Literal
 
-from fastapi import Security
+from fastapi import FastAPI, HTTPException, Query, Security
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from fastapi.security import APIKeyHeader
+from pydantic import BaseModel, Field
 
-api_key_header = APIKeyHeader(name="X-API-Key")
+# Import UMCP core modules
+try:
+    from . import __version__
+    from .validator import RootFileValidator
+except ImportError:
+    # Fallback for direct execution
+    __version__ = "1.5.0"
+    RootFileValidator = None  # type: ignore
 
+# ============================================================================
+# Configuration
+# ============================================================================
 
-def validate_api_key(api_key: str = Security(api_key_header)) -> bool:
-    """Validate API key."""
-    result: bool = api_key == "expected_key"
-    return result
+API_VERSION = "1.0.0"
+API_TITLE = "UMCP REST API"
+API_DESCRIPTION = """
+Universal Measurement Contract Protocol REST API.
 
+Provides HTTP endpoints for validating computational workflows,
+querying the ledger, and managing casepacks.
 
-def verify_api_key(api_key: str = Security(api_key_header)) -> bool:
-    """Verify API key."""
-    result: bool = api_key == "expected_key"
-    return result
+**Authentication**: API key required via `X-API-Key` header.
+"""
+
+# API key from environment (production should use secrets management)
+API_KEY = os.environ.get("UMCP_API_KEY", "umcp-dev-key")
+API_KEY_NAME = "X-API-Key"
+
+api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=False)
 
 
 def get_repo_root() -> Path:
-    return Path(__file__).parent.resolve()
+    """Find the repository root (contains pyproject.toml)."""
+    current = Path(__file__).parent.resolve()
+    while current != current.parent:
+        if (current / "pyproject.toml").exists():
+            return current
+        current = current.parent
+    # Fallback to current working directory
+    return Path.cwd()
 
 
-def classify_regime(omega: float, F: float, S: float, C: float) -> str:
-    if omega > 0 and F > 0 and S > 0 and C > 0:
-        return "regime-positive"
-    elif omega < 0 or F < 0 or S < 0 or C < 0:
-        return "regime-negative"
-    return "regime-unknown"
+def verify_api_key(api_key: str | None = Security(api_key_header)) -> bool:
+    """Verify the API key."""
+    if api_key is None:
+        return False
+    return api_key == API_KEY
+
+
+def validate_api_key(api_key: str = Security(api_key_header)) -> str:
+    """Validate API key and return it, or raise 401."""
+    if not api_key or api_key != API_KEY:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid or missing API key",
+            headers={"WWW-Authenticate": "ApiKey"},
+        )
+    return api_key
+
+
+# ============================================================================
+# Pydantic Models
+# ============================================================================
+
+
+class HealthResponse(BaseModel):
+    """Health check response."""
+
+    status: Literal["healthy", "unhealthy", "degraded"]
+    timestamp: str
+    version: str
+    api_version: str
+    checks: dict[str, Any] = Field(default_factory=dict)
+    metrics: dict[str, Any] | None = None
+
+
+class VersionResponse(BaseModel):
+    """Version information response."""
+
+    api_version: str
+    validator_version: str
+    python_version: str
+    schema_version: str = "UMCP.v1"
+
+
+class ValidationRequest(BaseModel):
+    """Request to validate a path."""
+
+    path: str = Field(..., description="Path to casepack or repository to validate")
+    strict: bool = Field(False, description="Enable strict publication-grade validation")
+
+
+class ValidationResponse(BaseModel):
+    """Validation result response."""
+
+    status: Literal["CONFORMANT", "NONCONFORMANT", "NON_EVALUABLE"]
+    errors: int
+    warnings: int
+    path: str
+    strict: bool
+    created_utc: str
+    hash: str
+    details: dict[str, Any] = Field(default_factory=dict)
+
+
+class CasepackSummary(BaseModel):
+    """Summary of a casepack."""
+
+    id: str
+    version: str
+    path: str
+    contract: str | None = None
+    status: str | None = None
+
+
+class CasepackDetail(BaseModel):
+    """Detailed casepack information."""
+
+    id: str
+    version: str
+    path: str
+    contract: str | None = None
+    description: str | None = None
+    closures: list[str] = Field(default_factory=list)
+    test_vectors: int = 0
+    last_validated: str | None = None
+    validation_status: str | None = None
+
+
+class CasepackRunRequest(BaseModel):
+    """Request to run a casepack."""
+
+    verbose: bool = Field(False, description="Include verbose output")
+    rows: int | None = Field(None, description="Limit number of rows to process")
+
+
+class CasepackRunResponse(BaseModel):
+    """Casepack run result."""
+
+    id: str
+    status: Literal["CONFORMANT", "NONCONFORMANT", "ERROR"]
+    rows_processed: int
+    defined_count: int
+    censored_count: int
+    execution_time_ms: float
+    output: dict[str, Any] = Field(default_factory=dict)
+
+
+class LedgerEntry(BaseModel):
+    """A single ledger entry."""
+
+    timestamp: str
+    status: str
+    kappa: float | None = None
+    omega: float | None = None
+    F: float | None = None
+    run_id: str | None = None
+
+
+class LedgerResponse(BaseModel):
+    """Ledger query response."""
+
+    total_entries: int
+    entries: list[LedgerEntry]
+    query: dict[str, Any] = Field(default_factory=dict)
+
+
+class ContractSummary(BaseModel):
+    """Summary of a contract."""
+
+    id: str
+    version: str
+    domain: str
+    path: str
+
+
+class ClosureSummary(BaseModel):
+    """Summary of a closure."""
+
+    name: str
+    domain: str
+    path: str
+    type: Literal["python", "yaml"]
+
+
+class RegimeClassification(BaseModel):
+    """Regime classification result."""
+
+    regime: str
+    omega: float
+    F: float
+    S: float
+    C: float
+
+
+# ============================================================================
+# FastAPI Application
+# ============================================================================
+
+app = FastAPI(
+    title=API_TITLE,
+    description=API_DESCRIPTION,
+    version=API_VERSION,
+    docs_url="/docs",
+    redoc_url="/redoc",
+)
+
+# CORS middleware for browser access
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Configure appropriately for production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+# ============================================================================
+# Utility Functions
+# ============================================================================
 
 
 def get_current_time() -> str:
-    return datetime.now().isoformat()
+    """Get current UTC time in ISO format."""
+    return datetime.now(UTC).isoformat()
+
+
+def classify_regime(omega: float, F: float, S: float, C: float) -> str:
+    """
+    Classify the computational regime based on kernel invariants.
+
+    Regimes (from KERNEL_SPECIFICATION.md):
+      - STABLE: ω ∈ [0.3, 0.7], |s| ≤ 0.005
+      - WATCH: ω ∈ [0.1, 0.3) ∪ (0.7, 0.9], |s| ≤ 0.01
+      - COLLAPSE: ω < 0.1 or ω > 0.9
+      - CRITICAL: |s| > 0.01
+
+    Args:
+        omega: Overlap fraction ω
+        F: Freshness F = 1 - ω
+        S: Seam residual (budget deviation)
+        C: Curvature κ
+
+    Returns:
+        Regime classification string
+    """
+    # Seam-based critical overlay
+    if abs(S) > 0.01:
+        return "CRITICAL"
+
+    # Omega-based primary classification
+    if omega < 0.1 or omega > 0.9:
+        return "COLLAPSE"
+    elif 0.3 <= omega <= 0.7:
+        return "STABLE"
+    else:
+        return "WATCH"
+
+
+def _load_yaml_safe(path: Path) -> Any:
+    """Load YAML file safely."""
+    try:
+        import yaml
+
+        with open(path, encoding="utf-8") as f:
+            return yaml.safe_load(f)
+    except ImportError:
+        # Minimal parser fallback
+        result = {}
+        with open(path, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith("#"):
+                    continue
+                if ":" in line:
+                    k, v = line.split(":", 1)
+                    result[k.strip()] = v.strip()
+        return result
+    except Exception:
+        return None
+
+
+def _run_cli_command(args: list[str], cwd: Path | None = None) -> tuple[int, str, str]:
+    """Run a CLI command and return (returncode, stdout, stderr)."""
+    try:
+        result = subprocess.run(
+            [sys.executable, "-m", "umcp", *args],
+            capture_output=True,
+            text=True,
+            cwd=cwd or get_repo_root(),
+            timeout=120,
+        )
+        return result.returncode, result.stdout, result.stderr
+    except subprocess.TimeoutExpired:
+        return 1, "", "Command timed out"
+    except Exception as e:
+        return 1, "", str(e)
+
+
+# ============================================================================
+# Endpoints
+# ============================================================================
+
+
+@app.get("/", tags=["Info"])
+async def root() -> dict[str, str]:
+    """API root - returns basic info."""
+    return {
+        "name": API_TITLE,
+        "version": API_VERSION,
+        "docs": "/docs",
+        "health": "/health",
+    }
+
+
+@app.get("/health", response_model=HealthResponse, tags=["System"])
+async def health_check() -> HealthResponse:
+    """
+    Check system health and readiness.
+
+    Returns health status, version info, and diagnostic checks.
+    Does not require authentication.
+    """
+    repo_root = get_repo_root()
+    checks: dict[str, Any] = {}
+    status: Literal["healthy", "unhealthy", "degraded"] = "healthy"
+
+    # Check pyproject.toml exists
+    pyproject = repo_root / "pyproject.toml"
+    checks["pyproject"] = {"status": "pass" if pyproject.exists() else "fail"}
+
+    # Check schemas directory
+    schemas_dir = repo_root / "schemas"
+    if schemas_dir.exists():
+        schema_count = len(list(schemas_dir.glob("*.json")))
+        checks["schemas"] = {"status": "pass", "count": schema_count}
+    else:
+        checks["schemas"] = {"status": "fail", "error": "schemas directory not found"}
+        status = "degraded"
+
+    # Check casepacks directory
+    casepacks_dir = repo_root / "casepacks"
+    if casepacks_dir.exists():
+        casepack_count = len([d for d in casepacks_dir.iterdir() if d.is_dir()])
+        checks["casepacks"] = {"status": "pass", "count": casepack_count}
+    else:
+        checks["casepacks"] = {"status": "fail", "error": "casepacks directory not found"}
+        status = "degraded"
+
+    # Check contracts directory
+    contracts_dir = repo_root / "contracts"
+    if contracts_dir.exists():
+        contract_count = len(list(contracts_dir.glob("*.yaml")))
+        checks["contracts"] = {"status": "pass", "count": contract_count}
+    else:
+        checks["contracts"] = {"status": "fail"}
+        status = "degraded"
+
+    # Check ledger
+    ledger_path = repo_root / "ledger" / "return_log.csv"
+    if ledger_path.exists():
+        with open(ledger_path) as f:
+            ledger_lines = sum(1 for _ in f) - 1  # Exclude header
+        checks["ledger"] = {"status": "pass", "entries": ledger_lines}
+    else:
+        checks["ledger"] = {"status": "warn", "message": "Ledger not initialized"}
+
+    # System metrics (optional)
+    metrics: dict[str, Any] | None = None
+    try:
+        import psutil
+
+        metrics = {
+            "cpu_percent": psutil.cpu_percent(),
+            "memory_percent": psutil.virtual_memory().percent,
+            "disk_percent": psutil.disk_usage("/").percent,
+        }
+    except ImportError:
+        pass
+
+    return HealthResponse(
+        status=status,
+        timestamp=get_current_time(),
+        version=__version__,
+        api_version=API_VERSION,
+        checks=checks,
+        metrics=metrics,
+    )
+
+
+@app.get("/version", response_model=VersionResponse, tags=["System"])
+async def get_version() -> VersionResponse:
+    """Get version information for API and validator."""
+    return VersionResponse(
+        api_version=API_VERSION,
+        validator_version=__version__,
+        python_version=f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
+        schema_version="UMCP.v1",
+    )
+
+
+@app.post("/validate", response_model=ValidationResponse, tags=["Validation"])
+async def validate_path(
+    request: ValidationRequest,
+    api_key: str = Security(validate_api_key),
+) -> ValidationResponse:
+    """
+    Validate a casepack or repository path.
+
+    Requires API key authentication.
+
+    Args:
+        request: Validation request with path and options
+
+    Returns:
+        Validation result with status, errors, and warnings
+    """
+    repo_root = get_repo_root()
+    target_path = Path(request.path)
+
+    # Resolve relative paths
+    if not target_path.is_absolute():
+        target_path = repo_root / target_path
+
+    if not target_path.exists():
+        raise HTTPException(status_code=404, detail=f"Path not found: {request.path}")
+
+    # Run validation via CLI
+    args = ["validate", str(target_path)]
+    if request.strict:
+        args.append("--strict")
+    args.extend(["--out", "/dev/stdout"])
+
+    returncode, stdout, stderr = _run_cli_command(args, cwd=repo_root)
+
+    # Parse JSON output
+    try:
+        # Find JSON in output (may have trailing governance note)
+        json_start = stdout.find("{")
+        json_end = stdout.rfind("}") + 1
+        if json_start >= 0 and json_end > json_start:
+            result_json = stdout[json_start:json_end]
+            result = json.loads(result_json)
+        else:
+            result = {"run_status": "NON_EVALUABLE", "summary": {"counts": {"errors": 1, "warnings": 0}}}
+    except json.JSONDecodeError:
+        result = {"run_status": "NON_EVALUABLE", "summary": {"counts": {"errors": 1, "warnings": 0}}}
+
+    # Compute hash
+    result_hash = hashlib.sha256(json.dumps(result, sort_keys=True).encode()).hexdigest()
+
+    return ValidationResponse(
+        status=result.get("run_status", "NON_EVALUABLE"),
+        errors=result.get("summary", {}).get("counts", {}).get("errors", 0),
+        warnings=result.get("summary", {}).get("counts", {}).get("warnings", 0),
+        path=request.path,
+        strict=request.strict,
+        created_utc=result.get("created_utc", get_current_time()),
+        hash=result_hash[:16],
+        details=result,
+    )
+
+
+@app.get("/casepacks", response_model=list[CasepackSummary], tags=["Casepacks"])
+async def list_casepacks(
+    api_key: str = Security(validate_api_key),
+) -> list[CasepackSummary]:
+    """
+    List all available casepacks.
+
+    Requires API key authentication.
+    """
+    repo_root = get_repo_root()
+    casepacks_dir = repo_root / "casepacks"
+
+    if not casepacks_dir.exists():
+        return []
+
+    summaries = []
+    for casepack_dir in sorted(casepacks_dir.iterdir()):
+        if not casepack_dir.is_dir():
+            continue
+
+        # Try to load manifest
+        manifest_path = casepack_dir / "manifest.json"
+        if not manifest_path.exists():
+            manifest_path = casepack_dir / "manifest.yaml"
+
+        casepack_id = casepack_dir.name
+        version = "unknown"
+        contract = None
+
+        if manifest_path.exists():
+            try:
+                if manifest_path.suffix == ".json":
+                    with open(manifest_path) as f:
+                        manifest = json.load(f)
+                else:
+                    manifest = _load_yaml_safe(manifest_path)
+
+                if manifest:
+                    casepack_data = manifest.get("casepack", {})
+                    casepack_id = casepack_data.get("id", casepack_dir.name)
+                    version = casepack_data.get("version", "unknown")
+                    contract = casepack_data.get("contract_ref")
+            except Exception:
+                pass
+
+        summaries.append(
+            CasepackSummary(
+                id=casepack_id,
+                version=version,
+                path=str(casepack_dir.relative_to(repo_root)),
+                contract=contract,
+            )
+        )
+
+    return summaries
+
+
+@app.get("/casepacks/{casepack_id}", response_model=CasepackDetail, tags=["Casepacks"])
+async def get_casepack(
+    casepack_id: str,
+    api_key: str = Security(validate_api_key),
+) -> CasepackDetail:
+    """
+    Get detailed information about a specific casepack.
+
+    Requires API key authentication.
+    """
+    repo_root = get_repo_root()
+    casepack_dir = repo_root / "casepacks" / casepack_id
+
+    if not casepack_dir.exists():
+        raise HTTPException(status_code=404, detail=f"Casepack not found: {casepack_id}")
+
+    # Load manifest
+    manifest_path = casepack_dir / "manifest.json"
+    if not manifest_path.exists():
+        manifest_path = casepack_dir / "manifest.yaml"
+
+    casepack_data: dict[str, Any] = {"id": casepack_id, "version": "unknown"}
+    description = None
+    contract = None
+
+    if manifest_path.exists():
+        try:
+            if manifest_path.suffix == ".json":
+                with open(manifest_path) as f:
+                    manifest = json.load(f)
+            else:
+                manifest = _load_yaml_safe(manifest_path)
+
+            if manifest:
+                casepack_data = manifest.get("casepack", casepack_data)
+                description = casepack_data.get("description")
+                contract = casepack_data.get("contract_ref")
+        except Exception:
+            pass
+
+    # Count closures
+    closures: list[str] = []
+    closures_dir = casepack_dir / "closures"
+    if closures_dir.exists():
+        closures = [f.stem for f in closures_dir.glob("*.py")]
+
+    # Count test vectors
+    test_vectors = 0
+    test_file = casepack_dir / "test_vectors.csv"
+    if test_file.exists():
+        with open(test_file) as f:
+            test_vectors = sum(1 for _ in f) - 1  # Exclude header
+
+    return CasepackDetail(
+        id=casepack_data.get("id", casepack_id),
+        version=casepack_data.get("version", "unknown"),
+        path=str(casepack_dir.relative_to(repo_root)),
+        contract=contract,
+        description=description,
+        closures=closures,
+        test_vectors=test_vectors,
+    )
+
+
+@app.post("/casepacks/{casepack_id}/run", response_model=CasepackRunResponse, tags=["Casepacks"])
+async def run_casepack(
+    casepack_id: str,
+    request: CasepackRunRequest | None = None,
+    api_key: str = Security(validate_api_key),
+) -> CasepackRunResponse:
+    """
+    Run a casepack and return results.
+
+    Requires API key authentication.
+    """
+    import re
+    import time
+
+    repo_root = get_repo_root()
+    casepack_dir = repo_root / "casepacks" / casepack_id
+
+    if not casepack_dir.exists():
+        raise HTTPException(status_code=404, detail=f"Casepack not found: {casepack_id}")
+
+    # Run casepack via CLI
+    start_time = time.perf_counter()
+
+    args = ["casepack", casepack_id]
+    if request and request.verbose:
+        args.append("--verbose")
+
+    returncode, stdout, stderr = _run_cli_command(args, cwd=repo_root)
+    execution_time = (time.perf_counter() - start_time) * 1000
+
+    # Parse output
+    status: Literal["CONFORMANT", "NONCONFORMANT", "ERROR"] = "ERROR"
+    rows_processed = 0
+    defined_count = 0
+    censored_count = 0
+
+    for line in stdout.split("\n"):
+        if "CONFORMANT" in line and "NONCONFORMANT" not in line:
+            status = "CONFORMANT"
+        elif "NONCONFORMANT" in line:
+            status = "NONCONFORMANT"
+        if "rows" in line.lower():
+            # Try to extract row count: "Processed 31 rows"
+            match = re.search(r"(\d+)\s+rows", line, re.IGNORECASE)
+            if match:
+                rows_processed = int(match.group(1))
+        if "defined" in line.lower():
+            match = re.search(r"(\d+)\s+defined", line, re.IGNORECASE)
+            if match:
+                defined_count = int(match.group(1))
+        if "censored" in line.lower():
+            match = re.search(r"(\d+)\s+censored", line, re.IGNORECASE)
+            if match:
+                censored_count = int(match.group(1))
+
+    return CasepackRunResponse(
+        id=casepack_id,
+        status=status,
+        rows_processed=rows_processed,
+        defined_count=defined_count,
+        censored_count=censored_count,
+        execution_time_ms=round(execution_time, 2),
+        output={"stdout": stdout, "stderr": stderr, "returncode": returncode},
+    )
+
+
+@app.get("/ledger", response_model=LedgerResponse, tags=["Ledger"])
+async def query_ledger(
+    limit: int = Query(100, ge=1, le=1000, description="Maximum entries to return"),
+    offset: int = Query(0, ge=0, description="Offset for pagination"),
+    status: str | None = Query(None, description="Filter by status (CONFORMANT, NONCONFORMANT)"),
+    api_key: str = Security(validate_api_key),
+) -> LedgerResponse:
+    """
+    Query the return log ledger.
+
+    Requires API key authentication.
+    """
+    repo_root = get_repo_root()
+    ledger_path = repo_root / "ledger" / "return_log.csv"
+
+    if not ledger_path.exists():
+        return LedgerResponse(
+            total_entries=0,
+            entries=[],
+            query={"limit": limit, "offset": offset, "status": status},
+        )
+
+    entries: list[LedgerEntry] = []
+    total = 0
+
+    with open(ledger_path, encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        all_rows = list(reader)
+
+        # Filter by status if specified
+        if status:
+            all_rows = [r for r in all_rows if r.get("status") == status]
+
+        total = len(all_rows)
+
+        # Apply pagination
+        paginated = all_rows[offset : offset + limit]
+
+        for row in paginated:
+            entries.append(
+                LedgerEntry(
+                    timestamp=row.get("timestamp", ""),
+                    status=row.get("status", ""),
+                    kappa=float(row["kappa"]) if row.get("kappa") else None,
+                    omega=float(row["omega"]) if row.get("omega") else None,
+                    F=float(row["F"]) if row.get("F") else None,
+                    run_id=row.get("run_id"),
+                )
+            )
+
+    return LedgerResponse(
+        total_entries=total,
+        entries=entries,
+        query={"limit": limit, "offset": offset, "status": status},
+    )
+
+
+@app.get("/contracts", response_model=list[ContractSummary], tags=["Contracts"])
+async def list_contracts(
+    api_key: str = Security(validate_api_key),
+) -> list[ContractSummary]:
+    """
+    List all available contracts.
+
+    Requires API key authentication.
+    """
+    repo_root = get_repo_root()
+    contracts_dir = repo_root / "contracts"
+
+    if not contracts_dir.exists():
+        return []
+
+    summaries = []
+    for contract_path in sorted(contracts_dir.glob("*.yaml")):
+        # Parse contract ID from filename: UMA.INTSTACK.v1.yaml -> UMA.INTSTACK.v1
+        filename = contract_path.stem
+        parts = filename.split(".")
+
+        # Extract domain and version
+        domain = parts[0] if parts else "unknown"
+        version = parts[-1] if len(parts) > 1 and parts[-1].startswith("v") else "v1"
+
+        summaries.append(
+            ContractSummary(
+                id=filename,
+                version=version,
+                domain=domain,
+                path=str(contract_path.relative_to(repo_root)),
+            )
+        )
+
+    return summaries
+
+
+@app.get("/closures", response_model=list[ClosureSummary], tags=["Closures"])
+async def list_closures(
+    api_key: str = Security(validate_api_key),
+) -> list[ClosureSummary]:
+    """
+    List all available closures.
+
+    Requires API key authentication.
+    """
+    repo_root = get_repo_root()
+    closures_dir = repo_root / "closures"
+
+    if not closures_dir.exists():
+        return []
+
+    summaries = []
+
+    # Python closures
+    for closure_path in sorted(closures_dir.glob("*.py")):
+        if closure_path.name.startswith("_"):
+            continue
+        name = closure_path.stem
+
+        # Infer domain from name
+        domain = "unknown"
+        if name.startswith("gcd") or "gcd" in name.lower():
+            domain = "GCD"
+        elif name.startswith("kin") or "kin" in name.lower():
+            domain = "KIN"
+        elif name.startswith("rcft") or "rcft" in name.lower():
+            domain = "RCFT"
+
+        summaries.append(
+            ClosureSummary(
+                name=name,
+                domain=domain,
+                path=str(closure_path.relative_to(repo_root)),
+                type="python",
+            )
+        )
+
+    # YAML closures
+    for closure_path in sorted(closures_dir.glob("*.yaml")):
+        if closure_path.name == "registry.yaml":
+            continue
+        name = closure_path.stem
+
+        domain = "unknown"
+        if "gcd" in name.lower():
+            domain = "GCD"
+        elif "kin" in name.lower():
+            domain = "KIN"
+        elif "curvature" in name.lower() or "gamma" in name.lower():
+            domain = "GCD"
+
+        summaries.append(
+            ClosureSummary(
+                name=name,
+                domain=domain,
+                path=str(closure_path.relative_to(repo_root)),
+                type="yaml",
+            )
+        )
+
+    return summaries
+
+
+@app.post("/regime/classify", response_model=RegimeClassification, tags=["Analysis"])
+async def classify_regime_endpoint(
+    omega: float = Query(..., ge=0.0, le=1.0, description="Overlap fraction ω"),
+    F: float = Query(..., ge=0.0, le=1.0, description="Freshness F = 1-ω"),
+    S: float = Query(..., description="Seam residual"),
+    C: float = Query(..., description="Curvature κ"),
+    api_key: str = Security(validate_api_key),
+) -> RegimeClassification:
+    """
+    Classify the computational regime based on kernel invariants.
+
+    Requires API key authentication.
+    """
+    regime = classify_regime(omega, F, S, C)
+    return RegimeClassification(
+        regime=regime,
+        omega=omega,
+        F=F,
+        S=S,
+        C=C,
+    )
+
+
+# ============================================================================
+# Error Handlers
+# ============================================================================
+
+
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request: Any, exc: HTTPException) -> JSONResponse:
+    """Handle HTTP exceptions with consistent JSON response."""
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={
+            "error": True,
+            "status_code": exc.status_code,
+            "detail": exc.detail,
+            "timestamp": get_current_time(),
+        },
+    )
+
+
+@app.exception_handler(Exception)
+async def general_exception_handler(request: Any, exc: Exception) -> JSONResponse:
+    """Handle unexpected exceptions."""
+    return JSONResponse(
+        status_code=500,
+        content={
+            "error": True,
+            "status_code": 500,
+            "detail": "Internal server error",
+            "timestamp": get_current_time(),
+        },
+    )
+
+
+# ============================================================================
+# CLI Entry Point
+# ============================================================================
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
