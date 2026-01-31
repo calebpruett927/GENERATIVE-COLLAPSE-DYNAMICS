@@ -945,9 +945,9 @@ async def general_exception_handler(request: Any, exc: Exception) -> JSONRespons
 
 if __name__ == "__main__":
     try:
-        import uvicorn
+        import uvicorn  # type: ignore[import-untyped]
 
-        uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
+        uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)  # type: ignore[no-untyped-call]
     except ImportError:
         print("uvicorn not installed. Run: pip install umcp[api]")
         sys.exit(1)

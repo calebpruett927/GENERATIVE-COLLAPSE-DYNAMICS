@@ -43,6 +43,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 # Try to import visualization dependencies
+_has_viz_deps = False
 try:
     import numpy as np
     import pandas as pd
@@ -51,15 +52,16 @@ try:
     import streamlit as st
     from plotly.subplots import make_subplots
 
-    HAS_VIZ_DEPS = True
+    _has_viz_deps = True
 except ImportError:
-    HAS_VIZ_DEPS = False
-    np = None
-    pd = None
-    px = None
-    go = None
-    st = None
-    make_subplots = None
+    np = None  # type: ignore[assignment]
+    pd = None  # type: ignore[assignment]
+    px = None  # type: ignore[assignment]
+    go = None  # type: ignore[assignment]
+    st = None  # type: ignore[assignment]
+    make_subplots = None  # type: ignore[assignment]
+
+HAS_VIZ_DEPS: bool = _has_viz_deps
 
 if TYPE_CHECKING:
     import pandas as pd

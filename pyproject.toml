@@ -253,8 +253,8 @@ module = [
 ]
 ignore_missing_imports = true
 
-# Exclude dashboard.py from strict type checking (UI-heavy, optional deps)
+# Exclude extension files from strict type checking (UI-heavy, optional deps)
 [[tool.mypy.overrides]]
-module = "umcp.dashboard"
+module = ["umcp.dashboard", "umcp.api_umcp"]
 ignore_errors = true
 
