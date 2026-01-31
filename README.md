@@ -3,7 +3,7 @@
 [![CI](https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/actions/workflows/validate.yml/badge.svg)](https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/actions/workflows/validate.yml)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Tests: 700 passing](https://img.shields.io/badge/tests-700%20passing-brightgreen.svg)](tests/)
+[![Tests: 718 passing](https://img.shields.io/badge/tests-718%20passing-brightgreen.svg)](tests/)
 [![Version: 1.5.0](https://img.shields.io/badge/version-1.5.0-blue.svg)](CHANGELOG.md)
 
 **UMCP transforms computational experiments into auditable artifacts** with formal mathematical foundations based on a foundational principle:
@@ -465,11 +465,49 @@ curl -H "X-API-Key: umcp-dev-key" "http://localhost:8000/ledger?limit=10&offset=
 
 ---
 
-## 🚀 Future Extensions
+## � Visualization Dashboard
+
+UMCP includes an interactive Streamlit dashboard for exploring validation data:
+
+```bash
+# Install visualization dependencies
+pip install -e ".[viz]"
+
+# Start the dashboard
+streamlit run src/umcp/dashboard.py
+
+# Or from command line
+python -m umcp.dashboard
+```
+
+### Dashboard Pages
+
+| Page | Description |
+|------|-------------|
+| **Overview** | Summary metrics, status distribution, recent activity timeline |
+| **Ledger** | Filter and explore validation history with statistics |
+| **Casepacks** | Browse available casepacks with details |
+| **Contracts** | View contracts grouped by domain |
+| **Regime** | Interactive regime classifier with phase space visualization |
+| **Metrics** | Time series, distributions, and correlations of kernel metrics |
+
+### Features
+
+- 📈 **Interactive Charts**: Plotly-powered visualizations
+- 🔍 **Filtering**: Filter ledger by status, limit rows
+- 📥 **Export**: Download filtered data as CSV
+- 🌡️ **Regime Phase Space**: Visual mapping of ω × s → regime
+- 📊 **Correlation Analysis**: Identify metric relationships
+
+📖 **Dashboard URL**: http://localhost:8501
+
+---
+
+## �🚀 Future Extensions
 
 The following extensions are planned for future implementation:
 - **Contract Auto-Formatter** (Entry point: `umcp-format` - not yet implemented)
-- **Web Dashboard** (Interactive visualization with Streamlit)
+
 
 These would provide additional interfaces but are **not required for core validation**.
 

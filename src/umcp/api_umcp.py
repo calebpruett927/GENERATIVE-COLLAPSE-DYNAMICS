@@ -35,7 +35,7 @@ import subprocess
 import sys
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Literal
+from typing import Any, Literal, cast
 
 from fastapi import FastAPI, HTTPException, Query, Security
 from fastapi.middleware.cors import CORSMiddleware
@@ -46,11 +46,9 @@ from pydantic import BaseModel, Field
 # Import UMCP core modules
 try:
     from . import __version__
-    from .validator import RootFileValidator
 except ImportError:
     # Fallback for direct execution
     __version__ = "1.5.0"
-    RootFileValidator = None  # type: ignore
 
 # ============================================================================
 # Configuration
@@ -302,16 +300,20 @@ def classify_regime(omega: float, F: float, S: float, C: float) -> str:
         return "WATCH"
 
 
-def _load_yaml_safe(path: Path) -> Any:
+def _load_yaml_safe(path: Path) -> dict[str, Any] | None:
     """Load YAML file safely."""
     try:
         import yaml
 
         with open(path, encoding="utf-8") as f:
-            return yaml.safe_load(f)
+            data = yaml.safe_load(f)
+            if isinstance(data, dict):
+                typed_data = cast(dict[str, Any], data)
+                return typed_data
+            return None
     except ImportError:
         # Minimal parser fallback
-        result = {}
+        result: dict[str, Any] = {}
         with open(path, encoding="utf-8") as f:
             for line in f:
                 line = line.strip()
@@ -476,9 +478,10 @@ async def validate_path(
         args.append("--strict")
     args.extend(["--out", "/dev/stdout"])
 
-    returncode, stdout, stderr = _run_cli_command(args, cwd=repo_root)
+    _returncode, stdout, _stderr = _run_cli_command(args, cwd=repo_root)
 
     # Parse JSON output
+    result: dict[str, Any]
     try:
         # Find JSON in output (may have trailing governance note)
         json_start = stdout.find("{")
@@ -494,13 +497,30 @@ async def validate_path(
     # Compute hash
     result_hash = hashlib.sha256(json.dumps(result, sort_keys=True).encode()).hexdigest()
 
+    # Extract values with proper types
+    run_status: str = str(result.get("run_status", "NON_EVALUABLE"))
+    summary: dict[str, Any] = result.get("summary", {}) or {}
+    counts: dict[str, Any] = summary.get("counts", {}) or {}
+    error_count: int = int(counts.get("errors", 0) or 0)
+    warning_count: int = int(counts.get("warnings", 0) or 0)
+    created_time: str = str(result.get("created_utc", get_current_time()))
+
+    # Map status to literal type
+    status_literal: Literal["CONFORMANT", "NONCONFORMANT", "NON_EVALUABLE"]
+    if run_status == "CONFORMANT":
+        status_literal = "CONFORMANT"
+    elif run_status == "NONCONFORMANT":
+        status_literal = "NONCONFORMANT"
+    else:
+        status_literal = "NON_EVALUABLE"
+
     return ValidationResponse(
-        status=result.get("run_status", "NON_EVALUABLE"),
-        errors=result.get("summary", {}).get("counts", {}).get("errors", 0),
-        warnings=result.get("summary", {}).get("counts", {}).get("warnings", 0),
+        status=status_literal,
+        errors=error_count,
+        warnings=warning_count,
         path=request.path,
         strict=request.strict,
-        created_utc=result.get("created_utc", get_current_time()),
+        created_utc=created_time,
         hash=result_hash[:16],
         details=result,
     )
@@ -521,7 +541,7 @@ async def list_casepacks(
     if not casepacks_dir.exists():
         return []
 
-    summaries = []
+    summaries: list[CasepackSummary] = []
     for casepack_dir in sorted(casepacks_dir.iterdir()):
         if not casepack_dir.is_dir():
             continue
@@ -533,10 +553,11 @@ async def list_casepacks(
 
         casepack_id = casepack_dir.name
         version = "unknown"
-        contract = None
+        contract: str | None = None
 
         if manifest_path.exists():
             try:
+                manifest: dict[str, Any] | None = None
                 if manifest_path.suffix == ".json":
                     with open(manifest_path) as f:
                         manifest = json.load(f)
@@ -544,10 +565,11 @@ async def list_casepacks(
                     manifest = _load_yaml_safe(manifest_path)
 
                 if manifest:
-                    casepack_data = manifest.get("casepack", {})
-                    casepack_id = casepack_data.get("id", casepack_dir.name)
-                    version = casepack_data.get("version", "unknown")
-                    contract = casepack_data.get("contract_ref")
+                    casepack_data: dict[str, Any] = manifest.get("casepack", {}) or {}
+                    casepack_id = str(casepack_data.get("id", casepack_dir.name))
+                    version = str(casepack_data.get("version", "unknown"))
+                    contract_val = casepack_data.get("contract_ref")
+                    contract = str(contract_val) if contract_val else None
             except Exception:
                 pass
 
@@ -585,11 +607,12 @@ async def get_casepack(
         manifest_path = casepack_dir / "manifest.yaml"
 
     casepack_data: dict[str, Any] = {"id": casepack_id, "version": "unknown"}
-    description = None
-    contract = None
+    description: str | None = None
+    contract: str | None = None
 
     if manifest_path.exists():
         try:
+            manifest: dict[str, Any] | None = None
             if manifest_path.suffix == ".json":
                 with open(manifest_path) as f:
                     manifest = json.load(f)
@@ -597,9 +620,11 @@ async def get_casepack(
                 manifest = _load_yaml_safe(manifest_path)
 
             if manifest:
-                casepack_data = manifest.get("casepack", casepack_data)
-                description = casepack_data.get("description")
-                contract = casepack_data.get("contract_ref")
+                casepack_data = manifest.get("casepack", casepack_data) or casepack_data
+                desc_val = casepack_data.get("description")
+                description = str(desc_val) if desc_val else None
+                contract_val = casepack_data.get("contract_ref")
+                contract = str(contract_val) if contract_val else None
         except Exception:
             pass
 
@@ -616,9 +641,13 @@ async def get_casepack(
         with open(test_file) as f:
             test_vectors = sum(1 for _ in f) - 1  # Exclude header
 
+    # Extract with proper types
+    detail_id = str(casepack_data.get("id", casepack_id))
+    detail_version = str(casepack_data.get("version", "unknown"))
+
     return CasepackDetail(
-        id=casepack_data.get("id", casepack_id),
-        version=casepack_data.get("version", "unknown"),
+        id=detail_id,
+        version=detail_version,
         path=str(casepack_dir.relative_to(repo_root)),
         contract=contract,
         description=description,
@@ -765,7 +794,7 @@ async def list_contracts(
     if not contracts_dir.exists():
         return []
 
-    summaries = []
+    summaries: list[ContractSummary] = []
     for contract_path in sorted(contracts_dir.glob("*.yaml")):
         # Parse contract ID from filename: UMA.INTSTACK.v1.yaml -> UMA.INTSTACK.v1
         filename = contract_path.stem
@@ -802,7 +831,7 @@ async def list_closures(
     if not closures_dir.exists():
         return []
 
-    summaries = []
+    summaries: list[ClosureSummary] = []
 
     # Python closures
     for closure_path in sorted(closures_dir.glob("*.py")):
@@ -834,18 +863,18 @@ async def list_closures(
             continue
         name = closure_path.stem
 
-        domain = "unknown"
+        yaml_domain = "unknown"
         if "gcd" in name.lower():
-            domain = "GCD"
+            yaml_domain = "GCD"
         elif "kin" in name.lower():
-            domain = "KIN"
+            yaml_domain = "KIN"
         elif "curvature" in name.lower() or "gamma" in name.lower():
-            domain = "GCD"
+            yaml_domain = "GCD"
 
         summaries.append(
             ClosureSummary(
                 name=name,
-                domain=domain,
+                domain=yaml_domain,
                 path=str(closure_path.relative_to(repo_root)),
                 type="yaml",
             )
@@ -915,6 +944,10 @@ async def general_exception_handler(request: Any, exc: Exception) -> JSONRespons
 # ============================================================================
 
 if __name__ == "__main__":
-    import uvicorn
+    try:
+        import uvicorn  # type: ignore[import-untyped]
 
-    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
+        uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)  # type: ignore[no-untyped-call]
+    except ImportError:
+        print("uvicorn not installed. Run: pip install umcp[api]")
+        sys.exit(1)

@@ -75,7 +75,7 @@ test = [
 ]
 
 # Communication extensions: REST API for remote validation and ledger access
-# PLANNED/FUTURE - not yet implemented, stub code exists
+# Provides HTTP endpoints for remote systems
 # NOT required for core validation - use for HTTP/network interfaces only
 api = [
   "fastapi>=0.109.0",
@@ -83,7 +83,7 @@ api = [
 ]
 
 # Communication extensions: Interactive visualization and exploration
-# PLANNED/FUTURE - not yet implemented
+# Provides Streamlit dashboard for exploring validation results
 # NOT required for core validation - use for web UI only
 viz = [
   "streamlit>=1.30.0",
@@ -92,7 +92,6 @@ viz = [
 ]
 
 # All standard communication extensions (API + visualization)
-# PLANNED/FUTURE - install these when extensions are implemented
 # These provide standard protocol interfaces but are NOT needed for validation
 communications = [
   "fastapi>=0.109.0",
