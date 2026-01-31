@@ -182,6 +182,7 @@ omit = [
   "src/umcp/api_umcp.py",  # Planned REST API extension - stub code
   "src/umcp/minimal_cli.py",  # Minimal CLI alternative - not primary interface
   "src/umcp/preflight.py",  # Complex error-handling paths, tested via integration
+  "src/umcp/dashboard.py",  # Streamlit UI - requires special testing, UI-heavy
 ]
 
 [tool.coverage.report]

@@ -566,7 +566,7 @@ def render_ledger_page() -> None:
     with filter_cols[0]:
         if "run_status" in filtered_df.columns:
             status_options = ["All", *filtered_df["run_status"].unique().tolist()]
-            status_filter = st.selectbox("Status", status_options)
+            status_filter: str = st.selectbox("Status", status_options) or "All"
             if status_filter != "All":
                 filtered_df = filtered_df[filtered_df["run_status"] == status_filter]
 
@@ -878,7 +878,7 @@ def render_closures_page() -> None:
         type_filter = st.radio("Type", ["All", "Python", "YAML"], horizontal=True)
     with filter_cols[1]:
         domain_options = ["All", *sorted({c["domain"] for c in closures})]
-        domain_filter = st.selectbox("Domain", domain_options)
+        domain_filter: str = st.selectbox("Domain", domain_options) or "All"
     with filter_cols[2]:
         search = st.text_input("Search", placeholder="Filter by name...")
 
