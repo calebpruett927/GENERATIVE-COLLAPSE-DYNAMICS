@@ -4,8 +4,6 @@ import subprocess
 import sys
 from unittest import mock
 
-import pytest
-
 from umcp import umcp_extensions
 
 
