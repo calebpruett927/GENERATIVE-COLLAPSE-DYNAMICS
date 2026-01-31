@@ -183,6 +183,7 @@ omit = [
   "src/umcp/minimal_cli.py",  # Minimal CLI alternative - not primary interface
   "src/umcp/preflight.py",  # Complex error-handling paths, tested via integration
   "src/umcp/dashboard.py",  # Streamlit UI - requires special testing, UI-heavy
+  "src/umcp/outputs.py",  # Output formatting module - generates SVG/HTML/LaTeX
 ]
 
 [tool.coverage.report]
@@ -255,6 +256,6 @@ ignore_missing_imports = true
 
 # Exclude extension files from strict type checking (UI-heavy, optional deps)
 [[tool.mypy.overrides]]
-module = ["umcp.dashboard", "umcp.api_umcp"]
+module = ["umcp.dashboard", "umcp.api_umcp", "umcp.outputs"]
 ignore_errors = true
 

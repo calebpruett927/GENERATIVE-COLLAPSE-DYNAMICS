@@ -27,6 +27,7 @@ Cross-references:
 
 from __future__ import annotations
 
+import contextlib
 import csv
 import hashlib
 import json
@@ -937,6 +938,326 @@ async def general_exception_handler(request: Any, exc: Exception) -> JSONRespons
             "timestamp": get_current_time(),
         },
     )
+
+
+# ============================================================================
+# Novel Output Endpoints
+# ============================================================================
+
+
+@app.get("/badge/status.svg", tags=["Outputs"])
+async def get_status_badge(
+    style: str = Query("flat", description="Badge style: flat or flat-square"),
+) -> JSONResponse:
+    """
+    Get dynamic SVG status badge for the last validation.
+
+    Returns SVG badge suitable for README embedding.
+    Does not require authentication.
+    """
+    from .outputs import BadgeGenerator
+
+    # Get last validation status from ledger
+    repo_root = get_repo_root()
+    ledger_path = repo_root / "ledger" / "return_log.csv"
+
+    status = "NON_EVALUABLE"
+    if ledger_path.exists():
+        with open(ledger_path) as f:
+            lines = f.readlines()
+            if len(lines) > 1:
+                last_line = lines[-1].strip()
+                parts = last_line.split(",")
+                if len(parts) > 1:
+                    status = parts[1]
+
+    svg = BadgeGenerator.status_badge(status, style=style)
+    return JSONResponse(content={"svg": svg, "status": status}, media_type="application/json")
+
+
+@app.get("/badge/regime.svg", tags=["Outputs"])
+async def get_regime_badge() -> JSONResponse:
+    """
+    Get dynamic SVG regime badge for the last validation.
+
+    Returns SVG badge showing current regime classification.
+    """
+    from .outputs import BadgeGenerator, RegimeState
+
+    # Get last validation metrics from ledger
+    repo_root = get_repo_root()
+    ledger_path = repo_root / "ledger" / "return_log.csv"
+
+    omega, curvature = 0.5, 0.0  # Defaults
+    if ledger_path.exists():
+        with open(ledger_path) as f:
+            lines = f.readlines()
+            if len(lines) > 1:
+                last_line = lines[-1].strip()
+                parts = last_line.split(",")
+                if len(parts) >= 5:
+                    try:
+                        omega = float(parts[4]) if parts[4] else 0.5
+                        curvature = float(parts[5]) if len(parts) > 5 and parts[5] else 0.0
+                    except ValueError:
+                        pass
+
+    regime = RegimeState.from_values(omega=omega, F=1 - omega, S=0.0, C=curvature)
+    svg = BadgeGenerator.regime_badge(regime)
+    return JSONResponse(content={"svg": svg, "regime": regime.regime, "omega": omega})
+
+
+@app.get("/output/ascii/gauge", tags=["Outputs"])
+async def get_ascii_gauge(
+    omega: float = Query(0.5, ge=0.0, le=1.0, description="Omega value"),
+    width: int = Query(40, ge=20, le=80, description="Gauge width"),
+) -> dict[str, str]:
+    """
+    Get ASCII regime gauge for terminal display.
+
+    Returns ASCII art representation of the omega gauge.
+    """
+    from .outputs import ASCIIGenerator
+
+    return {"gauge": ASCIIGenerator.regime_gauge(omega, width)}
+
+
+@app.get("/output/ascii/sparkline", tags=["Outputs"])
+async def get_ascii_sparkline(
+    values: str = Query(..., description="Comma-separated values"),
+    width: int = Query(20, ge=10, le=60, description="Sparkline width"),
+) -> dict[str, str]:
+    """
+    Get ASCII sparkline for time series visualization.
+
+    Pass values as comma-separated floats, e.g., "0.1,0.3,0.5,0.7,0.4"
+    """
+    from .outputs import ASCIIGenerator
+
+    try:
+        float_values = [float(v.strip()) for v in values.split(",")]
+    except ValueError as err:
+        raise HTTPException(status_code=400, detail="Invalid values format") from err
+
+    return {"sparkline": ASCIIGenerator.sparkline(float_values, width)}
+
+
+@app.get("/output/markdown/report", tags=["Outputs"])
+async def get_markdown_report(
+    api_key: str = Security(validate_api_key),
+) -> dict[str, str]:
+    """
+    Get Markdown validation report.
+
+    Returns publication-ready Markdown report.
+    Requires API key authentication.
+    """
+    from .outputs import MarkdownGenerator, RegimeState, ValidationSummary
+
+    # Get data from ledger
+    repo_root = get_repo_root()
+    ledger_path = repo_root / "ledger" / "return_log.csv"
+
+    status = "NON_EVALUABLE"
+    omega = 0.5
+
+    if ledger_path.exists():
+        with open(ledger_path) as f:
+            lines = f.readlines()
+            if len(lines) > 1:
+                last_line = lines[-1].strip()
+                parts = last_line.split(",")
+                if len(parts) > 1:
+                    status = parts[1]
+                if len(parts) >= 5:
+                    with contextlib.suppress(ValueError):
+                        omega = float(parts[4]) if parts[4] else 0.5
+
+    regime = RegimeState.from_values(omega=omega, F=1 - omega, S=0.0, C=0.0)
+    summary = ValidationSummary(
+        status=status,
+        errors=0 if status == "CONFORMANT" else 1,
+        warnings=0,
+        regime=regime,
+        timestamp=get_current_time(),
+    )
+
+    report = MarkdownGenerator.validation_report(summary)
+    return {"markdown": report}
+
+
+@app.get("/output/mermaid/regime", tags=["Outputs"])
+async def get_mermaid_regime_diagram() -> dict[str, str]:
+    """
+    Get Mermaid diagram for regime state machine.
+
+    Returns Mermaid diagram code for embedding in documentation.
+    """
+    from .outputs import MermaidGenerator
+
+    return {"mermaid": MermaidGenerator.regime_state_diagram()}
+
+
+@app.get("/output/html/card", tags=["Outputs"])
+async def get_html_card(
+    api_key: str = Security(validate_api_key),
+) -> dict[str, str]:
+    """
+    Get embeddable HTML status card.
+
+    Returns HTML widget for embedding in web pages.
+    Requires API key authentication.
+    """
+    from .outputs import HTMLGenerator, RegimeState, ValidationSummary
+
+    # Get data from ledger
+    repo_root = get_repo_root()
+    ledger_path = repo_root / "ledger" / "return_log.csv"
+
+    status = "NON_EVALUABLE"
+    omega = 0.5
+
+    if ledger_path.exists():
+        with open(ledger_path) as f:
+            lines = f.readlines()
+            if len(lines) > 1:
+                last_line = lines[-1].strip()
+                parts = last_line.split(",")
+                if len(parts) > 1:
+                    status = parts[1]
+                if len(parts) >= 5:
+                    with contextlib.suppress(ValueError):
+                        omega = float(parts[4]) if parts[4] else 0.5
+
+    regime = RegimeState.from_values(omega=omega, F=1 - omega, S=0.0, C=0.0)
+    summary = ValidationSummary(
+        status=status,
+        errors=0 if status == "CONFORMANT" else 1,
+        warnings=0,
+        regime=regime,
+        timestamp=get_current_time(),
+    )
+
+    html = HTMLGenerator.status_card(summary)
+    return {"html": html}
+
+
+@app.get("/output/latex/invariants", tags=["Outputs"])
+async def get_latex_table(
+    limit: int = Query(10, ge=1, le=100, description="Max rows"),
+    api_key: str = Security(validate_api_key),
+) -> dict[str, str]:
+    """
+    Get LaTeX table of kernel invariants.
+
+    Returns LaTeX code for academic paper integration.
+    Requires API key authentication.
+    """
+    from .outputs import LaTeXGenerator
+
+    # Get data from ledger
+    repo_root = get_repo_root()
+    ledger_path = repo_root / "ledger" / "return_log.csv"
+
+    rows = []
+    if ledger_path.exists():
+        with open(ledger_path) as f:
+            import csv as csv_module
+
+            reader = csv_module.DictReader(f)
+            for i, row in enumerate(reader):
+                if i >= limit:
+                    break
+                try:
+                    omega = float(row.get("omega", 0) or 0)
+                    rows.append(
+                        {
+                            "t": i,
+                            "omega": omega,
+                            "F": 1 - omega,
+                            "kappa": float(row.get("curvature", 0) or 0),
+                            "s": float(row.get("stiffness", 0) or 0),
+                            "regime": "STABLE" if 0.3 <= omega <= 0.7 else "WATCH",
+                        }
+                    )
+                except ValueError:
+                    pass
+
+    latex = LaTeXGenerator.invariants_table(rows)
+    return {"latex": latex}
+
+
+@app.get("/output/junit", tags=["Outputs"])
+async def get_junit_xml(
+    api_key: str = Security(validate_api_key),
+) -> JSONResponse:
+    """
+    Get JUnit XML for CI/CD integration.
+
+    Returns JUnit XML format suitable for test runners.
+    Requires API key authentication.
+    """
+    from .outputs import JUnitGenerator, ValidationSummary
+
+    # Get data from ledger
+    repo_root = get_repo_root()
+    ledger_path = repo_root / "ledger" / "return_log.csv"
+
+    status = "NON_EVALUABLE"
+    if ledger_path.exists():
+        with open(ledger_path) as f:
+            lines = f.readlines()
+            if len(lines) > 1:
+                last_line = lines[-1].strip()
+                parts = last_line.split(",")
+                if len(parts) > 1:
+                    status = parts[1]
+
+    summary = ValidationSummary(
+        status=status,
+        errors=0 if status == "CONFORMANT" else 1,
+        warnings=0,
+        timestamp=get_current_time(),
+    )
+
+    xml = JUnitGenerator.from_validation(summary)
+    return JSONResponse(content={"xml": xml}, media_type="application/json")
+
+
+@app.get("/output/jsonld", tags=["Outputs"])
+async def get_json_ld(
+    api_key: str = Security(validate_api_key),
+) -> dict[str, Any]:
+    """
+    Get JSON-LD for semantic web integration.
+
+    Returns linked data format for knowledge graphs.
+    Requires API key authentication.
+    """
+    from .outputs import JSONLDGenerator, ValidationSummary
+
+    # Get data from ledger
+    repo_root = get_repo_root()
+    ledger_path = repo_root / "ledger" / "return_log.csv"
+
+    status = "NON_EVALUABLE"
+    if ledger_path.exists():
+        with open(ledger_path) as f:
+            lines = f.readlines()
+            if len(lines) > 1:
+                last_line = lines[-1].strip()
+                parts = last_line.split(",")
+                if len(parts) > 1:
+                    status = parts[1]
+
+    summary = ValidationSummary(
+        status=status,
+        errors=0 if status == "CONFORMANT" else 1,
+        warnings=0,
+        timestamp=get_current_time(),
+    )
+
+    return JSONLDGenerator.validation_result(summary)
 
 
 # ============================================================================
