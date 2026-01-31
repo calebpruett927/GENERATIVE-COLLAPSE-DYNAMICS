@@ -244,14 +244,14 @@ class TestDashboardNewFunctions:
         """Test that detect_anomalies returns a proper result."""
         try:
             import pandas as pd
-            import numpy as np
 
             # Create test series with outlier
             data = pd.Series([1.0, 1.1, 0.9, 1.0, 1.0, 10.0])  # 10.0 is outlier
             result = detect_anomalies(data, threshold=2.0)
             assert isinstance(result, pd.Series)
-            # The outlier should be detected
-            assert result.iloc[-1] is True or result.iloc[-1] == True
+            # The outlier should be detected (last element is anomaly)
+            last_val: bool = result.tolist()[-1]  # type: ignore[assignment]
+            assert last_val is True
         except ImportError:
             pytest.skip("pandas/numpy not installed")
 
@@ -267,6 +267,7 @@ class TestDashboardNewFunctions:
             assert "path" in c
             assert "type" in c
             assert c["type"] in ["python", "yaml"]
+
 
     def test_closures_paths_exist(self) -> None:
         """Test that closure paths exist."""
