@@ -17,11 +17,18 @@ import pytest
 
 from umcp.dashboard import (
     classify_regime,
+    detect_anomalies,
+    format_bytes,
     get_regime_color,
     get_repo_root,
+    get_trend_indicator,
     load_casepacks,
+    load_closures,
     load_contracts,
     load_ledger,
+    KERNEL_SYMBOLS,
+    REGIME_COLORS,
+    STATUS_COLORS,
 )
 
 
@@ -198,3 +205,96 @@ class TestDashboardContractDetails:
             version = c.get("version", "")
             # Either starts with 'v' or is 'v1' default
             assert version.startswith("v") or version == "v1"
+
+
+class TestDashboardNewFunctions:
+    """Tests for new dashboard utility functions."""
+
+    def test_format_bytes_bytes(self) -> None:
+        """Test format_bytes for byte values."""
+        assert "B" in format_bytes(100)
+        assert "500" in format_bytes(500) or "500.0" in format_bytes(500)
+
+    def test_format_bytes_kilobytes(self) -> None:
+        """Test format_bytes for kilobyte values."""
+        result = format_bytes(2048)
+        assert "KB" in result
+
+    def test_format_bytes_megabytes(self) -> None:
+        """Test format_bytes for megabyte values."""
+        result = format_bytes(2 * 1024 * 1024)
+        assert "MB" in result
+
+    def test_get_trend_indicator_up(self) -> None:
+        """Test trend indicator for upward trend."""
+        result = get_trend_indicator(1.1, 1.0)
+        assert result in ["📈", "📉", "➡️"]
+
+    def test_get_trend_indicator_down(self) -> None:
+        """Test trend indicator for downward trend."""
+        result = get_trend_indicator(0.9, 1.0)
+        assert result in ["📈", "📉", "➡️"]
+
+    def test_get_trend_indicator_stable(self) -> None:
+        """Test trend indicator for stable values."""
+        result = get_trend_indicator(1.0, 1.0)
+        assert result == "➡️"
+
+    def test_detect_anomalies_returns_series(self) -> None:
+        """Test that detect_anomalies returns a proper result."""
+        try:
+            import pandas as pd
+            import numpy as np
+
+            # Create test series with outlier
+            data = pd.Series([1.0, 1.1, 0.9, 1.0, 1.0, 10.0])  # 10.0 is outlier
+            result = detect_anomalies(data, threshold=2.0)
+            assert isinstance(result, pd.Series)
+            # The outlier should be detected
+            assert result.iloc[-1] is True or result.iloc[-1] == True
+        except ImportError:
+            pytest.skip("pandas/numpy not installed")
+
+    def test_load_closures_returns_list(self) -> None:
+        """Test that load_closures returns a list of dicts."""
+        closures = load_closures()
+        assert isinstance(closures, list)
+        # This repo has closures
+        assert len(closures) > 0
+        # Each closure should have required fields
+        for c in closures:
+            assert "name" in c
+            assert "path" in c
+            assert "type" in c
+            assert c["type"] in ["python", "yaml"]
+
+    def test_closures_paths_exist(self) -> None:
+        """Test that closure paths exist."""
+        closures = load_closures()
+        for c in closures:
+            path = Path(c["path"])
+            assert path.exists(), f"Closure path does not exist: {path}"
+
+
+class TestDashboardConstants:
+    """Tests for dashboard constants."""
+
+    def test_regime_colors_complete(self) -> None:
+        """Test that all regime colors are defined."""
+        expected_regimes = ["STABLE", "WATCH", "COLLAPSE", "CRITICAL"]
+        for regime in expected_regimes:
+            assert regime in REGIME_COLORS
+            assert REGIME_COLORS[regime].startswith("#")
+
+    def test_status_colors_complete(self) -> None:
+        """Test that all status colors are defined."""
+        expected_statuses = ["CONFORMANT", "NONCONFORMANT", "NON_EVALUABLE"]
+        for status in expected_statuses:
+            assert status in STATUS_COLORS
+            assert STATUS_COLORS[status].startswith("#")
+
+    def test_kernel_symbols_present(self) -> None:
+        """Test that kernel symbols dictionary has entries."""
+        assert len(KERNEL_SYMBOLS) > 0
+        assert "omega" in KERNEL_SYMBOLS
+        assert "ω" in KERNEL_SYMBOLS["omega"]

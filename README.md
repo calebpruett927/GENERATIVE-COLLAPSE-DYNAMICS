@@ -3,7 +3,7 @@
 [![CI](https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/actions/workflows/validate.yml/badge.svg)](https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/actions/workflows/validate.yml)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Tests: 718 passing](https://img.shields.io/badge/tests-718%20passing-brightgreen.svg)](tests/)
+[![Tests: 730 passing](https://img.shields.io/badge/tests-730%20passing-brightgreen.svg)](tests/)
 [![Version: 1.5.0](https://img.shields.io/badge/version-1.5.0-blue.svg)](CHANGELOG.md)
 
 **UMCP transforms computational experiments into auditable artifacts** with formal mathematical foundations based on a foundational principle:
