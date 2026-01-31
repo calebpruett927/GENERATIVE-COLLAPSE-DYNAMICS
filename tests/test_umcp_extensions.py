@@ -276,15 +276,22 @@ def test_main_install_nonexistent(capsys):
 
 def test_run_extension_with_error():
     """Test run_extension handles errors gracefully."""
-    # Mock subprocess.run to raise an exception
-    with mock.patch.object(subprocess, "run", side_effect=Exception("Test error")):
+    # Mock check_extension to return True, then mock subprocess.run to raise
+    with (
+        mock.patch.object(umcp_extensions, "check_extension", return_value=True),
+        mock.patch.object(subprocess, "run", side_effect=Exception("Test error")),
+    ):
         result = umcp_extensions.run_extension("api")
     assert result == 1
 
 
 def test_run_extension_keyboard_interrupt():
     """Test run_extension handles keyboard interrupt."""
-    with mock.patch.object(subprocess, "run", side_effect=KeyboardInterrupt()):
+    # Mock check_extension to return True, then mock subprocess.run to raise
+    with (
+        mock.patch.object(umcp_extensions, "check_extension", return_value=True),
+        mock.patch.object(subprocess, "run", side_effect=KeyboardInterrupt()),
+    ):
         result = umcp_extensions.run_extension("api")
     assert result == 0
 
