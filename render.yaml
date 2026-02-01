@@ -1,0 +1,28 @@
+# Render Blueprint - Deploy both API and Dashboard
+# Deploy at: https://render.com/deploy?repo=https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code
+
+services:
+  # UMCP REST API
+  - type: web
+    name: umcp-api
+    runtime: python
+    plan: free
+    buildCommand: pip install -e ".[api]"
+    startCommand: uvicorn umcp.api_umcp:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12"
+      - key: UMCP_DEV_MODE
+        value: "true"
+    healthCheckPath: /health
+
+  # UMCP Streamlit Dashboard  
+  - type: web
+    name: umcp-dashboard
+    runtime: python
+    plan: free
+    buildCommand: pip install -e ".[viz]"
+    startCommand: streamlit run src/umcp/dashboard.py --server.port $PORT --server.address 0.0.0.0 --server.headless true
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12"
