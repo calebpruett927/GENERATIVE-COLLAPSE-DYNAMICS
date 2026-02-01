@@ -1,0 +1,53 @@
+# UMCP Dashboard Docker Image
+# 
+# Build: docker build -t umcp-dashboard -f deploy/Dockerfile.dashboard .
+# Run:   docker run -p 8501:8501 -p 8000:8000 umcp-dashboard
+
+FROM python:3.12-slim
+
+LABEL maintainer="UMCP Project"
+LABEL description="UMCP Dashboard and API Server"
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV UMCP_DEV_MODE=true
+ENV DASHBOARD_PORT=8501
+ENV API_PORT=8000
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create app directory
+WORKDIR /app
+
+# Copy all source files
+COPY pyproject.toml README.md ./
+COPY src/ src/
+COPY contracts/ contracts/
+COPY closures/ closures/
+COPY casepacks/ casepacks/
+COPY ledger/ ledger/
+COPY schemas/ schemas/
+COPY scripts/ scripts/
+COPY deploy/ deploy/
+
+# Install Python dependencies (non-editable for Docker)
+RUN pip install --no-cache-dir ".[communications]"
+
+# Create logs directory
+RUN mkdir -p logs
+
+# Expose ports
+EXPOSE 8501 8000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
+    CMD curl -f http://localhost:8501/_stcore/health || exit 1
+
+# Make entrypoint executable
+RUN chmod +x /app/deploy/docker-entrypoint.sh
+
+ENTRYPOINT ["/app/deploy/docker-entrypoint.sh"]

@@ -1,0 +1,49 @@
+# UMCP Dashboard systemd Service
+# 
+# Installation:
+#   1. Copy this file to /etc/systemd/system/umcp-dashboard.service
+#   2. Update paths and user as needed
+#   3. Run: sudo systemctl daemon-reload
+#   4. Run: sudo systemctl enable umcp-dashboard
+#   5. Run: sudo systemctl start umcp-dashboard
+#
+# Commands:
+#   sudo systemctl start umcp-dashboard    # Start service
+#   sudo systemctl stop umcp-dashboard     # Stop service
+#   sudo systemctl status umcp-dashboard   # Check status
+#   sudo journalctl -u umcp-dashboard -f   # View logs
+
+[Unit]
+Description=UMCP Dashboard (Streamlit)
+Documentation=https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code
+After=network.target
+
+[Service]
+Type=simple
+User=umcp
+Group=umcp
+WorkingDirectory=/opt/umcp
+Environment="PATH=/opt/umcp/.venv/bin:/usr/local/bin:/usr/bin:/bin"
+Environment="PYTHONPATH=/opt/umcp/src"
+ExecStart=/opt/umcp/.venv/bin/streamlit run src/umcp/dashboard.py \
+    --server.port 8501 \
+    --server.headless true \
+    --server.address 0.0.0.0 \
+    --server.enableCORS false \
+    --server.maxUploadSize 50
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=umcp-dashboard
+
+# Security hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/umcp/logs /opt/umcp/ledger
+
+[Install]
+WantedBy=multi-user.target

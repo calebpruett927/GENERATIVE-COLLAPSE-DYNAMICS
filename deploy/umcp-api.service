@@ -1,0 +1,44 @@
+# UMCP API systemd Service
+# 
+# Installation:
+#   1. Copy this file to /etc/systemd/system/umcp-api.service
+#   2. Update paths and user as needed
+#   3. Run: sudo systemctl daemon-reload
+#   4. Run: sudo systemctl enable umcp-api
+#   5. Run: sudo systemctl start umcp-api
+
+[Unit]
+Description=UMCP REST API (FastAPI/Uvicorn)
+Documentation=https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code
+After=network.target
+
+[Service]
+Type=simple
+User=umcp
+Group=umcp
+WorkingDirectory=/opt/umcp
+Environment="PATH=/opt/umcp/.venv/bin:/usr/local/bin:/usr/bin:/bin"
+Environment="PYTHONPATH=/opt/umcp/src"
+Environment="UMCP_DEV_MODE=false"
+ExecStart=/opt/umcp/.venv/bin/uvicorn umcp.api_umcp:app \
+    --host 0.0.0.0 \
+    --port 8000 \
+    --workers 4 \
+    --access-log \
+    --log-level info
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=umcp-api
+
+# Security hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/umcp/logs /opt/umcp/ledger
+
+[Install]
+WantedBy=multi-user.target

@@ -174,14 +174,19 @@ umcp report [path]          # Generate audit reports (JSON output)
 
 ```bash
 # Visualization dashboard (port 8501)
-umcp-visualize
+umcp-dashboard
 
-# REST API server (port 8000)
+# REST API server (port 8000) 
+# For local testing without authentication: export UMCP_DEV_MODE=1
 umcp-api
 
-# List extensions
-umcp-ext list
+# Extension management
+umcp-ext list              # List all extensions
+umcp-ext info <name>       # Get extension details
+umcp-ext check <name>      # Check extension dependencies
 ```
+
+**New to UMCP?** See [QUICKSTART_TUTORIAL.md](QUICKSTART_TUTORIAL.md) for a 10-minute hands-on tutorial.
 
 ---
 

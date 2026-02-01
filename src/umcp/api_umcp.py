@@ -70,6 +70,11 @@ querying the ledger, and managing casepacks.
 API_KEY = os.environ.get("UMCP_API_KEY", "umcp-dev-key")
 API_KEY_NAME = "X-API-Key"
 
+# Development mode: disable authentication for testing/local use
+# Set UMCP_DEV_MODE=1 to enable (authentication disabled)
+# Set UMCP_DEV_MODE=0 or unset for production (authentication required)
+DEV_MODE = os.environ.get("UMCP_DEV_MODE", "0").lower() in ("1", "true", "yes")
+
 api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=False)
 
 
@@ -86,6 +91,9 @@ def get_repo_root() -> Path:
 
 def verify_api_key(api_key: str | None = Security(api_key_header)) -> bool:
     """Verify the API key."""
+    # In dev mode, allow access without API key
+    if DEV_MODE:
+        return True
     if api_key is None:
         return False
     return api_key == API_KEY
@@ -93,6 +101,9 @@ def verify_api_key(api_key: str | None = Security(api_key_header)) -> bool:
 
 def validate_api_key(api_key: str = Security(api_key_header)) -> str:
     """Validate API key and return it, or raise 401."""
+    # In dev mode, skip authentication
+    if DEV_MODE:
+        return "dev-mode-enabled"
     if not api_key or api_key != API_KEY:
         raise HTTPException(
             status_code=401,

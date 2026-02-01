@@ -267,3 +267,16 @@ ignore_missing_imports = true
 module = ["umcp.dashboard", "umcp.api_umcp", "umcp.outputs"]
 ignore_errors = true
 
+
+# Pyright/Pylance configuration for VS Code
+[tool.pyright]
+pythonVersion = "3.11"
+typeCheckingMode = "basic"
+reportUnknownParameterType = false
+reportUnknownLambdaType = false
+reportUnknownMemberType = false
+reportMissingTypeStubs = false
+reportUnknownArgumentType = false
+
+# Exclude dashboard from strict checking (UI-heavy, lambda-heavy)
+ignore = ["src/umcp/dashboard.py"]
