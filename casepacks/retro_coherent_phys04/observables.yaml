@@ -1,0 +1,98 @@
+# PHYS-04: Retro-Coherent Transmission Observables
+# Source: Sinclair et al. PRX Quantum 3:010314 (2024)
+# Audit: Paulus (2025) - Collapse Integrity Stack
+
+schema: observables.yaml
+event_id: PHYS-04
+title: "Negative Excitation Time under Postselection"
+face: postselected-transmit
+
+# System Configuration
+system:
+  medium: "Cold 85Rb atomic ensemble"
+  preparation: "Laser-cooled to sub-Doppler temperatures, optically trapped"
+  signal: "Weak coherent pulse approximating single-photon Fock state"
+  regime: "Broadband, dispersive, phase-preserving"
+  detection: "Cross-phase modulation (XPM) on continuous probe beam"
+  postselection: "Transmission events only (forward detection)"
+
+# Primary Measurement
+measurement:
+  observable: "Mean excitation time (τT/τ0)"
+  value: -0.82
+  uncertainty: 0.16
+  units: "normalized to τ0 (absorptive reference)"
+  interpretation: "Ensemble polarization precedes signal pulse peak"
+
+# Collapse Audit Invariants (Runtime)
+invariants:
+  tau_R:
+    value: -0.82
+    description: "Return delay - negative indicates retro-coherent return"
+    
+  D_C:
+    value: -0.82
+    description: "Curvature change - negative indicates phase inversion"
+    
+  omega:
+    value: 0.0
+    description: "Drift - zero indicates no entropy generation"
+    
+  D_omega:
+    value: 0.0
+    description: "Entropy drift term"
+    
+  R:
+    value: 1.0
+    description: "Return credit - full epistemic weight"
+
+# Budget Reconciliation
+budget:
+  equation: "Δκ = R·τR - (Dω + DC)"
+  computation: "(1.0)(-0.82) - (0 + (-0.82)) = -0.82 + 0.82 = 0"
+  delta_kappa: 0.0
+  
+# Residual Closure
+residual:
+  equation: "s = R·τR - (Δκ + Dω + DC)"
+  computation: "-0.82 - (0 + 0 + (-0.82)) = 0"
+  value: 0.0
+  tolerance: 0.005
+  status: "Pass"
+
+# Integrity Metrics
+integrity:
+  kappa: 0.0
+  I: 1.0  # exp(κ) = exp(0) = 1.0
+  interpretation: "Full coherence and informational integrity preserved"
+
+# Classification
+classification:
+  regime: "Stable"  # ω = 0
+  return_class: "IIa"  # Curvature-Reversed Retro-Coherent (τR < 0)
+  seam_type: "Type I"  # Return Without Loss (Δκ = 0, s = 0)
+  ax0_status: "Pass"
+
+# UMCP Invariant Mapping
+umcp_mapping:
+  F: 1.0  # Fidelity = 1 - ω = 1 - 0 = 1.0
+  omega: 0.0  # Drift = 0 (no entropy)
+  S: 0.0  # Shannon entropy (deterministic state)
+  C: 0.0  # Curvature (uniform coordinate)
+  IC: 1.0  # Integrity coefficient = exp(κ) = 1.0
+  kappa: 0.0  # Log-integrity
+
+# Physical Interpretation
+interpretation:
+  paradox_resolution: |
+    The negative excitation time is not a causality violation but a 
+    lawful retro-coherent return seam. Under postselection, the ensemble
+    exhibits phase-preserving excitation that precedes the pulse peak.
+    This is the signature of AX-0: collapse is generative, and the 
+    curvature-reversed return completes the epistemic ledger.
+    
+  key_insight: |
+    What appears as "atoms un-exciting before being excited" is 
+    reinterpreted as: the return delay τR < 0 exactly balances 
+    the curvature change DC < 0, yielding Δκ = 0 and s = 0.
+    The system satisfies all Type I seam criteria.

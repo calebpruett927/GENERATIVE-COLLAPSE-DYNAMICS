@@ -1,0 +1,150 @@
+{
+  "schema": "schemas/validator.result.schema.json",
+  "created_utc": "2026-02-02T16:54:37Z",
+  "validator": {
+    "name": "umcp-validator",
+    "version": "1.5.0",
+    "implementation": {
+      "language": "python",
+      "python_version": "3.12.1",
+      "git_commit": "4f390ac53393a2adaef0b6738f4e600045cfe6c8",
+      "build": "repo"
+    }
+  },
+  "run_status": "NONCONFORMANT",
+  "summary": {
+    "counts": {
+      "errors": 1,
+      "warnings": 0,
+      "info": 0,
+      "targets_total": 9,
+      "targets_failed": 2
+    },
+    "policy": {
+      "strict": true,
+      "fail_on_warning": true
+    },
+    "cache_stats": {
+      "schema_validators_cached": 7,
+      "files_cached": 25,
+      "cache_hits": 4,
+      "cache_misses": 7,
+      "file_reuse": 10,
+      "schema_reuse": 4,
+      "casepacks_skipped": 7,
+      "total_validation_runs": 7
+    }
+  },
+  "targets": [
+    {
+      "target_type": "repo",
+      "target_path": ".",
+      "run_status": "NONCONFORMANT",
+      "counts": {
+        "errors": 1,
+        "warnings": 0,
+        "info": 0
+      },
+      "issues": []
+    },
+    {
+      "target_type": "casepack",
+      "target_path": "casepacks/UMCP-REF-E2E-0001",
+      "run_status": "NONCONFORMANT",
+      "counts": {
+        "errors": 1,
+        "warnings": 0,
+        "info": 0
+      },
+      "issues": [
+        {
+          "severity": "ERROR",
+          "code": "E001",
+          "message": "Missing required file: casepacks/UMCP-REF-E2E-0001/manifest.json",
+          "path": "casepacks/UMCP-REF-E2E-0001/manifest.json",
+          "hint": "Create the file at this exact path. CasePack requires manifest.json",
+          "rule": "require_file"
+        }
+      ]
+    },
+    {
+      "target_type": "casepack",
+      "target_path": "casepacks/gcd_complete",
+      "run_status": "CONFORMANT",
+      "counts": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 0
+      },
+      "issues": []
+    },
+    {
+      "target_type": "casepack",
+      "target_path": "casepacks/hello_world",
+      "run_status": "CONFORMANT",
+      "counts": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 0
+      },
+      "issues": []
+    },
+    {
+      "target_type": "casepack",
+      "target_path": "casepacks/kin_ref_phase_oscillator",
+      "run_status": "CONFORMANT",
+      "counts": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 0
+      },
+      "issues": []
+    },
+    {
+      "target_type": "casepack",
+      "target_path": "casepacks/kinematics_complete",
+      "run_status": "CONFORMANT",
+      "counts": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 0
+      },
+      "issues": []
+    },
+    {
+      "target_type": "casepack",
+      "target_path": "casepacks/rcft_complete",
+      "run_status": "CONFORMANT",
+      "counts": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 0
+      },
+      "issues": []
+    },
+    {
+      "target_type": "casepack",
+      "target_path": "casepacks/retro_coherent_phys04",
+      "run_status": "CONFORMANT",
+      "counts": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 0
+      },
+      "issues": []
+    },
+    {
+      "target_type": "casepack",
+      "target_path": "casepacks/weyl_des_y3",
+      "run_status": "CONFORMANT",
+      "counts": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 0
+      },
+      "issues": []
+    }
+  ],
+  "issues": [],
+  "notes": "UMCP repository validation"
+}

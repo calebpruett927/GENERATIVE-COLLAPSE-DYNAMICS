@@ -17,6 +17,10 @@ This document provides the **complete formal specification** of the UMCP kernel.
 
 **Critical principle**: These definitions are **algebraic + geometric + calculus objects**. They are not trend statistics or heuristics. Changes to conventions (normalization, domain, neighborhood) constitute **structural changes** and must be handled via closures and seam accounting.
 
+**Core Invariance Property**: For any run r with frozen config φ_r and bounded trace Ψ_r(t), the Tier-1 kernel K_r(t) := K(Ψ_r(t); φ_r) is invariant to any Tier-2 object. Within a frozen run, the kernel computation is a pure function of the frozen interface—no back-edges, no retroactive tuning. Between runs, canon edges require demonstrated return (τ_R finite) and weld closure (ledger–budget residual within tolerance).
+
+**See Also**: [TIER_SYSTEM.md](TIER_SYSTEM.md) for the complete tier architecture and constitutional clauses.
+
 ---
 
 ## 1. Kernel Invariants (Tier-1 Outputs)

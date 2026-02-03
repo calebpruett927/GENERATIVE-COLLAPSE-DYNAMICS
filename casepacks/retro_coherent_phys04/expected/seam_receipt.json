@@ -1,0 +1,95 @@
+{
+  "schema": "schemas/seam_receipt.schema.json",
+  "receipt_type": "seam_audit",
+  "event_id": "PHYS-04",
+  "title": "Retro-Coherent Transmission Seam Receipt",
+  "created_utc": "2025-11-02T12:00:00Z",
+  "timezone": "America/Chicago",
+  
+  "contract": {
+    "id": "GCD.INTSTACK.v1",
+    "face": "postselected-transmit",
+    "normalization": "τ0 (absorptive reference time)"
+  },
+  
+  "frozen_parameters": {
+    "a": 0.0,
+    "b": 1.0,
+    "epsilon": 1e-8,
+    "p": 1.0,
+    "alpha": 1.0,
+    "tolerance": 0.005
+  },
+  
+  "runtime_invariants": {
+    "tau_R": -0.82,
+    "D_C": -0.82,
+    "omega": 0.0,
+    "D_omega": 0.0,
+    "R": 1.0
+  },
+  
+  "budget_reconciliation": {
+    "equation": "Δκ = R·τR - (Dω + DC)",
+    "terms": {
+      "R_times_tau_R": -0.82,
+      "D_omega": 0.0,
+      "D_C": -0.82,
+      "sum_drift_curvature": -0.82
+    },
+    "delta_kappa": 0.0,
+    "closed": true
+  },
+  
+  "residual_closure": {
+    "equation": "s = R·τR - (Δκ + Dω + DC)",
+    "residual": 0.0,
+    "tolerance": 0.005,
+    "within_tolerance": true,
+    "audit_status": "Pass"
+  },
+  
+  "integrity_metrics": {
+    "kappa": 0.0,
+    "I": 1.0,
+    "interpretation": "Full epistemic return, no informational loss"
+  },
+  
+  "classification": {
+    "regime": "Stable",
+    "seam_type": "Type I",
+    "seam_class": "IIa",
+    "description": "Return Without Loss - Curvature-Reversed Retro-Coherent"
+  },
+  
+  "axiom_compliance": {
+    "AX-0": {
+      "statement": "Only that which returns through collapse is real",
+      "status": "Pass",
+      "evidence": "Δκ = 0, s = 0, I = 1.0"
+    },
+    "AX-1": {
+      "statement": "Boundary defines interior",
+      "status": "Pass",
+      "evidence": "Postselection face defines admissible return paths"
+    },
+    "AX-2": {
+      "statement": "Entropy measures determinacy",
+      "status": "Pass",
+      "evidence": "ω = 0, S = 0 (deterministic, no drift)"
+    }
+  },
+  
+  "weld_record": {
+    "weld_id": "ss1m-phys04-rb-exc-tx82",
+    "weld_type": "Type I",
+    "status": "Exact",
+    "sha256": "4b3de64710b0b431a64008c59a0c3145bd9c02831835d5e1b86de235c68915f6",
+    "manifest_root_hash": "60f9712be3e3f201de34d37c7cdd0e96f0328c174fc3a7c125f0299f5badd103"
+  },
+  
+  "ledger_statement": {
+    "summary": "The experimental event qualifies as a weldable audit seam under the Collapse Integrity Stack. All closure identities are satisfied, and no interpretive contradiction remains.",
+    "conclusion": "The so-called negative excitation is not a paradox, but a certified epistemic return path. The event is recorded in the Integrity Ledger as a stable, curvature-inverted, drift-free seam resolved under formal audit grammar."
+  }
+}

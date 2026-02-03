@@ -92,6 +92,10 @@ See also:
 | **Ψ_r** | Psi_recursive | Tier-2 | [0,∞) | Recursive field strength (RCFT) | [canon/rcft_anchors.yaml](canon/rcft_anchors.yaml) |
 | **λ_p** | lambda_pattern | Tier-2 | (0,∞] | Resonance wavelength (RCFT) | [canon/rcft_anchors.yaml](canon/rcft_anchors.yaml) |
 | **Θ** | Theta_phase | Tier-2 | [0,2π) | Phase angle (RCFT) | [canon/rcft_anchors.yaml](canon/rcft_anchors.yaml) |
+| **Σ** | Sigma | Tier-1 | [0,2] | Gravity modification function (WEYL) | [canon/weyl_anchors.yaml](canon/weyl_anchors.yaml) |
+| **Σ₀** | Sigma_0 | Tier-1 | [-1,1] | Amplitude of gravity deviation (WEYL) | [canon/weyl_anchors.yaml](canon/weyl_anchors.yaml) |
+| **ĥJ** | hJ | Tier-1 | [0,1] | Weyl evolution proxy (WEYL) | [canon/weyl_anchors.yaml](canon/weyl_anchors.yaml) |
+| **Ψ_W** | Psi_W | Tier-1 | [-1,1] | Weyl potential (Φ+Ψ)/2 (WEYL) | [canon/weyl_anchors.yaml](canon/weyl_anchors.yaml) |
 | **∞_rec** | INF_REC | Boundary | typed | No-return typed state | [contracts/UMA.INTSTACK.v1.yaml](contracts/UMA.INTSTACK.v1.yaml) |
 | **Δκ** | Delta_kappa | Tier-1.5 | ℝ | Ledger/budget delta (seam) | [contracts/GCD.INTSTACK.v1.yaml](contracts/GCD.INTSTACK.v1.yaml) |
 

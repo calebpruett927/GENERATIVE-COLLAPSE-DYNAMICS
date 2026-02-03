@@ -1,0 +1,317 @@
+schema: schemas/contract.schema.json
+contract:
+  id: WEYL.INTSTACK.v1
+  version: 1.0.0
+  timezone: UTC
+  parent_contract: GCD.INTSTACK.v1
+  tier_level: 1
+  embedding:
+    interval:
+    - 0.0
+    - 1.0
+    face: pre_clip
+    oor_policy: clip_and_flag
+    epsilon: 1.0e-08
+  tier_1_kernel:
+    reserved_symbols:
+    # Inherited from GCD
+    - omega
+    - F
+    - S
+    - C
+    - tau_R
+    - kappa
+    - IC
+    - IC_min
+    # Weyl-specific observables
+    - hJ  # Weyl evolution proxy ĥJ(z)
+    - hb  # Bias-growth combination ĥb(z)
+    - z_eff  # Effective redshift
+    - Sigma  # Modified gravity parameter Σ(z)
+    - Sigma_0  # Amplitude of Σ deviation
+    - sigma8  # σ8 amplitude normalization
+    - D1  # Linear growth function D₁(z)
+    - H_z  # Conformal Hubble H(z)
+    - chi  # Comoving distance χ(z)
+    - Omega_m  # Matter density Ω_m(z)
+    - C_ell  # Angular power spectrum C_ℓ
+    - T_Weyl  # Weyl transfer function
+    - J  # Weyl deviation function J(z)
+    - chi2_red  # Reduced chi-squared
+    weights_policy: nonnegative_sum_to_one
+    frozen_parameters:
+      # Inherited from GCD
+      p: 3
+      alpha: 1.0
+      lambda: 0.2
+      eta: 0.001
+      alpha_energy: 1.0
+      beta_energy: 0.5
+      tau_0: 10.0
+      C_crit: 0.2
+      # Weyl-specific parameters
+      z_star: 1100.0  # CMB last scattering redshift (high-z GR anchor)
+      z_anchor_matter_era: 10.0  # Matter era anchor for GR recovery
+      ell_limber_threshold: 200  # ℓ threshold for Limber approximation
+      sigma8_planck: 0.811  # Planck 2018 σ8 value
+      Omega_m_0: 0.315  # Present-day matter density
+      h_0: 0.674  # Hubble constant in 100 km/s/Mpc
+      n_s: 0.965  # Scalar spectral index
+      # DES Y3 MAGLIM lens bin effective redshifts
+      z_bin_1: 0.295
+      z_bin_2: 0.467
+      z_bin_3: 0.626
+      z_bin_4: 0.771
+    tolerances:
+      tol_seam: 0.005
+      tol_id: 1.0e-09
+      tol_energy: 1.0e-06
+      tol_flux: 1.0e-06
+      tol_resonance: 1.0e-06
+      tol_sigma: 0.01  # Σ deviation tolerance from GR
+      tol_hJ: 0.001  # ĥJ measurement tolerance
+      tol_chi2: 0.1  # χ² tolerance
+  axioms:
+  # Inherited from GCD
+  - id: AX-0
+    statement: Collapse is generative
+    description: |
+      Inherited from GCD Tier-1 (frozen). Every collapse event releases generative
+      potential that can be harvested by downstream processes.
+  - id: AX-1
+    statement: Boundary defines interior
+    description: |
+      Inherited from GCD Tier-1 (frozen). The system's boundary conditions fully
+      determine its interior dynamics through resonance patterns.
+  - id: AX-2
+    statement: Entropy measures determinacy
+    description: |
+      Inherited from GCD Tier-1 (frozen). Entropy S quantifies the system's
+      indeterminacy. S=0 implies deterministic precision.
+  # Weyl-specific axioms
+  - id: AX-W0
+    statement: Reference anchor defines deviation
+    description: |
+      The Weyl axiom: All gravitational deviations are measured relative to a
+      frozen high-redshift anchor z* where GR+ΛCDM is assumed to hold. The
+      anchor z* plays the role of the "boundary" that defines the interior
+      evolution of Σ(z). This is the cosmological analog of AX-1.
+      Mathematical form: Σ(z*) ≡ 1 (GR reference).
+  - id: AX-W1
+    statement: Weyl potential encodes gravitational truth
+    description: |
+      The Weyl potential Ψ_W = (Φ+Ψ)/2 is the geometric sum of metric potentials.
+      Deviations in Ψ_W evolution from the GR prediction constitute measurable
+      modified gravity. The function J(z) parametrizes this deviation.
+  - id: AX-W2
+    statement: Prior-free measurement reveals tension
+    description: |
+      The difference between σ8 inferred from cosmological parameters versus
+      σ8 inferred from ĥJ measurements constitutes a measurable "tension."
+      This tension is analogous to collapse potential Φ_collapse: it quantifies
+      the stress between prediction and observation.
+  regime_classification:
+    gravity_deviation:
+      GR_consistent:
+        threshold: 0.1
+        condition: "|Σ₀| < 0.1"
+        interpretation: "Consistent with General Relativity"
+      tension:
+        threshold: 0.3
+        condition: "0.1 ≤ |Σ₀| < 0.3"
+        interpretation: "Mild tension with GR, possible systematics"
+      modified_gravity:
+        threshold: null
+        condition: "|Σ₀| ≥ 0.3"
+        interpretation: "Strong evidence for modified gravity"
+    sigma8_tension:
+      consistent:
+        threshold: 0.05
+        condition: "|σ8_params - σ8_hJ|/σ8_hJ < 0.05"
+        interpretation: "No tension in σ8 measurements"
+      mild:
+        threshold: 0.10
+        condition: "0.05 ≤ |σ8_params - σ8_hJ|/σ8_hJ < 0.10"
+        interpretation: "Mild σ8 tension (~1σ)"
+      significant:
+        threshold: 0.20
+        condition: "0.10 ≤ |σ8_params - σ8_hJ|/σ8_hJ < 0.20"
+        interpretation: "Significant σ8 tension (~2σ)"
+      severe:
+        threshold: null
+        condition: "|σ8_params - σ8_hJ|/σ8_hJ ≥ 0.20"
+        interpretation: "Severe σ8 tension (>2σ)"
+    chi2_fit:
+      excellent:
+        threshold: 0.8
+        condition: "χ²_red < 0.8"
+        interpretation: "Excellent model fit"
+      good:
+        threshold: 1.5
+        condition: "0.8 ≤ χ²_red < 1.5"
+        interpretation: "Good model fit"
+      marginal:
+        threshold: 2.5
+        condition: "1.5 ≤ χ²_red < 2.5"
+        interpretation: "Marginal fit quality"
+      poor:
+        threshold: null
+        condition: "χ²_red ≥ 2.5"
+        interpretation: "Poor fit, model inadequacy"
+    # Inherited from GCD
+    energy:
+      low:
+        threshold: 0.01
+        condition: E < 0.01
+      medium:
+        threshold: 0.05
+        condition: "0.01 ≤ E < 0.05"
+      high:
+        threshold: null
+        condition: "E ≥ 0.05"
+  mathematical_identities:
+  # Inherited from GCD
+  - name: Fidelity-drift duality
+    formula: "F = 1 - ω"
+    tolerance: 1.0e-09
+  - name: Integrity-collapse relation
+    formula: "IC ≈ exp(κ)"
+    tolerance: 1.0e-06
+  # Weyl-specific identities
+  - name: Weyl evolution proxy definition
+    formula: "ĥJ(z) = J(z) · σ8(z) / D₁(z) = J(z) · σ8(z*) / D₁(z*)"
+    tolerance: 1.0e-06
+    source: "Nature Comms 15:9295 (2024) Eq. 4"
+  - name: Bias-growth combination
+    formula: "ĥb_i(z) = b_i(z) · σ8(z)"
+    tolerance: 1.0e-06
+    source: "Nature Comms 15:9295 (2024) Eq. 5"
+  - name: Modified gravity Sigma mapping
+    formula: "ĥJ(z_i) = Ω_m(z_i) · [D₁(z_i)/D₁(z*)] · σ8(z*) · Σ(z_i)"
+    tolerance: 1.0e-06
+    source: "Nature Comms 15:9295 (2024) Eq. 12"
+  - name: Sigma parametrization
+    formula: "Σ(z) = 1 + Σ₀ · g(z)"
+    tolerance: 1.0e-06
+    source: "Nature Comms 15:9295 (2024) Eq. 13"
+  - name: Weyl transfer function
+    formula: "T_{Ψ_W}(k,z) = [H²(z)J(k,z)/(H²(z*)D₁(z*))] · √[B(k,z)/B(k,z*)] · T_{Ψ_W}(k,z*)"
+    tolerance: 1.0e-06
+    source: "Nature Comms 15:9295 (2024) Eq. 2"
+  - name: GR recovery at anchor
+    formula: "Σ(z*) = 1"
+    tolerance: 1.0e-09
+    interpretation: "General Relativity holds at high-z anchor"
+  typed_censoring:
+    tau_R_special_values:
+    - INF_REC
+    - UNIDENTIFIABLE
+    run_status_enum:
+    - CONFORMANT
+    - NONCONFORMANT
+    - NON_EVALUABLE
+    no_return_no_credit: true
+    weyl_regime_enums:
+      gravity_deviation:
+      - GR_consistent
+      - Tension
+      - Modified_gravity
+      sigma8_tension:
+      - Consistent
+      - Mild
+      - Significant
+      - Severe
+      chi2_fit:
+      - Excellent
+      - Good
+      - Marginal
+      - Poor
+  closures:
+    # Inherited GCD closures
+    energy_potential:
+      path: closures/gcd/energy_potential.py
+      inputs: [omega, S, C]
+      outputs: [E_potential, E_collapse, E_entropy, E_curvature, regime]
+    # Weyl-specific closures
+    weyl_transfer:
+      path: closures/weyl/weyl_transfer.py
+      inputs: [H_z, J, D1, B_boost, z, z_star]
+      outputs: [T_Weyl, T_ratio, regime]
+      description: "Weyl transfer function T_{Ψ_W}(k,z) computation"
+      source: "Eq. 2"
+    limber_integral:
+      path: closures/weyl/limber_integral.py
+      inputs: [n_lens, n_source, H_z, hJ, hb, B_boost, P_lin, chi, ell_values]
+      outputs: [C_ell_ggl, C_ell_gg, regime]
+      description: "Limber approximation for C_ℓ (galaxy-galaxy lensing and clustering)"
+      source: "Eq. 3, 6"
+    beyond_limber:
+      path: closures/weyl/beyond_limber.py
+      inputs: [n_i, n_j, H_z, hb, P_lin, chi, ell]
+      outputs: [C_ell_lin, spherical_bessel_term]
+      description: "Beyond-Limber correction for ℓ < 200"
+      source: "Eq. 7"
+    sigma_evolution:
+      path: closures/weyl/sigma_evolution.py
+      inputs: [hJ, Omega_m, D1, sigma8_star]
+      outputs: [Sigma, Sigma_0, g_z, regime]
+      description: "Map ĥJ → Σ(z) and fit Σ₀"
+      source: "Eq. 11-13"
+    boost_factor:
+      path: closures/weyl/boost_factor.py
+      inputs: [k, z, P_lin, P_nl]
+      outputs: [B_boost, nl_correction]
+      description: "Nonlinear boost factor B(k,z)"
+    cosmology_background:
+      path: closures/weyl/cosmology_background.py
+      inputs: [z, Omega_m_0, h_0]
+      outputs: [H_z, chi, D1, Omega_m_z, sigma8_z]
+      description: "Background cosmology: H(z), χ(z), D₁(z), Ω_m(z)"
+  notes: |
+    WEYL.INTSTACK.v1 extends GCD.INTSTACK.v1 with the Weyl evolution framework
+    for testing modified gravity using weak gravitational lensing.
+    
+    This contract implements the mathematical framework from:
+    "Model-independent test of gravity with a network of galaxy surveys"
+    (Nature Communications 15:9295, 2024; s41467-024-53363-6)
+    
+    Core Principle Alignment:
+    - Within-run: Frozen cosmological parameters (Ω_m, σ8, z*) determine the
+      Weyl trace; Tier-1 invariants (ĥJ, Σ) are computed from that frozen trace.
+      No back-edges: the measured ĥJ cannot alter the prior assumptions.
+    - Between-run: Canonization requires return-weld. A new Σ₀ fit is only
+      "canon-continuous" with prior results if χ² improves AND identity checks
+      (parameter consistency) close within tolerance.
+    
+    Core Mapping to UMCP:
+    - ĥJ(z_i) per redshift bin → Kernel coordinates c_i(t)
+    - Σ₀ deviation from GR → Collapse/drift metric ω
+    - χ²_red fit quality → Seam residual s
+    - CMB prior toggle → Closure registry discipline
+    - z* anchor → Return domain generator D_θ
+    
+    The Weyl axiom (AX-W0) is the cosmological realization of AX-1
+    ("Boundary defines interior"): the high-z anchor where GR holds
+    defines the meaning of gravitational deviation at lower redshift.
+    
+    Reference Data (DES Y3 MAGLIM, CMB prior):
+    - z_bins: [0.295, 0.467, 0.626, 0.771]
+    - ĥJ: [0.326±0.020, 0.332±0.015, 0.387±0.026, 0.354±0.033]
+    - σ8 from params: 0.849±0.030
+    - σ8 from ĥJ: 0.743±0.039
+    - Σ₀ (standard): 0.24±0.10
+    - ΛCDM χ²_red: 2.1 (p=0.078)
+    - Σ₀ model χ²_red: ~1.1 (p=0.33)
+  provenance:
+    created: '2026-02-01'
+    author: UMCP-WEYL Working Group
+    canonical_anchor: canon/weyl_anchors.yaml
+    parent_version: GCD.INTSTACK.v1.0.0
+    source_publication:
+      title: "Model-independent test of gravity with a network of galaxy surveys"
+      journal: "Nature Communications"
+      volume: 15
+      article: 9295
+      year: 2024
+      doi: "s41467-024-53363-6"
+  extensions: {}

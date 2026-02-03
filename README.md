@@ -13,6 +13,11 @@
 >
 > Reality is defined by what persists through collapse-reconstruction cycles. Only measurements that return—that survive transformation and can be reproduced—receive credit as real, valid observations.
 
+**Core Principle**: *One-way dependency flow within a frozen run, with return-based canonization between runs.*
+
+- **Within-run**: Frozen causes only—no back-edges, no retroactive tuning, no "the result changed the rules that produced it."
+- **Between-run**: Continuity only by return-weld—new runs are canon-continuous with prior runs only if the seam returns and closes.
+
 ```yaml
 # Encoded in every UMCP contract
 typed_censoring:

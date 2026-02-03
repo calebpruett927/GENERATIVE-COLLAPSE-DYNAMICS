@@ -1536,6 +1536,109 @@ async def compute_kernel(
     )
 
 
+# ============================================================================
+# Universal Calculator Endpoint
+# ============================================================================
+
+
+class UniversalCalcRequest(BaseModel):
+    """Request for universal calculator."""
+
+    coordinates: list[float] = Field(..., description="Bounded coordinates c_i ∈ [0,1]")
+    weights: list[float] | None = Field(None, description="Channel weights (uniform if not specified)")
+    tau_R: float | None = Field(None, description="Return time (INF if not specified)")
+    prior_kappa: float | None = Field(None, description="Prior κ for seam accounting")
+    prior_IC: float | None = Field(None, description="Prior IC for seam accounting")
+    R_credit: float = Field(0.1, description="Return credit for budget identity")
+    coord_variances: list[float] | None = Field(None, description="Coordinate variances for uncertainty")
+    mode: str = Field("standard", description="Mode: minimal, standard, full, rcft")
+
+
+class UniversalCalcResponse(BaseModel):
+    """Response from universal calculator."""
+
+    timestamp: str
+    computation_mode: str
+    input_hash: str
+    kernel: dict[str, Any]
+    regime: str
+    costs: dict[str, Any] | None = None
+    seam: dict[str, Any] | None = None
+    gcd: dict[str, Any] | None = None
+    rcft: dict[str, Any] | None = None
+    uncertainty: dict[str, Any] | None = None
+    ss1m: dict[str, str] | None = None
+    diagnostics: dict[str, Any] | None = None
+
+
+@app.post("/calculate", response_model=UniversalCalcResponse, tags=["Calculator"])
+async def universal_calculate(
+    request: UniversalCalcRequest,
+    api_key: str = Security(validate_api_key),
+) -> UniversalCalcResponse:
+    """
+    Universal UMCP Calculator - compute all metrics in one call.
+
+    This endpoint integrates all UMCP concepts:
+    - Tier-1 Kernel Invariants (ω, F, S, C, τ_R, κ, IC)
+    - Cost Closures (Γ(ω), D_C, budget identity)
+    - Regime Classification (STABLE/WATCH/COLLAPSE/CRITICAL)
+    - Seam Accounting (if prior state provided)
+    - GCD Metrics (energy, collapse, flux, resonance)
+    - RCFT Metrics (fractal dimension, recursive field)
+    - Uncertainty Propagation (if variances provided)
+    - Human-Verifiable Checksums (SS1M triads)
+
+    Modes:
+    - minimal: Tier-1 kernel only
+    - standard: Kernel + costs + regime (default)
+    - full: All metrics including GCD and RCFT
+    - rcft: Focus on RCFT metrics
+
+    Requires API key authentication.
+    """
+    from .universal_calculator import ComputationMode, UniversalCalculator
+
+    # Map mode string to enum
+    mode_map = {
+        "minimal": ComputationMode.MINIMAL,
+        "standard": ComputationMode.STANDARD,
+        "full": ComputationMode.FULL,
+        "rcft": ComputationMode.RCFT,
+    }
+
+    mode = mode_map.get(request.mode.lower(), ComputationMode.STANDARD)
+
+    # Compute
+    calc = UniversalCalculator()
+    result = calc.compute_all(
+        coordinates=request.coordinates,
+        weights=request.weights,
+        tau_R=request.tau_R,
+        prior_kappa=request.prior_kappa,
+        prior_IC=request.prior_IC,
+        R_credit=request.R_credit,
+        coord_variances=request.coord_variances,
+        mode=mode,
+    )
+
+    # Convert to response
+    return UniversalCalcResponse(
+        timestamp=result.timestamp,
+        computation_mode=result.computation_mode,
+        input_hash=result.input_hash,
+        kernel=result.kernel.to_dict(),
+        regime=result.regime,
+        costs=result.costs.to_dict() if result.costs else None,
+        seam=result.seam.to_dict() if result.seam else None,
+        gcd=result.gcd.to_dict() if result.gcd else None,
+        rcft=result.rcft.to_dict() if result.rcft else None,
+        uncertainty=result.uncertainty.to_dict() if result.uncertainty else None,
+        ss1m=result.ss1m.to_dict() if result.ss1m else None,
+        diagnostics=result.diagnostics if result.diagnostics else None,
+    )
+
+
 @app.post("/kernel/budget", response_model=BudgetIdentityResponse, tags=["Kernel"])
 async def verify_budget_identity(
     R: float = Query(..., description="Return indicator (0 or 1)"),
@@ -1547,6 +1650,7 @@ async def verify_budget_identity(
 ) -> BudgetIdentityResponse:
     """
     Verify the UMCP budget identity: R·τ_R = D_ω + D_C + Δκ
+
 
     The budget identity is the core conservation law of UMCP.
     The seam residual |LHS - RHS| should be ≤ 0.005 for conformance.

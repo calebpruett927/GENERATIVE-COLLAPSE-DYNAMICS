@@ -281,14 +281,24 @@ timestamp,run_status,return_verified,seam_closed,delta_kappa
 
 The UMCP tier system embodies the return axiom through **return-based canonization**:
 
+**Core Principle**: One-way dependency flow within a frozen run, with return-based canonization between runs.
+
+**Within-run**: Authority flows in one direction. The frozen interface (ingest + embedding + contract + closures + weights) determines the bounded trace Ψ(t); Tier-1 invariants are computed as functions of that frozen trace; Tier-2 overlays may read Tier-1 outputs but cannot reach upstream to alter the interface, the trace, or the kernel definitions. No back-edges, no retroactive tuning, no "the result changed the rules that produced it."
+
+**Between-run**: Continuity is never presumed. A new run may exist freely, but it is only "canon-continuous" with a prior run if it returns and welds: the seam has admissible return (no continuity credit in ∞_rec segments), and the κ/IC continuity claim closes under the weld tolerances and identity checks. If that closure fails, the new run is still valid as an experiment or variant—but it does not become a canon edge.
+
+**Constitutional Clauses** (equivalent formulations):
+- "Within-run: frozen causes only. Between-run: continuity only by return-weld."
+- "Runs are deterministic under /freeze; canon is a graph whose edges require returned seam closure."
+- "No back-edges inside a run; no canon claims between runs without welded return."
+
+**Formal Statement**: For any run r with frozen config φ_r and bounded trace Ψ_r(t), Tier-1 kernel K_r(t) := K(Ψ_r(t); φ_r) is invariant to any Tier-2 object. For two runs r₀, r₁, the statement "r₁ canonizes r₀" is admissible iff the seam returns (τ_R finite under policy) and the weld closes (ledger–budget residual within tol + identity check). Otherwise, r₁ is non-canon relative to r₀.
+
 **Within a Frozen Run** (No Feedback):
 ```
 Tier-0 (interface) → Tier-1 (kernel) → Tier-1.5 (weld) → Tier-2 (overlay)
                                                             ✗ NO FEEDBACK
 ```
-- Tier-2 diagnostics cannot alter Tier-1 outcomes within a run
-- This prevents narrative rescue and maintains determinism
-- Preserves auditability and falsifiability
 
 **Across Runs** (Return Validation):
 ```

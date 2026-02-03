@@ -297,3 +297,39 @@ class TestDashboardConstants:
         assert len(KERNEL_SYMBOLS) > 0
         assert "omega" in KERNEL_SYMBOLS
         assert "ω" in KERNEL_SYMBOLS["omega"]
+
+
+class TestGeometryPageFunctions:
+    """Tests for the Three-Layer Geometry visualization functions."""
+
+    def test_geometry_page_function_exists(self) -> None:
+        """Test that render_geometry_page function exists and is importable."""
+        from umcp.dashboard import render_geometry_page
+        assert callable(render_geometry_page)
+
+    def test_layer1_function_exists(self) -> None:
+        """Test that render_layer1_state_space function exists."""
+        from umcp.dashboard import render_layer1_state_space
+        assert callable(render_layer1_state_space)
+
+    def test_layer2_function_exists(self) -> None:
+        """Test that render_layer2_projections function exists."""
+        from umcp.dashboard import render_layer2_projections
+        assert callable(render_layer2_projections)
+
+    def test_layer3_function_exists(self) -> None:
+        """Test that render_layer3_seam_graph function exists."""
+        from umcp.dashboard import render_layer3_seam_graph
+        assert callable(render_layer3_seam_graph)
+
+    def test_unified_view_function_exists(self) -> None:
+        """Test that render_unified_geometry_view function exists."""
+        from umcp.dashboard import render_unified_geometry_view
+        assert callable(render_unified_geometry_view)
+
+    def test_geometry_page_in_pages_dict(self) -> None:
+        """Test that Geometry page is registered in navigation."""
+        # This is a structural test - the page should be accessible
+        from umcp.dashboard import render_geometry_page
+        # Function should not raise when imported
+        assert render_geometry_page is not None

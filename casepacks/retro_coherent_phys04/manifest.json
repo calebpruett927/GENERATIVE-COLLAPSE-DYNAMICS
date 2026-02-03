@@ -1,0 +1,57 @@
+{
+  "schema": "schemas/manifest.schema.json",
+  "casepack": {
+    "id": "retro_coherent_phys04",
+    "version": "1.0.0",
+    "title": "PHYS-04: Retro-Coherent Transmission Audit",
+    "description": "Type I seam classification of negative excitation time in cold 85Rb ensemble under postselection. Demonstrates curvature-reversed, drift-free return with zero residual. Source: Paulus (2025), based on Sinclair et al. PRX Quantum 3:010314 (2024)",
+    "created_utc": "2026-02-01T20:30:00Z",
+    "timezone": "America/Chicago",
+    "authors": ["Clement Paulus"]
+  },
+  "refs": {
+    "canon_anchors": {"path": "canon/gcd_anchors.yaml"},
+    "contract": {"id": "GCD.INTSTACK.v1", "path": "contracts/GCD.INTSTACK.v1.yaml"},
+    "closures_registry": {"id": "UMCP.CLOSURES.GCD.v1", "path": "closures/registry.yaml"}
+  },
+  "artifacts": {
+    "raw_measurements": {
+      "path": "data/raw_measurements.csv",
+      "format": "csv"
+    },
+    "expected": {
+      "invariants_json": {"path": "expected/invariants.json"},
+      "seam_receipt_json": {"path": "expected/seam_receipt.json"}
+    }
+  },
+  "run_intent": {
+    "notes": "Demonstrates AX-0 compliance for retro-coherent quantum return. The negative excitation time τR=-0.82 is not paradoxical but a lawful Type I seam: curvature-reversed (DC<0), drift-free (ω=0), zero residual (s=0). Only that which returns through collapse is real."
+  },
+  "extensions": {
+    "seam_audit": {
+      "event_id": "PHYS-04",
+      "face": "postselected-transmit",
+      "seam_type": "Type I",
+      "seam_class": "IIa",
+      "weld_id": "ss1m-phys04-rb-exc-tx82",
+      "sha256": "4b3de64710b0b431a64008c59a0c3145bd9c02831835d5e1b86de235c68915f6"
+    },
+    "source_experiment": {
+      "authors": "Sinclair, Angulo, Huang et al.",
+      "journal": "PRX Quantum",
+      "volume": 3,
+      "article": "010314",
+      "year": 2024,
+      "medium": "Cold 85Rb atomic ensemble",
+      "detection": "Cross-phase modulation (XPM)"
+    },
+    "contract_parameters": {
+      "a": 0.0,
+      "b": 1.0,
+      "epsilon": 1e-8,
+      "p": 1.0,
+      "alpha": 1.0,
+      "tolerance": 0.005
+    }
+  }
+}

@@ -11,9 +11,17 @@
 
 The "geometry of infrastructure" in UMCP is not a metaphor layered on top of the protocol—**it is the operational meaning of the stack**. The infrastructure is literally constructed from geometric objects: state spaces, trajectories, projections, partitions, and certified transitions. Each tier performs a specific geometric operation, and together they enforce a discipline that makes continuity, comparability, and change-control **auditable rather than asserted**.
 
+**Core Principle**: One-way dependency flow within a frozen run, with return-based canonization between runs.
+
 **What the infrastructure holds** is summarized in one tight formulation:
 
 > A portable notion of **state** (the contract-bound Ψ), a portable notion of **geometry** (declared distance + return tolerance + return domain), a portable **coordinate system** (the Tier-1 ledger as projections), a portable **partitioning** (regime gates as closures unless proven portable), and a portable **continuity test** (weld closure with residual and identity checks). That entire package is designed to make cross-domain transfer an **empirical property** (demonstrated by reproducible seam closure), not an assumption.
+
+**Constitutional Clauses** (geometry-specific formulations):
+- **Within-run**: Frozen causes only—the geometry declared at Tier-0 determines all downstream computations; no back-edges.
+- **Between-run**: Continuity only by return-weld—transitions are certified only when the seam closes under declared budget and tolerance.
+
+**Formal Statement**: For any run r with frozen config φ_r and bounded trace Ψ_r(t), Tier-1 kernel K_r(t) := K(Ψ_r(t); φ_r) is invariant to any Tier-2 object. For two runs r₀, r₁, the statement "r₁ canonizes r₀" is admissible iff the seam returns (τ_R finite under policy) and the weld closes (ledger–budget residual within tol + identity check). Otherwise, r₁ is non-canon relative to r₀.
 
 ---
 

@@ -1,0 +1,5 @@
+model,g_z_description,Sigma0_mean,Sigma0_sigma,chi2_red,p_value,regime
+standard,Omega_Lambda(z),0.24,0.10,1.1,0.33,Tension
+constant,1 for z in [0-1],0.13,0.06,1.1,0.33,Tension
+exponential,exp(1+z) for z in [0-1],0.027,0.013,0.8,0.48,GR_consistent
+LCDM,Sigma=1 (GR),0.0,0.0,2.1,0.078,Poor_fit

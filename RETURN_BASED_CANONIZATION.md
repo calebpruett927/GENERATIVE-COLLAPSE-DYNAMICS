@@ -11,6 +11,19 @@
 
 **Return-based canonization** is the mechanism by which Tier-2 experimental results can be promoted to Tier-1 canonical status. This document formalizes the process and explains how it embodies the core UMCP axiom.
 
+**Core Principle**: One-way dependency flow within a frozen run, with return-based canonization between runs.
+
+**Within-run**: Authority flows in one direction. The frozen interface determines the bounded trace Ψ(t); Tier-1 invariants are computed as functions of that frozen trace; Tier-2 overlays may read Tier-1 outputs but cannot reach upstream to alter the interface, the trace, or the kernel definitions. No back-edges, no retroactive tuning.
+
+**Between-run**: Continuity is never presumed. A new run may exist freely, but it is only "canon-continuous" with a prior run if it returns and welds: the seam has admissible return (no continuity credit in ∞_rec segments), and the κ/IC continuity claim closes under the weld tolerances and identity checks.
+
+**Constitutional Clauses**:
+- "Within-run: frozen causes only. Between-run: continuity only by return-weld."
+- "Runs are deterministic under /freeze; canon is a graph whose edges require returned seam closure."
+- "No back-edges inside a run; no canon claims between runs without welded return."
+
+**Formal Statement**: For any run r with frozen config φ_r and bounded trace Ψ_r(t), Tier-1 kernel K_r(t) := K(Ψ_r(t); φ_r) is invariant to any Tier-2 object. For two runs r₀, r₁, the statement "r₁ canonizes r₀" is admissible iff the seam returns (τ_R finite under policy) and the weld closes (ledger–budget residual within tol + identity check). Otherwise, r₁ is non-canon relative to r₀.
+
 **Key Insight**: The tier system's "NO FEEDBACK" rule is not absolute - it applies **within a frozen run**. Across runs, Tier-2 results can be promoted to Tier-1 **if and only if** they demonstrate return through formal validation.
 
 ---

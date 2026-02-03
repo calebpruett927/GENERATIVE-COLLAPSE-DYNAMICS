@@ -983,8 +983,24 @@ def _apply_semantic_rules_to_casepack(
 # -----------------------------
 # Validation workflow
 # -----------------------------
+def _compute_expected_files_hash(case_dir: Path) -> str:
+    """Compute combined hash of expected files (invariants.json, psi.csv, ss1m_receipt.json)."""
+    expected_dir = case_dir / "expected"
+    files_to_hash = [
+        expected_dir / "invariants.json",
+        expected_dir / "psi.csv",
+        expected_dir / "ss1m_receipt.json",
+    ]
+    combined = ""
+    for fp in files_to_hash:
+        if fp.exists():
+            combined += _compute_file_hash(fp)
+    # Hash the combined string for a single fingerprint
+    return hashlib.sha256(combined.encode()).hexdigest()[:16] if combined else ""
+
+
 def _should_skip_casepack(cache_metadata: dict[str, Any], manifest_path: Path, case_path: str) -> bool:
-    """Check if casepack can be skipped based on unchanged manifest hash."""
+    """Check if casepack can be skipped based on unchanged manifest and expected files hash."""
     if not manifest_path.exists():
         return False
 
@@ -1001,24 +1017,34 @@ def _should_skip_casepack(cache_metadata: dict[str, Any], manifest_path: Path, c
             return False
 
         # Check if manifest hash matches
-        current_hash = _compute_file_hash(manifest_path)
-        cached_hash = cached_entry.get("manifest_hash")
+        current_manifest_hash = _compute_file_hash(manifest_path)
+        cached_manifest_hash = cached_entry.get("manifest_hash")
+        if current_manifest_hash != cached_manifest_hash:
+            return False
 
-        result: bool = current_hash == cached_hash
-        return result
+        # Check if expected files hash matches (invariants.json, psi.csv, ss1m_receipt.json)
+        case_dir = manifest_path.parent
+        current_expected_hash = _compute_expected_files_hash(case_dir)
+        cached_expected_hash = cached_entry.get("expected_hash", "")
+        if current_expected_hash != cached_expected_hash:
+            return False
+
+        return True
     except Exception:
         return False
 
 
 def _cache_casepack_result(cache_metadata: dict[str, Any], case_path: str, manifest_path: Path, status: str) -> None:
-    """Cache casepack validation result with manifest hash."""
+    """Cache casepack validation result with manifest and expected files hash."""
     try:
         if "casepack_results" not in cache_metadata:
             cache_metadata["casepack_results"] = {}
 
+        case_dir = manifest_path.parent
         cache_metadata["casepack_results"][case_path] = {
             "status": status,
             "manifest_hash": (_compute_file_hash(manifest_path) if manifest_path.exists() else None),
+            "expected_hash": _compute_expected_files_hash(case_dir),
             "last_validated": _utc_now_iso(),
         }
     except Exception:

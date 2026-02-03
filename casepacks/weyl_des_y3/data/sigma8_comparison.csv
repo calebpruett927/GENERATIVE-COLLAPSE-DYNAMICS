@@ -1,0 +1,5 @@
+prior_type,source,sigma8_mean,sigma8_sigma_plus,sigma8_sigma_minus,tension_percent
+cmb,from_parameters,0.849,0.030,0.030,
+cmb,from_hJ,0.743,0.039,0.039,14.3
+no_cmb,from_parameters,1.028,0.097,0.097,
+no_cmb,from_hJ,0.776,0.067,0.079,32.5

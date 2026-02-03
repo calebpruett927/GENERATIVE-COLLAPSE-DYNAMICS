@@ -5618,6 +5618,797 @@ def render_api_integration_page() -> None:
 
 
 # ============================================================================
+# Three-Layer Geometry Visualization
+# ============================================================================
+
+
+def render_geometry_page() -> None:
+    """
+    Render the Three-Layer Geometry page - Interactive visualization of
+    State Space → Invariant Coordinates → Seam Graph architecture.
+
+    Reference: INFRASTRUCTURE_GEOMETRY.md
+    """
+    if st is None or go is None or np is None or pd is None:
+        return
+
+    st.title("🔷 Infrastructure Geometry")
+    st.caption("Interactive exploration of the three-layer geometric architecture")
+
+    # ========== Theory Overview ==========
+    with st.expander("📖 Three-Layer Architecture", expanded=False):
+        st.markdown(r"""
+        The UMCP infrastructure is built on three coupled geometric layers:
+
+        ```
+        ┌─────────────────────────────────────────────────────────────────┐
+        │     LAYER 3: SEAM GRAPH (Continuity Certification)              │
+        │     Transitions certified when weld accounting closes           │
+        │     Residual s = Δκ_budget - Δκ_ledger within tolerance        │
+        ├─────────────────────────────────────────────────────────────────┤
+        │     LAYER 2: INVARIANT COORDINATES (Projections)                │
+        │     Ledger {ω, F, S, C, τ_R, κ, IC} as multi-projection        │
+        │     Regime gates partition the projection space                 │
+        ├─────────────────────────────────────────────────────────────────┤
+        │     LAYER 1: STATE SPACE (Manifold + Distance)                  │
+        │     Ψ(t) ∈ [0,1]ⁿ with declared norm ‖·‖ and tolerance η       │
+        │     Return = re-entry to η-balls under declared geometry        │
+        └─────────────────────────────────────────────────────────────────┘
+        ```
+
+        **Key Insight**: Each layer performs a specific geometric operation.
+        Together they make continuity **auditable rather than asserted**.
+
+        See [INFRASTRUCTURE_GEOMETRY.md](INFRASTRUCTURE_GEOMETRY.md) for full specification.
+        """)
+
+    st.divider()
+
+    # ========== Layer Navigation ==========
+    layer_tabs = st.tabs([
+        "🎯 Layer 1: State Space",
+        "📊 Layer 2: Invariant Projections",
+        "🔗 Layer 3: Seam Graph",
+        "🌐 Unified View"
+    ])
+
+    # ========== LAYER 1: STATE SPACE ==========
+    with layer_tabs[0]:
+        render_layer1_state_space()
+
+    # ========== LAYER 2: INVARIANT COORDINATES ==========
+    with layer_tabs[1]:
+        render_layer2_projections()
+
+    # ========== LAYER 3: SEAM GRAPH ==========
+    with layer_tabs[2]:
+        render_layer3_seam_graph()
+
+    # ========== UNIFIED VIEW ==========
+    with layer_tabs[3]:
+        render_unified_geometry_view()
+
+
+def render_layer1_state_space() -> None:
+    """Render Layer 1: State Space visualization with trajectory and η-balls."""
+    if st is None or go is None or np is None:
+        return
+
+    st.subheader("State Space: Ψ(t) ∈ [0,1]ⁿ")
+
+    st.markdown("""
+    **Layer 1** defines the bounded state manifold and return geometry:
+    - **Trajectory**: Time evolution Ψ(t) through normalized state space
+    - **η-balls**: Neighborhoods defining "closeness" for return detection
+    - **Return**: Re-entry to historical η-neighborhoods
+    """)
+
+    # ========== Interactive State Space ==========
+    with st.expander("⚙️ Simulation Parameters", expanded=True):
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            n_dims = st.slider("Dimensions (n)", 2, 5, 3, help="State space dimension")
+            n_steps = st.slider("Time Steps", 20, 200, 50, help="Trajectory length")
+
+        with col2:
+            eta = st.slider("η (Return Tolerance)", 0.01, 0.3, 0.1, 0.01,
+                          help="Neighborhood radius for return detection")
+            drift_rate = st.slider("Drift Rate", 0.0, 0.2, 0.05, 0.01,
+                                 help="Stochastic drift magnitude")
+
+        with col3:
+            oscillation = st.slider("Oscillation", 0.0, 1.0, 0.3, 0.05,
+                                  help="Periodic component strength")
+            seed = st.number_input("Random Seed", 0, 999, 42, help="For reproducibility")
+
+    # Generate synthetic trajectory
+    np.random.seed(seed)
+    t = np.linspace(0, 4 * np.pi, n_steps)
+
+    # Create trajectory with drift + oscillation + noise
+    trajectory = np.zeros((n_steps, n_dims))
+    for d in range(n_dims):
+        phase = 2 * np.pi * d / n_dims
+        base = 0.5 + oscillation * 0.3 * np.sin(t + phase)
+        drift = drift_rate * np.cumsum(np.random.randn(n_steps)) / np.sqrt(n_steps)
+        noise = 0.02 * np.random.randn(n_steps)
+        trajectory[:, d] = np.clip(base + drift + noise, 0.01, 0.99)
+
+    # Compute returns
+    returns = []
+    for i in range(1, n_steps):
+        for j in range(max(0, i - 20), i):  # Look back up to 20 steps
+            dist = np.linalg.norm(trajectory[i] - trajectory[j])
+            if dist <= eta:
+                returns.append((i, j, dist))
+                break
+
+    # ========== 2D/3D Projection ==========
+    st.markdown("#### Trajectory Projection")
+
+    view_mode = st.radio("View Mode", ["2D (c₁, c₂)", "3D (c₁, c₂, c₃)"], horizontal=True)
+
+    if view_mode == "2D (c₁, c₂)" or n_dims < 3:
+        # 2D visualization
+        fig = go.Figure()
+
+        # Trajectory line
+        fig.add_trace(go.Scatter(
+            x=trajectory[:, 0], y=trajectory[:, 1],
+            mode='lines+markers',
+            line=dict(color='royalblue', width=2),
+            marker=dict(size=4, color=np.arange(n_steps), colorscale='Viridis', showscale=True,
+                       colorbar=dict(title="Time t")),
+            name='Trajectory Ψ(t)',
+            hovertemplate='t=%{marker.color:.0f}<br>c₁=%{x:.3f}<br>c₂=%{y:.3f}<extra></extra>'
+        ))
+
+        # Start point
+        fig.add_trace(go.Scatter(
+            x=[trajectory[0, 0]], y=[trajectory[0, 1]],
+            mode='markers', marker=dict(size=15, color='green', symbol='star'),
+            name='Start (t=0)'
+        ))
+
+        # End point
+        fig.add_trace(go.Scatter(
+            x=[trajectory[-1, 0]], y=[trajectory[-1, 1]],
+            mode='markers', marker=dict(size=15, color='red', symbol='square'),
+            name=f'End (t={n_steps-1})'
+        ))
+
+        # η-balls for return events
+        for i, j, dist in returns[:10]:  # Show first 10 returns
+            theta_circle = np.linspace(0, 2*np.pi, 50)
+            x_circle = trajectory[j, 0] + eta * np.cos(theta_circle)
+            y_circle = trajectory[j, 1] + eta * np.sin(theta_circle)
+            fig.add_trace(go.Scatter(
+                x=x_circle, y=y_circle,
+                mode='lines', line=dict(color='orange', width=1, dash='dot'),
+                showlegend=False, hoverinfo='skip'
+            ))
+
+        # Return connections
+        for i, j, dist in returns[:10]:
+            fig.add_trace(go.Scatter(
+                x=[trajectory[i, 0], trajectory[j, 0]],
+                y=[trajectory[i, 1], trajectory[j, 1]],
+                mode='lines', line=dict(color='orange', width=1, dash='dash'),
+                showlegend=False,
+                hovertemplate=f'Return: t={i}→t={j}<br>τ_R={i-j}<br>dist={dist:.4f}<extra></extra>'
+            ))
+
+        fig.update_layout(
+            height=500,
+            xaxis_title="c₁ (Channel 1)",
+            yaxis_title="c₂ (Channel 2)",
+            xaxis=dict(range=[0, 1], constrain='domain'),
+            yaxis=dict(range=[0, 1], scaleanchor='x', scaleratio=1),
+            legend=dict(orientation='h', yanchor='bottom', y=1.02),
+            title=f"State Space Trajectory (η={eta})"
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
+
+    else:
+        # 3D visualization
+        fig = go.Figure()
+
+        # 3D trajectory
+        fig.add_trace(go.Scatter3d(
+            x=trajectory[:, 0], y=trajectory[:, 1], z=trajectory[:, 2],
+            mode='lines+markers',
+            line=dict(color='royalblue', width=3),
+            marker=dict(size=3, color=np.arange(n_steps), colorscale='Viridis', showscale=True,
+                       colorbar=dict(title="Time t")),
+            name='Trajectory Ψ(t)'
+        ))
+
+        # Start/end markers
+        fig.add_trace(go.Scatter3d(
+            x=[trajectory[0, 0]], y=[trajectory[0, 1]], z=[trajectory[0, 2]],
+            mode='markers', marker=dict(size=10, color='green', symbol='diamond'),
+            name='Start'
+        ))
+        fig.add_trace(go.Scatter3d(
+            x=[trajectory[-1, 0]], y=[trajectory[-1, 1]], z=[trajectory[-1, 2]],
+            mode='markers', marker=dict(size=10, color='red', symbol='square'),
+            name='End'
+        ))
+
+        fig.update_layout(
+            height=600,
+            scene=dict(
+                xaxis_title="c₁", yaxis_title="c₂", zaxis_title="c₃",
+                xaxis=dict(range=[0, 1]), yaxis=dict(range=[0, 1]), zaxis=dict(range=[0, 1])
+            ),
+            title=f"3D State Space (η={eta})"
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
+
+    # ========== Return Statistics ==========
+    st.markdown("#### Return Analysis")
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+        st.metric("Total Returns", len(returns))
+    with col2:
+        if returns:
+            avg_tau = np.mean([i - j for i, j, _ in returns])
+            st.metric("Avg τ_R", f"{avg_tau:.1f}")
+        else:
+            st.metric("Avg τ_R", "∞")
+    with col3:
+        if returns:
+            min_tau = min(i - j for i, j, _ in returns)
+            st.metric("Min τ_R", min_tau)
+        else:
+            st.metric("Min τ_R", "∞")
+    with col4:
+        return_rate = len(returns) / n_steps * 100
+        st.metric("Return Rate", f"{return_rate:.1f}%")
+
+    # Return time histogram
+    if returns:
+        tau_values = [i - j for i, j, _ in returns]
+        fig_hist = go.Figure(data=[go.Histogram(x=tau_values, nbinsx=20, marker_color='royalblue')])
+        fig_hist.update_layout(
+            height=250,
+            xaxis_title="Return Time τ_R (steps)",
+            yaxis_title="Count",
+            title="Return Time Distribution"
+        )
+        st.plotly_chart(fig_hist, use_container_width=True)
+
+
+def render_layer2_projections() -> None:
+    """Render Layer 2: Invariant Coordinate projections."""
+    if st is None or go is None or np is None or pd is None:
+        return
+
+    st.subheader("Invariant Coordinates: Multi-Projection Ledger")
+
+    st.markdown("""
+    **Layer 2** projects the state trajectory into interpretable coordinates:
+
+    | Projection | Formula | Range | Geometric Meaning |
+    |------------|---------|-------|-------------------|
+    | **F** (Fidelity) | Σ wᵢcᵢ | [0,1] | Weighted state quality |
+    | **ω** (Drift) | 1 - F | [0,1] | Distance from ideal |
+    | **S** (Entropy) | -Σ wᵢ[cᵢ ln cᵢ + (1-cᵢ)ln(1-cᵢ)] | ≥0 | Uncertainty spread |
+    | **C** (Curvature) | std(cᵢ)/0.5 | [0,1] | Shape dispersion |
+    | **κ** (Log-integrity) | Σ wᵢ ln cᵢ | ≤0 | Additive ledger term |
+    | **IC** (Integrity) | exp(κ) | (0,1] | Geometric mean composite |
+    """)
+
+    # ========== Generate Sample Data ==========
+    with st.expander("⚙️ Simulation Parameters", expanded=True):
+        col1, col2 = st.columns(2)
+        with col1:
+            n_samples = st.slider("Samples", 20, 200, 80)
+            scenario = st.selectbox("Scenario", ["Stable System", "Drift Event", "Oscillating", "Collapse Approach"])
+        with col2:
+            seed = st.number_input("Seed", 0, 999, 42, key="layer2_seed")
+            show_regime = st.checkbox("Show Regime Regions", True)
+
+    np.random.seed(seed)
+    t = np.arange(n_samples)
+
+    # Generate scenario-based data
+    if scenario == "Stable System":
+        omega = 0.02 + 0.01 * np.random.randn(n_samples)
+        C = 0.05 + 0.02 * np.random.randn(n_samples)
+    elif scenario == "Drift Event":
+        omega = 0.02 + 0.15 * (1 / (1 + np.exp(-(t - n_samples/2) / 5)))
+        C = 0.05 + 0.1 * (1 / (1 + np.exp(-(t - n_samples/2) / 5)))
+        omega += 0.01 * np.random.randn(n_samples)
+        C += 0.01 * np.random.randn(n_samples)
+    elif scenario == "Oscillating":
+        omega = 0.15 + 0.12 * np.sin(2 * np.pi * t / 30)
+        C = 0.10 + 0.08 * np.sin(2 * np.pi * t / 30 + np.pi/4)
+        omega += 0.01 * np.random.randn(n_samples)
+        C += 0.01 * np.random.randn(n_samples)
+    else:  # Collapse Approach
+        omega = 0.02 + 0.35 * (t / n_samples) ** 2
+        C = 0.05 + 0.25 * (t / n_samples) ** 1.5
+        omega += 0.01 * np.random.randn(n_samples)
+        C += 0.01 * np.random.randn(n_samples)
+
+    omega = np.clip(omega, 0.001, 0.999)
+    C = np.clip(C, 0.001, 0.999)
+    F = 1 - omega
+    S = 0.5 * C + 0.1 * np.random.randn(n_samples)
+    S = np.clip(S, 0.001, 1.0)
+    kappa = np.log(F) - 0.1 * C
+    IC = np.exp(kappa)
+    IC = np.clip(IC, 0.001, 0.999)
+
+    # Create dataframe
+    df = pd.DataFrame({
+        't': t, 'omega': omega, 'F': F, 'S': S, 'C': C, 'kappa': kappa, 'IC': IC
+    })
+
+    # ========== Multi-Axis Projection View ==========
+    st.markdown("#### Projection Time Series")
+
+    # Create subplot figure
+    fig = make_subplots(
+        rows=3, cols=2,
+        subplot_titles=('ω (Drift)', 'F (Fidelity)', 'S (Entropy)', 'C (Curvature)', 'κ (Log-Integrity)', 'IC (Integrity)'),
+        vertical_spacing=0.12
+    )
+
+    projections = [('omega', 1, 1), ('F', 1, 2), ('S', 2, 1), ('C', 2, 2), ('kappa', 3, 1), ('IC', 3, 2)]
+
+    for name, row, col in projections:
+        fig.add_trace(
+            go.Scatter(x=df['t'], y=df[name], mode='lines', name=name, line=dict(width=2)),
+            row=row, col=col
+        )
+
+        # Add threshold lines for ω
+        if name == 'omega' and show_regime:
+            fig.add_hline(y=0.038, line_dash="dash", line_color="green", row=row, col=col)
+            fig.add_hline(y=0.30, line_dash="dash", line_color="red", row=row, col=col)
+
+    fig.update_layout(height=700, showlegend=False, title="Invariant Projections Over Time")
+    st.plotly_chart(fig, use_container_width=True)
+
+    # ========== Phase Space Views ==========
+    st.markdown("#### Projection Phase Spaces")
+
+    phase_col1, phase_col2 = st.columns(2)
+
+    with phase_col1:
+        # ω vs F (should be linear: F = 1 - ω)
+        fig_of = go.Figure()
+        fig_of.add_trace(go.Scatter(
+            x=df['omega'], y=df['F'],
+            mode='markers',
+            marker=dict(color=df['t'], colorscale='Viridis', showscale=True, colorbar=dict(title="t")),
+            hovertemplate='ω=%{x:.3f}<br>F=%{y:.3f}<br>t=%{marker.color:.0f}<extra></extra>'
+        ))
+        # Identity line
+        fig_of.add_trace(go.Scatter(
+            x=[0, 1], y=[1, 0], mode='lines', line=dict(dash='dash', color='gray'),
+            name='F = 1 - ω'
+        ))
+        fig_of.update_layout(height=350, xaxis_title="ω (Drift)", yaxis_title="F (Fidelity)",
+                            title="Drift-Fidelity Axis")
+        st.plotly_chart(fig_of, use_container_width=True)
+
+    with phase_col2:
+        # S vs C
+        fig_sc = go.Figure()
+        fig_sc.add_trace(go.Scatter(
+            x=df['S'], y=df['C'],
+            mode='markers',
+            marker=dict(color=df['t'], colorscale='Viridis', showscale=True, colorbar=dict(title="t")),
+            hovertemplate='S=%{x:.3f}<br>C=%{y:.3f}<br>t=%{marker.color:.0f}<extra></extra>'
+        ))
+        fig_sc.update_layout(height=350, xaxis_title="S (Entropy)", yaxis_title="C (Curvature)",
+                            title="Entropy-Curvature Axis")
+        st.plotly_chart(fig_sc, use_container_width=True)
+
+    # ========== AM-GM Gap Visualization ==========
+    st.markdown("#### AM-GM Gap Analysis")
+
+    df['gap'] = df['F'] - df['IC']
+
+    fig_gap = go.Figure()
+    fig_gap.add_trace(go.Scatter(
+        x=df['t'], y=df['F'], mode='lines', name='F (Arithmetic)', line=dict(color='blue')
+    ))
+    fig_gap.add_trace(go.Scatter(
+        x=df['t'], y=df['IC'], mode='lines', name='IC (Geometric)', line=dict(color='green')
+    ))
+    fig_gap.add_trace(go.Scatter(
+        x=df['t'], y=df['gap'], mode='lines', name='Gap (F - IC)', line=dict(color='orange', dash='dash'),
+        fill='tozeroy', fillcolor='rgba(255,165,0,0.2)'
+    ))
+    fig_gap.update_layout(
+        height=300,
+        xaxis_title="Time t",
+        yaxis_title="Value",
+        title="AM-GM Gap: F ≥ IC (with equality iff homogeneous)",
+        legend=dict(orientation='h', yanchor='bottom', y=1.02)
+    )
+    st.plotly_chart(fig_gap, use_container_width=True)
+
+    st.caption("The gap Δ = F - IC quantifies state heterogeneity (Lemma 4, KERNEL_SPECIFICATION.md)")
+
+
+def render_layer3_seam_graph() -> None:
+    """Render Layer 3: Seam Graph for transition certification."""
+    if st is None or go is None or np is None or pd is None:
+        return
+
+    st.subheader("Seam Graph: Transition Certification")
+
+    st.markdown("""
+    **Layer 3** certifies transitions between states via weld accounting:
+
+    **Weld PASS requires ALL of:**
+    1. τ_R(t₁) is finite (not ∞_rec, not UNIDENTIFIABLE)
+    2. |s| ≤ tol_seam (residual within tolerance)
+    3. |exp(Δκ) - IC₁/IC₀| < 10⁻⁹ (identity closure)
+
+    **Key quantities:**
+    - **Δκ_ledger** = κ(t₁) - κ(t₀) = ln(IC₁/IC₀)
+    - **Δκ_budget** = R·τ_R - (D_ω + D_C)
+    - **Residual s** = Δκ_budget - Δκ_ledger
+    """)
+
+    # ========== Generate Seam Data ==========
+    with st.expander("⚙️ Seam Simulation", expanded=True):
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            n_seams = st.slider("Number of Seams", 5, 30, 12)
+            tol_seam = st.slider("Tolerance (tol_seam)", 0.001, 0.02, 0.005, 0.001)
+        with col2:
+            R = st.slider("Return Rate R", 0.01, 0.1, 0.05, 0.01, help="Credit per return step")
+            noise_level = st.slider("Budget Noise", 0.0, 0.02, 0.003, 0.001)
+        with col3:
+            failure_rate = st.slider("Failure Rate", 0.0, 0.5, 0.15, 0.05)
+            seed = st.number_input("Seed", 0, 999, 42, key="layer3_seed")
+
+    np.random.seed(seed)
+
+    # Generate seam transitions
+    seams = []
+    for i in range(n_seams):
+        t0, t1 = i * 10, (i + 1) * 10
+
+        # Generate IC values
+        IC0 = 0.95 - 0.02 * i + 0.01 * np.random.randn()
+        IC1 = IC0 - 0.01 - 0.005 * np.random.randn()
+        IC0, IC1 = np.clip([IC0, IC1], 0.1, 0.99)
+
+        kappa0, kappa1 = np.log(IC0), np.log(IC1)
+        delta_kappa_ledger = kappa1 - kappa0
+
+        # Return time
+        tau_R = np.random.randint(2, 15) if np.random.rand() > 0.1 else float('inf')
+
+        # Compute budget terms
+        if tau_R != float('inf'):
+            credit = R * tau_R
+            D_omega = 0.02 + 0.01 * np.random.randn()
+            D_C = 0.01 + 0.005 * np.random.randn()
+            delta_kappa_budget = credit - (D_omega + D_C) + noise_level * np.random.randn()
+
+            # Inject some failures
+            if np.random.rand() < failure_rate:
+                delta_kappa_budget += 0.02 * (1 if np.random.rand() > 0.5 else -1)
+
+            residual = delta_kappa_budget - delta_kappa_ledger
+        else:
+            D_omega, D_C = 0, 0
+            delta_kappa_budget = 0
+            residual = float('inf')
+
+        # Determine pass/fail
+        if tau_R == float('inf'):
+            status = "NO_RETURN"
+        elif abs(residual) <= tol_seam:
+            status = "PASS"
+        else:
+            status = "FAIL"
+
+        seams.append({
+            't0': t0, 't1': t1,
+            'IC0': IC0, 'IC1': IC1,
+            'kappa0': kappa0, 'kappa1': kappa1,
+            'delta_kappa_ledger': delta_kappa_ledger,
+            'delta_kappa_budget': delta_kappa_budget if tau_R != float('inf') else None,
+            'tau_R': tau_R if tau_R != float('inf') else 'INF_REC',
+            'residual': residual if tau_R != float('inf') else None,
+            'D_omega': D_omega, 'D_C': D_C,
+            'status': status
+        })
+
+    df_seams = pd.DataFrame(seams)
+
+    # ========== Seam Graph Visualization ==========
+    st.markdown("#### Seam Transition Graph")
+
+    # Create network-style graph
+    fig_graph = go.Figure()
+
+    # Add nodes (time points)
+    node_x = []
+    node_y = []
+    node_text = []
+    node_colors = []
+
+    for i, seam in enumerate(seams):
+        # Start node
+        node_x.append(seam['t0'])
+        node_y.append(seam['IC0'])
+        node_text.append(f"t={seam['t0']}<br>IC={seam['IC0']:.4f}")
+        node_colors.append('lightblue')
+
+    # Final node
+    node_x.append(seams[-1]['t1'])
+    node_y.append(seams[-1]['IC1'])
+    node_text.append(f"t={seams[-1]['t1']}<br>IC={seams[-1]['IC1']:.4f}")
+    node_colors.append('lightblue')
+
+    fig_graph.add_trace(go.Scatter(
+        x=node_x, y=node_y,
+        mode='markers',
+        marker=dict(size=15, color=node_colors, line=dict(width=2, color='darkblue')),
+        text=node_text, hoverinfo='text',
+        name='States'
+    ))
+
+    # Add edges (seams) with color by status
+    status_colors = {'PASS': 'green', 'FAIL': 'red', 'NO_RETURN': 'gray'}
+    for seam in seams:
+        color = status_colors.get(seam['status'], 'gray')
+        dash = 'solid' if seam['status'] == 'PASS' else 'dash'
+        residual_str = f"{seam['residual']:.4f}" if seam['residual'] is not None else 'N/A'
+
+        fig_graph.add_trace(go.Scatter(
+            x=[seam['t0'], seam['t1']],
+            y=[seam['IC0'], seam['IC1']],
+            mode='lines',
+            line=dict(color=color, width=3, dash=dash),
+            hovertemplate=(
+                f"Seam: t={seam['t0']}→{seam['t1']}<br>"
+                f"Status: {seam['status']}<br>"
+                f"τ_R: {seam['tau_R']}<br>"
+                f"Residual: {residual_str}<extra></extra>"
+            ),
+            showlegend=False
+        ))
+
+    # Add tolerance band annotation
+    fig_graph.add_annotation(
+        x=0.02, y=0.98, xref='paper', yref='paper',
+        text=f"tol_seam = {tol_seam}",
+        showarrow=False, bgcolor='rgba(255,255,255,0.8)'
+    )
+
+    fig_graph.update_layout(
+        height=400,
+        xaxis_title="Time t",
+        yaxis_title="Integrity IC",
+        title="Seam Certification Graph (Green=PASS, Red=FAIL, Gray=NO_RETURN)"
+    )
+
+    st.plotly_chart(fig_graph, use_container_width=True)
+
+    # ========== Residual Distribution ==========
+    st.markdown("#### Residual Analysis")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        # Residual bar chart
+        valid_seams = [s for s in seams if s['residual'] is not None]
+        if valid_seams:
+            residuals = [s['residual'] for s in valid_seams]
+            labels = [f"t{s['t0']}→{s['t1']}" for s in valid_seams]
+            colors = ['green' if abs(r) <= tol_seam else 'red' for r in residuals]
+
+            fig_res = go.Figure(data=[go.Bar(
+                x=labels, y=residuals,
+                marker_color=colors
+            )])
+            fig_res.add_hline(y=tol_seam, line_dash="dash", line_color="orange")
+            fig_res.add_hline(y=-tol_seam, line_dash="dash", line_color="orange")
+            fig_res.update_layout(height=300, xaxis_title="Seam", yaxis_title="Residual s",
+                                 title="Seam Residuals (orange = tolerance)")
+            st.plotly_chart(fig_res, use_container_width=True)
+
+    with col2:
+        # Summary metrics
+        pass_count = sum(1 for s in seams if s['status'] == 'PASS')
+        fail_count = sum(1 for s in seams if s['status'] == 'FAIL')
+        no_return_count = sum(1 for s in seams if s['status'] == 'NO_RETURN')
+
+        st.markdown("##### Certification Summary")
+        summary_col1, summary_col2, summary_col3 = st.columns(3)
+        with summary_col1:
+            st.metric("✅ PASS", pass_count)
+        with summary_col2:
+            st.metric("❌ FAIL", fail_count)
+        with summary_col3:
+            st.metric("⚪ NO_RETURN", no_return_count)
+
+        if valid_seams:
+            residuals = [s['residual'] for s in valid_seams]
+            st.metric("Mean |Residual|", f"{np.mean(np.abs(residuals)):.5f}")
+            st.metric("Max |Residual|", f"{np.max(np.abs(residuals)):.5f}")
+
+    # ========== Seam Table ==========
+    st.markdown("#### Seam Details")
+
+    display_df = df_seams.copy()
+    display_df['residual'] = display_df['residual'].apply(
+        lambda x: f"{x:.5f}" if x is not None else "N/A"
+    )
+    display_df['delta_kappa_budget'] = display_df['delta_kappa_budget'].apply(
+        lambda x: f"{x:.5f}" if x is not None else "N/A"
+    )
+
+    st.dataframe(
+        display_df[['t0', 't1', 'tau_R', 'delta_kappa_ledger', 'delta_kappa_budget', 'residual', 'status']],
+        use_container_width=True,
+        hide_index=True
+    )
+
+
+def render_unified_geometry_view() -> None:
+    """Render unified view of all three layers."""
+    if st is None or go is None or np is None or pd is None:
+        return
+
+    st.subheader("Unified Three-Layer View")
+
+    st.markdown("""
+    This view shows how the three geometric layers interact:
+    - **Layer 1**: State trajectory Ψ(t) flows through bounded space
+    - **Layer 2**: Kernel projects trajectory → invariant coordinates
+    - **Layer 3**: Seam accounting certifies transitions
+    """)
+
+    # ========== Generate Unified Data ==========
+    with st.expander("⚙️ Unified Simulation", expanded=True):
+        col1, col2 = st.columns(2)
+        with col1:
+            n_steps = st.slider("Time Steps", 30, 150, 60, key="unified_steps")
+            seed = st.number_input("Seed", 0, 999, 42, key="unified_seed")
+        with col2:
+            drift_intensity = st.slider("Drift Intensity", 0.0, 0.3, 0.08)
+            eta = st.slider("η Tolerance", 0.05, 0.25, 0.12)
+
+    np.random.seed(seed)
+    t = np.arange(n_steps)
+
+    # Generate 3-channel state
+    c1 = 0.8 + 0.1 * np.sin(2 * np.pi * t / 40) + drift_intensity * t / n_steps + 0.02 * np.random.randn(n_steps)
+    c2 = 0.75 + 0.15 * np.sin(2 * np.pi * t / 30 + np.pi/3) + 0.5 * drift_intensity * t / n_steps + 0.02 * np.random.randn(n_steps)
+    c3 = 0.85 - 0.1 * np.sin(2 * np.pi * t / 50) - 0.3 * drift_intensity * t / n_steps + 0.02 * np.random.randn(n_steps)
+
+    c1, c2, c3 = [np.clip(c, 0.01, 0.99) for c in [c1, c2, c3]]
+
+    # Weights
+    w = np.array([0.4, 0.35, 0.25])
+
+    # Compute invariants
+    C_arr = np.column_stack([c1, c2, c3])
+    F = np.sum(C_arr * w, axis=1)
+    omega = 1 - F
+    C_curv = np.std(C_arr, axis=1) / 0.5
+    kappa = np.sum(w * np.log(C_arr), axis=1)
+    IC = np.exp(kappa)
+
+    # Regime classification
+    regimes = ['STABLE' if o < 0.038 else 'WATCH' if o < 0.30 else 'COLLAPSE' for o in omega]
+
+    # Create figure with 3 subplots
+    fig = make_subplots(
+        rows=3, cols=1,
+        subplot_titles=(
+            'Layer 1: State Space Ψ(t) ∈ [0,1]³',
+            'Layer 2: Invariant Projections',
+            'Layer 3: Regime Classification & Continuity'
+        ),
+        vertical_spacing=0.1,
+        row_heights=[0.35, 0.35, 0.30]
+    )
+
+    # ========== Layer 1: State Space ==========
+    fig.add_trace(go.Scatter(x=t, y=c1, mode='lines', name='c₁', line=dict(color='#1f77b4')), row=1, col=1)
+    fig.add_trace(go.Scatter(x=t, y=c2, mode='lines', name='c₂', line=dict(color='#ff7f0e')), row=1, col=1)
+    fig.add_trace(go.Scatter(x=t, y=c3, mode='lines', name='c₃', line=dict(color='#2ca02c')), row=1, col=1)
+
+    # ========== Layer 2: Invariants ==========
+    fig.add_trace(go.Scatter(x=t, y=omega, mode='lines', name='ω (Drift)', line=dict(color='red')), row=2, col=1)
+    fig.add_trace(go.Scatter(x=t, y=IC, mode='lines', name='IC (Integrity)', line=dict(color='blue')), row=2, col=1)
+    fig.add_trace(go.Scatter(x=t, y=C_curv, mode='lines', name='C (Curvature)', line=dict(color='purple', dash='dot')), row=2, col=1)
+
+    # Threshold lines
+    fig.add_hline(y=0.038, line_dash="dash", line_color="green", row=2, col=1, annotation_text="ω_stable")
+    fig.add_hline(y=0.30, line_dash="dash", line_color="red", row=2, col=1, annotation_text="ω_collapse")
+
+    # ========== Layer 3: Regime & Continuity ==========
+    regime_numeric = [0 if r == 'STABLE' else 1 if r == 'WATCH' else 2 for r in regimes]
+    regime_colors = [REGIME_COLORS.get(r, 'gray') for r in regimes]
+
+    # Regime as colored segments
+    for i in range(len(t) - 1):
+        fig.add_trace(go.Scatter(
+            x=[t[i], t[i+1]], y=[0.5, 0.5],
+            mode='lines', line=dict(color=regime_colors[i], width=20),
+            showlegend=False, hovertemplate=f"t={t[i]}: {regimes[i]}<extra></extra>"
+        ), row=3, col=1)
+
+    # Add legend annotations
+    for i, (regime, color) in enumerate(REGIME_COLORS.items()):
+        fig.add_annotation(
+            x=n_steps * (0.15 + 0.25 * i), y=0.85,
+            text=f"<b>{regime}</b>",
+            showarrow=False,
+            font=dict(color=color, size=12),
+            row=3, col=1
+        )
+
+    fig.update_layout(
+        height=900,
+        showlegend=True,
+        legend=dict(orientation='h', yanchor='top', y=1.02, xanchor='center', x=0.5)
+    )
+
+    fig.update_yaxes(title_text="Coordinate Value", row=1, col=1, range=[0, 1])
+    fig.update_yaxes(title_text="Invariant Value", row=2, col=1)
+    fig.update_yaxes(title_text="Regime", row=3, col=1, range=[0, 1], showticklabels=False)
+    fig.update_xaxes(title_text="Time t", row=3, col=1)
+
+    st.plotly_chart(fig, use_container_width=True)
+
+    # ========== Flow Summary ==========
+    st.markdown("#### Geometric Flow Summary")
+
+    summary_cols = st.columns(3)
+
+    with summary_cols[0]:
+        st.markdown("""
+        **Layer 1 → Layer 2**
+
+        Projection via kernel:
+        - Ψ(t) → F = Σwᵢcᵢ
+        - Ψ(t) → IC = exp(Σwᵢ ln cᵢ)
+        - Ψ(t) → C = std(cᵢ)/0.5
+        """)
+
+    with summary_cols[1]:
+        st.markdown("""
+        **Layer 2 → Layer 3**
+
+        Regime gates partition space:
+        - ω < 0.038 → STABLE
+        - 0.038 ≤ ω < 0.30 → WATCH
+        - ω ≥ 0.30 → COLLAPSE
+        """)
+
+    with summary_cols[2]:
+        st.markdown("""
+        **Layer 3: Continuity**
+
+        Seam residual certifies:
+        - s = Δκ_budget - Δκ_ledger
+        - |s| ≤ 0.005 → PASS
+        - Otherwise → FAIL
+        """)
+
+
+# ============================================================================
 # Main Application
 # ============================================================================
 
@@ -5679,6 +6470,7 @@ def main() -> None:
     pages = {
         # Core Pages
         "Overview": ("📊", render_overview_page),
+        "Geometry": ("🔷", render_geometry_page),
         "Ledger": ("📒", render_ledger_page),
         "Casepacks": ("📦", render_casepacks_page),
         "Contracts": ("📜", render_contracts_page),

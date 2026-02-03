@@ -3,6 +3,20 @@
 ## Project Overview
 UMCP is a production-grade system for creating, validating, and sharing reproducible computational workflows. It enforces mathematical contracts, tracks provenance, generates cryptographic receipts, and validates results against frozen specifications. The system is organized around the concept of a "row"—a minimal publishable unit containing observations, rules, kernel outputs, and receipts.
 
+### Core Axiom
+> **"What Returns Through Collapse Is Real"** — Reality is defined by what persists through collapse-reconstruction cycles.
+
+### Core Principle
+> **One-way dependency flow within a frozen run, with return-based canonization between runs.**
+
+- **Within-run**: Frozen causes only. The frozen interface determines the bounded trace Ψ(t); Tier-1 invariants are pure functions of that frozen trace; Tier-2 overlays may read Tier-1 outputs but cannot alter the interface, trace, or kernel definitions. No back-edges, no retroactive tuning.
+- **Between-run**: Continuity only by return-weld. New runs are canon-continuous with prior runs only if the seam returns (τ_R finite) and the weld closes (ledger–budget residual within tolerance + identity check).
+
+### Constitutional Clauses (equivalent formulations)
+- "Within-run: frozen causes only. Between-run: continuity only by return-weld."
+- "Runs are deterministic under /freeze; canon is a graph whose edges require returned seam closure."
+- "No back-edges inside a run; no canon claims between runs without welded return."
+
 ## Architecture & Key Components
 
 ### Core System (No External Dependencies Beyond NumPy/SciPy/YAML/JSON)

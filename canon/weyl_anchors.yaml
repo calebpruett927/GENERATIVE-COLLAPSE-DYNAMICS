@@ -1,0 +1,194 @@
+# Weyl Evolution Canon Anchor (UMCP.WEYL.v1)
+# Modified Gravity Testing via Weyl Evolution - Tier-1 Extension
+#
+# Interconnections:
+# - Referenced by: contracts/WEYL.INTSTACK.v1.yaml, casepacks/weyl_des_y3/
+# - Parent: canon/gcd_anchors.yaml (WEYL extends GCD)
+# - Implements: Tier-1 invariants for cosmological observables
+# - Documentation: GLOSSARY.md#weyl, SYMBOL_INDEX.md#weyl
+# - Related: closures/weyl/*.py (computational implementations)
+# - Source: Nature Communications 15:9295 (2024) doi:10.1038/s41467-024-53363-6
+#
+# Term definitions: GLOSSARY.md#weyl-framework
+# Symbol lookup: SYMBOL_INDEX.md#weyl-reserved-symbols
+
+schema: canon.anchors.schema.json
+id: UMCP.WEYL.v1
+version: "1.0.0"
+created: "2025-01-24"
+
+scope:
+  hierarchy: "WEYL > GCD > UMCP (cosmological realization)"
+  tier: 1
+  description: |
+    Weyl Evolution framework provides the cosmological realization of GCD principles.
+    WEYL maps lensing observables to UMCP invariants through the ĥJ proxy,
+    testing modified gravity against General Relativity via the Σ(z) parametrization.
+    Core principle: The reference anchor (z*) defines deviation from GR (Σ=1).
+
+axioms:
+  - id: AX-W0
+    statement: "Reference anchor defines deviation"
+    description: |
+      The high-redshift anchor z* (matter-dominated era) provides the reference where
+      GR+ΛCDM is assumed valid. Deviations at low-z are measured relative to this anchor.
+      This is the cosmological realization of AX-1 (Boundary defines interior).
+      Just as ω measures distance from collapse boundary, Σ₀ measures distance from GR.
+
+  - id: AX-W1
+    statement: "Weyl potential is the gravitational observable"
+    description: |
+      The Weyl potential Ψ_W ≡ (Φ + Ψ)/2 combines both metric potentials and governs
+      light deflection. It is the observable that lensing directly probes.
+
+  - id: AX-W2
+    statement: "ĥJ tracks Σ evolution model-independently"
+    description: |
+      The ratio ĥJ(z) = J(z)σ8(z)/D₁(z) depends solely on Σ(z), enabling model-independent
+      tests of gravity modifications without assuming specific dark energy models.
+
+tier_1_invariants:
+  description: "Weyl-specific invariants extending GCD skeleton"
+  reserved_symbols:
+    - symbol: Psi_W
+      latex: "Ψ_W"
+      description: "Weyl potential: mean of metric potentials"
+      formula: "Ψ_W ≡ (Φ + Ψ)/2"
+      domain: "[-1, 1]"
+      interpretation: "Primary lensing observable; governs photon geodesics"
+
+    - symbol: Sigma
+      latex: "Σ"
+      description: "Gravity modification function"
+      formula: "∇²Ψ_W = 4πG Σ a² ρ_m δ_m"
+      domain: "[0, 2]"
+      interpretation: "Σ=1 is GR; Σ≠1 indicates modified gravity"
+
+    - symbol: Sigma_0
+      latex: "Σ₀"
+      description: "Amplitude of gravity deviation"
+      formula: "Σ(z) = 1 + Σ₀ × g(z)"
+      domain: "[-1, 1]"
+      interpretation: "Drift analog; Σ₀=0 is GR, |Σ₀|>0 is deviation"
+
+    - symbol: hJ
+      latex: "ĥJ"
+      description: "Dimensionless lensing proxy"
+      formula: "ĥJ(z) = J(z) × σ8(z) / D₁(z)"
+      domain: "[0, 1]"
+      interpretation: "Normalized Weyl evolution; F analog"
+
+    - symbol: T_PsiW
+      latex: "T_{Ψ_W}"
+      description: "Weyl transfer function"
+      formula: "T_{Ψ_W}(k,z) = Ψ_W(k,z) / Ψ_W(k, z*)"
+      domain: "[0, 1]"
+      interpretation: "Evolution from z* anchor; return domain generator"
+
+    - symbol: z_star
+      latex: "z*"
+      description: "Reference redshift anchor"
+      formula: "z* = 10 (matter era)"
+      domain: "[5, 50]"
+      interpretation: "High-z anchor where GR+ΛCDM assumed valid"
+
+    - symbol: J
+      latex: "J"
+      description: "Lensing response kernel"
+      formula: "J(z) = ∫ T_{Ψ_W} W_γ(z,z') dz'"
+      domain: "[0, ∞)"
+      interpretation: "Integrated lensing response"
+
+    - symbol: C_ell
+      latex: "C_ℓ"
+      description: "Angular power spectrum"
+      formula: "C_ℓ^{AB} = ∫ W^A(k) W^B(k) P(k) dk"
+      domain: "[0, ∞)"
+      interpretation: "Observable 2-point correlation"
+
+umcp_invariant_mapping:
+  description: "Maps Weyl observables to GCD invariants"
+  mappings:
+    - weyl: "Σ₀"
+      gcd: "ω"
+      formula: "ω_analog = |Σ₀|"
+      interpretation: "Σ₀ is drift from GR, analogous to ω being drift from stability"
+
+    - weyl: "ĥJ mean"
+      gcd: "F"
+      formula: "F_analog = ĥJ_mean"
+      interpretation: "Normalized lensing evolution as fidelity measure"
+
+    - weyl: "ĥJ std/max"
+      gcd: "S"
+      formula: "S_analog = std(ĥJ) / max(ĥJ)"
+      interpretation: "Variation across bins as entropy proxy"
+
+    - weyl: "ĥJ dispersion"
+      gcd: "C"
+      formula: "C_analog = std(ĥJ) / 0.5"
+      interpretation: "Non-uniformity across redshift bins"
+
+    - weyl: "σ8 tension"
+      gcd: "collapse potential"
+      formula: "collapse_analog = |σ8_params - σ8_hJ| / σ8_hJ"
+      interpretation: "Parameter inconsistency as collapse risk"
+
+    - weyl: "z*"
+      gcd: "return domain D_θ"
+      formula: "D_θ = { T_{Ψ_W}(k, z) | z ≤ z* }"
+      interpretation: "High-z anchor generates return domain"
+
+regime_gates:
+  description: "Regime classification thresholds for gravity testing"
+  gates:
+    - name: "gravity_deviation"
+      parameter: "Sigma_0"
+      thresholds:
+        GR_consistent: 0.1
+        Tension: 0.3
+        Modified_gravity: 0.5
+      interpretation: "Distance from Σ=1 (General Relativity)"
+
+    - name: "sigma8_tension"
+      parameter: "tension_ratio"
+      thresholds:
+        consistent: 0.05
+        mild: 0.10
+        significant: 0.20
+      interpretation: "Inconsistency between σ8 derivation methods"
+
+    - name: "chi2_fit"
+      parameter: "chi2_reduced"
+      thresholds:
+        excellent: 0.8
+        good: 1.5
+        marginal: 2.5
+      interpretation: "Model goodness-of-fit quality"
+
+budget_identity_analog:
+  description: "Seam-like comparison between competing models"
+  formula: "Δχ² = χ²_ΛCDM - χ²_Σ"
+  interpretation: |
+    Just as UMCP seams measure residual when closing between projections,
+    the χ² improvement measures how much better Σ(z) models close the
+    observed lensing data compared to ΛCDM baseline.
+
+reference:
+  source: "Nature Communications 15:9295 (2024)"
+  doi: "10.1038/s41467-024-53363-6"
+  title: "Model-independent test of gravity with a network of galaxy surveys"
+  authors: "Perenon, Velten, Piattella et al."
+  data: "DES Y3 MAGLIM cosmic shear + galaxy-galaxy lensing"
+  equations:
+    - "Eq. 2: Weyl transfer function T_{Ψ_W}(k,z)"
+    - "Eq. 3: Limber integral for C_ℓ"
+    - "Eq. 4-5: ĥJ proxy definition"
+    - "Eq. 6-7: Beyond-Limber corrections"
+    - "Eq. 11-13: Σ(z) parametrization models"
+
+horndeski_constraints:
+  description: "Theoretical constraints from scalar-tensor theories"
+  alpha_B_bound: "[-0.23, 0.63] at 68% CL"
+  alpha_M_bound: "[-0.21, 0.15] at 68% CL"
+  interpretation: "GR values (0,0) within bounds but Σ₀≠0 suggests deviation"

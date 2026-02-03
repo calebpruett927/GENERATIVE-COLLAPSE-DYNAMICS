@@ -1,0 +1,78 @@
+{
+  "schema": "expected.schema.json",
+  "description": "Σ(z) to UMCP invariant mapping for DES Y3",
+  "contract": "WEYL.INTSTACK.v1",
+  "source": "Nature Communications 15:9295 (2024) Eq. 11-13",
+  
+  "Sigma_parametrization": {
+    "equation": "Σ(z) = 1 + Σ₀ × g(z)",
+    "GR_value": 1.0,
+    "interpretation": "Σ=1 is General Relativity; Σ≠1 indicates modified gravity"
+  },
+  
+  "g_z_models": {
+    "standard": {
+      "formula": "g(z) = Ω_Λ(z)",
+      "description": "Dark energy density evolution",
+      "Sigma_0_fit": {"mean": 0.24, "sigma": 0.10},
+      "chi2_red": 1.1,
+      "p_value": 0.33
+    },
+    "constant": {
+      "formula": "g(z) = 1 for z ∈ [0,1], else 0",
+      "description": "Late-time modification only",
+      "Sigma_0_fit": {"mean": 0.13, "sigma": 0.06},
+      "chi2_red": 1.1,
+      "p_value": 0.33
+    },
+    "exponential": {
+      "formula": "g(z) = exp(1+z) for z ∈ [0,1], else 0",
+      "description": "Exponentially suppressed at high z",
+      "Sigma_0_fit": {"mean": 0.027, "sigma": 0.013},
+      "chi2_red": 0.8,
+      "p_value": 0.48
+    }
+  },
+  
+  "hJ_to_Sigma_mapping": {
+    "equation": "ĥJ(z_i) = Ω_m(z_i) × [D₁(z_i)/D₁(z*)] × σ8(z*) × Σ(z_i)",
+    "inverse": "Σ(z_i) = ĥJ(z_i) / [Ω_m(z_i) × (D₁(z_i)/D₁(z*)) × σ8(z*)]",
+    "per_bin_Sigma": [
+      {"z": 0.295, "hJ": 0.326, "Sigma_inferred": 1.18},
+      {"z": 0.467, "hJ": 0.332, "Sigma_inferred": 1.21},
+      {"z": 0.626, "hJ": 0.387, "Sigma_inferred": 1.29},
+      {"z": 0.771, "hJ": 0.354, "Sigma_inferred": 1.22}
+    ]
+  },
+  
+  "umcp_drift_mapping": {
+    "formula": "ω_analog = |Σ₀|",
+    "values": {
+      "standard": 0.24,
+      "constant": 0.13,
+      "exponential": 0.027
+    },
+    "interpretation": {
+      "standard": "Watch regime (ω=0.24 indicates significant drift from GR)",
+      "constant": "Watch regime (ω=0.13 moderate drift)",
+      "exponential": "Stable regime (ω=0.027 near GR)"
+    }
+  },
+  
+  "seam_residual_mapping": {
+    "description": "χ² improvement as seam closure quality",
+    "LCDM_chi2": 2.1,
+    "Sigma_chi2": 1.1,
+    "delta_chi2": -1.0,
+    "improvement_ratio": 0.476,
+    "seam_interpretation": "Σ₀ model closes residual 47.6% better than GR baseline"
+  },
+  
+  "return_domain_mapping": {
+    "z_star": 10.0,
+    "Sigma_at_z_star": 1.0,
+    "description": "GR recovered at z* (matter era anchor)",
+    "umcp_analog": "D_θ(t) return domain generator anchored at z*",
+    "axiom_realization": "AX-W0: Reference anchor defines deviation"
+  }
+}

@@ -3,10 +3,10 @@
   "manifest": {
     "id": "UMCP-REF-E2E-0001.manifest",
     "version": "1.0.0",
-    "created_utc": "2026-01-20T00:53:16.302528+00:00",
+    "created_utc": "2026-02-02T16:50:31.247097+00:00",
     "casepack_id": "UMCP-REF-E2E-0001",
     "environment": {
-      "git_commit": "aa3d0921135b9ebfa12b214fa02d978ad4239871",
+      "git_commit": "4f390ac53393a2adaef0b6738f4e600045cfe6c8",
       "python_version": "3.12.1",
       "umcp_tool": "api_umcp.py",
       "os": "Linux"
@@ -24,8 +24,8 @@
       },
       {
         "path": "compute_pipeline.py",
-        "sha256": "7213dcee21969a73ee07191868a7fcb2d7a9b6d430d7618830fdce5a0b9294c7",
-        "size_bytes": 17045
+        "sha256": "f11366965ed7bb3c6aa4c71619bab646cdb47d6bb853f0b94692bbae0c2fe580",
+        "size_bytes": 16858
       },
       {
         "path": "contracts/contract.yaml",
@@ -84,13 +84,8 @@
       },
       {
         "path": "logs/run.log",
-        "sha256": "d6018986583fc0b52ea9f8928be5cb3a625dd07a7d34240e52c1b314e7f477d7",
-        "size_bytes": 21950
-      },
-      {
-        "path": "logs/validation.log",
-        "sha256": "b42bdb0be158e0e011d238f49e8b2ab1ff9a9abcf4c57376dbdd79417785ef35",
-        "size_bytes": 516
+        "sha256": "b92656219328c808cd951dbabb320686e509aaaf6a79d8251065aca1e467b6e4",
+        "size_bytes": 4450
       },
       {
         "path": "logs/validator_output.json",
@@ -114,11 +109,11 @@
       },
       {
         "path": "receipts/ss1m.json",
-        "sha256": "516fe14ca36e848655cdb96737b12bc6463a1e97b4c6fed238f3454958ffd15b",
+        "sha256": "d4777c2c9e465adf335c548226e86fe007e13107513667622e1e2e1e82a6c5b6",
         "size_bytes": 1999
       }
     ],
-    "file_count": 21,
-    "root_sha256": "8695cc84b81970b651db2e16af4eca10499e4f8e0d1e0affbc1b23200cb5ca66"
+    "file_count": 20,
+    "root_sha256": "d93c29a01e34d038e7925569ec1821b194064346f7fd8ffe9385352887dca6ca"
   }
 }

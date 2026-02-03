@@ -1,0 +1,70 @@
+{
+  "schema": "schemas/invariants.schema.json",
+  "format": "tier1_invariants",
+  "contract_id": "GCD.INTSTACK.v1",
+  "closure_registry_id": "UMCP.CLOSURES.GCD.v1",
+  "canon": {
+    "pre_doi": "10.1103/PRXQuantum.3.010314",
+    "post_doi": "10.5281/zenodo.phys04-retro-coherent",
+    "weld_id": "W-2025-11-02-PHYS04-RETRO-COHERENT",
+    "timezone": "America/Chicago"
+  },
+  "rows": [
+    {
+      "t": "PHYS-04",
+      "omega": 0.0,
+      "F": 1.0,
+      "S": 0.0,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": 0.0,
+      "IC": 1.0,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      },
+      "kernel_optional": {
+        "IC_min": 1.0
+      }
+    }
+  ],
+  "notes": "Type I seam: retro-coherent return without loss. τR=-0.82 (collapse sense) maps to Stable regime with F=1.0 because ω=0. The negative return delay in collapse audit grammar indicates curvature-reversed return, not regime instability. AX-0 Pass: only that which returns through collapse is real.",
+  "extensions": {
+    "collapse_audit": {
+      "event_id": "PHYS-04",
+      "face": "postselected-transmit",
+      "tau_R_collapse": -0.82,
+      "D_C": -0.82,
+      "D_omega": 0.0,
+      "R": 1.0,
+      "delta_kappa": 0.0,
+      "residual": 0.0,
+      "tolerance": 0.005,
+      "seam_type": "Type I",
+      "seam_class": "IIa",
+      "weld_status": "Pass",
+      "ax0_status": "Pass"
+    },
+    "budget_identity": {
+      "equation": "Δκ = R·τR - (Dω + DC)",
+      "lhs": 0.0,
+      "rhs_terms": {
+        "R_times_tau_R": -0.82,
+        "D_omega": 0.0,
+        "D_C": -0.82
+      },
+      "rhs": 0.0,
+      "closed": true
+    },
+    "residual_check": {
+      "equation": "s = R·τR - (Δκ + Dω + DC)",
+      "value": 0.0,
+      "within_tolerance": true
+    },
+    "interpretation": {
+      "return_class": "IIa: Curvature-Reversed Retro-Coherent Return",
+      "physical_meaning": "Ensemble polarization precedes pulse peak under postselection",
+      "paradox_resolution": "Not causality violation but lawful epistemic return path"
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "schema": "schemas/invariants.schema.json",
+  "format": "tier1_invariants",
+  "contract_id": "WEYL.INTSTACK.v1",
+  "closure_registry_id": "UMCP.CLOSURES.WEYL.v1",
+  "canon": {
+    "pre_doi": "10.1038/s41467-024-53363-6",
+    "post_doi": "10.5281/zenodo.weyl-des-y3",
+    "weld_id": "W-2026-02-01-WEYL-DES-Y3",
+    "timezone": "UTC"
+  },
+  "rows": [
+    {
+      "t": "z1",
+      "omega": 0.674,
+      "F": 0.326,
+      "S": 0.077,
+      "C": 0.054,
+      "tau_R": "INF_REC",
+      "kappa": -3.912023005428146,
+      "IC": 0.020,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "z2",
+      "omega": 0.668,
+      "F": 0.332,
+      "S": 0.077,
+      "C": 0.054,
+      "tau_R": "INF_REC",
+      "kappa": -4.199705077879927,
+      "IC": 0.015,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "z3",
+      "omega": 0.613,
+      "F": 0.387,
+      "S": 0.077,
+      "C": 0.054,
+      "tau_R": "INF_REC",
+      "kappa": -3.6497111401396097,
+      "IC": 0.026,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "z4",
+      "omega": 0.646,
+      "F": 0.354,
+      "S": 0.077,
+      "C": 0.054,
+      "tau_R": "INF_REC",
+      "kappa": -3.4112459247076548,
+      "IC": 0.033,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    }
+  ],
+  "notes": "DES Y3 MAGLIM Weyl evolution analysis. F = hJ (normalized lensing), omega = 1 - hJ. Kappa = ln(IC) where IC = hJ_sigma. Source: Nature Communications 15:9295 (2024)",
+  "extensions": {
+    "weyl_specific": {
+      "z_eff": [0.295, 0.467, 0.626, 0.771],
+      "hJ_mean": [0.326, 0.332, 0.387, 0.354],
+      "hJ_sigma": [0.020, 0.015, 0.026, 0.033],
+      "Sigma_inferred": [1.18, 1.21, 1.29, 1.22],
+      "Sigma_0_standard": {"mean": 0.24, "sigma": 0.10},
+      "sigma8_tension": 0.143,
+      "LCDM_chi2_red": 2.1,
+      "Sigma_chi2_red": 1.1,
+      "z_star": 10.0
+    }
+  }
+}

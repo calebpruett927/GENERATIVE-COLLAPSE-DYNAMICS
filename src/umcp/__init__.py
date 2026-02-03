@@ -59,6 +59,13 @@ __all__ = [
     "check_seam_pass",
     "compute_kernel",
     "KernelOutput",
+    # Universal Calculator (unified computation interface)
+    "universal_calculator",
+    "UniversalCalculator",
+    "UniversalResult",
+    "ComputationMode",
+    "compute_full",
+    "compute_regime",
 ]
 
 __version__ = "1.5.0"
@@ -67,7 +74,7 @@ VALIDATOR_NAME = "umcp-validator"
 DEFAULT_TZ = "America/Chicago"
 
 # Import utilities
-from . import compute_utils, frozen_contract, ss1m_triad, umcp_extensions, uncertainty
+from . import compute_utils, frozen_contract, ss1m_triad, umcp_extensions, uncertainty, universal_calculator
 from .closures import ClosureLoader, get_closure_loader
 from .file_refs import UMCPFiles, get_umcp_files
 from .frozen_contract import (
@@ -88,6 +95,13 @@ from .uncertainty import (
     UncertaintyBounds,
     compute_kernel_gradients,
     propagate_uncertainty,
+)
+from .universal_calculator import (
+    ComputationMode,
+    UniversalCalculator,
+    UniversalResult,
+    compute_full,
+    compute_regime,
 )
 from .validator import RootFileValidator, get_root_validator
 

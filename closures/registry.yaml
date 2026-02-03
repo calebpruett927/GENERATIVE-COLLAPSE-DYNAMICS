@@ -141,4 +141,51 @@ registry:
           delta_phi_max: 0.5235987756
           window: 20
           debounce: 3
+    weyl:
+      - name: "weyl_transfer"
+        path: "closures/weyl/weyl_transfer.py"
+        description: "Weyl transfer function T_{Ψ_W}(k,z) for modified gravity evolution"
+        contract: "WEYL.INTSTACK.v1"
+        inputs: ["H_z", "J", "D1", "B_boost", "z", "z_star"]
+        outputs: ["T_Weyl", "T_ratio", "regime"]
+        source: "Nature Comms 15:9295 (2024) Eq. 2"
+      - name: "limber_integral"
+        path: "closures/weyl/limber_integral.py"
+        description: "Limber approximation for C_ℓ (galaxy-galaxy lensing and clustering)"
+        contract: "WEYL.INTSTACK.v1"
+        inputs: ["n_lens", "n_source", "H_z", "hJ", "hb", "B_boost", "P_lin", "chi", "ell_values"]
+        outputs: ["C_ell_ggl", "C_ell_gg", "regime"]
+        source: "Nature Comms 15:9295 (2024) Eq. 3, 6"
+      - name: "beyond_limber"
+        path: "closures/weyl/beyond_limber.py"
+        description: "Beyond-Limber correction for ℓ < 200 using spherical Bessel functions"
+        contract: "WEYL.INTSTACK.v1"
+        inputs: ["n_i", "n_j", "H_z", "hb", "P_lin", "chi", "ell"]
+        outputs: ["C_ell_lin", "spherical_bessel_term"]
+        source: "Nature Comms 15:9295 (2024) Eq. 7"
+      - name: "sigma_evolution"
+        path: "closures/weyl/sigma_evolution.py"
+        description: "Modified gravity Σ(z) parametrization and ĥJ → Σ mapping"
+        contract: "WEYL.INTSTACK.v1"
+        inputs: ["hJ", "Omega_m", "D1", "sigma8_star"]
+        outputs: ["Sigma", "Sigma_0", "g_z", "regime"]
+        source: "Nature Comms 15:9295 (2024) Eq. 11-13"
+      - name: "boost_factor"
+        path: "closures/weyl/boost_factor.py"
+        description: "Nonlinear boost factor B(k,z) = P_nl/P_lin"
+        contract: "WEYL.INTSTACK.v1"
+        inputs: ["k", "z", "P_lin", "P_nl"]
+        outputs: ["B_boost", "nl_correction"]
+      - name: "cosmology_background"
+        path: "closures/weyl/cosmology_background.py"
+        description: "Background cosmology: H(z), χ(z), D₁(z), Ω_m(z), σ8(z)"
+        contract: "WEYL.INTSTACK.v1"
+        inputs: ["z", "Omega_m_0", "h_0"]
+        outputs: ["H_z", "chi", "D1", "Omega_m_z", "sigma8_z"]
+        frozen_params:
+          Omega_m_0: 0.315
+          Omega_Lambda_0: 0.685
+          H_0: 67.4
+          sigma8_0: 0.811
+          n_s: 0.965
 

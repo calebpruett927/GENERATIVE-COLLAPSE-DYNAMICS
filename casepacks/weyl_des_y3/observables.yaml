@@ -1,0 +1,181 @@
+# Weyl Evolution Observables (DES Y3 MAGLIM)
+# Source: Nature Communications 15:9295 (2024), Table 1
+# Contract: WEYL.INTSTACK.v1
+
+schema: "observables.schema.yaml"
+
+metadata:
+  source: "Nature Communications 15:9295 (2024)"
+  survey: "Dark Energy Survey Year 3"
+  lens_sample: "MAGLIM"
+  n_source_bins: 4
+  n_lens_bins: 4
+  
+# Lens bin effective redshifts
+redshift_bins:
+  z_eff:
+    - 0.295
+    - 0.467
+    - 0.626
+    - 0.771
+  labels:
+    - "z1"
+    - "z2"
+    - "z3"
+    - "z4"
+
+# Primary observable: Weyl evolution proxy ĥJ(z)
+# Definition: ĥJ(z) = J(z) · σ8(z) / D₁(z)
+hJ_measurements:
+  # Standard scale cuts + CMB (Planck) prior
+  standard_cmb:
+    z1:
+      mean: 0.326
+      sigma: 0.020
+    z2:
+      mean: 0.332
+      sigma: 0.015
+    z3:
+      mean: 0.387
+      sigma: 0.026
+    z4:
+      mean: 0.354
+      sigma: 0.033
+  
+  # Standard scale cuts + NO CMB prior
+  standard_no_cmb:
+    z1:
+      mean: 0.333
+      sigma: 0.023
+    z2:
+      mean: 0.328
+      sigma: 0.020
+    z3:
+      mean: 0.386
+      sigma: 0.049
+    z4:
+      mean: 0.345
+      sigma: 0.043
+  
+  # Pessimistic (stringent) scale cuts + CMB prior
+  pessimistic_cmb:
+    z1:
+      mean: 0.329
+      sigma: 0.036
+    z2:
+      mean: 0.329
+      sigma: 0.034
+    z3:
+      mean: 0.429
+      sigma: 0.062
+    z4:
+      mean: 0.370
+      sigma: 0.064
+  
+  # Pessimistic scale cuts + NO CMB prior
+  pessimistic_no_cmb:
+    z1:
+      mean: 0.336
+      sigma: 0.039
+    z2:
+      mean: 0.326
+      sigma: 0.035
+    z3:
+      mean: 0.431
+      sigma: 0.086
+    z4:
+      mean: 0.370
+      sigma: 0.068
+
+# σ8 comparison (Table 2 analog)
+sigma8_comparison:
+  with_cmb_prior:
+    from_parameters:
+      mean: 0.849
+      sigma: 0.030
+    from_hJ:
+      mean: 0.743
+      sigma: 0.039
+    tension_percent: 14.3
+  
+  without_cmb_prior:
+    from_parameters:
+      mean: 1.028
+      sigma: 0.097
+    from_hJ:
+      mean: 0.776
+      sigma_plus: 0.067
+      sigma_minus: 0.079
+    tension_percent: 32.5
+
+# Modified gravity Σ₀ fits
+Sigma0_fits:
+  standard:
+    mean: 0.24
+    sigma: 0.10
+    g_model: "Ω_Λ(z)"
+    chi2_red: 1.1
+    p_value: 0.33
+  
+  constant:
+    mean: 0.13
+    sigma: 0.06
+    g_model: "1 for z∈[0,1]"
+    chi2_red: 1.1
+    p_value: 0.33
+  
+  exponential:
+    mean: 0.027
+    sigma: 0.013
+    g_model: "exp(1+z) for z∈[0,1]"
+    chi2_red: 0.8
+    p_value: 0.48
+
+# ΛCDM baseline (Σ = 1, no deviation)
+LCDM_baseline:
+  Sigma_0: 0.0
+  chi2_red: 2.1
+  p_value: 0.078
+  interpretation: "Poor fit indicates tension with GR"
+
+# Horndeski theory constraints
+horndeski_constraints:
+  alpha_M0:
+    mean: 0.55
+    sigma: 0.22
+    interpretation: "Running of Planck mass"
+  
+  gamma_c0:
+    mean: 0.79
+    sigma_plus: 0.37
+    sigma_minus: 0.30
+    interpretation: "Scalar field coupling"
+
+# Cosmological parameters (Planck 2018 fiducial)
+fiducial_cosmology:
+  Omega_m_0: 0.315
+  Omega_Lambda_0: 0.685
+  H_0: 67.4  # km/s/Mpc
+  sigma8_0: 0.811
+  n_s: 0.965
+  z_star: 10.0  # Matter era anchor for GR recovery
+
+# UMCP mapping annotations
+umcp_mapping:
+  hJ_to_coordinates:
+    description: "ĥJ values are the primary Ψ-coordinates in WEYL space"
+    embedding: "hJ ∈ [0, 1] after normalization by max(hJ)"
+  
+  Sigma0_to_drift:
+    description: "Σ₀ deviation from GR maps to ω (drift from ideal)"
+    formula: "ω_analog = |Σ₀|"
+    value: 0.24
+  
+  sigma8_tension_to_collapse:
+    description: "σ8 discrepancy maps to collapse potential Φ_collapse"
+    formula: "Φ_collapse_analog = |σ8_params - σ8_hJ| / σ8_hJ"
+    value: 0.143
+  
+  z_star_to_return_anchor:
+    description: "High-z anchor z* maps to return domain generator D_θ"
+    interpretation: "GR holds at z* = 10, deviations measured relative to this"

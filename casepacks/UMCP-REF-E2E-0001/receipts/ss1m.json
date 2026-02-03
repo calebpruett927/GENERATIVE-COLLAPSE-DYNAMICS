@@ -5,7 +5,7 @@
     "version": 1,
     "case_id": "UMCP-REF-E2E-0001",
     "timezone": "America/Chicago",
-    "emitted_at": "2026-01-20T00:53:16.231976+00:00",
+    "emitted_at": "2026-02-02T16:49:35.389060+00:00",
     "address": "Clement Paulus",
     "canon": {
       "pre_doi": "10.5281/zenodo.17756705",
@@ -33,11 +33,11 @@
     "environment": {
       "python_version": "3.12.1",
       "platform": "Linux",
-      "hostname": "codespaces-55d312"
+      "hostname": "codespaces-5c7782"
     },
     "manifest": {
       "id": "UMCP-REF-E2E-0001.manifest",
-      "root_sha256": "8695cc84b81970b651db2e16af4eca10499e4f8e0d1e0affbc1b23200cb5ca66"
+      "root_sha256": "d93c29a01e34d038e7925569ec1821b194064346f7fd8ffe9385352887dca6ca"
     },
     "kernel_summary": {
       "total_rows": 9,

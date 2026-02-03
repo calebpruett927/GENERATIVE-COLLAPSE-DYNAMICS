@@ -1,0 +1,2 @@
+event_id,face,tau_T_normalized,tau_T_sigma,tau_R,D_C,omega,R,delta_kappa,residual,kappa,I,seam_type,weld_status
+PHYS-04,postselected-transmit,-0.82,0.16,-0.82,-0.82,0.0,1.0,0.0,0.0,0.0,1.0,Type_I,Pass

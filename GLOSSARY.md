@@ -695,6 +695,87 @@ See [canon/rcft_anchors.yaml](canon/rcft_anchors.yaml) for complete machine-read
 
 ---
 
+## Tier-1 Extensions: WEYL Cosmological Framework
+
+See [canon/weyl_anchors.yaml](canon/weyl_anchors.yaml) for complete machine-readable definitions.
+
+### Weyl Potential (Ψ_W)
+
+**Tier tag:** Tier-1 (WEYL extension)
+
+**Definition:** The geometric sum of metric potentials Ψ_W ≡ (Φ + Ψ)/2, where Φ and Ψ are the Newtonian and curvature potentials in the metric perturbation. This is the primary gravitational observable for weak lensing.
+
+**Not to be confused with:**
+- Tier-1 bounded trace Ψ(t) (different object, same Greek letter)
+- Wavefunction ψ from quantum mechanics
+- Individual metric potentials Φ or Ψ alone
+
+**Inputs/outputs:**
+- Consumes: Metric perturbations from cosmological model
+- Produces: Lensing observable Ψ_W(k, z)
+
+**Where defined:**
+- [canon/weyl_anchors.yaml](canon/weyl_anchors.yaml) (reserved_symbols.Psi_W)
+- [contracts/WEYL.INTSTACK.v1.yaml](contracts/WEYL.INTSTACK.v1.yaml)
+
+**Where used:**
+- [closures/weyl/weyl_transfer.py](closures/weyl/weyl_transfer.py)
+- [casepacks/weyl_des_y3/](casepacks/weyl_des_y3/)
+
+**Status:** Canonical (WEYL extension)
+
+### Gravity Modification Function (Σ)
+
+**Tier tag:** Tier-1 (WEYL extension)
+
+**Definition:** The phenomenological function Σ(z) that modifies the Poisson equation for lensing: ∇²Ψ_W = 4πG Σ a² ρ_m δ_m. General Relativity corresponds to Σ = 1.
+
+**Not to be confused with:**
+- Summation symbol Σ (context-dependent)
+- Variance σ² (different symbol entirely)
+- Tier-1 entropy S (reserved for different purpose)
+
+**Inputs/outputs:**
+- Consumes: ĥJ measurements, cosmological background
+- Produces: Σ(z) values per redshift bin
+
+**Where defined:**
+- [canon/weyl_anchors.yaml](canon/weyl_anchors.yaml) (reserved_symbols.Sigma)
+- [contracts/WEYL.INTSTACK.v1.yaml](contracts/WEYL.INTSTACK.v1.yaml) (Eq. 11-13)
+
+**Where used:**
+- [closures/weyl/sigma_evolution.py](closures/weyl/sigma_evolution.py)
+- [casepacks/weyl_des_y3/](casepacks/weyl_des_y3/)
+
+**Status:** Canonical (WEYL extension)
+
+### Weyl Evolution Proxy (ĥJ)
+
+**Tier tag:** Tier-1 (WEYL extension)
+
+**Definition:** Dimensionless lensing proxy ĥJ(z) = J(z) × σ8(z) / D₁(z), where J(z) is the Weyl deviation function. This is the UMCP "fidelity analog" for cosmological observations.
+
+**Not to be confused with:**
+- Tier-1 fidelity F (different invariant, similar role)
+- Galaxy bias b (separate quantity)
+- Hubble parameter H (different symbol)
+
+**Inputs/outputs:**
+- Consumes: Lensing measurements, growth function, σ8 normalization
+- Produces: Dimensionless proxy per redshift bin
+
+**Where defined:**
+- [canon/weyl_anchors.yaml](canon/weyl_anchors.yaml) (reserved_symbols.hJ)
+- [contracts/WEYL.INTSTACK.v1.yaml](contracts/WEYL.INTSTACK.v1.yaml) (Eq. 4)
+
+**Where used:**
+- [closures/weyl/sigma_evolution.py](closures/weyl/sigma_evolution.py)
+- [casepacks/weyl_des_y3/](casepacks/weyl_des_y3/)
+
+**Status:** Canonical (WEYL extension)
+
+---
+
 ## Closure Registry and Governance
 
 ### Closure
