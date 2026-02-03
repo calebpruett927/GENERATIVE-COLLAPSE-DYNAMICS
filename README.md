@@ -89,7 +89,7 @@ pip install -e ".[all]"
 # System health check (should show HEALTHY status)
 umcp health
 
-# Run test suite (should show 863 tests passing)
+# Run test suite (should show 879 tests passing)
 pytest
 
 # Quick validation test
@@ -739,7 +739,7 @@ UMCP-Metadata-Runnable-Code/
 │   ├── dashboard.py       # Streamlit dashboard (21 pages)
 │   ├── umcp_extensions.py # Extension registry (4 extensions)
 │   └── kernel_optimized.py # Optimized kernel computation
-├── tests/                 # Test suite (863 tests)
+├── tests/                 # Test suite (879 tests)
 │   ├── test_frozen_contract.py  # 36 tests (v1.5.0)
 │   ├── test_ss1m_triad.py       # 35 tests (v1.5.0)
 │   ├── test_uncertainty.py      # 23 tests (v1.5.0)
@@ -836,7 +836,7 @@ pytest --cov --cov-report=html  # HTML report in htmlcov/
 pytest -m "not slow"
 ```
 
-**Test Structure**: 863 tests total
+**Test Structure**: 879 tests total
 - Schema validation: 50 tests
 - Kernel invariants: 84 tests
 - GCD framework: 92 tests
@@ -855,7 +855,7 @@ pytest -m "not slow"
 
 ## 🚀 Production Features
 
-- ✅ **863 tests** passing (100% success rate)
+- ✅ **879 tests** passing (100% success rate)
 - ✅ **10 CLI commands** for validation, testing, and inspection
 - ✅ **30+ API endpoints** with FastAPI (optional extension)
 - ✅ **21-page dashboard** with Streamlit (optional extension)

@@ -2264,6 +2264,196 @@ async def analyze_ledger(
 
 
 # ============================================================================
+# WEYL Cosmology Endpoints
+# ============================================================================
+
+
+class CosmologyParams(BaseModel):
+    """Cosmological parameters for WEYL computations."""
+
+    Omega_m_0: float = Field(default=0.315, description="Matter density today")
+    Omega_Lambda_0: float = Field(default=0.685, description="Dark energy density today")
+    H_0: float = Field(default=67.4, description="Hubble constant in km/s/Mpc")
+    sigma8_0: float = Field(default=0.811, description="σ8 amplitude at z=0")
+
+
+class SigmaResult(BaseModel):
+    """Result of Σ(z) computation."""
+
+    z: float = Field(description="Redshift")
+    Sigma: float = Field(description="Σ(z) value")
+    Sigma_0: float = Field(description="Σ₀ amplitude")
+    regime: str = Field(description="Classification regime")
+    deviation_from_GR: float = Field(description="|Σ - 1|")
+
+
+class BackgroundResult(BaseModel):
+    """Result of background cosmology computation."""
+
+    z: float = Field(description="Redshift")
+    H_z: float = Field(description="Hubble parameter H(z) in km/s/Mpc")
+    chi: float = Field(description="Comoving distance χ(z) in Mpc/h")
+    D1: float = Field(description="Linear growth function D₁(z)")
+    sigma8_z: float = Field(description="σ8(z) amplitude")
+    Omega_m_z: float = Field(description="Matter density Ω_m(z)")
+
+
+class DESY3Data(BaseModel):
+    """DES Y3 reference data."""
+
+    z_bins: list[float] = Field(description="Effective redshifts for 4 lens bins")
+    hJ_mean: list[float] = Field(description="ĥJ measurements (CMB prior)")
+    hJ_sigma: list[float] = Field(description="ĥJ uncertainties")
+    Sigma_0_standard: dict[str, float] = Field(description="Σ₀ fit with standard g(z)")
+    Sigma_0_constant: dict[str, float] = Field(description="Σ₀ fit with constant g(z)")
+
+
+class UMCPMapping(BaseModel):
+    """WEYL to UMCP invariant mapping."""
+
+    omega_analog: float = Field(description="Drift analog (1 - F)")
+    F_analog: float = Field(description="Fidelity analog")
+    regime: str = Field(description="UMCP-style regime")
+    chi2_improvement: float = Field(description="χ² improvement ratio")
+
+
+@app.get("/weyl/background", response_model=BackgroundResult, tags=["WEYL"])
+async def compute_weyl_background(
+    z: float = Query(..., ge=0.0, le=10.0, description="Redshift"),
+    api_key: str = Security(validate_api_key),
+) -> BackgroundResult:
+    """
+    Compute background cosmology quantities at redshift z.
+
+    Returns H(z), χ(z), D₁(z), σ8(z), Ω_m(z) for Planck 2018 cosmology.
+    """
+    try:
+        from closures.weyl import (
+            H_of_z,
+            chi_of_z,
+            D1_of_z,
+            sigma8_of_z,
+            Omega_m_of_z,
+        )
+    except ImportError:
+        raise HTTPException(
+            status_code=500,
+            detail="WEYL closures not available",
+        )
+
+    return BackgroundResult(
+        z=z,
+        H_z=float(H_of_z(z)),
+        chi=float(chi_of_z(z)),
+        D1=float(D1_of_z(z)),
+        sigma8_z=float(sigma8_of_z(z)),
+        Omega_m_z=float(Omega_m_of_z(z)),
+    )
+
+
+@app.get("/weyl/sigma", response_model=SigmaResult, tags=["WEYL"])
+async def compute_weyl_sigma(
+    z: float = Query(..., ge=0.0, le=3.0, description="Redshift"),
+    Sigma_0: float = Query(default=0.24, ge=-1.0, le=1.0, description="Σ₀ amplitude"),
+    g_model: str = Query(default="constant", description="g(z) model: constant, exponential, standard"),
+    api_key: str = Security(validate_api_key),
+) -> SigmaResult:
+    """
+    Compute Σ(z) modified gravity parameter.
+
+    Σ(z) = 1 + Σ₀ · g(z), where g(z) depends on the chosen model.
+    DES Y3 finds Σ₀ ≈ 0.24 ± 0.14 (constant model).
+    """
+    try:
+        from closures.weyl import compute_Sigma, GzModel
+    except ImportError:
+        raise HTTPException(
+            status_code=500,
+            detail="WEYL closures not available",
+        )
+
+    try:
+        model = GzModel(g_model)
+    except ValueError:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid g_model: {g_model}. Use: constant, exponential, standard",
+        )
+
+    result = compute_Sigma(z, Sigma_0, model)
+
+    return SigmaResult(
+        z=result.z,
+        Sigma=result.Sigma,
+        Sigma_0=result.Sigma_0,
+        regime=result.regime,
+        deviation_from_GR=result.deviation_from_GR,
+    )
+
+
+@app.get("/weyl/des-y3", response_model=DESY3Data, tags=["WEYL"])
+async def get_des_y3_data(
+    api_key: str = Security(validate_api_key),
+) -> DESY3Data:
+    """
+    Get DES Y3 reference data from Nature Communications 15:9295 (2024).
+
+    Returns ĥJ measurements and Σ₀ fits for the 4 lens redshift bins.
+    """
+    try:
+        from closures.weyl import DES_Y3_DATA
+    except ImportError:
+        raise HTTPException(
+            status_code=500,
+            detail="WEYL closures not available",
+        )
+
+    return DESY3Data(
+        z_bins=DES_Y3_DATA["z_bins"],
+        hJ_mean=DES_Y3_DATA["hJ_cmb"]["mean"],
+        hJ_sigma=DES_Y3_DATA["hJ_cmb"]["sigma"],
+        Sigma_0_standard={
+            "mean": DES_Y3_DATA["Sigma_0_fits"]["standard"]["mean"],
+            "sigma": DES_Y3_DATA["Sigma_0_fits"]["standard"]["sigma"],
+        },
+        Sigma_0_constant={
+            "mean": DES_Y3_DATA["Sigma_0_fits"]["constant"]["mean"],
+            "sigma": DES_Y3_DATA["Sigma_0_fits"]["constant"]["sigma"],
+        },
+    )
+
+
+@app.get("/weyl/umcp-mapping", response_model=UMCPMapping, tags=["WEYL"])
+async def compute_weyl_umcp_mapping(
+    Sigma_0: float = Query(default=0.24, ge=-1.0, le=1.0, description="Σ₀ amplitude"),
+    chi2_Sigma: float = Query(default=1.1, ge=0.0, description="χ² of Σ model fit"),
+    chi2_LCDM: float = Query(default=2.1, ge=0.0, description="χ² of ΛCDM fit"),
+    api_key: str = Security(validate_api_key),
+) -> UMCPMapping:
+    """
+    Map WEYL Σ measurements to UMCP invariants.
+
+    Returns ω (drift), F (fidelity), regime, and χ² improvement.
+    """
+    try:
+        from closures.weyl import Sigma_to_UMCP_invariants
+    except ImportError:
+        raise HTTPException(
+            status_code=500,
+            detail="WEYL closures not available",
+        )
+
+    result = Sigma_to_UMCP_invariants(Sigma_0, chi2_Sigma, chi2_LCDM)
+
+    return UMCPMapping(
+        omega_analog=result["omega_analog"],
+        F_analog=result["F_analog"],
+        regime=result["regime"],
+        chi2_improvement=result["chi2_improvement"],
+    )
+
+
+# ============================================================================
 # CLI Entry Point
 # ============================================================================
 
