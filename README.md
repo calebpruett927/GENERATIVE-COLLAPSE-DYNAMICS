@@ -89,7 +89,7 @@ pip install -e ".[all]"
 # System health check (should show HEALTHY status)
 umcp health
 
-# Run test suite (should show 755 tests passing)
+# Run test suite (should show 863 tests passing)
 pytest
 
 # Quick validation test
@@ -558,7 +558,7 @@ curl -X POST -H "X-API-Key: umcp-dev-key" \
 
 ## 📊 Visualization Dashboard
 
-UMCP includes an interactive Streamlit dashboard with **8 pages** for exploring validation data:
+UMCP includes an interactive Streamlit dashboard with **21 pages** for exploring validation data:
 
 ```bash
 # Install visualization dependencies
@@ -571,16 +571,21 @@ umcp-dashboard
 
 ### Dashboard Pages
 
+| Category | Pages | Description |
+|----------|-------|-------------|
+| **Core** | Overview, Geometry, Ledger, Casepacks, Contracts, Closures, Regime, Metrics, Health | System monitoring and data browsing |
+| **Interactive** | Live Runner, Batch Validation, Test Templates | Run validations directly |
+| **Scientific** | Physics, Kinematics, Formula Builder, **Cosmology** | Domain-specific interfaces |
+| **Analysis** | Time Series, Comparison | Data analysis tools |
+| **Management** | Exports, Bookmarks, Notifications, API Integration | System management |
+
+#### Key Scientific Pages
+
 | Page | Description |
 |------|-------------|
-| **Overview** | System status, quick metrics, recent validations |
-| **Ledger** | Interactive ledger browser with filtering and statistics |
-| **Casepacks** | Browse available casepacks with details and run options |
-| **Contracts** | View contracts grouped by domain with schema details |
-| **Closures** | Closure function browser with documentation |
-| **Regime** | Interactive regime classifier with phase space visualization |
-| **Metrics** | Time series, distributions, and correlations of kernel metrics |
-| **Health** | System health monitoring and diagnostics |
+| **Physics** | SI unit conversion and tier translation |
+| **Kinematics** | Phase space analysis and trajectory tracking |
+| **Cosmology** | WEYL Σ(z) modified gravity analysis with DES Y3 data |
 
 ### Features
 
@@ -590,6 +595,7 @@ umcp-dashboard
 - 🌡️ **Regime Phase Space**: Visual mapping of ω × s → regime
 - 📊 **Correlation Analysis**: Identify metric relationships
 - ⚡ **Real-time Updates**: Live system health monitoring
+- 🌌 **WEYL Integration**: Cosmological modified gravity analysis
 
 📖 **Dashboard URL**: http://localhost:8501
 
@@ -730,10 +736,10 @@ UMCP-Metadata-Runnable-Code/
 │   ├── validator.py       # Core validation engine
 │   ├── cli.py             # Command-line interface (10 commands)
 │   ├── api_umcp.py        # REST API (30+ endpoints)
-│   ├── dashboard.py       # Streamlit dashboard (8 pages)
+│   ├── dashboard.py       # Streamlit dashboard (21 pages)
 │   ├── umcp_extensions.py # Extension registry (4 extensions)
 │   └── kernel_optimized.py # Optimized kernel computation
-├── tests/                 # Test suite (755 tests)
+├── tests/                 # Test suite (863 tests)
 │   ├── test_frozen_contract.py  # 36 tests (v1.5.0)
 │   ├── test_ss1m_triad.py       # 35 tests (v1.5.0)
 │   ├── test_uncertainty.py      # 23 tests (v1.5.0)
@@ -751,7 +757,7 @@ UMCP-Metadata-Runnable-Code/
 │   ├── UMA.INTSTACK.v1.yaml     # Primary contract
 │   ├── GCD.INTSTACK.v1.yaml     # GCD framework
 │   └── RCFT.INTSTACK.v1.yaml    # RCFT framework
-├── closures/              # Computational functions (16 closures)
+├── closures/              # Computational functions (26 closures)
 │   ├── registry.yaml      # Closure registry
 │   ├── gcd/              # 5 GCD closures
 │   │   ├── energy_potential.py
@@ -830,12 +836,13 @@ pytest --cov --cov-report=html  # HTML report in htmlcov/
 pytest -m "not slow"
 ```
 
-**Test Structure**: 755 tests total
+**Test Structure**: 863 tests total
 - Schema validation: 50 tests
 - Kernel invariants: 84 tests
 - GCD framework: 92 tests
 - Kinematics framework: 133 tests
 - RCFT framework: 78 tests
+- **WEYL framework: 43 tests** (NEW)
 - Frozen contract: 36 tests
 - SS1m triads: 35 tests
 - Uncertainty: 23 tests
@@ -848,12 +855,12 @@ pytest -m "not slow"
 
 ## 🚀 Production Features
 
-- ✅ **755 tests** passing (100% success rate)
+- ✅ **863 tests** passing (100% success rate)
 - ✅ **10 CLI commands** for validation, testing, and inspection
 - ✅ **30+ API endpoints** with FastAPI (optional extension)
-- ✅ **8-page dashboard** with Streamlit (optional extension)
+- ✅ **21-page dashboard** with Streamlit (optional extension)
 - ✅ **6 casepacks** with reproducible examples
-- ✅ **16 closures** across GCD, Kinematics, and RCFT frameworks
+- ✅ **26 closures** across GCD, Kinematics, RCFT, and WEYL frameworks
 - ✅ **Frozen contracts**: Mathematical constants as versioned artifacts
 - ✅ **Budget conservation**: R·τ_R = D_ω + D_C + Δκ validation
 - ✅ **Return time tracking**: τ_R for temporal coherence
@@ -910,7 +917,8 @@ python scripts/update_integrity.py
 - ✅ **32 API Tests**: Comprehensive endpoint coverage
 
 **Visualization Dashboard Complete** (NEW):
-- ✅ **8-Page Dashboard**: Overview, Ledger, Casepacks, Contracts, Closures, Regime, Metrics, Health
+- ✅ **21-Page Dashboard**: Core (9), Interactive (3), Scientific (4), Analysis (2), Management (4)
+- ✅ **WEYL Cosmology Page**: Σ(z) visualization, DES Y3 data, UMCP integration
 - ✅ **Interactive Charts**: Plotly-powered visualizations
 - ✅ **Real-time Health Monitoring**: System diagnostics
 - ✅ **Export Capabilities**: Download data as CSV
@@ -1030,7 +1038,7 @@ MIT License - see [LICENSE](LICENSE) for details.
   📦 Casepacks:    6 validated
   🔧 CLI:          10 commands
   🌐 API:          30+ endpoints
-  📈 Dashboard:    8 pages
+  📈 Dashboard:    21 pages
   🔌 Extensions:   4 available (api, viz, ledger, formatter)
   🔒 Integrity:    10 files checksummed
   🌐 Timezone:     America/Chicago
@@ -1065,7 +1073,7 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 **Communication Extensions** (Optional):
 - **REST API**: FastAPI with 30+ endpoints (`pip install umcp[api]`)
-- **Dashboard**: Streamlit with 8 pages (`pip install umcp[viz]`)
+- **Dashboard**: Streamlit with 21 pages (`pip install umcp[viz]`)
 - **Extension System**: 4 built-in extensions
 
 **Casepacks** (6):

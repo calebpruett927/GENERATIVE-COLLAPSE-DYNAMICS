@@ -5272,6 +5272,319 @@ def render_formula_builder_page() -> None:
         st.info("No custom formulas saved yet.")
 
 
+def render_cosmology_page() -> None:
+    """
+    Render the WEYL Cosmology page for modified gravity analysis.
+    
+    Implements visualization of the WEYL.INTSTACK.v1 contract:
+    - Σ(z) evolution and regime classification
+    - ĥJ measurements from DES Y3 data
+    - Weyl transfer function visualization
+    - UMCP integration patterns
+    
+    Reference: Nature Communications 15:9295 (2024)
+    """
+    if st is None or np is None or pd is None:
+        return
+
+    st.title("🌌 WEYL Cosmology")
+    st.caption("Modified gravity analysis with Σ(z) parametrization | Nature Comms 15:9295 (2024)")
+
+    # Try to import WEYL closures
+    try:
+        from closures.weyl import (
+            PLANCK_2018,
+            DES_Y3_DATA,
+            SigmaRegime,
+            GzModel,
+            compute_Sigma,
+            compute_background,
+            H_of_z,
+            chi_of_z,
+            D1_of_z,
+            sigma8_of_z,
+            Sigma_to_UMCP_invariants,
+            classify_limber_regime,
+            classify_scale_regime,
+        )
+        weyl_available = True
+    except ImportError:
+        weyl_available = False
+
+    if not weyl_available:
+        st.error("❌ WEYL closures not available. Please ensure closures/weyl/ is installed.")
+        st.code("# WEYL closures should be in closures/weyl/", language="python")
+        return
+
+    # Initialize session state
+    if "weyl_params" not in st.session_state:
+        st.session_state.weyl_params = {
+            "Sigma_0": 0.24,
+            "g_model": "constant",
+            "z_max": 2.0,
+            "n_points": 100,
+        }
+
+    # ========== Cosmological Background Section ==========
+    st.header("🌍 Cosmological Background")
+
+    with st.expander("📖 About ΛCDM Background", expanded=False):
+        st.markdown("""
+        **Planck 2018 Fiducial Cosmology:**
+        - Matter density: Ω_m,0 = 0.315
+        - Dark energy: Ω_Λ,0 = 0.685
+        - Hubble constant: H₀ = 67.4 km/s/Mpc
+        - σ8 amplitude: σ8,0 = 0.811
+        
+        **Key Functions:**
+        - H(z) = H₀ √[Ω_m(1+z)³ + Ω_Λ] - Hubble parameter
+        - χ(z) = ∫ c/H(z') dz' - Comoving distance
+        - D₁(z) - Linear growth function (normalized to 1 at z=0)
+        - σ8(z) = σ8,0 × D₁(z) - Amplitude evolution
+        
+        **UMCP Integration:**
+        - Background cosmology = embedding specification (Tier-0)
+        - Frozen parameters (Ω_m, σ8, H₀) define the coordinate system
+        """)
+
+    # Background visualization
+    z_arr = np.linspace(0, 3, 100)
+    H_arr = np.array([H_of_z(z) for z in z_arr])
+    chi_arr = np.array([chi_of_z(z) for z in z_arr])
+    D1_arr = np.array([D1_of_z(z) for z in z_arr])
+    sigma8_arr = np.array([sigma8_of_z(z) for z in z_arr])
+
+    bg_tabs = st.tabs(["📈 H(z)", "📏 χ(z)", "📊 D₁(z) & σ8(z)"])
+
+    with bg_tabs[0]:
+        fig_H = go.Figure()
+        fig_H.add_trace(go.Scatter(x=z_arr, y=H_arr, mode="lines", name="H(z)", line={"color": "#1f77b4", "width": 2}))
+        fig_H.update_layout(
+            title="Hubble Parameter Evolution",
+            xaxis_title="Redshift z",
+            yaxis_title="H(z) [km/s/Mpc]",
+            showlegend=True,
+        )
+        st.plotly_chart(fig_H, use_container_width=True)
+
+    with bg_tabs[1]:
+        fig_chi = go.Figure()
+        fig_chi.add_trace(go.Scatter(x=z_arr, y=chi_arr, mode="lines", name="χ(z)", line={"color": "#2ca02c", "width": 2}))
+        fig_chi.update_layout(
+            title="Comoving Distance",
+            xaxis_title="Redshift z",
+            yaxis_title="χ(z) [Mpc/h]",
+            showlegend=True,
+        )
+        st.plotly_chart(fig_chi, use_container_width=True)
+
+    with bg_tabs[2]:
+        fig_growth = go.Figure()
+        fig_growth.add_trace(go.Scatter(x=z_arr, y=D1_arr, mode="lines", name="D₁(z)", line={"color": "#ff7f0e", "width": 2}))
+        fig_growth.add_trace(go.Scatter(x=z_arr, y=sigma8_arr, mode="lines", name="σ8(z)", line={"color": "#d62728", "width": 2}))
+        fig_growth.add_hline(y=PLANCK_2018.sigma8_0, line_dash="dash", line_color="gray", annotation_text="σ8,0")
+        fig_growth.update_layout(
+            title="Growth Function and σ8 Evolution",
+            xaxis_title="Redshift z",
+            yaxis_title="Value",
+            showlegend=True,
+        )
+        st.plotly_chart(fig_growth, use_container_width=True)
+
+    st.divider()
+
+    # ========== Σ(z) Modified Gravity Section ==========
+    st.header("🔬 Modified Gravity: Σ(z)")
+
+    with st.expander("📖 About Σ Parametrization", expanded=False):
+        st.markdown("""
+        **Σ(z) Definition (Eq. 11):**
+        
+        The Σ parameter encodes deviations from General Relativity:
+        
+        $$ k^2 (\\Phi + \\Psi)/2 = -4\\pi G a^2 \\Sigma(z,k) \\bar{\\rho}(z) \\Delta_m(z,k) $$
+        
+        - **Σ = 1**: General Relativity
+        - **Σ ≠ 1**: Modified gravity or gravitational slip
+        
+        **Parametrization (Eq. 13):**
+        $$ \\Sigma(z) = 1 + \\Sigma_0 \\cdot g(z) $$
+        
+        Where g(z) models:
+        - **constant**: g(z) = 1 for z ∈ [0,1]
+        - **exponential**: g(z) = exp(1+z) for z ∈ [0,1]
+        - **standard**: g(z) = Ω_Λ(z)
+        
+        **UMCP Regime Mapping:**
+        | Σ₀ Range | Regime | UMCP Analog |
+        |----------|--------|-------------|
+        | |Σ₀| < 0.1 | GR_consistent | STABLE |
+        | 0.1 ≤ |Σ₀| < 0.3 | Tension | WATCH |
+        | |Σ₀| ≥ 0.3 | Modified_gravity | COLLAPSE |
+        """)
+
+    # Interactive Σ₀ controls
+    control_cols = st.columns([1, 1, 1, 1])
+
+    with control_cols[0]:
+        sigma_0 = st.slider("Σ₀ (deviation amplitude)", -0.5, 0.5, 0.24, 0.01, help="DES Y3 finds Σ₀ ≈ 0.24 ± 0.14")
+    with control_cols[1]:
+        g_model_name = st.selectbox("g(z) Model", ["constant", "exponential", "standard"], index=0)
+        g_model = GzModel(g_model_name)
+    with control_cols[2]:
+        z_max_sigma = st.slider("z_max", 0.5, 3.0, 2.0, 0.1)
+    with control_cols[3]:
+        n_points = st.slider("Points", 20, 200, 100, 10)
+
+    # Compute Σ(z)
+    z_sigma = np.linspace(0, z_max_sigma, n_points)
+    Sigma_results = [compute_Sigma(z, sigma_0, g_model) for z in z_sigma]
+    Sigma_values = [r.Sigma for r in Sigma_results]
+    regimes = [r.regime for r in Sigma_results]
+
+    # Create Σ(z) plot with regime coloring
+    fig_sigma = go.Figure()
+
+    # Add Σ(z) curve
+    fig_sigma.add_trace(go.Scatter(
+        x=z_sigma, y=Sigma_values, mode="lines+markers",
+        name="Σ(z)", line={"color": "#9467bd", "width": 2},
+        marker={"size": 4}
+    ))
+
+    # Add GR line
+    fig_sigma.add_hline(y=1.0, line_dash="dash", line_color="green", annotation_text="GR (Σ=1)")
+
+    # Add regime bands
+    fig_sigma.add_hrect(y0=0.9, y1=1.1, fillcolor="green", opacity=0.1, line_width=0)
+    fig_sigma.add_hrect(y0=0.7, y1=0.9, fillcolor="yellow", opacity=0.1, line_width=0)
+    fig_sigma.add_hrect(y0=1.1, y1=1.3, fillcolor="yellow", opacity=0.1, line_width=0)
+    fig_sigma.add_hrect(y0=0.0, y1=0.7, fillcolor="red", opacity=0.1, line_width=0)
+    fig_sigma.add_hrect(y0=1.3, y1=2.0, fillcolor="red", opacity=0.1, line_width=0)
+
+    fig_sigma.update_layout(
+        title=f"Σ(z) Evolution | Σ₀ = {sigma_0:.3f} | Model: {g_model_name}",
+        xaxis_title="Redshift z",
+        yaxis_title="Σ(z)",
+        yaxis={"range": [0.5, 1.6]},
+        showlegend=True,
+    )
+    st.plotly_chart(fig_sigma, use_container_width=True)
+
+    # Regime summary
+    regime_counts = {}
+    for r in regimes:
+        regime_counts[r] = regime_counts.get(r, 0) + 1
+
+    regime_cols = st.columns(3)
+    for i, (regime, count) in enumerate(regime_counts.items()):
+        with regime_cols[i % 3]:
+            color = "green" if regime == "GR_consistent" else ("yellow" if regime == "Tension" else "red")
+            st.markdown(f"**{regime}**: {count} points ({100*count/len(regimes):.1f}%)")
+
+    st.divider()
+
+    # ========== DES Y3 Data Section ==========
+    st.header("📊 DES Y3 Reference Data")
+
+    with st.expander("📖 About DES Y3 Analysis", expanded=False):
+        st.markdown("""
+        **Dark Energy Survey Year 3 Results:**
+        
+        The Nature Communications paper analyzes:
+        - 4 lens redshift bins: z ∈ [0.295, 0.467, 0.626, 0.771]
+        - Galaxy-galaxy lensing + galaxy clustering
+        - Cross-correlation with CMB lensing from Planck
+        
+        **Key Measurements (CMB prior):**
+        - ĥJ(z₁) = 0.326 ± 0.062
+        - ĥJ(z₂) = 0.332 ± 0.052
+        - ĥJ(z₃) = 0.387 ± 0.059
+        - ĥJ(z₄) = 0.354 ± 0.085
+        
+        **Fitted Σ₀:**
+        - Standard model: Σ₀ = 0.17 ± 0.12
+        - Constant model: Σ₀ = 0.24 ± 0.14
+        - Exponential model: Σ₀ = 0.10 ± 0.05
+        """)
+
+    # Display DES Y3 data table
+    des_df = pd.DataFrame({
+        "Bin": [1, 2, 3, 4],
+        "z_eff": DES_Y3_DATA["z_bins"],
+        "ĥJ (mean)": DES_Y3_DATA["hJ_cmb"]["mean"],
+        "ĥJ (σ)": DES_Y3_DATA["hJ_cmb"]["sigma"],
+    })
+    st.dataframe(des_df, hide_index=True, use_container_width=True)
+
+    # Plot ĥJ measurements
+    fig_hJ = go.Figure()
+    fig_hJ.add_trace(go.Scatter(
+        x=DES_Y3_DATA["z_bins"],
+        y=DES_Y3_DATA["hJ_cmb"]["mean"],
+        error_y={"type": "data", "array": DES_Y3_DATA["hJ_cmb"]["sigma"]},
+        mode="markers",
+        name="ĥJ (CMB prior)",
+        marker={"size": 12, "color": "#1f77b4"},
+    ))
+    fig_hJ.update_layout(
+        title="DES Y3 ĥJ Measurements",
+        xaxis_title="Effective Redshift z",
+        yaxis_title="ĥJ",
+        showlegend=True,
+    )
+    st.plotly_chart(fig_hJ, use_container_width=True)
+
+    st.divider()
+
+    # ========== UMCP Integration Section ==========
+    st.header("🔗 UMCP Integration")
+
+    with st.expander("📖 About WEYL-UMCP Mapping", expanded=True):
+        st.markdown("""
+        **Core Principle Alignment:**
+        > "Within-run: frozen causes only. Between-run: continuity only by return-weld."
+        
+        **WEYL Implementation:**
+        - **Within-run**: Frozen cosmological parameters (Ω_m, σ8, z*) determine the Weyl trace
+        - **Between-run**: Canonization requires return-weld (Σ → 1 at high z)
+        
+        **Invariant Mapping:**
+        | WEYL Quantity | UMCP Analog | Interpretation |
+        |---------------|-------------|----------------|
+        | ĥJ | F (Fidelity) | Fraction of ideal response |
+        | 1 - ĥJ | ω (Drift) | Distance from ideal |
+        | Σ₀ | Deviation | Amplitude of departure from GR |
+        | χ² improvement | Seam closure | Better fit = tighter weld |
+        """)
+
+    # Interactive UMCP mapping
+    st.subheader("🧮 Compute UMCP Invariants")
+
+    map_cols = st.columns(3)
+    with map_cols[0]:
+        input_sigma0 = st.number_input("Σ₀", value=0.24, step=0.01, format="%.3f")
+    with map_cols[1]:
+        chi2_sigma = st.number_input("χ² (Σ model)", value=1.1, step=0.1, format="%.2f")
+    with map_cols[2]:
+        chi2_lcdm = st.number_input("χ² (ΛCDM)", value=2.1, step=0.1, format="%.2f")
+
+    if st.button("📊 Compute UMCP Mapping"):
+        mapping = Sigma_to_UMCP_invariants(input_sigma0, chi2_sigma, chi2_lcdm)
+
+        result_cols = st.columns(4)
+        with result_cols[0]:
+            st.metric("ω (Drift)", f"{mapping['omega_analog']:.3f}")
+        with result_cols[1]:
+            st.metric("F (Fidelity)", f"{mapping['F_analog']:.3f}")
+        with result_cols[2]:
+            st.metric("χ² Improvement", f"{mapping['chi2_improvement']:.1%}")
+        with result_cols[3]:
+            st.metric("Regime", mapping["regime"])
+
+        st.success(f"✅ WEYL measurements mapped to UMCP invariants successfully!")
+
+
 def render_batch_validation_page() -> None:
     """Render the batch validation page for running multiple casepacks."""
     if st is None:
@@ -6486,6 +6799,7 @@ def main() -> None:
         "Physics": ("⚛️", render_physics_interface_page),
         "Kinematics": ("🎯", render_kinematics_interface_page),
         "Formula Builder": ("🔧", render_formula_builder_page),
+        "Cosmology": ("🌌", render_cosmology_page),
         # Analysis Pages
         "Time Series": ("📈", render_time_series_page),
         "Comparison": ("🔀", render_comparison_page),
