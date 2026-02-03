@@ -96,9 +96,9 @@ class TestUMCPFileReferences:
         umcp = get_umcp_files()
         weights = umcp.load_weights()
 
-        assert len(weights) == 1
-        w_row = weights[0]
-        w_values = [float(v) for v in w_row.values()]
+        # New row-based format: variable,weight with 3 rows
+        assert len(weights) == 3
+        w_values = [float(row["weight"]) for row in weights]
 
         # Weights should sum to 1
         assert abs(sum(w_values) - 1.0) < 1e-9

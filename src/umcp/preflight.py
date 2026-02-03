@@ -733,10 +733,15 @@ class PreflightValidator:
 
         try:
             obs = self._load_yaml(observables_path)
-            current_bounds = obs.get("bounds", obs.get("coordinate_bounds", {}))
+            # Get bounds from observables.yaml (may be nested under 'observables')
+            obs_data = obs.get("observables", obs)
+            current_bounds = obs_data.get("bounds", obs_data.get("coordinate_bounds", {}))
 
             with open(freeze_bounds_path) as f:
-                frozen_bounds = json.load(f)
+                frozen_bounds_doc = json.load(f)
+
+            # Extract bounds from freeze doc (may be nested under 'bounds' key)
+            frozen_bounds = frozen_bounds_doc.get("bounds", frozen_bounds_doc)
 
             if current_bounds != frozen_bounds:
                 self._add_hit(
