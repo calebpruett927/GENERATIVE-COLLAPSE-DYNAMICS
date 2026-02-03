@@ -139,10 +139,10 @@ class BadgeGenerator:
     <rect width="{total_width}" height="20" fill="url(#b)"/>
   </g>
   <g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
-    <text x="{label_width/2}" y="15" fill="#010101" fill-opacity=".3">{label}</text>
-    <text x="{label_width/2}" y="14">{label}</text>
-    <text x="{label_width + status_width/2}" y="15" fill="#010101" fill-opacity=".3">{icon} {status}</text>
-    <text x="{label_width + status_width/2}" y="14">{icon} {status}</text>
+    <text x="{label_width / 2}" y="15" fill="#010101" fill-opacity=".3">{label}</text>
+    <text x="{label_width / 2}" y="14">{label}</text>
+    <text x="{label_width + status_width / 2}" y="15" fill="#010101" fill-opacity=".3">{icon} {status}</text>
+    <text x="{label_width + status_width / 2}" y="14">{icon} {status}</text>
   </g>
 </svg>"""
         else:
@@ -151,8 +151,8 @@ class BadgeGenerator:
   <rect width="{label_width}" height="20" fill="#555"/>
   <rect x="{label_width}" width="{status_width}" height="20" fill="{color}"/>
   <g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
-    <text x="{label_width/2}" y="14">{label}</text>
-    <text x="{label_width + status_width/2}" y="14">{icon} {status}</text>
+    <text x="{label_width / 2}" y="14">{label}</text>
+    <text x="{label_width + status_width / 2}" y="14">{icon} {status}</text>
   </g>
 </svg>"""
 
@@ -227,7 +227,7 @@ class MermaidGenerator:
             path = artifact.get("path", f"artifact_{i}")
             icon = {"data": "📊", "receipt": "🧾", "log": "📋", "seam": "🔗"}.get(role, "📄")
             lines.append(f'    A{i}["{icon} {path}"]')
-            lines.append(f"    CL{min(i, len(closures)-1)} --> A{i}")
+            lines.append(f"    CL{min(i, len(closures) - 1)} --> A{i}")
 
         lines.append("```")
         return "\n".join(lines)
@@ -387,7 +387,7 @@ class ASCIIGenerator:
 │   ω (Overlap)      │ F (Freshness)     │ κ (Curvature)      │
 │   {omega:>12.6f}     │ {F:>12.6f}      │ {kappa:>12.6f}      │
 ├─────────────────────────────────────────────────────────────┤
-│   Identity Check: F ≈ 1-ω  │  |{F:.6f} - {1-omega:.6f}| = {abs(F - (1-omega)):.2e}     │
+│   Identity Check: F ≈ 1-ω  │  |{F:.6f} - {1 - omega:.6f}| = {abs(F - (1 - omega)):.2e}     │
 │   Seam Residual:  |s| = {abs(S):.6f}  {"✓ PASS" if abs(S) <= 0.01 else "✗ FAIL":<8}                       │
 └─────────────────────────────────────────────────────────────┘
 """
@@ -778,11 +778,11 @@ class HTMLGenerator:
     <div style="padding:12px 16px;">
         <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
             <span style="color:#666;">Errors</span>
-            <span style="font-weight:600; color:{'#f44336' if summary.errors > 0 else '#4caf50'};">{summary.errors}</span>
+            <span style="font-weight:600; color:{"#f44336" if summary.errors > 0 else "#4caf50"};">{summary.errors}</span>
         </div>
         <div style="display:flex; justify-content:space-between;">
             <span style="color:#666;">Warnings</span>
-            <span style="font-weight:600; color:{'#ff9800' if summary.warnings > 0 else '#4caf50'};">{summary.warnings}</span>
+            <span style="font-weight:600; color:{"#ff9800" if summary.warnings > 0 else "#4caf50"};">{summary.warnings}</span>
         </div>
         {regime_info}
         <div style="margin-top:12px; font-size:10px; color:#999;">

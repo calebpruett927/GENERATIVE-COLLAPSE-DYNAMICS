@@ -23,7 +23,7 @@ UMCP Integration:
 
 Core Axiom Realization:
     AX-W0 (Weyl Axiom): "Reference anchor defines deviation"
-    
+
     The high-z anchor z* where GR holds defines the meaning of
     gravitational deviation at lower redshift. This is the
     cosmological realization of AX-1 ("Boundary defines interior").

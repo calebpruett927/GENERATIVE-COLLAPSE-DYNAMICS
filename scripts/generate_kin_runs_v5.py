@@ -538,7 +538,7 @@ def generate_shm_run() -> None:
     tau_R_finite = tau_R[np.isfinite(tau_R)]
     print(f"✓ Generated {run_id}")
     print(f"  N={N}, T={T}s, f0={f0} Hz (expected period={expected_period}s)")
-    print(f"  τ_R: coverage={100*len(tau_R_finite)/N:.1f}%, median={np.median(tau_R_finite):.4f}s")
+    print(f"  τ_R: coverage={100 * len(tau_R_finite) / N:.1f}%, median={np.median(tau_R_finite):.4f}s")
     print(f"  ω: median={np.median(omega):.6f}, max={omega_max:.6f}")
     print(f"  F: median={np.median(fidelity_arr):.6f} (should be ≈ 1 - median(ω) = {1 - np.median(omega):.6f})")
     print(
@@ -546,7 +546,7 @@ def generate_shm_run() -> None:
     )
     print(f"  S: median={np.median(S_norm):.4f} (normalized to [0,1])")
     print(f"  C: median={np.median(curvature_arr):.4f}, C_0={C_0_used:.4f}")
-    print(f"  IC: median={np.median(IC):.4f}, pass rate (≥{IC_min})={100*IC_pass_rate:.1f}%")
+    print(f"  IC: median={np.median(IC):.4f}, pass rate (≥{IC_min})={100 * IC_pass_rate:.1f}%")
     print(f"  κ: median={np.median(kappa):.4f} (should be ≈ ln(IC_med) = {np.log(np.median(IC)):.4f})")
     print(
         f"  TIER-1 CHECK: κ = ln(IC) ? {identity_validation['kappa_identity_valid']} (max error: {identity_validation['kappa_max_error']:.2e})"
@@ -1076,13 +1076,13 @@ def generate_gait_run() -> None:
     tau_R_finite = tau_R[np.isfinite(tau_R)]
     print(f"✓ Generated {run_id}")
     print(f"  N={N}, T={T}s, f_gait={f_gait} Hz (expected period={expected_period:.4f}s)")
-    print(f"  τ_R: coverage={100*len(tau_R_finite)/N:.1f}%, median={np.median(tau_R_finite):.4f}s")
+    print(f"  τ_R: coverage={100 * len(tau_R_finite) / N:.1f}%, median={np.median(tau_R_finite):.4f}s")
     print(f"  ω: median={np.median(omega):.6f}")
     print(f"  F: median={np.median(fidelity_arr):.6f} (should be ≈ 1 - median(ω) = {1 - np.median(omega):.6f})")
     print(f"  TIER-1 CHECK: F = 1 - ω ? {identity_validation['F_identity_valid']}")
     print(f"  S: median={np.median(S_norm):.4f} (normalized)")
     print(f"  C: median={np.median(curvature_arr):.4f}")
-    print(f"  IC: median={np.median(IC):.4f}, pass rate (≥{IC_min})={100*IC_pass_rate:.1f}%")
+    print(f"  IC: median={np.median(IC):.4f}, pass rate (≥{IC_min})={100 * IC_pass_rate:.1f}%")
     print(f"  κ: median={np.median(kappa):.4f} (should be ≈ ln(IC_med) = {np.log(np.median(IC)):.4f})")
     print(f"  TIER-1 CHECK: κ = ln(IC) ? {identity_validation['kappa_identity_valid']}")
 

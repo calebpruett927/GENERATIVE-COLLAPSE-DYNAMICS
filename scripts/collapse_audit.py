@@ -315,8 +315,8 @@ Seam Types:
         print(f"  Type I (Return Without Loss): {type_i}")
         print(f"  Type II (Return With Loss):   {type_ii}")
         print(f"  Type III (Irreconcilable):    {type_iii}")
-        print(f"  Audit Pass Rate: {passed}/{len(results)} ({100*passed/len(results):.1f}%)")
-        print(f"  AX-0 Compliance: {ax0_passed}/{len(results)} ({100*ax0_passed/len(results):.1f}%)")
+        print(f"  Audit Pass Rate: {passed}/{len(results)} ({100 * passed / len(results):.1f}%)")
+        print(f"  AX-0 Compliance: {ax0_passed}/{len(results)} ({100 * ax0_passed / len(results):.1f}%)")
         print()
 
         # Individual results

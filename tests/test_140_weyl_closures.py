@@ -210,7 +210,7 @@ class TestWeylTransfer:
         H_z = np.array([70.0, 80.0, 90.0])
         J_z = np.array([1.0, 1.0, 1.0])
         B_ratio = np.array([1.0, 1.0, 1.0])
-        
+
         T_Weyl, T_ratio = compute_weyl_transfer_array(
             H_z=H_z,
             H_z_star=700.0,
@@ -226,7 +226,7 @@ class TestWeylTransfer:
         """Test Weyl return domain analysis."""
         z_values = np.linspace(0, 2, 21)
         J_values = 1.0 + 0.24 * np.exp(-z_values)  # Deviation at low z
-        
+
         result = weyl_return_domain(z_values, J_values, z_star=10.0, eta_J=0.05)
         assert "return_rate" in result
         assert "first_deviation_z" in result
@@ -328,7 +328,7 @@ class TestLimberIntegral:
         hJ_des = np.array([0.326, 0.332, 0.387, 0.354])
         hb_des = np.array([0.5, 0.6, 0.7, 0.8])
         z_bins = np.array([0.295, 0.467, 0.626, 0.771])
-        
+
         proj = limber_as_projection(hJ_des, hb_des, z_bins)
         assert "hJ_mean" in proj
         assert "F_analog" in proj
@@ -435,11 +435,11 @@ class TestWeylUMCPIntegration:
         """Test ĥJ maps to UMCP fidelity analog."""
         # DES Y3 mean ĥJ ≈ 0.35
         hJ_mean = np.mean(DES_Y3_DATA["hJ_cmb"]["mean"])
-        
+
         # This should map to F_analog ≈ 0.35 (similar magnitude)
         # The mapping preserves the "fraction of ideal" interpretation
         assert 0.3 < hJ_mean < 0.4
-        
+
         # ω_analog = 1 - F_analog
         omega_analog = 1 - hJ_mean
         assert 0.6 < omega_analog < 0.7
@@ -449,9 +449,9 @@ class TestWeylUMCPIntegration:
         mapping = Sigma_to_UMCP_invariants(
             Sigma_0=0.24,
             chi2_red_Sigma=1.1,  # Σ model fit
-            chi2_red_LCDM=2.1,   # ΛCDM fit
+            chi2_red_LCDM=2.1,  # ΛCDM fit
         )
-        
+
         # χ² improved from 2.1 to 1.1 → ~48% improvement
         assert mapping["chi2_improvement"] > 0.4
 
@@ -460,11 +460,11 @@ class TestWeylUMCPIntegration:
         # GR_consistent → STABLE
         result_gr = compute_Sigma(z=0.5, Sigma_0=0.05, g_model=GzModel.CONSTANT)
         assert result_gr.regime == SigmaRegime.GR_CONSISTENT.value
-        
+
         # Tension → WATCH
         result_tension = compute_Sigma(z=0.5, Sigma_0=0.20, g_model=GzModel.CONSTANT)
         assert result_tension.regime == SigmaRegime.TENSION.value
-        
+
         # Modified_gravity → COLLAPSE analog
         result_mg = compute_Sigma(z=0.5, Sigma_0=0.50, g_model=GzModel.CONSTANT)
         assert result_mg.regime == SigmaRegime.MODIFIED_GRAVITY.value
@@ -481,9 +481,9 @@ class TestWeylCoreInvariants:
         Omega_m = 0.45  # Approximate at z=0.295
         D1_ratio = 0.9  # D₁(z)/D₁(z*)
         sigma8_star = 0.3  # At z*
-        
+
         hJ_expected = Omega_m * D1_ratio * sigma8_star * Sigma
-        
+
         # Should be in reasonable range
         assert 0 < hJ_expected < 1
 
@@ -495,7 +495,7 @@ class TestWeylCoreInvariants:
         D1_z = 0.9
         D1_z_star = 0.1
         sigma8_star = 0.3
-        
+
         Sigma = compute_Sigma_from_hJ(
             hJ=hJ,
             Omega_m_z=Omega_m,
@@ -503,7 +503,7 @@ class TestWeylCoreInvariants:
             D1_z_star=D1_z_star,
             sigma8_z_star=sigma8_star,
         )
-        
+
         # Reconstruct hJ
         hJ_reconstructed = Omega_m * (D1_z / D1_z_star) * sigma8_star * Sigma
         assert hJ_reconstructed == pytest.approx(hJ, rel=1e-6)

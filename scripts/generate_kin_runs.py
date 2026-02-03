@@ -285,11 +285,11 @@ def generate_shm_run() -> None:
 
     tau_R_finite = tau_R[np.isfinite(tau_R)]
     print(f"✓ Generated {run_id}")
-    print(f"  N={N}, T={T}s, f0={f0} Hz (period={1/f0}s)")
+    print(f"  N={N}, T={T}s, f0={f0} Hz (period={1 / f0}s)")
     print(
-        f"  τ_R: coverage={100*len(tau_R_finite)/N:.1f}%, median={np.median(tau_R_finite):.3f}s, expected≈{1/f0:.3f}s"
+        f"  τ_R: coverage={100 * len(tau_R_finite) / N:.1f}%, median={np.median(tau_R_finite):.3f}s, expected≈{1 / f0:.3f}s"
     )
-    print(f"  F: mean={np.mean(fidelity_arr):.3f}, IC pass rate={100*np.mean(IC):.1f}%")
+    print(f"  F: mean={np.mean(fidelity_arr):.3f}, IC pass rate={100 * np.mean(IC):.1f}%")
     print(f"  κ final: {kappa[-1]:.4f}")
 
 
@@ -577,7 +577,7 @@ def generate_ballistic_run() -> None:
     print(f"✓ Generated {run_id}")
     print(f"  N={N}, T={t_arr[-1]:.2f}s, bounces={bounce_count}")
     print(f"  Seam: t_s={t_seam:.4f}s, weld result: {weld_result}")
-    print(f"  τ_R finite coverage: {100*len(tau_R_finite)/N:.1f}%")
+    print(f"  τ_R finite coverage: {100 * len(tau_R_finite) / N:.1f}%")
     print(f"  IC: pre={IC_pre:.3f}, post={IC_post:.3f}, Δκ={delta_kappa:.6f}")
 
 
@@ -777,9 +777,9 @@ def generate_gait_run() -> None:
     print(f"✓ Generated {run_id}")
     print(f"  N={N}, T={T}s, f_gait={f_gait} Hz (period={expected_period:.3f}s)")
     print(
-        f"  τ_R: coverage={100*len(tau_R_finite)/N:.1f}%, median={np.median(tau_R_finite):.3f}s, expected≈{expected_period:.3f}s"
+        f"  τ_R: coverage={100 * len(tau_R_finite) / N:.1f}%, median={np.median(tau_R_finite):.3f}s, expected≈{expected_period:.3f}s"
     )
-    print(f"  F: mean={np.mean(fidelity_arr):.3f}, IC pass rate={100*np.mean(IC):.1f}%")
+    print(f"  F: mean={np.mean(fidelity_arr):.3f}, IC pass rate={100 * np.mean(IC):.1f}%")
     print(f"  κ final: {kappa[-1]:.4f}")
 
 

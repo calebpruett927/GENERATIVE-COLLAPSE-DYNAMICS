@@ -402,7 +402,7 @@ def main() -> int:
     print(f"  Mean Δκ:               {analysis['mean_delta_kappa']:+.6f}")
     print(f"  Std Δκ:                {analysis['std_delta_kappa']:.6f}")
     print()
-    print(f"  Positive Δκ steps:     {analysis['positive_steps']} ({analysis['positive_ratio']*100:.1f}%)")
+    print(f"  Positive Δκ steps:     {analysis['positive_steps']} ({analysis['positive_ratio'] * 100:.1f}%)")
     print(f"  Neutral Δκ steps:      {analysis['neutral_steps']}")
     print(f"  Negative Δκ steps:     {analysis['negative_steps']}")
     print()

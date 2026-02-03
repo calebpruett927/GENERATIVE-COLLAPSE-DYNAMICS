@@ -385,12 +385,12 @@ def generate_shm_run() -> None:
     print(f"✓ Generated {run_id}")
     print(f"  N={N}, T={T}s, f0={f0} Hz (expected period={expected_period}s)")
     print(
-        f"  τ_R: coverage={100*len(tau_R_finite)/N:.1f}%, median={np.median(tau_R_finite):.3f}s (target≈{expected_period:.3f}s)"
+        f"  τ_R: coverage={100 * len(tau_R_finite) / N:.1f}%, median={np.median(tau_R_finite):.3f}s (target≈{expected_period:.3f}s)"
     )
     print(f"  ω: mean={np.mean(omega):.4f}, max={np.max(omega):.4f} (should be small)")
     print(f"  F: mean={np.mean(fidelity_arr):.4f} (should be ≈ 1 - mean(ω))")
     print(f"  C: mean={np.mean(curvature_arr):.4f}, max={np.max(curvature_arr):.4f} (normalized to [0,1])")
-    print(f"  IC pass rate={100*np.mean(IC):.1f}%")
+    print(f"  IC pass rate={100 * np.mean(IC):.1f}%")
     print(f"  κ final: {kappa[-1]:.6f}")
 
 
@@ -689,7 +689,9 @@ def generate_ballistic_run() -> None:
     print(f"✓ Generated {run_id}")
     print(f"  N={N}, T={t_arr[-1]:.2f}s, bounces={bounce_count}")
     print(f"  Seam: t_s={t_seam:.4f}s")
-    print(f"  τ_R finite coverage: {100*len(tau_R_finite)/N:.1f}% (rho_min={100*CONTRACT['rho_min']:.0f}% for PASS)")
+    print(
+        f"  τ_R finite coverage: {100 * len(tau_R_finite) / N:.1f}% (rho_min={100 * CONTRACT['rho_min']:.0f}% for PASS)"
+    )
     print(f"  ω: mean={np.mean(omega):.4f}")
     print(f"  F: mean={np.mean(fidelity_arr):.4f}")
     print(f"  C: mean={np.mean(curvature_arr):.4f} (normalized)")
@@ -883,12 +885,12 @@ def generate_gait_run() -> None:
     print(f"✓ Generated {run_id}")
     print(f"  N={N}, T={T}s, f_gait={f_gait} Hz (expected period={expected_period:.3f}s)")
     print(
-        f"  τ_R: coverage={100*len(tau_R_finite)/N:.1f}%, median={np.median(tau_R_finite):.3f}s (target≈{expected_period:.3f}s)"
+        f"  τ_R: coverage={100 * len(tau_R_finite) / N:.1f}%, median={np.median(tau_R_finite):.3f}s (target≈{expected_period:.3f}s)"
     )
     print(f"  ω: mean={np.mean(omega_drift):.4f} (nonnegative)")
     print(f"  F: mean={np.mean(fidelity_arr):.4f} (should be ≈ 1 - mean(ω))")
     print(f"  C: mean={np.mean(curvature_arr):.4f} (normalized to [0,1])")
-    print(f"  IC pass rate={100*np.mean(IC):.1f}%")
+    print(f"  IC pass rate={100 * np.mean(IC):.1f}%")
     print(f"  κ final: {kappa[-1]:.6f}")
 
 

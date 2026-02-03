@@ -229,13 +229,13 @@ def main() -> None:
             regime_counts = df["regime_gate"].value_counts()
             print(f"\n  {cp}:")
             print(
-                f"    Stable:       {regime_counts.get('Stable', 0):4d} ({100*regime_counts.get('Stable', 0)/len(df):.1f}%)"
+                f"    Stable:       {regime_counts.get('Stable', 0):4d} ({100 * regime_counts.get('Stable', 0) / len(df):.1f}%)"
             )
             print(
-                f"    Transitional: {regime_counts.get('Transitional', 0):4d} ({100*regime_counts.get('Transitional', 0)/len(df):.1f}%)"
+                f"    Transitional: {regime_counts.get('Transitional', 0):4d} ({100 * regime_counts.get('Transitional', 0) / len(df):.1f}%)"
             )
             print(
-                f"    Drift:        {regime_counts.get('Drift', 0):4d} ({100*regime_counts.get('Drift', 0)/len(df):.1f}%)"
+                f"    Drift:        {regime_counts.get('Drift', 0):4d} ({100 * regime_counts.get('Drift', 0) / len(df):.1f}%)"
             )
 
 

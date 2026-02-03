@@ -192,9 +192,9 @@ def main() -> int:
     for i in range(len(results) - 1):
         r1, r2 = results[i], results[i + 1]
         if r1.anchor_u is not None and r2.anchor_u is not None and abs(r1.phi - r2.phi) < 1e-9:
-            print(f"  Tie-breaker case at rows {i}, {i+1}:")
+            print(f"  Tie-breaker case at rows {i}, {i + 1}:")
             print(f"    phi = {r1.phi:.10f}")
-            print(f"    anchor_u[{i}] = {r1.anchor_u}, anchor_u[{i+1}] = {r2.anchor_u}")
+            print(f"    anchor_u[{i}] = {r1.anchor_u}, anchor_u[{i + 1}] = {r2.anchor_u}")
             tie_found = True
 
     if not tie_found:

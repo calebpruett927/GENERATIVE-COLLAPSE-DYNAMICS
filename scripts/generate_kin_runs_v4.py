@@ -484,7 +484,7 @@ def generate_shm_run() -> None:
     tau_R_finite = tau_R[np.isfinite(tau_R)]
     print(f"✓ Generated {run_id}")
     print(f"  N={N}, T={T}s, f0={f0} Hz (expected period={expected_period}s)")
-    print(f"  τ_R: coverage={100*len(tau_R_finite)/N:.1f}%, median={np.median(tau_R_finite):.4f}s")
+    print(f"  τ_R: coverage={100 * len(tau_R_finite) / N:.1f}%, median={np.median(tau_R_finite):.4f}s")
     print(f"  ω: median={np.median(omega):.4f}, scale={omega_scale:.4f}")
     print(f"  F: median={np.median(fidelity_arr):.4f} (should be ≈ 1 - median(ω)/scale)")
     print(f"  C: median={np.median(curvature_arr):.4f}, C_0={C_0_used:.4f} (target median ≈ 0.5)")
@@ -980,11 +980,11 @@ def generate_gait_run() -> None:
     tau_R_finite = tau_R[np.isfinite(tau_R)]
     print(f"✓ Generated {run_id}")
     print(f"  N={N}, T={T}s, f_gait={f_gait} Hz (expected period={expected_period:.3f}s)")
-    print(f"  τ_R: coverage={100*len(tau_R_finite)/N:.1f}%, median={np.median(tau_R_finite):.4f}s")
+    print(f"  τ_R: coverage={100 * len(tau_R_finite) / N:.1f}%, median={np.median(tau_R_finite):.4f}s")
     print(f"  ω: median={np.median(omega):.4f}, scale={omega_scale:.4f}")
     print(f"  F: median={np.median(fidelity_arr):.4f}")
     print(f"  C: median={np.median(curvature_arr):.4f}, C_0={C_0_used:.4f}")
-    print(f"  IC: median={np.median(IC):.4f}, min={np.min(IC):.4f}, pass rate={100*np.mean(IC > 0.5):.1f}%")
+    print(f"  IC: median={np.median(IC):.4f}, min={np.min(IC):.4f}, pass rate={100 * np.mean(IC > 0.5):.1f}%")
     print(f"  κ: median={np.median(kappa):.4f} (instantaneous)")
 
 

@@ -567,7 +567,7 @@ def render_overview_page() -> None:
                 omega_str = f"ω={omega_val:.3f}" if omega_val is not None else ""
                 st.markdown(
                     f"""
-                <div style="padding:8px; border-radius:8px; background-color: {STATUS_COLORS.get(status, '#ccc')}22; border-left: 3px solid {STATUS_COLORS.get(status, '#ccc')};">
+                <div style="padding:8px; border-radius:8px; background-color: {STATUS_COLORS.get(status, "#ccc")}22; border-left: 3px solid {STATUS_COLORS.get(status, "#ccc")};">
                     <strong>{emoji} {status}</strong><br/>
                     <small>{ts}</small><br/>
                     <small>{omega_str}</small>
@@ -788,10 +788,10 @@ def render_casepacks_page() -> None:
 
                     # Metadata badges
                     badge_html = f"""
-                    <span style="background:#007bff; color:white; padding:2px 8px; border-radius:4px; font-size:12px;">v{cp['version']}</span>
+                    <span style="background:#007bff; color:white; padding:2px 8px; border-radius:4px; font-size:12px;">v{cp["version"]}</span>
                     """
                     if cp.get("contract"):
-                        badge_html += f""" <span style="background:#28a745; color:white; padding:2px 8px; border-radius:4px; font-size:12px;">📜 {cp['contract']}</span>"""
+                        badge_html += f""" <span style="background:#28a745; color:white; padding:2px 8px; border-radius:4px; font-size:12px;">📜 {cp["contract"]}</span>"""
                     st.markdown(badge_html, unsafe_allow_html=True)
 
                     # Description
@@ -1944,12 +1944,12 @@ def render_gcd_panel(gcd_data: dict[str, Any], compact: bool = False) -> None:
 
     # Regime header
     st.markdown(
-        f"""<div style="padding: 15px; border-left: 6px solid {regime_info['color']}; 
-            background: {regime_info['color']}22; border-radius: 8px; margin-bottom: 15px;">
-            <h3 style="margin: 0; color: {regime_info['color']};">
-                {regime_info['icon']} GCD Regime: {regime}
+        f"""<div style="padding: 15px; border-left: 6px solid {regime_info["color"]}; 
+            background: {regime_info["color"]}22; border-radius: 8px; margin-bottom: 15px;">
+            <h3 style="margin: 0; color: {regime_info["color"]};">
+                {regime_info["icon"]} GCD Regime: {regime}
             </h3>
-            <p style="margin: 5px 0 0 0; font-size: 0.9em;">{regime_info['description']}</p>
+            <p style="margin: 5px 0 0 0; font-size: 0.9em;">{regime_info["description"]}</p>
         </div>""",
         unsafe_allow_html=True,
     )
@@ -1981,7 +1981,7 @@ def render_gcd_panel(gcd_data: dict[str, Any], compact: bool = False) -> None:
                     progress = min(1.0, data["value"] / 0.30)
                     st.progress(progress, text=f"{data['percent_to_collapse']:.1f}% to collapse")
                 elif sym == "F":
-                    st.progress(data["value"], text=f"Fidelity: {data['value']*100:.1f}%")
+                    st.progress(data["value"], text=f"Fidelity: {data['value'] * 100:.1f}%")
 
         with col2:
             for sym in ["C", "kappa", "IC"]:
@@ -1992,9 +1992,9 @@ def render_gcd_panel(gcd_data: dict[str, Any], compact: bool = False) -> None:
                 st.caption(f"_{data['interpretation']}_")
 
                 if sym == "C":
-                    st.progress(min(1.0, data["value"]), text=f"Curvature: {data['value']*100:.1f}%")
+                    st.progress(min(1.0, data["value"]), text=f"Curvature: {data['value'] * 100:.1f}%")
                 elif sym == "IC":
-                    st.progress(data["value"], text=f"Integrity: {data['value']*100:.1f}%")
+                    st.progress(data["value"], text=f"Integrity: {data['value'] * 100:.1f}%")
 
         # Axiom state
         st.markdown("### 📜 GCD Axiom State")
@@ -3729,7 +3729,7 @@ def render_test_templates_page() -> None:
     for i in range(n_dims):
         with coord_cols[i]:
             val = st.number_input(
-                f"c_{i+1}",
+                f"c_{i + 1}",
                 min_value=0.0,
                 max_value=1.0,
                 value=float(st.session_state.template_coords[i]),
@@ -3746,7 +3746,7 @@ def render_test_templates_page() -> None:
     for i in range(n_dims):
         with weight_cols[i]:
             val = st.number_input(
-                f"w_{i+1}",
+                f"w_{i + 1}",
                 min_value=0.0,
                 max_value=1.0,
                 value=float(st.session_state.template_weights[i]),
@@ -3970,7 +3970,7 @@ def render_test_templates_page() -> None:
                 f"""<div style="padding: 20px; border-left: 6px solid {regime_color}; 
                     background: {regime_color}22; border-radius: 8px; margin-bottom: 20px;">
                     <h2 style="margin: 0; color: {regime_color};">🎯 Result: {regime}</h2>
-                    <p style="margin: 5px 0 0 0;">Stability Score: {audit_entry['tier2']['stability_score']}/100 • Risk: {audit_entry['tier2']['risk_level']}</p>
+                    <p style="margin: 5px 0 0 0;">Stability Score: {audit_entry["tier2"]["stability_score"]}/100 • Risk: {audit_entry["tier2"]["risk_level"]}</p>
                 </div>""",
                 unsafe_allow_html=True,
             )
@@ -3989,7 +3989,7 @@ def render_test_templates_page() -> None:
                 with st.expander("Raw Data"):
                     t0_df = pd.DataFrame(
                         {
-                            "Coordinate": [f"c_{i+1}" for i in range(len(t0["raw_coordinates"]))],
+                            "Coordinate": [f"c_{i + 1}" for i in range(len(t0["raw_coordinates"]))],
                             "Raw": t0["raw_coordinates"],
                             "Clipped": t0["clipped_coordinates"],
                             "Weight": t0["raw_weights"],
@@ -4095,12 +4095,12 @@ def render_test_templates_page() -> None:
             │  ═══════════════════             ═══════════════         ══════════════ │
             │                                                                         │
             │  Raw Coordinates:                Computed:               Classification:│
-            │  c = {[f'{c:.2f}' for c in coords]}     F = {t1['F']:.4f}              Regime: {regime}      │
-            │                                  ω = {t1['omega']:.4f}              Risk: {t2['risk_level']}       │
-            │  Weights:                        S = {t1['S']:.4f}                                │
-            │  w = {[f'{w:.2f}' for w in weights]}    C = {t1['C']:.4f}              Return Est:   │
-            │                                  κ = {t1['kappa']:.4f}             {t2['tau_R_estimate']}  │
-            │  ε = {epsilon:.0e}                       IC = {t1['IC']:.4f}                               │
+            │  c = {[f"{c:.2f}" for c in coords]}     F = {t1["F"]:.4f}              Regime: {regime}      │
+            │                                  ω = {t1["omega"]:.4f}              Risk: {t2["risk_level"]}       │
+            │  Weights:                        S = {t1["S"]:.4f}                                │
+            │  w = {[f"{w:.2f}" for w in weights]}    C = {t1["C"]:.4f}              Return Est:   │
+            │                                  κ = {t1["kappa"]:.4f}             {t2["tau_R_estimate"]}  │
+            │  ε = {epsilon:.0e}                       IC = {t1["IC"]:.4f}                               │
             │                                                                         │
             │        ────────────>         ────────────>         ────────────>        │
             │           freeze                compute                classify         │
@@ -4410,7 +4410,9 @@ def render_comparison_page() -> None:
             col1, col2 = st.columns(2)
 
             # Create index-based selection
-            df["index_label"] = [f"#{i+1} - {row.get('timestamp', 'N/A')}" for i, (_, row) in enumerate(df.iterrows())]
+            df["index_label"] = [
+                f"#{i + 1} - {row.get('timestamp', 'N/A')}" for i, (_, row) in enumerate(df.iterrows())
+            ]
 
             with col1:
                 st.markdown("### 📋 Entry A")
@@ -4551,7 +4553,7 @@ def render_comparison_page() -> None:
                 audit_a_idx = st.selectbox(
                     "Select Audit A",
                     range(len(audit_log)),
-                    format_func=lambda x: f"Run {x+1} @ {audit_log[x]['timestamp'][:19]}",
+                    format_func=lambda x: f"Run {x + 1} @ {audit_log[x]['timestamp'][:19]}",
                     key="audit_compare_a",
                 )
                 audit_a = audit_log[audit_a_idx]
@@ -4562,7 +4564,7 @@ def render_comparison_page() -> None:
                 audit_b_idx = st.selectbox(
                     "Select Audit B",
                     range(len(audit_log)),
-                    format_func=lambda x: f"Run {x+1} @ {audit_log[x]['timestamp'][:19]}",
+                    format_func=lambda x: f"Run {x + 1} @ {audit_log[x]['timestamp'][:19]}",
                     index=min(1, len(audit_log) - 1),
                     key="audit_compare_b",
                 )
@@ -5275,13 +5277,13 @@ def render_formula_builder_page() -> None:
 def render_cosmology_page() -> None:
     """
     Render the WEYL Cosmology page for modified gravity analysis.
-    
+
     Implements visualization of the WEYL.INTSTACK.v1 contract:
     - Σ(z) evolution and regime classification
     - ĥJ measurements from DES Y3 data
     - Weyl transfer function visualization
     - UMCP integration patterns
-    
+
     Reference: Nature Communications 15:9295 (2024)
     """
     if st is None or np is None or pd is None:
@@ -5307,6 +5309,7 @@ def render_cosmology_page() -> None:
             classify_limber_regime,
             classify_scale_regime,
         )
+
         weyl_available = True
     except ImportError:
         weyl_available = False
@@ -5369,7 +5372,9 @@ def render_cosmology_page() -> None:
 
     with bg_tabs[1]:
         fig_chi = go.Figure()
-        fig_chi.add_trace(go.Scatter(x=z_arr, y=chi_arr, mode="lines", name="χ(z)", line={"color": "#2ca02c", "width": 2}))
+        fig_chi.add_trace(
+            go.Scatter(x=z_arr, y=chi_arr, mode="lines", name="χ(z)", line={"color": "#2ca02c", "width": 2})
+        )
         fig_chi.update_layout(
             title="Comoving Distance",
             xaxis_title="Redshift z",
@@ -5380,8 +5385,12 @@ def render_cosmology_page() -> None:
 
     with bg_tabs[2]:
         fig_growth = go.Figure()
-        fig_growth.add_trace(go.Scatter(x=z_arr, y=D1_arr, mode="lines", name="D₁(z)", line={"color": "#ff7f0e", "width": 2}))
-        fig_growth.add_trace(go.Scatter(x=z_arr, y=sigma8_arr, mode="lines", name="σ8(z)", line={"color": "#d62728", "width": 2}))
+        fig_growth.add_trace(
+            go.Scatter(x=z_arr, y=D1_arr, mode="lines", name="D₁(z)", line={"color": "#ff7f0e", "width": 2})
+        )
+        fig_growth.add_trace(
+            go.Scatter(x=z_arr, y=sigma8_arr, mode="lines", name="σ8(z)", line={"color": "#d62728", "width": 2})
+        )
         fig_growth.add_hline(y=PLANCK_2018.sigma8_0, line_dash="dash", line_color="gray", annotation_text="σ8,0")
         fig_growth.update_layout(
             title="Growth Function and σ8 Evolution",
@@ -5446,11 +5455,16 @@ def render_cosmology_page() -> None:
     fig_sigma = go.Figure()
 
     # Add Σ(z) curve
-    fig_sigma.add_trace(go.Scatter(
-        x=z_sigma, y=Sigma_values, mode="lines+markers",
-        name="Σ(z)", line={"color": "#9467bd", "width": 2},
-        marker={"size": 4}
-    ))
+    fig_sigma.add_trace(
+        go.Scatter(
+            x=z_sigma,
+            y=Sigma_values,
+            mode="lines+markers",
+            name="Σ(z)",
+            line={"color": "#9467bd", "width": 2},
+            marker={"size": 4},
+        )
+    )
 
     # Add GR line
     fig_sigma.add_hline(y=1.0, line_dash="dash", line_color="green", annotation_text="GR (Σ=1)")
@@ -5480,7 +5494,7 @@ def render_cosmology_page() -> None:
     for i, (regime, count) in enumerate(regime_counts.items()):
         with regime_cols[i % 3]:
             color = "green" if regime == "GR_consistent" else ("yellow" if regime == "Tension" else "red")
-            st.markdown(f"**{regime}**: {count} points ({100*count/len(regimes):.1f}%)")
+            st.markdown(f"**{regime}**: {count} points ({100 * count / len(regimes):.1f}%)")
 
     st.divider()
 
@@ -5509,24 +5523,28 @@ def render_cosmology_page() -> None:
         """)
 
     # Display DES Y3 data table
-    des_df = pd.DataFrame({
-        "Bin": [1, 2, 3, 4],
-        "z_eff": DES_Y3_DATA["z_bins"],
-        "ĥJ (mean)": DES_Y3_DATA["hJ_cmb"]["mean"],
-        "ĥJ (σ)": DES_Y3_DATA["hJ_cmb"]["sigma"],
-    })
+    des_df = pd.DataFrame(
+        {
+            "Bin": [1, 2, 3, 4],
+            "z_eff": DES_Y3_DATA["z_bins"],
+            "ĥJ (mean)": DES_Y3_DATA["hJ_cmb"]["mean"],
+            "ĥJ (σ)": DES_Y3_DATA["hJ_cmb"]["sigma"],
+        }
+    )
     st.dataframe(des_df, hide_index=True, use_container_width=True)
 
     # Plot ĥJ measurements
     fig_hJ = go.Figure()
-    fig_hJ.add_trace(go.Scatter(
-        x=DES_Y3_DATA["z_bins"],
-        y=DES_Y3_DATA["hJ_cmb"]["mean"],
-        error_y={"type": "data", "array": DES_Y3_DATA["hJ_cmb"]["sigma"]},
-        mode="markers",
-        name="ĥJ (CMB prior)",
-        marker={"size": 12, "color": "#1f77b4"},
-    ))
+    fig_hJ.add_trace(
+        go.Scatter(
+            x=DES_Y3_DATA["z_bins"],
+            y=DES_Y3_DATA["hJ_cmb"]["mean"],
+            error_y={"type": "data", "array": DES_Y3_DATA["hJ_cmb"]["sigma"]},
+            mode="markers",
+            name="ĥJ (CMB prior)",
+            marker={"size": 12, "color": "#1f77b4"},
+        )
+    )
     fig_hJ.update_layout(
         title="DES Y3 ĥJ Measurements",
         xaxis_title="Effective Redshift z",
@@ -5650,7 +5668,7 @@ def render_batch_validation_page() -> None:
         failed = 0
 
         for i, cp_id in enumerate(selected_casepacks):
-            progress.progress((i + 1) / total, text=f"Validating {cp_id}... ({i+1}/{total})")
+            progress.progress((i + 1) / total, text=f"Validating {cp_id}... ({i + 1}/{total})")
 
             try:
                 cmd = [sys.executable, "-m", "umcp", "validate", f"casepacks/{cp_id}"]
@@ -5978,12 +5996,9 @@ def render_geometry_page() -> None:
     st.divider()
 
     # ========== Layer Navigation ==========
-    layer_tabs = st.tabs([
-        "🎯 Layer 1: State Space",
-        "📊 Layer 2: Invariant Projections",
-        "🔗 Layer 3: Seam Graph",
-        "🌐 Unified View"
-    ])
+    layer_tabs = st.tabs(
+        ["🎯 Layer 1: State Space", "📊 Layer 2: Invariant Projections", "🔗 Layer 3: Seam Graph", "🌐 Unified View"]
+    )
 
     # ========== LAYER 1: STATE SPACE ==========
     with layer_tabs[0]:
@@ -6025,14 +6040,13 @@ def render_layer1_state_space() -> None:
             n_steps = st.slider("Time Steps", 20, 200, 50, help="Trajectory length")
 
         with col2:
-            eta = st.slider("η (Return Tolerance)", 0.01, 0.3, 0.1, 0.01,
-                          help="Neighborhood radius for return detection")
-            drift_rate = st.slider("Drift Rate", 0.0, 0.2, 0.05, 0.01,
-                                 help="Stochastic drift magnitude")
+            eta = st.slider(
+                "η (Return Tolerance)", 0.01, 0.3, 0.1, 0.01, help="Neighborhood radius for return detection"
+            )
+            drift_rate = st.slider("Drift Rate", 0.0, 0.2, 0.05, 0.01, help="Stochastic drift magnitude")
 
         with col3:
-            oscillation = st.slider("Oscillation", 0.0, 1.0, 0.3, 0.05,
-                                  help="Periodic component strength")
+            oscillation = st.slider("Oscillation", 0.0, 1.0, 0.3, 0.05, help="Periodic component strength")
             seed = st.number_input("Random Seed", 0, 999, 42, help="For reproducibility")
 
     # Generate synthetic trajectory
@@ -6067,59 +6081,83 @@ def render_layer1_state_space() -> None:
         fig = go.Figure()
 
         # Trajectory line
-        fig.add_trace(go.Scatter(
-            x=trajectory[:, 0], y=trajectory[:, 1],
-            mode='lines+markers',
-            line=dict(color='royalblue', width=2),
-            marker=dict(size=4, color=np.arange(n_steps), colorscale='Viridis', showscale=True,
-                       colorbar=dict(title="Time t")),
-            name='Trajectory Ψ(t)',
-            hovertemplate='t=%{marker.color:.0f}<br>c₁=%{x:.3f}<br>c₂=%{y:.3f}<extra></extra>'
-        ))
+        fig.add_trace(
+            go.Scatter(
+                x=trajectory[:, 0],
+                y=trajectory[:, 1],
+                mode="lines+markers",
+                line=dict(color="royalblue", width=2),
+                marker=dict(
+                    size=4,
+                    color=np.arange(n_steps),
+                    colorscale="Viridis",
+                    showscale=True,
+                    colorbar=dict(title="Time t"),
+                ),
+                name="Trajectory Ψ(t)",
+                hovertemplate="t=%{marker.color:.0f}<br>c₁=%{x:.3f}<br>c₂=%{y:.3f}<extra></extra>",
+            )
+        )
 
         # Start point
-        fig.add_trace(go.Scatter(
-            x=[trajectory[0, 0]], y=[trajectory[0, 1]],
-            mode='markers', marker=dict(size=15, color='green', symbol='star'),
-            name='Start (t=0)'
-        ))
+        fig.add_trace(
+            go.Scatter(
+                x=[trajectory[0, 0]],
+                y=[trajectory[0, 1]],
+                mode="markers",
+                marker=dict(size=15, color="green", symbol="star"),
+                name="Start (t=0)",
+            )
+        )
 
         # End point
-        fig.add_trace(go.Scatter(
-            x=[trajectory[-1, 0]], y=[trajectory[-1, 1]],
-            mode='markers', marker=dict(size=15, color='red', symbol='square'),
-            name=f'End (t={n_steps-1})'
-        ))
+        fig.add_trace(
+            go.Scatter(
+                x=[trajectory[-1, 0]],
+                y=[trajectory[-1, 1]],
+                mode="markers",
+                marker=dict(size=15, color="red", symbol="square"),
+                name=f"End (t={n_steps - 1})",
+            )
+        )
 
         # η-balls for return events
         for i, j, dist in returns[:10]:  # Show first 10 returns
-            theta_circle = np.linspace(0, 2*np.pi, 50)
+            theta_circle = np.linspace(0, 2 * np.pi, 50)
             x_circle = trajectory[j, 0] + eta * np.cos(theta_circle)
             y_circle = trajectory[j, 1] + eta * np.sin(theta_circle)
-            fig.add_trace(go.Scatter(
-                x=x_circle, y=y_circle,
-                mode='lines', line=dict(color='orange', width=1, dash='dot'),
-                showlegend=False, hoverinfo='skip'
-            ))
+            fig.add_trace(
+                go.Scatter(
+                    x=x_circle,
+                    y=y_circle,
+                    mode="lines",
+                    line=dict(color="orange", width=1, dash="dot"),
+                    showlegend=False,
+                    hoverinfo="skip",
+                )
+            )
 
         # Return connections
         for i, j, dist in returns[:10]:
-            fig.add_trace(go.Scatter(
-                x=[trajectory[i, 0], trajectory[j, 0]],
-                y=[trajectory[i, 1], trajectory[j, 1]],
-                mode='lines', line=dict(color='orange', width=1, dash='dash'),
-                showlegend=False,
-                hovertemplate=f'Return: t={i}→t={j}<br>τ_R={i-j}<br>dist={dist:.4f}<extra></extra>'
-            ))
+            fig.add_trace(
+                go.Scatter(
+                    x=[trajectory[i, 0], trajectory[j, 0]],
+                    y=[trajectory[i, 1], trajectory[j, 1]],
+                    mode="lines",
+                    line=dict(color="orange", width=1, dash="dash"),
+                    showlegend=False,
+                    hovertemplate=f"Return: t={i}→t={j}<br>τ_R={i - j}<br>dist={dist:.4f}<extra></extra>",
+                )
+            )
 
         fig.update_layout(
             height=500,
             xaxis_title="c₁ (Channel 1)",
             yaxis_title="c₂ (Channel 2)",
-            xaxis=dict(range=[0, 1], constrain='domain'),
-            yaxis=dict(range=[0, 1], scaleanchor='x', scaleratio=1),
-            legend=dict(orientation='h', yanchor='bottom', y=1.02),
-            title=f"State Space Trajectory (η={eta})"
+            xaxis=dict(range=[0, 1], constrain="domain"),
+            yaxis=dict(range=[0, 1], scaleanchor="x", scaleratio=1),
+            legend=dict(orientation="h", yanchor="bottom", y=1.02),
+            title=f"State Space Trajectory (η={eta})",
         )
 
         st.plotly_chart(fig, use_container_width=True)
@@ -6129,34 +6167,57 @@ def render_layer1_state_space() -> None:
         fig = go.Figure()
 
         # 3D trajectory
-        fig.add_trace(go.Scatter3d(
-            x=trajectory[:, 0], y=trajectory[:, 1], z=trajectory[:, 2],
-            mode='lines+markers',
-            line=dict(color='royalblue', width=3),
-            marker=dict(size=3, color=np.arange(n_steps), colorscale='Viridis', showscale=True,
-                       colorbar=dict(title="Time t")),
-            name='Trajectory Ψ(t)'
-        ))
+        fig.add_trace(
+            go.Scatter3d(
+                x=trajectory[:, 0],
+                y=trajectory[:, 1],
+                z=trajectory[:, 2],
+                mode="lines+markers",
+                line=dict(color="royalblue", width=3),
+                marker=dict(
+                    size=3,
+                    color=np.arange(n_steps),
+                    colorscale="Viridis",
+                    showscale=True,
+                    colorbar=dict(title="Time t"),
+                ),
+                name="Trajectory Ψ(t)",
+            )
+        )
 
         # Start/end markers
-        fig.add_trace(go.Scatter3d(
-            x=[trajectory[0, 0]], y=[trajectory[0, 1]], z=[trajectory[0, 2]],
-            mode='markers', marker=dict(size=10, color='green', symbol='diamond'),
-            name='Start'
-        ))
-        fig.add_trace(go.Scatter3d(
-            x=[trajectory[-1, 0]], y=[trajectory[-1, 1]], z=[trajectory[-1, 2]],
-            mode='markers', marker=dict(size=10, color='red', symbol='square'),
-            name='End'
-        ))
+        fig.add_trace(
+            go.Scatter3d(
+                x=[trajectory[0, 0]],
+                y=[trajectory[0, 1]],
+                z=[trajectory[0, 2]],
+                mode="markers",
+                marker=dict(size=10, color="green", symbol="diamond"),
+                name="Start",
+            )
+        )
+        fig.add_trace(
+            go.Scatter3d(
+                x=[trajectory[-1, 0]],
+                y=[trajectory[-1, 1]],
+                z=[trajectory[-1, 2]],
+                mode="markers",
+                marker=dict(size=10, color="red", symbol="square"),
+                name="End",
+            )
+        )
 
         fig.update_layout(
             height=600,
             scene=dict(
-                xaxis_title="c₁", yaxis_title="c₂", zaxis_title="c₃",
-                xaxis=dict(range=[0, 1]), yaxis=dict(range=[0, 1]), zaxis=dict(range=[0, 1])
+                xaxis_title="c₁",
+                yaxis_title="c₂",
+                zaxis_title="c₃",
+                xaxis=dict(range=[0, 1]),
+                yaxis=dict(range=[0, 1]),
+                zaxis=dict(range=[0, 1]),
             ),
-            title=f"3D State Space (η={eta})"
+            title=f"3D State Space (η={eta})",
         )
 
         st.plotly_chart(fig, use_container_width=True)
@@ -6187,12 +6248,9 @@ def render_layer1_state_space() -> None:
     # Return time histogram
     if returns:
         tau_values = [i - j for i, j, _ in returns]
-        fig_hist = go.Figure(data=[go.Histogram(x=tau_values, nbinsx=20, marker_color='royalblue')])
+        fig_hist = go.Figure(data=[go.Histogram(x=tau_values, nbinsx=20, marker_color="royalblue")])
         fig_hist.update_layout(
-            height=250,
-            xaxis_title="Return Time τ_R (steps)",
-            yaxis_title="Count",
-            title="Return Time Distribution"
+            height=250, xaxis_title="Return Time τ_R (steps)", yaxis_title="Count", title="Return Time Distribution"
         )
         st.plotly_chart(fig_hist, use_container_width=True)
 
@@ -6235,13 +6293,13 @@ def render_layer2_projections() -> None:
         omega = 0.02 + 0.01 * np.random.randn(n_samples)
         C = 0.05 + 0.02 * np.random.randn(n_samples)
     elif scenario == "Drift Event":
-        omega = 0.02 + 0.15 * (1 / (1 + np.exp(-(t - n_samples/2) / 5)))
-        C = 0.05 + 0.1 * (1 / (1 + np.exp(-(t - n_samples/2) / 5)))
+        omega = 0.02 + 0.15 * (1 / (1 + np.exp(-(t - n_samples / 2) / 5)))
+        C = 0.05 + 0.1 * (1 / (1 + np.exp(-(t - n_samples / 2) / 5)))
         omega += 0.01 * np.random.randn(n_samples)
         C += 0.01 * np.random.randn(n_samples)
     elif scenario == "Oscillating":
         omega = 0.15 + 0.12 * np.sin(2 * np.pi * t / 30)
-        C = 0.10 + 0.08 * np.sin(2 * np.pi * t / 30 + np.pi/4)
+        C = 0.10 + 0.08 * np.sin(2 * np.pi * t / 30 + np.pi / 4)
         omega += 0.01 * np.random.randn(n_samples)
         C += 0.01 * np.random.randn(n_samples)
     else:  # Collapse Approach
@@ -6260,30 +6318,33 @@ def render_layer2_projections() -> None:
     IC = np.clip(IC, 0.001, 0.999)
 
     # Create dataframe
-    df = pd.DataFrame({
-        't': t, 'omega': omega, 'F': F, 'S': S, 'C': C, 'kappa': kappa, 'IC': IC
-    })
+    df = pd.DataFrame({"t": t, "omega": omega, "F": F, "S": S, "C": C, "kappa": kappa, "IC": IC})
 
     # ========== Multi-Axis Projection View ==========
     st.markdown("#### Projection Time Series")
 
     # Create subplot figure
     fig = make_subplots(
-        rows=3, cols=2,
-        subplot_titles=('ω (Drift)', 'F (Fidelity)', 'S (Entropy)', 'C (Curvature)', 'κ (Log-Integrity)', 'IC (Integrity)'),
-        vertical_spacing=0.12
+        rows=3,
+        cols=2,
+        subplot_titles=(
+            "ω (Drift)",
+            "F (Fidelity)",
+            "S (Entropy)",
+            "C (Curvature)",
+            "κ (Log-Integrity)",
+            "IC (Integrity)",
+        ),
+        vertical_spacing=0.12,
     )
 
-    projections = [('omega', 1, 1), ('F', 1, 2), ('S', 2, 1), ('C', 2, 2), ('kappa', 3, 1), ('IC', 3, 2)]
+    projections = [("omega", 1, 1), ("F", 1, 2), ("S", 2, 1), ("C", 2, 2), ("kappa", 3, 1), ("IC", 3, 2)]
 
     for name, row, col in projections:
-        fig.add_trace(
-            go.Scatter(x=df['t'], y=df[name], mode='lines', name=name, line=dict(width=2)),
-            row=row, col=col
-        )
+        fig.add_trace(go.Scatter(x=df["t"], y=df[name], mode="lines", name=name, line=dict(width=2)), row=row, col=col)
 
         # Add threshold lines for ω
-        if name == 'omega' and show_regime:
+        if name == "omega" and show_regime:
             fig.add_hline(y=0.038, line_dash="dash", line_color="green", row=row, col=col)
             fig.add_hline(y=0.30, line_dash="dash", line_color="red", row=row, col=col)
 
@@ -6298,56 +6359,66 @@ def render_layer2_projections() -> None:
     with phase_col1:
         # ω vs F (should be linear: F = 1 - ω)
         fig_of = go.Figure()
-        fig_of.add_trace(go.Scatter(
-            x=df['omega'], y=df['F'],
-            mode='markers',
-            marker=dict(color=df['t'], colorscale='Viridis', showscale=True, colorbar=dict(title="t")),
-            hovertemplate='ω=%{x:.3f}<br>F=%{y:.3f}<br>t=%{marker.color:.0f}<extra></extra>'
-        ))
+        fig_of.add_trace(
+            go.Scatter(
+                x=df["omega"],
+                y=df["F"],
+                mode="markers",
+                marker=dict(color=df["t"], colorscale="Viridis", showscale=True, colorbar=dict(title="t")),
+                hovertemplate="ω=%{x:.3f}<br>F=%{y:.3f}<br>t=%{marker.color:.0f}<extra></extra>",
+            )
+        )
         # Identity line
-        fig_of.add_trace(go.Scatter(
-            x=[0, 1], y=[1, 0], mode='lines', line=dict(dash='dash', color='gray'),
-            name='F = 1 - ω'
-        ))
-        fig_of.update_layout(height=350, xaxis_title="ω (Drift)", yaxis_title="F (Fidelity)",
-                            title="Drift-Fidelity Axis")
+        fig_of.add_trace(
+            go.Scatter(x=[0, 1], y=[1, 0], mode="lines", line=dict(dash="dash", color="gray"), name="F = 1 - ω")
+        )
+        fig_of.update_layout(
+            height=350, xaxis_title="ω (Drift)", yaxis_title="F (Fidelity)", title="Drift-Fidelity Axis"
+        )
         st.plotly_chart(fig_of, use_container_width=True)
 
     with phase_col2:
         # S vs C
         fig_sc = go.Figure()
-        fig_sc.add_trace(go.Scatter(
-            x=df['S'], y=df['C'],
-            mode='markers',
-            marker=dict(color=df['t'], colorscale='Viridis', showscale=True, colorbar=dict(title="t")),
-            hovertemplate='S=%{x:.3f}<br>C=%{y:.3f}<br>t=%{marker.color:.0f}<extra></extra>'
-        ))
-        fig_sc.update_layout(height=350, xaxis_title="S (Entropy)", yaxis_title="C (Curvature)",
-                            title="Entropy-Curvature Axis")
+        fig_sc.add_trace(
+            go.Scatter(
+                x=df["S"],
+                y=df["C"],
+                mode="markers",
+                marker=dict(color=df["t"], colorscale="Viridis", showscale=True, colorbar=dict(title="t")),
+                hovertemplate="S=%{x:.3f}<br>C=%{y:.3f}<br>t=%{marker.color:.0f}<extra></extra>",
+            )
+        )
+        fig_sc.update_layout(
+            height=350, xaxis_title="S (Entropy)", yaxis_title="C (Curvature)", title="Entropy-Curvature Axis"
+        )
         st.plotly_chart(fig_sc, use_container_width=True)
 
     # ========== AM-GM Gap Visualization ==========
     st.markdown("#### AM-GM Gap Analysis")
 
-    df['gap'] = df['F'] - df['IC']
+    df["gap"] = df["F"] - df["IC"]
 
     fig_gap = go.Figure()
-    fig_gap.add_trace(go.Scatter(
-        x=df['t'], y=df['F'], mode='lines', name='F (Arithmetic)', line=dict(color='blue')
-    ))
-    fig_gap.add_trace(go.Scatter(
-        x=df['t'], y=df['IC'], mode='lines', name='IC (Geometric)', line=dict(color='green')
-    ))
-    fig_gap.add_trace(go.Scatter(
-        x=df['t'], y=df['gap'], mode='lines', name='Gap (F - IC)', line=dict(color='orange', dash='dash'),
-        fill='tozeroy', fillcolor='rgba(255,165,0,0.2)'
-    ))
+    fig_gap.add_trace(go.Scatter(x=df["t"], y=df["F"], mode="lines", name="F (Arithmetic)", line=dict(color="blue")))
+    fig_gap.add_trace(go.Scatter(x=df["t"], y=df["IC"], mode="lines", name="IC (Geometric)", line=dict(color="green")))
+    fig_gap.add_trace(
+        go.Scatter(
+            x=df["t"],
+            y=df["gap"],
+            mode="lines",
+            name="Gap (F - IC)",
+            line=dict(color="orange", dash="dash"),
+            fill="tozeroy",
+            fillcolor="rgba(255,165,0,0.2)",
+        )
+    )
     fig_gap.update_layout(
         height=300,
         xaxis_title="Time t",
         yaxis_title="Value",
         title="AM-GM Gap: F ≥ IC (with equality iff homogeneous)",
-        legend=dict(orientation='h', yanchor='bottom', y=1.02)
+        legend=dict(orientation="h", yanchor="bottom", y=1.02),
     )
     st.plotly_chart(fig_gap, use_container_width=True)
 
@@ -6404,10 +6475,10 @@ def render_layer3_seam_graph() -> None:
         delta_kappa_ledger = kappa1 - kappa0
 
         # Return time
-        tau_R = np.random.randint(2, 15) if np.random.rand() > 0.1 else float('inf')
+        tau_R = np.random.randint(2, 15) if np.random.rand() > 0.1 else float("inf")
 
         # Compute budget terms
-        if tau_R != float('inf'):
+        if tau_R != float("inf"):
             credit = R * tau_R
             D_omega = 0.02 + 0.01 * np.random.randn()
             D_C = 0.01 + 0.005 * np.random.randn()
@@ -6421,27 +6492,33 @@ def render_layer3_seam_graph() -> None:
         else:
             D_omega, D_C = 0, 0
             delta_kappa_budget = 0
-            residual = float('inf')
+            residual = float("inf")
 
         # Determine pass/fail
-        if tau_R == float('inf'):
+        if tau_R == float("inf"):
             status = "NO_RETURN"
         elif abs(residual) <= tol_seam:
             status = "PASS"
         else:
             status = "FAIL"
 
-        seams.append({
-            't0': t0, 't1': t1,
-            'IC0': IC0, 'IC1': IC1,
-            'kappa0': kappa0, 'kappa1': kappa1,
-            'delta_kappa_ledger': delta_kappa_ledger,
-            'delta_kappa_budget': delta_kappa_budget if tau_R != float('inf') else None,
-            'tau_R': tau_R if tau_R != float('inf') else 'INF_REC',
-            'residual': residual if tau_R != float('inf') else None,
-            'D_omega': D_omega, 'D_C': D_C,
-            'status': status
-        })
+        seams.append(
+            {
+                "t0": t0,
+                "t1": t1,
+                "IC0": IC0,
+                "IC1": IC1,
+                "kappa0": kappa0,
+                "kappa1": kappa1,
+                "delta_kappa_ledger": delta_kappa_ledger,
+                "delta_kappa_budget": delta_kappa_budget if tau_R != float("inf") else None,
+                "tau_R": tau_R if tau_R != float("inf") else "INF_REC",
+                "residual": residual if tau_R != float("inf") else None,
+                "D_omega": D_omega,
+                "D_C": D_C,
+                "status": status,
+            }
+        )
 
     df_seams = pd.DataFrame(seams)
 
@@ -6459,58 +6536,68 @@ def render_layer3_seam_graph() -> None:
 
     for i, seam in enumerate(seams):
         # Start node
-        node_x.append(seam['t0'])
-        node_y.append(seam['IC0'])
+        node_x.append(seam["t0"])
+        node_y.append(seam["IC0"])
         node_text.append(f"t={seam['t0']}<br>IC={seam['IC0']:.4f}")
-        node_colors.append('lightblue')
+        node_colors.append("lightblue")
 
     # Final node
-    node_x.append(seams[-1]['t1'])
-    node_y.append(seams[-1]['IC1'])
+    node_x.append(seams[-1]["t1"])
+    node_y.append(seams[-1]["IC1"])
     node_text.append(f"t={seams[-1]['t1']}<br>IC={seams[-1]['IC1']:.4f}")
-    node_colors.append('lightblue')
+    node_colors.append("lightblue")
 
-    fig_graph.add_trace(go.Scatter(
-        x=node_x, y=node_y,
-        mode='markers',
-        marker=dict(size=15, color=node_colors, line=dict(width=2, color='darkblue')),
-        text=node_text, hoverinfo='text',
-        name='States'
-    ))
+    fig_graph.add_trace(
+        go.Scatter(
+            x=node_x,
+            y=node_y,
+            mode="markers",
+            marker=dict(size=15, color=node_colors, line=dict(width=2, color="darkblue")),
+            text=node_text,
+            hoverinfo="text",
+            name="States",
+        )
+    )
 
     # Add edges (seams) with color by status
-    status_colors = {'PASS': 'green', 'FAIL': 'red', 'NO_RETURN': 'gray'}
+    status_colors = {"PASS": "green", "FAIL": "red", "NO_RETURN": "gray"}
     for seam in seams:
-        color = status_colors.get(seam['status'], 'gray')
-        dash = 'solid' if seam['status'] == 'PASS' else 'dash'
-        residual_str = f"{seam['residual']:.4f}" if seam['residual'] is not None else 'N/A'
+        color = status_colors.get(seam["status"], "gray")
+        dash = "solid" if seam["status"] == "PASS" else "dash"
+        residual_str = f"{seam['residual']:.4f}" if seam["residual"] is not None else "N/A"
 
-        fig_graph.add_trace(go.Scatter(
-            x=[seam['t0'], seam['t1']],
-            y=[seam['IC0'], seam['IC1']],
-            mode='lines',
-            line=dict(color=color, width=3, dash=dash),
-            hovertemplate=(
-                f"Seam: t={seam['t0']}→{seam['t1']}<br>"
-                f"Status: {seam['status']}<br>"
-                f"τ_R: {seam['tau_R']}<br>"
-                f"Residual: {residual_str}<extra></extra>"
-            ),
-            showlegend=False
-        ))
+        fig_graph.add_trace(
+            go.Scatter(
+                x=[seam["t0"], seam["t1"]],
+                y=[seam["IC0"], seam["IC1"]],
+                mode="lines",
+                line=dict(color=color, width=3, dash=dash),
+                hovertemplate=(
+                    f"Seam: t={seam['t0']}→{seam['t1']}<br>"
+                    f"Status: {seam['status']}<br>"
+                    f"τ_R: {seam['tau_R']}<br>"
+                    f"Residual: {residual_str}<extra></extra>"
+                ),
+                showlegend=False,
+            )
+        )
 
     # Add tolerance band annotation
     fig_graph.add_annotation(
-        x=0.02, y=0.98, xref='paper', yref='paper',
+        x=0.02,
+        y=0.98,
+        xref="paper",
+        yref="paper",
         text=f"tol_seam = {tol_seam}",
-        showarrow=False, bgcolor='rgba(255,255,255,0.8)'
+        showarrow=False,
+        bgcolor="rgba(255,255,255,0.8)",
     )
 
     fig_graph.update_layout(
         height=400,
         xaxis_title="Time t",
         yaxis_title="Integrity IC",
-        title="Seam Certification Graph (Green=PASS, Red=FAIL, Gray=NO_RETURN)"
+        title="Seam Certification Graph (Green=PASS, Red=FAIL, Gray=NO_RETURN)",
     )
 
     st.plotly_chart(fig_graph, use_container_width=True)
@@ -6522,27 +6609,25 @@ def render_layer3_seam_graph() -> None:
 
     with col1:
         # Residual bar chart
-        valid_seams = [s for s in seams if s['residual'] is not None]
+        valid_seams = [s for s in seams if s["residual"] is not None]
         if valid_seams:
-            residuals = [s['residual'] for s in valid_seams]
+            residuals = [s["residual"] for s in valid_seams]
             labels = [f"t{s['t0']}→{s['t1']}" for s in valid_seams]
-            colors = ['green' if abs(r) <= tol_seam else 'red' for r in residuals]
+            colors = ["green" if abs(r) <= tol_seam else "red" for r in residuals]
 
-            fig_res = go.Figure(data=[go.Bar(
-                x=labels, y=residuals,
-                marker_color=colors
-            )])
+            fig_res = go.Figure(data=[go.Bar(x=labels, y=residuals, marker_color=colors)])
             fig_res.add_hline(y=tol_seam, line_dash="dash", line_color="orange")
             fig_res.add_hline(y=-tol_seam, line_dash="dash", line_color="orange")
-            fig_res.update_layout(height=300, xaxis_title="Seam", yaxis_title="Residual s",
-                                 title="Seam Residuals (orange = tolerance)")
+            fig_res.update_layout(
+                height=300, xaxis_title="Seam", yaxis_title="Residual s", title="Seam Residuals (orange = tolerance)"
+            )
             st.plotly_chart(fig_res, use_container_width=True)
 
     with col2:
         # Summary metrics
-        pass_count = sum(1 for s in seams if s['status'] == 'PASS')
-        fail_count = sum(1 for s in seams if s['status'] == 'FAIL')
-        no_return_count = sum(1 for s in seams if s['status'] == 'NO_RETURN')
+        pass_count = sum(1 for s in seams if s["status"] == "PASS")
+        fail_count = sum(1 for s in seams if s["status"] == "FAIL")
+        no_return_count = sum(1 for s in seams if s["status"] == "NO_RETURN")
 
         st.markdown("##### Certification Summary")
         summary_col1, summary_col2, summary_col3 = st.columns(3)
@@ -6554,7 +6639,7 @@ def render_layer3_seam_graph() -> None:
             st.metric("⚪ NO_RETURN", no_return_count)
 
         if valid_seams:
-            residuals = [s['residual'] for s in valid_seams]
+            residuals = [s["residual"] for s in valid_seams]
             st.metric("Mean |Residual|", f"{np.mean(np.abs(residuals)):.5f}")
             st.metric("Max |Residual|", f"{np.max(np.abs(residuals)):.5f}")
 
@@ -6562,17 +6647,15 @@ def render_layer3_seam_graph() -> None:
     st.markdown("#### Seam Details")
 
     display_df = df_seams.copy()
-    display_df['residual'] = display_df['residual'].apply(
-        lambda x: f"{x:.5f}" if x is not None else "N/A"
-    )
-    display_df['delta_kappa_budget'] = display_df['delta_kappa_budget'].apply(
+    display_df["residual"] = display_df["residual"].apply(lambda x: f"{x:.5f}" if x is not None else "N/A")
+    display_df["delta_kappa_budget"] = display_df["delta_kappa_budget"].apply(
         lambda x: f"{x:.5f}" if x is not None else "N/A"
     )
 
     st.dataframe(
-        display_df[['t0', 't1', 'tau_R', 'delta_kappa_ledger', 'delta_kappa_budget', 'residual', 'status']],
+        display_df[["t0", "t1", "tau_R", "delta_kappa_ledger", "delta_kappa_budget", "residual", "status"]],
         use_container_width=True,
-        hide_index=True
+        hide_index=True,
     )
 
 
@@ -6605,7 +6688,12 @@ def render_unified_geometry_view() -> None:
 
     # Generate 3-channel state
     c1 = 0.8 + 0.1 * np.sin(2 * np.pi * t / 40) + drift_intensity * t / n_steps + 0.02 * np.random.randn(n_steps)
-    c2 = 0.75 + 0.15 * np.sin(2 * np.pi * t / 30 + np.pi/3) + 0.5 * drift_intensity * t / n_steps + 0.02 * np.random.randn(n_steps)
+    c2 = (
+        0.75
+        + 0.15 * np.sin(2 * np.pi * t / 30 + np.pi / 3)
+        + 0.5 * drift_intensity * t / n_steps
+        + 0.02 * np.random.randn(n_steps)
+    )
     c3 = 0.85 - 0.1 * np.sin(2 * np.pi * t / 50) - 0.3 * drift_intensity * t / n_steps + 0.02 * np.random.randn(n_steps)
 
     c1, c2, c3 = [np.clip(c, 0.01, 0.99) for c in [c1, c2, c3]]
@@ -6622,60 +6710,72 @@ def render_unified_geometry_view() -> None:
     IC = np.exp(kappa)
 
     # Regime classification
-    regimes = ['STABLE' if o < 0.038 else 'WATCH' if o < 0.30 else 'COLLAPSE' for o in omega]
+    regimes = ["STABLE" if o < 0.038 else "WATCH" if o < 0.30 else "COLLAPSE" for o in omega]
 
     # Create figure with 3 subplots
     fig = make_subplots(
-        rows=3, cols=1,
+        rows=3,
+        cols=1,
         subplot_titles=(
-            'Layer 1: State Space Ψ(t) ∈ [0,1]³',
-            'Layer 2: Invariant Projections',
-            'Layer 3: Regime Classification & Continuity'
+            "Layer 1: State Space Ψ(t) ∈ [0,1]³",
+            "Layer 2: Invariant Projections",
+            "Layer 3: Regime Classification & Continuity",
         ),
         vertical_spacing=0.1,
-        row_heights=[0.35, 0.35, 0.30]
+        row_heights=[0.35, 0.35, 0.30],
     )
 
     # ========== Layer 1: State Space ==========
-    fig.add_trace(go.Scatter(x=t, y=c1, mode='lines', name='c₁', line=dict(color='#1f77b4')), row=1, col=1)
-    fig.add_trace(go.Scatter(x=t, y=c2, mode='lines', name='c₂', line=dict(color='#ff7f0e')), row=1, col=1)
-    fig.add_trace(go.Scatter(x=t, y=c3, mode='lines', name='c₃', line=dict(color='#2ca02c')), row=1, col=1)
+    fig.add_trace(go.Scatter(x=t, y=c1, mode="lines", name="c₁", line=dict(color="#1f77b4")), row=1, col=1)
+    fig.add_trace(go.Scatter(x=t, y=c2, mode="lines", name="c₂", line=dict(color="#ff7f0e")), row=1, col=1)
+    fig.add_trace(go.Scatter(x=t, y=c3, mode="lines", name="c₃", line=dict(color="#2ca02c")), row=1, col=1)
 
     # ========== Layer 2: Invariants ==========
-    fig.add_trace(go.Scatter(x=t, y=omega, mode='lines', name='ω (Drift)', line=dict(color='red')), row=2, col=1)
-    fig.add_trace(go.Scatter(x=t, y=IC, mode='lines', name='IC (Integrity)', line=dict(color='blue')), row=2, col=1)
-    fig.add_trace(go.Scatter(x=t, y=C_curv, mode='lines', name='C (Curvature)', line=dict(color='purple', dash='dot')), row=2, col=1)
+    fig.add_trace(go.Scatter(x=t, y=omega, mode="lines", name="ω (Drift)", line=dict(color="red")), row=2, col=1)
+    fig.add_trace(go.Scatter(x=t, y=IC, mode="lines", name="IC (Integrity)", line=dict(color="blue")), row=2, col=1)
+    fig.add_trace(
+        go.Scatter(x=t, y=C_curv, mode="lines", name="C (Curvature)", line=dict(color="purple", dash="dot")),
+        row=2,
+        col=1,
+    )
 
     # Threshold lines
     fig.add_hline(y=0.038, line_dash="dash", line_color="green", row=2, col=1, annotation_text="ω_stable")
     fig.add_hline(y=0.30, line_dash="dash", line_color="red", row=2, col=1, annotation_text="ω_collapse")
 
     # ========== Layer 3: Regime & Continuity ==========
-    regime_numeric = [0 if r == 'STABLE' else 1 if r == 'WATCH' else 2 for r in regimes]
-    regime_colors = [REGIME_COLORS.get(r, 'gray') for r in regimes]
+    regime_numeric = [0 if r == "STABLE" else 1 if r == "WATCH" else 2 for r in regimes]
+    regime_colors = [REGIME_COLORS.get(r, "gray") for r in regimes]
 
     # Regime as colored segments
     for i in range(len(t) - 1):
-        fig.add_trace(go.Scatter(
-            x=[t[i], t[i+1]], y=[0.5, 0.5],
-            mode='lines', line=dict(color=regime_colors[i], width=20),
-            showlegend=False, hovertemplate=f"t={t[i]}: {regimes[i]}<extra></extra>"
-        ), row=3, col=1)
+        fig.add_trace(
+            go.Scatter(
+                x=[t[i], t[i + 1]],
+                y=[0.5, 0.5],
+                mode="lines",
+                line=dict(color=regime_colors[i], width=20),
+                showlegend=False,
+                hovertemplate=f"t={t[i]}: {regimes[i]}<extra></extra>",
+            ),
+            row=3,
+            col=1,
+        )
 
     # Add legend annotations
     for i, (regime, color) in enumerate(REGIME_COLORS.items()):
         fig.add_annotation(
-            x=n_steps * (0.15 + 0.25 * i), y=0.85,
+            x=n_steps * (0.15 + 0.25 * i),
+            y=0.85,
             text=f"<b>{regime}</b>",
             showarrow=False,
             font=dict(color=color, size=12),
-            row=3, col=1
+            row=3,
+            col=1,
         )
 
     fig.update_layout(
-        height=900,
-        showlegend=True,
-        legend=dict(orientation='h', yanchor='top', y=1.02, xanchor='center', x=0.5)
+        height=900, showlegend=True, legend=dict(orientation="h", yanchor="top", y=1.02, xanchor="center", x=0.5)
     )
 
     fig.update_yaxes(title_text="Coordinate Value", row=1, col=1, range=[0, 1])
@@ -7079,7 +7179,7 @@ def render_live_runner_page() -> None:
         status_color = STATUS_COLORS.get(last["status"], "#6c757d")
         st.markdown(
             f"""<div style="padding: 10px; border-left: 4px solid {status_color}; background: {status_color}22; border-radius: 4px;">
-            <strong>{last['status']}</strong> — {last['target']} @ {last['timestamp'][:19]}
+            <strong>{last["status"]}</strong> — {last["target"]} @ {last["timestamp"][:19]}
             </div>""",
             unsafe_allow_html=True,
         )

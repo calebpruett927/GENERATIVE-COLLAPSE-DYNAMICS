@@ -255,9 +255,9 @@ def test_e2e_strict_validation():
 
         assert e2e_target is not None, "E2E case not found in strict validation results"
         assert e2e_target["run_status"] == "CONFORMANT", f"Strict validation failed: {e2e_target}"
-        assert (
-            e2e_target["counts"]["errors"] == 0
-        ), f"Expected 0 errors in strict mode, got {e2e_target['counts']['errors']}"
+        assert e2e_target["counts"]["errors"] == 0, (
+            f"Expected 0 errors in strict mode, got {e2e_target['counts']['errors']}"
+        )
 
         print(f"✓ Strict validation: CONFORMANT (errors={e2e_target['counts']['errors']})")
     except (json.JSONDecodeError, KeyError) as e:

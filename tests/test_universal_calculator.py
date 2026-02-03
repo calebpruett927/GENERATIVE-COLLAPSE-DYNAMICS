@@ -40,7 +40,7 @@ class TestKernelInvariants:
         calc = UniversalCalculator()
         result = calc.compute_all(
             coordinates=[0.9, 0.9, 0.9],
-            weights=[1/3, 1/3, 1/3],
+            weights=[1 / 3, 1 / 3, 1 / 3],
             mode=ComputationMode.MINIMAL,
         )
 
@@ -469,8 +469,7 @@ class TestCLI:
     def test_cli_basic(self):
         """Test basic CLI invocation."""
         result = subprocess.run(
-            [sys.executable, "-m", "umcp.universal_calculator",
-             "--coordinates", "0.9,0.85,0.92"],
+            [sys.executable, "-m", "umcp.universal_calculator", "--coordinates", "0.9,0.85,0.92"],
             capture_output=True,
             text=True,
         )
@@ -480,9 +479,15 @@ class TestCLI:
     def test_cli_with_weights(self):
         """Test CLI with weights."""
         result = subprocess.run(
-            [sys.executable, "-m", "umcp.universal_calculator",
-             "--coordinates", "0.9,0.85,0.92",
-             "--weights", "0.5,0.3,0.2"],
+            [
+                sys.executable,
+                "-m",
+                "umcp.universal_calculator",
+                "--coordinates",
+                "0.9,0.85,0.92",
+                "--weights",
+                "0.5,0.3,0.2",
+            ],
             capture_output=True,
             text=True,
         )
@@ -491,9 +496,7 @@ class TestCLI:
     def test_cli_json_output(self):
         """Test CLI with JSON output."""
         result = subprocess.run(
-            [sys.executable, "-m", "umcp.universal_calculator",
-             "--coordinates", "0.9,0.85,0.92",
-             "--json"],
+            [sys.executable, "-m", "umcp.universal_calculator", "--coordinates", "0.9,0.85,0.92", "--json"],
             capture_output=True,
             text=True,
         )
@@ -504,9 +507,7 @@ class TestCLI:
     def test_cli_full_mode(self):
         """Test CLI with full mode."""
         result = subprocess.run(
-            [sys.executable, "-m", "umcp.universal_calculator",
-             "--coordinates", "0.9,0.85,0.92",
-             "--mode", "full"],
+            [sys.executable, "-m", "umcp.universal_calculator", "--coordinates", "0.9,0.85,0.92", "--mode", "full"],
             capture_output=True,
             text=True,
         )

@@ -14,7 +14,7 @@ A unified calculator that integrates all UMCP concepts into a single interface:
 
 Usage:
     from umcp.universal_calculator import UniversalCalculator
-    
+
     calc = UniversalCalculator()
     result = calc.compute_all(coordinates=[0.9, 0.85, 0.92], weights=[0.5, 0.3, 0.2])
     print(result.summary())
@@ -339,60 +339,72 @@ class UniversalResult:
         ]
 
         if self.costs:
-            lines.extend([
-                "",
-                "─── Cost Closures ───",
-                f"  Γ(ω):       {self.costs.gamma_omega:.6f}",
-                f"  D_C:        {self.costs.D_C:.6f}",
-                f"  Φ_eq:       {self.costs.equator_phi:.6f}",
-            ])
+            lines.extend(
+                [
+                    "",
+                    "─── Cost Closures ───",
+                    f"  Γ(ω):       {self.costs.gamma_omega:.6f}",
+                    f"  D_C:        {self.costs.D_C:.6f}",
+                    f"  Φ_eq:       {self.costs.equator_phi:.6f}",
+                ]
+            )
 
         if self.seam:
-            lines.extend([
-                "",
-                "─── Seam Accounting ───",
-                f"  Δκ_budget:  {self.seam.delta_kappa_budget:.6f}",
-                f"  Δκ_ledger:  {self.seam.delta_kappa_ledger:.6f}",
-                f"  Residual s: {self.seam.residual:.6f}",
-                f"  PASS:       {self.seam.passed}",
-            ])
+            lines.extend(
+                [
+                    "",
+                    "─── Seam Accounting ───",
+                    f"  Δκ_budget:  {self.seam.delta_kappa_budget:.6f}",
+                    f"  Δκ_ledger:  {self.seam.delta_kappa_ledger:.6f}",
+                    f"  Residual s: {self.seam.residual:.6f}",
+                    f"  PASS:       {self.seam.passed}",
+                ]
+            )
 
         if self.gcd:
-            lines.extend([
-                "",
-                "─── GCD Metrics ───",
-                f"  E_potential:  {self.gcd.E_potential:.6f}",
-                f"  Φ_collapse:   {self.gcd.Phi_collapse:.6f}",
-                f"  Φ_gen:        {self.gcd.Phi_gen:.6f}",
-                f"  R_resonance:  {self.gcd.R_resonance:.6f}",
-                f"  Energy Regime: {self.gcd.energy_regime}",
-            ])
+            lines.extend(
+                [
+                    "",
+                    "─── GCD Metrics ───",
+                    f"  E_potential:  {self.gcd.E_potential:.6f}",
+                    f"  Φ_collapse:   {self.gcd.Phi_collapse:.6f}",
+                    f"  Φ_gen:        {self.gcd.Phi_gen:.6f}",
+                    f"  R_resonance:  {self.gcd.R_resonance:.6f}",
+                    f"  Energy Regime: {self.gcd.energy_regime}",
+                ]
+            )
 
         if self.rcft:
-            lines.extend([
-                "",
-                "─── RCFT Metrics ───",
-                f"  D_fractal:     {self.rcft.D_fractal:.4f}",
-                f"  Fractal Regime: {self.rcft.fractal_regime}",
-                f"  Ψ_recursive:   {self.rcft.Psi_recursive:.6f}",
-                f"  Basin Strength: {self.rcft.basin_strength:.6f}",
-            ])
+            lines.extend(
+                [
+                    "",
+                    "─── RCFT Metrics ───",
+                    f"  D_fractal:     {self.rcft.D_fractal:.4f}",
+                    f"  Fractal Regime: {self.rcft.fractal_regime}",
+                    f"  Ψ_recursive:   {self.rcft.Psi_recursive:.6f}",
+                    f"  Basin Strength: {self.rcft.basin_strength:.6f}",
+                ]
+            )
 
         if self.uncertainty:
-            lines.extend([
-                "",
-                "─── Uncertainty (1σ) ───",
-                f"  σ_F:     {self.uncertainty.std_F:.6f}",
-                f"  σ_ω:     {self.uncertainty.std_omega:.6f}",
-                f"  σ_κ:     {self.uncertainty.std_kappa:.6f}",
-            ])
+            lines.extend(
+                [
+                    "",
+                    "─── Uncertainty (1σ) ───",
+                    f"  σ_F:     {self.uncertainty.std_F:.6f}",
+                    f"  σ_ω:     {self.uncertainty.std_omega:.6f}",
+                    f"  σ_κ:     {self.uncertainty.std_kappa:.6f}",
+                ]
+            )
 
         if self.ss1m:
-            lines.extend([
-                "",
-                "─── SS1M Checksum ───",
-                f"  Triad: {self.ss1m}",
-            ])
+            lines.extend(
+                [
+                    "",
+                    "─── SS1M Checksum ───",
+                    f"  Triad: {self.ss1m}",
+                ]
+            )
 
         lines.append("=" * 60)
         return "\n".join(lines)
@@ -705,9 +717,7 @@ class UniversalCalculator:
             energy_regime=energy_regime,
         )
 
-    def _compute_rcft(
-        self, trajectory: NDArray, kernel: KernelInvariants
-    ) -> RCFTMetrics:
+    def _compute_rcft(self, trajectory: NDArray, kernel: KernelInvariants) -> RCFTMetrics:
         """Compute RCFT metrics from trajectory."""
         # Fractal dimension via box-counting
         D_fractal = self._box_counting_dimension(trajectory)
@@ -798,9 +808,7 @@ class UniversalCalculator:
 
         return float(np.clip(slope, 0.0, 3.0))
 
-    def _compute_uncertainty(
-        self, c: NDArray, w: NDArray, variances: list[float] | NDArray
-    ) -> UncertaintyBounds:
+    def _compute_uncertainty(self, c: NDArray, w: NDArray, variances: list[float] | NDArray) -> UncertaintyBounds:
         """Compute uncertainty bounds via delta-method."""
         v = np.array(variances, dtype=np.float64)
 
@@ -854,9 +862,7 @@ class UniversalCalculator:
 
         return float("inf")  # INF_REC
 
-    def _compute_diagnostics(
-        self, kernel: KernelInvariants, c: NDArray, w: NDArray
-    ) -> dict[str, Any]:
+    def _compute_diagnostics(self, kernel: KernelInvariants, c: NDArray, w: NDArray) -> dict[str, Any]:
         """Compute diagnostic information."""
         return {
             "n_coordinates": len(c),
@@ -878,12 +884,7 @@ class UniversalCalculator:
     def _compute_ss1m(self, result: UniversalResult) -> SS1MTriad:
         """Compute SS1M human-verifiable checksum (mod-97 triads)."""
         # Concatenate key values
-        data = (
-            f"{result.kernel.omega:.6f},"
-            f"{result.kernel.F:.6f},"
-            f"{result.kernel.IC:.6f},"
-            f"{result.regime}"
-        )
+        data = f"{result.kernel.omega:.6f},{result.kernel.F:.6f},{result.kernel.IC:.6f},{result.regime}"
         full_hash = hashlib.sha256(data.encode()).hexdigest()
 
         # Extract three segments and compute mod-97
@@ -959,9 +960,7 @@ def compute_full(
         UniversalResult with all computed metrics
     """
     calc = UniversalCalculator()
-    return calc.compute_all(
-        coordinates, weights, trajectory=trajectory, mode=ComputationMode.FULL
-    )
+    return calc.compute_all(coordinates, weights, trajectory=trajectory, mode=ComputationMode.FULL)
 
 
 # =============================================================================
@@ -973,23 +972,24 @@ def main() -> None:
     """Command-line interface for the universal calculator."""
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description="UMCP Universal Calculator - Compute all metrics in one call"
-    )
+    parser = argparse.ArgumentParser(description="UMCP Universal Calculator - Compute all metrics in one call")
     parser.add_argument(
-        "-c", "--coordinates",
+        "-c",
+        "--coordinates",
         type=str,
         required=True,
         help="Comma-separated coordinates (e.g., '0.9,0.85,0.92')",
     )
     parser.add_argument(
-        "-w", "--weights",
+        "-w",
+        "--weights",
         type=str,
         default=None,
         help="Comma-separated weights (default: uniform)",
     )
     parser.add_argument(
-        "-m", "--mode",
+        "-m",
+        "--mode",
         type=str,
         choices=["minimal", "standard", "full", "rcft"],
         default="standard",
