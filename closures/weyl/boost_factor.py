@@ -26,9 +26,10 @@ Reference: Implicit in Eq. 2, 3, 6 of Nature Comms 15:9295 (2024)
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
 from enum import Enum
-from typing import Callable, NamedTuple
+from typing import NamedTuple
 
 import numpy as np
 from numpy.typing import NDArray
@@ -312,7 +313,7 @@ if __name__ == "__main__":
     # Test curvature interpretation
     k_array = np.logspace(-2, 0.5, 20)
     curvature = boost_as_curvature(k_array, z=0.5)
-    print(f"\nCurvature interpretation at z=0.5:")
+    print("\nCurvature interpretation at z=0.5:")
     print(f"  C_proxy mean = {curvature['C_proxy_mean']:.3f}")
     print(f"  k_nonlinear = {curvature['k_nonlinear']:.3f} h/Mpc")
     print(f"  B_max = {curvature['B_max']:.2f}")

@@ -5157,7 +5157,7 @@ def render_formula_builder_page() -> None:
 
             # Test the formula
             try:
-                test_vars = {p: 1.0 for p in params}
+                test_vars = dict.fromkeys(params, 1.0)
                 test_result = eval(
                     formula_expr,
                     {"__builtins__": {}},
@@ -5295,19 +5295,15 @@ def render_cosmology_page() -> None:
     # Try to import WEYL closures
     try:
         from closures.weyl import (
-            PLANCK_2018,
             DES_Y3_DATA,
-            SigmaRegime,
-            GzModel,
-            compute_Sigma,
-            compute_background,
-            H_of_z,
-            chi_of_z,
+            PLANCK_2018,
             D1_of_z,
-            sigma8_of_z,
+            GzModel,
+            H_of_z,
             Sigma_to_UMCP_invariants,
-            classify_limber_regime,
-            classify_scale_regime,
+            chi_of_z,
+            compute_Sigma,
+            sigma8_of_z,
         )
 
         weyl_available = True
@@ -5493,7 +5489,6 @@ def render_cosmology_page() -> None:
     regime_cols = st.columns(3)
     for i, (regime, count) in enumerate(regime_counts.items()):
         with regime_cols[i % 3]:
-            color = "green" if regime == "GR_consistent" else ("yellow" if regime == "Tension" else "red")
             st.markdown(f"**{regime}**: {count} points ({100 * count / len(regimes):.1f}%)")
 
     st.divider()
@@ -5600,7 +5595,7 @@ def render_cosmology_page() -> None:
         with result_cols[3]:
             st.metric("Regime", mapping["regime"])
 
-        st.success(f"✅ WEYL measurements mapped to UMCP invariants successfully!")
+        st.success("✅ WEYL measurements mapped to UMCP invariants successfully!")
 
 
 def render_batch_validation_page() -> None:
@@ -6086,14 +6081,14 @@ def render_layer1_state_space() -> None:
                 x=trajectory[:, 0],
                 y=trajectory[:, 1],
                 mode="lines+markers",
-                line=dict(color="royalblue", width=2),
-                marker=dict(
-                    size=4,
-                    color=np.arange(n_steps),
-                    colorscale="Viridis",
-                    showscale=True,
-                    colorbar=dict(title="Time t"),
-                ),
+                line={"color": "royalblue", "width": 2},
+                marker={
+                    "size": 4,
+                    "color": np.arange(n_steps),
+                    "colorscale": "Viridis",
+                    "showscale": True,
+                    "colorbar": {"title": "Time t"},
+                },
                 name="Trajectory Ψ(t)",
                 hovertemplate="t=%{marker.color:.0f}<br>c₁=%{x:.3f}<br>c₂=%{y:.3f}<extra></extra>",
             )
@@ -6105,7 +6100,7 @@ def render_layer1_state_space() -> None:
                 x=[trajectory[0, 0]],
                 y=[trajectory[0, 1]],
                 mode="markers",
-                marker=dict(size=15, color="green", symbol="star"),
+                marker={"size": 15, "color": "green", "symbol": "star"},
                 name="Start (t=0)",
             )
         )
@@ -6116,13 +6111,13 @@ def render_layer1_state_space() -> None:
                 x=[trajectory[-1, 0]],
                 y=[trajectory[-1, 1]],
                 mode="markers",
-                marker=dict(size=15, color="red", symbol="square"),
+                marker={"size": 15, "color": "red", "symbol": "square"},
                 name=f"End (t={n_steps - 1})",
             )
         )
 
         # η-balls for return events
-        for i, j, dist in returns[:10]:  # Show first 10 returns
+        for _i, j, _dist in returns[:10]:  # Show first 10 returns
             theta_circle = np.linspace(0, 2 * np.pi, 50)
             x_circle = trajectory[j, 0] + eta * np.cos(theta_circle)
             y_circle = trajectory[j, 1] + eta * np.sin(theta_circle)
@@ -6131,7 +6126,7 @@ def render_layer1_state_space() -> None:
                     x=x_circle,
                     y=y_circle,
                     mode="lines",
-                    line=dict(color="orange", width=1, dash="dot"),
+                    line={"color": "orange", "width": 1, "dash": "dot"},
                     showlegend=False,
                     hoverinfo="skip",
                 )
@@ -6144,7 +6139,7 @@ def render_layer1_state_space() -> None:
                     x=[trajectory[i, 0], trajectory[j, 0]],
                     y=[trajectory[i, 1], trajectory[j, 1]],
                     mode="lines",
-                    line=dict(color="orange", width=1, dash="dash"),
+                    line={"color": "orange", "width": 1, "dash": "dash"},
                     showlegend=False,
                     hovertemplate=f"Return: t={i}→t={j}<br>τ_R={i - j}<br>dist={dist:.4f}<extra></extra>",
                 )
@@ -6154,9 +6149,9 @@ def render_layer1_state_space() -> None:
             height=500,
             xaxis_title="c₁ (Channel 1)",
             yaxis_title="c₂ (Channel 2)",
-            xaxis=dict(range=[0, 1], constrain="domain"),
-            yaxis=dict(range=[0, 1], scaleanchor="x", scaleratio=1),
-            legend=dict(orientation="h", yanchor="bottom", y=1.02),
+            xaxis={"range": [0, 1], "constrain": "domain"},
+            yaxis={"range": [0, 1], "scaleanchor": "x", "scaleratio": 1},
+            legend={"orientation": "h", "yanchor": "bottom", "y": 1.02},
             title=f"State Space Trajectory (η={eta})",
         )
 
@@ -6173,14 +6168,14 @@ def render_layer1_state_space() -> None:
                 y=trajectory[:, 1],
                 z=trajectory[:, 2],
                 mode="lines+markers",
-                line=dict(color="royalblue", width=3),
-                marker=dict(
-                    size=3,
-                    color=np.arange(n_steps),
-                    colorscale="Viridis",
-                    showscale=True,
-                    colorbar=dict(title="Time t"),
-                ),
+                line={"color": "royalblue", "width": 3},
+                marker={
+                    "size": 3,
+                    "color": np.arange(n_steps),
+                    "colorscale": "Viridis",
+                    "showscale": True,
+                    "colorbar": {"title": "Time t"},
+                },
                 name="Trajectory Ψ(t)",
             )
         )
@@ -6192,7 +6187,7 @@ def render_layer1_state_space() -> None:
                 y=[trajectory[0, 1]],
                 z=[trajectory[0, 2]],
                 mode="markers",
-                marker=dict(size=10, color="green", symbol="diamond"),
+                marker={"size": 10, "color": "green", "symbol": "diamond"},
                 name="Start",
             )
         )
@@ -6202,21 +6197,21 @@ def render_layer1_state_space() -> None:
                 y=[trajectory[-1, 1]],
                 z=[trajectory[-1, 2]],
                 mode="markers",
-                marker=dict(size=10, color="red", symbol="square"),
+                marker={"size": 10, "color": "red", "symbol": "square"},
                 name="End",
             )
         )
 
         fig.update_layout(
             height=600,
-            scene=dict(
-                xaxis_title="c₁",
-                yaxis_title="c₂",
-                zaxis_title="c₃",
-                xaxis=dict(range=[0, 1]),
-                yaxis=dict(range=[0, 1]),
-                zaxis=dict(range=[0, 1]),
-            ),
+            scene={
+                "xaxis_title": "c₁",
+                "yaxis_title": "c₂",
+                "zaxis_title": "c₃",
+                "xaxis": {"range": [0, 1]},
+                "yaxis": {"range": [0, 1]},
+                "zaxis": {"range": [0, 1]},
+            },
             title=f"3D State Space (η={eta})",
         )
 
@@ -6341,7 +6336,7 @@ def render_layer2_projections() -> None:
     projections = [("omega", 1, 1), ("F", 1, 2), ("S", 2, 1), ("C", 2, 2), ("kappa", 3, 1), ("IC", 3, 2)]
 
     for name, row, col in projections:
-        fig.add_trace(go.Scatter(x=df["t"], y=df[name], mode="lines", name=name, line=dict(width=2)), row=row, col=col)
+        fig.add_trace(go.Scatter(x=df["t"], y=df[name], mode="lines", name=name, line={"width": 2}), row=row, col=col)
 
         # Add threshold lines for ω
         if name == "omega" and show_regime:
@@ -6364,13 +6359,13 @@ def render_layer2_projections() -> None:
                 x=df["omega"],
                 y=df["F"],
                 mode="markers",
-                marker=dict(color=df["t"], colorscale="Viridis", showscale=True, colorbar=dict(title="t")),
+                marker={"color": df["t"], "colorscale": "Viridis", "showscale": True, "colorbar": {"title": "t"}},
                 hovertemplate="ω=%{x:.3f}<br>F=%{y:.3f}<br>t=%{marker.color:.0f}<extra></extra>",
             )
         )
         # Identity line
         fig_of.add_trace(
-            go.Scatter(x=[0, 1], y=[1, 0], mode="lines", line=dict(dash="dash", color="gray"), name="F = 1 - ω")
+            go.Scatter(x=[0, 1], y=[1, 0], mode="lines", line={"dash": "dash", "color": "gray"}, name="F = 1 - ω")
         )
         fig_of.update_layout(
             height=350, xaxis_title="ω (Drift)", yaxis_title="F (Fidelity)", title="Drift-Fidelity Axis"
@@ -6385,7 +6380,7 @@ def render_layer2_projections() -> None:
                 x=df["S"],
                 y=df["C"],
                 mode="markers",
-                marker=dict(color=df["t"], colorscale="Viridis", showscale=True, colorbar=dict(title="t")),
+                marker={"color": df["t"], "colorscale": "Viridis", "showscale": True, "colorbar": {"title": "t"}},
                 hovertemplate="S=%{x:.3f}<br>C=%{y:.3f}<br>t=%{marker.color:.0f}<extra></extra>",
             )
         )
@@ -6400,15 +6395,15 @@ def render_layer2_projections() -> None:
     df["gap"] = df["F"] - df["IC"]
 
     fig_gap = go.Figure()
-    fig_gap.add_trace(go.Scatter(x=df["t"], y=df["F"], mode="lines", name="F (Arithmetic)", line=dict(color="blue")))
-    fig_gap.add_trace(go.Scatter(x=df["t"], y=df["IC"], mode="lines", name="IC (Geometric)", line=dict(color="green")))
+    fig_gap.add_trace(go.Scatter(x=df["t"], y=df["F"], mode="lines", name="F (Arithmetic)", line={"color": "blue"}))
+    fig_gap.add_trace(go.Scatter(x=df["t"], y=df["IC"], mode="lines", name="IC (Geometric)", line={"color": "green"}))
     fig_gap.add_trace(
         go.Scatter(
             x=df["t"],
             y=df["gap"],
             mode="lines",
             name="Gap (F - IC)",
-            line=dict(color="orange", dash="dash"),
+            line={"color": "orange", "dash": "dash"},
             fill="tozeroy",
             fillcolor="rgba(255,165,0,0.2)",
         )
@@ -6418,7 +6413,7 @@ def render_layer2_projections() -> None:
         xaxis_title="Time t",
         yaxis_title="Value",
         title="AM-GM Gap: F ≥ IC (with equality iff homogeneous)",
-        legend=dict(orientation="h", yanchor="bottom", y=1.02),
+        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02},
     )
     st.plotly_chart(fig_gap, use_container_width=True)
 
@@ -6534,7 +6529,7 @@ def render_layer3_seam_graph() -> None:
     node_text = []
     node_colors = []
 
-    for i, seam in enumerate(seams):
+    for _i, seam in enumerate(seams):
         # Start node
         node_x.append(seam["t0"])
         node_y.append(seam["IC0"])
@@ -6552,7 +6547,7 @@ def render_layer3_seam_graph() -> None:
             x=node_x,
             y=node_y,
             mode="markers",
-            marker=dict(size=15, color=node_colors, line=dict(width=2, color="darkblue")),
+            marker={"size": 15, "color": node_colors, "line": {"width": 2, "color": "darkblue"}},
             text=node_text,
             hoverinfo="text",
             name="States",
@@ -6571,7 +6566,7 @@ def render_layer3_seam_graph() -> None:
                 x=[seam["t0"], seam["t1"]],
                 y=[seam["IC0"], seam["IC1"]],
                 mode="lines",
-                line=dict(color=color, width=3, dash=dash),
+                line={"color": color, "width": 3, "dash": dash},
                 hovertemplate=(
                     f"Seam: t={seam['t0']}→{seam['t1']}<br>"
                     f"Status: {seam['status']}<br>"
@@ -6681,7 +6676,7 @@ def render_unified_geometry_view() -> None:
             seed = st.number_input("Seed", 0, 999, 42, key="unified_seed")
         with col2:
             drift_intensity = st.slider("Drift Intensity", 0.0, 0.3, 0.08)
-            eta = st.slider("η Tolerance", 0.05, 0.25, 0.12)
+            st.slider("η Tolerance", 0.05, 0.25, 0.12)
 
     np.random.seed(seed)
     t = np.arange(n_steps)
@@ -6726,15 +6721,15 @@ def render_unified_geometry_view() -> None:
     )
 
     # ========== Layer 1: State Space ==========
-    fig.add_trace(go.Scatter(x=t, y=c1, mode="lines", name="c₁", line=dict(color="#1f77b4")), row=1, col=1)
-    fig.add_trace(go.Scatter(x=t, y=c2, mode="lines", name="c₂", line=dict(color="#ff7f0e")), row=1, col=1)
-    fig.add_trace(go.Scatter(x=t, y=c3, mode="lines", name="c₃", line=dict(color="#2ca02c")), row=1, col=1)
+    fig.add_trace(go.Scatter(x=t, y=c1, mode="lines", name="c₁", line={"color": "#1f77b4"}), row=1, col=1)
+    fig.add_trace(go.Scatter(x=t, y=c2, mode="lines", name="c₂", line={"color": "#ff7f0e"}), row=1, col=1)
+    fig.add_trace(go.Scatter(x=t, y=c3, mode="lines", name="c₃", line={"color": "#2ca02c"}), row=1, col=1)
 
     # ========== Layer 2: Invariants ==========
-    fig.add_trace(go.Scatter(x=t, y=omega, mode="lines", name="ω (Drift)", line=dict(color="red")), row=2, col=1)
-    fig.add_trace(go.Scatter(x=t, y=IC, mode="lines", name="IC (Integrity)", line=dict(color="blue")), row=2, col=1)
+    fig.add_trace(go.Scatter(x=t, y=omega, mode="lines", name="ω (Drift)", line={"color": "red"}), row=2, col=1)
+    fig.add_trace(go.Scatter(x=t, y=IC, mode="lines", name="IC (Integrity)", line={"color": "blue"}), row=2, col=1)
     fig.add_trace(
-        go.Scatter(x=t, y=C_curv, mode="lines", name="C (Curvature)", line=dict(color="purple", dash="dot")),
+        go.Scatter(x=t, y=C_curv, mode="lines", name="C (Curvature)", line={"color": "purple", "dash": "dot"}),
         row=2,
         col=1,
     )
@@ -6744,7 +6739,7 @@ def render_unified_geometry_view() -> None:
     fig.add_hline(y=0.30, line_dash="dash", line_color="red", row=2, col=1, annotation_text="ω_collapse")
 
     # ========== Layer 3: Regime & Continuity ==========
-    regime_numeric = [0 if r == "STABLE" else 1 if r == "WATCH" else 2 for r in regimes]
+    [0 if r == "STABLE" else 1 if r == "WATCH" else 2 for r in regimes]
     regime_colors = [REGIME_COLORS.get(r, "gray") for r in regimes]
 
     # Regime as colored segments
@@ -6754,7 +6749,7 @@ def render_unified_geometry_view() -> None:
                 x=[t[i], t[i + 1]],
                 y=[0.5, 0.5],
                 mode="lines",
-                line=dict(color=regime_colors[i], width=20),
+                line={"color": regime_colors[i], "width": 20},
                 showlegend=False,
                 hovertemplate=f"t={t[i]}: {regimes[i]}<extra></extra>",
             ),
@@ -6769,13 +6764,15 @@ def render_unified_geometry_view() -> None:
             y=0.85,
             text=f"<b>{regime}</b>",
             showarrow=False,
-            font=dict(color=color, size=12),
+            font={"color": color, "size": 12},
             row=3,
             col=1,
         )
 
     fig.update_layout(
-        height=900, showlegend=True, legend=dict(orientation="h", yanchor="top", y=1.02, xanchor="center", x=0.5)
+        height=900,
+        showlegend=True,
+        legend={"orientation": "h", "yanchor": "top", "y": 1.02, "xanchor": "center", "x": 0.5},
     )
 
     fig.update_yaxes(title_text="Coordinate Value", row=1, col=1, range=[0, 1])

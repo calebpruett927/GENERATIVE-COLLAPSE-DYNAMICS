@@ -14,6 +14,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
+
 from umcp.dashboard import (
     KERNEL_SYMBOLS,
     REGIME_COLORS,

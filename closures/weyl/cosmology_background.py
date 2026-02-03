@@ -273,7 +273,7 @@ def compute_background_array(
     if params is None:
         params = PLANCK_2018
 
-    n = len(z_values)
+    len(z_values)
 
     return {
         "z": z_values,

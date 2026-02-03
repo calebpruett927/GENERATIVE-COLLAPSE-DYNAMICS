@@ -25,13 +25,14 @@ Reference: Eq. 7 of Nature Comms 15:9295 (2024)
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
 from enum import Enum
-from typing import Callable, NamedTuple
+from typing import NamedTuple
 
 import numpy as np
 from numpy.typing import NDArray
-from scipy import integrate, special
+from scipy import special
 
 
 class BeyondLimberRegime(str, Enum):

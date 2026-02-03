@@ -17,6 +17,7 @@ import time
 
 import numpy as np
 import pytest
+
 from umcp.kernel_optimized import (
     CoherenceAnalyzer,
     OptimizedKernelComputer,

@@ -13,52 +13,9 @@ Tests cover:
 Reference: Nature Communications 15:9295 (2024)
 """
 
-import math
-
 import numpy as np
 import pytest
 
-# Import WEYL closures
-from closures.weyl.cosmology_background import (
-    PLANCK_2018,
-    BackgroundResult,
-    CosmologyParams,
-    D1_of_z,
-    H_of_z,
-    Omega_Lambda_of_z,
-    Omega_m_of_z,
-    chi_of_z,
-    compute_background,
-    compute_background_array,
-    compute_des_y3_background,
-    cosmology_as_embedding,
-    sigma8_of_z,
-)
-from closures.weyl.weyl_transfer import (
-    WeylRegime,
-    WeylTransferConfig,
-    WeylTransferResult,
-    compute_weyl_transfer,
-    compute_weyl_transfer_array,
-    weyl_return_domain,
-)
-from closures.weyl.sigma_evolution import (
-    DES_Y3_DATA,
-    GzModel,
-    SigmaConfig,
-    SigmaRegime,
-    Sigma_to_UMCP_invariants,
-    compute_Sigma,
-    compute_Sigma_from_hJ,
-    g_z_constant,
-    g_z_exponential,
-)
-from closures.weyl.limber_integral import (
-    LimberRegime,
-    classify_limber_regime,
-    k_ell,
-    limber_as_projection,
-)
 from closures.weyl.beyond_limber import (
     BeyondLimberRegime,
     beyond_limber_as_strict_mode,
@@ -73,6 +30,44 @@ from closures.weyl.boost_factor import (
     halofit_boost,
 )
 
+# Import WEYL closures
+from closures.weyl.cosmology_background import (
+    PLANCK_2018,
+    BackgroundResult,
+    D1_of_z,
+    H_of_z,
+    Omega_Lambda_of_z,
+    Omega_m_of_z,
+    chi_of_z,
+    compute_background,
+    compute_des_y3_background,
+    cosmology_as_embedding,
+    sigma8_of_z,
+)
+from closures.weyl.limber_integral import (
+    LimberRegime,
+    classify_limber_regime,
+    k_ell,
+    limber_as_projection,
+)
+from closures.weyl.sigma_evolution import (
+    DES_Y3_DATA,
+    GzModel,
+    Sigma_to_UMCP_invariants,
+    SigmaConfig,
+    SigmaRegime,
+    compute_Sigma,
+    compute_Sigma_from_hJ,
+    g_z_constant,
+    g_z_exponential,
+)
+from closures.weyl.weyl_transfer import (
+    WeylRegime,
+    compute_weyl_transfer,
+    compute_weyl_transfer_array,
+    weyl_return_domain,
+)
+
 
 class TestCosmologyBackground:
     """Test background cosmology computations."""
@@ -81,13 +76,13 @@ class TestCosmologyBackground:
         """Test Planck 2018 default parameters."""
         assert PLANCK_2018.Omega_m_0 == pytest.approx(0.315, rel=1e-3)
         assert PLANCK_2018.Omega_Lambda_0 == pytest.approx(0.685, rel=1e-3)
-        assert PLANCK_2018.H_0 == pytest.approx(67.4, rel=1e-3)
+        assert pytest.approx(67.4, rel=1e-3) == PLANCK_2018.H_0
         assert PLANCK_2018.sigma8_0 == pytest.approx(0.811, rel=1e-3)
 
     def test_hubble_at_z0(self):
         """Test H(z=0) = H_0."""
         H_0 = H_of_z(0.0)
-        assert H_0 == pytest.approx(PLANCK_2018.H_0, rel=1e-6)
+        assert pytest.approx(PLANCK_2018.H_0, rel=1e-6) == H_0
 
     def test_hubble_increases_with_z(self):
         """Test H(z) increases with redshift."""
@@ -110,7 +105,7 @@ class TestCosmologyBackground:
         D1_0 = D1_of_z(0.0)
         D1_1 = D1_of_z(1.0)
         D1_2 = D1_of_z(2.0)
-        assert D1_0 == pytest.approx(1.0, rel=1e-3)
+        assert pytest.approx(1.0, rel=1e-3) == D1_0
         assert D1_1 < D1_0
         assert D1_2 < D1_1
 
@@ -380,7 +375,7 @@ class TestBoostFactor:
     def test_linear_regime_boost(self):
         """Test B ≈ 1 at large scales (small k)."""
         B = halofit_boost(k=0.01, z=0.5)
-        assert B == pytest.approx(1.0, abs=0.2)  # Within 20% of 1
+        assert pytest.approx(1.0, abs=0.2) == B  # Within 20% of 1
 
     def test_boost_increases_with_k(self):
         """Test B increases with wavenumber (more nonlinear)."""
@@ -476,7 +471,6 @@ class TestWeylCoreInvariants:
     def test_hJ_from_sigma(self):
         """Test ĥJ computation from Σ via Eq. 12."""
         # Using DES Y3 bin 1 parameters (approximate)
-        z = 0.295
         Sigma = 1.0  # GR
         Omega_m = 0.45  # Approximate at z=0.295
         D1_ratio = 0.9  # D₁(z)/D₁(z*)

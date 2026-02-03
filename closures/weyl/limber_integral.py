@@ -31,9 +31,10 @@ Reference: Eq. 3, 6 of Nature Comms 15:9295 (2024)
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
 from enum import Enum
-from typing import Callable, NamedTuple
+from typing import NamedTuple
 
 import numpy as np
 from numpy.typing import NDArray
@@ -400,7 +401,7 @@ if __name__ == "__main__":
     z_bins = np.array([0.295, 0.467, 0.626, 0.771])
 
     proj = limber_as_projection(hJ_des, hb_des, z_bins)
-    print(f"\nDES Y3 Projection Analysis:")
+    print("\nDES Y3 Projection Analysis:")
     print(f"  ĥJ mean = {proj['hJ_mean']:.3f}")
     print(f"  ĥJ std = {proj['hJ_std']:.3f}")
     print(f"  F_analog = {proj['F_analog']:.3f}")

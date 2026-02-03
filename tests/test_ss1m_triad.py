@@ -4,6 +4,7 @@ Tests the mod-97 prime-field checksum system for edition identity.
 """
 
 import pytest
+
 from umcp.ss1m_triad import (
     PRIME_COEFFICIENTS,
     TRIAD_MODULUS,

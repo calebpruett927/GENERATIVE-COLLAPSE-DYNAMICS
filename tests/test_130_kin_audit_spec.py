@@ -699,7 +699,7 @@ class TestReturnMechanics:
     def test_return_rate_range(self):
         """F17. return_rate ∈ [0, 1] always."""
         # Various scenarios
-        gamma_history = {i: (0.5, 0.5) for i in range(100)}
+        gamma_history = dict.fromkeys(range(100), (0.5, 0.5))
 
         for t in [0, 3, 10, 50, 100]:
             rate = compute_return_rate(t, gamma_history)
@@ -1006,7 +1006,7 @@ class TestGoldStandardVectors:
         Constant γ(t) for t=0..6, test at t=2 (<δ=3).
         """
         # Constant phase point
-        gamma_history = {t: (0.5, 0.5) for t in range(7)}
+        gamma_history = dict.fromkeys(range(7), (0.5, 0.5))
 
         t = 2
 

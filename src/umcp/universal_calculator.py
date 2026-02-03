@@ -38,7 +38,7 @@ import math
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from enum import Enum
-from typing import Any, NamedTuple
+from typing import Any
 
 import numpy as np
 from numpy.typing import NDArray
@@ -46,21 +46,20 @@ from numpy.typing import NDArray
 # Import frozen contract constants
 from .frozen_contract import (
     ALPHA,
+    DEFAULT_THRESHOLDS,
     EPSILON,
     P_EXPONENT,
     TOL_SEAM,
-    DEFAULT_THRESHOLDS,
     Regime,
     RegimeThresholds,
+    check_seam_pass,
     classify_regime,
-    gamma_omega,
-    cost_curvature,
     compute_budget_delta_kappa,
     compute_seam_residual,
-    check_seam_pass,
+    cost_curvature,
     equator_phi,
+    gamma_omega,
 )
-
 
 # =============================================================================
 # DATA STRUCTURES
@@ -487,10 +486,7 @@ class UniversalCalculator:
         c = np.array(coordinates, dtype=np.float64)
         n = len(c)
 
-        if weights is None:
-            w = np.ones(n) / n
-        else:
-            w = np.array(weights, dtype=np.float64)
+        w = np.ones(n) / n if weights is None else np.array(weights, dtype=np.float64)
 
         # Validate weights
         if not np.isclose(w.sum(), 1.0, atol=1e-9):
@@ -775,7 +771,7 @@ class UniversalCalculator:
         if trajectory.ndim == 1:
             trajectory = trajectory.reshape(-1, 1)
 
-        n_points, n_dims = trajectory.shape
+        n_points, _n_dims = trajectory.shape
         if n_points < 3:
             return 1.0
 

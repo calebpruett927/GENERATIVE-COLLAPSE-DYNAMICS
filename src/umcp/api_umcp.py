@@ -2329,17 +2329,17 @@ async def compute_weyl_background(
     """
     try:
         from closures.weyl import (
-            H_of_z,
-            chi_of_z,
             D1_of_z,
-            sigma8_of_z,
+            H_of_z,
             Omega_m_of_z,
+            chi_of_z,
+            sigma8_of_z,
         )
-    except ImportError:
+    except ImportError as e:
         raise HTTPException(
             status_code=500,
             detail="WEYL closures not available",
-        )
+        ) from e
 
     return BackgroundResult(
         z=z,
@@ -2365,20 +2365,20 @@ async def compute_weyl_sigma(
     DES Y3 finds Σ₀ ≈ 0.24 ± 0.14 (constant model).
     """
     try:
-        from closures.weyl import compute_Sigma, GzModel
-    except ImportError:
+        from closures.weyl import GzModel, compute_Sigma
+    except ImportError as e:
         raise HTTPException(
             status_code=500,
             detail="WEYL closures not available",
-        )
+        ) from e
 
     try:
         model = GzModel(g_model)
-    except ValueError:
+    except ValueError as e:
         raise HTTPException(
             status_code=400,
             detail=f"Invalid g_model: {g_model}. Use: constant, exponential, standard",
-        )
+        ) from e
 
     result = compute_Sigma(z, Sigma_0, model)
 
@@ -2402,11 +2402,11 @@ async def get_des_y3_data(
     """
     try:
         from closures.weyl import DES_Y3_DATA
-    except ImportError:
+    except ImportError as e:
         raise HTTPException(
             status_code=500,
             detail="WEYL closures not available",
-        )
+        ) from e
 
     return DESY3Data(
         z_bins=DES_Y3_DATA["z_bins"],
@@ -2437,11 +2437,11 @@ async def compute_weyl_umcp_mapping(
     """
     try:
         from closures.weyl import Sigma_to_UMCP_invariants
-    except ImportError:
+    except ImportError as e:
         raise HTTPException(
             status_code=500,
             detail="WEYL closures not available",
-        )
+        ) from e
 
     result = Sigma_to_UMCP_invariants(Sigma_0, chi2_Sigma, chi2_LCDM)
 

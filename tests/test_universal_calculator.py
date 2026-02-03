@@ -17,7 +17,6 @@ import json
 import math
 import subprocess
 import sys
-from pathlib import Path
 
 import numpy as np
 import pytest
@@ -45,10 +44,10 @@ class TestKernelInvariants:
         )
 
         # Check kernel values
-        assert result.kernel.F == pytest.approx(0.9, rel=1e-6)
+        assert pytest.approx(0.9, rel=1e-6) == result.kernel.F
         assert result.kernel.omega == pytest.approx(0.1, rel=1e-6)
-        assert result.kernel.IC == pytest.approx(0.9, rel=1e-6)
-        assert result.kernel.C == pytest.approx(0.0, abs=1e-10)  # Homogeneous
+        assert pytest.approx(0.9, rel=1e-6) == result.kernel.IC
+        assert pytest.approx(0.0, abs=1e-10) == result.kernel.C  # Homogeneous
 
     def test_heterogeneous_coordinates(self):
         """Test with heterogeneous coordinates."""
@@ -59,7 +58,7 @@ class TestKernelInvariants:
         )
 
         # F = 0.4*0.9 + 0.3*0.5 + 0.3*0.8 = 0.36 + 0.15 + 0.24 = 0.75
-        assert result.kernel.F == pytest.approx(0.75, rel=1e-6)
+        assert pytest.approx(0.75, rel=1e-6) == result.kernel.F
         assert result.kernel.omega == pytest.approx(0.25, rel=1e-6)
 
         # IC should be less than F (AM-GM inequality)
@@ -80,7 +79,7 @@ class TestKernelInvariants:
         assert (result.kernel.F + result.kernel.omega) == pytest.approx(1.0, rel=1e-10)
 
         # IC = exp(κ)
-        assert result.kernel.IC == pytest.approx(math.exp(result.kernel.kappa), rel=1e-10)
+        assert pytest.approx(math.exp(result.kernel.kappa), rel=1e-10) == result.kernel.IC
 
     def test_uniform_weights_default(self):
         """Test that uniform weights are used when not specified."""
@@ -88,7 +87,7 @@ class TestKernelInvariants:
         result = calc.compute_all(coordinates=[0.8, 0.9, 0.7])
 
         # With uniform weights: F = (0.8 + 0.9 + 0.7) / 3 = 0.8
-        assert result.kernel.F == pytest.approx(0.8, rel=1e-6)
+        assert pytest.approx(0.8, rel=1e-6) == result.kernel.F
 
     def test_boundary_values(self):
         """Test with values near boundaries."""
@@ -129,7 +128,7 @@ class TestCostClosures:
         )
 
         assert result.costs is not None
-        assert result.costs.D_C == pytest.approx(result.kernel.C, rel=1e-10)
+        assert pytest.approx(result.kernel.C, rel=1e-10) == result.costs.D_C
 
     def test_equator_phi(self):
         """Test equator diagnostic Φ_eq."""
@@ -402,7 +401,7 @@ class TestConvenienceFunctions:
         """Test compute_kernel convenience function."""
         kernel = compute_kernel([0.9, 0.85, 0.92])
 
-        assert kernel.F == pytest.approx(0.89, rel=1e-2)
+        assert pytest.approx(0.89, rel=1e-2) == kernel.F
         assert kernel.omega == pytest.approx(0.11, rel=1e-2)
 
     def test_compute_regime(self):

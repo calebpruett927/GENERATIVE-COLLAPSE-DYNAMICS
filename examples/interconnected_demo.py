@@ -199,6 +199,7 @@ def main():
 
     try:
         import numpy as np
+
         from umcp.compute_utils import BatchProcessor, clip_coordinates, prune_zero_weights
         from umcp.kernel_optimized import OptimizedKernelComputer, validate_kernel_bounds
 

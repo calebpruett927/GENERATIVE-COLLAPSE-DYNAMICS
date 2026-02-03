@@ -253,7 +253,7 @@ if __name__ == "__main__":
         B_ratio=1.0,  # No nonlinear boost at linear scales
         T_Weyl_star=1.0,  # Normalized
     )
-    print(f"GR-consistent (J=1):")
+    print("GR-consistent (J=1):")
     print(f"  T_Weyl = {result_gr.T_Weyl:.4f}")
     print(f"  regime = {result_gr.regime}")
     print(f"  H_ratio = {result_gr.H_ratio:.4f}")
@@ -267,7 +267,7 @@ if __name__ == "__main__":
         B_ratio=1.0,
         T_Weyl_star=1.0,
     )
-    print(f"\nModified gravity (J=1.24):")
+    print("\nModified gravity (J=1.24):")
     print(f"  T_Weyl = {result_mg.T_Weyl:.4f}")
     print(f"  regime = {result_mg.regime}")
     print(f"  J_effective = {result_mg.J_effective}")
@@ -277,7 +277,7 @@ if __name__ == "__main__":
     J_test = 1.0 + 0.24 * np.exp(-z_test)  # Deviation at low z
 
     return_analysis = weyl_return_domain(z_test, J_test, z_star=10.0, eta_J=0.05)
-    print(f"\nReturn-domain analysis:")
+    print("\nReturn-domain analysis:")
     print(f"  GR-consistent fraction = {return_analysis['gr_consistent_fraction']:.2%}")
     print(f"  First deviation at z = {return_analysis['first_deviation_z']}")
     print(f"  Interpretation: {return_analysis['interpretation']}")
