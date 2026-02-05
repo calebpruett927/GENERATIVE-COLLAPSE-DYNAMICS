@@ -1,0 +1,40 @@
+{
+  "schema": "schemas/invariants.schema.json",
+  "format": "tier1_invariants",
+  "contract_id": "UMA.INTSTACK.v1",
+  "closure_registry_id": "UMCP.CLOSURES.SECURITY.v1",
+  "canon": {
+    "pre_doi": "10.5281/zenodo.17756705",
+    "post_doi": "10.5281/zenodo.18072852",
+    "weld_id": "W-2026-02-04-SECURITY-VALIDATION",
+    "timezone": "UTC"
+  },
+  "rows": [
+    {"t": 1, "omega": 0.0875, "F": 0.9125, "S": 0.312, "C": 0.056, "tau_R": "INF_REC", "kappa": -0.092, "IC": 0.912, "regime": {"label": "Stable", "critical_overlay": false}},
+    {"t": 2, "omega": 0.0975, "F": 0.9025, "S": 0.328, "C": 0.054, "tau_R": 1, "kappa": -0.103, "IC": 0.902, "regime": {"label": "Stable", "critical_overlay": false}},
+    {"t": 3, "omega": 0.1100, "F": 0.8900, "S": 0.345, "C": 0.058, "tau_R": 1, "kappa": -0.117, "IC": 0.890, "regime": {"label": "Stable", "critical_overlay": false}},
+    {"t": 4, "omega": 0.1200, "F": 0.8800, "S": 0.358, "C": 0.055, "tau_R": 1, "kappa": -0.128, "IC": 0.880, "regime": {"label": "Stable", "critical_overlay": false}},
+    {"t": 5, "omega": 0.1300, "F": 0.8700, "S": 0.371, "C": 0.057, "tau_R": 1, "kappa": -0.139, "IC": 0.870, "regime": {"label": "Stable", "critical_overlay": false}},
+    {"t": 6, "omega": 0.1400, "F": 0.8600, "S": 0.384, "C": 0.056, "tau_R": 1, "kappa": -0.151, "IC": 0.860, "regime": {"label": "Stable", "critical_overlay": false}},
+    {"t": 7, "omega": 0.1500, "F": 0.8500, "S": 0.397, "C": 0.054, "tau_R": 1, "kappa": -0.163, "IC": 0.850, "regime": {"label": "Stable", "critical_overlay": false}},
+    {"t": 8, "omega": 0.1600, "F": 0.8400, "S": 0.410, "C": 0.055, "tau_R": 1, "kappa": -0.174, "IC": 0.840, "regime": {"label": "Stable", "critical_overlay": false}},
+    {"t": 9, "omega": 0.1700, "F": 0.8300, "S": 0.423, "C": 0.053, "tau_R": 1, "kappa": -0.186, "IC": 0.830, "regime": {"label": "Stable", "critical_overlay": false}},
+    {"t": 10, "omega": 0.6250, "F": 0.3750, "S": 0.678, "C": 0.112, "tau_R": "INF_REC", "kappa": -0.981, "IC": 0.375, "regime": {"label": "Collapse", "critical_overlay": true}},
+    {"t": 11, "omega": 0.6500, "F": 0.3500, "S": 0.692, "C": 0.098, "tau_R": "INF_REC", "kappa": -1.050, "IC": 0.350, "regime": {"label": "Collapse", "critical_overlay": true}},
+    {"t": 12, "omega": 0.6750, "F": 0.3250, "S": 0.706, "C": 0.108, "tau_R": "INF_REC", "kappa": -1.124, "IC": 0.325, "regime": {"label": "Collapse", "critical_overlay": true}},
+    {"t": 13, "omega": 0.7000, "F": 0.3000, "S": 0.718, "C": 0.112, "tau_R": "INF_REC", "kappa": -1.204, "IC": 0.300, "regime": {"label": "Collapse", "critical_overlay": true}},
+    {"t": 14, "omega": 0.7250, "F": 0.2750, "S": 0.728, "C": 0.108, "tau_R": "INF_REC", "kappa": -1.291, "IC": 0.275, "regime": {"label": "Collapse", "critical_overlay": true}},
+    {"t": 15, "omega": 0.6750, "F": 0.3250, "S": 0.706, "C": 0.108, "tau_R": "INF_REC", "kappa": -1.124, "IC": 0.325, "regime": {"label": "Collapse", "critical_overlay": true}},
+    {"t": 16, "omega": 0.5750, "F": 0.4250, "S": 0.654, "C": 0.108, "tau_R": "INF_REC", "kappa": -0.856, "IC": 0.425, "regime": {"label": "Collapse", "critical_overlay": true}},
+    {"t": 17, "omega": 0.4750, "F": 0.5250, "S": 0.598, "C": 0.108, "tau_R": "INF_REC", "kappa": -0.644, "IC": 0.525, "regime": {"label": "Collapse", "critical_overlay": true}},
+    {"t": 18, "omega": 0.3750, "F": 0.6250, "S": 0.538, "C": 0.108, "tau_R": "INF_REC", "kappa": -0.470, "IC": 0.625, "regime": {"label": "Collapse", "critical_overlay": true}},
+    {"t": 19, "omega": 0.2750, "F": 0.7250, "S": 0.472, "C": 0.108, "tau_R": "INF_REC", "kappa": -0.322, "IC": 0.725, "regime": {"label": "Watch", "critical_overlay": false}},
+    {"t": 20, "omega": 0.2250, "F": 0.7750, "S": 0.436, "C": 0.108, "tau_R": 11, "kappa": -0.255, "IC": 0.775, "regime": {"label": "Watch", "critical_overlay": false}},
+    {"t": 21, "omega": 0.1850, "F": 0.8150, "S": 0.402, "C": 0.088, "tau_R": 12, "kappa": -0.205, "IC": 0.815, "regime": {"label": "Watch", "critical_overlay": false}},
+    {"t": 22, "omega": 0.1625, "F": 0.8375, "S": 0.378, "C": 0.082, "tau_R": 13, "kappa": -0.177, "IC": 0.838, "regime": {"label": "Watch", "critical_overlay": false}},
+    {"t": 23, "omega": 0.1475, "F": 0.8525, "S": 0.358, "C": 0.078, "tau_R": 14, "kappa": -0.160, "IC": 0.853, "regime": {"label": "Watch", "critical_overlay": false}},
+    {"t": 24, "omega": 0.1300, "F": 0.8700, "S": 0.342, "C": 0.070, "tau_R": 15, "kappa": -0.139, "IC": 0.870, "regime": {"label": "Watch", "critical_overlay": false}},
+    {"t": 25, "omega": 0.1175, "F": 0.8825, "S": 0.328, "C": 0.068, "tau_R": 16, "kappa": -0.125, "IC": 0.883, "regime": {"label": "Stable", "critical_overlay": false}}
+  ],
+  "notes": "Security invariants demonstrating anomaly detection and recovery. Rows 10-18 show collapse (omega > 0.3, tau_R = INF_REC), rows 19-24 show Watch regime (recovery), row 25 returns to Stable."
+}

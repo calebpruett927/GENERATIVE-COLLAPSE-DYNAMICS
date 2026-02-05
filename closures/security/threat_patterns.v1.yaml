@@ -1,0 +1,63 @@
+schema: "schemas/closures.schema.json"
+
+closure:
+  kind: "threat_detection"
+  id: "SECURITY.THREAT.patterns.v1"
+  
+  threat_patterns:
+    # Frozen threat signature patterns
+    # These define the detection rules - analogous to Γ(ω) in UMCP
+    
+    file_signatures:
+      # Hash-based detection (known malware)
+      hash_types: ["sha256", "md5", "sha1"]
+      blocklist_sources:
+        - name: "local_blocklist"
+          path: "closures/security/blocklist_hashes.yaml"
+        - name: "virustotal_api"
+          api_key_env: "VIRUSTOTAL_API_KEY"
+          enabled: false  # Optional external
+          
+    url_patterns:
+      # Phishing/malicious URL patterns
+      suspicious_tlds: [".xyz", ".top", ".click", ".loan", ".work"]
+      suspicious_keywords: ["login", "verify", "suspend", "urgent", "account"]
+      homoglyph_detection: true
+      punycode_analysis: true
+      
+    behavior_patterns:
+      # Anomalous behavior detection
+      rapid_file_access: 
+        threshold: 100  # files per second
+        window: 5       # seconds
+      suspicious_network:
+        - "data exfiltration (large outbound)"
+        - "command and control (periodic beaconing)"
+        - "port scanning"
+      privilege_escalation:
+        - "unexpected sudo/admin"
+        - "credential access"
+        
+    identity_patterns:
+      # Identity verification signals
+      email_domain_mismatch: true
+      disposable_email_detection: true
+      credential_reuse_check: true
+      
+  parameters:
+    # Threat scoring weights (frozen)
+    w_hash: 0.4         # Hash match weight
+    w_url: 0.2          # URL pattern weight
+    w_behavior: 0.25    # Behavior pattern weight
+    w_identity: 0.15    # Identity pattern weight
+    
+    # Thresholds
+    threat_threshold_block: 0.8    # Block if threat_score > this
+    threat_threshold_warn: 0.4     # Warn if threat_score > this
+    
+  notes: >
+    Tier-0 closure defining frozen threat detection patterns.
+    These patterns are FROZEN at validation time - no adaptive updates within a run.
+    Pattern updates require new closure version and seam accounting.
+    
+  extensions: {}

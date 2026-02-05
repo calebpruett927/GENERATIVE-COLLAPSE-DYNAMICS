@@ -1,0 +1,87 @@
+---
+# UMCP Security Closures Registry
+# Format: closures/registry.yaml
+# Version: 1.0.0
+
+schema: "closures_registry.v1"
+id: "UMCP.CLOSURES.SECURITY.v1"
+version: "1.0.0"
+description: "Security domain closures implementing UMCP validation for anti-virus, anti-scam, identity, and privacy."
+
+parent_contract: "UMA.INTSTACK.v1"
+
+# Cost closures (weld budget terms)
+cost_closures:
+  - id: "D_omega"
+    description: "Drift cost barrier function"
+    formula: "Gamma(omega) = omega^3 / (1 - omega + epsilon)"
+    file: "closures/security/trust_fidelity.py"
+    
+  - id: "D_C"
+    description: "Curvature cost"  
+    formula: "D_C = alpha * C"
+    file: "closures/security/trust_integrity.py"
+
+# Kernel invariants
+kernel_invariants:
+  - id: "T"
+    name: "Trust Fidelity"
+    description: "Weighted trust from security signals"
+    formula: "T = sum(w_i * s_i)"
+    file: "closures/security/trust_fidelity.py"
+    
+  - id: "theta"
+    name: "Threat Drift"
+    description: "Deviation from perfect trust"
+    formula: "theta = 1 - T"
+    file: "closures/security/trust_fidelity.py"
+    
+  - id: "H"
+    name: "Security Entropy"
+    description: "Classification uncertainty"
+    formula: "H = -sum(w_i * [s_i*ln(s_i) + (1-s_i)*ln(1-s_i)])"
+    file: "closures/security/security_entropy.py"
+    
+  - id: "D"
+    name: "Signal Dispersion"
+    description: "Signal variance"
+    formula: "D = std(s_i) / 0.5"
+    file: "closures/security/security_entropy.py"
+    
+  - id: "sigma"
+    name: "Log-Integrity"
+    description: "Trust ledger"
+    formula: "sigma = sum(w_i * ln(s_i + epsilon))"
+    file: "closures/security/trust_integrity.py"
+    
+  - id: "TIC"
+    name: "Trust Integrity Composite"
+    description: "Geometric trust mean"
+    formula: "TIC = exp(sigma)"
+    file: "closures/security/trust_integrity.py"
+    
+  - id: "tau_A"
+    name: "Anomaly Return Time"
+    description: "Time to return to baseline"
+    formula: "tau_A = min{t-u : ||S(t)-S(u)|| <= eta}"
+    file: "closures/security/anomaly_return.py"
+
+# Tier-2 overlays
+overlays:
+  - id: "threat_classifier"
+    file: "closures/security/threat_classifier.py"
+    description: "Classifies threats by type"
+    
+  - id: "reputation_analyzer"
+    file: "closures/security/reputation_analyzer.py"
+    description: "Analyzes URL, file, IP reputation"
+    
+  - id: "behavior_profiler"
+    file: "closures/security/behavior_profiler.py"
+    description: "Detects behavioral anomalies"
+    
+  - id: "privacy_auditor"
+    file: "closures/security/privacy_auditor.py"
+    description: "Detects PII and privacy violations"
+
+notes: "Security domain closures that translate 'What Returns Through Collapse Is Real' to security validation."

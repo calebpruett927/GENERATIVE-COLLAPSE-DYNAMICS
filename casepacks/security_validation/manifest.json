@@ -1,0 +1,42 @@
+{
+  "schema": "schemas/manifest.schema.json",
+  "casepack": {
+    "id": "security_validation",
+    "version": "1.0.0",
+    "title": "Security Validation CasePack",
+    "description": "UMCP-based security validation demonstrating 'What Returns Through Collapse Is Real' applied to security domain (anti-virus, anti-scam, identity, privacy).",
+    "created_utc": "2026-02-04T00:00:00Z",
+    "timezone": "UTC",
+    "authors": ["UMCP Security Domain"]
+  },
+  "refs": {
+    "canon_anchors": { "path": "canon/anchors.yaml" },
+    "contract": { "id": "UMA.INTSTACK.v1", "path": "contracts/UMA.INTSTACK.v1.yaml" },
+    "closures_registry": { "id": "UMCP.CLOSURES.SECURITY.v1", "path": "closures/registry.yaml" }
+  },
+  "artifacts": {
+    "raw_measurements": {
+      "path": "raw_measurements.csv",
+      "format": "csv"
+    },
+    "expected": {
+      "invariants_json": { "path": "expected/invariants.json" },
+      "validation_receipt_json": { "path": "expected/validation_receipt.json" }
+    }
+  },
+  "run_intent": {
+    "notes": "This CasePack demonstrates UMCP security validation. Entities are validated against frozen Tier-0 policy, Tier-1 invariants computed, and validation receipts issued. Only entities that 'return through collapse' (tau_R finite, IC above threshold) are marked TRUSTED."
+  },
+  "extensions": {
+    "domain": "security",
+    "axiom_application": {
+      "core_axiom": "What Returns Through Collapse Is Real",
+      "security_translation": "What Survives Validation Is Trusted"
+    },
+    "tier_mapping": {
+      "tier_0": "Frozen security policy - threat signatures, trust baselines, validation rules",
+      "tier_1": "Deterministic security kernel - invariants T, theta, H, D, sigma, TIC, tau_A",
+      "tier_2": "Diagnostic overlays - threat classification, reputation, behavior analysis"
+    }
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "schema": "schemas/classification.schema.json",
+  "contract_id": "SECURITY.INTSTACK.v1",
+  "casepack_id": "security_validation",
+  "computed_at_utc": "2026-02-04T00:00:00Z",
+  
+  "classification_rules": {
+    "TRUSTED": {
+      "condition": "T >= 0.8 AND tau_A != INF_ANOMALY",
+      "description": "High trust, returns to baseline"
+    },
+    "SUSPICIOUS": {
+      "condition": "0.4 <= T < 0.8 OR tau_A > H_rec/2",
+      "description": "Moderate trust or slow return"
+    },
+    "BLOCKED": {
+      "condition": "T < 0.4 OR tau_A == INF_ANOMALY",
+      "description": "Low trust or no return to baseline"
+    },
+    "NON_EVALUABLE": {
+      "condition": "insufficient data or UNIDENTIFIABLE",
+      "description": "Cannot compute invariants"
+    }
+  },
+  
+  "file_classifications": [
+    {
+      "file_id": 1,
+      "filename": "trusted_document.pdf",
+      "hash_match": true,
+      "T": 0.95,
+      "tau_A": 1,
+      "status": "TRUSTED",
+      "confidence": 0.98
+    },
+    {
+      "file_id": 2,
+      "filename": "unknown_executable.exe",
+      "hash_match": null,
+      "T": 0.55,
+      "tau_A": 32,
+      "status": "SUSPICIOUS",
+      "confidence": 0.72,
+      "recommendation": "Manual review required"
+    },
+    {
+      "file_id": 3,
+      "filename": "known_malware.bin",
+      "hash_match": true,
+      "blocklist_hit": true,
+      "T": 0.05,
+      "tau_A": "INF_ANOMALY",
+      "status": "BLOCKED",
+      "confidence": 0.99,
+      "recommendation": "Quarantine and delete"
+    },
+    {
+      "file_id": 4,
+      "filename": "system_file.dll",
+      "hash_match": true,
+      "T": 0.92,
+      "tau_A": 1,
+      "status": "TRUSTED",
+      "confidence": 0.95
+    },
+    {
+      "file_id": 5,
+      "filename": "download.zip",
+      "hash_match": null,
+      "T": null,
+      "tau_A": "UNIDENTIFIABLE",
+      "status": "NON_EVALUABLE",
+      "confidence": null,
+      "recommendation": "Extract and scan contents"
+    }
+  ],
+  
+  "url_classifications": [
+    {
+      "url_id": 1,
+      "domain": "github.com",
+      "reputation_score": 0.98,
+      "T": 0.97,
+      "tau_A": 1,
+      "status": "TRUSTED",
+      "confidence": 0.99
+    },
+    {
+      "url_id": 2,
+      "domain": "google.com",
+      "reputation_score": 0.99,
+      "T": 0.98,
+      "tau_A": 1,
+      "status": "TRUSTED",
+      "confidence": 0.99
+    },
+    {
+      "url_id": 3,
+      "domain": "secure-l0gin-verify.xyz",
+      "reputation_score": 0.05,
+      "phishing_indicators": ["homoglyph:l0gin", "suspicious_tld:.xyz", "keyword:verify"],
+      "T": 0.08,
+      "tau_A": "INF_ANOMALY",
+      "status": "BLOCKED",
+      "confidence": 0.97,
+      "recommendation": "Phishing site - block access"
+    },
+    {
+      "url_id": 4,
+      "domain": "amaz0n-verify.click",
+      "reputation_score": 0.03,
+      "phishing_indicators": ["homoglyph:amaz0n", "suspicious_tld:.click", "keyword:verify"],
+      "T": 0.06,
+      "tau_A": "INF_ANOMALY",
+      "status": "BLOCKED",
+      "confidence": 0.98,
+      "recommendation": "Phishing site - block access"
+    },
+    {
+      "url_id": 5,
+      "domain": "unknown-domain-12345.com",
+      "reputation_score": 0.45,
+      "T": 0.50,
+      "tau_A": 48,
+      "status": "SUSPICIOUS",
+      "confidence": 0.65,
+      "recommendation": "No established reputation - proceed with caution"
+    },
+    {
+      "url_id": 6,
+      "domain": "192.168.1.1",
+      "is_internal_ip": true,
+      "T": 0.60,
+      "tau_A": 12,
+      "status": "SUSPICIOUS",
+      "confidence": 0.70,
+      "recommendation": "Internal IP - verify network context"
+    }
+  ],
+  
+  "summary": {
+    "files_trusted": 2,
+    "files_suspicious": 1,
+    "files_blocked": 1,
+    "files_non_evaluable": 1,
+    "urls_trusted": 2,
+    "urls_suspicious": 2,
+    "urls_blocked": 2
+  },
+  
+  "notes": "Tier-2 threat classification based on Tier-1 invariants. Classification is deterministic given frozen Tier-0 policy. Phishing detection uses homoglyph analysis and suspicious TLD patterns from threat_patterns.v1.yaml."
+}

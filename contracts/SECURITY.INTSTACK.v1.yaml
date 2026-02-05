@@ -1,0 +1,90 @@
+schema: schemas/contract.schema.json
+contract:
+  id: SECURITY.INTSTACK.v1
+  version: 1.0.0
+  timezone: UTC
+  embedding:
+    interval:
+      - 0.0
+      - 1.0
+    face: pre_clip
+    oor_policy: clip_and_flag
+    epsilon: 1.0e-08
+  tier_1_kernel:
+    reserved_symbols:
+      - T           # Trust fidelity (analogous to F)
+      - θ           # Threat drift (analogous to ω = 1-F)
+      - theta
+      - H           # Security entropy
+      - D           # Signal dispersion
+      - σ           # Log-integrity (security ledger)
+      - sigma
+      - TIC         # Trust integrity composite
+      - τ_A         # Anomaly return time
+      - tau_A
+    weights_policy: nonnegative_sum_to_one
+    frozen_parameters:
+      p: 3
+      alpha: 1.0
+      lambda: 0.2
+      eta: 0.01
+    tolerances:
+      tol_seam: 0.005
+      tol_id: 1.0e-09
+  typed_censoring:
+    tau_R_special_values:
+      - INF_REC
+      - INF_ANOMALY
+      - UNIDENTIFIABLE
+    run_status_enum:
+      - CONFORMANT
+      - NONCONFORMANT
+      - NON_EVALUABLE
+    no_return_no_credit: true
+  notes: >
+    SECURITY.INTSTACK.v1 extends UMA.INTSTACK.v1 for security domain validation.
+    Applies UMCP tier architecture to security: anti-virus, anti-scam, identity, privacy.
+    Core translation: "What returns through collapse is real" → "What survives validation is trusted".
+    Security signals mapped to [0,1] bounded trace. Trust fidelity T replaces F;
+    Threat drift θ replaces ω; Anomaly return τ_A replaces τ_R.
+  extensions:
+    domain: security
+    domain_applications:
+      - anti-virus (file integrity, malware detection)
+      - anti-scam (phishing, fraud detection)
+      - identity verification (authentication)
+      - privacy (PII detection, data protection)
+    security_invariants:
+      T:
+        name: Trust Fidelity
+        formula: "T = Σ w_i · s_i"
+        range: [0.0, 1.0]
+      theta:
+        name: Threat Drift
+        formula: "θ = 1 - T"
+        range: [0.0, 1.0]
+      H:
+        name: Security Entropy
+        formula: "H = -Σ w_i [s_i ln(s_i) + (1-s_i) ln(1-s_i)]"
+        range: [0.0, null]
+      D:
+        name: Signal Dispersion
+        formula: "D = std(s_i) / 0.5"
+        range: [0.0, 1.0]
+      sigma:
+        name: Log-Integrity
+        formula: "σ = Σ w_i ln(s_i + ε)"
+        range: [null, 0.0]
+      TIC:
+        name: Trust Integrity Composite
+        formula: "TIC = exp(σ)"
+        range: [0.0, 1.0]
+      tau_A:
+        name: Anomaly Return Time
+        formula: "τ_A = min{t-u : ||S(t)-S(u)|| ≤ η}"
+        range: [0, null]
+    validation_status:
+      TRUSTED: "T ≥ 0.8 AND τ_A ≠ INF_ANOMALY"
+      SUSPICIOUS: "0.4 ≤ T < 0.8"
+      BLOCKED: "T < 0.4 OR τ_A = INF_ANOMALY"
+      NON_EVALUABLE: "Insufficient data"

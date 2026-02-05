@@ -1,0 +1,7 @@
+url_id,url,domain,expected_status
+1,https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code,github.com,TRUSTED
+2,https://google.com,google.com,TRUSTED
+3,http://secure-l0gin-verify.xyz/account,secure-l0gin-verify.xyz,BLOCKED
+4,https://amaz0n-verify.click/login,amaz0n-verify.click,BLOCKED
+5,https://unknown-domain-12345.com,unknown-domain-12345.com,SUSPICIOUS
+6,http://192.168.1.1/admin,192.168.1.1,SUSPICIOUS

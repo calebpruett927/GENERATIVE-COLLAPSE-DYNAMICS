@@ -1,0 +1,99 @@
+# closures/security/registry.yaml
+# Security closure registry for SECURITY.INTSTACK.v1
+# Cross-references: contracts/SECURITY.INTSTACK.v1.yaml
+schema: "schemas/closures.schema.json"
+
+registry:
+  id: "UMCP.CLOSURES.SECURITY.v1"
+  
+  notes: >
+    Security domain closure registry applying UMCP architecture to:
+    - Anti-virus/malware detection
+    - Anti-scam/phishing detection
+    - Identity verification
+    - Privacy validation
+    
+    Core principle: "What returns through collapse is real" →
+    "What survives validation is trusted"
+    
+  closures:
+    # Tier-0: Frozen detection patterns
+    threat_patterns:
+      path: "closures/security/threat_patterns.v1.yaml"
+      description: "Frozen threat signatures and detection rules"
+      
+    # Tier-0: Trust baseline for return detection
+    trust_baseline:
+      path: "closures/security/trust_baseline.v1.yaml"
+      description: "Baseline signals and return-domain for τ_A computation"
+      
+    # Tier-0: Privacy validation rules
+    privacy_rules:
+      path: "closures/security/privacy_rules.v1.yaml"
+      description: "PII detection, consent, and retention rules"
+      
+    # Tier-0: Identity verification rules
+    identity_verification:
+      path: "closures/security/identity_verification.v1.yaml"
+      description: "Authentication and identity signals"
+      
+  extensions:
+    # Tier-1 kernel computations
+    kernel:
+      - name: "trust_fidelity"
+        path: "closures/security/trust_fidelity.py"
+        description: "Compute T = Σ w_i · s_i (Trust Fidelity)"
+        inputs: ["security_signals", "weights"]
+        outputs: ["T", "theta", "signal_contributions"]
+        tier: 1
+        
+      - name: "security_entropy"
+        path: "closures/security/security_entropy.py"
+        description: "Compute H = -Σ w_i [s_i ln(s_i) + (1-s_i)ln(1-s_i)]"
+        inputs: ["security_signals", "weights"]
+        outputs: ["H", "per_signal_entropy"]
+        tier: 1
+        
+      - name: "trust_integrity"
+        path: "closures/security/trust_integrity.py"
+        description: "Compute σ = Σ w_i ln(s_i,ε) and TIC = exp(σ)"
+        inputs: ["security_signals", "weights", "epsilon"]
+        outputs: ["sigma", "TIC"]
+        tier: 1
+        
+      - name: "anomaly_return"
+        path: "closures/security/anomaly_return.py"
+        description: "Compute τ_A (anomaly return time to baseline)"
+        inputs: ["signal_history", "baseline", "eta", "horizon"]
+        outputs: ["tau_A", "return_candidates"]
+        tier: 1
+        
+    # Tier-2 diagnostic overlays
+    diagnostics:
+      - name: "threat_classifier"
+        path: "closures/security/threat_classifier.py"
+        description: "Classify threat type based on Tier-1 invariants"
+        inputs: ["T", "theta", "H", "D", "sigma", "TIC", "tau_A"]
+        outputs: ["threat_type", "confidence", "recommendations"]
+        tier: 2
+        
+      - name: "reputation_analyzer"
+        path: "closures/security/reputation_analyzer.py"
+        description: "External reputation lookup and analysis"
+        inputs: ["url", "domain", "ip", "hash"]
+        outputs: ["reputation_score", "sources", "details"]
+        tier: 2
+        
+      - name: "behavior_profiler"
+        path: "closures/security/behavior_profiler.py"
+        description: "Build and compare behavior profiles"
+        inputs: ["signal_history", "baseline"]
+        outputs: ["deviation_score", "anomalies", "trend"]
+        tier: 2
+        
+      - name: "privacy_auditor"
+        path: "closures/security/privacy_auditor.py"
+        description: "Audit data for privacy violations"
+        inputs: ["data", "privacy_rules"]
+        outputs: ["violations", "severity", "recommendations"]
+        tier: 2
