@@ -16,6 +16,7 @@ Classification:
 import csv
 import math
 from pathlib import Path
+from typing import Any, ClassVar
 
 import numpy as np
 import pytest
@@ -24,12 +25,12 @@ import pytest
 DATA_PATH = Path(__file__).parent.parent / "data" / "physics_observations_complete.csv"
 
 
-def load_physics_observations() -> list[dict]:
+def load_physics_observations() -> list[dict[str, Any]]:
     """Load the physics observations dataset."""
     if not DATA_PATH.exists():
         pytest.skip(f"Data file not found: {DATA_PATH}")
     
-    with open(DATA_PATH, "r") as f:
+    with open(DATA_PATH) as f:
         reader = csv.DictReader(f)
         return list(reader)
 
@@ -44,7 +45,7 @@ class TestLemma35ReturnCollapseDuality:
         τ_R(t) = D_C(t)  (exactly)
     """
     
-    def test_atomic_physics_tau_equals_dc(self):
+    def test_atomic_physics_tau_equals_dc(self) -> None:
         """All atomic physics observations should have τ_R = D_C exactly."""
         observations = load_physics_observations()
         
@@ -70,7 +71,7 @@ class TestLemma35ReturnCollapseDuality:
                 f"Lemma 35 violation in {obs['event_id']}: τ_R={tau_R} ≠ D_C={D_C}"
             )
     
-    def test_od_scaling_law(self):
+    def test_od_scaling_law(self) -> None:
         """Corollary 35.2: τ_R = -OD for narrow-band transmission.
         
         Note: In the data, the OD suffix indicates the optical depth,
@@ -86,7 +87,6 @@ class TestLemma35ReturnCollapseDuality:
         ]
         
         for obs in narrow_band:
-            event_id = obs["event_id"]
             tau_R = float(obs["tau_R"])
             D_C = float(obs["D_C"])
             
@@ -99,7 +99,7 @@ class TestLemma35ReturnCollapseDuality:
             # τ_R should be negative (superluminal)
             assert tau_R < 0, f"Narrow-band should be superluminal: τ_R={tau_R}"
     
-    def test_r_squared_unity(self):
+    def test_r_squared_unity(self) -> None:
         """Verify R² = 1.000 for τ_R vs D_C in atomic physics."""
         observations = load_physics_observations()
         
@@ -137,7 +137,7 @@ class TestLemma36GenerativeFluxBound:
         (-0.1, 0.5, 0.5, 1e-8),
         (-2.0, 0.8, 0.8, 1e-8),
     ])
-    def test_flux_component_bounds(self, kappa: float, IC: float, C: float, eps: float):
+    def test_flux_component_bounds(self, kappa: float, IC: float, C: float, eps: float) -> None:
         """Verify generative flux components are bounded."""
         # Compute flux components
         kappa_component = abs(kappa)
@@ -153,7 +153,7 @@ class TestLemma36GenerativeFluxBound:
             f"Flux bound violated: Φ_gen={phi_gen} > bound={upper_bound}"
         )
     
-    def test_conservation_interpretation(self):
+    def test_conservation_interpretation(self) -> None:
         """Collapse generates at most what the ledger consumes."""
         # Δκ_ledger represents change in log-integrity
         delta_kappa = -0.5  # Negative = integrity loss
@@ -176,7 +176,7 @@ class TestLemma37PhaseTransition:
     Lemma 37: Systems transition at Δκ_critical = 0.10 ± 0.02
     """
     
-    def test_type_i_classification(self):
+    def test_type_i_classification(self) -> None:
         """Type I (unitary) systems have |Δκ| < 0.10."""
         observations = load_physics_observations()
         
@@ -197,7 +197,7 @@ class TestLemma37PhaseTransition:
                 f"Type I classification violated for {obs['event_id']}: |Δκ|={abs(delta_kappa)}"
             )
     
-    def test_type_iii_classification(self):
+    def test_type_iii_classification(self) -> None:
         """Type III (horizon) systems have larger Δκ."""
         observations = load_physics_observations()
         
@@ -226,7 +226,7 @@ class TestLemma38HorizonDeficit:
     Lemma 38: IC_horizon = 0.947 ± 0.01 (5.3% loss)
     """
     
-    def test_horizon_integrity_consistency(self):
+    def test_horizon_integrity_consistency(self) -> None:
         """All horizon systems should show similar IC deficit."""
         observations = load_physics_observations()
         
@@ -263,7 +263,7 @@ class TestLemma39SuperExponential:
     Lemma 39: ω_{n+1} = ω_n^p ⟹ ω_n = ω_0^{p^n}
     """
     
-    def test_anyon_convergence(self):
+    def test_anyon_convergence(self) -> None:
         """Validate against Ising anyon data.
         
         The data shows super-exponential convergence but with measured
@@ -309,7 +309,7 @@ class TestLemma39SuperExponential:
         (0.3, 3, 4),
         (0.286, 5, 2),  # Anyon case
     ])
-    def test_convergence_formula(self, omega_0: float, p: int, n_target: int):
+    def test_convergence_formula(self, omega_0: float, p: int, n_target: int) -> None:
         """Verify ω_n = ω_0^{p^n} formula."""
         omega_n = omega_0
         
@@ -321,7 +321,7 @@ class TestLemma39SuperExponential:
                 f"Convergence formula failed at n={n}: computed={omega_n}, predicted={predicted}"
             )
     
-    def test_convergence_iterations(self):
+    def test_convergence_iterations(self) -> None:
         """Verify convergence to machine precision in O(log log) iterations."""
         omega_0 = 0.286
         p = 5
@@ -353,7 +353,7 @@ class TestLemma40StableAttractor:
     
     OMEGA_STABLE = 0.038  # Stable regime threshold
     
-    def test_attractor_property(self):
+    def test_attractor_property(self) -> None:
         """Once in Stable regime, system cannot escape."""
         omega_0 = 0.286  # Start in Watch regime
         p = 5
@@ -376,7 +376,7 @@ class TestLemma40StableAttractor:
             omega = omega ** p
             assert omega < self.OMEGA_STABLE, "System escaped Stable regime"
     
-    def test_n_crit_formula(self):
+    def test_n_crit_formula(self) -> None:
         """Verify N_crit formula."""
         omega_0 = 0.286
         p = 5
@@ -408,7 +408,7 @@ class TestLemma41EntropyIntegrity:
     """
     
     @pytest.mark.parametrize("c", [0.1, 0.3, 0.5, 0.7, 0.9])
-    def test_single_channel_bound(self, c: float):
+    def test_single_channel_bound(self, c: float) -> None:
         """Test S + κ bound for single-channel case."""
         eps = 1e-8
         c_safe = max(eps, min(1 - eps, c))
@@ -428,10 +428,9 @@ class TestLemma41EntropyIntegrity:
             f"Entropy-integrity bound violated: S={S}, κ={kappa}, S+κ={bound}"
         )
     
-    def test_anti_correlation(self):
+    def test_anti_correlation(self) -> None:
         """High entropy requires low (negative) log-integrity."""
         # Maximum entropy at c = 0.5
-        c_max_entropy = 0.5
         S_max = math.log(2)  # ≈ 0.693
         kappa_at_max = math.log(0.5)  # = -ln(2) ≈ -0.693
         
@@ -440,7 +439,6 @@ class TestLemma41EntropyIntegrity:
         
         # High integrity (c → 1) requires low entropy
         c_high_IC = 0.99
-        eps = 1e-8
         S_low = -c_high_IC * math.log(c_high_IC) - (1 - c_high_IC) * math.log(1 - c_high_IC)
         kappa_high = math.log(c_high_IC)
         
@@ -458,7 +456,7 @@ class TestLemma42CoherenceEntropyProduct:
     """
     
     @pytest.mark.parametrize("c", [0.1, 0.2, 0.3, 0.5, 0.7, 0.9])
-    def test_product_bounds(self, c: float):
+    def test_product_bounds(self, c: float) -> None:
         """Verify Π ∈ [ε, 2(1-ε)]."""
         eps = 1e-8
         c_safe = max(eps, min(1 - eps, c))
@@ -494,7 +492,7 @@ class TestLemma43RecursiveFieldConvergence:
         (0.9, 1.0, 10),
         (0.3, 2.0, 3),
     ])
-    def test_truncation_bound(self, alpha: float, M: float, N: int):
+    def test_truncation_bound(self, alpha: float, M: float, N: int) -> None:
         """Verify geometric series remainder bound."""
         # Simulate recursive field
         psi_rec = sum(alpha**n * M for n in range(1, 100))  # Approximate infinite sum
@@ -510,7 +508,7 @@ class TestLemma43RecursiveFieldConvergence:
             f"Truncation error {actual_error} exceeds bound {bound}"
         )
     
-    def test_exponential_forgetting(self):
+    def test_exponential_forgetting(self) -> None:
         """Recent returns dominate, older returns decay."""
         alpha = 0.8
         weights = [alpha**n for n in range(1, 11)]
@@ -535,7 +533,7 @@ class TestLemma44FractalReturnScaling:
     Lemma 44: E[τ_R(η)] ∝ η^{-1/D_f}
     """
     
-    def test_scaling_monotonicity(self):
+    def test_scaling_monotonicity(self) -> None:
         """Smaller tolerance η should give larger return time."""
         D_f = 1.5  # Typical fractal dimension
         
@@ -545,11 +543,11 @@ class TestLemma44FractalReturnScaling:
         # τ should increase as η decreases
         for i in range(len(tau_expected) - 1):
             assert tau_expected[i] < tau_expected[i + 1], (
-                f"τ should increase as η decreases"
+                "τ should increase as η decreases"
             )
     
     @pytest.mark.parametrize("D_f", [1.0, 1.5, 2.0, 2.5])
-    def test_dimension_effect(self, D_f: float):
+    def test_dimension_effect(self, D_f: float) -> None:
         """Higher D_f means slower return at fine tolerances."""
         eta = 0.01
         
@@ -569,7 +567,7 @@ class TestLemma45ResidualAlgebra:
     Lemma 45: Seam residuals form an abelian group under addition.
     """
     
-    def test_closure(self):
+    def test_closure(self) -> None:
         """s₁ + s₂ is a valid residual."""
         s1 = 0.002
         s2 = -0.001
@@ -579,26 +577,26 @@ class TestLemma45ResidualAlgebra:
         # Result is a real number (valid residual)
         assert isinstance(s_composed, float), "Composed residual should be float"
     
-    def test_identity(self):
+    def test_identity(self) -> None:
         """Zero is the identity element."""
         s = 0.003
         
         assert s + 0 == s, "Zero should be identity"
     
-    def test_inverse(self):
+    def test_inverse(self) -> None:
         """Every residual has an inverse."""
         s = 0.004
         
         assert s + (-s) == 0, "s + (-s) should equal 0"
     
-    def test_commutativity(self):
+    def test_commutativity(self) -> None:
         """s₁ + s₂ = s₂ + s₁"""
         s1 = 0.002
         s2 = 0.003
         
         assert s1 + s2 == s2 + s1, "Addition should be commutative"
     
-    def test_associativity(self):
+    def test_associativity(self) -> None:
         """(s₁ + s₂) + s₃ = s₁ + (s₂ + s₃)"""
         s1 = 0.001
         s2 = 0.002
@@ -618,7 +616,7 @@ class TestLemma46WeldComposition:
     Lemma 46: |s_{0→2}| ≤ |s₁| + |s₂| ≤ 2·tol
     """
     
-    def test_triangle_inequality(self):
+    def test_triangle_inequality(self) -> None:
         """Composed residual bounded by sum."""
         s1 = 0.002
         s2 = -0.003
@@ -629,7 +627,7 @@ class TestLemma46WeldComposition:
             "Triangle inequality should hold"
         )
     
-    def test_tolerance_accumulation(self):
+    def test_tolerance_accumulation(self) -> None:
         """K seams with |s_k| ≤ tol gives |s_total| ≤ K·tol."""
         tol = 0.005
         K = 10
@@ -649,7 +647,7 @@ class TestLemma46WeldComposition:
             f"Total residual {abs(s_total)} exceeds K·tol={K * tol}"
         )
     
-    def test_corollary_telescoping(self):
+    def test_corollary_telescoping(self) -> None:
         """Corollary 46.1: Long seam chains need tighter tolerances."""
         target_total_tol = 0.01
         K = 100  # 100 seams
@@ -671,7 +669,7 @@ class TestLemma46WeldComposition:
 class TestCrossLemmaIntegration:
     """Integration tests verifying lemmas work together."""
     
-    def test_type_i_implies_duality(self):
+    def test_type_i_implies_duality(self) -> None:
         """Type I classification (L37) implies τ_R = D_C (L35)."""
         observations = load_physics_observations()
         
@@ -686,7 +684,7 @@ class TestCrossLemmaIntegration:
                     f"Type I without duality in {obs['event_id']}"
                 )
     
-    def test_super_exponential_reaches_stable(self):
+    def test_super_exponential_reaches_stable(self) -> None:
         """Lemma 39 + Lemma 40: Super-exponential convergence reaches stable attractor."""
         omega_0 = 0.286
         p = 5
@@ -702,9 +700,8 @@ class TestCrossLemmaIntegration:
             f"Not in Stable after 2 iterations: ω_2={omega_2}"
         )
     
-    def test_residual_algebra_enables_composition(self):
+    def test_residual_algebra_enables_composition(self) -> None:
         """Lemma 45 + Lemma 46: Algebraic structure enables composition bounds."""
-        tol = 0.005
         residuals = [0.002, -0.003, 0.001]
         
         # Lemma 45: We can add residuals (group structure)
@@ -723,16 +720,16 @@ class TestCrossLemmaIntegration:
 class TestLemmaClassification:
     """Verify lemma classifications are correct."""
     
-    EMPIRICAL = ["L35", "L37", "L38"]  # 🔬
-    PURE = ["L36", "L39", "L40", "L41", "L42", "L43", "L45", "L46"]  # 📐
-    HYBRID = ["L44"]  # 🔗
+    EMPIRICAL: ClassVar[list[str]] = ["L35", "L37", "L38"]  # 🔬
+    PURE: ClassVar[list[str]] = ["L36", "L39", "L40", "L41", "L42", "L43", "L45", "L46"]  # 📐
+    HYBRID: ClassVar[list[str]] = ["L44"]  # 🔗
     
-    def test_empirical_lemmas_have_data(self):
+    def test_empirical_lemmas_have_data(self) -> None:
         """Empirical lemmas should reference real observations."""
         observations = load_physics_observations()
         assert len(observations) >= 30, "Need sufficient data for empirical lemmas"
     
-    def test_pure_lemmas_are_algebraic(self):
+    def test_pure_lemmas_are_algebraic(self) -> None:
         """Pure lemmas follow from algebra, no data needed."""
         # Lemma 39: Super-exponential - pure algebra
         omega_0 = 0.5
@@ -744,7 +741,7 @@ class TestLemmaClassification:
         
         assert abs(result - expected) < 1e-15, "Pure algebraic lemma should be exact"
     
-    def test_classification_complete(self):
+    def test_classification_complete(self) -> None:
         """All lemmas 35-46 should be classified."""
         all_lemmas = set(self.EMPIRICAL + self.PURE + self.HYBRID)
         expected = {f"L{i}" for i in range(35, 47)}
