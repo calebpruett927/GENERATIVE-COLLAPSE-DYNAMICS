@@ -61,6 +61,9 @@ from .frozen_contract import (
     gamma_omega,
 )
 
+# Type alias for array types (mypy strict mode compliance)
+FloatArray = NDArray[np.floating[Any]]
+
 # =============================================================================
 # DATA STRUCTURES
 # =============================================================================
@@ -455,14 +458,14 @@ class UniversalCalculator:
 
     def compute_all(
         self,
-        coordinates: list[float] | NDArray[np.floating],
-        weights: list[float] | NDArray[np.floating] | None = None,
+        coordinates: list[float] | FloatArray,
+        weights: list[float] | FloatArray | None = None,
         tau_R: float | None = None,
         prior_kappa: float | None = None,
         prior_IC: float | None = None,
         R_credit: float = 0.1,
-        trajectory: NDArray[np.floating] | None = None,
-        coord_variances: list[float] | NDArray[np.floating] | None = None,
+        trajectory: FloatArray | None = None,
+        coord_variances: list[float] | FloatArray | None = None,
         mode: ComputationMode = ComputationMode.STANDARD,
     ) -> UniversalResult:
         """
@@ -584,7 +587,7 @@ class UniversalCalculator:
 
         return result
 
-    def _compute_kernel(self, c: NDArray, w: NDArray) -> KernelInvariants:
+    def _compute_kernel(self, c: FloatArray, w: FloatArray) -> KernelInvariants:
         """Compute Tier-1 kernel invariants."""
         # Fidelity: F = Σ w_i c_i
         F = float(np.sum(w * c))
@@ -713,7 +716,7 @@ class UniversalCalculator:
             energy_regime=energy_regime,
         )
 
-    def _compute_rcft(self, trajectory: NDArray, kernel: KernelInvariants) -> RCFTMetrics:
+    def _compute_rcft(self, trajectory: FloatArray, kernel: KernelInvariants) -> RCFTMetrics:
         """Compute RCFT metrics from trajectory."""
         # Fractal dimension via box-counting
         D_fractal = self._box_counting_dimension(trajectory)
@@ -766,7 +769,7 @@ class UniversalCalculator:
             basin_strength=1.0 - kernel.C,
         )
 
-    def _box_counting_dimension(self, trajectory: NDArray) -> float:
+    def _box_counting_dimension(self, trajectory: FloatArray) -> float:
         """Compute box-counting fractal dimension."""
         if trajectory.ndim == 1:
             trajectory = trajectory.reshape(-1, 1)
@@ -804,7 +807,9 @@ class UniversalCalculator:
 
         return float(np.clip(slope, 0.0, 3.0))
 
-    def _compute_uncertainty(self, c: NDArray, w: NDArray, variances: list[float] | NDArray) -> UncertaintyBounds:
+    def _compute_uncertainty(
+        self, c: FloatArray, w: FloatArray, variances: list[float] | FloatArray
+    ) -> UncertaintyBounds:
         """Compute uncertainty bounds via delta-method."""
         v = np.array(variances, dtype=np.float64)
 
@@ -842,7 +847,7 @@ class UniversalCalculator:
         )
 
     def _compute_tau_R_from_trajectory(
-        self, trajectory: NDArray, current: NDArray, eta: float = 0.001, H_rec: int = 64
+        self, trajectory: FloatArray, current: FloatArray, eta: float = 0.001, H_rec: int = 64
     ) -> float:
         """Compute return time from trajectory."""
         if trajectory.ndim == 1:
@@ -858,7 +863,7 @@ class UniversalCalculator:
 
         return float("inf")  # INF_REC
 
-    def _compute_diagnostics(self, kernel: KernelInvariants, c: NDArray, w: NDArray) -> dict[str, Any]:
+    def _compute_diagnostics(self, kernel: KernelInvariants, c: FloatArray, w: FloatArray) -> dict[str, Any]:
         """Compute diagnostic information."""
         return {
             "n_coordinates": len(c),
@@ -872,7 +877,7 @@ class UniversalCalculator:
             "is_homogeneous": float(np.std(c)) < 1e-10,
         }
 
-    def _compute_hash(self, c: NDArray, w: NDArray) -> str:
+    def _compute_hash(self, c: FloatArray, w: FloatArray) -> str:
         """Compute SHA256 hash of inputs."""
         data = f"c={c.tobytes().hex()},w={w.tobytes().hex()}"
         return hashlib.sha256(data.encode()).hexdigest()[:16]
@@ -942,7 +947,7 @@ def compute_regime(
 def compute_full(
     coordinates: list[float],
     weights: list[float] | None = None,
-    trajectory: NDArray | None = None,
+    trajectory: FloatArray | None = None,
 ) -> UniversalResult:
     """
     Full computation with all metrics.

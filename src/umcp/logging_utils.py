@@ -28,7 +28,7 @@ try:
 
     _has_psutil = True
 except ImportError:
-    psutil = None  # type: ignore[assignment]
+    psutil = None  # type: ignore[assignment,unused-ignore]
 
 
 @dataclass

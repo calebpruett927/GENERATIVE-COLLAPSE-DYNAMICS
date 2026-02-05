@@ -1026,7 +1026,7 @@ def _should_skip_casepack(cache_metadata: dict[str, Any], manifest_path: Path, c
         case_dir = manifest_path.parent
         current_expected_hash = _compute_expected_files_hash(case_dir)
         cached_expected_hash = cached_entry.get("expected_hash", "")
-        return current_expected_hash == cached_expected_hash
+        return bool(current_expected_hash == cached_expected_hash)
     except Exception:
         return False
 

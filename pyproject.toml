@@ -260,12 +260,19 @@ module = [
   "uvicorn.*",
   "pandas.*",
   "numpy.*",
+  "scipy.*",
+  "psutil.*",
 ]
 ignore_missing_imports = true
 
 # Exclude extension files from strict type checking (UI-heavy, optional deps)
 [[tool.mypy.overrides]]
 module = ["umcp.dashboard", "umcp.api_umcp", "umcp.outputs"]
+ignore_errors = true
+
+# Exclude Weyl closures from strict checking (scientific computing, scipy-heavy)
+[[tool.mypy.overrides]]
+module = ["closures.weyl.*"]
 ignore_errors = true
 
 
