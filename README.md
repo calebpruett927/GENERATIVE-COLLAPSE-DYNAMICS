@@ -1,22 +1,134 @@
-# UMCP: Universal Measurement Contract Protocol
+<p align="center">
+  <img src="https://img.shields.io/badge/UMCP-Universal%20Measurement%20Contract%20Protocol-6C63FF?style=for-the-badge" alt="UMCP">
+</p>
 
-[![CI](https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/actions/workflows/validate.yml/badge.svg)](https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/actions/workflows/validate.yml)
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Tests: 879 passing](https://img.shields.io/badge/tests-879%20passing-brightgreen.svg)](tests/)
-[![Version: 1.5.0](https://img.shields.io/badge/version-1.5.0-blue.svg)](CHANGELOG.md)
-[![API: 30+ endpoints](https://img.shields.io/badge/API-30%2B%20endpoints-orange.svg)](src/umcp/api_umcp.py)
+<h1 align="center">🔬 Universal Measurement Contract Protocol</h1>
 
-**UMCP transforms computational experiments into auditable artifacts** with formal mathematical foundations based on a foundational principle:
+<p align="center">
+  <strong>Transform computational experiments into auditable, reproducible artifacts with formal mathematical foundations</strong>
+</p>
+
+<p align="center">
+  <a href="https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/actions/workflows/validate.yml"><img src="https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/actions/workflows/validate.yml/badge.svg" alt="CI"></a>
+  <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.11+-3776AB?logo=python&logoColor=white" alt="Python 3.11+"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License: MIT"></a>
+  <a href="tests/"><img src="https://img.shields.io/badge/tests-932%20passing-brightgreen?logo=pytest" alt="Tests: 932 passing"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-1.5.0-blue" alt="Version: 1.5.0"></a>
+  <a href="src/umcp/api_umcp.py"><img src="https://img.shields.io/badge/API-37%2B%20endpoints-orange?logo=fastapi" alt="API: 37+ endpoints"></a>
+</p>
+
+<p align="center">
+  <a href="#-quick-start">Quick Start</a> •
+  <a href="#-core-axiom">Core Axiom</a> •
+  <a href="#-features">Features</a> •
+  <a href="#-architecture">Architecture</a> •
+  <a href="#-documentation">Documentation</a> •
+  <a href="#-contributing">Contributing</a>
+</p>
+
+---
+
+<div align="center">
 
 > **Core Axiom**: *"What Returns Through Collapse Is Real"*
 >
-> Reality is defined by what persists through collapse-reconstruction cycles. Only measurements that return—that survive transformation and can be reproduced—receive credit as real, valid observations.
+> Reality is defined by what persists through collapse-reconstruction cycles.
+> Only measurements that return—that survive transformation and can be reproduced—receive credit as real, valid observations.
 
-**Core Principle**: *One-way dependency flow within a frozen run, with return-based canonization between runs.*
+</div>
 
-- **Within-run**: Frozen causes only—no back-edges, no retroactive tuning, no "the result changed the rules that produced it."
-- **Between-run**: Continuity only by return-weld—new runs are canon-continuous with prior runs only if the seam returns and closes.
+---
+
+## 📋 Table of Contents
+
+<details>
+<summary><strong>Click to expand</strong></summary>
+
+- [🚀 Quick Start](#-quick-start)
+- [🎯 Core Axiom](#-core-axiom)
+- [✨ What Makes UMCP Different](#-what-makes-umcp-different)
+- [📊 System Overview](#-system-overview)
+- [🏗️ Architecture](#️-architecture)
+- [🔧 CLI Commands](#-cli-commands)
+- [🌐 REST API](#-rest-api)
+- [📈 Visualization Dashboard](#-visualization-dashboard)
+- [📦 Frameworks](#-frameworks)
+- [🧪 Testing](#-testing)
+- [📚 Documentation](#-documentation)
+- [📂 Repository Map](#-repository-map)
+- [🎓 Getting Started Tutorial](#-getting-started-tutorial)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
+
+</details>
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+| Requirement | Version | Purpose |
+|-------------|---------|---------|
+| Python | 3.11+ | Runtime |
+| pip | Latest | Package management |
+| git | Any | Version control |
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code.git
+cd UMCP-Metadata-Runnable-Code
+
+# Create virtual environment
+python3 -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+
+# Install (choose your level)
+pip install -e "."                    # Core only
+pip install -e ".[api]"               # + REST API
+pip install -e ".[viz]"               # + Dashboard
+pip install -e ".[dev]"               # + Dev tools
+pip install -e ".[all]"               # Everything
+```
+
+### Verify Installation
+
+```bash
+umcp health           # System health check
+umcp validate .       # Validate repository
+pytest                # Run 932 tests
+```
+
+<details>
+<summary><strong>📱 One-liner install</strong></summary>
+
+```bash
+git clone https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code.git && cd UMCP-Metadata-Runnable-Code && python3 -m venv .venv && source .venv/bin/activate && pip install -e ".[all]" && umcp health
+```
+
+</details>
+
+---
+
+## 🎯 Core Axiom
+
+<table>
+<tr>
+<td width="60%">
+
+### The Foundational Principle
+
+UMCP is built on a single axiom that drives all design decisions:
+
+> **"What Returns Through Collapse Is Real"**
+
+This means:
+- ✅ Only measurements that **return** (survive transformation) are valid
+- ✅ No credit without **reproducibility**
+- ✅ Mathematical contracts are **frozen** artifacts
+- ✅ Provenance is **cryptographically verified**
 
 ```yaml
 # Encoded in every UMCP contract
@@ -24,192 +136,97 @@ typed_censoring:
   no_return_no_credit: true
 ```
 
-UMCP is a **production-grade system** for creating, validating, and sharing reproducible computational workflows. It enforces mathematical contracts, tracks provenance, generates cryptographic receipts, validates results against frozen specifications, and provides formal uncertainty quantification.
+</td>
+<td width="40%">
 
-## 🎯 What Makes UMCP Different
+### Core Principle
 
-### Traditional Approaches
-- **Version control** → Tracks code changes
-- **Docker** → Reproducible environments
-- **Unit tests** → Validates specific outputs
-- **Checksums** → File integrity verification
+**One-way dependency flow within a frozen run, with return-based canonization between runs.**
 
-### UMCP Adds
-- **Return time (τ_R)** → Measures temporal coherence: Can the system recover?
-- **Budget identity** → Conservation law: R·τ_R = D_ω + D_C + Δκ
-- **Frozen contracts** → Mathematical assumptions are versioned, immutable artifacts
-- **Seam testing** → Validates budget conservation |s| ≤ 0.005
-- **Regime classification** → Stable → Watch → Collapse + Critical overlay
-- **Uncertainty propagation** → Delta-method through kernel invariants
-- **Human-verifiable checksums** → mod-97 triads checkable by hand
+| Context | Rule |
+|---------|------|
+| **Within-run** | Frozen causes only—no back-edges, no retroactive tuning |
+| **Between-run** | Continuity only by return-weld—new runs are canon-continuous only if seam returns and closes |
+
+</td>
+</tr>
+</table>
 
 ---
 
-## 📊 Quick Start (5 Minutes)
+## ✨ What Makes UMCP Different
 
-### Prerequisites
+<table>
+<tr>
+<th>Traditional Approaches</th>
+<th>UMCP Adds</th>
+</tr>
+<tr>
+<td>
 
-- **Python 3.11+** (3.12+ recommended)
-- **pip** (Python package installer)
-- **git** (version control)
+| Tool | Purpose |
+|------|---------|
+| Version control | Tracks code changes |
+| Docker | Reproducible environments |
+| Unit tests | Validates specific outputs |
+| Checksums | File integrity |
 
-### Installation
+</td>
+<td>
 
-```bash
-# 1. Clone the repository
-git clone https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code.git
-cd UMCP-Metadata-Runnable-Code
+| Feature | Purpose |
+|---------|---------|
+| **Return time (τ_R)** | Measures temporal coherence |
+| **Budget identity** | Conservation law validation |
+| **Frozen contracts** | Immutable mathematical specs |
+| **Seam testing** | Budget conservation |
+| **Regime classification** | System health monitoring |
+| **Uncertainty propagation** | Delta-method through invariants |
+| **Human-verifiable checksums** | mod-97 triads |
 
-# 2. Create and activate virtual environment
-python3 -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-
-# 3. Install production dependencies (includes numpy, scipy, pyyaml, jsonschema)
-pip install -e ".[production]"
-```
-
-**Optional installations:**
-
-```bash
-# Install test dependencies (adds pytest, coverage tools)
-pip install -e ".[test]"
-
-# Install communication extensions
-pip install -e ".[api]"            # REST API (FastAPI/uvicorn)
-pip install -e ".[viz]"            # Streamlit dashboard
-pip install -e ".[communications]" # All communication extensions
-
-# Install everything (production + test + extensions)
-pip install -e ".[all]"
-```
-
-### Verify Installation
-
-```bash
-# System health check (should show HEALTHY status)
-umcp health
-
-# Run test suite (should show 879 tests passing)
-pytest
-
-# Quick validation test
-umcp validate casepacks/hello_world
-
-# List available casepacks
-umcp list casepacks
-
-# List available extensions
-umcp-ext list
-
-# Check installed version
-python -c "import umcp; print(f'UMCP v{umcp.__version__}')"
-```
-
-**Python API:**
-```python
-import umcp
-from umcp.frozen_contract import compute_kernel, classify_regime
-import numpy as np
-
-# Validate a casepack
-result = umcp.validate("casepacks/hello_world")
-
-if result:  # Returns True if CONFORMANT
-    print("✓ CONFORMANT")
-    print(f"Errors: {result.error_count}, Warnings: {result.warning_count}")
-else:
-    print("✗ NONCONFORMANT")
-    for error in result.errors:
-        print(f"  - {error}")
-
-# Compute kernel invariants directly
-c = np.array([0.9, 0.85, 0.92])  # Coherence values
-w = np.array([0.5, 0.3, 0.2])    # Weights
-kernel = compute_kernel(c, w, tau_R=5.0)
-
-print(f"Drift: {kernel.omega:.4f}")
-print(f"Fidelity: {kernel.F:.4f}")
-print(f"Integrity: {kernel.IC:.4f}")
-
-# Classify regime
-regime = classify_regime(
-    omega=kernel.omega, 
-    F=kernel.F, 
-    S=kernel.S, 
-    C=kernel.C, 
-    integrity=kernel.IC
-)
-print(f"Regime: {regime.name}")
-```
-
-**Expected output:**
-```
-Status: HEALTHY
-Schemas: 12
-755 passed in ~21s
-Drift: 0.1280
-Fidelity: 0.8720
-Integrity: 0.8720
-Regime: STABLE
-```
-
-### CLI Commands
-
-UMCP provides 10 built-in CLI commands:
-
-```bash
-# Core validation
-umcp validate [path]        # Validate repo artifacts, CasePacks, schemas
-umcp run [path]             # Operational placeholder (validates target)
-umcp diff file1 file2       # Compare two validation receipts
-umcp health                 # Check system health and production readiness
-umcp preflight              # Run preflight validation
-
-# Testing and execution
-umcp test                   # Run tests with pytest (supports --coverage, -k, -m)
-umcp casepack <name>        # Run a specific casepack by name
-
-# Discovery and inspection
-umcp list <type>            # List casepacks, closures, contracts, or schemas
-umcp integrity <path>       # Verify artifact SHA256 hashes against manifest
-umcp report [path]          # Generate audit reports (JSON output)
-```
-
-### Launch Interactive Tools
-
-```bash
-# Visualization dashboard (port 8501)
-umcp-dashboard
-
-# REST API server (port 8000) 
-# For local testing without authentication: export UMCP_DEV_MODE=1
-umcp-api
-
-# Extension management
-umcp-ext list              # List all extensions
-umcp-ext info <name>       # Get extension details
-umcp-ext check <name>      # Check extension dependencies
-```
-
-**New to UMCP?** See [QUICKSTART_TUTORIAL.md](QUICKSTART_TUTORIAL.md) for a 10-minute hands-on tutorial.
+</td>
+</tr>
+</table>
 
 ---
 
-## 🎯 What is UMCP?
+## 📊 System Overview
 
-UMCP is a **measurement discipline for computational claims**. It requires that every serious claim be published as a reproducible record (a **row**) with:
+<div align="center">
 
-- ✅ **Declared inputs** (raw measurements)
-- ✅ **Frozen rules** (mathematical contracts)
-- ✅ **Computed outputs** (invariants, closures)
-- ✅ **Cryptographic receipts** (SHA256 verification)
+```
+╔═══════════════════════════════════════════════════════════════════╗
+║                    UMCP SYSTEM AT A GLANCE                        ║
+╠═══════════════════════════════════════════════════════════════════╣
+║                                                                   ║
+║   📊 932 Tests         🔌 37+ API Endpoints    📈 21 Dashboard    ║
+║   📦 11 Casepacks      🔧 10 CLI Commands      🧮 46 Lemmas       ║
+║   🔬 28 Closures       📜 5 Frameworks         🔒 SHA256 Verified ║
+║                                                                   ║
+╠═══════════════════════════════════════════════════════════════════╣
+║                                                                   ║
+║   FRAMEWORKS:                                                     ║
+║   ┌──────────────┐  ┌──────────────┐  ┌──────────────┐           ║
+║   │ GCD (Tier-1) │  │ KIN (Tier-1) │  │ RCFT (Tier-2)│           ║
+║   │ Energy/      │  │ Phase Space  │  │ Fractal/     │           ║
+║   │ Collapse     │  │ Return       │  │ Recursive    │           ║
+║   └──────────────┘  └──────────────┘  └──────────────┘           ║
+║                                                                   ║
+║   ┌──────────────┐  ┌──────────────┐                             ║
+║   │ WEYL         │  │ Security     │                             ║
+║   │ Cosmological │  │ Validation   │                             ║
+║   │ Analysis     │  │ Framework    │                             ║
+║   └──────────────┘  └──────────────┘                             ║
+║                                                                   ║
+╚═══════════════════════════════════════════════════════════════════╝
+```
 
-### Operational Terms
+</div>
 
-**Core Invariants** (Tier-1: The Seven Kernel Metrics):
+### Kernel Invariants (The Seven Core Metrics)
 
 | Symbol | Name | Definition | Range | Purpose |
-|--------|------|------------|-------|---------|
+|:------:|------|------------|:-----:|---------|
 | **ω** | Drift | ω = 1 - F | [0,1] | Collapse proximity |
 | **F** | Fidelity | F = Σ wᵢ·cᵢ | [0,1] | Weighted coherence |
 | **S** | Entropy | S = -Σ wᵢ[cᵢ ln(cᵢ) + (1-cᵢ)ln(1-cᵢ)] | ≥0 | Disorder measure |
@@ -218,875 +235,609 @@ UMCP is a **measurement discipline for computational claims**. It requires that 
 | **κ** | Log-integrity | κ = Σ wᵢ ln(cᵢ,ε) | ≤0 | Composite stability |
 | **IC** | Integrity | IC = exp(κ) | (0,1] | System stability |
 
-**Canonical Constants** (Frozen Contract v1.5.0):
+### Regime Classification
 
-| Symbol | Name | Value | Purpose |
-|--------|------|-------|---------|
-| **ε** | Guard band | 10⁻⁸ | Numerical stability |
-| **p** | Power exponent | 3 | Γ(ω) cubic exponent |
-| **α** | Curvature scale | 1.0 | D_C = αC cost closure |
-| **λ** | Damping | 0.2 | Reserved for future use |
-| **tol_seam** | Seam tolerance | 0.005 | Budget residual threshold |
-
-**Regime Thresholds**:
-
-| Regime | Conditions | Interpretation |
-|--------|-----------|----------------|
-| **STABLE** | ω < 0.038, F > 0.90, S < 0.15, C < 0.14 | Healthy operation |
-| **WATCH** | 0.038 ≤ ω < 0.30 | Degradation warning |
-| **COLLAPSE** | ω ≥ 0.30 | System failure |
-| **CRITICAL** | IC < 0.30 (overlay) | Integrity crisis (overrides others) |
-
-**Cost Closures** (v1.5.0):
-
-```python
-# Drift cost (cubic barrier function)
-Γ(ω) = ω³ / (1 - ω + ε)
-
-# Curvature cost
-D_C = α·C
-
-# Budget identity (conservation law)
-R·τ_R = D_ω + D_C + Δκ
-
-# Seam test (PASS condition)
-|s| ≤ tol_seam  where s = Δκ_budget - Δκ_ledger
-
-# Equator diagnostic (not a gate)
-Φ_eq(ω, F, C) = F - (1.00 - 0.75ω - 0.55C)
-```
-
-**Extended Metrics** (Tier-2: RCFT Framework):
-
-| Symbol | Name | Range | Purpose |
-|--------|------|-------|---------|
-| **Dꜰ** | Fractal dimension | [1,3] | Trajectory complexity |
-| **Ψᵣ** | Recursive field | ≥0 | Self-referential strength |
-| **B** | Basin strength | [0,1] | Attractor robustness |
+| Regime | Conditions | 🚦 |
+|--------|-----------|:--:|
+| **STABLE** | ω < 0.038, F > 0.90, S < 0.15, C < 0.14 | 🟢 |
+| **WATCH** | 0.038 ≤ ω < 0.30 | 🟡 |
+| **COLLAPSE** | ω ≥ 0.30 | 🔴 |
+| **CRITICAL** | IC < 0.30 (overlay) | ⚫ |
 
 ---
 
-## 🏗️ System Architecture
+## 🏗️ Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
 │                     UMCP WORKFLOW (v1.5.0)                          │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
-│  1. INPUT (Tier-0: Raw → Bounded)                                  │
-│     └─ raw_measurements.csv  → Normalize to Ψ(t) ∈ [0,1]ⁿ          │
+│  ┌─────────┐    ┌─────────────┐    ┌─────────────┐    ┌──────────┐ │
+│  │ INPUT   │───▶│ KERNEL      │───▶│ CLOSURES    │───▶│ OUTPUT   │ │
+│  │ Ψ(t)    │    │ ω,F,S,C,τ_R │    │ Γ(ω),D_C    │    │ Receipts │ │
+│  │ [0,1]ⁿ  │    │ κ, IC       │    │ Budget      │    │ Ledger   │ │
+│  └─────────┘    └─────────────┘    └─────────────┘    └──────────┘ │
+│       │                │                 │                 │        │
+│       ▼                ▼                 ▼                 ▼        │
+│  ┌─────────┐    ┌─────────────┐    ┌─────────────┐    ┌──────────┐ │
+│  │ Tier-0  │    │ Tier-1      │    │ Seam Tests  │    │ SHA256   │ │
+│  │ Bounded │    │ Invariants  │    │ |s| ≤ 0.005 │    │ Verified │ │
+│  └─────────┘    └─────────────┘    └─────────────┘    └──────────┘ │
 │                                                                     │
-│  2. KERNEL INVARIANTS (Tier-1: Seven Core Metrics)                 │
-│     ├─ ω (drift)         = 1 - F                                   │
-│     ├─ F (fidelity)      = Σ wᵢcᵢ                                  │
-│     ├─ S (entropy)       = -Σ wᵢ[cᵢln(cᵢ) + (1-cᵢ)ln(1-cᵢ)]       │
-│     ├─ C (curvature)     = std(cᵢ)/0.5                             │
-│     ├─ τ_R (return time) = min{Δt: ‖Ψ(t)-Ψ(t-Δt)‖ < η}            │
-│     ├─ κ (log-integrity) = Σ wᵢln(cᵢ)                              │
-│     └─ IC (integrity)    = exp(κ)                                  │
-│                                                                     │
-│  3. COST CLOSURES (Frozen Contract)                                │
-│     ├─ Γ(ω) = ω³/(1-ω+ε)      [Drift cost - cubic barrier]         │
-│     ├─ D_C = α·C                [Curvature cost]                   │
-│     └─ Budget: R·τ_R = D_ω + D_C + Δκ                              │
-│                                                                     │
-│  4. FRAMEWORK SELECTION                                             │
-│     ┌─────────────────┐      ┌──────────────────┐      ┌──────────────────┐
-│     │ GCD (Tier-1)    │  OR  │ KIN (Tier-1)     │  OR  │ RCFT (Tier-2)    │
-│     ├─────────────────┤      ├──────────────────┤      ├──────────────────┤
-│     │ • Energy (E)    │      │ • Position (x,v) │      │ • Fractal (Dꜰ)   │
-│     │ • Collapse (Φ)  │      │ • E_kin/E_pot    │      │ • Recursive (Ψᵣ) │
-│     │ • Flux (Φ_gen)  │      │ • τ_kin (return) │      │ • Pattern (λ, Θ) │
-│     │ • Resonance (R) │      │ • K_stability    │      │ + all GCD        │
-│     └─────────────────┘      └──────────────────┘      └──────────────────┘
-│                                                                     │
-│  5. VALIDATION (Seam Tests)                                        │
-│     ├─ Budget conservation: |s| ≤ 0.005                            │
-│     ├─ Return finiteness: τ_R < ∞                                  │
-│     ├─ Identity check: IC ≈ exp(Δκ)                                │
-│     ├─ Regime classification: STABLE/WATCH/COLLAPSE/CRITICAL       │
-│     └─ Contract conformance: Schema + semantic rules               │
-│                                                                     │
-│  6. UNCERTAINTY (Delta-Method)                                     │
-│     ├─ Gradients: ∂F/∂c, ∂ω/∂c, ∂κ/∂c, ∂S/∂c, ∂C/∂c              │
-│     ├─ Propagation: Var(F) = w^T V w                               │
-│     └─ Bounds: σ_κ sensitivity to input uncertainty                │
-│                                                                     │
-│  7. OUTPUT (Receipts + Provenance)                                 │
-│     ├─ kernel.json (7 invariants + regime)                         │
-│     ├─ closure_results.json (costs + budget)                       │
-│     ├─ seam_receipt.json (PASS/FAIL + SHA256 + git commit)         │
-│     ├─ ss1m_triad (C1-C2-C3 human-checkable)                       │
-│     ├─ uncertainty.json (variances + sensitivities)                │
-│     └─ ledger/return_log.csv (continuous append)                   │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │ COST CLOSURES (Frozen Contract v1.5.0)                      │   │
+│  │ ────────────────────────────────────────────────────────── │   │
+│  │ Γ(ω) = ω³/(1-ω+ε)           [Drift cost - cubic barrier]   │   │
+│  │ D_C = α·C                    [Curvature cost]               │   │
+│  │ Budget: R·τ_R = D_ω + D_C + Δκ  [Conservation law]          │   │
+│  │ Seam: |s| ≤ tol_seam         [PASS condition]               │   │
+│  └─────────────────────────────────────────────────────────────┘   │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
-
-Key Innovation: Return time τ_R connects information-theoretic
-coherence to dynamical systems recurrence (Poincaré-style).
 ```
+
+### Canonical Constants
+
+| Symbol | Name | Value | Purpose |
+|:------:|------|:-----:|---------|
+| ε | Guard band | 10⁻⁸ | Numerical stability |
+| p | Power exponent | 3 | Γ(ω) cubic exponent |
+| α | Curvature scale | 1.0 | D_C cost closure |
+| λ | Damping | 0.2 | Reserved |
+| tol_seam | Seam tolerance | 0.005 | Budget residual threshold |
 
 ---
 
-## 📦 Framework Selection Guide
+## 🔧 CLI Commands
 
-### GCD (Generative Collapse Dynamics) - Tier-1
+UMCP provides **10 built-in CLI commands**:
 
-**Best for**: Energy/collapse analysis, phase transitions, basic regime classification
-
-**Closures** (4):
-- `energy_potential`: Total system energy
-- `entropic_collapse`: Collapse potential
-- `generative_flux`: Generative flux
-- `field_resonance`: Boundary-interior resonance
-
-**Example**:
 ```bash
-umcp validate casepacks/gcd_complete
+# Core validation
+umcp validate [path]        # Validate artifacts, CasePacks, schemas
+umcp health                 # System health check
+umcp preflight              # Pre-validation checks
+
+# Testing
+umcp test                   # Run pytest (supports --coverage, -k, -m)
+umcp casepack <name>        # Run specific casepack
+
+# Discovery
+umcp list <type>            # List casepacks|closures|contracts|schemas
+umcp integrity <path>       # Verify SHA256 hashes
+
+# Analysis
+umcp diff file1 file2       # Compare validation receipts
+umcp report [path]          # Generate audit reports
+umcp run [path]             # Operational validation
 ```
 
-### Kinematics (KIN) - Tier-1 Extension
+<details>
+<summary><strong>📋 Command Examples</strong></summary>
 
-**Best for**: Physics-based motion analysis, phase space return detection, mechanical systems
-
-**Closures** (6):
-- `linear_kinematics`: Position, velocity, acceleration with OOR clipping
-- `rotational_kinematics`: Angular motion, torque, angular momentum
-- `energy_mechanics`: Kinetic/potential energy, work, power conservation
-- `momentum_dynamics`: Linear momentum, impulse, elastic/inelastic collisions
-- `phase_space_return`: τ_kin computation in (x,v) phase space
-- `kinematic_stability`: K_stability index, Lyapunov estimation, regime classification
-
-**Reference CasePack** (NEW):
-- `kin_ref_phase_oscillator`: Deterministic phase-anchor oscillator (31 rows, 26 defined anchors, 5 censor events)
-  - Frozen params: δφ_max=π/6, window=20, debounce=3
-  - frozen_config_sha256: `c14872d87ebeb96a22ecdfda5dad0dafdbf6a37080af20a2c4870c0da578b32e`
-
-**Example**:
 ```bash
-umcp validate casepacks/kinematics_complete
-umcp casepack kin_ref_phase_oscillator
+# Validate hello_world casepack
+umcp validate casepacks/hello_world
+
+# Run tests with coverage
+umcp test --coverage
+
+# List all casepacks
+umcp list casepacks
+
+# Check system health
+umcp health
+
+# Generate report
+umcp report casepacks/gcd_complete
 ```
 
-### RCFT (Recursive Collapse Field Theory) - Tier-2
-
-**Best for**: Trajectory complexity, memory effects, oscillatory patterns, multi-scale analysis
-
-**Closures** (7 = 4 GCD + 3 RCFT):
-- All GCD closures +
-- `fractal_dimension`: Trajectory complexity (Dꜰ ∈ [1,3])
-- `recursive_field`: Collapse memory (Ψᵣ ≥ 0)
-- `resonance_pattern`: Oscillation detection (λ, Θ)
-
-**Example**:
-```bash
-umcp validate casepacks/rcft_complete
-```
-
-### Decision Matrix
-
-| Need | Framework | Why |
-|------|-----------|-----|
-| Basic energy/collapse | GCD | Simpler, faster, foundational |
-| Physics/motion analysis | Kinematics | Phase space return, energy conservation |
-| Trajectory complexity | RCFT | Box-counting fractal dimension |
-| History/memory | RCFT | Exponential decay field |
-| Oscillation detection | RCFT | FFT-based pattern analysis |
-| Maximum insight | RCFT | All GCD metrics + 3 new |
+</details>
 
 ---
 
-## 🔌 Built-In Features
+## 🌐 REST API
 
-
-UMCP includes two core features that enhance validation without requiring external dependencies:
-
-### 1. Continuous Ledger (Automatic)
-**No install needed** - built into core
-```bash
-# Automatically logs every validation run
-cat ledger/return_log.csv
-```
-
-**Purpose**: Provides complete audit trail of all validations
-- Timestamp (ISO 8601 UTC)
-- Run status (CONFORMANT/NONCONFORMANT)  
-- Key invariants (ω, C, stiffness)
-- Enables trend analysis and historical review
-
----
-
-## 🌐 REST API Extension
-
-UMCP includes a production-ready REST API built with FastAPI with **30+ endpoints**:
+UMCP includes a production-ready REST API with **37+ endpoints**:
 
 ```bash
-# Install API dependencies
-pip install -e ".[api]"
-
-# Start the API server
-umcp-api
-# Or: uvicorn umcp.api_umcp:app --host 0.0.0.0 --port 8000 --reload
+pip install -e ".[api]"     # Install API dependencies
+umcp-api                    # Start server (port 8000)
 ```
 
-### API Endpoint Categories
+### Endpoint Categories
 
 | Category | Endpoints | Description |
-|----------|-----------|-------------|
-| **System** | `/`, `/health`, `/version` | Health monitoring, version info |
-| **Validation** | `/validate` | Run UMCP validation |
-| **Casepacks** | `/casepacks`, `/casepacks/{id}`, `/casepacks/{id}/run` | Browse and execute |
-| **Ledger** | `/ledger`, `/analysis/ledger` | Query validation history |
-| **Contracts** | `/contracts` | List available contracts |
-| **Closures** | `/closures` | List closure functions |
-| **Analysis** | `/regime/classify`, `/analysis/statistics`, `/analysis/correlation`, `/analysis/timeseries` | Data analysis |
-| **Conversion** | `/convert/measurements`, `/convert/embed` | Unit conversion, coordinate embedding |
-| **Kernel** | `/kernel/compute`, `/kernel/budget`, `/uncertainty/propagate` | Kernel computation with uncertainty |
-| **Outputs** | `/badge/*.svg`, `/output/markdown/report`, `/output/junit`, `/output/jsonld`, etc. | Multiple output formats |
+|----------|:---------:|-------------|
+| **System** | 3 | `/`, `/health`, `/version` |
+| **Validation** | 1 | `/validate` |
+| **Casepacks** | 3 | Browse and execute |
+| **Ledger** | 2 | Query validation history |
+| **Contracts** | 1 | List available contracts |
+| **Closures** | 1 | List closure functions |
+| **Analysis** | 4 | Statistics, correlation, timeseries |
+| **Kernel** | 3 | Compute invariants, budget, uncertainty |
+| **Conversion** | 2 | Unit conversion, embedding |
+| **Output** | 10+ | SVG, Markdown, HTML, LaTeX, JUnit, JSON-LD |
 
-### Complete Endpoint Reference
-
-#### System Endpoints
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| GET | `/` | No | API info and version |
-| GET | `/health` | No | System health check with metrics |
-| GET | `/version` | No | Version information |
-
-#### Validation Endpoints
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| POST | `/validate` | Yes | Validate a casepack or repository |
-
-#### Casepack Endpoints
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| GET | `/casepacks` | Yes | List all casepacks |
-| GET | `/casepacks/{id}` | Yes | Get casepack details |
-| POST | `/casepacks/{id}/run` | Yes | Execute a casepack |
-
-#### Ledger Endpoints
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| GET | `/ledger` | Yes | Query the return log with pagination |
-| GET | `/analysis/ledger` | Yes | Comprehensive ledger analysis |
-
-#### Contract & Closure Endpoints
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| GET | `/contracts` | Yes | List available contracts |
-| GET | `/closures` | Yes | List available closures |
-
-#### Analysis Endpoints
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| POST | `/regime/classify` | Yes | Classify computational regime (STABLE/WATCH/COLLAPSE) |
-| POST | `/analysis/statistics` | Yes | Compute descriptive statistics (mean, std, skewness, kurtosis) |
-| POST | `/analysis/correlation` | Yes | Compute Pearson/Spearman correlation and regression |
-| POST | `/analysis/timeseries` | Yes | Time series analysis with trend detection |
-
-#### Conversion Endpoints
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| POST | `/convert/measurements` | Yes | Unit conversion (SI ↔ Imperial) |
-| POST | `/convert/embed` | Yes | Coordinate embedding (minmax/sigmoid/tanh) |
-
-#### Kernel Computation Endpoints
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| POST | `/kernel/compute` | Yes | Compute ω, F, S, C, κ, IC from coordinates |
-| POST | `/kernel/budget` | Yes | Verify budget identity R·τ_R = D_ω + D_C + Δκ |
-| POST | `/uncertainty/propagate` | Yes | Propagate measurement uncertainty through kernel |
-
-#### Output Format Endpoints
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| GET | `/badge/status.svg` | Yes | Status badge SVG |
-| GET | `/badge/regime.svg` | Yes | Regime badge SVG |
-| GET | `/output/ascii/gauge` | Yes | ASCII gauge visualization |
-| GET | `/output/ascii/sparkline` | Yes | ASCII sparkline chart |
-| GET | `/output/markdown/report` | Yes | Markdown report |
-| GET | `/output/mermaid/regime` | Yes | Mermaid diagram |
-| GET | `/output/html/card` | Yes | HTML dashboard card |
-| GET | `/output/latex/invariants` | Yes | LaTeX invariants |
-| GET | `/output/junit` | Yes | JUnit XML format |
-| GET | `/output/jsonld` | Yes | JSON-LD semantic format |
-
-### Authentication
-
-Set the `UMCP_API_KEY` environment variable (default: `umcp-dev-key`):
+<details>
+<summary><strong>📋 API Examples</strong></summary>
 
 ```bash
-export UMCP_API_KEY="your-secret-key"
-curl -H "X-API-Key: your-secret-key" http://localhost:8000/casepacks
-```
-
-### Example Usage
-
-```bash
-# Health check (no auth required)
+# Health check (no auth)
 curl http://localhost:8000/health
 
 # List casepacks
 curl -H "X-API-Key: umcp-dev-key" http://localhost:8000/casepacks
 
-# Validate a casepack
+# Compute kernel
 curl -X POST -H "X-API-Key: umcp-dev-key" \
   -H "Content-Type: application/json" \
-  -d '{"path": "casepacks/hello_world"}' \
-  http://localhost:8000/validate
-
-# Compute kernel outputs
-curl -X POST -H "X-API-Key: umcp-dev-key" \
-  -H "Content-Type: application/json" \
-  -d '{"coordinates": [0.3, 0.5, 0.7], "weights": [0.33, 0.34, 0.33]}' \
+  -d '{"coordinates": [0.9, 0.85, 0.92], "weights": [0.5, 0.3, 0.2]}' \
   http://localhost:8000/kernel/compute
-
-# Comprehensive ledger analysis
-curl -H "X-API-Key: umcp-dev-key" http://localhost:8000/analysis/ledger
-
-# Compute statistics on data
-curl -X POST -H "X-API-Key: umcp-dev-key" \
-  -H "Content-Type: application/json" \
-  -d '{"data": [1.2, 2.3, 3.1, 2.8, 1.9]}' \
-  http://localhost:8000/analysis/statistics
 ```
+
+</details>
 
 📖 **Interactive docs**: http://localhost:8000/docs (Swagger UI)
 
 ---
 
-## 📊 Visualization Dashboard
+## 📈 Visualization Dashboard
 
-UMCP includes an interactive Streamlit dashboard with **21 pages** for exploring validation data:
+UMCP includes an interactive Streamlit dashboard with **21 pages**:
 
 ```bash
-# Install visualization dependencies
-pip install -e ".[viz]"
-
-# Start the dashboard
-umcp-dashboard
-# Or: streamlit run src/umcp/dashboard.py
+pip install -e ".[viz]"     # Install visualization dependencies
+umcp-dashboard              # Start dashboard (port 8501)
 ```
 
 ### Dashboard Pages
 
 | Category | Pages | Description |
 |----------|-------|-------------|
-| **Core** | Overview, Geometry, Ledger, Casepacks, Contracts, Closures, Regime, Metrics, Health | System monitoring and data browsing |
-| **Interactive** | Live Runner, Batch Validation, Test Templates | Run validations directly |
-| **Scientific** | Physics, Kinematics, Formula Builder, **Cosmology** | Domain-specific interfaces |
-| **Analysis** | Time Series, Comparison | Data analysis tools |
+| **Core** | Overview, Geometry, Ledger, Casepacks, Contracts, Closures, Regime, Metrics, Health | System monitoring |
+| **Interactive** | Live Runner, Batch Validation, Test Templates | Run validations |
+| **Scientific** | Physics, Kinematics, Formula Builder, Cosmology | Domain-specific |
+| **Analysis** | Time Series, Comparison | Data analysis |
 | **Management** | Exports, Bookmarks, Notifications, API Integration | System management |
-
-#### Key Scientific Pages
-
-| Page | Description |
-|------|-------------|
-| **Physics** | SI unit conversion and tier translation |
-| **Kinematics** | Phase space analysis and trajectory tracking |
-| **Cosmology** | WEYL Σ(z) modified gravity analysis with DES Y3 data |
-
-### Features
-
-- 📈 **Interactive Charts**: Plotly-powered visualizations
-- 🔍 **Filtering**: Filter ledger by status, date range, limit rows
-- 📥 **Export**: Download filtered data as CSV
-- 🌡️ **Regime Phase Space**: Visual mapping of ω × s → regime
-- 📊 **Correlation Analysis**: Identify metric relationships
-- ⚡ **Real-time Updates**: Live system health monitoring
-- 🌌 **WEYL Integration**: Cosmological modified gravity analysis
 
 📖 **Dashboard URL**: http://localhost:8501
 
 ---
 
-## 🔌 Extension System
+## 📦 Frameworks
 
-UMCP includes a complete extension system for optional features:
+### Framework Selection Guide
 
-**Available Extensions:**
+| Framework | Tier | Best For | Closures |
+|-----------|:----:|----------|:--------:|
+| **GCD** | 1 | Energy/collapse analysis, phase transitions | 5 |
+| **Kinematics** | 1 | Physics-based motion, phase space return | 6 |
+| **RCFT** | 2 | Trajectory complexity, memory effects | 4 |
+| **WEYL** | 2 | Cosmological analysis, modified gravity | 5 |
+| **Security** | 1 | Validation security, input sanitization | 8 |
+
+<details>
+<summary><strong>🔬 GCD (Generative Collapse Dynamics)</strong></summary>
+
+**Closures**: `energy_potential`, `entropic_collapse`, `generative_flux`, `field_resonance`, `boundary_detection`
+
 ```bash
-umcp-ext list              # List all extensions
-umcp-ext info api          # Show extension details
-umcp-ext check api         # Check if installed
-umcp-ext install api       # Install dependencies
-umcp-ext run visualization # Run an extension
+umcp validate casepacks/gcd_complete
 ```
 
-| Extension | Type | Description | Command |
-|-----------|------|-------------|---------|
-| `api` | REST API | FastAPI server | `umcp-api` |
-| `visualization` | Dashboard | Streamlit UI | `umcp-dashboard` |
-| `ledger` | Logging | Audit trail | Built-in |
-| `formatter` | Tool | Contract formatting | Built-in |
+</details>
 
-📖 **See**: [EXTENSION_INTEGRATION.md](EXTENSION_INTEGRATION.md) | [QUICKSTART_EXTENSIONS.md](QUICKSTART_EXTENSIONS.md)
+<details>
+<summary><strong>⚙️ Kinematics (KIN)</strong></summary>
 
----
+**Closures**: `linear_kinematics`, `rotational_kinematics`, `energy_mechanics`, `momentum_dynamics`, `phase_space_return`, `kinematic_stability`
 
-## ⚡ Performance
-
-UMCP validation is optimized for production use:
-
-**Typical Validation Times:**
-- Small casepack (hello_world): ~5-10ms
-- Medium casepack (GCD complete): ~15-30ms  
-- Large casepack (RCFT complete): ~30-50ms
-- Full repository validation: ~100-200ms
-
-**Overhead vs. Basic Validation:**
-- Speed: +71% slower than basic schema validation
-- Value: Contract conformance, closure verification, semantic rules, provenance tracking
-- Memory: <100MB for typical workloads
-
-**Benchmark Results** (from `benchmark_umcp_vs_standard.py`):
-```
-UMCP Validator:
-  Mean: 9.4ms per validation
-  Median: 6.5ms
-  Accuracy: 100% (400/400 errors caught, 0 false positives)
-  
-Additional Features:
-  ✓ Cryptographic receipts (SHA256)
-  ✓ Git commit tracking
-  ✓ Contract conformance
-  ✓ Closure verification
-  ✓ Full audit trail
+```bash
+umcp validate casepacks/kinematics_complete
+umcp casepack kin_ref_phase_oscillator
 ```
 
-**Scaling:** Validated on datasets with 1000+ validation runs. Ledger handles millions of entries efficiently (O(1) append).
+</details>
 
----
+<details>
+<summary><strong>🌀 RCFT (Recursive Collapse Field Theory)</strong></summary>
 
-**Overhead vs. Basic Validation:**
-- Speed: +71% slower than basic schema validation
-- Value: Contract conformance, closure verification, semantic rules, provenance tracking
-- Memory: <100MB for typical workloads
+**Closures**: All GCD + `fractal_dimension`, `recursive_field`, `resonance_pattern`
 
-**Benchmark Results** (from `benchmark_umcp_vs_standard.py`):
-```
-UMCP Validator:
-  Mean: 9.4ms per validation
-  Median: 6.5ms
-  Accuracy: 100% (400/400 errors caught, 0 false positives)
-  
-Additional Features:
-  ✓ Cryptographic receipts (SHA256)
-  ✓ Git commit tracking
-  ✓ Contract conformance
-  ✓ Closure verification
-  ✓ Full audit trail
+```bash
+umcp validate casepacks/rcft_complete
 ```
 
-**Scaling:** Validated on datasets with 1000+ validation runs. Ledger handles millions of entries efficiently (O(1) append).
+</details>
 
----
+<details>
+<summary><strong>🌌 WEYL (Cosmological Framework)</strong></summary>
 
-## 📚 Documentation
+**Purpose**: Modified gravity analysis, DES Y3 data integration
 
-### Mathematical Foundations (v1.5.0)
-- **[MATHEMATICAL_ARCHITECTURE.md](MATHEMATICAL_ARCHITECTURE.md)** — Complete mathematical framework
-- **[frozen_contract.py](src/umcp/frozen_contract.py)** — Canonical constants and closures
-- **[ss1m_triad.py](src/umcp/ss1m_triad.py)** — Mod-97 human-verifiable checksums
-- **[uncertainty.py](src/umcp/uncertainty.py)** — Delta-method uncertainty propagation
-
-### Core Protocol
-- **[AXIOM.md](AXIOM.md)** — Core axiom: "What returns is real"
-- **[INFRASTRUCTURE_GEOMETRY.md](INFRASTRUCTURE_GEOMETRY.md)** — Three-layer geometric architecture (state space, projections, seam graph)
-- **[TIER_SYSTEM.md](TIER_SYSTEM.md)** — Tier-0/1/1.5/2 boundaries, freeze gates
-- **[RETURN_BASED_CANONIZATION.md](RETURN_BASED_CANONIZATION.md)** — How Tier-2 results become Tier-1 canon
-- **[KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md)** — Formal definitions (34 lemmas)
-- **[PUBLICATION_INFRASTRUCTURE.md](PUBLICATION_INFRASTRUCTURE.md)** — Publication standards
-- **[CASEPACK_REFERENCE.md](CASEPACK_REFERENCE.md)** — CasePack structure
-
-### Indexing & Reference
-- **[GLOSSARY.md](GLOSSARY.md)** — Authoritative term definitions
-- **[SYMBOL_INDEX.md](SYMBOL_INDEX.md)** — Symbol table (collision prevention)
-- **[TERM_INDEX.md](TERM_INDEX.md)** — Alphabetical cross-reference
-
-### Framework Documentation
-- **[GCD Theory](canon/gcd_anchors.yaml)** — Tier-1 specification
-- **[Kinematics Theory](canon/kin_anchors.yaml)** — Physics-based motion extension
-- **[KINEMATICS_SPECIFICATION.md](KINEMATICS_SPECIFICATION.md)** — Complete kinematics layer documentation
-- **[RCFT Theory](docs/rcft_theory.md)** — Tier-2 mathematical foundations
-- **[RCFT Usage](docs/rcft_usage.md)** — Practical examples
-
-### Governance
-- **[UHMP.md](UHMP.md)** — Universal Hash Manifest Protocol
-- **[FACE_POLICY.md](FACE_POLICY.md)** — Boundary governance
-- **[PROTOCOL_REFERENCE.md](PROTOCOL_REFERENCE.md)** — Master navigation
-
-### Developer Guides
-- **[Quickstart](docs/quickstart.md)** — Get started in 10 minutes
-- **[Python Standards](docs/python_coding_key.md)** — Development guidelines
-- **[Production Deployment](docs/production_deployment.md)** — Enterprise setup
-- **[PyPI Publishing](docs/pypi_publishing_guide.md)** — Release workflow
-
----
-
-## 📂 Repository Structure
-
+```bash
+umcp validate casepacks/weyl_des_y3
 ```
-UMCP-Metadata-Runnable-Code/
-├── src/umcp/              # Python implementation
-│   ├── frozen_contract.py # Canonical constants & closures (v1.5.0)
-│   ├── ss1m_triad.py      # Mod-97 checksums (v1.5.0)
-│   ├── uncertainty.py     # Delta-method propagation (v1.5.0)
-│   ├── validator.py       # Core validation engine
-│   ├── cli.py             # Command-line interface (10 commands)
-│   ├── api_umcp.py        # REST API (30+ endpoints)
-│   ├── dashboard.py       # Streamlit dashboard (21 pages)
-│   ├── umcp_extensions.py # Extension registry (4 extensions)
-│   └── kernel_optimized.py # Optimized kernel computation
-├── tests/                 # Test suite (879 tests)
-│   ├── test_frozen_contract.py  # 36 tests (v1.5.0)
-│   ├── test_ss1m_triad.py       # 35 tests (v1.5.0)
-│   ├── test_uncertainty.py      # 23 tests (v1.5.0)
-│   ├── test_api_umcp.py         # 32 tests (REST API)
-│   ├── test_umcp_extensions.py  # 12 tests (extensions)
-│   ├── test_120_kinematics_closures.py  # Kinematics closure tests
-│   ├── test_130_kin_audit_spec.py       # KIN audit specification
-│   ├── closures/                        # Closure-specific tests
-│   │   └── test_kin_ref_phase.py        # KIN.REF.PHASE tests (27 tests)
-│   └── ...                              # Additional tests
-├── scripts/               # Utility scripts
-│   ├── update_integrity.py      # SHA256 checksums
-│   └── check_merge_status.sh    # Git merge checker
-├── contracts/             # Frozen mathematical contracts
-│   ├── UMA.INTSTACK.v1.yaml     # Primary contract
-│   ├── GCD.INTSTACK.v1.yaml     # GCD framework
-│   └── RCFT.INTSTACK.v1.yaml    # RCFT framework
-├── closures/              # Computational functions (26 closures)
-│   ├── registry.yaml      # Closure registry
-│   ├── gcd/              # 5 GCD closures
-│   │   ├── energy_potential.py
-│   │   ├── entropic_collapse.py
-│   │   ├── generative_flux.py
-│   │   └── field_resonance.py
-│   ├── kinematics/       # 6 Kinematics closures
-│   │   ├── linear_kinematics.py
-│   │   ├── rotational_kinematics.py
-│   │   ├── energy_mechanics.py
-│   │   ├── momentum_dynamics.py
-│   │   ├── phase_space_return.py
-│   │   └── kinematic_stability.py
-│   └── rcft/             # 4 RCFT closures
-│       ├── fractal_dimension.py
-│       ├── recursive_field.py
-│       └── resonance_pattern.py
-├── casepacks/             # Reproducible examples (6 casepacks)
-│   ├── hello_world/      # Zero entropy baseline
-│   ├── gcd_complete/     # GCD validation
-│   ├── kinematics_complete/    # Full kinematics validation
-│   ├── kin_ref_phase_oscillator/  # KIN.REF.PHASE reference
-│   ├── rcft_complete/    # RCFT validation
-│   └── UMCP-REF-E2E-0001/  # End-to-end reference
-├── schemas/               # JSON schemas (12 schemas)
-├── canon/                 # Canonical anchors
-│   ├── gcd_anchors.yaml  # GCD specification
-│   └── rcft_anchors.yaml # RCFT specification
-├── ledger/                # Validation log (continuous append)
-│   └── return_log.csv    # 1900+ conformance records
-├── integrity/             # SHA256 checksums
-│   └── sha256.txt        # 23 tracked files
-├── docs/                  # Documentation
-│   ├── MATHEMATICAL_ARCHITECTURE.md  # v1.5.0 math spec
-│   ├── quickstart.md
-│   ├── production_deployment.md
-│   └── ...
-└── pyproject.toml         # Project configuration (v1.5.0)
-```
+
+</details>
 
 ---
 
 ## 🧪 Testing
 
 ```bash
-# All tests (755 total, ~21s)
-pytest
-
-# Verbose output
-pytest -v
-
-# Using UMCP CLI
-umcp test                    # Run all tests
-umcp test --coverage         # With coverage report
-umcp test -k "gcd"          # Pattern matching
-umcp test -m "not slow"     # Skip slow tests
-
-# Specific modules (v1.5.0)
-pytest tests/test_frozen_contract.py    # 36 tests - canonical constants
-pytest tests/test_ss1m_triad.py         # 35 tests - mod-97 checksums
-pytest tests/test_uncertainty.py        # 23 tests - delta-method
-pytest tests/test_api_umcp.py           # 32 tests - REST API endpoints
-pytest tests/closures/test_kin_ref_phase.py  # 27 tests - KIN.REF.PHASE
-
-# Specific framework
-pytest -k "gcd"         # GCD tests
-pytest -k "rcft"        # RCFT tests
-pytest -k "kinematics"  # Kinematics tests
-pytest -k "api"         # API tests
-
-# Coverage report
-pytest --cov
-pytest --cov --cov-report=html  # HTML report in htmlcov/
-
-# Fast subset (skip slow tests)
-pytest -m "not slow"
+pytest                      # Run all 932 tests
+pytest -v                   # Verbose output
+pytest --cov                # With coverage
+pytest -k "gcd"             # Pattern matching
+pytest -m "not slow"        # Skip slow tests
 ```
 
-**Test Structure**: 879 tests total
-- Schema validation: 50 tests
-- Kernel invariants: 84 tests
-- GCD framework: 92 tests
-- Kinematics framework: 133 tests
-- RCFT framework: 78 tests
-- **WEYL framework: 43 tests** (NEW)
-- Frozen contract: 36 tests
-- SS1m triads: 35 tests
-- Uncertainty: 23 tests
-- Dashboard: 30 tests
-- API: 32 tests
-- Extensions: 12 tests
-- Integration: 150 tests
+### Test Distribution
+
+| Category | Tests | Description |
+|----------|------:|-------------|
+| Schema validation | 50 | JSON/YAML schema tests |
+| Kernel invariants | 84 | Core metric tests |
+| GCD framework | 92 | Energy/collapse tests |
+| Kinematics | 133 | Motion analysis tests |
+| RCFT framework | 78 | Fractal/recursive tests |
+| WEYL framework | 43 | Cosmology tests |
+| Extended Lemmas | 53 | Lemmas 35-46 tests |
+| Frozen contract | 36 | Canonical constants |
+| SS1m triads | 35 | Checksum tests |
+| Uncertainty | 23 | Delta-method tests |
+| API | 32 | REST endpoint tests |
+| Dashboard | 30 | UI component tests |
+| Security | 45 | Input validation tests |
+| Integration | 150+ | End-to-end tests |
 
 ---
 
-## 🚀 Production Features
+## 📚 Documentation
 
-- ✅ **879 tests** passing (100% success rate)
-- ✅ **10 CLI commands** for validation, testing, and inspection
-- ✅ **30+ API endpoints** with FastAPI (optional extension)
-- ✅ **21-page dashboard** with Streamlit (optional extension)
-- ✅ **6 casepacks** with reproducible examples
-- ✅ **26 closures** across GCD, Kinematics, RCFT, and WEYL frameworks
-- ✅ **Frozen contracts**: Mathematical constants as versioned artifacts
-- ✅ **Budget conservation**: R·τ_R = D_ω + D_C + Δκ validation
-- ✅ **Return time tracking**: τ_R for temporal coherence
-- ✅ **Regime classification**: STABLE/WATCH/COLLAPSE/CRITICAL
-- ✅ **Uncertainty quantification**: Delta-method propagation
-- ✅ **Human-verifiable checksums**: mod-97 triads (C1-C2-C3)
-- ✅ **Health checks**: `umcp health` for system monitoring
-- ✅ **Structured logging**: JSON output for ELK/Splunk/CloudWatch
-- ✅ **Performance metrics**: Duration, memory, CPU tracking
-- ✅ **Container ready**: Docker + Kubernetes support
-- ✅ **Cryptographic receipts**: SHA256 verification
-- ✅ **PyPI ready**: Package builds pass twine check
-- ✅ **Zero linting errors**: All ruff checks pass
-- ✅ **Zero type errors**: Pylance clean
-- ✅ **<50ms validation**: Fast for typical repositories
+### 📖 Core References
 
-📖 **See**: [Production Deployment Guide](docs/production_deployment.md)
+| Document | Description |
+|----------|-------------|
+| [AXIOM.md](AXIOM.md) | Core axiom: "What returns is real" |
+| [KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md) | Formal definitions (46 lemmas) |
+| [MATHEMATICAL_ARCHITECTURE.md](MATHEMATICAL_ARCHITECTURE.md) | Complete mathematical framework |
+| [TIER_SYSTEM.md](TIER_SYSTEM.md) | Tier-0/1/1.5/2 boundaries |
+| [INFRASTRUCTURE_GEOMETRY.md](INFRASTRUCTURE_GEOMETRY.md) | Three-layer geometric architecture |
+
+### 🔧 Developer Guides
+
+| Document | Description |
+|----------|-------------|
+| [QUICKSTART_TUTORIAL.md](QUICKSTART_TUTORIAL.md) | 10-minute hands-on tutorial |
+| [docs/quickstart.md](docs/quickstart.md) | Getting started guide |
+| [docs/python_coding_key.md](docs/python_coding_key.md) | Development standards |
+| [docs/production_deployment.md](docs/production_deployment.md) | Enterprise deployment |
+
+### 📐 Framework Documentation
+
+| Document | Description |
+|----------|-------------|
+| [canon/gcd_anchors.yaml](canon/gcd_anchors.yaml) | GCD specification |
+| [canon/kin_anchors.yaml](canon/kin_anchors.yaml) | Kinematics specification |
+| [canon/rcft_anchors.yaml](canon/rcft_anchors.yaml) | RCFT specification |
+| [KINEMATICS_SPECIFICATION.md](KINEMATICS_SPECIFICATION.md) | Kinematics layer docs |
+
+### 📋 Reference
+
+| Document | Description |
+|----------|-------------|
+| [GLOSSARY.md](GLOSSARY.md) | Authoritative term definitions |
+| [SYMBOL_INDEX.md](SYMBOL_INDEX.md) | Symbol table |
+| [CASEPACK_REFERENCE.md](CASEPACK_REFERENCE.md) | CasePack structure |
+| [EXTENSION_INTEGRATION.md](EXTENSION_INTEGRATION.md) | Extension system |
 
 ---
 
-## 🔒 Integrity & Automation
+## 📂 Repository Map
+
+```
+UMCP-Metadata-Runnable-Code/
+│
+├── 📁 src/umcp/                   # Core Python implementation
+│   ├── frozen_contract.py         # Canonical constants & closures
+│   ├── validator.py               # Core validation engine
+│   ├── cli.py                     # CLI (10 commands)
+│   ├── api_umcp.py                # REST API (37+ endpoints)
+│   ├── dashboard.py               # Streamlit (21 pages)
+│   ├── uncertainty.py             # Delta-method propagation
+│   ├── ss1m_triad.py              # Mod-97 checksums
+│   └── umcp_extensions.py         # Extension registry
+│
+├── 📁 tests/                      # Test suite (932 tests)
+│   ├── test_frozen_contract.py    # Frozen contract tests
+│   ├── test_extended_lemmas.py    # Lemmas 35-46 tests
+│   ├── test_api_umcp.py           # API tests
+│   ├── closures/                  # Closure-specific tests
+│   └── ...
+│
+├── 📁 casepacks/                  # Reproducible examples (11)
+│   ├── hello_world/               # Zero entropy baseline
+│   ├── gcd_complete/              # GCD validation
+│   ├── kinematics_complete/       # Kinematics validation
+│   ├── rcft_complete/             # RCFT validation
+│   ├── weyl_des_y3/               # WEYL cosmology
+│   ├── security_validation/       # Security framework
+│   └── ...
+│
+├── 📁 closures/                   # Computational functions (28+)
+│   ├── gcd/                       # GCD closures
+│   ├── kinematics/                # Kinematics closures
+│   ├── rcft/                      # RCFT closures
+│   ├── weyl/                      # WEYL closures
+│   ├── security/                  # Security closures
+│   └── registry.yaml              # Closure registry
+│
+├── 📁 contracts/                  # Frozen mathematical contracts
+│   ├── UMA.INTSTACK.v1.yaml       # Primary contract
+│   ├── GCD.INTSTACK.v1.yaml       # GCD framework
+│   └── RCFT.INTSTACK.v1.yaml      # RCFT framework
+│
+├── 📁 canon/                      # Canonical anchors
+│   ├── gcd_anchors.yaml           # GCD specification
+│   ├── kin_anchors.yaml           # Kinematics specification
+│   └── rcft_anchors.yaml          # RCFT specification
+│
+├── 📁 schemas/                    # JSON schemas (12+)
+├── 📁 ledger/                     # Validation log
+├── 📁 integrity/                  # SHA256 checksums
+├── 📁 docs/                       # Documentation
+├── 📁 data/                       # Physics observations
+│   └── physics_observations_complete.csv  # 38 observations
+│
+└── 📄 pyproject.toml              # Project configuration
+```
+
+---
+
+## 🎓 Getting Started Tutorial
+
+### Step 1: Understand the Core Concept
+
+UMCP validates computational experiments as **auditable artifacts**. Every claim must have:
+
+1. ✅ **Declared inputs** (raw measurements)
+2. ✅ **Frozen rules** (mathematical contracts)  
+3. ✅ **Computed outputs** (invariants, closures)
+4. ✅ **Cryptographic receipts** (SHA256 verification)
+
+### Step 2: Run Your First Validation
 
 ```bash
-# Verify file integrity
-sha256sum -c integrity/sha256.txt
+# Validate the hello_world casepack
+umcp validate casepacks/hello_world
 
-# Update after changes
-python scripts/update_integrity.py
-
-# Check merge status
-./scripts/check_merge_status.sh
+# Expected output:
+# ✓ CONFORMANT
+# Errors: 0, Warnings: 0
 ```
 
-**Automated**:
-- ✅ 730 tests on every commit (CI/CD)
-- ✅ Code formatting (ruff format)
-- ✅ Linting (ruff check)
-- ✅ Type checking (mypy)
-- ✅ SHA256 tracking (23 files)
+### Step 3: Explore the Python API
 
----
+```python
+import umcp
+from umcp.frozen_contract import compute_kernel, classify_regime
+import numpy as np
 
-## 📊 What's New in v1.5.0
+# Validate a casepack
+result = umcp.validate("casepacks/hello_world")
+print(f"Status: {'CONFORMANT' if result else 'NONCONFORMANT'}")
 
-**REST API Extension Complete** (NEW):
-- ✅ **30+ Endpoints**: Full REST API with FastAPI
-- ✅ **8 Endpoint Categories**: System, Validation, Casepacks, Ledger, Analysis, Conversion, Kernel, Outputs
-- ✅ **Kernel Computation**: `/kernel/compute`, `/kernel/budget` for ω, κ, IC computation
-- ✅ **Uncertainty Propagation**: `/uncertainty/propagate` for delta-method bounds
-- ✅ **Data Analysis**: `/analysis/statistics`, `/analysis/correlation`, `/analysis/timeseries`
-- ✅ **Measurement Conversion**: `/convert/measurements`, `/convert/embed`
-- ✅ **Multiple Output Formats**: SVG badges, Markdown, HTML, LaTeX, JUnit, JSON-LD
-- ✅ **Pure NumPy Implementation**: Minimal dependencies (no scipy required for API)
-- ✅ **32 API Tests**: Comprehensive endpoint coverage
+# Compute kernel invariants
+c = np.array([0.9, 0.85, 0.92])  # Coherence values
+w = np.array([0.5, 0.3, 0.2])    # Weights
+kernel = compute_kernel(c, w, tau_R=5.0)
 
-**Visualization Dashboard Complete** (NEW):
-- ✅ **21-Page Dashboard**: Core (9), Interactive (3), Scientific (4), Analysis (2), Management (4)
-- ✅ **WEYL Cosmology Page**: Σ(z) visualization, DES Y3 data, UMCP integration
-- ✅ **Interactive Charts**: Plotly-powered visualizations
-- ✅ **Real-time Health Monitoring**: System diagnostics
-- ✅ **Export Capabilities**: Download data as CSV
+print(f"Drift (ω): {kernel.omega:.4f}")
+print(f"Fidelity (F): {kernel.F:.4f}")
+print(f"Integrity (IC): {kernel.IC:.4f}")
 
-**Extension System Complete** (NEW):
-- ✅ **4 Built-in Extensions**: api, visualization, ledger, formatter
-- ✅ **Extension CLI**: `umcp-ext list|info|check|install|run`
-- ✅ **Plugin Registry**: Extensible architecture for custom extensions
-- ✅ **Dependency Management**: Automatic checking and installation
+# Classify regime
+regime = classify_regime(
+    omega=kernel.omega,
+    F=kernel.F,
+    S=kernel.S,
+    C=kernel.C,
+    integrity=kernel.IC
+)
+print(f"Regime: {regime.name}")  # STABLE, WATCH, or COLLAPSE
+```
 
-**Kinematics Framework Complete**:
-- ✅ **6 Kinematics Closures**: Phase space return, energy mechanics, momentum dynamics
-- ✅ **KIN.REF.PHASE Reference CasePack**: Deterministic phase-anchor oscillator
-  - 31 time-series rows, 26 defined anchors, 5 censor events
-  - Frozen params: δφ_max=π/6, window=20, debounce=3
-  - 27 comprehensive tests with edge case coverage
-- ✅ **τ_kin Return Time**: Phase space recurrence in (x,v) coordinates
-- ✅ **K_stability Index**: Lyapunov-based kinematic stability
+### Step 4: Create Your Own CasePack
 
-**CLI Expansion**:
-- ✅ **10 CLI Commands**: validate, run, diff, health, preflight, test, casepack, list, integrity, report
-- ✅ **`umcp test`**: Run pytest with coverage, parallel, marker options
-- ✅ **`umcp casepack`**: Execute casepacks directly by name
-- ✅ **`umcp list`**: Discover casepacks, closures, contracts, schemas
-- ✅ **`umcp integrity`**: Verify SHA256 hashes against manifest
-- ✅ **`umcp report`**: Generate JSON audit reports
+```bash
+# Copy the hello_world template
+cp -r casepacks/hello_world casepacks/my_experiment
 
-**Mathematical Foundations Complete**:
-- ✅ **Frozen Contract Module**: Canonical constants from "The Physics of Coherence"
-  - ε=10⁻⁸, p=3, α=1.0, λ=0.2, tol_seam=0.005
-  - `gamma_omega()`, `cost_curvature()`, `compute_kernel()`, `classify_regime()`
-  - Budget identity: R·τ_R = D_ω + D_C + Δκ
-  - Seam test: `check_seam_pass()` with PASS conditions
-  - Equator diagnostic: Φ_eq(ω,F,C) = F - (1.00 - 0.75ω - 0.55C)
+# Edit the manifest
+nano casepacks/my_experiment/manifest.yaml
 
-- ✅ **SS1m Triad Checksums**: Human-verifiable mod-97 checksums
-  - Corrected formulas: C1=(P+F+T+E+R)mod97, C3=(P·F+T·E+R)mod97
-  - Prime-field arithmetic for error detection
-  - Crockford Base32 encoding for EID12 format
-  - 35 comprehensive tests
+# Validate your casepack
+umcp validate casepacks/my_experiment
+```
 
-- ✅ **Uncertainty Propagation**: Delta-method through kernel invariants
-  - Gradients: ∂F/∂c, ∂ω/∂c, ∂κ/∂c, ∂S/∂c, ∂C/∂c
-  - Var(F) = w^T V w covariance propagation
-  - Sensitivity bounds: ‖∂κ/∂c‖ ≤ max(w)/ε
-  - 23 comprehensive tests
+### Step 5: Explore Extensions
 
-**Quality & Testing**:
-- ✅ 755 tests passing (+25 from v1.4.0)
-- ✅ Zero linting warnings (ruff clean)
-- ✅ Zero type errors (Pylance clean)
-- ✅ All formulas match canonical specification
-- ✅ Full test coverage of new modules
-- ✅ PyPI package builds verified (twine check PASSED)
+```bash
+# Start the REST API
+pip install -e ".[api]"
+umcp-api
+# Open http://localhost:8000/docs
 
-📖 **See**: [CHANGELOG.md](CHANGELOG.md) | [IMMUTABLE_RELEASE.md](IMMUTABLE_RELEASE.md)
+# Start the Dashboard
+pip install -e ".[viz]"
+umcp-dashboard
+# Open http://localhost:8501
+```
+
+### Step 6: Run the Test Suite
+
+```bash
+# Run all tests
+pytest
+
+# Run with coverage
+pytest --cov=umcp --cov-report=html
+
+# Run specific framework tests
+pytest -k "gcd"
+pytest -k "kinematics"
+pytest -k "rcft"
+```
+
+### Step 7: Understand the Mathematics
+
+Read these documents in order:
+1. [AXIOM.md](AXIOM.md) - The foundational principle
+2. [KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md) - 46 formal lemmas
+3. [MATHEMATICAL_ARCHITECTURE.md](MATHEMATICAL_ARCHITECTURE.md) - Complete framework
 
 ---
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/name`)
-3. Add tests for new functionality
-4. Ensure all tests pass (`pytest`)
-5. Validate code quality (`ruff check`, `mypy`)
-6. Commit changes (`git commit -m 'feat: Description'`)
-7. Push to branch (`git push origin feature/name`)
-8. Open Pull Request
+We welcome contributions! Please read our comprehensive [CONTRIBUTING.md](CONTRIBUTING.md) guide.
 
-📖 **See**: [Python Coding Standards](docs/python_coding_key.md) | [CONTRIBUTING.md](CONTRIBUTING.md)
+### Quick Contribution Workflow
+
+```bash
+# 1. Fork and clone
+git clone https://github.com/YOUR_USERNAME/UMCP-Metadata-Runnable-Code.git
+cd UMCP-Metadata-Runnable-Code
+
+# 2. Create virtual environment
+python -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+
+# 3. Create feature branch
+git checkout -b feat/your-feature
+
+# 4. Make changes and test
+pytest
+ruff check .
+ruff format .
+mypy src/umcp
+
+# 5. Commit and push
+git commit -m "feat: your feature description"
+git push origin feat/your-feature
+
+# 6. Open Pull Request
+```
+
+### Contribution Areas
+
+| Area | Description | Difficulty |
+|------|-------------|:----------:|
+| 📖 Documentation | Improve docs, fix typos | 🟢 Easy |
+| 🧪 Tests | Add test coverage | 🟢 Easy |
+| 🐛 Bug fixes | Fix reported issues | 🟡 Medium |
+| ✨ Features | New closures, endpoints | 🟡 Medium |
+| 🔬 Research | New frameworks, lemmas | 🔴 Hard |
+
+### Code Quality Standards
+
+- ✅ All tests must pass (`pytest`)
+- ✅ 80%+ code coverage
+- ✅ Zero ruff errors (`ruff check .`)
+- ✅ Zero type errors (`mypy src/umcp`)
+- ✅ Proper formatting (`ruff format .`)
 
 ---
 
 ## 📄 License
 
-MIT License - see [LICENSE](LICENSE) for details.
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+```
+MIT License
+
+Copyright (c) 2026 Clement Paulus
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+```
 
 ---
 
 ## 📞 Support & Resources
 
-- **Issues**: [GitHub Issues](https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/issues)
-- **Documentation**: [docs/](docs/)
-- **Examples**: [casepacks/](casepacks/)
-- **Immutable Release**: [IMMUTABLE_RELEASE.md](IMMUTABLE_RELEASE.md)
+<table>
+<tr>
+<td width="50%">
+
+### 🔗 Links
+
+- 📖 [Documentation](docs/)
+- 📦 [Examples](casepacks/)
+- 🐛 [Issues](https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/issues)
+- 📋 [Changelog](CHANGELOG.md)
+
+</td>
+<td width="50%">
+
+### 📚 Key Files
+
+- [AXIOM.md](AXIOM.md) - Core principle
+- [GLOSSARY.md](GLOSSARY.md) - Term definitions
+- [KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md) - 46 lemmas
+- [IMMUTABLE_RELEASE.md](IMMUTABLE_RELEASE.md) - Release info
+
+</td>
+</tr>
+</table>
 
 ---
+
+<div align="center">
 
 ## 🏆 System Status
 
 ```
-╔═══════════════════════════════════════════════════════════╗
-║           UMCP PRODUCTION SYSTEM STATUS                   ║
-╚═══════════════════════════════════════════════════════════╝
-
-  🎯 Core Axiom:   "What Returns Through Collapse Is Real"
-  🔐 Canon:        UMCP.CANON.v1
-  📜 Contract:     UMA.INTSTACK.v1 + Frozen Contract v1.5.0
-  📚 DOI:          10.5281/zenodo.17756705 (PRE)
-                   10.5281/zenodo.18072852 (POST)
-                   10.5281/zenodo.18226878 (PACK)
-  
-  ⚙️  Frozen:      ε=10⁻⁸  p=3  α=1.0  λ=0.2  tol=0.005
-  🎯 Regimes:      Stable: ω<0.038, F>0.90, S<0.15, C<0.14
-                   Watch: 0.038≤ω<0.30
-                   Collapse: ω≥0.30
-                   Critical: IC<0.30 (overlay)
-  
-  🔬 Closures:     Γ(ω) = ω³/(1-ω+ε)
-                   D_C = α·C
-                   Budget: R·τ_R = D_ω + D_C + Δκ
-                   Seam: |s| ≤ tol_seam
-  
-  📊 Status:       CONFORMANT ✅
-  🧪 Tests:        755 passing
-  📦 Casepacks:    6 validated
-  🔧 CLI:          10 commands
-  🌐 API:          30+ endpoints
-  📈 Dashboard:    21 pages
-  🔌 Extensions:   4 available (api, viz, ledger, formatter)
-  🔒 Integrity:    10 files checksummed
-  🌐 Timezone:     America/Chicago
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  "No improvisation. Contract-first. Return-based canon."
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+╔═══════════════════════════════════════════════════════════════════════╗
+║                    UMCP PRODUCTION SYSTEM STATUS                      ║
+╠═══════════════════════════════════════════════════════════════════════╣
+║                                                                       ║
+║   🎯 Core Axiom:    "What Returns Through Collapse Is Real"           ║
+║   📜 Contract:      UMA.INTSTACK.v1 + Frozen Contract v1.5.0          ║
+║   🔐 Canon:         UMCP.CANON.v1                                     ║
+║                                                                       ║
+║   ⚙️  Frozen:       ε=10⁻⁸  p=3  α=1.0  λ=0.2  tol=0.005              ║
+║                                                                       ║
+║   📊 Status:        CONFORMANT ✅                                     ║
+║   🧪 Tests:         932 passing                                       ║
+║   📦 Casepacks:     11 validated                                      ║
+║   🔧 CLI:           10 commands                                       ║
+║   🌐 API:           37+ endpoints                                     ║
+║   📈 Dashboard:     21 pages                                          ║
+║   🧮 Lemmas:        46 formal proofs                                  ║
+║   🔬 Closures:      28+ functions                                     ║
+║   🔒 Integrity:     SHA256 verified                                   ║
+║                                                                       ║
+╚═══════════════════════════════════════════════════════════════════════╝
 ```
 
 ---
 
-## 🎓 Citation
+**Built with ❤️ for reproducible science**
 
-**Framework**: UMCP (Universal Measurement Contract Protocol)  
-**Author**: Clement Paulus  
-**Version**: 1.5.0  
-**Release**: January 31, 2026  
-**Tests**: 755 passing  
-**API**: 30+ endpoints  
-**Integrity**: SHA256 verified  
-
-**Mathematical Foundations**:
-- **Frozen Contract**: Canonical constants (ε, p, α, λ, tol_seam)
-- **Cost Closures**: Γ(ω), D_C, budget identity
-- **SS1m Triads**: Mod-97 human-verifiable checksums
-- **Uncertainty**: Delta-method propagation through kernel invariants
-
-**Frameworks**:
-- **Tier-1**: GCD (Generative Collapse Dynamics) - 5 closures
-- **Tier-1**: Kinematics (KIN) - 6 closures (phase space return, energy, momentum)
-- **Tier-2**: RCFT (Recursive Collapse Field Theory) - 4 closures
-
-**Communication Extensions** (Optional):
-- **REST API**: FastAPI with 30+ endpoints (`pip install umcp[api]`)
-- **Dashboard**: Streamlit with 21 pages (`pip install umcp[viz]`)
-- **Extension System**: 4 built-in extensions
-
-**Casepacks** (6):
-- `hello_world` - Zero entropy baseline
-- `gcd_complete` - Full GCD validation
-- `kinematics_complete` - Full kinematics validation
-- `kin_ref_phase_oscillator` - KIN.REF.PHASE reference implementation
-- `rcft_complete` - Full RCFT validation
-- `UMCP-REF-E2E-0001` - End-to-end reference
-
-**Key Innovation**: Return time τ_R as temporal coherence metric, connecting information theory to dynamical systems recurrence (Poincaré-style).
-
----
-
-**Built with ❤️ for reproducible science**  
 *"What Returns Through Collapse Is Real"*
+
+</div>
