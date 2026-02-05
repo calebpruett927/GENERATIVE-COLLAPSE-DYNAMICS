@@ -6,25 +6,21 @@ Shows the network topology with device trust levels
 and VLAN assignments based on UMCP validation.
 """
 
-from datetime import datetime, timedelta
-from device_daemon import (
-    DeviceDaemon, DeviceCategory, DeviceStatus, NetworkAction,
-    NetworkDevice, INF_ANOMALY
-)
+from device_daemon import INF_ANOMALY, DeviceCategory, DeviceDaemon, DeviceStatus
 
 
 def print_network_map():
     """Print ASCII network topology with trust levels"""
-    
+
     print()
     print("=" * 80)
     print("                    UMCP DEVICE NETWORK MAP")
     print("=" * 80)
     print()
-    
+
     # Create daemon with sample devices
     daemon = DeviceDaemon()
-    
+
     devices_data = [
         ("AA:BB:CC:DD:EE:01", "192.168.1.10", "alice-laptop", DeviceCategory.WORKSTATION, 0.92),
         ("AA:BB:CC:DD:EE:02", "192.168.1.11", "bob-desktop", DeviceCategory.WORKSTATION, 0.88),
@@ -39,7 +35,7 @@ def print_network_map():
         ("AA:BB:CC:DD:EE:11", "192.168.1.2", "wifi-ap-01", DeviceCategory.NETWORK, 0.90),
         ("AA:BB:CC:DD:EE:12", "192.168.1.250", "unknown-device", DeviceCategory.UNKNOWN, 0.30),
     ]
-    
+
     # Add devices with simulated trust
     for mac, ip, hostname, category, trust in devices_data:
         device = daemon.add_device(mac, ip, hostname, category)
@@ -56,7 +52,7 @@ def print_network_map():
         else:
             device.current_tau_A = INF_ANOMALY
             device.status = DeviceStatus.BLOCKED
-    
+
     # Print network diagram
     print("""
                            ┌─────────────────────────────────────┐
@@ -74,44 +70,41 @@ def print_network_map():
        │     (Trusted)         │       │       │       │
        │                       │       │       │       │
     """)
-    
+
     # VLAN 100 - Trusted
     print("┌──────────────────────────────────────┐")
     print("│           VLAN 100 (Trusted)         │")
     print("├──────────────────────────────────────┤")
-    
-    trusted = [(d.hostname, d.current_T) for d in daemon.devices.values() 
-               if d.status == DeviceStatus.TRUSTED]
+
+    trusted = [(d.hostname, d.current_T) for d in daemon.devices.values() if d.status == DeviceStatus.TRUSTED]
     for name, t in trusted:
         bar = "█" * int(t * 10)
         print(f"│  ✓ {name:<18} T={t:.2f} [{bar:<10}] │")
     print("│  Full access to all resources        │")
     print("└──────────────────────────────────────┘")
-    
+
     print()
-    
+
     # VLAN 200 - Limited
     print("┌──────────────────────────────────────┐")
     print("│           VLAN 200 (Limited)         │")
     print("├──────────────────────────────────────┤")
-    
-    limited = [(d.hostname, d.current_T) for d in daemon.devices.values() 
-               if d.status == DeviceStatus.LIMITED]
+
+    limited = [(d.hostname, d.current_T) for d in daemon.devices.values() if d.status == DeviceStatus.LIMITED]
     for name, t in limited:
         bar = "█" * int(t * 10)
         print(f"│  ◐ {name:<18} T={t:.2f} [{bar:<10}] │")
     print("│  Internet only, no internal servers  │")
     print("└──────────────────────────────────────┘")
-    
+
     print()
-    
+
     # VLAN 666 - Quarantine
     print("┌──────────────────────────────────────┐")
     print("│         VLAN 666 (Quarantine)        │")
     print("├──────────────────────────────────────┤")
-    
-    quarantine = [(d.hostname, d.current_T) for d in daemon.devices.values() 
-                  if d.status == DeviceStatus.QUARANTINE]
+
+    quarantine = [(d.hostname, d.current_T) for d in daemon.devices.values() if d.status == DeviceStatus.QUARANTINE]
     if quarantine:
         for name, t in quarantine:
             bar = "█" * int(t * 10)
@@ -120,24 +113,23 @@ def print_network_map():
         print("│  (No devices currently quarantined)  │")
     print("│  Remediation server access only      │")
     print("└──────────────────────────────────────┘")
-    
+
     print()
-    
+
     # BLOCKED
     print("┌──────────────────────────────────────┐")
     print("│              BLOCKED                 │")
     print("├──────────────────────────────────────┤")
-    
-    blocked = [(d.hostname, d.current_T) for d in daemon.devices.values() 
-               if d.status == DeviceStatus.BLOCKED]
+
+    blocked = [(d.hostname, d.current_T) for d in daemon.devices.values() if d.status == DeviceStatus.BLOCKED]
     for name, t in blocked:
         bar = "█" * int(t * 10)
         print(f"│  ✗ {name:<18} T={t:.2f} [{bar:<10}] │")
     print("│  Port shutdown, no network access    │")
     print("└──────────────────────────────────────┘")
-    
+
     print()
-    
+
     # Legend
     print("=" * 80)
     print("LEGEND")
@@ -161,13 +153,13 @@ def print_network_map():
 
 def print_trust_dashboard():
     """Print real-time trust dashboard"""
-    
+
     print()
     print("=" * 80)
     print("               UMCP DEVICE TRUST DASHBOARD")
     print("=" * 80)
     print()
-    
+
     # Simulate devices with different trust patterns
     devices = [
         ("alice-laptop", "workstation", 0.92, 1.0, "TRUSTED", "▲ Stable high trust"),
@@ -176,49 +168,51 @@ def print_trust_dashboard():
         ("db-server", "server", 0.78, 15.0, "LIMITED", "► Slight drift detected"),
         ("carol-iphone", "mobile", 0.72, 30.0, "LIMITED", "► Normal mobile pattern"),
         ("dave-android", "mobile", 0.68, 45.0, "LIMITED", "► Outdated OS version"),
-        ("lobby-camera", "iot", 0.45, float('inf'), "QUARANTINE", "▼ Vuln CVE-2024-1234"),
+        ("lobby-camera", "iot", 0.45, float("inf"), "QUARANTINE", "▼ Vuln CVE-2024-1234"),
         ("smart-thermostat", "iot", 0.55, 120.0, "QUARANTINE", "► Recovering from anomaly"),
         ("door-lock", "iot", 0.62, 60.0, "LIMITED", "► Firmware updated"),
         ("core-switch", "network", 0.98, 1.0, "TRUSTED", "▲ Infrastructure stable"),
         ("wifi-ap-01", "network", 0.88, 5.0, "TRUSTED", "▲ Normal operation"),
-        ("unknown-device", "unknown", 0.25, float('inf'), "BLOCKED", "✗ No identity verified"),
+        ("unknown-device", "unknown", 0.25, float("inf"), "BLOCKED", "✗ No identity verified"),
     ]
-    
+
     # Header
     print(f"  {'Device':<18} {'Type':<12} {'T':>6} {'τ_A':>8} {'Status':<12} {'Trend'}")
     print("  " + "-" * 75)
-    
+
     for name, dtype, trust, tau, status, trend in devices:
-        tau_str = f"{tau:.0f}s" if tau != float('inf') else "∞"
-        
+        tau_str = f"{tau:.0f}s" if tau != float("inf") else "∞"
+
         # Trust bar
-        trust_bar = "█" * int(trust * 10) + "░" * (10 - int(trust * 10))
-        
+        "█" * int(trust * 10) + "░" * (10 - int(trust * 10))
+
         # Status icon
         icons = {"TRUSTED": "✓", "LIMITED": "◐", "QUARANTINE": "◎", "BLOCKED": "✗"}
         icon = icons.get(status, "?")
-        
+
         print(f"  {icon} {name:<16} {dtype:<12} {trust:.2f}  {tau_str:>7} {status:<12} {trend}")
-    
+
     print()
-    
+
     # Summary stats
     trusted_count = sum(1 for _, _, _, _, s, _ in devices if s == "TRUSTED")
     limited_count = sum(1 for _, _, _, _, s, _ in devices if s == "LIMITED")
     quarantine_count = sum(1 for _, _, _, _, s, _ in devices if s == "QUARANTINE")
     blocked_count = sum(1 for _, _, _, _, s, _ in devices if s == "BLOCKED")
     avg_trust = sum(t for _, _, t, _, _, _ in devices) / len(devices)
-    
+
     print("  " + "=" * 75)
     print()
     print(f"  Summary: {len(devices)} devices | Avg Trust: {avg_trust:.2f}")
-    print(f"  ✓ Trusted: {trusted_count}  |  ◐ Limited: {limited_count}  |  ◎ Quarantine: {quarantine_count}  |  ✗ Blocked: {blocked_count}")
+    print(
+        f"  ✓ Trusted: {trusted_count}  |  ◐ Limited: {limited_count}  |  ◎ Quarantine: {quarantine_count}  |  ✗ Blocked: {blocked_count}"
+    )
     print()
 
 
 def print_device_lifecycle():
     """Show device trust lifecycle"""
-    
+
     print()
     print("=" * 80)
     print("               DEVICE TRUST LIFECYCLE")
@@ -226,7 +220,7 @@ def print_device_lifecycle():
     print()
     print("  How a new device earns trust through UMCP validation:")
     print()
-    
+
     lifecycle = """
     ┌─────────────────────────────────────────────────────────────────────────┐
     │  t=0: DEVICE CONNECTS                                                   │
@@ -276,7 +270,7 @@ def print_device_lifecycle():
     └─────────────────────────────────────────────────────────────────────────┘
     """
     print(lifecycle)
-    
+
     print("  KEY PRINCIPLE: Trust is EARNED through validated return, not asserted.")
     print()
     print("  Traditional NAC: One-time 802.1X auth → access forever")
@@ -286,13 +280,13 @@ def print_device_lifecycle():
 
 def print_comparison():
     """Compare UMCP device security with traditional approaches"""
-    
+
     print()
     print("=" * 80)
     print("         UMCP DEVICE SECURITY vs TRADITIONAL NETWORK SECURITY")
     print("=" * 80)
     print()
-    
+
     comparison = """
     ┌────────────────────────┬─────────────────────────┬─────────────────────────┐
     │        Aspect          │    Traditional NAC      │    UMCP Device Daemon   │
@@ -325,7 +319,7 @@ def print_comparison():
     └────────────────────────┴─────────────────────────┴─────────────────────────┘
     """
     print(comparison)
-    
+
     print()
     print("  UMCP Core Principle Applied to Devices:")
     print()

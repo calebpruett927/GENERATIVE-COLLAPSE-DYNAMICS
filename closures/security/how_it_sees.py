@@ -6,8 +6,6 @@ Visual demonstration of how the daemon perceives and responds to entities.
 Shows the UMCP perspective vs traditional antivirus perspective.
 """
 
-import numpy as np
-from datetime import datetime
 
 def show_traditional_av_view():
     """Show how traditional AV sees threats."""
@@ -17,7 +15,7 @@ def show_traditional_av_view():
     print()
     print("Detection Method: Signature Matching")
     print()
-    
+
     entities = [
         ("file1.exe", "SHA256 matches known malware DB", "BLOCK"),
         ("file2.dll", "Heuristic: suspicious API calls", "BLOCK"),
@@ -25,13 +23,13 @@ def show_traditional_av_view():
         ("url1.com", "Domain in reputation DB (bad)", "BLOCK"),
         ("url2.com", "Not in any list", "ALLOW"),
     ]
-    
+
     print(f"{'Entity':<20} {'Detection Method':<40} {'Action':<10}")
     print("-" * 70)
-    
+
     for entity, method, action in entities:
         print(f"{entity:<20} {method:<40} {action:<10}")
-    
+
     print()
     print("Problems:")
     print("  • Binary decision (ALLOW or BLOCK only)")
@@ -51,7 +49,7 @@ def show_umcp_view():
     print("Axiom: 'What Returns Through Collapse Is Real'")
     print("      → 'What Survives Validation Is Trusted'")
     print()
-    
+
     # Simulate entities with UMCP invariants
     entities = [
         {
@@ -62,7 +60,7 @@ def show_umcp_view():
             "H": 0.25,
             "tau_A": 1,
             "status": "TRUSTED",
-            "action": "ALLOW"
+            "action": "ALLOW",
         },
         {
             "name": "user_script",
@@ -72,7 +70,7 @@ def show_umcp_view():
             "H": 0.45,
             "tau_A": 8,
             "status": "SUSPICIOUS",
-            "action": "MONITOR"
+            "action": "MONITOR",
         },
         {
             "name": "unknown_exe",
@@ -82,7 +80,7 @@ def show_umcp_view():
             "H": 0.68,
             "tau_A": 32,
             "status": "SUSPICIOUS",
-            "action": "QUARANTINE"
+            "action": "QUARANTINE",
         },
         {
             "name": "malware",
@@ -92,45 +90,44 @@ def show_umcp_view():
             "H": 0.72,
             "tau_A": "INF_ANOMALY",
             "status": "BLOCKED",
-            "action": "BLOCK"
+            "action": "BLOCK",
         },
     ]
-    
+
     print(f"{'Entity':<20} {'T':<6} {'τ_A':<12} {'Status':<14} {'Action':<12}")
     print("-" * 70)
-    
+
     for entity in entities:
-        tau_str = f"{entity['tau_A']}" if isinstance(entity['tau_A'], int) else entity['tau_A']
-        print(f"{entity['name']:<20} {entity['T']:<6.3f} {tau_str:<12} "
-              f"{entity['status']:<14} {entity['action']:<12}")
-    
+        tau_str = f"{entity['tau_A']}" if isinstance(entity["tau_A"], int) else entity["tau_A"]
+        print(f"{entity['name']:<20} {entity['T']:<6.3f} {tau_str:<12} {entity['status']:<14} {entity['action']:<12}")
+
     print()
     print("How UMCP Sees Each Entity:")
     print()
-    
+
     for entity in entities:
         print(f"• {entity['name']} ({entity['path']}):")
         print(f"    Trust Fidelity (T): {entity['T']:.3f}")
         print(f"    Threat Drift (θ): {entity['theta']:.3f}")
         print(f"    Security Entropy (H): {entity['H']:.3f}")
         print(f"    Anomaly Return (τ_A): {entity['tau_A']}")
-        
+
         # Explain the decision
-        if entity['tau_A'] == "INF_ANOMALY":
-            print(f"    → No return to baseline detected")
+        if entity["tau_A"] == "INF_ANOMALY":
+            print("    → No return to baseline detected")
             print(f"    → 'No return = no trust credit' → {entity['action']}")
-        elif entity['T'] >= 0.8:
+        elif entity["T"] >= 0.8:
             print(f"    → High trust, returns quickly (τ_A={entity['tau_A']})")
             print(f"    → Validated through collapse-return → {entity['action']}")
-        elif entity['T'] >= 0.4:
-            print(f"    → Medium trust, may recover")
+        elif entity["T"] >= 0.4:
+            print("    → Medium trust, may recover")
             print(f"    → Allow but track closely → {entity['action']}")
         else:
-            print(f"    → Low trust, slow/no return")
+            print("    → Low trust, slow/no return")
             print(f"    → Isolate until validated → {entity['action']}")
-        
+
         print()
-    
+
     print("Advantages:")
     print("  • Graduated response (4 levels, not just 2)")
     print("  • Detects zero-days (validation, not signatures)")
@@ -149,7 +146,7 @@ def show_response_timeline():
     print("Entity: unknown_download.exe")
     print("Scenario: User downloads unknown file, daemon validates over time")
     print()
-    
+
     timeline = [
         {
             "t": 0,
@@ -157,7 +154,7 @@ def show_response_timeline():
             "T": None,
             "tau_A": None,
             "status": "NON_EVALUABLE",
-            "action": "ALLOW_TRACK"
+            "action": "ALLOW_TRACK",
         },
         {
             "t": 1,
@@ -165,7 +162,7 @@ def show_response_timeline():
             "T": 0.45,
             "tau_A": None,
             "status": "SUSPICIOUS",
-            "action": "ALLOW_MONITORED"
+            "action": "ALLOW_MONITORED",
         },
         {
             "t": 5,
@@ -173,7 +170,7 @@ def show_response_timeline():
             "T": 0.32,
             "tau_A": "INF_ANOMALY",
             "status": "BLOCKED",
-            "action": "QUARANTINE"
+            "action": "QUARANTINE",
         },
         {
             "t": 10,
@@ -181,27 +178,19 @@ def show_response_timeline():
             "T": 0.58,
             "tau_A": 15,
             "status": "SUSPICIOUS",
-            "action": "ALLOW_MONITORED"
+            "action": "ALLOW_MONITORED",
         },
-        {
-            "t": 15,
-            "event": "Returns to baseline",
-            "T": 0.82,
-            "tau_A": 3,
-            "status": "TRUSTED",
-            "action": "ALLOW"
-        },
+        {"t": 15, "event": "Returns to baseline", "T": 0.82, "tau_A": 3, "status": "TRUSTED", "action": "ALLOW"},
     ]
-    
+
     print(f"{'t':<3} {'Event':<30} {'T':<8} {'τ_A':<14} {'Status':<14} {'Action':<16}")
     print("-" * 90)
-    
+
     for step in timeline:
-        t_str = f"{step['T']:.2f}" if step['T'] is not None else "-"
-        tau_str = f"{step['tau_A']}" if step['tau_A'] is not None else "-"
-        print(f"{step['t']:<3} {step['event']:<30} {t_str:<8} {tau_str:<14} "
-              f"{step['status']:<14} {step['action']:<16}")
-    
+        t_str = f"{step['T']:.2f}" if step["T"] is not None else "-"
+        tau_str = f"{step['tau_A']}" if step["tau_A"] is not None else "-"
+        print(f"{step['t']:<3} {step['event']:<30} {t_str:<8} {tau_str:<14} {step['status']:<14} {step['action']:<16}")
+
     print()
     print("Key Observations:")
     print()
@@ -225,7 +214,7 @@ def show_comparison_table():
     print("TRADITIONAL AV vs UMCP SECURITY")
     print("=" * 70)
     print()
-    
+
     comparisons = [
         ("Detection", "Signatures/Heuristics", "Validation (T, τ_A)"),
         ("Response", "ALLOW or BLOCK", "4 levels (ALLOW/MONITOR/QUARANTINE/BLOCK)"),
@@ -236,13 +225,13 @@ def show_comparison_table():
         ("Continuity", "None", "Seam accounting (trust ledger)"),
         ("Principle", "Block known bad", "'No return = no trust credit'"),
     ]
-    
+
     print(f"{'Aspect':<15} {'Traditional AV':<30} {'UMCP Security':<30}")
     print("-" * 75)
-    
+
     for aspect, trad, umcp in comparisons:
         print(f"{aspect:<15} {trad:<30} {umcp:<30}")
-    
+
     print()
 
 

@@ -7,15 +7,14 @@ Demonstrates the background antivirus running in UMCP mode:
 """
 
 import sys
-import time
-import subprocess
 from pathlib import Path
 
 # Add project to path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from closures.security.security_daemon import SecurityDaemon
 from closures.security.response_engine import ResponseEngine
+from closures.security.security_daemon import SecurityDaemon
+
 
 def demo():
     """Run a quick demo of the security daemon."""
@@ -41,27 +40,25 @@ def demo():
     print()
     print("-" * 70)
     print()
-    
+
     # Initialize daemon
-    daemon = SecurityDaemon(
-        log_dir="/tmp/umcp_security_demo/logs",
-        state_dir="/tmp/umcp_security_demo/state",
-        check_interval=0.5
+    SecurityDaemon(
+        log_dir="/tmp/umcp_security_demo/logs", state_dir="/tmp/umcp_security_demo/state", check_interval=0.5
     )
-    
+
     # Initialize response engine
     response_engine = ResponseEngine(
         quarantine_dir="/tmp/umcp_security_demo/quarantine",
-        dry_run=True  # Don't actually quarantine in demo
+        dry_run=True,  # Don't actually quarantine in demo
     )
-    
+
     print("✓ Daemon initialized")
     print("✓ Response engine initialized")
     print()
     print("Simulating background monitoring...")
     print("(In production, this would run 24/7)")
     print()
-    
+
     # Simulate some file validations
     test_files = [
         ("/usr/bin/python3", "trusted_system_binary"),
@@ -69,10 +66,10 @@ def demo():
         ("/tmp/suspicious.exe", "suspicious_file"),
         ("/tmp/malware.bin", "malicious_file"),
     ]
-    
+
     for file_path, description in test_files:
         print(f"Validating: {file_path} ({description})")
-        
+
         # Simulate signal collection and validation
         if "python3" in file_path:
             # System binary - high trust
@@ -94,7 +91,7 @@ def demo():
             signals = [0.15, 0.10, 0.12, 0.08]
             T, tau_A = 0.11, "INF_ANOMALY"
             status = "BLOCKED"
-        
+
         # Make response decision
         decision = response_engine.decide_action(
             entity_id=f"file:{file_path}",
@@ -102,30 +99,30 @@ def demo():
             validation_status=status,
             T=T,
             tau_A=tau_A,
-            threat_type="computed_from_invariants"
+            threat_type="computed_from_invariants",
         )
-        
+
         print(f"  Signals: {signals}")
         print(f"  T (Trust): {T:.3f}")
         print(f"  τ_A (Return Time): {tau_A}")
         print(f"  → Action: {decision.action.value}")
         print(f"  → Reason: {decision.reason}")
         print()
-    
+
     print("-" * 70)
     print()
     print("Response Summary:")
     summary = response_engine.get_summary()
     print(f"  Total Decisions: {summary['total_decisions']}")
-    print(f"  Actions Taken:")
-    for action, count in summary['action_counts'].items():
+    print("  Actions Taken:")
+    for action, count in summary["action_counts"].items():
         print(f"    - {action}: {count}")
     print()
-    print(f"  Escalation Levels:")
-    for level, count in summary['escalation_counts'].items():
+    print("  Escalation Levels:")
+    for level, count in summary["escalation_counts"].items():
         print(f"    - {level}: {count}")
     print()
-    
+
     print("=" * 70)
     print("Demo Complete")
     print()
