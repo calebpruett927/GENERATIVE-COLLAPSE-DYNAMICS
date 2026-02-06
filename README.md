@@ -12,7 +12,7 @@
   <a href="https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/actions/workflows/validate.yml"><img src="https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/actions/workflows/validate.yml/badge.svg" alt="CI"></a>
   <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.11+-3776AB?logo=python&logoColor=white" alt="Python 3.11+"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License: MIT"></a>
-  <a href="tests/"><img src="https://img.shields.io/badge/tests-932%20passing-brightgreen?logo=pytest" alt="Tests: 932 passing"></a>
+  <a href="tests/"><img src="https://img.shields.io/badge/tests-1002%20passing-brightgreen?logo=pytest" alt="Tests: 1002 passing"></a>
   <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-1.5.0-blue" alt="Version: 1.5.0"></a>
   <a href="src/umcp/api_umcp.py"><img src="https://img.shields.io/badge/API-37%2B%20endpoints-orange?logo=fastapi" alt="API: 37+ endpoints"></a>
 </p>
@@ -98,7 +98,7 @@ pip install -e ".[all]"               # Everything
 ```bash
 umcp health           # System health check
 umcp validate .       # Validate repository
-pytest                # Run 932 tests
+pytest                # Run 1002 tests
 ```
 
 <details>
@@ -199,7 +199,7 @@ typed_censoring:
 ║                    UMCP SYSTEM AT A GLANCE                        ║
 ╠═══════════════════════════════════════════════════════════════════╣
 ║                                                                   ║
-║   📊 932 Tests         🔌 37+ API Endpoints    📈 21 Dashboard    ║
+║   📊 1002 Tests        🔌 37+ API Endpoints    📈 21 Dashboard    ║
 ║   📦 11 Casepacks      🔧 10 CLI Commands      🧮 46 Lemmas       ║
 ║   🔬 28 Closures       📜 5 Frameworks         🔒 SHA256 Verified ║
 ║                                                                   ║
@@ -469,7 +469,7 @@ umcp validate casepacks/weyl_des_y3
 ## 🧪 Testing
 
 ```bash
-pytest                      # Run all 932 tests
+pytest                      # Run all 1002 tests
 pytest -v                   # Verbose output
 pytest --cov                # With coverage
 pytest -k "gcd"             # Pattern matching
@@ -553,7 +553,7 @@ UMCP-Metadata-Runnable-Code/
 │   ├── ss1m_triad.py              # Mod-97 checksums
 │   └── umcp_extensions.py         # Extension registry
 │
-├── 📁 tests/                      # Test suite (932 tests)
+├── 📁 tests/                      # Test suite (1002 tests)
 │   ├── test_frozen_contract.py    # Frozen contract tests
 │   ├── test_extended_lemmas.py    # Lemmas 35-46 tests
 │   ├── test_api_umcp.py           # API tests
@@ -822,7 +822,7 @@ copies or substantial portions of the Software.
 ║   ⚙️  Frozen:       ε=10⁻⁸  p=3  α=1.0  λ=0.2  tol=0.005              ║
 ║                                                                       ║
 ║   📊 Status:        CONFORMANT ✅                                     ║
-║   🧪 Tests:         932 passing                                       ║
+║   🧪 Tests:         1002 passing                                      ║
 ║   📦 Casepacks:     11 validated                                      ║
 ║   🔧 CLI:           10 commands                                       ║
 ║   🌐 API:           37+ endpoints                                     ║

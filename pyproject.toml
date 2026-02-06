@@ -148,11 +148,11 @@ api = "umcp.api_umcp:app"
 visualization = "umcp.dashboard:main"
 
 [tool.setuptools]
-package-dir = {"" = "src"}
+package-dir = {"" = "src", "closures" = "closures"}
 
 [tool.setuptools.packages.find]
-where = ["src"]
-include = ["umcp*"]
+where = ["src", "."]
+include = ["umcp*", "closures*"]
 
 [tool.setuptools.package-data]
 umcp = [
@@ -161,6 +161,10 @@ umcp = [
   "../closures/**/*.py",
   "../schemas/*.json",
   "../canon/*.yaml"
+]
+closures = [
+  "**/*.py",
+  "**/*.yaml"
 ]
 
 # Auto-discovery of extensions

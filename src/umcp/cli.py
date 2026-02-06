@@ -334,7 +334,17 @@ def _relpath(repo_root: Path, p: Path) -> str:
 def _append_to_ledger(repo_root: Path, run_status: str, invariants_data: dict[str, Any] | None = None) -> None:
     """
     Append validation result to continuous ledger at ledger/return_log.csv.
-    Records: timestamp, run_status, Δκ (delta_kappa), s (stiffness), and optional observables.
+    Records: timestamp, run_status, and all kernel invariants (F, ω, κ, IC, C, S, τ_R).
+    
+    Extended columns (per KERNEL_SPECIFICATION.md):
+    - F: Fidelity (arithmetic mean)
+    - omega: Drift (1 - F)
+    - kappa: Log-integrity (Σwᵢ ln cᵢ)
+    - IC: Integrity Composite (exp κ)
+    - C: Curvature proxy
+    - S: Shannon entropy
+    - tau_R: Return time (∞ if no return)
+    - delta_kappa: Seam accounting Δκ
     """
     ledger_dir = repo_root / "ledger"
     ledger_path = ledger_dir / "return_log.csv"
@@ -345,33 +355,45 @@ def _append_to_ledger(repo_root: Path, run_status: str, invariants_data: dict[st
     # Check if we need to write header
     write_header = not ledger_path.exists() or ledger_path.stat().st_size == 0
 
-    # Prepare row data
+    # Prepare row data with ALL kernel invariants
     timestamp = _utc_now_iso()
     row = {
         "timestamp": timestamp,
         "run_status": run_status,
-        "delta_kappa": "",
-        "stiffness": "",
+        "F": "",
         "omega": "",
-        "curvature": "",
+        "kappa": "",
+        "IC": "",
+        "C": "",
+        "S": "",
+        "tau_R": "",
+        "delta_kappa": "",
     }
 
     # Extract invariants if available
     if invariants_data:
-        row["delta_kappa"] = invariants_data.get("delta_kappa", "")
-        row["stiffness"] = invariants_data.get("S", "")
+        row["F"] = invariants_data.get("F", "")
         row["omega"] = invariants_data.get("omega", "")
-        row["curvature"] = invariants_data.get("C", "")
+        row["kappa"] = invariants_data.get("kappa", invariants_data.get("log_ic", ""))
+        row["IC"] = invariants_data.get("IC", invariants_data.get("integrity_composite", ""))
+        row["C"] = invariants_data.get("C", invariants_data.get("curvature", ""))
+        row["S"] = invariants_data.get("S", invariants_data.get("stiffness", ""))
+        row["tau_R"] = invariants_data.get("tau_R", invariants_data.get("return_time", ""))
+        row["delta_kappa"] = invariants_data.get("delta_kappa", "")
 
     # Append to ledger
     with open(ledger_path, "a", newline="", encoding="utf-8") as f:
         fieldnames = [
             "timestamp",
             "run_status",
-            "delta_kappa",
-            "stiffness",
+            "F",
             "omega",
-            "curvature",
+            "kappa",
+            "IC",
+            "C",
+            "S",
+            "tau_R",
+            "delta_kappa",
         ]
         writer = csv.DictWriter(f, fieldnames=fieldnames)
 

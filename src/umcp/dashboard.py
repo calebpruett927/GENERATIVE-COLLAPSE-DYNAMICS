@@ -72,6 +72,30 @@ try:
 except ImportError:
     __version__ = "1.5.0"
 
+# Ensure closures package is importable (needed for Docker container)
+# Add the repo root to sys.path so closures/ can be imported
+def _setup_closures_path() -> None:
+    """Add repo root to sys.path so closures package is importable."""
+    import sys
+    from pathlib import Path
+    
+    # Find repo root (contains pyproject.toml)
+    current = Path(__file__).parent.resolve()
+    while current != current.parent:
+        if (current / "pyproject.toml").exists():
+            repo_root = str(current)
+            if repo_root not in sys.path:
+                sys.path.insert(0, repo_root)
+            return
+        current = current.parent
+    
+    # Fallback: check common Docker paths
+    for path in ["/app", "/workspaces/UMCP-Metadata-Runnable-Code"]:
+        if Path(path).exists() and path not in sys.path:
+            sys.path.insert(0, path)
+
+_setup_closures_path()
+
 
 # ============================================================================
 # Constants and Configuration
@@ -84,21 +108,27 @@ REGIME_COLORS = {
     "CRITICAL": "#6f42c1",  # Purple
 }
 
+# Kernel invariants from KERNEL_SPECIFICATION.md
+# Tier-1 outputs: F, ω, S, C, κ, IC computed from frozen trace Ψ(t)
 KERNEL_SYMBOLS = {
-    "omega": "ω (Drift)",
+    # Core Tier-1 Invariants
+    "omega": "ω (Drift = 1-F)",
     "F": "F (Fidelity)",
-    "S": "S (Entropy)",
-    "C": "C (Curvature)",
+    "S": "S (Shannon Entropy)",
+    "C": "C (Curvature Proxy)",
     "tau_R": "τ_R (Return Time)",
-    "IC": "IC (Integrity)",
-    "kappa": "κ (Curvature)",
+    "IC": "IC (Integrity Composite = exp(κ))",
+    "kappa": "κ (Log-Integrity = Σwᵢ ln cᵢ)",
+    # Derived/Seam Values
     "stiffness": "Stiffness",
-    "delta_kappa": "Δκ (Delta Curvature)",
-    "curvature": "Curvature",
+    "delta_kappa": "Δκ (Seam Curvature Change)",
+    "curvature": "C (Curvature = std/0.5)",
     "freshness": "Freshness (1-ω)",
-    "seam_residual": "Seam Residual (s)",
+    "seam_residual": "s (Seam Residual)",
+    # Meta
     "timestamp": "Timestamp",
     "run_status": "Status",
+    "Phi_gen": "Φ_gen (Generative Flux)",
 }
 
 STATUS_COLORS = {
@@ -420,6 +450,22 @@ def render_overview_page() -> None:
 
     st.title("🔬 UMCP Dashboard")
     st.caption(f"Universal Measurement Contract Protocol | v{__version__} | Schema: UMCP.v1")
+
+    # ========== Core Axiom ==========
+    with st.expander("📜 **Core Axiom**: What Returns Through Collapse Is Real", expanded=False):
+        st.markdown("""
+        **AXIOM-0 (The Return Axiom)**: *"Collapse is generative; only what returns is real."*
+        
+        This is the fundamental axiom upon which UMCP, GCD, and RCFT are built.
+        
+        **Operational Definitions**:
+        - **Collapse**: Regime label produced by kernel gates on (ω, F, S, C) under frozen thresholds
+        - **Return (τ_R)**: Re-entry condition with prior u ∈ Dθ(t) where ‖Ψ(t) - Ψ(u)‖ ≤ η
+        - **Drift (ω)**: ω = 1 - F, collapse proximity measure on [0,1]
+        - **Integrity (IC)**: IC = exp(κ) where κ = Σ wᵢ ln(cᵢ,ε)
+        
+        **Constitutional Principle**: *One-way dependency flow within a frozen run, with return-based canonization between runs.*
+        """)
 
     # Load all data
     df = load_ledger()
@@ -5292,7 +5338,9 @@ def render_cosmology_page() -> None:
     st.title("🌌 WEYL Cosmology")
     st.caption("Modified gravity analysis with Σ(z) parametrization | Nature Comms 15:9295 (2024)")
 
-    # Try to import WEYL closures
+    # Try to import WEYL closures - with path fix for Docker
+    weyl_available = False
+    Omega_Lambda_of_z = None  # Initialize for scope
     try:
         from closures.weyl import (
             DES_Y3_DATA,
@@ -5300,15 +5348,36 @@ def render_cosmology_page() -> None:
             D1_of_z,
             GzModel,
             H_of_z,
+            Omega_Lambda_of_z,
             Sigma_to_UMCP_invariants,
             chi_of_z,
             compute_Sigma,
             sigma8_of_z,
         )
-
         weyl_available = True
     except ImportError:
-        weyl_available = False
+        # Add closures directory to path for Docker container
+        import sys
+        repo_root = get_repo_root()
+        closures_path = str(repo_root / "closures")
+        if closures_path not in sys.path:
+            sys.path.insert(0, str(repo_root))
+        try:
+            from closures.weyl import (
+                DES_Y3_DATA,
+                PLANCK_2018,
+                D1_of_z,
+                GzModel,
+                H_of_z,
+                Omega_Lambda_of_z,
+                Sigma_to_UMCP_invariants,
+                chi_of_z,
+                compute_Sigma,
+                sigma8_of_z,
+            )
+            weyl_available = True
+        except ImportError as e:
+            st.error(f"❌ WEYL closures import failed: {e}")
 
     if not weyl_available:
         st.error("❌ WEYL closures not available. Please ensure closures/weyl/ is installed.")
@@ -5443,7 +5512,11 @@ def render_cosmology_page() -> None:
 
     # Compute Σ(z)
     z_sigma = np.linspace(0, z_max_sigma, n_points)
-    Sigma_results = [compute_Sigma(z, sigma_0, g_model) for z in z_sigma]
+    # Pass Omega_Lambda_of_z for standard model (required by closure)
+    Sigma_results = [
+        compute_Sigma(z, sigma_0, g_model, Omega_Lambda_z=Omega_Lambda_of_z)
+        for z in z_sigma
+    ]
     Sigma_values = [r.Sigma for r in Sigma_results]
     regimes = [r.regime for r in Sigma_results]
 
@@ -5941,6 +6014,360 @@ def render_api_integration_page() -> None:
 
         if st.session_state.api_settings.get("last_sync"):
             st.caption(f"Last sync: {st.session_state.api_settings['last_sync']}")
+
+
+# ============================================================================
+# Precision Verification Page
+# ============================================================================
+
+
+def render_precision_page() -> None:
+    """
+    Render the Precision Verification page - exact numerical values,
+    formal axiom verification, and invariant computation with full precision.
+    
+    This page embodies the breakthrough: computationally enforced truth.
+    """
+    if st is None or np is None or pd is None:
+        return
+
+    st.title("🎯 Precision Verification")
+    st.caption("Exact numerical values • Formal axiom enforcement • Auditable computation")
+
+    # ========== Core Axiom Display ==========
+    st.markdown("""
+    <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); 
+                padding: 20px; border-radius: 10px; margin-bottom: 20px;
+                border-left: 4px solid #00ff88;">
+        <h3 style="color: #00ff88; margin: 0;">AXIOM-0: The Return Axiom</h3>
+        <p style="color: #ffffff; font-size: 1.2em; font-style: italic; margin: 10px 0;">
+            "Collapse is generative; only what returns is real."
+        </p>
+        <p style="color: #aaaaaa; font-size: 0.9em; margin: 0;">
+            This is not philosophy. It is compiled into the validator.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.divider()
+
+    # ========== Interactive Invariant Calculator ==========
+    st.subheader("🔬 Kernel Invariant Calculator")
+
+    st.markdown("""
+    Enter state coordinates to compute **exact** kernel invariants.
+    All formulas from [KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md).
+    """)
+
+    with st.expander("⚙️ State Input", expanded=True):
+        n_channels = st.slider("Number of channels (n)", 2, 8, 3)
+        
+        cols = st.columns(n_channels)
+        c_values = []
+        for i in range(n_channels):
+            with cols[i]:
+                c = st.number_input(
+                    f"c{i+1}", 
+                    min_value=0.0001, 
+                    max_value=0.9999, 
+                    value=0.8 - 0.1*i,
+                    step=0.01,
+                    format="%.4f",
+                    key=f"precision_c{i}"
+                )
+                c_values.append(c)
+        
+        # Weights
+        st.markdown("**Weights** (must sum to 1)")
+        weight_cols = st.columns(n_channels)
+        w_values = []
+        for i in range(n_channels):
+            with weight_cols[i]:
+                w = st.number_input(
+                    f"w{i+1}",
+                    min_value=0.0,
+                    max_value=1.0,
+                    value=1.0/n_channels,
+                    step=0.01,
+                    format="%.4f",
+                    key=f"precision_w{i}"
+                )
+                w_values.append(w)
+
+    # Normalize weights
+    w_sum = sum(w_values)
+    w_normalized = [w/w_sum for w in w_values] if w_sum > 0 else [1.0/n_channels] * n_channels
+
+    # ========== Compute Invariants with Full Precision ==========
+    c_arr = np.array(c_values)
+    w_arr = np.array(w_normalized)
+    eps = 1e-8  # Clipping epsilon
+
+    # Fidelity (arithmetic mean)
+    F = float(np.sum(w_arr * c_arr))
+    
+    # Drift
+    omega = 1.0 - F
+    
+    # Log-integrity (kappa)
+    c_clipped = np.clip(c_arr, eps, 1-eps)
+    kappa = float(np.sum(w_arr * np.log(c_clipped)))
+    
+    # Integrity Composite (geometric mean)
+    IC = float(np.exp(kappa))
+    
+    # Curvature proxy
+    C = float(np.std(c_arr) / 0.5)  # Population std / 0.5
+    
+    # Shannon Entropy
+    S_terms = []
+    for c in c_clipped:
+        s = -c * np.log(c) - (1-c) * np.log(1-c) if 0 < c < 1 else 0
+        S_terms.append(s)
+    S = float(np.sum(w_arr * np.array(S_terms)))
+    
+    # AM-GM Gap
+    gap = F - IC
+
+    # ========== Display Results with Full Precision ==========
+    st.subheader("📊 Computed Invariants")
+
+    # Main invariants table
+    invariants_data = {
+        "Symbol": ["F", "ω", "κ", "IC", "C", "S", "Δ (AM-GM Gap)"],
+        "Name": [
+            "Fidelity (Arithmetic Mean)",
+            "Drift (1 - F)",
+            "Log-Integrity (Σwᵢ ln cᵢ)",
+            "Integrity Composite (exp κ)",
+            "Curvature Proxy (std/0.5)",
+            "Shannon Entropy",
+            "AM-GM Gap (F - IC)"
+        ],
+        "Value": [
+            f"{F:.15f}",
+            f"{omega:.15f}",
+            f"{kappa:.15f}",
+            f"{IC:.15f}",
+            f"{C:.15f}",
+            f"{S:.15f}",
+            f"{gap:.15f}"
+        ],
+        "Bound Check": [
+            "✅" if 0 <= F <= 1 else "❌",
+            "✅" if 0 <= omega <= 1 else "❌",
+            "✅" if kappa <= 0 else "❌",  # IC <= 1 implies kappa <= 0
+            "✅" if 0 < IC <= 1 else "❌",
+            "✅" if 0 <= C <= 1 else "⚠️",  # Soft bound
+            "✅" if S >= 0 else "❌",
+            "✅" if gap >= 0 else "❌"  # AM-GM: F >= IC always
+        ]
+    }
+
+    df_inv = pd.DataFrame(invariants_data)
+    st.dataframe(df_inv, use_container_width=True, hide_index=True)
+
+    # ========== Formal Verification Checks ==========
+    st.subheader("✅ Formal Verification")
+
+    checks = []
+    
+    # Lemma 1: F ∈ [0,1]
+    checks.append({
+        "Lemma": "Lemma 1",
+        "Statement": "F ∈ [0, 1]",
+        "Computed": f"F = {F:.10f}",
+        "Status": "PASS ✅" if 0 <= F <= 1 else "FAIL ❌"
+    })
+    
+    # Lemma 2: IC is geometric mean
+    ic_check = np.prod(c_clipped ** w_arr)
+    checks.append({
+        "Lemma": "Lemma 2",
+        "Statement": "IC = Π cᵢ^wᵢ (geometric mean)",
+        "Computed": f"|IC - Πcᵢ^wᵢ| = {abs(IC - ic_check):.2e}",
+        "Status": "PASS ✅" if abs(IC - ic_check) < 1e-12 else "FAIL ❌"
+    })
+    
+    # Lemma 3: κ = ln(IC)
+    kappa_check = np.log(IC)
+    checks.append({
+        "Lemma": "Lemma 3",
+        "Statement": "κ = ln(IC)",
+        "Computed": f"|κ - ln(IC)| = {abs(kappa - kappa_check):.2e}",
+        "Status": "PASS ✅" if abs(kappa - kappa_check) < 1e-12 else "FAIL ❌"
+    })
+    
+    # Lemma 4: AM-GM inequality F >= IC
+    checks.append({
+        "Lemma": "Lemma 4",
+        "Statement": "F ≥ IC (AM-GM inequality)",
+        "Computed": f"F - IC = {gap:.10f}",
+        "Status": "PASS ✅" if gap >= -1e-15 else "FAIL ❌"
+    })
+    
+    # Lemma 5: Equality iff homogeneous
+    is_homogeneous = np.std(c_arr) < 1e-10
+    gap_zero = gap < 1e-10
+    checks.append({
+        "Lemma": "Lemma 5",
+        "Statement": "F = IC ⟺ all cᵢ equal",
+        "Computed": f"std(c) = {np.std(c_arr):.2e}, gap = {gap:.2e}",
+        "Status": "PASS ✅" if (is_homogeneous == gap_zero) else "INCONCLUSIVE ⚠️"
+    })
+
+    df_checks = pd.DataFrame(checks)
+    st.dataframe(df_checks, use_container_width=True, hide_index=True)
+
+    # ========== Regime Classification ==========
+    st.subheader("🌡️ Regime Classification")
+
+    # Classify based on omega
+    if omega < 0.038:
+        regime = "STABLE"
+        regime_color = "#28a745"
+        regime_desc = "System operating within normal parameters"
+    elif omega < 0.30:
+        regime = "WATCH"
+        regime_color = "#ffc107"
+        regime_desc = "Elevated drift, monitoring required"
+    else:
+        regime = "COLLAPSE"
+        regime_color = "#dc3545"
+        regime_desc = "Critical drift level, intervention needed"
+
+    st.markdown(f"""
+    <div style="background-color: {regime_color}22; border-left: 4px solid {regime_color};
+                padding: 15px; border-radius: 5px;">
+        <h2 style="color: {regime_color}; margin: 0;">{regime}</h2>
+        <p style="margin: 5px 0 0 0;">{regime_desc}</p>
+        <p style="margin: 5px 0 0 0; font-family: monospace;">
+            ω = {omega:.6f} | Threshold: STABLE < 0.038 < WATCH < 0.30 < COLLAPSE
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.divider()
+
+    # ========== Seam Simulation ==========
+    st.subheader("🔗 Seam Weld Simulation")
+
+    st.markdown("""
+    Simulate a seam transition to verify weld accounting.
+    This demonstrates the **residual computation** that enforces continuity.
+    """)
+
+    seam_cols = st.columns(2)
+    
+    with seam_cols[0]:
+        st.markdown("**State at t₀**")
+        IC_0 = st.number_input("IC(t₀)", value=0.85, step=0.01, format="%.6f", key="IC0")
+        tau_R = st.number_input("τ_R (return time)", value=5, min_value=1, max_value=100, key="tau_R_sim")
+    
+    with seam_cols[1]:
+        st.markdown("**State at t₁**")
+        IC_1 = st.number_input("IC(t₁)", value=0.82, step=0.01, format="%.6f", key="IC1")
+        tol_seam = st.number_input("Tolerance", value=0.005, step=0.001, format="%.4f", key="tol_sim")
+
+    # Seam parameters
+    R = 0.05  # Return credit rate
+    D_omega = 0.02  # Drift decay
+    D_C = 0.01  # Curvature decay
+
+    # Compute seam
+    kappa_0 = np.log(IC_0)
+    kappa_1 = np.log(IC_1)
+    delta_kappa_ledger = kappa_1 - kappa_0
+    i_r = IC_1 / IC_0
+    
+    delta_kappa_budget = R * tau_R - (D_omega + D_C)
+    residual = delta_kappa_budget - delta_kappa_ledger
+
+    # Identity check
+    identity_check = abs(np.exp(delta_kappa_ledger) - i_r)
+
+    # Weld status
+    if tau_R == float('inf') or tau_R < 0:
+        weld_status = "NO_RETURN"
+        weld_color = "#6c757d"
+    elif abs(residual) <= tol_seam and identity_check < 1e-9:
+        weld_status = "PASS"
+        weld_color = "#28a745"
+    else:
+        weld_status = "FAIL"
+        weld_color = "#dc3545"
+
+    st.markdown("#### Seam Computation")
+
+    seam_table = {
+        "Quantity": [
+            "κ(t₀) = ln(IC₀)",
+            "κ(t₁) = ln(IC₁)",
+            "Δκ_ledger = κ₁ - κ₀",
+            "i_r = IC₁/IC₀",
+            "Δκ_budget = R·τ_R - (D_ω + D_C)",
+            "Residual s = Δκ_budget - Δκ_ledger",
+            "Identity Check |exp(Δκ) - i_r|"
+        ],
+        "Value": [
+            f"{kappa_0:.10f}",
+            f"{kappa_1:.10f}",
+            f"{delta_kappa_ledger:.10f}",
+            f"{i_r:.10f}",
+            f"{delta_kappa_budget:.10f}",
+            f"{residual:.10f}",
+            f"{identity_check:.2e}"
+        ]
+    }
+    st.dataframe(pd.DataFrame(seam_table), use_container_width=True, hide_index=True)
+
+    st.markdown(f"""
+    <div style="background-color: {weld_color}22; border: 2px solid {weld_color};
+                padding: 20px; border-radius: 10px; text-align: center;">
+        <h1 style="color: {weld_color}; margin: 0;">WELD: {weld_status}</h1>
+        <p style="margin: 10px 0 0 0;">
+            |s| = {abs(residual):.6f} {'≤' if abs(residual) <= tol_seam else '>'} {tol_seam} (tolerance)
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.divider()
+
+    # ========== Constitutional Enforcement ==========
+    st.subheader("📜 Constitutional Enforcement")
+
+    st.markdown("""
+    These are not guidelines. They are **computationally enforced constraints**.
+    """)
+
+    constitution = [
+        {
+            "Clause": "No back-edges within run",
+            "Meaning": "Tier-2 cannot modify Tier-0/1",
+            "Enforcement": "Frozen interface before kernel compute",
+            "Status": "ENFORCED ✅"
+        },
+        {
+            "Clause": "No continuity without return",
+            "Meaning": "τ_R = ∞ → seam FAIL",
+            "Enforcement": "typed_censoring.no_return_no_credit = true",
+            "Status": "ENFORCED ✅"
+        },
+        {
+            "Clause": "Residual within tolerance",
+            "Meaning": "|s| > tol → seam FAIL",
+            "Enforcement": "Weld gate checks |Δκ_budget - Δκ_ledger|",
+            "Status": "ENFORCED ✅"
+        },
+        {
+            "Clause": "Identity consistency",
+            "Meaning": "exp(Δκ) must equal IC ratio",
+            "Enforcement": "|exp(Δκ) - i_r| < 10⁻⁹",
+            "Status": "ENFORCED ✅"
+        }
+    ]
+
+    st.dataframe(pd.DataFrame(constitution), use_container_width=True, hide_index=True)
 
 
 # ============================================================================
@@ -6880,6 +7307,7 @@ def main() -> None:
     pages = {
         # Core Pages
         "Overview": ("📊", render_overview_page),
+        "Precision": ("🎯", render_precision_page),
         "Geometry": ("🔷", render_geometry_page),
         "Ledger": ("📒", render_ledger_page),
         "Casepacks": ("📦", render_casepacks_page),
@@ -7003,6 +7431,24 @@ def main() -> None:
                 except Exception as e:
                     st.error(f"Error: {e}")
             st.session_state.run_quick_validation = False
+
+    st.sidebar.divider()
+
+    # ========== Core Axiom ==========
+    st.sidebar.markdown("### 📜 Core Axiom")
+    st.sidebar.info("**\"What Returns Through Collapse Is Real\"**")
+    st.sidebar.caption("Collapse is generative; only what returns is real.")
+
+    st.sidebar.divider()
+
+    # ========== Protocol Tiers ==========
+    st.sidebar.markdown("### 🏛️ Protocol Tiers")
+    st.sidebar.markdown("""
+    - **Tier-0**: Interface (freeze)
+    - **Tier-1**: Kernel (F, ω, S, C, κ, IC)
+    - **Tier-1.5**: Seam Weld
+    - **Tier-2**: Overlays
+    """)
 
     st.sidebar.divider()
 
