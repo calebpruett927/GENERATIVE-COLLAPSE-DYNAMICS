@@ -114,7 +114,8 @@ print("                               that is actually modified gravity")
 
 z_eval = np.array([0.2, 0.3, 0.5, 0.7, 1.0, 1.5, 2.0])
 
-print(f"\n  {'z':>5}  {'Σ(z)':>8}  {'M_lens/M_true':>14}  {'f_gravity':>12}  {'% \"DM\" that is MG':>20}")
+_dm_hdr = '% "DM" that is MG'
+print(f"\n  {'z':>5}  {'Σ(z)':>8}  {'M_lens/M_true':>14}  {'f_gravity':>12}  {_dm_hdr:>20}")
 print("  " + "-" * 65)
 
 mass_bias_results: list = []
@@ -255,7 +256,7 @@ for log_M in [12.0, 13.0, 13.5, 14.0, 14.5, 15.0]:
         return np.sum((kappa_boosted - s * kf)**2)
 
     res = optimize.minimize_scalar(chi2_fit, bounds=(1, 30), method="bounded")
-    c_inf = float(res.x)
+    c_inf = float(res.x)  # type: ignore[union-attr]
     bias = (c_inf / c_dm - 1) * 100
 
     concentration_results.append({
