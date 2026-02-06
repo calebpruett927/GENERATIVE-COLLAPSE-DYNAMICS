@@ -189,6 +189,7 @@ def get_repo_root() -> Path:
     return Path.cwd()
 
 
+@st.cache_data(ttl=60)
 def load_ledger() -> Any:
     """Load the return log ledger as a DataFrame."""
     if pd is None:
@@ -210,6 +211,7 @@ def load_ledger() -> Any:
     return df
 
 
+@st.cache_data(ttl=60)
 def load_casepacks() -> list[dict[str, Any]]:
     """Load casepack information with extended metadata."""
     repo_root = get_repo_root()
@@ -284,6 +286,7 @@ def load_casepacks() -> list[dict[str, Any]]:
     return casepacks
 
 
+@st.cache_data(ttl=60)
 def load_contracts() -> list[dict[str, Any]]:
     """Load contract information with extended metadata."""
     repo_root = get_repo_root()
@@ -315,6 +318,7 @@ def load_contracts() -> list[dict[str, Any]]:
     return contracts
 
 
+@st.cache_data(ttl=60)
 def load_closures() -> list[dict[str, Any]]:
     """Load closure information."""
     repo_root = get_repo_root()
@@ -325,22 +329,32 @@ def load_closures() -> list[dict[str, Any]]:
 
     closures: list[dict[str, Any]] = []
 
-    # Python closures
-    for closure_path in sorted(closures_dir.glob("*.py")):
+    def _infer_domain(path: Path) -> str:
+        """Infer domain from file name or parent directory name."""
+        # Check parent directory name first (e.g., closures/gcd/, closures/rcft/)
+        rel = path.relative_to(closures_dir)
+        parts_lower = [p.lower() for p in rel.parts]
+        combined = " ".join(parts_lower)
+        if "gcd" in combined or "curvature" in combined or "gamma" in combined:
+            return "GCD"
+        if "kin" in combined:
+            return "KIN"
+        if "rcft" in combined:
+            return "RCFT"
+        if "weyl" in combined:
+            return "WEYL"
+        if "security" in combined:
+            return "SECURITY"
+        return "unknown"
+
+    # Python closures (recursive)
+    for closure_path in sorted(closures_dir.rglob("*.py")):
         if closure_path.name.startswith("_"):
             continue
 
         name = closure_path.stem
         size_bytes = closure_path.stat().st_size
-
-        # Infer domain
-        domain = "unknown"
-        if "gcd" in name.lower():
-            domain = "GCD"
-        elif "kin" in name.lower():
-            domain = "KIN"
-        elif "rcft" in name.lower():
-            domain = "RCFT"
+        domain = _infer_domain(closure_path)
 
         # Count lines
         with open(closure_path) as f:
@@ -357,19 +371,14 @@ def load_closures() -> list[dict[str, Any]]:
             }
         )
 
-    # YAML closures
-    for closure_path in sorted(closures_dir.glob("*.yaml")):
+    # YAML closures (recursive)
+    for closure_path in sorted(closures_dir.rglob("*.yaml")):
         if closure_path.name == "registry.yaml":
             continue
 
         name = closure_path.stem
         size_bytes = closure_path.stat().st_size
-
-        domain = "unknown"
-        if "gcd" in name.lower() or "curvature" in name.lower() or "gamma" in name.lower():
-            domain = "GCD"
-        elif "kin" in name.lower():
-            domain = "KIN"
+        domain = _infer_domain(closure_path)
 
         closures.append(
             {
@@ -4267,7 +4276,7 @@ def render_exports_page() -> None:
                         data=csv_data,
                         file_name=f"umcp_ledger_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
                         mime="text/csv",
-                        use_container_width=True,
+                        width="stretch",
                     )
                 with export_cols[1]:
                     json_data = df[columns].to_json(orient="records", indent=2)
@@ -4276,7 +4285,7 @@ def render_exports_page() -> None:
                         data=json_data,
                         file_name=f"umcp_ledger_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
                         mime="application/json",
-                        use_container_width=True,
+                        width="stretch",
                     )
                 with export_cols[2]:
                     # Excel requires openpyxl
@@ -4290,10 +4299,10 @@ def render_exports_page() -> None:
                             data=buffer.getvalue(),
                             file_name=f"umcp_ledger_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx",
                             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                            use_container_width=True,
+                            width="stretch",
                         )
                     except ImportError:
-                        st.button("📊 Excel (needs openpyxl)", disabled=True, use_container_width=True)
+                        st.button("📊 Excel (needs openpyxl)", disabled=True, width="stretch")
 
     with tab2:
         st.subheader("Casepack Reports")
@@ -4321,7 +4330,7 @@ def render_exports_page() -> None:
                         data=json.dumps(report, indent=2),
                         file_name=f"casepack_{selected_cp}_report.json",
                         mime="application/json",
-                        use_container_width=True,
+                        width="stretch",
                     )
 
     with tab3:
@@ -4373,7 +4382,7 @@ def render_exports_page() -> None:
                     data=html_buffer,
                     file_name=f"umcp_plot_{plot_type.lower().replace(' ', '_')}.html",
                     mime="text/html",
-                    use_container_width=True,
+                    width="stretch",
                 )
         else:
             st.info("No data available for plot generation.")
@@ -4381,7 +4390,7 @@ def render_exports_page() -> None:
     with tab4:
         st.subheader("Full System Report")
 
-        if st.button("🔄 Generate Full Report", use_container_width=True):
+        if st.button("🔄 Generate Full Report", width="stretch"):
             with st.spinner("Generating comprehensive report..."):
                 # Compile full report
                 df = load_ledger()
@@ -4429,7 +4438,7 @@ def render_exports_page() -> None:
                     data=json.dumps(report, indent=2, default=str),
                     file_name=f"umcp_full_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
                     mime="application/json",
-                    use_container_width=True,
+                    width="stretch",
                 )
 
 
@@ -4689,7 +4698,7 @@ def render_notifications_page() -> None:
     with col2:
         st.subheader("🔍 Current State Check")
 
-        if st.button("🔄 Check for Alerts Now", use_container_width=True):
+        if st.button("🔄 Check for Alerts Now", width="stretch"):
             df = load_ledger()
             alerts = []
 
@@ -4825,7 +4834,7 @@ def render_bookmarks_page() -> None:
             bookmark_tags = st.text_input("Tags (comma-separated)", placeholder="stable, baseline, v1.5")
             bookmark_notes = st.text_area("Notes", placeholder="Add any notes about this bookmark...")
 
-        submitted = st.form_submit_button("🔖 Save Bookmark", use_container_width=True)
+        submitted = st.form_submit_button("🔖 Save Bookmark", width="stretch")
 
         if submitted and bookmark_name:
             # Capture current state
@@ -4920,10 +4929,10 @@ def render_bookmarks_page() -> None:
                 data=json.dumps(st.session_state.bookmarks, indent=2, default=str),
                 file_name=f"umcp_bookmarks_{datetime.now().strftime('%Y%m%d')}.json",
                 mime="application/json",
-                use_container_width=True,
+                width="stretch",
             )
         with col2:
-            if st.button("🗑️ Clear All Bookmarks", use_container_width=True):
+            if st.button("🗑️ Clear All Bookmarks", width="stretch"):
                 st.session_state.bookmarks = []
                 st.rerun()
 
@@ -5186,7 +5195,7 @@ def render_formula_builder_page() -> None:
 
         formula_description = st.text_area("Description", placeholder="Describe what this formula calculates...")
 
-        submitted = st.form_submit_button("➕ Add Formula", use_container_width=True)
+        submitted = st.form_submit_button("➕ Add Formula", width="stretch")
 
         if submitted and formula_name and formula_expr and formula_params:
             params = [p.strip() for p in formula_params.split(",")]
@@ -5260,7 +5269,7 @@ def render_formula_builder_page() -> None:
                     )
 
             # Calculate
-            if st.button("🔢 Calculate", use_container_width=True):
+            if st.button("🔢 Calculate", width="stretch"):
                 try:
                     # Safe evaluation with numpy functions
                     safe_dict = {
@@ -5316,7 +5325,7 @@ def render_formula_builder_page() -> None:
             data=json.dumps(st.session_state.custom_formulas, indent=2),
             file_name="custom_formulas.json",
             mime="application/json",
-            use_container_width=True,
+            width="stretch",
         )
     else:
         st.info("No custom formulas saved yet.")
@@ -5438,7 +5447,7 @@ def render_cosmology_page() -> None:
             yaxis_title="H(z) [km/s/Mpc]",
             showlegend=True,
         )
-        st.plotly_chart(fig_H, use_container_width=True)
+        st.plotly_chart(fig_H, width="stretch")
 
     with bg_tabs[1]:
         fig_chi = go.Figure()
@@ -5451,7 +5460,7 @@ def render_cosmology_page() -> None:
             yaxis_title="χ(z) [Mpc/h]",
             showlegend=True,
         )
-        st.plotly_chart(fig_chi, use_container_width=True)
+        st.plotly_chart(fig_chi, width="stretch")
 
     with bg_tabs[2]:
         fig_growth = go.Figure()
@@ -5468,7 +5477,7 @@ def render_cosmology_page() -> None:
             yaxis_title="Value",
             showlegend=True,
         )
-        st.plotly_chart(fig_growth, use_container_width=True)
+        st.plotly_chart(fig_growth, width="stretch")
 
     st.divider()
 
@@ -5554,7 +5563,7 @@ def render_cosmology_page() -> None:
         yaxis={"range": [0.5, 1.6]},
         showlegend=True,
     )
-    st.plotly_chart(fig_sigma, use_container_width=True)
+    st.plotly_chart(fig_sigma, width="stretch")
 
     # Regime summary
     regime_counts = {}
@@ -5601,7 +5610,7 @@ def render_cosmology_page() -> None:
             "ĥJ (σ)": DES_Y3_DATA["hJ_cmb"]["sigma"],
         }
     )
-    st.dataframe(des_df, hide_index=True, use_container_width=True)
+    st.dataframe(des_df, hide_index=True, width="stretch")
 
     # Plot ĥJ measurements
     fig_hJ = go.Figure()
@@ -5621,7 +5630,7 @@ def render_cosmology_page() -> None:
         yaxis_title="ĥJ",
         showlegend=True,
     )
-    st.plotly_chart(fig_hJ, use_container_width=True)
+    st.plotly_chart(fig_hJ, width="stretch")
 
     st.divider()
 
@@ -5728,7 +5737,7 @@ def render_batch_validation_page() -> None:
     st.divider()
 
     # ========== Run Batch ==========
-    if st.button("🚀 Run Batch Validation", use_container_width=True, disabled=not selected_casepacks):
+    if st.button("🚀 Run Batch Validation", width="stretch", disabled=not selected_casepacks):
         results = []
         progress = st.progress(0, text="Starting batch validation...")
         status_container = st.container()
@@ -5901,7 +5910,7 @@ def render_api_integration_page() -> None:
         st.session_state.api_settings["url"] = api_url
 
     with col2:
-        if st.button("🔗 Test Connection", use_container_width=True):
+        if st.button("🔗 Test Connection", width="stretch"):
             try:
                 import urllib.error
                 import urllib.request
@@ -6162,7 +6171,7 @@ def render_precision_page() -> None:
     }
 
     df_inv = pd.DataFrame(invariants_data)
-    st.dataframe(df_inv, use_container_width=True, hide_index=True)
+    st.dataframe(df_inv, width="stretch", hide_index=True)
 
     # ========== Formal Verification Checks ==========
     st.subheader("✅ Formal Verification")
@@ -6224,7 +6233,7 @@ def render_precision_page() -> None:
     )
 
     df_checks = pd.DataFrame(checks)
-    st.dataframe(df_checks, use_container_width=True, hide_index=True)
+    st.dataframe(df_checks, width="stretch", hide_index=True)
 
     # ========== Regime Classification ==========
     st.subheader("🌡️ Regime Classification")
@@ -6329,7 +6338,7 @@ def render_precision_page() -> None:
             f"{identity_check:.2e}",
         ],
     }
-    st.dataframe(pd.DataFrame(seam_table), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(seam_table), width="stretch", hide_index=True)
 
     st.markdown(
         f"""
@@ -6380,7 +6389,7 @@ def render_precision_page() -> None:
         },
     ]
 
-    st.dataframe(pd.DataFrame(constitution), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(constitution), width="stretch", hide_index=True)
 
 
 # ============================================================================
@@ -6595,7 +6604,7 @@ def render_layer1_state_space() -> None:
             title=f"State Space Trajectory (η={eta})",
         )
 
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
     else:
         # 3D visualization
@@ -6655,7 +6664,7 @@ def render_layer1_state_space() -> None:
             title=f"3D State Space (η={eta})",
         )
 
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
     # ========== Return Statistics ==========
     st.markdown("#### Return Analysis")
@@ -6687,7 +6696,7 @@ def render_layer1_state_space() -> None:
         fig_hist.update_layout(
             height=250, xaxis_title="Return Time τ_R (steps)", yaxis_title="Count", title="Return Time Distribution"
         )
-        st.plotly_chart(fig_hist, use_container_width=True)
+        st.plotly_chart(fig_hist, width="stretch")
 
 
 def render_layer2_projections() -> None:
@@ -6784,7 +6793,7 @@ def render_layer2_projections() -> None:
             fig.add_hline(y=0.30, line_dash="dash", line_color="red", row=row, col=col)
 
     fig.update_layout(height=700, showlegend=False, title="Invariant Projections Over Time")
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
     # ========== Phase Space Views ==========
     st.markdown("#### Projection Phase Spaces")
@@ -6810,7 +6819,7 @@ def render_layer2_projections() -> None:
         fig_of.update_layout(
             height=350, xaxis_title="ω (Drift)", yaxis_title="F (Fidelity)", title="Drift-Fidelity Axis"
         )
-        st.plotly_chart(fig_of, use_container_width=True)
+        st.plotly_chart(fig_of, width="stretch")
 
     with phase_col2:
         # S vs C
@@ -6827,7 +6836,7 @@ def render_layer2_projections() -> None:
         fig_sc.update_layout(
             height=350, xaxis_title="S (Entropy)", yaxis_title="C (Curvature)", title="Entropy-Curvature Axis"
         )
-        st.plotly_chart(fig_sc, use_container_width=True)
+        st.plotly_chart(fig_sc, width="stretch")
 
     # ========== AM-GM Gap Visualization ==========
     st.markdown("#### AM-GM Gap Analysis")
@@ -6855,7 +6864,7 @@ def render_layer2_projections() -> None:
         title="AM-GM Gap: F ≥ IC (with equality iff homogeneous)",
         legend={"orientation": "h", "yanchor": "bottom", "y": 1.02},
     )
-    st.plotly_chart(fig_gap, use_container_width=True)
+    st.plotly_chart(fig_gap, width="stretch")
 
     st.caption("The gap Δ = F - IC quantifies state heterogeneity (Lemma 4, KERNEL_SPECIFICATION.md)")
 
@@ -7035,7 +7044,7 @@ def render_layer3_seam_graph() -> None:
         title="Seam Certification Graph (Green=PASS, Red=FAIL, Gray=NO_RETURN)",
     )
 
-    st.plotly_chart(fig_graph, use_container_width=True)
+    st.plotly_chart(fig_graph, width="stretch")
 
     # ========== Residual Distribution ==========
     st.markdown("#### Residual Analysis")
@@ -7056,7 +7065,7 @@ def render_layer3_seam_graph() -> None:
             fig_res.update_layout(
                 height=300, xaxis_title="Seam", yaxis_title="Residual s", title="Seam Residuals (orange = tolerance)"
             )
-            st.plotly_chart(fig_res, use_container_width=True)
+            st.plotly_chart(fig_res, width="stretch")
 
     with col2:
         # Summary metrics
@@ -7089,7 +7098,7 @@ def render_layer3_seam_graph() -> None:
 
     st.dataframe(
         display_df[["t0", "t1", "tau_R", "delta_kappa_ledger", "delta_kappa_budget", "residual", "status"]],
-        use_container_width=True,
+        width="stretch",
         hide_index=True,
     )
 
@@ -7220,7 +7229,7 @@ def render_unified_geometry_view() -> None:
     fig.update_yaxes(title_text="Regime", row=3, col=1, range=[0, 1], showticklabels=False)
     fig.update_xaxes(title_text="Time t", row=3, col=1)
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
     # ========== Flow Summary ==========
     st.markdown("#### Geometric Flow Summary")
@@ -7263,6 +7272,16 @@ def render_unified_geometry_view() -> None:
 # ============================================================================
 
 
+def _is_running_in_streamlit() -> bool:
+    """Check if we're running inside a Streamlit runtime context."""
+    try:
+        from streamlit.runtime.scriptrunner import get_script_run_ctx
+
+        return get_script_run_ctx() is not None
+    except ImportError:
+        return False
+
+
 def main() -> None:
     """Main dashboard application."""
     if not HAS_VIZ_DEPS:
@@ -7283,6 +7302,12 @@ def main() -> None:
         print("  streamlit run src/umcp/dashboard.py")
         print("━" * 60)
         sys.exit(1)
+
+    # If called from CLI (not inside Streamlit runtime), launch streamlit as subprocess
+    if not _is_running_in_streamlit():
+        dashboard_path = str(Path(__file__).resolve())
+        cmd = [sys.executable, "-m", "streamlit", "run", dashboard_path, "--server.headless", "true"]
+        sys.exit(subprocess.call(cmd))
 
     # st is guaranteed to be available here since HAS_VIZ_DEPS is True
     assert st is not None  # for type narrowing
@@ -7374,11 +7399,12 @@ def main() -> None:
         st.session_state.refresh_interval = st.sidebar.slider(
             "Refresh Interval (sec)", min_value=5, max_value=120, value=st.session_state.refresh_interval, step=5
         )
-        # Auto-refresh mechanism
+        # Auto-refresh: clear cached data and rerun after the configured interval
         import time
 
-        time.sleep(0.1)  # Small delay to prevent immediate rerun
-        st.rerun() if False else None  # Placeholder - actual refresh handled by streamlit
+        time.sleep(st.session_state.refresh_interval)
+        st.cache_data.clear()
+        st.rerun()
 
     st.sidebar.divider()
 

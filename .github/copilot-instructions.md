@@ -1,129 +1,96 @@
 # Copilot Instructions for UMCP-Metadata-Runnable-Code
 
-## Project Overview
-UMCP is a production-grade system for creating, validating, and sharing reproducible computational workflows. It enforces mathematical contracts, tracks provenance, generates cryptographic receipts, and validates results against frozen specifications. The system is organized around the concept of a "row"—a minimal publishable unit containing observations, rules, kernel outputs, and receipts.
+## What This Project Is
 
-### Core Axiom
-> **"What Returns Through Collapse Is Real"** — Reality is defined by what persists through collapse-reconstruction cycles.
+UMCP (Universal Measurement Contract Protocol) validates reproducible computational workflows against mathematical contracts. The unit of work is a **casepack** — a directory containing raw data, a contract reference, closures, and expected outputs. The validator checks schema conformance, Tier-1 kernel identities (F = 1 − ω, IC ≈ exp(κ), IC ≤ F), regime classification, and SHA256 integrity, producing a CONFORMANT/NONCONFORMANT verdict and appending to `ledger/return_log.csv`.
 
-### Core Principle
-> **One-way dependency flow within a frozen run, with return-based canonization between runs.**
+> **Core Axiom**: *"What Returns Through Collapse Is Real"* — Within-run: frozen causes only (no back-edges). Between-run: continuity only by return-weld (τ_R finite + seam residual within tolerance).
 
-- **Within-run**: Frozen causes only. The frozen interface determines the bounded trace Ψ(t); Tier-1 invariants are pure functions of that frozen trace; Tier-2 overlays may read Tier-1 outputs but cannot alter the interface, trace, or kernel definitions. No back-edges, no retroactive tuning.
-- **Between-run**: Continuity only by return-weld. New runs are canon-continuous with prior runs only if the seam returns (τ_R finite) and the weld closes (ledger–budget residual within tolerance + identity check).
+## Architecture
 
-### Constitutional Clauses (equivalent formulations)
-- "Within-run: frozen causes only. Between-run: continuity only by return-weld."
-- "Runs are deterministic under /freeze; canon is a graph whose edges require returned seam closure."
-- "No back-edges inside a run; no canon claims between runs without welded return."
-
-## Architecture & Key Components
-
-### Core System (No External Dependencies Beyond NumPy/SciPy/YAML/JSON)
-- **Core Python Files**: `src/umcp/validator.py`, `src/umcp/cli.py`, `src/umcp/umcp_extensions.py`
-- **Contracts**: Versioned YAML files in `contracts/` (e.g., `UMA.INTSTACK.v1.yaml`).
-- **Closures**: Explicit closure sets in `closures/` with registry in `closures/registry.yaml`.
-- **Casepacks**: Reference implementations and manifests in `casepacks/`.
-- **Ledger**: Continuous append log in `ledger/return_log.csv`.
-- **Schemas**: JSON schema definitions for contracts and closures in `schemas/`.
-- **Tests**: Comprehensive suite in `tests/` (pytest, 740+ tests).
-- **Validation Engine**: Pure Python validation with mathematical contract enforcement.
-
-### Communication Extensions (Optional - Fully Implemented)
-- **REST API**: ✅ FastAPI server for remote validation and ledger access
-  - Install with: `pip install umcp[api]`
-  - Run with: `umcp-api` or `uvicorn umcp.api_umcp:app --reload`
-  - Endpoints: `/health`, `/validate`, `/casepacks`, `/ledger`, `/contracts`, `/closures`
-- **Visualization**: ✅ Streamlit dashboard for interactive exploration
-  - Install with: `pip install umcp[viz]`
-  - Run with: `umcp-dashboard` or `streamlit run src/umcp/dashboard.py`
-  - 8 pages: Overview, Ledger, Casepacks, Contracts, Closures, Regime, Metrics, Health
-- **All Communications**: Install with `pip install umcp[communications]`
-
-### Extensions System (Fully Implemented)
-- **Extension Registry**: `src/umcp/umcp_extensions.py` - complete plugin system
-- **Extension CLI**: `umcp-ext list|info|check|install|run`
-- **Available Extensions**: api, visualization, ledger, formatter
-
-## Developer Workflows
-
-### Core Validation (No Extensions Required)
-- **Validation**: `umcp validate` or `python scripts/update_integrity.py` (run after changes to core files).
-- **Testing**: `pytest`, `pytest -v`, `pytest -k "gcd"`, `pytest --cov`.
-- **CI/CD**: Automated via GitHub Actions (`.github/workflows/validate.yml`).
-- **Code Style**: Enforced with `ruff`.
-
-### Communication Extensions
-- **API Server**: `umcp-api` or `umcp-ext run api`
-- **Dashboard**: `umcp-dashboard` or `umcp-ext run visualization`
-- **List Extensions**: `umcp-ext list`
-- **Check Dependencies**: `umcp-ext check api`
-
-## Installation Options
-
-```bash
-# Core validation engine only (minimal dependencies)
-pip install umcp
-
-# With API communication layer
-pip install umcp[api]
-
-# With visualization communication layer
-pip install umcp[viz]
-
-# With all communication extensions
-pip install umcp[communications]
-
-# Development environment
-pip install umcp[dev]
-
-# Everything
-pip install umcp[all]
+```
+src/umcp/
+├── cli.py              # 2500-line argparse CLI — validation engine, all subcommands
+├── validator.py        # Root-file validator (16 files, checksums, math identities)
+├── kernel_optimized.py # Lemma-based kernel computation (F, ω, S, C, κ, IC)
+├── constants.py        # Regime enum, frozen threshold dataclass, all math constants
+├── api_umcp.py         # [Optional] FastAPI REST extension (Pydantic models)
+├── dashboard.py        # [Optional] Streamlit dashboard (23 pages)
+├── umcp_extensions.py  # Protocol-based plugin system
+└── __init__.py         # Public API: validate() convenience function, __version__
 ```
 
-## Project-Specific Conventions
-- **Typed Boundary Values**: Do not coerce types (e.g., `tau_R = INF_REC` must remain typed).
-- **Registry Enforcement**: Closure registry must reference all files used in a run; missing/ambiguous registry breaks conformance.
-- **Custom Validation**: Add semantic rules in `validator_rules.yaml`.
-- **Publication Rows**: Use tools/scripts in `scripts/` and follow formats in `PUBLICATION_INFRASTRUCTURE.md`.
-- **Tier System**: See `TIER_SYSTEM.md` for interface/kernel/weld/overlay boundaries and dependency flow.
-- **Kernel Specification**: Mathematical invariants and implementation bounds in `KERNEL_SPECIFICATION.md`.
-- **Infrastructure Geometry**: See `INFRASTRUCTURE_GEOMETRY.md` for the three-layer geometric architecture (state space → projections → seam graph) and what the infrastructure "holds" (portable state, geometry, coordinates, partitions, continuity tests).
+**Data artifacts** (not Python — never import these):
+- `contracts/*.yaml` — versioned mathematical contracts (JSON Schema Draft 2020-12)
+- `closures/` — Python/YAML closures organized by domain subdirs (gcd/, rcft/, kinematics/, weyl/, security/)
+- `closures/registry.yaml` — central registry; must list every closure used in a run
+- `casepacks/*/manifest.json` — casepack manifest referencing contract, closures, expected outputs
+- `schemas/*.schema.json` — 13 JSON Schema Draft 2020-12 files validating all artifacts
+- `ledger/return_log.csv` — append-only validation log
 
-## Communication vs Core
-**IMPORTANT**: The REST API and visualization dashboard are **communication extensions** for standard interfaces (HTTP, web UI). They are NOT required for core validation functionality. UMCP core runs entirely with CLI commands and Python imports.
+## Critical Workflows
 
-## Integration Points
-- **REST API** (Optional Extension): Full REST endpoints for remote systems at `http://localhost:8000`
-- **Streamlit Dashboard** (Optional Extension): Interactive UI at `http://localhost:8501`
-- **Structured Logging**: JSON logs for ELK/Splunk/CloudWatch
-- **Docker/Kubernetes**: See `docs/production_deployment.md` for deployment
+```bash
+pip install -e ".[all]"                     # Dev install (core + api + viz + dev tools)
+pytest                                       # 1002+ tests (growing), ~30s
+python scripts/update_integrity.py          # MUST run after changing any tracked file
+umcp validate .                             # Validate entire repo
+umcp validate casepacks/hello_world --strict # Validate casepack (strict = fail on warnings)
+```
 
-## Key References
-- README.md: High-level overview, CLI commands, workflow, architecture diagrams.
-- INFRASTRUCTURE_GEOMETRY.md: Three-layer geometric architecture and what the infrastructure holds.
-- EXTENSION_INTEGRATION.md: Extension system documentation.
-- CASEPACK_REFERENCE.md: CasePack structure and validation.
-- KERNEL_SPECIFICATION.md: Formal specification and debugging guide.
-- TIER_SYSTEM.md: System boundaries and dependency rules.
-- PUBLICATION_INFRASTRUCTURE.md: Publication formats and conventions.
+**⚠️ `python scripts/update_integrity.py` is mandatory** after modifying any `src/umcp/*.py`, `contracts/*.yaml`, `closures/**`, `schemas/**`, or `scripts/*.py` file. It regenerates SHA256 checksums in `integrity/checksums.sha256`. CI will fail on mismatch.
 
-## Example Workflow (Core Only - No Extensions)
-1. Prepare data (`raw_measurements.csv`).
-2. Validate with `umcp validate`.
-3. Run tests with `pytest`.
-4. Update integrity with `python scripts/update_integrity.py`.
+**CI pipeline** (`.github/workflows/validate.yml`): lint (ruff + mypy) → test (pytest) → validate (baseline + strict, both must return CONFORMANT).
 
-## Example Workflow (With API Communication Extension)
-1. Install API extension: `pip install umcp[api]`
-2. Start API server: `umcp-api` or `uvicorn umcp.api_umcp:app --reload`
-3. Query remotely: `curl http://localhost:8000/health`
-4. View docs: `http://localhost:8000/docs`
+## Code Conventions
 
-## Example Workflow (With Visualization Dashboard)
-1. Install viz extension: `pip install umcp[viz]`
-2. Start dashboard: `umcp-dashboard` or `streamlit run src/umcp/dashboard.py`
-3. Open browser: `http://localhost:8501`
+**Every source file** starts with `from __future__ import annotations` (PEP 563). Maintain this.
 
----
-For unclear or incomplete sections, please provide feedback to improve these instructions.
+**Optional dependency guarding** — wrap optional imports in `try/except`, set to `None` on failure, check before use. Applied to: yaml, fastapi, streamlit, plotly, pandas, numpy. Never add required imports for optional features.
+
+**Dataclasses** are the dominant data container. `NamedTuples` for immutable math outputs (`KernelInvariants` in `constants.py`). Pydantic `BaseModel` is API-extension only. Serialization uses explicit `.to_dict()` methods, not `dataclasses.asdict()`.
+
+**Three-valued status**: `CONFORMANT` / `NONCONFORMANT` / `NON_EVALUABLE` — never boolean. CLI exit: 0 = CONFORMANT, 1 = NONCONFORMANT.
+
+**`INF_REC` is a typed sentinel**: In CSV/YAML/JSON data it stays as the string `"INF_REC"`. In Python it maps to `float("inf")`. Never coerce the string to a number in data files.
+
+**Greek letters** (`ω`, `κ`, `Ψ`, `Γ`, `τ`) appear in comments and strings. Ruff rules RUF001/002/003 are suppressed. Line length: 120 chars.
+
+**OPT-* tags** in comments (e.g., `# OPT-1`, `# OPT-12`) reference proven lemmas in `KERNEL_SPECIFICATION.md`. These are formal math cross-references.
+
+## Validation Data Flow
+
+```
+umcp validate <target>
+  → detect type (repo | casepack | file)
+  → schema validation (jsonschema Draft 2020-12)
+  → semantic rule checks (validator_rules.yaml: E101, W201, ...)
+  → kernel identity checks: F=1−ω, IC≈exp(κ), IC≤F (AM-GM)
+  → regime: STABLE|WATCH|COLLAPSE
+  → SHA256 integrity check
+  → CONFORMANT → append to ledger/return_log.csv + JSON report
+```
+
+## Test Patterns
+
+**56 test files** in `tests/`, numbered by group (`test_00_*` through `test_140_*`). Single `tests/conftest.py` provides:
+- Frozen `RepoPaths` dataclass (session-scoped) with all critical paths
+- `@lru_cache` helpers: `_read_file()`, `_parse_json()`, `_parse_yaml()`, `_compile_schema()`
+- Convention: `test_<subject>_<behavior>()` for functions; `TestCLI*` classes with `subprocess.run` for CLI integration
+
+## Extension System
+
+Extensions use `typing.Protocol` (`ExtensionProtocol` requiring `name`, `version`, `description`, `check_dependencies()`). Built-in extensions (api, visualization, ledger, formatter) registered in a plain dict. CLI: `umcp-ext list|info|check|run`. API: `umcp-api` (:8000). Dashboard: `umcp-dashboard` (:8501).
+
+## Key Files to Read First
+
+| To understand... | Read... |
+|---|---|
+| Validation logic | `src/umcp/cli.py` (top + `_cmd_validate`) |
+| Math identities | `src/umcp/validator.py` (`_validate_invariant_identities`) |
+| Kernel computation | `src/umcp/kernel_optimized.py` |
+| Constants & regimes | `src/umcp/constants.py` |
+| Test fixtures | `tests/conftest.py` (first 100 lines) |
+| Casepack structure | `casepacks/hello_world/` |
+| Contract format | `contracts/UMA.INTSTACK.v1.yaml` |
+| Semantic rules | `validator_rules.yaml` |
