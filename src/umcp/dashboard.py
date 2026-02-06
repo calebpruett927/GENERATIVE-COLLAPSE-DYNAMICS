@@ -68,9 +68,11 @@ def _cache_data(**kwargs: Any) -> Any:
     """Safe wrapper around st.cache_data; no-op when Streamlit is unavailable."""
     if st is not None:
         return st.cache_data(**kwargs)
+
     # Fallback: identity decorator
     def _identity(func: Any) -> Any:
         return func
+
     return _identity
 
 

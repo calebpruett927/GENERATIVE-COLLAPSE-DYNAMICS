@@ -1,4 +1,5 @@
 """Generate PNG examples of UMCP dashboard visualizations from real data."""
+
 # pyright: reportArgumentType=false
 from __future__ import annotations
 
@@ -70,26 +71,44 @@ def gen_regime_phase_space(df: pd.DataFrame) -> None:
     colors = [REGIME_COLORS[classify_regime(o)] for o in omegas]
 
     # Trajectory line
-    fig.add_trace(go.Scatter(
-        x=omegas, y=Fs, mode="lines",
-        line=dict(color="#555555", width=1, dash="dot"),
-        showlegend=False,
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=omegas,
+            y=Fs,
+            mode="lines",
+            line=dict(color="#555555", width=1, dash="dot"),
+            showlegend=False,
+        )
+    )
     # Points
-    fig.add_trace(go.Scatter(
-        x=omegas, y=Fs, mode="markers+text",
-        marker=dict(size=14, color=colors, line=dict(width=2, color=TEXT)),
-        text=[f"t{i}" for i in range(len(omegas))],
-        textposition="top center",
-        textfont=dict(size=10, color=TEXT),
-        name="Trajectory",
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=omegas,
+            y=Fs,
+            mode="markers+text",
+            marker=dict(size=14, color=colors, line=dict(width=2, color=TEXT)),
+            text=[f"t{i}" for i in range(len(omegas))],
+            textposition="top center",
+            textfont=dict(size=10, color=TEXT),
+            name="Trajectory",
+        )
+    )
 
     # Regime boundaries
-    fig.add_hline(y=0.70, line_dash="dash", line_color=REGIME_COLORS["COLLAPSE"],
-                  annotation_text="COLLAPSE (F < 0.70)", annotation_font_color=REGIME_COLORS["COLLAPSE"])
-    fig.add_hline(y=0.90, line_dash="dash", line_color=REGIME_COLORS["WATCH"],
-                  annotation_text="WATCH (F < 0.90)", annotation_font_color=REGIME_COLORS["WATCH"])
+    fig.add_hline(
+        y=0.70,
+        line_dash="dash",
+        line_color=REGIME_COLORS["COLLAPSE"],
+        annotation_text="COLLAPSE (F < 0.70)",
+        annotation_font_color=REGIME_COLORS["COLLAPSE"],
+    )
+    fig.add_hline(
+        y=0.90,
+        line_dash="dash",
+        line_color=REGIME_COLORS["WATCH"],
+        annotation_text="WATCH (F < 0.90)",
+        annotation_font_color=REGIME_COLORS["WATCH"],
+    )
     fig.add_vline(x=0.038, line_dash="dash", line_color=REGIME_COLORS["STABLE"])
     fig.add_vline(x=0.30, line_dash="dash", line_color=REGIME_COLORS["COLLAPSE"])
 
@@ -98,14 +117,17 @@ def gen_regime_phase_space(df: pd.DataFrame) -> None:
     fig.add_vrect(x0=0.038, x1=0.30, fillcolor=REGIME_COLORS["WATCH"], opacity=0.08, line_width=0)
     fig.add_vrect(x0=0.30, x1=0.35, fillcolor=REGIME_COLORS["COLLAPSE"], opacity=0.08, line_width=0)
 
-    styled(fig,
-           title="Regime Phase Space — ω vs F Trajectory",
-           xaxis_title="ω (Drift)",
-           yaxis_title="F (Fidelity)",
-           width=900, height=550,
-           xaxis=dict(range=[-0.01, 0.35]),
-           yaxis=dict(range=[0.65, 1.02]),
-           showlegend=False)
+    styled(
+        fig,
+        title="Regime Phase Space — ω vs F Trajectory",
+        xaxis_title="ω (Drift)",
+        yaxis_title="F (Fidelity)",
+        width=900,
+        height=550,
+        xaxis=dict(range=[-0.01, 0.35]),
+        yaxis=dict(range=[0.65, 1.02]),
+        showlegend=False,
+    )
 
     fig.write_image(str(OUT_DIR / "01_regime_phase_space.png"), scale=2)
     print("  ✓ 01_regime_phase_space.png")
@@ -119,11 +141,21 @@ def gen_kernel_timeseries(df: pd.DataFrame) -> None:
     sample = df.head(100).copy()
     sample = sample.reset_index(drop=True)
 
-    fig = make_subplots(rows=3, cols=2, shared_xaxes=True,
-                        subplot_titles=["F (Fidelity)", "ω (Drift)",
-                                        "IC (Integrity Composite)", "κ (Log-Integrity)",
-                                        "S (Entropy)", "C (Curvature)"],
-                        vertical_spacing=0.08, horizontal_spacing=0.08)
+    fig = make_subplots(
+        rows=3,
+        cols=2,
+        shared_xaxes=True,
+        subplot_titles=[
+            "F (Fidelity)",
+            "ω (Drift)",
+            "IC (Integrity Composite)",
+            "κ (Log-Integrity)",
+            "S (Entropy)",
+            "C (Curvature)",
+        ],
+        vertical_spacing=0.08,
+        horizontal_spacing=0.08,
+    )
 
     metrics = [
         ("F", 1, 1, "#00d4ff"),
@@ -136,14 +168,20 @@ def gen_kernel_timeseries(df: pd.DataFrame) -> None:
 
     for col_name, row, col, color in metrics:
         if col_name in sample.columns:
-            fig.add_trace(go.Scatter(
-                x=sample["timestamp"], y=sample[col_name],
-                mode="lines", line=dict(color=color, width=2),
-                name=col_name, showlegend=False,
-            ), row=row, col=col)
+            fig.add_trace(
+                go.Scatter(
+                    x=sample["timestamp"],
+                    y=sample[col_name],
+                    mode="lines",
+                    line=dict(color=color, width=2),
+                    name=col_name,
+                    showlegend=False,
+                ),
+                row=row,
+                col=col,
+            )
 
-    styled(fig, title="Tier-1 Kernel Invariants Over Time",
-           width=1100, height=700, showlegend=False)
+    styled(fig, title="Tier-1 Kernel Invariants Over Time", width=1100, height=700, showlegend=False)
 
     for i in range(1, 7):
         fig.update_xaxes(gridcolor=GRID, row=(i - 1) // 2 + 1, col=(i - 1) % 2 + 1)
@@ -161,33 +199,48 @@ def gen_amgm_gap(df: pd.DataFrame) -> None:
 
     fig = go.Figure()
 
-    fig.add_trace(go.Scatter(
-        x=sample.index, y=sample["F"],
-        mode="lines+markers", name="F (Arithmetic Mean)",
-        line=dict(color="#00d4ff", width=2),
-        marker=dict(size=5),
-    ))
-    fig.add_trace(go.Scatter(
-        x=sample.index, y=sample["IC"],
-        mode="lines+markers", name="IC (Geometric Mean)",
-        line=dict(color="#51cf66", width=2),
-        marker=dict(size=5),
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=sample.index,
+            y=sample["F"],
+            mode="lines+markers",
+            name="F (Arithmetic Mean)",
+            line=dict(color="#00d4ff", width=2),
+            marker=dict(size=5),
+        )
+    )
+    fig.add_trace(
+        go.Scatter(
+            x=sample.index,
+            y=sample["IC"],
+            mode="lines+markers",
+            name="IC (Geometric Mean)",
+            line=dict(color="#51cf66", width=2),
+            marker=dict(size=5),
+        )
+    )
 
     # Gap shading
-    fig.add_trace(go.Scatter(
-        x=list(sample.index) + list(sample.index[::-1]),
-        y=list(sample["F"]) + list(sample["IC"][::-1]),
-        fill="toself", fillcolor="rgba(255, 212, 59, 0.15)",
-        line=dict(width=0), name="Δ = F − IC (heterogeneity)",
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=list(sample.index) + list(sample.index[::-1]),
+            y=list(sample["F"]) + list(sample["IC"][::-1]),
+            fill="toself",
+            fillcolor="rgba(255, 212, 59, 0.15)",
+            line=dict(width=0),
+            name="Δ = F − IC (heterogeneity)",
+        )
+    )
 
-    styled(fig,
-           title="AM-GM Gap: F ≥ IC (Lemma 4 — equality iff homogeneous)",
-           xaxis_title="Run Index",
-           yaxis_title="Value",
-           width=900, height=450,
-           legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="center", x=0.5))
+    styled(
+        fig,
+        title="AM-GM Gap: F ≥ IC (Lemma 4 — equality iff homogeneous)",
+        xaxis_title="Run Index",
+        yaxis_title="Value",
+        width=900,
+        height=450,
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="center", x=0.5),
+    )
 
     fig.write_image(str(OUT_DIR / "03_amgm_gap_analysis.png"), scale=2)
     print("  ✓ 03_amgm_gap_analysis.png")
@@ -197,30 +250,44 @@ def gen_amgm_gap(df: pd.DataFrame) -> None:
 # 4. LEDGER STATUS DISTRIBUTION
 # ══════════════════════════════════════════════════════════════════
 def gen_ledger_overview(df: pd.DataFrame) -> None:
-    fig = make_subplots(rows=1, cols=2,
-                        specs=[[{"type": "pie"}, {"type": "bar"}]],
-                        subplot_titles=["Validation Status Distribution", "Runs per Day"])
+    fig = make_subplots(
+        rows=1,
+        cols=2,
+        specs=[[{"type": "pie"}, {"type": "bar"}]],
+        subplot_titles=["Validation Status Distribution", "Runs per Day"],
+    )
 
     # Status pie
     status_counts = df["run_status"].value_counts()
     colors = [STATUS_COLORS.get(s, "#6c757d") for s in status_counts.index]
-    fig.add_trace(go.Pie(
-        labels=status_counts.index, values=status_counts.values,
-        marker=dict(colors=colors, line=dict(color=BG, width=2)),
-        textinfo="label+percent", textfont=dict(size=12),
-        hole=0.4,
-    ), row=1, col=1)
+    fig.add_trace(
+        go.Pie(
+            labels=status_counts.index,
+            values=status_counts.values,
+            marker=dict(colors=colors, line=dict(color=BG, width=2)),
+            textinfo="label+percent",
+            textfont=dict(size=12),
+            hole=0.4,
+        ),
+        row=1,
+        col=1,
+    )
 
     # Runs per day
     daily = df.set_index("timestamp").resample("D").size().reset_index(name="count")
-    fig.add_trace(go.Bar(
-        x=daily["timestamp"], y=daily["count"],
-        marker_color="#00d4ff", name="Runs",
-        showlegend=False,
-    ), row=1, col=2)
+    fig.add_trace(
+        go.Bar(
+            x=daily["timestamp"],
+            y=daily["count"],
+            marker_color="#00d4ff",
+            name="Runs",
+            showlegend=False,
+        ),
+        row=1,
+        col=2,
+    )
 
-    styled(fig, title="Ledger Overview — 3,000+ Validation Runs",
-           width=1100, height=450, showlegend=False)
+    styled(fig, title="Ledger Overview — 3,000+ Validation Runs", width=1100, height=450, showlegend=False)
     fig.update_xaxes(gridcolor=GRID, row=1, col=2)
     fig.update_yaxes(gridcolor=GRID, title_text="Run Count", row=1, col=2)
 
@@ -248,7 +315,9 @@ def gen_three_layer_geometry() -> None:
     colors = [REGIME_COLORS[r] for r in regimes]
 
     fig = make_subplots(
-        rows=3, cols=1, shared_xaxes=True,
+        rows=3,
+        cols=1,
+        shared_xaxes=True,
         subplot_titles=[
             "Layer 1 — State Space (ω, F)",
             "Layer 2 — Projections (IC vs F, AM-GM Gap)",
@@ -259,43 +328,91 @@ def gen_three_layer_geometry() -> None:
     )
 
     # Layer 1: State space trajectory
-    fig.add_trace(go.Scatter(
-        x=list(range(n)), y=list(F), mode="lines",
-        line=dict(color="#00d4ff", width=2), name="F",
-    ), row=1, col=1)
-    fig.add_trace(go.Scatter(
-        x=list(range(n)), y=list(omega), mode="lines",
-        line=dict(color="#ff6b6b", width=2), name="ω",
-    ), row=1, col=1)
+    fig.add_trace(
+        go.Scatter(
+            x=list(range(n)),
+            y=list(F),
+            mode="lines",
+            line=dict(color="#00d4ff", width=2),
+            name="F",
+        ),
+        row=1,
+        col=1,
+    )
+    fig.add_trace(
+        go.Scatter(
+            x=list(range(n)),
+            y=list(omega),
+            mode="lines",
+            line=dict(color="#ff6b6b", width=2),
+            name="ω",
+        ),
+        row=1,
+        col=1,
+    )
     fig.add_hline(y=0.70, line_dash="dash", line_color=REGIME_COLORS["COLLAPSE"], row=1, col=1)
     fig.add_hline(y=0.30, line_dash="dash", line_color=REGIME_COLORS["COLLAPSE"], row=1, col=1)
 
     # Layer 2: IC vs F (AM-GM gap)
-    fig.add_trace(go.Scatter(
-        x=list(range(n)), y=list(F), mode="lines",
-        line=dict(color="#00d4ff", width=2), name="F (AM)", showlegend=False,
-    ), row=2, col=1)
-    fig.add_trace(go.Scatter(
-        x=list(range(n)), y=list(IC), mode="lines",
-        line=dict(color="#51cf66", width=2), name="IC (GM)", showlegend=False,
-    ), row=2, col=1)
-    fig.add_trace(go.Scatter(
-        x=list(range(n)) + list(range(n))[::-1],
-        y=list(F) + list(IC)[::-1],
-        fill="toself", fillcolor="rgba(255,212,59,0.15)",
-        line=dict(width=0), name="Δ gap", showlegend=False,
-    ), row=2, col=1)
+    fig.add_trace(
+        go.Scatter(
+            x=list(range(n)),
+            y=list(F),
+            mode="lines",
+            line=dict(color="#00d4ff", width=2),
+            name="F (AM)",
+            showlegend=False,
+        ),
+        row=2,
+        col=1,
+    )
+    fig.add_trace(
+        go.Scatter(
+            x=list(range(n)),
+            y=list(IC),
+            mode="lines",
+            line=dict(color="#51cf66", width=2),
+            name="IC (GM)",
+            showlegend=False,
+        ),
+        row=2,
+        col=1,
+    )
+    fig.add_trace(
+        go.Scatter(
+            x=list(range(n)) + list(range(n))[::-1],
+            y=list(F) + list(IC)[::-1],
+            fill="toself",
+            fillcolor="rgba(255,212,59,0.15)",
+            line=dict(width=0),
+            name="Δ gap",
+            showlegend=False,
+        ),
+        row=2,
+        col=1,
+    )
 
     # Layer 3: Regime bars
     regime_y = [1.0 if r == "STABLE" else 0.5 if r == "WATCH" else 0.15 for r in regimes]
-    fig.add_trace(go.Bar(
-        x=list(range(n)), y=regime_y,
-        marker_color=colors, name="Regime", showlegend=False,
-    ), row=3, col=1)
+    fig.add_trace(
+        go.Bar(
+            x=list(range(n)),
+            y=regime_y,
+            marker_color=colors,
+            name="Regime",
+            showlegend=False,
+        ),
+        row=3,
+        col=1,
+    )
 
-    styled(fig, title="Three-Layer Geometry — Unified View",
-           width=1000, height=800,
-           legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="center", x=0.5))
+    styled(
+        fig,
+        title="Three-Layer Geometry — Unified View",
+        width=1000,
+        height=800,
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="center", x=0.5),
+    )
 
     for row in range(1, 4):
         fig.update_xaxes(gridcolor=GRID, row=row, col=1)
@@ -318,7 +435,7 @@ def gen_seam_graph() -> None:
 
     # Simulate seam data (pairs of consecutive runs)
     n_seams = 20
-    seam_labels = [f"S{i}→S{i+1}" for i in range(n_seams)]
+    seam_labels = [f"S{i}→S{i + 1}" for i in range(n_seams)]
     residuals = np.random.exponential(0.003, n_seams)
     # Make a few fail
     residuals[7] = 0.025
@@ -331,22 +448,33 @@ def gen_seam_graph() -> None:
 
     fig = go.Figure()
 
-    fig.add_trace(go.Bar(
-        x=seam_labels, y=residuals,
-        marker_color=bar_colors,
-        name="Seam Residual |s|",
-    ))
+    fig.add_trace(
+        go.Bar(
+            x=seam_labels,
+            y=residuals,
+            marker_color=bar_colors,
+            name="Seam Residual |s|",
+        )
+    )
 
-    fig.add_hline(y=tolerance, line_dash="dash", line_color="#ff922b", line_width=2,
-                  annotation_text="Tolerance = 0.01",
-                  annotation_font_color="#ff922b",
-                  annotation_position="top right")
+    fig.add_hline(
+        y=tolerance,
+        line_dash="dash",
+        line_color="#ff922b",
+        line_width=2,
+        annotation_text="Tolerance = 0.01",
+        annotation_font_color="#ff922b",
+        annotation_position="top right",
+    )
 
-    styled(fig,
-           title="Seam Certification — Residual |s| per Weld (Green=PASS, Red=FAIL)",
-           xaxis_title="Seam (Run Pair)",
-           yaxis_title="Residual |s|",
-           width=1000, height=450)
+    styled(
+        fig,
+        title="Seam Certification — Residual |s| per Weld (Green=PASS, Red=FAIL)",
+        xaxis_title="Seam (Run Pair)",
+        yaxis_title="Residual |s|",
+        width=1000,
+        height=450,
+    )
 
     fig.write_image(str(OUT_DIR / "06_seam_certification.png"), scale=2)
     print("  ✓ 06_seam_certification.png")
@@ -377,24 +505,29 @@ def gen_gcd_panel() -> None:
         ("WATCH", watch, REGIME_COLORS["WATCH"]),
         ("COLLAPSE", collapse, REGIME_COLORS["COLLAPSE"]),
     ]:
-        fig.add_trace(go.Scatterpolar(
-            r=vals + [vals[0]],
-            theta=symbols + [symbols[0]],
-            fill="toself",
-            fillcolor=hex_to_rgba(color, 0.15),
-            line=dict(color=color, width=2),
-            name=name,
-        ))
+        fig.add_trace(
+            go.Scatterpolar(
+                r=vals + [vals[0]],
+                theta=symbols + [symbols[0]],
+                fill="toself",
+                fillcolor=hex_to_rgba(color, 0.15),
+                line=dict(color=color, width=2),
+                name=name,
+            )
+        )
 
-    styled(fig,
-           title="GCD Kernel Profile — Regime Comparison",
-           width=700, height=600,
-           polar=dict(
-               bgcolor=BG,
-               radialaxis=dict(visible=True, range=[0, 1], gridcolor=GRID, color=TEXT),
-               angularaxis=dict(gridcolor=GRID, color=TEXT),
-           ),
-           legend=dict(orientation="h", yanchor="bottom", y=-0.15, xanchor="center", x=0.5))
+    styled(
+        fig,
+        title="GCD Kernel Profile — Regime Comparison",
+        width=700,
+        height=600,
+        polar=dict(
+            bgcolor=BG,
+            radialaxis=dict(visible=True, range=[0, 1], gridcolor=GRID, color=TEXT),
+            angularaxis=dict(gridcolor=GRID, color=TEXT),
+        ),
+        legend=dict(orientation="h", yanchor="bottom", y=-0.15, xanchor="center", x=0.5),
+    )
 
     fig.write_image(str(OUT_DIR / "07_gcd_kernel_profile.png"), scale=2)
     print("  ✓ 07_gcd_kernel_profile.png")
@@ -415,23 +548,41 @@ def gen_drift_detection() -> None:
     regimes = [classify_regime(o) for o in omega]
     colors = [REGIME_COLORS[r] for r in regimes]
 
-    fig = make_subplots(rows=2, cols=1, shared_xaxes=True,
-                        subplot_titles=["Drift ω Over Time", "Regime Classification"],
-                        vertical_spacing=0.12, row_heights=[0.65, 0.35])
+    fig = make_subplots(
+        rows=2,
+        cols=1,
+        shared_xaxes=True,
+        subplot_titles=["Drift ω Over Time", "Regime Classification"],
+        vertical_spacing=0.12,
+        row_heights=[0.65, 0.35],
+    )
 
     # Omega line
-    fig.add_trace(go.Scatter(
-        x=weeks, y=omega, mode="lines+markers",
-        line=dict(color="#ff6b6b", width=3),
-        marker=dict(size=10, color=colors, line=dict(width=2, color=TEXT)),
-        name="ω (drift)",
-    ), row=1, col=1)
+    fig.add_trace(
+        go.Scatter(
+            x=weeks,
+            y=omega,
+            mode="lines+markers",
+            line=dict(color="#ff6b6b", width=3),
+            marker=dict(size=10, color=colors, line=dict(width=2, color=TEXT)),
+            name="ω (drift)",
+        ),
+        row=1,
+        col=1,
+    )
 
     # Threshold lines
-    fig.add_hline(y=0.038, line_dash="dash", line_color=REGIME_COLORS["STABLE"],
-                  annotation_text="STABLE boundary", row=1, col=1)
-    fig.add_hline(y=0.30, line_dash="dash", line_color=REGIME_COLORS["COLLAPSE"],
-                  annotation_text="COLLAPSE boundary", row=1, col=1)
+    fig.add_hline(
+        y=0.038, line_dash="dash", line_color=REGIME_COLORS["STABLE"], annotation_text="STABLE boundary", row=1, col=1
+    )
+    fig.add_hline(
+        y=0.30,
+        line_dash="dash",
+        line_color=REGIME_COLORS["COLLAPSE"],
+        annotation_text="COLLAPSE boundary",
+        row=1,
+        col=1,
+    )
 
     # Regime bands
     fig.add_hrect(y0=0, y1=0.038, fillcolor=REGIME_COLORS["STABLE"], opacity=0.08, row=1, col=1, line_width=0)
@@ -440,15 +591,24 @@ def gen_drift_detection() -> None:
 
     # Regime bars
     regime_y = [1] * len(weeks)
-    fig.add_trace(go.Bar(
-        x=weeks, y=regime_y,
-        marker_color=colors, showlegend=False,
-    ), row=2, col=1)
+    fig.add_trace(
+        go.Bar(
+            x=weeks,
+            y=regime_y,
+            marker_color=colors,
+            showlegend=False,
+        ),
+        row=2,
+        col=1,
+    )
 
-    styled(fig,
-           title="Production Drift Detection — Model Monitoring Over 16 Weeks",
-           width=950, height=550,
-           showlegend=False)
+    styled(
+        fig,
+        title="Production Drift Detection — Model Monitoring Over 16 Weeks",
+        width=950,
+        height=550,
+        showlegend=False,
+    )
 
     fig.update_xaxes(title_text="Week", row=2, col=1, gridcolor=GRID)
     fig.update_yaxes(title_text="ω", row=1, col=1, gridcolor=GRID)
@@ -475,34 +635,52 @@ def gen_multisite_comparison() -> None:
     site_regimes = ["STABLE", "STABLE", "STABLE", "WATCH"]
     site_colors = [REGIME_COLORS[r] for r in site_regimes]
 
-    fig = make_subplots(rows=1, cols=2, column_widths=[0.55, 0.45],
-                        subplot_titles=["Kernel Metrics by Site", "Regime Status"],
-                        specs=[[{"type": "bar"}, {"type": "bar"}]])
+    fig = make_subplots(
+        rows=1,
+        cols=2,
+        column_widths=[0.55, 0.45],
+        subplot_titles=["Kernel Metrics by Site", "Regime Status"],
+        specs=[[{"type": "bar"}, {"type": "bar"}]],
+    )
 
     metric_colors = ["#00d4ff", "#ff6b6b", "#51cf66", "#cc5de8", "#ff922b"]
 
     for i, (metric, values) in enumerate(metrics.items()):
-        fig.add_trace(go.Bar(
-            x=sites, y=values, name=metric,
-            marker_color=metric_colors[i],
-            opacity=0.85,
-        ), row=1, col=1)
+        fig.add_trace(
+            go.Bar(
+                x=sites,
+                y=values,
+                name=metric,
+                marker_color=metric_colors[i],
+                opacity=0.85,
+            ),
+            row=1,
+            col=1,
+        )
 
     # Regime status bars
-    fig.add_trace(go.Bar(
-        x=sites, y=[1, 1, 1, 1],
-        marker_color=site_colors,
-        text=site_regimes,
-        textposition="inside",
-        textfont=dict(size=14, color="white"),
-        showlegend=False,
-    ), row=1, col=2)
+    fig.add_trace(
+        go.Bar(
+            x=sites,
+            y=[1, 1, 1, 1],
+            marker_color=site_colors,
+            text=site_regimes,
+            textposition="inside",
+            textfont=dict(size=14, color="white"),
+            showlegend=False,
+        ),
+        row=1,
+        col=2,
+    )
 
-    styled(fig,
-           title="Multi-Site Clinical Trial — Cross-Site Kernel Comparison",
-           width=1050, height=450,
-           barmode="group",
-           legend=dict(orientation="h", yanchor="bottom", y=1.05, xanchor="center", x=0.3))
+    styled(
+        fig,
+        title="Multi-Site Clinical Trial — Cross-Site Kernel Comparison",
+        width=1050,
+        height=450,
+        barmode="group",
+        legend=dict(orientation="h", yanchor="bottom", y=1.05, xanchor="center", x=0.3),
+    )
 
     fig.update_xaxes(gridcolor=GRID, row=1, col=1)
     fig.update_xaxes(gridcolor=GRID, row=1, col=2)
@@ -530,25 +708,28 @@ def gen_precision_verification() -> None:
     header_colors = [CARD_BG] * 5
     cell_colors = [["#1a1a2e"] * len(checks)] * 5
 
-    fig = go.Figure(data=[go.Table(
-        header=dict(
-            values=["<b>Identity</b>", "<b>LHS</b>", "<b>RHS</b>", "<b>Error</b>", "<b>Status</b>"],
-            fill_color=CARD_BG,
-            font=dict(color=TEXT, size=13),
-            align="center",
-            height=35,
-        ),
-        cells=dict(
-            values=list(zip(*checks)),
-            fill_color=[["#1a1a2e"] * len(checks)] * 5,
-            font=dict(color=[TEXT] * 4 + [["#28a745"] * len(checks)], size=12),
-            align="center",
-            height=30,
-        ),
-    )])
+    fig = go.Figure(
+        data=[
+            go.Table(
+                header=dict(
+                    values=["<b>Identity</b>", "<b>LHS</b>", "<b>RHS</b>", "<b>Error</b>", "<b>Status</b>"],
+                    fill_color=CARD_BG,
+                    font=dict(color=TEXT, size=13),
+                    align="center",
+                    height=35,
+                ),
+                cells=dict(
+                    values=list(zip(*checks)),
+                    fill_color=[["#1a1a2e"] * len(checks)] * 5,
+                    font=dict(color=[TEXT] * 4 + [["#28a745"] * len(checks)], size=12),
+                    align="center",
+                    height=30,
+                ),
+            )
+        ]
+    )
 
-    styled(fig, title="Formal Identity Verification — Tier-1 Kernel Checks",
-           width=900, height=350)
+    styled(fig, title="Formal Identity Verification — Tier-1 Kernel Checks", width=900, height=350)
 
     fig.write_image(str(OUT_DIR / "10_precision_verification.png"), scale=2)
     print("  ✓ 10_precision_verification.png")

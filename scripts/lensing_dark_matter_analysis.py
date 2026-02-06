@@ -35,6 +35,7 @@ Key Equation:
 
 Reference: Nature Communications 15:9295 (2024)
 """
+
 from __future__ import annotations
 
 import json
@@ -130,13 +131,15 @@ for z in z_eval:
     f_gravity = (Sigma_val - 1.0) / Sigma_val if Sigma_val > 0 else 0.0
     pct_dm_is_mg = f_gravity * 100
 
-    mass_bias_results.append({
-        "z": float(z),
-        "Sigma": float(Sigma_val),
-        "M_lens_over_M_true": float(mass_ratio),
-        "f_gravity": float(f_gravity),
-        "pct_dark_matter_is_modified_gravity": float(pct_dm_is_mg),
-    })
+    mass_bias_results.append(
+        {
+            "z": float(z),
+            "Sigma": float(Sigma_val),
+            "M_lens_over_M_true": float(mass_ratio),
+            "f_gravity": float(f_gravity),
+            "pct_dark_matter_is_modified_gravity": float(pct_dm_is_mg),
+        }
+    )
 
     print(f"  {z:5.1f}  {Sigma_val:8.4f}  {mass_ratio:14.4f}  {f_gravity:12.4f}  {pct_dm_is_mg:18.1f}%")
 
@@ -153,7 +156,7 @@ print(f"\n  At z = 0 (today):")
 print(f"    Ω_DM (true)     = {Omega_DM:.3f}")
 print(f"    Ω_DM (lensing)  = {apparent_DM:.3f}")
 print(f"    Gravity excess   = {gravity_excess:.3f}")
-print(f"    → {gravity_excess/apparent_DM*100:.1f}% of lensing-inferred dark matter")
+print(f"    → {gravity_excess / apparent_DM * 100:.1f}% of lensing-inferred dark matter")
 print(f"      is actually a gravitational enhancement effect")
 
 results["sections"]["lensing_mass_bias"] = {
@@ -179,6 +182,7 @@ print("  than their true mass distribution.")
 # With Σ ≠ 1: κ_observed = Σ × κ_GR
 # This makes the inferred concentration c = r_vir/r_s appear higher
 
+
 # NFW convergence profile for cluster-scale halo
 def nfw_convergence_profile(r_Mpc: np.ndarray, M_vir: float, c: float, z_lens: float) -> np.ndarray:
     """Simplified NFW convergence κ(r) for a halo at z_lens."""
@@ -188,7 +192,7 @@ def nfw_convergence_profile(r_Mpc: np.ndarray, M_vir: float, c: float, z_lens: f
 
     # Virial radius from M_vir
     rho_mean = rho_crit_0 * 200  # 200× critical
-    r_vir = (3 * M_vir * 1.989e30 / (4 * np.pi * rho_mean))**(1/3) / 3.086e22  # Mpc
+    r_vir = (3 * M_vir * 1.989e30 / (4 * np.pi * rho_mean)) ** (1 / 3) / 3.086e22  # Mpc
 
     r_s = r_vir / c
     x = r_Mpc / r_s
@@ -197,11 +201,11 @@ def nfw_convergence_profile(r_Mpc: np.ndarray, M_vir: float, c: float, z_lens: f
     kappa = np.zeros_like(x)
     for i, xi in enumerate(x):
         if xi < 1:
-            kappa[i] = 1 / (xi**2 - 1) * (1 - np.arccosh(1/xi) / np.sqrt(1 - xi**2))
+            kappa[i] = 1 / (xi**2 - 1) * (1 - np.arccosh(1 / xi) / np.sqrt(1 - xi**2))
         elif xi > 1:
-            kappa[i] = 1 / (xi**2 - 1) * (1 - np.arccos(1/xi) / np.sqrt(xi**2 - 1))
+            kappa[i] = 1 / (xi**2 - 1) * (1 - np.arccos(1 / xi) / np.sqrt(xi**2 - 1))
         else:
-            kappa[i] = 1/3
+            kappa[i] = 1 / 3
     return kappa
 
 
@@ -217,13 +221,15 @@ kappa_GR = nfw_convergence_profile(r_range, M_vir, c_true, z_cluster)
 Sigma_cluster = compute_Sigma(z_cluster, 0.24, GzModel.STANDARD, Omega_Lambda_of_z).Sigma
 kappa_MG = Sigma_cluster * kappa_GR
 
+
 # What concentration would GR observer infer?
 # Fit an NFW profile to the MG-boosted signal
 def chi2_nfw_fit(c_fit: float) -> float:
     kappa_fit = nfw_convergence_profile(r_range, M_vir, c_fit, z_cluster)
     # Scale to match amplitude (mass degeneracy)
     scale = np.sum(kappa_MG * kappa_fit) / np.sum(kappa_fit**2)
-    return np.sum((kappa_MG - scale * kappa_fit)**2)
+    return np.sum((kappa_MG - scale * kappa_fit) ** 2)
+
 
 result = optimize.minimize_scalar(chi2_nfw_fit, bounds=(1, 20), method="bounded")
 c_inferred = float(result.x)
@@ -232,8 +238,8 @@ print(f"\n  Cluster: M_vir = 10^14.5 M☉, z = {z_cluster}")
 print(f"  True NFW concentration: c_true = {c_true:.1f}")
 print(f"  Σ(z={z_cluster}) = {Sigma_cluster:.4f}")
 print(f"  Inferred concentration (GR observer): c_inferred = {c_inferred:.1f}")
-print(f"  Concentration bias: {(c_inferred/c_true - 1)*100:+.1f}%")
-print(f"\n  ★ A GR observer would infer {(c_inferred/c_true - 1)*100:.0f}% higher concentration")
+print(f"  Concentration bias: {(c_inferred / c_true - 1) * 100:+.1f}%")
+print(f"\n  ★ A GR observer would infer {(c_inferred / c_true - 1) * 100:.0f}% higher concentration")
 print(f"    than the true mass distribution warrants.")
 
 # Scan across masses and redshifts
@@ -245,7 +251,7 @@ concentration_results: list = []
 for log_M in [12.0, 13.0, 13.5, 14.0, 14.5, 15.0]:
     M = 10**log_M
     # Concentration-mass relation (Duffy+2008 approximation)
-    c_dm = 5.71 * (M / 2e12)**(-0.084) * (1 + z_cluster)**(-0.47)
+    c_dm = 5.71 * (M / 2e12) ** (-0.084) * (1 + z_cluster) ** (-0.47)
 
     kappa_true = nfw_convergence_profile(r_range, M, c_dm, z_cluster)
     kappa_boosted = Sigma_cluster * kappa_true
@@ -253,18 +259,20 @@ for log_M in [12.0, 13.0, 13.5, 14.0, 14.5, 15.0]:
     def chi2_fit(c: float) -> float:
         kf = nfw_convergence_profile(r_range, M, c, z_cluster)
         s = np.sum(kappa_boosted * kf) / max(np.sum(kf**2), 1e-30)
-        return np.sum((kappa_boosted - s * kf)**2)
+        return np.sum((kappa_boosted - s * kf) ** 2)
 
     res = optimize.minimize_scalar(chi2_fit, bounds=(1, 30), method="bounded")
     c_inf = float(res.x)  # type: ignore[union-attr]
     bias = (c_inf / c_dm - 1) * 100
 
-    concentration_results.append({
-        "log_M": log_M,
-        "c_true": float(c_dm),
-        "c_inferred": float(c_inf),
-        "bias_pct": float(bias),
-    })
+    concentration_results.append(
+        {
+            "log_M": log_M,
+            "c_true": float(c_dm),
+            "c_inferred": float(c_inf),
+            "bias_pct": float(bias),
+        }
+    )
 
     print(f"    {log_M:14.1f}  {c_dm:8.2f}  {c_inf:12.2f}  {bias:+7.1f}%")
 
@@ -307,7 +315,7 @@ for k_tr in k_transition_values:
 
     def Sigma_k(k: float) -> float:
         g_z = Omega_Lambda_of_z(z_test)
-        h_k = np.exp(-(k / k_tr)**2)
+        h_k = np.exp(-((k / k_tr) ** 2))
         return 1.0 + Sigma_0_paper * g_z * h_k
 
     S_001 = Sigma_k(0.01)
@@ -315,13 +323,15 @@ for k_tr in k_transition_values:
     S_1 = Sigma_k(1.0)
     S_10 = Sigma_k(10.0)
 
-    scale_dep_results.append({
-        "k_transition": float(k_tr),
-        "Sigma_k001": float(S_001),
-        "Sigma_k01": float(S_01),
-        "Sigma_k1": float(S_1),
-        "Sigma_k10": float(S_10),
-    })
+    scale_dep_results.append(
+        {
+            "k_transition": float(k_tr),
+            "Sigma_k001": float(S_001),
+            "Sigma_k01": float(S_01),
+            "Sigma_k1": float(S_1),
+            "Sigma_k10": float(S_10),
+        }
+    )
 
     print(f"  {k_tr:14.2f}  {S_001:14.4f}  {S_01:12.4f}  {S_1:12.4f}  {S_10:12.4f}")
 
@@ -350,7 +360,7 @@ scales = [
 
 for name, k in scales:
     g_z = Omega_Lambda_of_z(0.5)
-    h_k = np.exp(-(k / k_tr_best)**2)
+    h_k = np.exp(-((k / k_tr_best) ** 2))
     S = 1.0 + 0.24 * g_z * h_k
     dm_from_mg = max(0, (S - 1) / S * 100)
     print(f"    {name:>20}  {k:12.3f}  {S:8.4f}  {dm_from_mg:12.1f}%")
@@ -410,17 +420,21 @@ for z in z_accretion:
     nu_MG = delta_c_linear_MG / sigma_M
     accretion_boost = np.exp((nu_GR**2 - nu_MG**2) / 2) if abs(nu_GR**2 - nu_MG**2) < 50 else 999.9
 
-    accretion_results.append({
-        "z": float(z),
-        "D1": float(D1),
-        "Sigma": float(Sigma_val),
-        "delta_c_GR": float(delta_c_linear_GR),
-        "delta_c_MG": float(delta_c_linear_MG),
-        "accretion_boost": float(min(accretion_boost, 999.9)),
-    })
+    accretion_results.append(
+        {
+            "z": float(z),
+            "D1": float(D1),
+            "Sigma": float(Sigma_val),
+            "delta_c_GR": float(delta_c_linear_GR),
+            "delta_c_MG": float(delta_c_linear_MG),
+            "accretion_boost": float(min(accretion_boost, 999.9)),
+        }
+    )
 
-    print(f"    {z:5.1f}  {D1:8.4f}  {Sigma_val:8.4f}  {delta_c_linear_GR:10.4f}  "
-          f"{delta_c_linear_MG:10.4f}  {min(accretion_boost, 999.9):14.1f}×")
+    print(
+        f"    {z:5.1f}  {D1:8.4f}  {Sigma_val:8.4f}  {delta_c_linear_GR:10.4f}  "
+        f"{delta_c_linear_MG:10.4f}  {min(accretion_boost, 999.9):14.1f}×"
+    )
 
 print(f"\n  ★ INTERPRETATION:")
 print(f"    Modified gravity (Σ > 1) LOWERS the collapse barrier")
@@ -445,16 +459,16 @@ s8_lens = 0.743  # DES Y3 from lensing
 print(f"\n  The σ₈ tension:")
 print(f"    σ₈(CMB, Planck) = {s8_cmb}")
 print(f"    σ₈(lensing, DES) = {s8_lens}")
-print(f"    Ratio: {s8_lens/s8_cmb:.4f}")
-print(f"    Tension: {abs(s8_cmb - s8_lens)/np.sqrt(0.030**2 + 0.039**2):.1f}σ")
+print(f"    Ratio: {s8_lens / s8_cmb:.4f}")
+print(f"    Tension: {abs(s8_cmb - s8_lens) / np.sqrt(0.030**2 + 0.039**2):.1f}σ")
 
 print(f"\n  Resolution mechanism:")
 print(f"    CMB measures the TRUE σ₈ (primordial fluctuation amplitude)")
 print(f"    Lensing measures σ₈ × Σ⁻¹ (because Σ > 1 means you need")
 print(f"    LESS matter to produce the observed lensing signal)")
 print(f"\n    σ₈(lens) = σ₈(true) / Σ_eff")
-print(f"    → Σ_eff = σ₈(true) / σ₈(lens) = {s8_cmb/s8_lens:.4f}")
-print(f"    → Σ₀ needed: {s8_cmb/s8_lens - 1:.4f}")
+print(f"    → Σ_eff = σ₈(true) / σ₈(lens) = {s8_cmb / s8_lens:.4f}")
+print(f"    → Σ₀ needed: {s8_cmb / s8_lens - 1:.4f}")
 
 # Compare with measured Σ₀
 Sigma_needed = s8_cmb / s8_lens
@@ -466,7 +480,7 @@ S0_standard_paper = 0.24
 print(f"\n  Consistency check:")
 print(f"    Σ₀ needed to resolve σ₈ tension: {Sigma_0_needed:+.4f}")
 print(f"    Σ₀ measured (DES Y3, standard):  {S0_standard_paper:+.4f}")
-print(f"    Ratio: {Sigma_0_needed/S0_standard_paper:.2f}")
+print(f"    Ratio: {Sigma_0_needed / S0_standard_paper:.2f}")
 
 # The resolution is partial — σ₈ tension needs Σ₀ ≈ 0.14, measured is 0.24
 # But this is within the same order of magnitude!
@@ -487,14 +501,14 @@ print(f"    If k_tr ≈ 0.15 h/Mpc:")
 k_sigma8 = 0.2  # Approximate k for σ₈ measurement
 k_tr_model = 0.15
 g_z_eff = Omega_Lambda_of_z(0.5)
-h_k_sigma8 = np.exp(-(k_sigma8 / k_tr_model)**2)
+h_k_sigma8 = np.exp(-((k_sigma8 / k_tr_model) ** 2))
 Sigma_at_sigma8_scale = 1.0 + 0.24 * g_z_eff * h_k_sigma8
 
 print(f"    Σ at σ₈ scale (k={k_sigma8}) = {Sigma_at_sigma8_scale:.4f}")
-print(f"    → σ₈(lens) / σ₈(true) = {1/Sigma_at_sigma8_scale:.4f}")
+print(f"    → σ₈(lens) / σ₈(true) = {1 / Sigma_at_sigma8_scale:.4f}")
 print(f"    → Predicted σ₈(lens) = {s8_cmb / Sigma_at_sigma8_scale:.3f}")
 print(f"    → Observed σ₈(lens) = {s8_lens:.3f}")
-print(f"    → Discrepancy: {abs(s8_cmb/Sigma_at_sigma8_scale - s8_lens):.3f}")
+print(f"    → Discrepancy: {abs(s8_cmb / Sigma_at_sigma8_scale - s8_lens):.3f}")
 
 results["sections"]["sigma8_resolution"] = {
     "sigma8_CMB": s8_cmb,
@@ -526,14 +540,16 @@ print(f"    while dynamics probe Newtonian potential (Σ-independent)")
 
 for z in [0.2, 0.5, 0.8]:
     S = compute_Sigma(z, 0.24, GzModel.STANDARD, Omega_Lambda_of_z).Sigma
-    print(f"    z = {z}: M_lens/M_dyn = {S:.4f} ({(S-1)*100:+.1f}%)")
+    print(f"    z = {z}: M_lens/M_dyn = {S:.4f} ({(S - 1) * 100:+.1f}%)")
 
-predictions.append({
-    "name": "Lensing-dynamical mass ratio",
-    "signature": "M_lens / M_dyn = Σ(z) > 1",
-    "magnitude": "10-17% excess at z ∈ [0.2, 0.8]",
-    "testable_by": "Cluster mass calibration with X-ray + lensing + velocity dispersion",
-})
+predictions.append(
+    {
+        "name": "Lensing-dynamical mass ratio",
+        "signature": "M_lens / M_dyn = Σ(z) > 1",
+        "magnitude": "10-17% excess at z ∈ [0.2, 0.8]",
+        "testable_by": "Cluster mass calibration with X-ray + lensing + velocity dispersion",
+    }
+)
 
 # Prediction 2: Galaxy-galaxy lensing stronger than galaxy clustering implies
 print(f"\n  PREDICTION 2: Galaxy-galaxy lensing/clustering ratio anomaly")
@@ -544,16 +560,18 @@ print(f"    With Σ(k): EG becomes scale-dependent")
 print(f"    EG_modified(k) = EG_GR × Σ(k)")
 
 for k_test_val in [0.01, 0.05, 0.1, 0.5]:
-    h_k = np.exp(-(k_test_val / 0.1)**2)
+    h_k = np.exp(-((k_test_val / 0.1) ** 2))
     S_k = 1.0 + 0.24 * Omega_Lambda_of_z(0.5) * h_k
     print(f"    k = {k_test_val:.2f} h/Mpc: EG_mod/EG_GR = {S_k:.4f}")
 
-predictions.append({
-    "name": "Scale-dependent EG statistic",
-    "signature": "EG(k) varies with scale if Σ(k) ≠ 1",
-    "magnitude": "~16% variation between k=0.01 and k=0.5",
-    "testable_by": "DESI + Euclid cross-correlation analysis",
-})
+predictions.append(
+    {
+        "name": "Scale-dependent EG statistic",
+        "signature": "EG(k) varies with scale if Σ(k) ≠ 1",
+        "magnitude": "~16% variation between k=0.01 and k=0.5",
+        "testable_by": "DESI + Euclid cross-correlation analysis",
+    }
+)
 
 # Prediction 3: Void lensing anomaly
 print(f"\n  PREDICTION 3: Cosmic void lensing anomaly")
@@ -563,12 +581,14 @@ print(f"    But overdensities show Σ > 1 → MORE lensing")
 print(f"    Net: lensing by voids is suppressed relative to GR")
 print(f"    This has been TENTATIVELY observed in DES data!")
 
-predictions.append({
-    "name": "Void lensing suppression",
-    "signature": "Lensing by voids weaker than GR prediction",
-    "magnitude": "10-20% suppression at void boundary",
-    "testable_by": "DES Y6, LSST void lensing measurements",
-})
+predictions.append(
+    {
+        "name": "Void lensing suppression",
+        "signature": "Lensing by voids weaker than GR prediction",
+        "magnitude": "10-20% suppression at void boundary",
+        "testable_by": "DES Y6, LSST void lensing measurements",
+    }
+)
 
 # Prediction 4: Redshift-dependent concentration-mass relation offset
 print(f"\n  PREDICTION 4: c-M relation redshift evolution")
@@ -578,12 +598,14 @@ print(f"    At z=0: Σ ≈ {compute_Sigma(0, 0.24, GzModel.STANDARD, Omega_Lambd
 print(f"    At z=1: Σ ≈ {compute_Sigma(1, 0.24, GzModel.STANDARD, Omega_Lambda_of_z).Sigma:.3f}")
 print(f"    The bias should VANISH at high z (where GR recovers)")
 
-predictions.append({
-    "name": "z-evolving c-M relation offset",
-    "signature": "c_obs/c_true ≈ Σ(z), decreasing toward high z",
-    "magnitude": "17% at z=0, 5% at z=1, ~0% at z>2",
-    "testable_by": "Cluster surveys: eROSITA + Euclid + SPT-3G",
-})
+predictions.append(
+    {
+        "name": "z-evolving c-M relation offset",
+        "signature": "c_obs/c_true ≈ Σ(z), decreasing toward high z",
+        "magnitude": "17% at z=0, 5% at z=1, ~0% at z>2",
+        "testable_by": "Cluster surveys: eROSITA + Euclid + SPT-3G",
+    }
+)
 
 # Prediction 5: CMB lensing vs galaxy lensing discrepancy
 print(f"\n  PREDICTION 5: CMB lensing amplitude anomaly")
@@ -595,21 +617,20 @@ A_lens_planck = 1.18
 A_lens_predicted = compute_Sigma(0.5, 0.24, GzModel.STANDARD, Omega_Lambda_of_z).Sigma
 # CMB lensing is an integral over z ~ 0.5-3
 z_cmb_lens = np.linspace(0.5, 3.0, 50)
-A_lens_integral = np.mean([
-    compute_Sigma(z, 0.24, GzModel.STANDARD, Omega_Lambda_of_z).Sigma
-    for z in z_cmb_lens
-])
+A_lens_integral = np.mean([compute_Sigma(z, 0.24, GzModel.STANDARD, Omega_Lambda_of_z).Sigma for z in z_cmb_lens])
 print(f"    Effective Σ over z=[0.5,3.0] = {A_lens_integral:.4f}")
 print(f"    Predicted A_lens = {A_lens_integral:.3f}")
 print(f"    Observed A_lens = {A_lens_planck:.3f}")
-print(f"    Agreement: {abs(A_lens_integral - A_lens_planck)/A_lens_planck*100:.1f}% discrepancy")
+print(f"    Agreement: {abs(A_lens_integral - A_lens_planck) / A_lens_planck * 100:.1f}% discrepancy")
 
-predictions.append({
-    "name": "CMB lensing A_lens anomaly",
-    "signature": "A_lens > 1, predicted by Σ > 1",
-    "magnitude": f"Predicted A_lens = {A_lens_integral:.3f} vs observed {A_lens_planck}",
-    "testable_by": "CMB-S4, Simons Observatory",
-})
+predictions.append(
+    {
+        "name": "CMB lensing A_lens anomaly",
+        "signature": "A_lens > 1, predicted by Σ > 1",
+        "magnitude": f"Predicted A_lens = {A_lens_integral:.3f} vs observed {A_lens_planck}",
+        "testable_by": "CMB-S4, Simons Observatory",
+    }
+)
 
 results["sections"]["predictions"] = predictions
 
@@ -633,23 +654,28 @@ print(f"    Ω_Λ       = 0.685  (68.5%)")
 # Different probes are affected differently:
 probes = {
     "CMB power spectrum": {
-        "z_eff": 1100, "k_eff": 0.01,
+        "z_eff": 1100,
+        "k_eff": 0.01,
         "note": "Unaffected — primordial, before modified gravity kicks in",
     },
     "BAO": {
-        "z_eff": 0.5, "k_eff": 0.05,
+        "z_eff": 0.5,
+        "k_eff": 0.05,
         "note": "Geometric probe — mostly unaffected by Σ",
     },
     "Weak lensing (DES)": {
-        "z_eff": 0.5, "k_eff": 0.1,
+        "z_eff": 0.5,
+        "k_eff": 0.1,
         "note": "DIRECTLY affected: measures Σ × true mass",
     },
     "Cluster masses (X-ray+lensing)": {
-        "z_eff": 0.3, "k_eff": 0.5,
+        "z_eff": 0.3,
+        "k_eff": 0.5,
         "note": "Lensing component biased by Σ",
     },
     "Galaxy rotation curves": {
-        "z_eff": 0.0, "k_eff": 10.0,
+        "z_eff": 0.0,
+        "k_eff": 10.0,
         "note": "Probes Newtonian Φ, not Weyl (Φ+Ψ)/2 — may not be Σ-dependent",
     },
 }
@@ -666,18 +692,20 @@ for probe, info in probes.items():
         S_eff = 1.0  # CMB era: GR holds
     else:
         g_z = Omega_Lambda_of_z(z_e) if z_e < 10 else 0
-        h_k = np.exp(-(k_e / 0.1)**2)
+        h_k = np.exp(-((k_e / 0.1) ** 2))
         S_eff = 1.0 + 0.24 * g_z * h_k
 
     bias = (S_eff - 1.0) * 100
 
-    dm_budget.append({
-        "probe": probe,
-        "z_eff": z_e,
-        "Sigma_eff": float(S_eff),
-        "DM_bias_pct": float(bias),
-        "note": info["note"],
-    })
+    dm_budget.append(
+        {
+            "probe": probe,
+            "z_eff": z_e,
+            "Sigma_eff": float(S_eff),
+            "DM_bias_pct": float(bias),
+            "note": info["note"],
+        }
+    )
 
     print(f"    {probe:>30}  {z_e:6.1f}  {k_e:8.2f}  {S_eff:8.4f}  {bias:+8.1f}%")
 
@@ -690,7 +718,7 @@ print(f"\n  ★ REVISED DARK MATTER BUDGET (if Σ₀ = 0.24 is real):")
 print(f"    Ω_DM (standard ΛCDM)  = {Omega_DM_standard:.3f}")
 print(f"    Gravitational mirage   = {Omega_DM_lens_bias:.3f}")
 print(f"    Ω_DM (revised)         = {Omega_DM_revised:.3f}")
-print(f"    → {Omega_DM_lens_bias/Omega_DM_standard*100:.0f}% of 'dark matter'")
+print(f"    → {Omega_DM_lens_bias / Omega_DM_standard * 100:.0f}% of 'dark matter'")
 print(f"      may be a gravitational enhancement effect")
 print(f"\n    CAVEAT: This only affects lensing-based measurements.")
 print(f"    CMB, BAO, and rotation curve evidence for dark matter")

@@ -21,6 +21,7 @@ Analyses performed:
 
 Reference: Nature Communications 15:9295 (2024)
 """
+
 from __future__ import annotations
 
 import json
@@ -186,18 +187,19 @@ for variant_name, variant_data in DATA_VARIANTS.items():
         deviation = Sigma_z - 1.0
         sn = abs(deviation) / max(Sigma_err, 1e-10)
 
-        bin_inversions[variant_name].append({
-            "z": float(z),
-            "hJ": float(hJ),
-            "hJ_sigma": float(sigma),
-            "Sigma_z": float(Sigma_z),
-            "Sigma_minus_1": float(deviation),
-            "Sigma_error": float(Sigma_err),
-            "signal_to_noise": float(sn),
-        })
+        bin_inversions[variant_name].append(
+            {
+                "z": float(z),
+                "hJ": float(hJ),
+                "hJ_sigma": float(sigma),
+                "Sigma_z": float(Sigma_z),
+                "Sigma_minus_1": float(deviation),
+                "Sigma_error": float(Sigma_err),
+                "signal_to_noise": float(sn),
+            }
+        )
 
-        print(f"    {z:6.3f}  {hJ:8.4f}  {sigma:8.4f}  {Sigma_z:8.4f}  "
-              f"{deviation:+8.4f}  {sn:6.1f}")
+        print(f"    {z:6.3f}  {hJ:8.4f}  {sigma:8.4f}  {Sigma_z:8.4f}  {deviation:+8.4f}  {sn:6.1f}")
 
     # Test for z-dependence: linear fit of (Σ-1) vs z
     deviations = [b["Sigma_minus_1"] for b in bin_inversions[variant_name]]
@@ -211,9 +213,8 @@ for variant_name, variant_data in DATA_VARIANTS.items():
 
     z_mean = np.average(z_arr, weights=w_arr)
     dev_mean = np.average(dev_arr, weights=w_arr)
-    slope = np.sum(w_arr * (z_arr - z_mean) * (dev_arr - dev_mean)) / \
-            np.sum(w_arr * (z_arr - z_mean)**2)
-    slope_err = 1.0 / np.sqrt(np.sum(w_arr * (z_arr - z_mean)**2))
+    slope = np.sum(w_arr * (z_arr - z_mean) * (dev_arr - dev_mean)) / np.sum(w_arr * (z_arr - z_mean) ** 2)
+    slope_err = 1.0 / np.sqrt(np.sum(w_arr * (z_arr - z_mean) ** 2))
     slope_significance = abs(slope) / slope_err
 
     print(f"\n    ⤷ Linear trend: d(Σ-1)/dz = {slope:+.4f} ± {slope_err:.4f}")
@@ -244,20 +245,26 @@ s8_cmb_hJ = s8_data["from_hJ_cmb"]
 s8_nocmb_params = s8_data["from_params_no_cmb"]
 s8_nocmb_hJ = s8_data["from_hJ_no_cmb"]
 
+
 # Tension = |μ₁ - μ₂| / √(σ₁² + σ₂²)
 def compute_tension(m1: float, s1: float, m2: float, s2: float) -> float:
     return abs(m1 - m2) / np.sqrt(s1**2 + s2**2)
 
+
 tension_cmb = compute_tension(
-    s8_cmb_params["mean"], s8_cmb_params["sigma"],
-    s8_cmb_hJ["mean"], s8_cmb_hJ["sigma"],
+    s8_cmb_params["mean"],
+    s8_cmb_params["sigma"],
+    s8_cmb_hJ["mean"],
+    s8_cmb_hJ["sigma"],
 )
 
 # For asymmetric errors, use average
 s8_nocmb_hJ_sigma = (s8_nocmb_hJ["sigma_plus"] + s8_nocmb_hJ["sigma_minus"]) / 2
 tension_nocmb = compute_tension(
-    s8_nocmb_params["mean"], s8_nocmb_params["sigma"],
-    s8_nocmb_hJ["mean"], s8_nocmb_hJ_sigma,
+    s8_nocmb_params["mean"],
+    s8_nocmb_params["sigma"],
+    s8_nocmb_hJ["mean"],
+    s8_nocmb_hJ_sigma,
 )
 
 # Also compute: what Σ₀ would resolve the σ₈ tension?
@@ -272,23 +279,24 @@ print(f"    Tension: {tension_cmb:.1f}σ")
 
 print(f"\n  Without CMB prior:")
 print(f"    σ₈ (from params) = {s8_nocmb_params['mean']:.3f} ± {s8_nocmb_params['sigma']:.3f}")
-print(f"    σ₈ (from ĥJ)    = {s8_nocmb_hJ['mean']:.3f} +{s8_nocmb_hJ['sigma_plus']:.3f}/-{s8_nocmb_hJ['sigma_minus']:.3f}")
+print(
+    f"    σ₈ (from ĥJ)    = {s8_nocmb_hJ['mean']:.3f} +{s8_nocmb_hJ['sigma_plus']:.3f}/-{s8_nocmb_hJ['sigma_minus']:.3f}"
+)
 print(f"    Tension: {tension_nocmb:.1f}σ")
 
 print(f"\n  To resolve σ₈ tension via modified gravity:")
 print(f"    Σ needed = σ₈(lensing)/σ₈(CMB) = {Sigma_resolution:.3f}")
 print(f"    → Σ₀ = {Sigma_0_resolution:+.3f}")
-print(f"    → This is {'consistent' if abs(Sigma_0_resolution) < 0.3 else 'inconsistent'} "
-      f"with measured Σ₀ ≈ 0.24")
+print(f"    → This is {'consistent' if abs(Sigma_0_resolution) < 0.3 else 'inconsistent'} with measured Σ₀ ≈ 0.24")
 
 # Is the tension direction consistent with the Σ₀ sign?
-consistent = (Sigma_0_resolution < 0) == (
-    fit_results["CMB_prior"]["standard"].Sigma_0 < 0
-) or (Sigma_0_resolution > 0) == (
-    fit_results["CMB_prior"]["standard"].Sigma_0 > 0
+consistent = (Sigma_0_resolution < 0) == (fit_results["CMB_prior"]["standard"].Sigma_0 < 0) or (
+    Sigma_0_resolution > 0
+) == (fit_results["CMB_prior"]["standard"].Sigma_0 > 0)
+print(
+    f"    → Sign consistency: {'YES ✓' if not consistent else 'NO ✗'} — "
+    f"Σ₀ > 0 strengthens lensing, but σ₈(lensing) < σ₈(CMB)"
 )
-print(f"    → Sign consistency: {'YES ✓' if not consistent else 'NO ✗'} — "
-      f"Σ₀ > 0 strengthens lensing, but σ₈(lensing) < σ₈(CMB)")
 # Actually, Σ > 1 means MORE lensing, but σ₈(lensing) < σ₈(CMB)
 # This is the Weyl tension: Σ₀ > 0 says gravity is STRONGER than GR,
 # yet we measure LESS clustering. This is the novel puzzle.
@@ -335,18 +343,24 @@ for z in z_scan:
 
     # GR: J(z) = 1
     T_gr = compute_weyl_transfer(
-        H_z=H_z, H_z_star=H_star,
-        J_z=1.0, D1_z_star=D1_star_val,
-        B_ratio=B_ratio, T_Weyl_star=1.0,
+        H_z=H_z,
+        H_z_star=H_star,
+        J_z=1.0,
+        D1_z_star=D1_star_val,
+        B_ratio=B_ratio,
+        T_Weyl_star=1.0,
     )
     transfer_gr.append(T_gr)
 
     # Modified gravity: J(z) = Σ(z) with Σ₀=0.24
     Sigma_result = compute_Sigma(z, 0.24, GzModel.STANDARD, Omega_Lambda_of_z)
     T_mg = compute_weyl_transfer(
-        H_z=H_z, H_z_star=H_star,
-        J_z=Sigma_result.Sigma, D1_z_star=D1_star_val,
-        B_ratio=B_ratio, T_Weyl_star=1.0,
+        H_z=H_z,
+        H_z_star=H_star,
+        J_z=Sigma_result.Sigma,
+        D1_z_star=D1_star_val,
+        B_ratio=B_ratio,
+        T_Weyl_star=1.0,
     )
     transfer_mg.append(T_mg)
 
@@ -361,18 +375,18 @@ max_diff_pct = rel_diff[max_diff_idx]
 
 print(f"\n  Key results:")
 print(f"    Max |T_MG - T_GR| / T_GR = {abs(max_diff_pct):.1f}% at z = {max_diff_z:.2f}")
-print(f"    T_Weyl(z=0.5, GR)  = {T_gr_arr[np.argmin(np.abs(z_scan-0.5))]:.4f}")
-print(f"    T_Weyl(z=0.5, MG)  = {T_mg_arr[np.argmin(np.abs(z_scan-0.5))]:.4f}")
-print(f"    T_Weyl(z=1.0, GR)  = {T_gr_arr[np.argmin(np.abs(z_scan-1.0))]:.4f}")
-print(f"    T_Weyl(z=1.0, MG)  = {T_mg_arr[np.argmin(np.abs(z_scan-1.0))]:.4f}")
+print(f"    T_Weyl(z=0.5, GR)  = {T_gr_arr[np.argmin(np.abs(z_scan - 0.5))]:.4f}")
+print(f"    T_Weyl(z=0.5, MG)  = {T_mg_arr[np.argmin(np.abs(z_scan - 0.5))]:.4f}")
+print(f"    T_Weyl(z=1.0, GR)  = {T_gr_arr[np.argmin(np.abs(z_scan - 1.0))]:.4f}")
+print(f"    T_Weyl(z=1.0, MG)  = {T_mg_arr[np.argmin(np.abs(z_scan - 1.0))]:.4f}")
 
 # Where does GR deviate most?
 # Regimes from transfer function
 regimes_z = [(z_scan[i], transfer_mg[i].regime) for i in range(len(z_scan))]
 regime_transitions = []
 for i in range(1, len(regimes_z)):
-    if regimes_z[i][1] != regimes_z[i-1][1]:
-        regime_transitions.append((regimes_z[i][0], regimes_z[i-1][1], regimes_z[i][1]))
+    if regimes_z[i][1] != regimes_z[i - 1][1]:
+        regime_transitions.append((regimes_z[i][0], regimes_z[i - 1][1], regimes_z[i][1]))
 
 if regime_transitions:
     print(f"\n  Regime transitions (Σ₀=0.24):")
@@ -402,7 +416,7 @@ z_test_vals = [0.3, 0.5, 0.8, 1.0]
 
 print(f"\n  {'k (h/Mpc)':>12}  ", end="")
 for z in z_test_vals:
-    print(f"{'B(z='+f'{z:.1f}'+')':>12}", end="")
+    print(f"{'B(z=' + f'{z:.1f}' + ')':>12}", end="")
 print()
 print("  " + "-" * 60)
 
@@ -431,8 +445,7 @@ print(f"    Current framework assumes Σ(z) only — a potential blind spot.")
 results["sections"]["scale_sensitivity"] = {
     "chi_z05_Mpc_h": float(chi_05),
     "scales_at_z05": [
-        {"ell": ell, "k_h_Mpc": float((ell+0.5)/chi_05),
-         "B_boost": float(halofit_boost((ell+0.5)/chi_05, 0.5))}
+        {"ell": ell, "k_h_Mpc": float((ell + 0.5) / chi_05), "B_boost": float(halofit_boost((ell + 0.5) / chi_05, 0.5))}
         for ell in [200, 500, 1000, 2000]
     ],
 }
@@ -500,6 +513,7 @@ for model in GZ_MODELS:
 
     # Check for secondary minima
     from scipy.signal import argrelmin
+
     local_mins = argrelmin(chi2_arr, order=5)[0]
     if len(local_mins) > 1:
         print(f"    ⚠️  {len(local_mins)} local minima found — potential degeneracy!")
@@ -650,8 +664,10 @@ for S0 in key_values:
     mapping = Sigma_to_UMCP_invariants(S0, 1.1, 2.1)
     marker = " ◄ DES Y3" if abs(S0 - 0.24) < 0.01 else ""
     marker = " ◄ GR" if abs(S0) < 0.01 else marker
-    print(f"  {S0:+8.2f}  {mapping['omega_analog']:.3f}  {mapping['F_analog']:.3f}  "
-          f"{mapping['regime']:>12}  {mapping['chi2_improvement']:.1%}{marker}")
+    print(
+        f"  {S0:+8.2f}  {mapping['omega_analog']:.3f}  {mapping['F_analog']:.3f}  "
+        f"{mapping['regime']:>12}  {mapping['chi2_improvement']:.1%}{marker}"
+    )
 
 print(f"\n  Regime transitions:")
 for S0, r_from, r_to in transitions_found:
@@ -682,10 +698,7 @@ print("  If systematic → correlated. If statistical → uncorrelated.")
 hJ_obs = hJ_cmb["mean"]
 hJ_err = hJ_cmb["sigma"]
 
-hJ_gr_pred = np.array([
-    Omega_m_of_z(z) * (D1_of_z(z) / D1_star) * sigma8_star
-    for z in z_bins
-])
+hJ_gr_pred = np.array([Omega_m_of_z(z) * (D1_of_z(z) / D1_star) * sigma8_star for z in z_bins])
 
 residuals = hJ_obs - hJ_gr_pred
 normalized_residuals = residuals / hJ_err
@@ -694,8 +707,10 @@ print(f"\n  Bin residuals (ĥJ_obs - ĥJ_GR):")
 print(f"    {'z':>6}  {'ĥJ_obs':>8}  {'ĥJ_GR':>8}  {'Residual':>10}  {'Norm. Res':>10}")
 print("    " + "-" * 50)
 for i, z in enumerate(z_bins):
-    print(f"    {z:6.3f}  {hJ_obs[i]:8.4f}  {hJ_gr_pred[i]:8.4f}  "
-          f"{residuals[i]:+10.4f}  {normalized_residuals[i]:+10.2f}σ")
+    print(
+        f"    {z:6.3f}  {hJ_obs[i]:8.4f}  {hJ_gr_pred[i]:8.4f}  "
+        f"{residuals[i]:+10.4f}  {normalized_residuals[i]:+10.2f}σ"
+    )
 
 # Are all residuals the same sign?
 all_positive = all(r > 0 for r in residuals)
@@ -714,7 +729,7 @@ n_pos = sum(1 for r in normalized_residuals if r > 0)
 n_neg = n_bins - n_pos
 n_runs = 1
 for i in range(1, n_bins):
-    if (normalized_residuals[i] > 0) != (normalized_residuals[i-1] > 0):
+    if (normalized_residuals[i] > 0) != (normalized_residuals[i - 1] > 0):
         n_runs += 1
 
 print(f"  Positive residuals: {n_pos}, Negative: {n_neg}, Runs: {n_runs}")
@@ -726,15 +741,15 @@ p_value_residuals = 1.0 - stats.chi2.cdf(chi2_residuals, n_bins)
 print(f"\n  χ² of residuals under GR: {chi2_residuals:.2f} (dof = {n_bins})")
 print(f"  p-value: {p_value_residuals:.4f}")
 if p_value_residuals < 0.01:
-    print(f"  ⚠️  GR REJECTED at {(1-p_value_residuals)*100:.1f}% confidence")
+    print(f"  ⚠️  GR REJECTED at {(1 - p_value_residuals) * 100:.1f}% confidence")
 elif p_value_residuals < 0.05:
-    print(f"  ⚠  GR disfavored at {(1-p_value_residuals)*100:.1f}% confidence")
+    print(f"  ⚠  GR disfavored at {(1 - p_value_residuals) * 100:.1f}% confidence")
 else:
     print(f"  ✓  GR not formally rejected (p > 0.05)")
 
 # Weighted mean of normalized residuals
-wmean_res = np.average(normalized_residuals, weights=1.0/hJ_err**2)
-wmean_err = 1.0 / np.sqrt(np.sum(1.0/hJ_err**2))
+wmean_res = np.average(normalized_residuals, weights=1.0 / hJ_err**2)
+wmean_err = 1.0 / np.sqrt(np.sum(1.0 / hJ_err**2))
 wmean_significance = abs(wmean_res) / max(wmean_err, 1e-10)
 
 print(f"\n  Weighted mean normalized residual: {wmean_res:+.3f}")
@@ -792,14 +807,18 @@ for model in GZ_MODELS:
     print(f"    κ_analog = {kappa_analog:.3f}")
     print(f"    IC_analog = exp(κ) = {IC_analog:.3f}")
     print(f"    F_analog = {F_check:.3f}")
-    print(f"    IC ≤ F check: {IC_analog:.3f} ≤ {F_check:.3f} → "
-          f"{'SATISFIED ✓' if IC_analog <= F_check else 'VIOLATED ✗ (AM-GM boundary exceeded)'}")
+    print(
+        f"    IC ≤ F check: {IC_analog:.3f} ≤ {F_check:.3f} → "
+        f"{'SATISFIED ✓' if IC_analog <= F_check else 'VIOLATED ✗ (AM-GM boundary exceeded)'}"
+    )
 
 results["sections"]["information_theoretic"] = {
     model.value: {
         "delta_chi2": float(chi2_landscape[model.value]["chi2_at_GR"] - chi2_landscape[model.value]["chi2_min"]),
         "D_KL_nats": float((chi2_landscape[model.value]["chi2_at_GR"] - chi2_landscape[model.value]["chi2_min"]) / 2),
-        "D_KL_bits": float((chi2_landscape[model.value]["chi2_at_GR"] - chi2_landscape[model.value]["chi2_min"]) / (2 * np.log(2))),
+        "D_KL_bits": float(
+            (chi2_landscape[model.value]["chi2_at_GR"] - chi2_landscape[model.value]["chi2_min"]) / (2 * np.log(2))
+        ),
     }
     for model in GZ_MODELS
 }
@@ -818,26 +837,17 @@ best_fit = fit_results["CMB_prior"]["standard"]
 best_significance = abs(best_fit.Sigma_0) / max(best_fit.Sigma_0_error, 1e-10)
 
 findings = [
-    f"1. Σ₀ detection: {best_fit.Sigma_0:+.3f} ± {best_fit.Sigma_0_error:.3f} "
-    f"({best_significance:.1f}σ from GR)",
-
+    f"1. Σ₀ detection: {best_fit.Sigma_0:+.3f} ± {best_fit.Sigma_0_error:.3f} ({best_significance:.1f}σ from GR)",
     f"2. σ₈ tension: {tension_cmb:.1f}σ between CMB-inferred and lensing-inferred values",
-
     f"3. Sign puzzle: Σ₀ > 0 (stronger gravity) yet σ₈(lens) < σ₈(CMB) (less growth) "
     f"— possible scale-dependent modification",
-
     f"4. GR formally {'rejected' if p_value_residuals < 0.05 else 'not rejected'} "
     f"by binned χ² test (p = {p_value_residuals:.3f})",
-
     f"5. {'All' if all_positive or all_negative else 'Not all'} bins deviate in same direction "
     f"(prob under null: {0.5**n_bins:.1%})",
-
-    f"6. Best information gain: {max(float((chi2_landscape[m.value]['chi2_at_GR'] - chi2_landscape[m.value]['chi2_min']) / (2*np.log(2))) for m in GZ_MODELS):.1f} bits against GR",
-
+    f"6. Best information gain: {max(float((chi2_landscape[m.value]['chi2_at_GR'] - chi2_landscape[m.value]['chi2_min']) / (2 * np.log(2))) for m in GZ_MODELS):.1f} bits against GR",
     f"7. Max Weyl transfer deviation: {abs(max_diff_pct):.1f}% at z = {max_diff_z:.2f}",
-
-    f"8. 5σ discovery forecast: requires σ(Σ₀) ≤ {sigma_5sig:.3f} "
-    f"— achievable by ~LSST Y10 / Stage-IV combined",
+    f"8. 5σ discovery forecast: requires σ(Σ₀) ≤ {sigma_5sig:.3f} — achievable by ~LSST Y10 / Stage-IV combined",
 ]
 
 for f in findings:
