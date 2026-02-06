@@ -63,6 +63,17 @@ except ImportError:
 
 HAS_VIZ_DEPS: bool = _has_viz_deps
 
+
+def _cache_data(**kwargs: Any) -> Any:
+    """Safe wrapper around st.cache_data; no-op when Streamlit is unavailable."""
+    if st is not None:
+        return st.cache_data(**kwargs)
+    # Fallback: identity decorator
+    def _identity(func: Any) -> Any:
+        return func
+    return _identity
+
+
 if TYPE_CHECKING:
     import pandas as pd
 
@@ -189,7 +200,7 @@ def get_repo_root() -> Path:
     return Path.cwd()
 
 
-@st.cache_data(ttl=60)
+@_cache_data(ttl=60)
 def load_ledger() -> Any:
     """Load the return log ledger as a DataFrame."""
     if pd is None:
@@ -211,7 +222,7 @@ def load_ledger() -> Any:
     return df
 
 
-@st.cache_data(ttl=60)
+@_cache_data(ttl=60)
 def load_casepacks() -> list[dict[str, Any]]:
     """Load casepack information with extended metadata."""
     repo_root = get_repo_root()
@@ -286,7 +297,7 @@ def load_casepacks() -> list[dict[str, Any]]:
     return casepacks
 
 
-@st.cache_data(ttl=60)
+@_cache_data(ttl=60)
 def load_contracts() -> list[dict[str, Any]]:
     """Load contract information with extended metadata."""
     repo_root = get_repo_root()
@@ -318,7 +329,7 @@ def load_contracts() -> list[dict[str, Any]]:
     return contracts
 
 
-@st.cache_data(ttl=60)
+@_cache_data(ttl=60)
 def load_closures() -> list[dict[str, Any]]:
     """Load closure information."""
     repo_root = get_repo_root()
