@@ -5,22 +5,18 @@ These tests verify that output formatters produce valid
 structured output in various formats.
 """
 
-import json
-
-import pytest
-
 from umcp.outputs import (
-    RegimeState,
-    ValidationSummary,
-    BadgeGenerator,
-    MermaidGenerator,
     ASCIIGenerator,
-    MarkdownGenerator,
-    LaTeXGenerator,
-    JSONLDGenerator,
-    SARIFGenerator,
-    JUnitGenerator,
+    BadgeGenerator,
     HTMLGenerator,
+    JSONLDGenerator,
+    JUnitGenerator,
+    LaTeXGenerator,
+    MarkdownGenerator,
+    MermaidGenerator,
+    RegimeState,
+    SARIFGenerator,
+    ValidationSummary,
     generate_all_badges,
 )
 
@@ -30,13 +26,7 @@ class TestRegimeState:
 
     def test_regime_creation(self):
         """RegimeState can be created."""
-        regime = RegimeState(
-            omega=0.5,
-            F=0.85,
-            S=0.001,
-            C=0.1,
-            regime="STABLE"
-        )
+        regime = RegimeState(omega=0.5, F=0.85, S=0.001, C=0.1, regime="STABLE")
         assert regime.regime == "STABLE"
         assert regime.F == 0.85
 
@@ -83,7 +73,7 @@ class TestBadgeGenerator:
 
     def test_badge_generator_class_methods(self):
         """BadgeGenerator has class methods."""
-        assert hasattr(BadgeGenerator, 'status_badge')
+        assert hasattr(BadgeGenerator, "status_badge")
 
     def test_status_badge(self):
         """Status badge can be generated."""
@@ -138,7 +128,7 @@ class TestMermaidGenerator:
     def test_mermaid_has_diagram_method(self):
         """MermaidGenerator has diagram method."""
         gen = MermaidGenerator()
-        assert hasattr(gen, 'regime_state_diagram')
+        assert hasattr(gen, "regime_state_diagram")
 
 
 class TestLaTeXGenerator:

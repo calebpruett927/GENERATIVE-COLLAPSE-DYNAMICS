@@ -9,11 +9,11 @@ import numpy as np
 import pytest
 
 from umcp.compute_utils import (
+    ClippingResult,
+    PruningResult,
     clip_coordinates,
     normalize_weights,
     prune_zero_weights,
-    ClippingResult,
-    PruningResult,
 )
 
 

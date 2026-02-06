@@ -5,10 +5,9 @@ These tests verify the public API exposed by the umcp package.
 """
 
 import json
-import pytest
 
 import umcp
-from umcp import validate, ValidationResult
+from umcp import ValidationResult, validate
 
 
 class TestPackageAPI:
@@ -16,7 +15,7 @@ class TestPackageAPI:
 
     def test_version_exists(self):
         """Package has __version__."""
-        assert hasattr(umcp, '__version__')
+        assert hasattr(umcp, "__version__")
         assert isinstance(umcp.__version__, str)
 
     def test_validate_function_exists(self):
@@ -33,10 +32,7 @@ class TestValidationResult:
 
     def test_result_from_dict(self):
         """ValidationResult can be created from dict."""
-        data = {
-            "run_status": "CONFORMANT",
-            "summary": {"errors": 0, "warnings": 0}
-        }
+        data = {"run_status": "CONFORMANT", "summary": {"errors": 0, "warnings": 0}}
         result = ValidationResult(data)
         assert result  # Truthy for CONFORMANT
 
@@ -71,7 +67,7 @@ class TestValidateFunction:
             result = validate("/nonexistent/path/xyz123")
             # If it returns, it should be some result
             assert result is not None or result is None
-        except (FileNotFoundError, ValueError, json.JSONDecodeError) as e:
+        except (FileNotFoundError, ValueError, json.JSONDecodeError):
             # These are acceptable error types for invalid input
             pass
 
@@ -79,6 +75,7 @@ class TestValidateFunction:
         """validate() returns ValidationResult for valid repo."""
         # Validate from the repo root
         import os
+
         repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         result = validate(repo_root)
         assert isinstance(result, ValidationResult)

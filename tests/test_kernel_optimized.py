@@ -9,9 +9,9 @@ import numpy as np
 import pytest
 
 from umcp.kernel_optimized import (
-    OptimizedKernelComputer,
-    KernelOutputs,
     ErrorBounds,
+    KernelOutputs,
+    OptimizedKernelComputer,
     compute_kernel_outputs,
 )
 
@@ -23,7 +23,7 @@ class TestOptimizedKernelComputer:
         """Basic kernel computation works."""
         computer = OptimizedKernelComputer()
         c = np.array([0.8, 0.6, 0.4])
-        w = np.array([1/3, 1/3, 1/3])
+        w = np.array([1 / 3, 1 / 3, 1 / 3])
         result = computer.compute(c, w)
         assert isinstance(result, KernelOutputs)
         assert 0 <= result.F <= 1
@@ -34,7 +34,7 @@ class TestOptimizedKernelComputer:
         """F = arithmetic mean with uniform weights."""
         computer = OptimizedKernelComputer()
         c = np.array([0.8, 0.6, 0.4])
-        w = np.array([1/3, 1/3, 1/3])
+        w = np.array([1 / 3, 1 / 3, 1 / 3])
         result = computer.compute(c, w)
         assert abs(result.F - 0.6) < 1e-10
 
@@ -42,7 +42,7 @@ class TestOptimizedKernelComputer:
         """omega = 1 - F per Lemma 6."""
         computer = OptimizedKernelComputer()
         c = np.array([0.8, 0.6, 0.4])
-        w = np.array([1/3, 1/3, 1/3])
+        w = np.array([1 / 3, 1 / 3, 1 / 3])
         result = computer.compute(c, w)
         assert abs(result.F + result.omega - 1.0) < 1e-10
 
@@ -60,7 +60,7 @@ class TestOptimizedKernelComputer:
         """kappa <= 0 since all c in (0, 1]."""
         computer = OptimizedKernelComputer()
         c = np.array([0.8, 0.6, 0.4])
-        w = np.array([1/3, 1/3, 1/3])
+        w = np.array([1 / 3, 1 / 3, 1 / 3])
         result = computer.compute(c, w)
         assert result.kappa <= 0
 
@@ -77,7 +77,7 @@ class TestOptimizedKernelComputer:
         """F = IC for homogeneous state (Lemma 4)."""
         computer = OptimizedKernelComputer()
         c = np.array([0.75, 0.75, 0.75])
-        w = np.array([1/3, 1/3, 1/3])
+        w = np.array([1 / 3, 1 / 3, 1 / 3])
         result = computer.compute(c, w)
         assert result.is_homogeneous
         assert abs(result.F - result.IC) < 1e-10
@@ -121,7 +121,7 @@ class TestOptimizedKernelComputer:
         """Regime is classified."""
         computer = OptimizedKernelComputer()
         c = np.array([0.8, 0.6, 0.4])
-        w = np.array([1/3, 1/3, 1/3])
+        w = np.array([1 / 3, 1 / 3, 1 / 3])
         result = computer.compute(c, w)
         assert isinstance(result.regime, str)
         assert len(result.regime) > 0
@@ -131,10 +131,10 @@ class TestOptimizedKernelComputer:
         computer = OptimizedKernelComputer()
         # Homogeneous case
         c_homo = np.array([0.75, 0.75, 0.75])
-        w = np.array([1/3, 1/3, 1/3])
+        w = np.array([1 / 3, 1 / 3, 1 / 3])
         result_homo = computer.compute(c_homo, w)
         assert result_homo.computation_mode == "fast_homogeneous"
-        
+
         # Heterogeneous case
         c_hetero = np.array([0.9, 0.3, 0.5])
         result_hetero = computer.compute(c_hetero, w)
@@ -147,25 +147,25 @@ class TestComputeKernelOutputs:
     def test_returns_dict(self):
         """Function returns a dict with all invariants."""
         c = np.array([0.8, 0.6, 0.4])
-        w = np.array([1/3, 1/3, 1/3])
+        w = np.array([1 / 3, 1 / 3, 1 / 3])
         result = compute_kernel_outputs(c, w)
         assert isinstance(result, dict)
-        assert 'F' in result
-        assert 'omega' in result
-        assert 'IC' in result
-        assert 'kappa' in result
+        assert "F" in result
+        assert "omega" in result
+        assert "IC" in result
+        assert "kappa" in result
 
     def test_matches_class(self):
         """Function returns same values as class."""
         computer = OptimizedKernelComputer()
         c = np.array([0.8, 0.6, 0.4])
-        w = np.array([1/3, 1/3, 1/3])
-        
+        w = np.array([1 / 3, 1 / 3, 1 / 3])
+
         class_result = computer.compute(c, w)
         func_result = compute_kernel_outputs(c, w)
-        
-        assert abs(class_result.F - func_result['F']) < 1e-10
-        assert abs(class_result.IC - func_result['IC']) < 1e-10
+
+        assert abs(class_result.F - func_result["F"]) < 1e-10
+        assert abs(class_result.IC - func_result["IC"]) < 1e-10
 
 
 class TestKernelOutputs:
@@ -174,9 +174,16 @@ class TestKernelOutputs:
     def test_outputs_accessible(self):
         """KernelOutputs fields are accessible."""
         outputs = KernelOutputs(
-            F=0.6, omega=0.4, S=0.5, C=0.1, kappa=-0.5, IC=0.55,
-            amgm_gap=0.05, regime="normal", is_homogeneous=False,
-            computation_mode="full_heterogeneous"
+            F=0.6,
+            omega=0.4,
+            S=0.5,
+            C=0.1,
+            kappa=-0.5,
+            IC=0.55,
+            amgm_gap=0.05,
+            regime="normal",
+            is_homogeneous=False,
+            computation_mode="full_heterogeneous",
         )
         assert outputs.F == 0.6
         assert outputs.omega == 0.4

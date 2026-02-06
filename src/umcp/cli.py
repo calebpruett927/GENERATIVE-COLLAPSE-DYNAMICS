@@ -26,7 +26,7 @@ try:
     import yaml
 except ImportError:
     yaml = None
-from jsonschema import Draft202012Validator  # type: ignore[import-untyped]
+from jsonschema import Draft202012Validator
 
 from umcp import VALIDATOR_NAME, __version__
 from umcp.logging_utils import HealthCheck, get_logger
@@ -335,7 +335,7 @@ def _append_to_ledger(repo_root: Path, run_status: str, invariants_data: dict[st
     """
     Append validation result to continuous ledger at ledger/return_log.csv.
     Records: timestamp, run_status, and all kernel invariants (F, ω, κ, IC, C, S, τ_R).
-    
+
     Extended columns (per KERNEL_SPECIFICATION.md):
     - F: Fidelity (arithmetic mean)
     - omega: Drift (1 - F)
