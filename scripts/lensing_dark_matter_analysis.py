@@ -40,11 +40,11 @@ from __future__ import annotations
 
 import json
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import numpy as np
-from scipy import integrate, interpolate, optimize
+from scipy import optimize
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
@@ -53,23 +53,14 @@ from closures.weyl import (
     PLANCK_2018,
     D1_of_z,
     GzModel,
-    H_of_z,
     Omega_Lambda_of_z,
-    Omega_m_of_z,
-    Sigma_to_UMCP_invariants,
-    chi_of_z,
-    compute_background,
     compute_Sigma,
-    compute_weyl_transfer,
-    fit_Sigma_0,
-    halofit_boost,
-    sigma8_of_z,
 )
 
 np.set_printoptions(precision=6, suppress=True)
 
 results: dict = {
-    "timestamp": datetime.now(timezone.utc).isoformat(),
+    "timestamp": datetime.now(UTC).isoformat(),
     "title": "Gravitational Lensing & Dark Matter Accumulation via Modified Gravity",
     "hypothesis": (
         "The DES Y3 Σ₀ signal implies that a fraction of what we attribute "
@@ -152,12 +143,12 @@ apparent_DM = Omega_DM * Sigma_today
 real_DM = Omega_DM
 gravity_excess = apparent_DM - real_DM
 
-print(f"\n  At z = 0 (today):")
+print("\n  At z = 0 (today):")
 print(f"    Ω_DM (true)     = {Omega_DM:.3f}")
 print(f"    Ω_DM (lensing)  = {apparent_DM:.3f}")
 print(f"    Gravity excess   = {gravity_excess:.3f}")
 print(f"    → {gravity_excess / apparent_DM * 100:.1f}% of lensing-inferred dark matter")
-print(f"      is actually a gravitational enhancement effect")
+print("      is actually a gravitational enhancement effect")
 
 results["sections"]["lensing_mass_bias"] = {
     "bias_vs_redshift": mass_bias_results,
@@ -240,10 +231,10 @@ print(f"  Σ(z={z_cluster}) = {Sigma_cluster:.4f}")
 print(f"  Inferred concentration (GR observer): c_inferred = {c_inferred:.1f}")
 print(f"  Concentration bias: {(c_inferred / c_true - 1) * 100:+.1f}%")
 print(f"\n  ★ A GR observer would infer {(c_inferred / c_true - 1) * 100:.0f}% higher concentration")
-print(f"    than the true mass distribution warrants.")
+print("    than the true mass distribution warrants.")
 
 # Scan across masses and redshifts
-print(f"\n  Concentration bias across halo masses:")
+print("\n  Concentration bias across halo masses:")
 print(f"    {'log₁₀(M/M☉)':>14}  {'c_true':>8}  {'c_inferred':>12}  {'Bias':>8}")
 print("    " + "-" * 50)
 
@@ -256,10 +247,10 @@ for log_M in [12.0, 13.0, 13.5, 14.0, 14.5, 15.0]:
     kappa_true = nfw_convergence_profile(r_range, M, c_dm, z_cluster)
     kappa_boosted = Sigma_cluster * kappa_true
 
-    def chi2_fit(c: float) -> float:
-        kf = nfw_convergence_profile(r_range, M, c, z_cluster)
-        s = np.sum(kappa_boosted * kf) / max(np.sum(kf**2), 1e-30)
-        return np.sum((kappa_boosted - s * kf) ** 2)
+    def chi2_fit(c: float, _M: float = M, _kappa_boosted: object = kappa_boosted) -> float:
+        kf = nfw_convergence_profile(r_range, _M, c, z_cluster)
+        s = np.sum(_kappa_boosted * kf) / max(np.sum(kf**2), 1e-30)
+        return np.sum((_kappa_boosted - s * kf) ** 2)
 
     res = optimize.minimize_scalar(chi2_fit, bounds=(1, 30), method="bounded")
     c_inf = float(res.x)  # type: ignore[union-attr]
@@ -299,8 +290,8 @@ print("  Lensing probes large scales, clustering probes smaller scales.")
 # Model: h(k) = exp(-(k/k_transition)²)
 # k_transition separates the lensing and clustering regimes
 
-print(f"\n  Model: Σ(k,z) = 1 + Σ₀·g(z)·exp(-(k/k_tr)²)")
-print(f"  Where k_tr is the transition scale between modified and GR gravity")
+print("\n  Model: Σ(k,z) = 1 + Σ₀·g(z)·exp(-(k/k_tr)²)")
+print("  Where k_tr is the transition scale between modified and GR gravity")
 
 k_transition_values = [0.05, 0.1, 0.2, 0.5, 1.0]
 k_scan = np.logspace(-3, 1, 100)
@@ -313,10 +304,10 @@ for k_tr in k_transition_values:
     Sigma_0_paper = 0.24
     z_test = 0.5
 
-    def Sigma_k(k: float) -> float:
-        g_z = Omega_Lambda_of_z(z_test)
-        h_k = np.exp(-((k / k_tr) ** 2))
-        return 1.0 + Sigma_0_paper * g_z * h_k
+    def Sigma_k(k: float, _z_test: float = z_test, _k_tr: float = k_tr, _Sigma_0_paper: float = Sigma_0_paper) -> float:
+        g_z = Omega_Lambda_of_z(_z_test)
+        h_k = np.exp(-((k / _k_tr) ** 2))
+        return 1.0 + _Sigma_0_paper * g_z * h_k
 
     S_001 = Sigma_k(0.01)
     S_01 = Sigma_k(0.1)
@@ -335,15 +326,15 @@ for k_tr in k_transition_values:
 
     print(f"  {k_tr:14.2f}  {S_001:14.4f}  {S_01:12.4f}  {S_1:12.4f}  {S_10:12.4f}")
 
-print(f"\n  ★ INTERPRETATION:")
-print(f"    If k_tr ≈ 0.1 h/Mpc:")
-print(f"      • Lensing (k < 0.1): Σ ≈ 1.16 → 16% mass overestimate")
-print(f"      • Clustering (k > 0.5): Σ ≈ 1.00 → GR-consistent growth")
-print(f"      • This RESOLVES the sign puzzle!")
-print(f"      • And explains why σ₈(lensing) ≠ σ₈(clustering)")
+print("\n  ★ INTERPRETATION:")
+print("    If k_tr ≈ 0.1 h/Mpc:")
+print("      • Lensing (k < 0.1): Σ ≈ 1.16 → 16% mass overestimate")
+print("      • Clustering (k > 0.5): Σ ≈ 1.00 → GR-consistent growth")
+print("      • This RESOLVES the sign puzzle!")
+print("      • And explains why σ₈(lensing) ≠ σ₈(clustering)")
 
 # What dark matter fraction does this explain at each scale?
-print(f"\n  Dark matter 'mirage' fraction by scale (k_tr = 0.1 h/Mpc):")
+print("\n  Dark matter 'mirage' fraction by scale (k_tr = 0.1 h/Mpc):")
 print(f"    {'Scale':>20}  {'k (h/Mpc)':>12}  {'Σ':>8}  {'%DM from MG':>14}")
 print("    " + "-" * 60)
 
@@ -393,7 +384,7 @@ delta_c_GR = 1.686  # Critical overdensity for spherical collapse in GR
 
 z_accretion = np.array([0.0, 0.2, 0.5, 0.8, 1.0, 1.5, 2.0, 3.0])
 
-print(f"\n  Spherical collapse threshold δ_c and accretion enhancement:")
+print("\n  Spherical collapse threshold δ_c and accretion enhancement:")
 print(f"    {'z':>5}  {'D₁(z)':>8}  {'Σ(z)':>8}  {'δ_c(GR)':>10}  {'δ_c(MG)':>10}  {'Accretion boost':>16}")
 print("    " + "-" * 65)
 
@@ -436,11 +427,11 @@ for z in z_accretion:
         f"{delta_c_linear_MG:10.4f}  {min(accretion_boost, 999.9):14.1f}×"
     )
 
-print(f"\n  ★ INTERPRETATION:")
-print(f"    Modified gravity (Σ > 1) LOWERS the collapse barrier")
-print(f"    → Dark matter accumulates faster into halos")
-print(f"    → More massive halos form earlier than GR predicts")
-print(f"    → This matches observations of 'impossibly early' massive galaxies")
+print("\n  ★ INTERPRETATION:")
+print("    Modified gravity (Σ > 1) LOWERS the collapse barrier")
+print("    → Dark matter accumulates faster into halos")
+print("    → More massive halos form earlier than GR predicts")
+print("    → This matches observations of 'impossibly early' massive galaxies")
 
 results["sections"]["accretion_enhancement"] = accretion_results
 
@@ -456,17 +447,17 @@ print("━" * 80)
 s8_cmb = 0.849  # Planck CMB
 s8_lens = 0.743  # DES Y3 from lensing
 
-print(f"\n  The σ₈ tension:")
+print("\n  The σ₈ tension:")
 print(f"    σ₈(CMB, Planck) = {s8_cmb}")
 print(f"    σ₈(lensing, DES) = {s8_lens}")
 print(f"    Ratio: {s8_lens / s8_cmb:.4f}")
 print(f"    Tension: {abs(s8_cmb - s8_lens) / np.sqrt(0.030**2 + 0.039**2):.1f}σ")
 
-print(f"\n  Resolution mechanism:")
-print(f"    CMB measures the TRUE σ₈ (primordial fluctuation amplitude)")
-print(f"    Lensing measures σ₈ × Σ⁻¹ (because Σ > 1 means you need")
-print(f"    LESS matter to produce the observed lensing signal)")
-print(f"\n    σ₈(lens) = σ₈(true) / Σ_eff")
+print("\n  Resolution mechanism:")
+print("    CMB measures the TRUE σ₈ (primordial fluctuation amplitude)")
+print("    Lensing measures σ₈ × Σ⁻¹ (because Σ > 1 means you need")
+print("    LESS matter to produce the observed lensing signal)")
+print("\n    σ₈(lens) = σ₈(true) / Σ_eff")
 print(f"    → Σ_eff = σ₈(true) / σ₈(lens) = {s8_cmb / s8_lens:.4f}")
 print(f"    → Σ₀ needed: {s8_cmb / s8_lens - 1:.4f}")
 
@@ -477,7 +468,7 @@ Sigma_0_needed = Sigma_needed - 1
 # Our fits
 S0_standard_paper = 0.24
 
-print(f"\n  Consistency check:")
+print("\n  Consistency check:")
 print(f"    Σ₀ needed to resolve σ₈ tension: {Sigma_0_needed:+.4f}")
 print(f"    Σ₀ measured (DES Y3, standard):  {S0_standard_paper:+.4f}")
 print(f"    Ratio: {Sigma_0_needed / S0_standard_paper:.2f}")
@@ -494,9 +485,9 @@ else:
 print(f"    Verdict: {consistency}")
 
 # What if there's a scale-dependent effect?
-print(f"\n  With scale-dependent Σ(k):")
-print(f"    σ₈ is measured at k ~ 0.1-0.3 h/Mpc (8 Mpc/h scale)")
-print(f"    If k_tr ≈ 0.15 h/Mpc:")
+print("\n  With scale-dependent Σ(k):")
+print("    σ₈ is measured at k ~ 0.1-0.3 h/Mpc (8 Mpc/h scale)")
+print("    If k_tr ≈ 0.15 h/Mpc:")
 
 k_sigma8 = 0.2  # Approximate k for σ₈ measurement
 k_tr_model = 0.15
@@ -532,11 +523,11 @@ print("  predictions follow that differ from pure dark matter models.")
 predictions: list = []
 
 # Prediction 1: Lensing mass > dynamical mass
-print(f"\n  PREDICTION 1: Lensing mass exceeds dynamical mass")
-print(f"  ──────────────────────────────────────────────────")
-print(f"    M_lensing / M_dynamical = Σ(z)")
-print(f"    Because lensing probes Weyl potential (Σ-dependent)")
-print(f"    while dynamics probe Newtonian potential (Σ-independent)")
+print("\n  PREDICTION 1: Lensing mass exceeds dynamical mass")
+print("  ──────────────────────────────────────────────────")
+print("    M_lensing / M_dynamical = Σ(z)")
+print("    Because lensing probes Weyl potential (Σ-dependent)")
+print("    while dynamics probe Newtonian potential (Σ-independent)")
 
 for z in [0.2, 0.5, 0.8]:
     S = compute_Sigma(z, 0.24, GzModel.STANDARD, Omega_Lambda_of_z).Sigma
@@ -552,12 +543,12 @@ predictions.append(
 )
 
 # Prediction 2: Galaxy-galaxy lensing stronger than galaxy clustering implies
-print(f"\n  PREDICTION 2: Galaxy-galaxy lensing/clustering ratio anomaly")
-print(f"  ──────────────────────────────────────────────────────────────")
-print(f"    EG statistic: EG = Ω_m / β where β = f/b (growth rate / bias)")
-print(f"    In GR: EG is scale-independent")
-print(f"    With Σ(k): EG becomes scale-dependent")
-print(f"    EG_modified(k) = EG_GR × Σ(k)")
+print("\n  PREDICTION 2: Galaxy-galaxy lensing/clustering ratio anomaly")
+print("  ──────────────────────────────────────────────────────────────")
+print("    EG statistic: EG = Ω_m / β where β = f/b (growth rate / bias)")
+print("    In GR: EG is scale-independent")
+print("    With Σ(k): EG becomes scale-dependent")
+print("    EG_modified(k) = EG_GR × Σ(k)")
 
 for k_test_val in [0.01, 0.05, 0.1, 0.5]:
     h_k = np.exp(-((k_test_val / 0.1) ** 2))
@@ -574,12 +565,12 @@ predictions.append(
 )
 
 # Prediction 3: Void lensing anomaly
-print(f"\n  PREDICTION 3: Cosmic void lensing anomaly")
-print(f"  ──────────────────────────────────────────")
-print(f"    Voids show Σ < 1 on their boundary → LESS lensing than GR")
-print(f"    But overdensities show Σ > 1 → MORE lensing")
-print(f"    Net: lensing by voids is suppressed relative to GR")
-print(f"    This has been TENTATIVELY observed in DES data!")
+print("\n  PREDICTION 3: Cosmic void lensing anomaly")
+print("  ──────────────────────────────────────────")
+print("    Voids show Σ < 1 on their boundary → LESS lensing than GR")
+print("    But overdensities show Σ > 1 → MORE lensing")
+print("    Net: lensing by voids is suppressed relative to GR")
+print("    This has been TENTATIVELY observed in DES data!")
 
 predictions.append(
     {
@@ -591,12 +582,12 @@ predictions.append(
 )
 
 # Prediction 4: Redshift-dependent concentration-mass relation offset
-print(f"\n  PREDICTION 4: c-M relation redshift evolution")
-print(f"  ──────────────────────────────────────────────")
-print(f"    The concentration bias Δc/c should evolve as Σ(z)")
+print("\n  PREDICTION 4: c-M relation redshift evolution")
+print("  ──────────────────────────────────────────────")
+print("    The concentration bias Δc/c should evolve as Σ(z)")
 print(f"    At z=0: Σ ≈ {compute_Sigma(0, 0.24, GzModel.STANDARD, Omega_Lambda_of_z).Sigma:.3f}")
 print(f"    At z=1: Σ ≈ {compute_Sigma(1, 0.24, GzModel.STANDARD, Omega_Lambda_of_z).Sigma:.3f}")
-print(f"    The bias should VANISH at high z (where GR recovers)")
+print("    The bias should VANISH at high z (where GR recovers)")
 
 predictions.append(
     {
@@ -608,10 +599,10 @@ predictions.append(
 )
 
 # Prediction 5: CMB lensing vs galaxy lensing discrepancy
-print(f"\n  PREDICTION 5: CMB lensing amplitude anomaly")
-print(f"  ─────────────────────────────────────────────")
-print(f"    Planck A_lens = 1.18 ± 0.065 (higher than GR predicts)")
-print(f"    Predicted from Σ₀ = 0.24:")
+print("\n  PREDICTION 5: CMB lensing amplitude anomaly")
+print("  ─────────────────────────────────────────────")
+print("    Planck A_lens = 1.18 ± 0.065 (higher than GR predicts)")
+print("    Predicted from Σ₀ = 0.24:")
 
 A_lens_planck = 1.18
 A_lens_predicted = compute_Sigma(0.5, 0.24, GzModel.STANDARD, Omega_Lambda_of_z).Sigma
@@ -643,10 +634,10 @@ print("\n\n" + "━" * 80)
 print("  SECTION 7: The Dark Matter Budget")
 print("━" * 80)
 
-print(f"\n  Standard ΛCDM budget:")
-print(f"    Ω_baryon  = 0.049  (4.9%)")
-print(f"    Ω_DM      = 0.266  (26.6%)")
-print(f"    Ω_Λ       = 0.685  (68.5%)")
+print("\n  Standard ΛCDM budget:")
+print("    Ω_baryon  = 0.049  (4.9%)")
+print("    Ω_DM      = 0.266  (26.6%)")
+print("    Ω_Λ       = 0.685  (68.5%)")
 
 # If Σ > 1 at low z, some "dark matter" is gravitational enhancement
 # The amount depends on how Σ enters the observational chain
@@ -680,7 +671,7 @@ probes = {
     },
 }
 
-print(f"\n  How Σ affects different dark matter probes:")
+print("\n  How Σ affects different dark matter probes:")
 print(f"    {'Probe':>30}  {'z_eff':>6}  {'k_eff':>8}  {'Σ_eff':>8}  {'DM bias':>10}")
 print("    " + "-" * 70)
 
@@ -714,16 +705,16 @@ Omega_DM_standard = 0.266
 Omega_DM_lens_bias = Omega_DM_standard * 0.16  # ~16% from lensing surveys
 Omega_DM_revised = Omega_DM_standard - Omega_DM_lens_bias
 
-print(f"\n  ★ REVISED DARK MATTER BUDGET (if Σ₀ = 0.24 is real):")
+print("\n  ★ REVISED DARK MATTER BUDGET (if Σ₀ = 0.24 is real):")
 print(f"    Ω_DM (standard ΛCDM)  = {Omega_DM_standard:.3f}")
 print(f"    Gravitational mirage   = {Omega_DM_lens_bias:.3f}")
 print(f"    Ω_DM (revised)         = {Omega_DM_revised:.3f}")
 print(f"    → {Omega_DM_lens_bias / Omega_DM_standard * 100:.0f}% of 'dark matter'")
-print(f"      may be a gravitational enhancement effect")
-print(f"\n    CAVEAT: This only affects lensing-based measurements.")
-print(f"    CMB, BAO, and rotation curve evidence for dark matter")
-print(f"    is NOT affected by this mechanism. Dark matter still")
-print(f"    exists — but there may be ~16% less of it than we think.")
+print("      may be a gravitational enhancement effect")
+print("\n    CAVEAT: This only affects lensing-based measurements.")
+print("    CMB, BAO, and rotation curve evidence for dark matter")
+print("    is NOT affected by this mechanism. Dark matter still")
+print("    exists — but there may be ~16% less of it than we think.")
 
 results["sections"]["dark_matter_budget"] = {
     "Omega_DM_standard": Omega_DM_standard,
@@ -741,15 +732,15 @@ print("\n\n" + "━" * 80)
 print("  SECTION 8: UMCP Invariant Interpretation")
 print("━" * 80)
 
-print(f"\n  Mapping modified gravity to UMCP's tripartite invariants:")
-print(f"\n  In standard UMCP:")
-print(f"    F (Fidelity) = 1 − ω = fraction of ideal signal retained")
-print(f"    IC (Information Content) ≤ F (AM-GM bound)")
-print(f"    Regime: STABLE → WATCH → COLLAPSE")
-print(f"\n  Cosmological realization:")
-print(f"    ω = |Σ₀| = drift from GR ideal")
-print(f"    F = 1 − |Σ₀| = gravitational fidelity")
-print(f"    IC = exp(D_KL) = information content of deviation")
+print("\n  Mapping modified gravity to UMCP's tripartite invariants:")
+print("\n  In standard UMCP:")
+print("    F (Fidelity) = 1 − ω = fraction of ideal signal retained")
+print("    IC (Information Content) ≤ F (AM-GM bound)")
+print("    Regime: STABLE → WATCH → COLLAPSE")
+print("\n  Cosmological realization:")
+print("    ω = |Σ₀| = drift from GR ideal")
+print("    F = 1 − |Σ₀| = gravitational fidelity")
+print("    IC = exp(D_KL) = information content of deviation")
 
 # From our previous analysis
 delta_chi2 = 8.81  # standard model
@@ -758,24 +749,24 @@ IC = np.exp(D_KL)
 F = 1.0 - 0.24
 omega = 0.24
 
-print(f"\n  For DES Y3 (Σ₀ = 0.24):")
+print("\n  For DES Y3 (Σ₀ = 0.24):")
 print(f"    ω = {omega:.3f}")
 print(f"    F = {F:.3f}")
 print(f"    IC = exp({D_KL:.2f}) = {IC:.1f}")
 print(f"    IC ≤ F: {IC:.1f} ≤ {F:.3f} → VIOLATED")
-print(f"\n  ★ The AM-GM violation means:")
-print(f"    The INFORMATION CONTENT of the GR deviation EXCEEDS")
-print(f"    the system's FIDELITY to GR.")
-print(f"    In UMCP language: the signal has COLLAPSED through")
-print(f"    the stability boundary.")
-print(f"\n    This is the mathematical signature of a real physical")
-print(f"    signal — not noise, not systematics.")
-print(f"    Noise would give IC ≈ 1 (no information).")
+print("\n  ★ The AM-GM violation means:")
+print("    The INFORMATION CONTENT of the GR deviation EXCEEDS")
+print("    the system's FIDELITY to GR.")
+print("    In UMCP language: the signal has COLLAPSED through")
+print("    the stability boundary.")
+print("\n    This is the mathematical signature of a real physical")
+print("    signal — not noise, not systematics.")
+print("    Noise would give IC ≈ 1 (no information).")
 print(f"    We get IC ≈ {IC:.0f} — orders of magnitude above threshold.")
 
 # What κ (curvature) would be needed for IC ≤ F?
 kappa_max = np.log(F)  # IC = exp(κ) ≤ F ⟹ κ ≤ ln(F)
-print(f"\n  For IC ≤ F to hold:")
+print("\n  For IC ≤ F to hold:")
 print(f"    κ must be ≤ ln(F) = ln({F:.3f}) = {kappa_max:.3f}")
 print(f"    But we have κ = {D_KL:.3f}")
 print(f"    Excess: κ − ln(F) = {D_KL - kappa_max:.3f}")

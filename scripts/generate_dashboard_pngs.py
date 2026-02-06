@@ -3,8 +3,6 @@
 # pyright: reportArgumentType=false
 from __future__ import annotations
 
-import math
-import sys
 from pathlib import Path
 
 import numpy as np
@@ -24,12 +22,12 @@ CARD_BG = "#262730"
 TEXT = "#fafafa"
 GRID = "#333333"
 
-LAYOUT_DEFAULTS = dict(
-    paper_bgcolor=BG,
-    plot_bgcolor=BG,
-    font=dict(color=TEXT, family="Inter, system-ui, sans-serif"),
-    margin=dict(l=60, r=30, t=60, b=50),
-)
+LAYOUT_DEFAULTS = {
+    "paper_bgcolor": BG,
+    "plot_bgcolor": BG,
+    "font": {"color": TEXT, "family": "Inter, system-ui, sans-serif"},
+    "margin": {"l": 60, "r": 30, "t": 60, "b": 50},
+}
 
 
 def styled(fig: go.Figure, **kw) -> go.Figure:
@@ -76,7 +74,7 @@ def gen_regime_phase_space(df: pd.DataFrame) -> None:
             x=omegas,
             y=Fs,
             mode="lines",
-            line=dict(color="#555555", width=1, dash="dot"),
+            line={"color": "#555555", "width": 1, "dash": "dot"},
             showlegend=False,
         )
     )
@@ -86,10 +84,10 @@ def gen_regime_phase_space(df: pd.DataFrame) -> None:
             x=omegas,
             y=Fs,
             mode="markers+text",
-            marker=dict(size=14, color=colors, line=dict(width=2, color=TEXT)),
+            marker={"size": 14, "color": colors, "line": {"width": 2, "color": TEXT}},
             text=[f"t{i}" for i in range(len(omegas))],
             textposition="top center",
-            textfont=dict(size=10, color=TEXT),
+            textfont={"size": 10, "color": TEXT},
             name="Trajectory",
         )
     )
@@ -124,8 +122,8 @@ def gen_regime_phase_space(df: pd.DataFrame) -> None:
         yaxis_title="F (Fidelity)",
         width=900,
         height=550,
-        xaxis=dict(range=[-0.01, 0.35]),
-        yaxis=dict(range=[0.65, 1.02]),
+        xaxis={"range": [-0.01, 0.35]},
+        yaxis={"range": [0.65, 1.02]},
         showlegend=False,
     )
 
@@ -173,7 +171,7 @@ def gen_kernel_timeseries(df: pd.DataFrame) -> None:
                     x=sample["timestamp"],
                     y=sample[col_name],
                     mode="lines",
-                    line=dict(color=color, width=2),
+                    line={"color": color, "width": 2},
                     name=col_name,
                     showlegend=False,
                 ),
@@ -205,8 +203,8 @@ def gen_amgm_gap(df: pd.DataFrame) -> None:
             y=sample["F"],
             mode="lines+markers",
             name="F (Arithmetic Mean)",
-            line=dict(color="#00d4ff", width=2),
-            marker=dict(size=5),
+            line={"color": "#00d4ff", "width": 2},
+            marker={"size": 5},
         )
     )
     fig.add_trace(
@@ -215,8 +213,8 @@ def gen_amgm_gap(df: pd.DataFrame) -> None:
             y=sample["IC"],
             mode="lines+markers",
             name="IC (Geometric Mean)",
-            line=dict(color="#51cf66", width=2),
-            marker=dict(size=5),
+            line={"color": "#51cf66", "width": 2},
+            marker={"size": 5},
         )
     )
 
@@ -227,7 +225,7 @@ def gen_amgm_gap(df: pd.DataFrame) -> None:
             y=list(sample["F"]) + list(sample["IC"][::-1]),
             fill="toself",
             fillcolor="rgba(255, 212, 59, 0.15)",
-            line=dict(width=0),
+            line={"width": 0},
             name="Δ = F − IC (heterogeneity)",
         )
     )
@@ -239,7 +237,7 @@ def gen_amgm_gap(df: pd.DataFrame) -> None:
         yaxis_title="Value",
         width=900,
         height=450,
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="center", x=0.5),
+        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "center", "x": 0.5},
     )
 
     fig.write_image(str(OUT_DIR / "03_amgm_gap_analysis.png"), scale=2)
@@ -264,9 +262,9 @@ def gen_ledger_overview(df: pd.DataFrame) -> None:
         go.Pie(
             labels=status_counts.index,
             values=status_counts.values,
-            marker=dict(colors=colors, line=dict(color=BG, width=2)),
+            marker={"colors": colors, "line": {"color": BG, "width": 2}},
             textinfo="label+percent",
-            textfont=dict(size=12),
+            textfont={"size": 12},
             hole=0.4,
         ),
         row=1,
@@ -309,7 +307,7 @@ def gen_three_layer_geometry() -> None:
     F = 1 - omega
     kappa = np.log(np.clip(F - 0.01, 0.01, 1))
     IC = np.exp(kappa)
-    S = -omega * np.log(np.clip(omega, 1e-10, 1)) - (1 - omega) * np.log(np.clip(1 - omega, 1e-10, 1))
+    -omega * np.log(np.clip(omega, 1e-10, 1)) - (1 - omega) * np.log(np.clip(1 - omega, 1e-10, 1))
 
     regimes = [classify_regime(o) for o in omega]
     colors = [REGIME_COLORS[r] for r in regimes]
@@ -333,7 +331,7 @@ def gen_three_layer_geometry() -> None:
             x=list(range(n)),
             y=list(F),
             mode="lines",
-            line=dict(color="#00d4ff", width=2),
+            line={"color": "#00d4ff", "width": 2},
             name="F",
         ),
         row=1,
@@ -344,7 +342,7 @@ def gen_three_layer_geometry() -> None:
             x=list(range(n)),
             y=list(omega),
             mode="lines",
-            line=dict(color="#ff6b6b", width=2),
+            line={"color": "#ff6b6b", "width": 2},
             name="ω",
         ),
         row=1,
@@ -359,7 +357,7 @@ def gen_three_layer_geometry() -> None:
             x=list(range(n)),
             y=list(F),
             mode="lines",
-            line=dict(color="#00d4ff", width=2),
+            line={"color": "#00d4ff", "width": 2},
             name="F (AM)",
             showlegend=False,
         ),
@@ -371,7 +369,7 @@ def gen_three_layer_geometry() -> None:
             x=list(range(n)),
             y=list(IC),
             mode="lines",
-            line=dict(color="#51cf66", width=2),
+            line={"color": "#51cf66", "width": 2},
             name="IC (GM)",
             showlegend=False,
         ),
@@ -384,7 +382,7 @@ def gen_three_layer_geometry() -> None:
             y=list(F) + list(IC)[::-1],
             fill="toself",
             fillcolor="rgba(255,212,59,0.15)",
-            line=dict(width=0),
+            line={"width": 0},
             name="Δ gap",
             showlegend=False,
         ),
@@ -411,7 +409,7 @@ def gen_three_layer_geometry() -> None:
         title="Three-Layer Geometry — Unified View",
         width=1000,
         height=800,
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="center", x=0.5),
+        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "center", "x": 0.5},
     )
 
     for row in range(1, 4):
@@ -507,11 +505,11 @@ def gen_gcd_panel() -> None:
     ]:
         fig.add_trace(
             go.Scatterpolar(
-                r=vals + [vals[0]],
-                theta=symbols + [symbols[0]],
+                r=[*vals, vals[0]],
+                theta=[*symbols, symbols[0]],
                 fill="toself",
                 fillcolor=hex_to_rgba(color, 0.15),
-                line=dict(color=color, width=2),
+                line={"color": color, "width": 2},
                 name=name,
             )
         )
@@ -521,12 +519,12 @@ def gen_gcd_panel() -> None:
         title="GCD Kernel Profile — Regime Comparison",
         width=700,
         height=600,
-        polar=dict(
-            bgcolor=BG,
-            radialaxis=dict(visible=True, range=[0, 1], gridcolor=GRID, color=TEXT),
-            angularaxis=dict(gridcolor=GRID, color=TEXT),
-        ),
-        legend=dict(orientation="h", yanchor="bottom", y=-0.15, xanchor="center", x=0.5),
+        polar={
+            "bgcolor": BG,
+            "radialaxis": {"visible": True, "range": [0, 1], "gridcolor": GRID, "color": TEXT},
+            "angularaxis": {"gridcolor": GRID, "color": TEXT},
+        },
+        legend={"orientation": "h", "yanchor": "bottom", "y": -0.15, "xanchor": "center", "x": 0.5},
     )
 
     fig.write_image(str(OUT_DIR / "07_gcd_kernel_profile.png"), scale=2)
@@ -543,7 +541,7 @@ def gen_drift_detection() -> None:
     # Simulate gradual drift: stable → watch → collapse
     omega = 0.02 + 0.005 * weeks**1.5 + np.random.normal(0, 0.003, len(weeks))
     omega = np.clip(omega, 0, 0.40)
-    F = 1 - omega
+    1 - omega
 
     regimes = [classify_regime(o) for o in omega]
     colors = [REGIME_COLORS[r] for r in regimes]
@@ -563,8 +561,8 @@ def gen_drift_detection() -> None:
             x=weeks,
             y=omega,
             mode="lines+markers",
-            line=dict(color="#ff6b6b", width=3),
-            marker=dict(size=10, color=colors, line=dict(width=2, color=TEXT)),
+            line={"color": "#ff6b6b", "width": 3},
+            marker={"size": 10, "color": colors, "line": {"width": 2, "color": TEXT}},
             name="ω (drift)",
         ),
         row=1,
@@ -666,7 +664,7 @@ def gen_multisite_comparison() -> None:
             marker_color=site_colors,
             text=site_regimes,
             textposition="inside",
-            textfont=dict(size=14, color="white"),
+            textfont={"size": 14, "color": "white"},
             showlegend=False,
         ),
         row=1,
@@ -679,7 +677,7 @@ def gen_multisite_comparison() -> None:
         width=1050,
         height=450,
         barmode="group",
-        legend=dict(orientation="h", yanchor="bottom", y=1.05, xanchor="center", x=0.3),
+        legend={"orientation": "h", "yanchor": "bottom", "y": 1.05, "xanchor": "center", "x": 0.3},
     )
 
     fig.update_xaxes(gridcolor=GRID, row=1, col=1)
@@ -705,26 +703,25 @@ def gen_precision_verification() -> None:
         ("0 ≤ C ≤ 1", "0.100000", "[0, 1]", "—", "✅ PASS"),
     ]
 
-    header_colors = [CARD_BG] * 5
-    cell_colors = [["#1a1a2e"] * len(checks)] * 5
+    [["#1a1a2e"] * len(checks)] * 5
 
     fig = go.Figure(
         data=[
             go.Table(
-                header=dict(
-                    values=["<b>Identity</b>", "<b>LHS</b>", "<b>RHS</b>", "<b>Error</b>", "<b>Status</b>"],
-                    fill_color=CARD_BG,
-                    font=dict(color=TEXT, size=13),
-                    align="center",
-                    height=35,
-                ),
-                cells=dict(
-                    values=list(zip(*checks)),
-                    fill_color=[["#1a1a2e"] * len(checks)] * 5,
-                    font=dict(color=[TEXT] * 4 + [["#28a745"] * len(checks)], size=12),
-                    align="center",
-                    height=30,
-                ),
+                header={
+                    "values": ["<b>Identity</b>", "<b>LHS</b>", "<b>RHS</b>", "<b>Error</b>", "<b>Status</b>"],
+                    "fill_color": CARD_BG,
+                    "font": {"color": TEXT, "size": 13},
+                    "align": "center",
+                    "height": 35,
+                },
+                cells={
+                    "values": list(zip(*checks, strict=False)),
+                    "fill_color": [["#1a1a2e"] * len(checks)] * 5,
+                    "font": {"color": [TEXT] * 4 + [["#28a745"] * len(checks)], "size": 12},
+                    "align": "center",
+                    "height": 30,
+                },
             )
         ]
     )
