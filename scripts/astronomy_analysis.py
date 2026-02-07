@@ -12,6 +12,7 @@ import json
 import math
 import os
 import sys
+from typing import Any
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, PROJECT_ROOT)
@@ -25,7 +26,7 @@ from closures.astronomy.stellar_luminosity import compute_stellar_luminosity
 
 # ── Known reference values from literature ──────────────────────
 # Sources: IAU 2015, Mamajek et al. 2015, NASA/JPL, SIMBAD, HIPPARCOS
-REFERENCE = {
+REFERENCE: dict[str, Any] = {
     # Stellar luminosities (L_sun) — known observed values
     "L_obs": {
         "S001": 1.0,  # Sun (definition)
@@ -86,28 +87,28 @@ REFERENCE = {
 }
 
 
-def _pct_error(computed, reference):
+def _pct_error(computed: float, reference: float) -> float:
     """Percentage error: |computed - reference| / |reference| * 100."""
     if reference == 0:
         return float("inf") if computed != 0 else 0.0
     return abs(computed - reference) / abs(reference) * 100
 
 
-def _load_invariants():
+def _load_invariants() -> dict[str, Any]:
     """Load the generated invariants.json."""
     path = os.path.join(PROJECT_ROOT, "casepacks/astronomy_complete/expected/invariants.json")
     with open(path) as f:
-        return json.load(f)
+        return json.load(f)  # type: ignore[no-any-return]
 
 
-def _load_csv():
+def _load_csv() -> list[dict[str, str]]:
     """Load raw measurements."""
     path = os.path.join(PROJECT_ROOT, "casepacks/astronomy_complete/raw_measurements.csv")
     with open(path, newline="") as f:
         return list(csv.DictReader(f))
 
 
-def analyze_orbital_accuracy(data):
+def analyze_orbital_accuracy(data: list[dict[str, str]]) -> list[float]:
     """Compare Kepler III predictions against known orbital periods."""
     print("\n" + "=" * 80)
     print("  ORBITAL MECHANICS — Kepler's Third Law Accuracy")
@@ -153,7 +154,9 @@ def analyze_orbital_accuracy(data):
     return errors
 
 
-def analyze_luminosity_accuracy(data):
+def analyze_luminosity_accuracy(
+    data: list[dict[str, str]],
+) -> tuple[list[tuple[str, float]], list[tuple[str, float]]]:
     """Compare Stefan-Boltzmann / ML luminosities against known values."""
     print("\n" + "=" * 80)
     print("  STELLAR LUMINOSITY — Stefan-Boltzmann & Mass-Luminosity Accuracy")
@@ -215,7 +218,9 @@ def analyze_luminosity_accuracy(data):
     return sb_errors, ml_errors
 
 
-def analyze_distance_accuracy(data):
+def analyze_distance_accuracy(
+    data: list[dict[str, str]],
+) -> list[tuple[str, float, float, float]]:
     """Compare distance ladder measurements against known values."""
     print("\n" + "=" * 80)
     print("  DISTANCE LADDER — Multi-Method Cross-Validation")
@@ -259,7 +264,9 @@ def analyze_distance_accuracy(data):
     return errors
 
 
-def analyze_spectral_accuracy(data):
+def analyze_spectral_accuracy(
+    data: list[dict[str, str]],
+) -> list[tuple[str, str, float, float, float, float, str]]:
     """Analyze spectral analysis closure accuracy."""
     print("\n" + "=" * 80)
     print("  SPECTRAL ANALYSIS — Wien's Law & B-V Calibration")
@@ -314,7 +321,9 @@ def analyze_spectral_accuracy(data):
     return results
 
 
-def analyze_galactic_dynamics(data):
+def analyze_galactic_dynamics(
+    data: list[dict[str, str]],
+) -> list[tuple[str, dict[str, Any], float | None, float | None]]:
     """Analyze gravitational dynamics accuracy."""
     print("\n" + "=" * 80)
     print("  GRAVITATIONAL DYNAMICS — Dark Matter & Virial Analysis")
@@ -355,7 +364,9 @@ def analyze_galactic_dynamics(data):
     return results
 
 
-def analyze_evolution(data):
+def analyze_evolution(
+    data: list[dict[str, str]],
+) -> list[tuple[str, str, float, float, float, float, str]]:
     """Analyze stellar evolution predictions."""
     print("\n" + "=" * 80)
     print("  STELLAR EVOLUTION — Main-Sequence Lifetime & Phase Classification")
@@ -408,7 +419,7 @@ def analyze_evolution(data):
     return results
 
 
-def analyze_umcp_invariants(invariants_data):
+def analyze_umcp_invariants(invariants_data: dict[str, Any]) -> None:
     """Analyze the UMCP invariant mapping quality."""
     print("\n" + "=" * 80)
     print("  UMCP INVARIANT MAPPING — Tier-1 Identity Verification")
@@ -467,7 +478,7 @@ def analyze_umcp_invariants(invariants_data):
 
     # Regime distribution
     print("\n  ── Regime Distribution ──")
-    regime_counts = {}
+    regime_counts: dict[str, int] = {}
     critical_count = 0
     for row in rows:
         label = row["regime"]["label"]
@@ -492,7 +503,7 @@ def analyze_umcp_invariants(invariants_data):
     print(f"    Saturated (ω=1): {saturated}/{len(omegas)}")
 
 
-def novel_insights(invariants_data, csv_data):
+def novel_insights(invariants_data: dict[str, Any], csv_data: list[dict[str, str]]) -> None:
     """Extract novel insights that UMCP framework reveals about astronomy."""
     print("\n" + "=" * 80)
     print("  NOVEL INSIGHTS — What UMCP Reveals About Astronomical Systems")
@@ -513,7 +524,7 @@ def novel_insights(invariants_data, csv_data):
     print("  • Galactic: ω = dark matter fraction (hidden mass ratio)")
     print()
 
-    categories = {"Stable": [], "Watch": [], "Collapse": []}
+    categories: dict[str, list[dict[str, Any]]] = {"Stable": [], "Watch": [], "Collapse": []}
     for row in rows:
         categories[row["regime"]["label"]].append(row)
 
@@ -596,7 +607,7 @@ def novel_insights(invariants_data, csv_data):
     print("  dominates, the less 'faithful' the luminous model is → higher ω.")
 
 
-def main():
+def main() -> None:
     print("╔" + "═" * 78 + "╗")
     print("║" + " UMCP ASTRONOMY CASEPACK — COMPREHENSIVE ACCURACY & INSIGHTS REPORT ".center(78) + "║")
     print("╚" + "═" * 78 + "╝")
