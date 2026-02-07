@@ -232,9 +232,9 @@ class TestSelectPhaseAnchor:
         for expected in expected_results:
             if expected["anchor_u"] is not None:
                 result = select_phase_anchor(x_series, v_series, expected["idx"])
-                assert (
-                    result.anchor_u == expected["anchor_u"]
-                ), f"Anchor mismatch at idx={expected['idx']}: got {result.anchor_u}, expected {expected['anchor_u']}"
+                assert result.anchor_u == expected["anchor_u"], (
+                    f"Anchor mismatch at idx={expected['idx']}: got {result.anchor_u}, expected {expected['anchor_u']}"
+                )
 
 
 class TestTieBreaker:
@@ -265,9 +265,9 @@ class TestTieBreaker:
         # If delta_phi is 0 for both, then the most recent should be selected
         if abs(result_12.delta_phi) < 1e-9 and abs(result_13.delta_phi) < 1e-9:
             # Both have perfect matches - verify most recent selection
-            assert (
-                result_13.anchor_u >= result_12.anchor_u
-            ), f"Tie-breaker failed: row 13 selected u={result_13.anchor_u}, row 12 selected u={result_12.anchor_u}"
+            assert result_13.anchor_u >= result_12.anchor_u, (
+                f"Tie-breaker failed: row 13 selected u={result_13.anchor_u}, row 12 selected u={result_12.anchor_u}"
+            )
 
     def test_tie_breaker_explicit(self) -> None:
         """Test tie-breaker with explicit data designed to create a tie."""
@@ -301,9 +301,9 @@ class TestPhaseMismatch:
 
         for idx in mismatch_indices:
             result = select_phase_anchor(x_series, v_series, idx)
-            assert (
-                result.undefined_reason == UndefinedReason.PHASE_MISMATCH
-            ), f"Expected PHASE_MISMATCH at idx={idx}, got {result.undefined_reason}"
+            assert result.undefined_reason == UndefinedReason.PHASE_MISMATCH, (
+                f"Expected PHASE_MISMATCH at idx={idx}, got {result.undefined_reason}"
+            )
             assert result.anchor_u is None
             assert result.eligible_count > 0  # Has eligible anchors, but none within threshold
 
@@ -323,24 +323,24 @@ class TestEndToEnd:
         x_series, v_series = raw_measurements
         results, _censors = process_trajectory(x_series, v_series)
 
-        assert len(results) == len(
-            expected_results
-        ), f"Result count mismatch: {len(results)} vs {len(expected_results)}"
+        assert len(results) == len(expected_results), (
+            f"Result count mismatch: {len(results)} vs {len(expected_results)}"
+        )
 
         for i, (result, expected) in enumerate(zip(results, expected_results, strict=False)):
             assert result.idx == expected["idx"]
-            assert (
-                abs(result.phi - expected["phi"]) < 1e-8
-            ), f"Phi mismatch at idx={i}: {result.phi} vs {expected['phi']}"
+            assert abs(result.phi - expected["phi"]) < 1e-8, (
+                f"Phi mismatch at idx={i}: {result.phi} vs {expected['phi']}"
+            )
             assert result.eligible_count == expected["eligible_count"]
-            assert (
-                result.anchor_u == expected["anchor_u"]
-            ), f"Anchor mismatch at idx={i}: {result.anchor_u} vs {expected['anchor_u']}"
+            assert result.anchor_u == expected["anchor_u"], (
+                f"Anchor mismatch at idx={i}: {result.anchor_u} vs {expected['anchor_u']}"
+            )
 
             if result.delta_phi is not None and expected["delta_phi"] is not None:
-                assert (
-                    abs(result.delta_phi - expected["delta_phi"]) < 1e-8
-                ), f"Delta_phi mismatch at idx={i}: {result.delta_phi} vs {expected['delta_phi']}"
+                assert abs(result.delta_phi - expected["delta_phi"]) < 1e-8, (
+                    f"Delta_phi mismatch at idx={i}: {result.delta_phi} vs {expected['delta_phi']}"
+                )
 
             assert result.undefined_reason.value == expected["undefined_reason"]
 
@@ -351,9 +351,9 @@ class TestEndToEnd:
         x_series, v_series = raw_measurements
         _results, censors = process_trajectory(x_series, v_series)
 
-        assert len(censors) == len(
-            expected_censors
-        ), f"Censor count mismatch: {len(censors)} vs {len(expected_censors)}"
+        assert len(censors) == len(expected_censors), (
+            f"Censor count mismatch: {len(censors)} vs {len(expected_censors)}"
+        )
 
         for censor, expected in zip(censors, expected_censors, strict=False):
             assert censor.idx == expected["idx"]
@@ -435,9 +435,9 @@ class TestDeterminism:
 
         Path(temp_csv_path).unlink()
 
-        assert (
-            csv_hash_before == csv_hash_after
-        ), "CSV regeneration produced different output - expected outputs may be stale"
+        assert csv_hash_before == csv_hash_after, (
+            "CSV regeneration produced different output - expected outputs may be stale"
+        )
 
 
 # =============================================================================

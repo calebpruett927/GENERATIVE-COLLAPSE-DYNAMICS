@@ -24,6 +24,7 @@ from pathlib import Path
 
 import numpy as np
 import pytest
+
 from umcp.measurement_engine import (
     EmbeddingConfig,
     EmbeddingSpec,
@@ -35,11 +36,10 @@ from umcp.measurement_engine import (
     tau_R_display,
 )
 
+
 # ============================================================================
 # Fixtures
 # ============================================================================
-
-
 @pytest.fixture
 def engine() -> MeasurementEngine:
     """Default measurement engine."""
@@ -50,7 +50,7 @@ def engine() -> MeasurementEngine:
 def sample_csv(tmp_path: Path) -> Path:
     """Create a simple raw measurements CSV."""
     csv_path = tmp_path / "raw.csv"
-    csv_path.write_text("x_1,x_2,x_3\n" "9.9,9.9,9.9\n" "9.8,9.7,9.6\n" "9.5,9.4,9.3\n" "9.2,9.1,9.0\n" "8.9,8.8,8.7\n")
+    csv_path.write_text("x_1,x_2,x_3\n9.9,9.9,9.9\n9.8,9.7,9.6\n9.5,9.4,9.3\n9.2,9.1,9.0\n8.9,8.8,8.7\n")
     return csv_path
 
 
@@ -71,8 +71,6 @@ def sample_array() -> np.ndarray:
 # ============================================================================
 # Embedding Strategy Tests
 # ============================================================================
-
-
 class TestEmbedding:
     """Test embedding/normalization strategies."""
 
@@ -137,8 +135,6 @@ class TestEmbedding:
 # ============================================================================
 # Kernel Identity Tests (Tier-1)
 # ============================================================================
-
-
 class TestKernelIdentities:
     """Test that Tier-1 identities hold in engine output."""
 
@@ -176,8 +172,6 @@ class TestKernelIdentities:
 # ============================================================================
 # τ_R and Return Detection Tests
 # ============================================================================
-
-
 class TestTauR:
     """Test τ_R computation and INF_REC handling."""
 
@@ -208,8 +202,6 @@ class TestTauR:
 # ============================================================================
 # INF_REC Utility Tests
 # ============================================================================
-
-
 class TestINFRECUtilities:
     """Test safe_tau_R and tau_R_display."""
 
@@ -254,8 +246,6 @@ class TestINFRECUtilities:
 # ============================================================================
 # CSV Input Tests
 # ============================================================================
-
-
 class TestCSVInput:
     """Test from_csv entry point."""
 
@@ -287,8 +277,6 @@ class TestCSVInput:
 # ============================================================================
 # Array Input Tests
 # ============================================================================
-
-
 class TestArrayInput:
     """Test from_array entry point."""
 
@@ -314,8 +302,6 @@ class TestArrayInput:
 # ============================================================================
 # Output Writer Tests
 # ============================================================================
-
-
 class TestWriters:
     """Test psi.csv and invariants.json writers."""
 
@@ -357,8 +343,6 @@ class TestWriters:
 # ============================================================================
 # Casepack Generation Tests
 # ============================================================================
-
-
 class TestCasepackGeneration:
     """Test full casepack scaffolding."""
 
@@ -386,8 +370,6 @@ class TestCasepackGeneration:
 # ============================================================================
 # Regime Classification Tests
 # ============================================================================
-
-
 class TestRegimeClassification:
     """Test regime classification through the engine."""
 
@@ -427,8 +409,6 @@ class TestRegimeClassification:
 # ============================================================================
 # EngineResult Tests
 # ============================================================================
-
-
 class TestEngineResult:
     """Test EngineResult container."""
 
@@ -453,8 +433,6 @@ class TestEngineResult:
 # ============================================================================
 # Edge Cases
 # ============================================================================
-
-
 class TestEdgeCases:
     """Test edge cases and robustness."""
 
@@ -521,8 +499,6 @@ class TestEdgeCases:
 # ============================================================================
 # Real-world: repo's raw_measurements.csv
 # ============================================================================
-
-
 class TestRepoRawMeasurements:
     """Test engine against the actual repo raw_measurements.csv."""
 

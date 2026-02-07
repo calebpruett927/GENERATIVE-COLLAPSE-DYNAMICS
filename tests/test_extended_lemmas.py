@@ -191,9 +191,9 @@ class TestLemma37PhaseTransition:
 
             delta_kappa = R * tau_R - D_C
 
-            assert (
-                abs(delta_kappa) < 0.10
-            ), f"Type I classification violated for {obs['event_id']}: |Δκ|={abs(delta_kappa)}"
+            assert abs(delta_kappa) < 0.10, (
+                f"Type I classification violated for {obs['event_id']}: |Δκ|={abs(delta_kappa)}"
+            )
 
     def test_type_iii_classification(self) -> None:
         """Type III (horizon) systems have larger Δκ."""
@@ -313,9 +313,9 @@ class TestLemma39SuperExponential:
             omega_n = omega_n**p
             predicted = omega_0 ** (p**n)
 
-            assert (
-                abs(omega_n - predicted) < 1e-15
-            ), f"Convergence formula failed at n={n}: computed={omega_n}, predicted={predicted}"
+            assert abs(omega_n - predicted) < 1e-15, (
+                f"Convergence formula failed at n={n}: computed={omega_n}, predicted={predicted}"
+            )
 
     def test_convergence_iterations(self) -> None:
         """Verify convergence to machine precision in O(log log) iterations."""
@@ -416,9 +416,9 @@ class TestLemma41EntropyIntegrity:
 
         # The maximum occurs at c = 0.5 where bound ≈ ln(2) - ln(2) = 0
         # Actually need to verify the correct bound
-        assert (
-            bound <= math.log(2) + abs(kappa) + 0.01
-        ), f"Entropy-integrity bound violated: S={S}, κ={kappa}, S+κ={bound}"
+        assert bound <= math.log(2) + abs(kappa) + 0.01, (
+            f"Entropy-integrity bound violated: S={S}, κ={kappa}, S+κ={bound}"
+        )
 
     def test_anti_correlation(self) -> None:
         """High entropy requires low (negative) log-integrity."""

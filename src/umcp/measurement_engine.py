@@ -492,7 +492,7 @@ class MeasurementEngine:
             },
             "run_intent": {
                 "notes": (
-                    f"Generated from raw measurements " f"({result.n_timesteps} timesteps, {result.n_dims} dimensions)"
+                    f"Generated from raw measurements ({result.n_timesteps} timesteps, {result.n_dims} dimensions)"
                 ),
             },
         }
@@ -673,7 +673,7 @@ class MeasurementEngine:
         else:
             w = np.asarray(weights, dtype=float)
             if len(w) != n_dims:
-                raise ValueError(f"Weight dimension mismatch: got {len(w)} weights " f"for {n_dims} dimensions")
+                raise ValueError(f"Weight dimension mismatch: got {len(w)} weights for {n_dims} dimensions")
             w = normalize_weights(w)
         return w
 
