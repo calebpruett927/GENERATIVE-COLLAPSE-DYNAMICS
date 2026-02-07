@@ -1,0 +1,301 @@
+# Astronomy Canon Anchor (UMCP.ASTRO.v1)
+# Observational Astronomy — Tier-1 Extension
+#
+# Interconnections:
+# - Referenced by: contracts/ASTRO.INTSTACK.v1.yaml, casepacks/astronomy_complete/
+# - Parent: canon/gcd_anchors.yaml (ASTRO extends GCD)
+# - Implements: Tier-1 invariants for astronomical observables
+# - Documentation: GLOSSARY.md#astronomy, SYMBOL_INDEX.md#astronomy
+# - Related: closures/astronomy/*.py (computational implementations)
+# - Sources: fundamental astrophysics, empirical stellar relations
+#
+# Term definitions: GLOSSARY.md#astronomy-framework
+# Symbol lookup: SYMBOL_INDEX.md#astronomy-reserved-symbols
+
+schema: canon.anchors.schema.json
+id: UMCP.ASTRO.v1
+version: "1.0.0"
+created: "2026-02-07"
+
+scope:
+  hierarchy: "ASTRO > GCD > UMCP (astronomical realization)"
+  tier: 1
+  description: |
+    Astronomy framework provides the observational-science realization of GCD
+    principles. ASTRO maps stellar, orbital, spectral, and distance observables
+    to UMCP invariants through physically motivated embeddings.
+    Core principle: The inverse square law (AX-A0) anchors all astronomical
+    distance measurements, just as the GCD collapse boundary anchors drift.
+
+axioms:
+  - id: AX-A0
+    statement: "Inverse square law anchors distance"
+    description: |
+      All astronomical distances derive from F = L/(4πd²). The distance modulus
+      μ = m − M = 5·log₁₀(d/10) is the fundamental bridge between apparent and
+      absolute properties. This is the astronomical realization of AX-1
+      (Boundary defines interior): observed flux at the boundary determines
+      intrinsic luminosity.
+
+  - id: AX-A1
+    statement: "Mass determines stellar fate"
+    description: |
+      The mass-luminosity relation (L ∝ M^α) is the fundamental driver of
+      stellar evolution. A star's mass fixes its luminosity, temperature,
+      lifetime, and endpoint. This is the deterministic kernel: initial
+      conditions (mass) dictate the full evolutionary trajectory.
+
+  - id: AX-A2
+    statement: "Spectral class encodes temperature"
+    description: |
+      Wien's displacement law (λ_peak = b/T) and the Planck spectrum encode
+      effective temperature in the spectral class. The O-B-A-F-G-K-M sequence
+      is a monotone temperature ordering embedded to [0,1].
+
+  - id: AX-A3
+    statement: "Kepler's laws govern bound orbits"
+    description: |
+      For gravitationally bound two-body systems, P² = (4π²/GM)·a³.
+      Orbital stability maps to UMCP fidelity: circular orbits (e=0) → F=1,
+      unbound trajectories (e≥1) → F→0.
+
+tier_1_invariants:
+  description: "Astronomy-specific invariants extending GCD skeleton"
+  reserved_symbols:
+    # ── Stellar Physics ──────────────────────────────────────────
+    - symbol: L
+      latex: "L"
+      description: "Stellar luminosity"
+      formula: "L = 4πR²σ_SB T⁴"
+      domain: "(0, ∞)"
+      unit: "L_sun"
+      interpretation: "Intrinsic energy output; primary stellar observable"
+
+    - symbol: M_star
+      latex: "M_*"
+      description: "Stellar mass"
+      formula: "L ∝ M^α (mass-luminosity relation)"
+      domain: "(0, ∞)"
+      unit: "M_sun"
+      interpretation: "Determines evolutionary trajectory (AX-A1)"
+
+    - symbol: T_eff
+      latex: "T_{eff}"
+      description: "Effective temperature"
+      formula: "L = 4πR²σT⁴  →  T = (L/4πR²σ)^{1/4}"
+      domain: "(0, ∞)"
+      unit: "K"
+      interpretation: "Surface temperature; spectral class anchor (AX-A2)"
+
+    - symbol: R_star
+      latex: "R_*"
+      description: "Stellar radius"
+      formula: "R = √(L / 4πσT⁴)"
+      domain: "(0, ∞)"
+      unit: "R_sun"
+      interpretation: "Physical size; links L and T"
+
+    # ── Distance Ladder ──────────────────────────────────────────
+    - symbol: d_pc
+      latex: "d"
+      description: "Distance"
+      formula: "d = 10^{(μ+5)/5}"
+      domain: "(0, ∞)"
+      unit: "pc"
+      interpretation: "Astronomical distance from multiple methods"
+
+    - symbol: mu
+      latex: "μ"
+      description: "Distance modulus"
+      formula: "μ = m - M = 5·log₁₀(d) − 5"
+      domain: "(-∞, ∞)"
+      unit: "mag"
+      interpretation: "Logarithmic distance measure"
+
+    - symbol: pi_arcsec
+      latex: "π"
+      description: "Trigonometric parallax"
+      formula: "d = 1/π"
+      domain: "(0, 1]"
+      unit: "arcsec"
+      interpretation: "Geometric distance anchor; most fundamental method"
+
+    # ── Spectral ─────────────────────────────────────────────────
+    - symbol: lambda_peak
+      latex: "λ_{peak}"
+      description: "Wien peak wavelength"
+      formula: "λ = b/T"
+      domain: "(0, ∞)"
+      unit: "nm"
+      interpretation: "Peak emission wavelength from thermal spectrum"
+
+    - symbol: B_V
+      latex: "B-V"
+      description: "Color index"
+      formula: "B-V = m_B - m_V"
+      domain: "[-0.4, 2.0]"
+      unit: "mag"
+      interpretation: "Temperature proxy from photometric colors"
+
+    # ── Orbital Mechanics ────────────────────────────────────────
+    - symbol: P_orb
+      latex: "P"
+      description: "Orbital period"
+      formula: "P² = (4π²/GM)a³"
+      domain: "(0, ∞)"
+      unit: "s"
+      interpretation: "Period of gravitationally bound orbit"
+
+    - symbol: e_orb
+      latex: "e"
+      description: "Orbital eccentricity"
+      formula: "e = c/a  where c = focal distance"
+      domain: "[0, ∞)"
+      unit: "dimensionless"
+      interpretation: "Orbit shape; e=0 circular, e<1 elliptical, e≥1 unbound"
+
+    # ── Gravitational Dynamics ───────────────────────────────────
+    - symbol: M_virial
+      latex: "M_{vir}"
+      description: "Virial mass"
+      formula: "M = 5σ²R/G"
+      domain: "(0, ∞)"
+      unit: "M_sun"
+      interpretation: "Gravitational mass from velocity dispersion"
+
+    - symbol: delta_L
+      latex: "δ_L"
+      description: "Luminosity deviation"
+      formula: "δ_L = |L_obs - L_pred| / L_pred"
+      domain: "[0, ∞)"
+      unit: "dimensionless"
+      interpretation: "Drift from mass-luminosity prediction; ω analog"
+
+umcp_invariant_mapping:
+  description: "Maps astronomical observables to GCD invariants"
+  mappings:
+    - astro: "δ_L (luminosity deviation)"
+      gcd: "ω"
+      formula: "ω_analog = min(1, δ_L)"
+      interpretation: "Deviation from mass-luminosity prediction is drift from stability"
+
+    - astro: "1 − δ_L"
+      gcd: "F"
+      formula: "F_analog = max(0, 1 - δ_L)"
+      interpretation: "Agreement with prediction is fidelity"
+
+    - astro: "σ(measurements) / μ(measurements)"
+      gcd: "S"
+      formula: "S_analog = CV of measured properties"
+      interpretation: "Measurement scatter as entropy proxy"
+
+    - astro: "HR diagram dispersion"
+      gcd: "C"
+      formula: "C_analog = normalized spread on HR diagram"
+      interpretation: "Non-main-sequence spread as curvature"
+
+    - astro: "distance inconsistency"
+      gcd: "collapse potential"
+      formula: "collapse_analog = σ(d_methods) / mean(d_methods)"
+      interpretation: "Disagreement between distance methods as collapse risk"
+
+    - astro: "orbital eccentricity"
+      gcd: "stability F"
+      formula: "F_orbital = max(0, 1 - e)"
+      interpretation: "Circular orbit = perfect fidelity; unbound = collapse"
+
+regime_gates:
+  description: "Regime classification thresholds for astronomy"
+  gates:
+    - name: "luminosity_deviation"
+      parameter: "delta_L"
+      thresholds:
+        Consistent: 0.05
+        Mild: 0.15
+        Significant: 0.30
+        Anomalous: 0.50
+      interpretation: "Distance from mass-luminosity prediction"
+
+    - name: "spectral_fit"
+      parameter: "chi2_HR"
+      thresholds:
+        Excellent: 0.8
+        Good: 1.5
+        Marginal: 2.5
+      interpretation: "Spectral data consistency"
+
+    - name: "orbital_stability"
+      parameter: "e_orb"
+      thresholds:
+        Stable: 0.3
+        Eccentric: 0.7
+        Unstable: 0.95
+      interpretation: "Orbital eccentricity regime"
+
+    - name: "distance_confidence"
+      parameter: "CV_distance"
+      thresholds:
+        High: 0.01
+        Moderate: 0.05
+        Low: 0.15
+      interpretation: "Inter-method distance agreement"
+
+    - name: "evolutionary_phase"
+      parameter: "age/t_MS"
+      thresholds:
+        Pre_MS: 0.01
+        Main_Seq: 0.90
+        Subgiant: 1.00
+        Giant: 1.50
+      interpretation: "Fractional main-sequence evolution"
+
+budget_identity_analog:
+  description: "Cross-method distance consistency as seam analog"
+  formula: "Δd = |d_modulus - d_parallax| / d_modulus"
+  interpretation: |
+    Just as UMCP seams measure residual between projections, the distance
+    consistency measures how well independent distance methods close on the
+    same answer. Perfect closure implies zero seam residual.
+
+reference:
+  sources:
+    - "Stefan-Boltzmann law: L = 4πR²σT⁴ (fundamental thermodynamics)"
+    - "Wien displacement law: λ_peak = b/T (Planck radiation)"
+    - "Mass-luminosity relation: L ∝ M^α (empirical, Eddington 1924)"
+    - "Kepler's third law: P² = (4π²/GM)a³ (Kepler 1619)"
+    - "Distance modulus: μ = m - M = 5log₁₀(d) - 5 (Pogson 1856)"
+    - "Virial theorem: 2KE + PE = 0 (Clausius 1870)"
+    - "Hertzsprung-Russell diagram: Russell 1913, Hertzsprung 1911"
+    - "Ballesteros B-V relation: Ballesteros 2012, EPL 97,34008"
+
+astronomical_constants:
+  description: "Frozen physical constants used in closures"
+  constants:
+    - name: "Solar luminosity"
+      symbol: "L_☉"
+      value: 3.828e+26
+      unit: "W"
+    - name: "Solar mass"
+      symbol: "M_☉"
+      value: 1.989e+30
+      unit: "kg"
+    - name: "Solar radius"
+      symbol: "R_☉"
+      value: 6.957e+08
+      unit: "m"
+    - name: "Solar temperature"
+      symbol: "T_☉"
+      value: 5778
+      unit: "K"
+    - name: "Stefan-Boltzmann constant"
+      symbol: "σ"
+      value: 5.670374419e-08
+      unit: "W m⁻² K⁻⁴"
+    - name: "Wien displacement constant"
+      symbol: "b"
+      value: 2897771.955
+      unit: "nm K"
+    - name: "Gravitational constant"
+      symbol: "G"
+      value: 6.67430e-11
+      unit: "m³ kg⁻¹ s⁻²"

@@ -246,3 +246,55 @@ registry:
         frozen_params:
           weights: [0.30, 0.25, 0.25, 0.20]
           epsilon: 1.0e-12
+
+    astronomy:
+      - name: "stellar_luminosity"
+        path: "closures/astronomy/stellar_luminosity.py"
+        description: "Stefan-Boltzmann + mass-luminosity: L = 4πR²σT⁴, L ∝ M^α"
+        contract: "ASTRO.INTSTACK.v1"
+        inputs: ["M_star", "T_eff", "R_star"]
+        outputs: ["L_predicted", "L_SB", "delta_L", "lambda_peak", "regime"]
+        frozen_params:
+          sigma_SB: 5.670374419e-08
+          b_Wien: 2897771.955
+          ML_alpha_mid: 4.0
+      - name: "orbital_mechanics"
+        path: "closures/astronomy/orbital_mechanics.py"
+        description: "Kepler's third law: P² = (4π²/GM)a³, orbital stability"
+        contract: "ASTRO.INTSTACK.v1"
+        inputs: ["P_orb", "a_semi", "M_total", "e_orb"]
+        outputs: ["P_predicted", "kepler_residual", "v_orb", "E_orbital", "regime"]
+        frozen_params:
+          G_grav: 6.67430e-11
+      - name: "spectral_analysis"
+        path: "closures/astronomy/spectral_analysis.py"
+        description: "Wien's law + B−V calibration + spectral class embedding O-M → [0,1]"
+        contract: "ASTRO.INTSTACK.v1"
+        inputs: ["T_eff", "B_V", "spectral_class"]
+        outputs: ["lambda_peak", "T_from_BV", "spectral_embedding", "chi2_spectral", "regime"]
+        source: "Wien 1893, Ballesteros 2012 EPL 97:34008"
+      - name: "distance_ladder"
+        path: "closures/astronomy/distance_ladder.py"
+        description: "Multi-method distance: parallax, distance modulus, Hubble flow"
+        contract: "ASTRO.INTSTACK.v1"
+        inputs: ["m_app", "M_abs", "pi_arcsec", "z_cosmo"]
+        outputs: ["d_modulus", "d_parallax", "d_hubble", "distance_consistency", "regime"]
+        frozen_params:
+          H_0_fiducial: 70.0
+          c_light: 299800.0
+      - name: "gravitational_dynamics"
+        path: "closures/astronomy/gravitational_dynamics.py"
+        description: "Virial theorem + rotation curves: M_vir = 5σ²R/G, dark matter fraction"
+        contract: "ASTRO.INTSTACK.v1"
+        inputs: ["v_rot", "r_obs", "sigma_v", "M_luminous"]
+        outputs: ["M_virial", "M_dynamic", "dark_matter_fraction", "virial_ratio", "regime"]
+        frozen_params:
+          G_grav: 6.67430e-11
+      - name: "stellar_evolution"
+        path: "closures/astronomy/stellar_evolution.py"
+        description: "Main-sequence lifetime t_MS ≈ M/L · t_sun, evolutionary phase classification"
+        contract: "ASTRO.INTSTACK.v1"
+        inputs: ["M_star", "L", "T_eff", "age_Gyr"]
+        outputs: ["t_MS", "evolutionary_phase", "L_ZAMS", "T_ZAMS", "regime"]
+        frozen_params:
+          t_sun_MS: 10.0

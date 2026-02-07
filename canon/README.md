@@ -11,6 +11,8 @@ canon/
 ├── gcd_anchors.yaml       # UMCP.GCD.v1 - Tier-1 framework (GCD)
 ├── rcft_anchors.yaml      # UMCP.RCFT.v1 - Tier-2 overlay (RCFT)
 ├── kin_anchors.yaml       # UMCP.KIN.v1 - Kinematics extension
+├── astro_anchors.yaml     # UMCP.ASTRO.v1 - Astronomy extension
+├── weyl_anchors.yaml      # UMCP.WEYL.v1 - Weyl geometry extension
 └── docs/
     └── validator_usage.md # Validation guidance
 ```
@@ -22,6 +24,8 @@ canon/
 | Base | [anchors.yaml](anchors.yaml) | UMCP.CANON.v1 | Base framework: hygiene rules, DOI anchors, contract defaults |
 | 1 | [gcd_anchors.yaml](gcd_anchors.yaml) | UMCP.GCD.v1 | Generative Collapse Dynamics: frozen invariants (ω, F, S, C, τ_R, κ, IC) |
 | 1 | [kin_anchors.yaml](kin_anchors.yaml) | UMCP.KIN.v1 | Kinematics: physics-based motion (x, v, a, E_kin, τ_kin, K_stability) |
+| 1 | [astro_anchors.yaml](astro_anchors.yaml) | UMCP.ASTRO.v1 | Astronomy: stellar luminosity, orbital mechanics, spectral analysis, distance ladder, gravitational dynamics, stellar evolution |
+| 1 | [weyl_anchors.yaml](weyl_anchors.yaml) | UMCP.WEYL.v1 | Weyl geometry: conformal symmetry, curvature invariants |
 | 2 | [rcft_anchors.yaml](rcft_anchors.yaml) | UMCP.RCFT.v1 | Recursive Collapse Field Theory: overlay extensions (D_f, Ψ_r, λ_p, Θ) |
 
 ## Key Principles
@@ -76,6 +80,22 @@ The Tier-2 RCFT overlay defines:
 - **Recursive regime classification**: Dormant, Active, Resonant
 - **Computational notes**: Box-counting, FFT analysis, series convergence
 
+### astro_anchors.yaml (UMCP.ASTRO.v1)
+
+The Tier-1 Astronomy extension defines:
+- **Axioms**: AX-A0 (Inverse square law anchors distance), AX-A1 (Mass determines stellar fate), AX-A2 (Spectral class encodes temperature), AX-A3 (Kepler's laws govern bound orbits)
+- **Reserved symbols**: L, M_star, T_eff, R_star, lambda_peak, P_orb, a_semi, e_orb, v_rot, M_virial, pi_arcsec, z_cosmo
+- **Mathematical identities**: L = 4πR²σT⁴, λ_peak = b/T, P² = (4π²/GM)a³, μ = m − M, 2⟨KE⟩ + ⟨PE⟩ = 0
+- **Regime classifications**: Luminosity deviation, spectral fit, orbital stability, distance confidence
+- **Closures**: stellar_luminosity, orbital_mechanics, spectral_analysis, distance_ladder, gravitational_dynamics, stellar_evolution
+
+### weyl_anchors.yaml (UMCP.WEYL.v1)
+
+The Tier-1 Weyl geometry extension defines:
+- **Extension symbols**: W_μν (Weyl tensor), C_inv (conformal invariant), R_s (Ricci scalar)
+- **Conformal symmetry**: Weyl curvature invariants for geometric analysis
+- **Regime classification**: Geometric stability thresholds
+
 ## Interconnections
 
 ```
@@ -102,6 +122,18 @@ casepacks/kinematics_complete/manifest.json
 
 casepacks/rcft_complete/manifest.json
     └── refs.canon_anchors → canon/rcft_anchors.yaml
+
+contracts/ASTRO.INTSTACK.v1.yaml
+    └── refs.canonical_anchor → canon/astro_anchors.yaml
+
+contracts/WEYL.INTSTACK.v1.yaml
+    └── refs.canonical_anchor → canon/weyl_anchors.yaml
+
+casepacks/astronomy_complete/manifest.json
+    └── refs.canon_anchors → canon/astro_anchors.yaml
+
+casepacks/weyl_des_y3/manifest.json
+    └── refs.canon_anchors → canon/weyl_anchors.yaml
 ```
 
 ## Validation
@@ -159,8 +191,11 @@ print(f"Collapse: ω ≥ {regimes['collapse']['omega_gte']}")
 |------|----------|---------|---------|
 | anchors.yaml | UMCP.CANON.v1 | 1.0.0 | 2026-01-18 |
 | gcd_anchors.yaml | UMCP.GCD.v1 | 1.0.0 | 2026-01-18 |
+| kin_anchors.yaml | UMCP.KIN.v1 | 1.0.0 | 2026-01-18 |
 | rcft_anchors.yaml | UMCP.RCFT.v1 | 1.0.0 | 2026-01-18 |
+| astro_anchors.yaml | UMCP.ASTRO.v1 | 1.0.0 | 2026-02-07 |
+| weyl_anchors.yaml | UMCP.WEYL.v1 | 1.0.0 | 2026-01-18 |
 
 ---
 
-*Last updated: 2026-01-24*
+*Last updated: 2026-02-07*

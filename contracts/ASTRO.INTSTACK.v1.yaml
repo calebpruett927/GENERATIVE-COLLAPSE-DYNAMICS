@@ -1,0 +1,309 @@
+schema: schemas/contract.schema.json
+contract:
+  id: ASTRO.INTSTACK.v1
+  version: 1.0.0
+  timezone: UTC
+  parent_contract: GCD.INTSTACK.v1
+  tier_level: 1
+  embedding:
+    interval:
+    - 0.0
+    - 1.0
+    face: pre_clip
+    oor_policy: clip_and_flag
+    epsilon: 1.0e-08
+  tier_1_kernel:
+    reserved_symbols:
+    # Inherited from GCD
+    - omega
+    - F
+    - S
+    - C
+    - tau_R
+    - kappa
+    - IC
+    - IC_min
+    # Astronomy-specific observables — Stellar Physics
+    - L             # Luminosity (solar units, embedded to [0,1])
+    - M_star        # Stellar mass (solar units, embedded)
+    - T_eff         # Effective temperature (K, embedded)
+    - R_star        # Stellar radius (solar units, embedded)
+    - M_abs         # Absolute magnitude
+    - m_app         # Apparent magnitude
+    - d_pc          # Distance in parsecs
+    - mu            # Distance modulus μ = m - M
+    # Astronomy-specific observables — Spectral
+    - lambda_peak   # Wien peak wavelength (nm)
+    - spectral_class # Encoded spectral type O-M → [0,1]
+    - B_V           # B−V color index
+    # Astronomy-specific observables — Orbital Mechanics
+    - P_orb         # Orbital period
+    - a_semi        # Semi-major axis
+    - e_orb         # Eccentricity
+    - v_orb         # Orbital velocity
+    # Astronomy-specific observables — Dynamics
+    - v_rot         # Rotational velocity / galactic rotation
+    - M_virial      # Virial mass estimate
+    - sigma_v       # Velocity dispersion
+    # Astronomy-specific observables — Distance Ladder
+    - pi_arcsec     # Parallax (arcseconds)
+    - z_cosmo       # Cosmological redshift
+    - H_0_local     # Locally inferred Hubble constant
+    # Astronomy-specific derived
+    - L_predicted   # Mass-luminosity predicted L
+    - delta_L       # |L_obs - L_predicted| / L_predicted
+    - chi2_HR       # Reduced chi-squared for HR diagram fit
+    weights_policy: nonnegative_sum_to_one
+    frozen_parameters:
+      # Inherited from GCD
+      p: 3
+      alpha: 1.0
+      lambda: 0.2
+      eta: 0.001
+      alpha_energy: 1.0
+      beta_energy: 0.5
+      tau_0: 10.0
+      C_crit: 0.2
+      # Astronomy-specific constants
+      L_sun: 3.828e+26           # Solar luminosity (W)
+      M_sun: 1.989e+30           # Solar mass (kg)
+      R_sun: 6.957e+08           # Solar radius (m)
+      T_sun: 5778.0              # Solar effective temperature (K)
+      sigma_SB: 5.670374419e-08  # Stefan-Boltzmann constant (W m⁻² K⁻⁴)
+      b_Wien: 2897771.955        # Wien displacement constant (nm·K)
+      G_grav: 6.67430e-11        # Gravitational constant (m³ kg⁻¹ s⁻²)
+      c_light: 2.998e+08         # Speed of light (m/s)
+      pc_to_m: 3.0857e+16        # Parsec in meters
+      au_to_m: 1.496e+11         # AU in meters
+      H_0_fiducial: 70.0         # Fiducial Hubble constant (km/s/Mpc)
+      # Mass-luminosity relation exponents
+      ML_alpha_low: 2.3          # L ∝ M^2.3 for M < 0.43 M_sun
+      ML_alpha_mid: 4.0          # L ∝ M^4.0 for 0.43 ≤ M < 2 M_sun
+      ML_alpha_high: 3.5         # L ∝ M^3.5 for 2 ≤ M < 55 M_sun
+      ML_alpha_massive: 1.0      # L ∝ M^1.0 for M ≥ 55 M_sun
+    tolerances:
+      tol_seam: 0.005
+      tol_id: 1.0e-09
+      tol_energy: 1.0e-06
+      tol_flux: 1.0e-06
+      tol_resonance: 1.0e-06
+      tol_luminosity: 0.01       # 1% luminosity tolerance
+      tol_temperature: 50.0      # 50 K temperature tolerance
+      tol_distance: 0.05         # 5% distance tolerance
+      tol_HR: 0.1                # HR diagram fit tolerance
+      tol_kepler: 1.0e-06        # Kepler's third law tolerance
+  axioms:
+  # Inherited from GCD
+  - id: AX-0
+    statement: Collapse is generative
+    description: |
+      Inherited from GCD Tier-1 (frozen). Every collapse event releases generative
+      potential. In astronomy: stellar collapse (supernovae) generates heavy elements
+      and seeds new star formation. Φ_gen ≥ 0 always.
+  - id: AX-1
+    statement: Boundary defines interior
+    description: |
+      Inherited from GCD Tier-1 (frozen). Boundary conditions fully determine
+      interior dynamics. In astronomy: the photosphere (boundary) encodes the
+      stellar interior through spectral lines and luminosity.
+  - id: AX-2
+    statement: Entropy measures determinacy
+    description: |
+      Inherited from GCD Tier-1 (frozen). S quantifies system indeterminacy.
+      In astronomy: measurement scatter across objects determines how
+      deterministically we can predict stellar properties.
+  # Astronomy-specific axioms
+  - id: AX-A0
+    statement: Inverse square law anchors distance
+    description: |
+      All astronomical distances are anchored by the inverse square law of
+      radiation: F = L / (4πd²). The distance modulus μ = m − M = 5·log₁₀(d/10)
+      is the fundamental bridge between apparent and absolute properties.
+      This axiom is the astronomical realization of AX-1 (boundary defines interior):
+      the observed flux at the boundary determines the intrinsic luminosity.
+  - id: AX-A1
+    statement: Mass determines stellar fate
+    description: |
+      The mass-luminosity relation (L ∝ M^α) is the fundamental driver of
+      stellar evolution. A star's mass at formation fixes its luminosity,
+      temperature, lifetime, and endpoint. This is the astronomical realization
+      of deterministic kernel evolution from initial conditions.
+  - id: AX-A2
+    statement: Spectral class encodes temperature
+    description: |
+      Wien's displacement law (λ_peak = b/T) and the Planck spectrum encode
+      the effective temperature in the spectral class. The O-B-A-F-G-K-M
+      sequence is a monotone temperature ordering. Spectral classification
+      is the astronomical realization of observable embedding into [0,1].
+  - id: AX-A3
+    statement: Kepler's laws govern bound orbits
+    description: |
+      For any two-body gravitationally bound system, P² = (4π²/GM)·a³.
+      Orbital stability (eccentricity, period regularity) maps to the
+      UMCP fidelity concept: circular orbits (e=0) have F=1, while
+      hyperbolic trajectories (e≥1) represent escape (collapse).
+  regime_classification:
+    luminosity_deviation:
+      consistent:
+        threshold: 0.05
+        condition: "delta_L < 0.05"
+      mild:
+        threshold: 0.15
+        condition: "0.05 ≤ delta_L < 0.15"
+      significant:
+        threshold: 0.30
+        condition: "0.15 ≤ delta_L < 0.30"
+      anomalous:
+        threshold: null
+        condition: "delta_L ≥ 0.30"
+    spectral_fit:
+      excellent:
+        threshold: 0.8
+        condition: "chi2_HR < 0.8"
+      good:
+        threshold: 1.5
+        condition: "0.8 ≤ chi2_HR < 1.5"
+      marginal:
+        threshold: 2.5
+        condition: "1.5 ≤ chi2_HR < 2.5"
+      poor:
+        threshold: null
+        condition: "chi2_HR ≥ 2.5"
+    orbital_stability:
+      stable:
+        threshold: 0.3
+        condition: "e < 0.3"
+      eccentric:
+        threshold: 0.7
+        condition: "0.3 ≤ e < 0.7"
+      unstable:
+        threshold: 0.95
+        condition: "0.7 ≤ e < 0.95"
+      escape:
+        threshold: null
+        condition: "e ≥ 0.95"
+    distance_confidence:
+      high:
+        threshold: 0.01
+        condition: "sigma_d/d < 0.01"
+      moderate:
+        threshold: 0.05
+      low:
+        threshold: 0.15
+      unreliable:
+        threshold: null
+    energy:  # Inherited from GCD
+      low:
+        threshold: 0.01
+        condition: E < 0.01
+      medium:
+        threshold: 0.05
+      high:
+        threshold: null
+  mathematical_identities:
+  # Inherited from GCD
+  - name: Fidelity-drift duality
+    formula: "F = 1 - ω"
+    tolerance: 1.0e-09
+  - name: Integrity-collapse relation
+    formula: "IC ≈ exp(κ)"
+    tolerance: 1.0e-06
+  # Astronomy-specific identities
+  - name: Stefan-Boltzmann law
+    formula: "L = 4π R² σ_SB T_eff⁴"
+    tolerance: 0.01
+    source: "Fundamental stellar astrophysics"
+  - name: Wien displacement law
+    formula: "λ_peak = b_Wien / T_eff"
+    tolerance: 50.0
+    source: "Thermal radiation theory"
+  - name: Distance modulus
+    formula: "μ = m_app - M_abs = 5·log₁₀(d_pc) - 5"
+    tolerance: 0.01
+    source: "Fundamental astrometry"
+  - name: Mass-luminosity relation (main sequence)
+    formula: "L/L_sun ≈ (M/M_sun)^α"
+    tolerance: 0.05
+    source: "Empirical stellar physics"
+  - name: Kepler third law
+    formula: "P² = (4π²/GM)·a³"
+    tolerance: 1.0e-06
+    source: "Classical mechanics"
+  - name: Parallax-distance relation
+    formula: "d_pc = 1 / π_arcsec"
+    tolerance: 0.05
+    source: "Geometric astrometry"
+  - name: Virial theorem
+    formula: "2⟨KE⟩ + ⟨PE⟩ = 0"
+    tolerance: 0.01
+    source: "Statistical mechanics"
+  typed_censoring:
+    tau_R_special_values:
+    - INF_REC
+    - UNIDENTIFIABLE
+    run_status_enum:
+    - CONFORMANT
+    - NONCONFORMANT
+    - NON_EVALUABLE
+    no_return_no_credit: true
+    astro_regime_enums:
+      luminosity_deviation:
+      - Consistent
+      - Mild
+      - Significant
+      - Anomalous
+      spectral_fit:
+      - Excellent
+      - Good
+      - Marginal
+      - Poor
+      orbital_stability:
+      - Stable
+      - Eccentric
+      - Unstable
+      - Escape
+      distance_confidence:
+      - High
+      - Moderate
+      - Low
+      - Unreliable
+  closures:
+    stellar_luminosity:
+      path: closures/astronomy/stellar_luminosity.py
+      inputs: [M_star, T_eff, R_star]
+      outputs: [L_predicted, L_SB, delta_L, lambda_peak, regime]
+    orbital_mechanics:
+      path: closures/astronomy/orbital_mechanics.py
+      inputs: [P_orb, a_semi, M_total, e_orb]
+      outputs: [P_predicted, kepler_residual, v_orb, E_orbital, regime]
+    spectral_analysis:
+      path: closures/astronomy/spectral_analysis.py
+      inputs: [T_eff, B_V, spectral_class]
+      outputs: [lambda_peak, T_from_BV, spectral_embedding, chi2_spectral, regime]
+    distance_ladder:
+      path: closures/astronomy/distance_ladder.py
+      inputs: [m_app, M_abs, pi_arcsec, z_cosmo]
+      outputs: [d_modulus, d_parallax, d_hubble, distance_consistency, regime]
+    gravitational_dynamics:
+      path: closures/astronomy/gravitational_dynamics.py
+      inputs: [v_rot, r_obs, sigma_v, M_luminous]
+      outputs: [M_virial, M_dynamic, dark_matter_fraction, virial_ratio, regime]
+    stellar_evolution:
+      path: closures/astronomy/stellar_evolution.py
+      inputs: [M_star, L, T_eff, age_Gyr]
+      outputs: [t_MS, evolutionary_phase, L_ZAMS, T_ZAMS, regime]
+  notes: |
+    ASTRO.INTSTACK.v1 extends GCD.INTSTACK.v1 with observational astronomy.
+    Covers the six pillars of astronomical measurement: stellar luminosity
+    (Stefan-Boltzmann, mass-luminosity), orbital mechanics (Kepler's laws),
+    spectral analysis (Wien, Planck), the distance ladder (parallax, standard
+    candles, Hubble flow), gravitational dynamics (virial theorem, rotation
+    curves), and stellar evolution (main-sequence lifetime, HR diagram).
+    Each closure maps astronomical observables to UMCP invariants (ω, F, S, C)
+    through physically motivated embeddings.
+  provenance:
+    created: '2026-02-07'
+    author: UMCP-ASTRO Working Group
+    canonical_anchor: canon/astro_anchors.yaml
+    parent_version: GCD.INTSTACK.v1.0.0
+  extensions: {}

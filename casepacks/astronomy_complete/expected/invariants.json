@@ -1,0 +1,1126 @@
+{
+  "schema": "schemas/invariants.schema.json",
+  "format": "tier1_invariants",
+  "contract_id": "ASTRO.INTSTACK.v1",
+  "closure_registry_id": "UMCP.CLOSURES.ASTRO.v1",
+  "canon": {
+    "pre_doi": "10.1086/133630",
+    "post_doi": "10.5281/zenodo.14854321",
+    "weld_id": "W-2026-02-07-ASTRO-COMPLETE",
+    "timezone": "UTC"
+  },
+  "rows": [
+    {
+      "t": "S001",
+      "omega": 0.0,
+      "F": 1.0,
+      "S": 0.079211,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": 0.0,
+      "IC": 1.0,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "S002",
+      "omega": 0.036866,
+      "F": 0.963134,
+      "S": 0.090397,
+      "C": 0.00893,
+      "tau_R": "INF_REC",
+      "kappa": -0.03756272837,
+      "IC": 0.963134,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "S003",
+      "omega": 0.240661,
+      "F": 0.759339,
+      "S": 0.466718,
+      "C": 0.011233,
+      "tau_R": "INF_REC",
+      "kappa": -0.275306960984,
+      "IC": 0.759339,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "S004",
+      "omega": 0.769887,
+      "F": 0.230113,
+      "S": 0.00121,
+      "C": 0.00962,
+      "tau_R": "INF_REC",
+      "kappa": -1.469184786362,
+      "IC": 0.230113,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": true
+      }
+    },
+    {
+      "t": "S005",
+      "omega": 1.0,
+      "F": 0.0,
+      "S": 0.362527,
+      "C": 0.003302,
+      "tau_R": "INF_REC",
+      "kappa": -6.907755278982,
+      "IC": 0.001,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": true
+      }
+    },
+    {
+      "t": "S006",
+      "omega": 0.978438,
+      "F": 0.021562,
+      "S": 0.067912,
+      "C": 0.035524,
+      "tau_R": "INF_REC",
+      "kappa": -3.836822772865,
+      "IC": 0.021562,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": true
+      }
+    },
+    {
+      "t": "S007",
+      "omega": 1.0,
+      "F": 0.0,
+      "S": 0.186128,
+      "C": 0.006842,
+      "tau_R": "INF_REC",
+      "kappa": -6.907755278982,
+      "IC": 0.001,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": true
+      }
+    },
+    {
+      "t": "S008",
+      "omega": 1.0,
+      "F": 0.0,
+      "S": 0.019133,
+      "C": 0.001264,
+      "tau_R": "INF_REC",
+      "kappa": -6.907755278982,
+      "IC": 0.001,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": true
+      }
+    },
+    {
+      "t": "S009",
+      "omega": 1.0,
+      "F": 0.0,
+      "S": 0.28694,
+      "C": 0.057092,
+      "tau_R": "INF_REC",
+      "kappa": -6.907755278982,
+      "IC": 0.001,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": true
+      }
+    },
+    {
+      "t": "S010",
+      "omega": 1.0,
+      "F": 0.0,
+      "S": 0.251355,
+      "C": 0.194911,
+      "tau_R": "INF_REC",
+      "kappa": -6.907755278982,
+      "IC": 0.001,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": true
+      }
+    },
+    {
+      "t": "S011",
+      "omega": 0.355177,
+      "F": 0.644823,
+      "S": 0.034559,
+      "C": 0.008614,
+      "tau_R": "INF_REC",
+      "kappa": -0.438779418451,
+      "IC": 0.644823,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "S012",
+      "omega": 0.192461,
+      "F": 0.807539,
+      "S": 0.298797,
+      "C": 0.00073,
+      "tau_R": "INF_REC",
+      "kappa": -0.213763927838,
+      "IC": 0.807539,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "S013",
+      "omega": 1.0,
+      "F": 0.0,
+      "S": 0.01327,
+      "C": 0.017812,
+      "tau_R": "INF_REC",
+      "kappa": -6.907755278982,
+      "IC": 0.001,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": true
+      }
+    },
+    {
+      "t": "S014",
+      "omega": 0.219655,
+      "F": 0.780345,
+      "S": 0.006942,
+      "C": 0.005687,
+      "tau_R": "INF_REC",
+      "kappa": -0.248019149395,
+      "IC": 0.780345,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "S015",
+      "omega": 1.0,
+      "F": 0.0,
+      "S": 0.022025,
+      "C": 0.323533,
+      "tau_R": "INF_REC",
+      "kappa": -6.907755278982,
+      "IC": 0.001,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": true
+      }
+    },
+    {
+      "t": "S016",
+      "omega": 1.0,
+      "F": 0.0,
+      "S": 0.992641,
+      "C": 0.003038,
+      "tau_R": "INF_REC",
+      "kappa": -6.907755278982,
+      "IC": 0.001,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": true
+      }
+    },
+    {
+      "t": "S017",
+      "omega": 1.0,
+      "F": 0.0,
+      "S": 0.130137,
+      "C": 0.002968,
+      "tau_R": "INF_REC",
+      "kappa": -6.907755278982,
+      "IC": 0.001,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": true
+      }
+    },
+    {
+      "t": "S018",
+      "omega": 1.0,
+      "F": 0.0,
+      "S": 0.352972,
+      "C": 0.022569,
+      "tau_R": "INF_REC",
+      "kappa": -6.907755278982,
+      "IC": 0.001,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": true
+      }
+    },
+    {
+      "t": "S019",
+      "omega": 0.71321,
+      "F": 0.28679,
+      "S": 0.007795,
+      "C": 0.004711,
+      "tau_R": "INF_REC",
+      "kappa": -1.249005038368,
+      "IC": 0.28679,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": true
+      }
+    },
+    {
+      "t": "S020",
+      "omega": 0.641075,
+      "F": 0.358925,
+      "S": 0.060599,
+      "C": 0.002549,
+      "tau_R": "INF_REC",
+      "kappa": -1.024641825968,
+      "IC": 0.358925,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "ORB01",
+      "omega": 0.0167,
+      "F": 0.9833,
+      "S": 0.036843,
+      "C": 0.0167,
+      "tau_R": "INF_REC",
+      "kappa": -0.016841017196,
+      "IC": 0.9833,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "ORB02",
+      "omega": 0.0489,
+      "F": 0.9511,
+      "S": 0.053036,
+      "C": 0.0489,
+      "tau_R": "INF_REC",
+      "kappa": -0.050136069494,
+      "IC": 0.9511,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "ORB03",
+      "omega": 0.0934,
+      "F": 0.9066,
+      "S": 0.018678,
+      "C": 0.0934,
+      "tau_R": "INF_REC",
+      "kappa": -0.098053940475,
+      "IC": 0.9066,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "ORB04",
+      "omega": 0.2056,
+      "F": 0.7944,
+      "S": 0.087601,
+      "C": 0.2056,
+      "tau_R": "INF_REC",
+      "kappa": -0.230168166251,
+      "IC": 0.7944,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "ORB05",
+      "omega": 0.9671,
+      "F": 0.0329,
+      "S": 0.535364,
+      "C": 0.9671,
+      "tau_R": "INF_REC",
+      "kappa": -3.414282621211,
+      "IC": 0.0329,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": true
+      }
+    },
+    {
+      "t": "GAL01",
+      "omega": 0.458002,
+      "F": 0.541998,
+      "S": 0.69697,
+      "C": 0.458002,
+      "tau_R": "INF_REC",
+      "kappa": -0.612492967586,
+      "IC": 0.541998,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "GAL02",
+      "omega": 0.800826,
+      "F": 0.199174,
+      "S": 0.2,
+      "C": 0.800826,
+      "tau_R": "INF_REC",
+      "kappa": -1.613576464439,
+      "IC": 0.199174,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": true
+      }
+    },
+    {
+      "t": "GAL03",
+      "omega": 0.997132,
+      "F": 0.002868,
+      "S": 0.0,
+      "C": 0.997132,
+      "tau_R": "INF_REC",
+      "kappa": -5.854140356245,
+      "IC": 0.002868,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": true
+      }
+    }
+  ],
+  "notes": "Complete astronomy casepack covering 20 stellar objects (O through M types, giants, supergiants, white dwarfs), 5 orbital systems (planets + comet), and 3 galactic dynamics targets. Closures: stellar_luminosity, spectral_analysis, distance_ladder, orbital_mechanics, gravitational_dynamics, stellar_evolution. Domain-specific regime labels mapped to UMCP standard: Stable/Watch/Collapse. Original domain regimes in extensions.",
+  "extensions": {
+    "astronomy_summary": {
+      "total_objects": 28,
+      "stellar": 20,
+      "orbital": 5,
+      "galactic": 3,
+      "spectral_types_covered": [
+        "A",
+        "B",
+        "D",
+        "F",
+        "G",
+        "K",
+        "M"
+      ]
+    },
+    "domain_closure_outputs": {
+      "S001": {
+        "stellar_luminosity": {
+          "L_predicted": 1.0,
+          "L_SB": 1.0,
+          "delta_L": 0.0,
+          "lambda_peak": 501.52,
+          "regime": "Consistent"
+        },
+        "spectral_analysis": {
+          "lambda_peak": 501.52,
+          "T_from_BV": 5756.6,
+          "spectral_embedding": 0.5996,
+          "chi2_spectral": 0.396057,
+          "regime": "Excellent"
+        },
+        "distance_ladder": {
+          "d_modulus": 0.0,
+          "d_parallax": 0.0,
+          "d_hubble": 0.0,
+          "distance_consistency": 0.0,
+          "regime": "High"
+        },
+        "stellar_evolution": {
+          "t_MS": 10.0,
+          "evolutionary_phase": "Main-Seq",
+          "L_ZAMS": 0.7,
+          "T_ZAMS": 5778.0,
+          "regime": "Main-Seq"
+        },
+        "domain_regime": "Consistent"
+      },
+      "S002": {
+        "stellar_luminosity": {
+          "L_predicted": 1.4641,
+          "L_SB": 1.518075,
+          "delta_L": 0.036866,
+          "lambda_peak": 500.48,
+          "regime": "Consistent"
+        },
+        "spectral_analysis": {
+          "lambda_peak": 500.48,
+          "T_from_BV": 5567.7,
+          "spectral_embedding": 0.5996,
+          "chi2_spectral": 0.451987,
+          "regime": "Excellent"
+        },
+        "distance_ladder": {
+          "d_modulus": 1.3243,
+          "d_parallax": 1.3009,
+          "d_hubble": 0.0,
+          "distance_consistency": 0.00893,
+          "regime": "High"
+        },
+        "stellar_evolution": {
+          "t_MS": 7.5131,
+          "evolutionary_phase": "Main-Seq",
+          "L_ZAMS": 1.02487,
+          "T_ZAMS": 6100.6,
+          "regime": "Main-Seq"
+        },
+        "domain_regime": "Consistent"
+      },
+      "S003": {
+        "stellar_luminosity": {
+          "L_predicted": 0.676751,
+          "L_SB": 0.513884,
+          "delta_L": 0.240661,
+          "lambda_peak": 550.91,
+          "regime": "Significant"
+        },
+        "spectral_analysis": {
+          "lambda_peak": 550.91,
+          "T_from_BV": 5050.6,
+          "spectral_embedding": 0.7283,
+          "chi2_spectral": 2.333592,
+          "regime": "Marginal"
+        },
+        "distance_ladder": {
+          "d_modulus": 1.3305,
+          "d_parallax": 1.3009,
+          "d_hubble": 0.0,
+          "distance_consistency": 0.011233,
+          "regime": "Moderate"
+        },
+        "stellar_evolution": {
+          "t_MS": 13.4023,
+          "evolutionary_phase": "Main-Seq",
+          "L_ZAMS": 0.473726,
+          "T_ZAMS": 5465.3,
+          "regime": "Main-Seq"
+        },
+        "domain_regime": "Significant"
+      },
+      "S004": {
+        "stellar_luminosity": {
+          "L_predicted": 0.007918,
+          "L_SB": 0.001822,
+          "delta_L": 0.769887,
+          "lambda_peak": 952.59,
+          "regime": "Anomalous"
+        },
+        "spectral_analysis": {
+          "lambda_peak": 952.59,
+          "T_from_BV": 3368.1,
+          "spectral_embedding": 0.9285,
+          "chi2_spectral": 0.006048,
+          "regime": "Excellent"
+        },
+        "distance_ladder": {
+          "d_modulus": 1.2764,
+          "d_parallax": 1.3012,
+          "d_hubble": 0.0,
+          "distance_consistency": 0.00962,
+          "regime": "High"
+        },
+        "stellar_evolution": {
+          "t_MS": 154.075,
+          "evolutionary_phase": "Main-Seq",
+          "L_ZAMS": 0.005543,
+          "T_ZAMS": 1741.8,
+          "regime": "Main-Seq"
+        },
+        "domain_regime": "Anomalous"
+      },
+      "S005": {
+        "stellar_luminosity": {
+          "L_predicted": 12.610935,
+          "L_SB": 25.641026,
+          "delta_L": 1.033237,
+          "lambda_peak": 291.53,
+          "regime": "Anomalous"
+        },
+        "spectral_analysis": {
+          "lambda_peak": 291.53,
+          "T_from_BV": 10014.3,
+          "spectral_embedding": 0.3003,
+          "chi2_spectral": 1.812636,
+          "regime": "Marginal"
+        },
+        "distance_ladder": {
+          "d_modulus": 2.6546,
+          "d_parallax": 2.6371,
+          "d_hubble": 0.0,
+          "distance_consistency": 0.003302,
+          "regime": "High"
+        },
+        "stellar_evolution": {
+          "t_MS": 1.6359,
+          "evolutionary_phase": "Main-Seq",
+          "L_ZAMS": 8.827655,
+          "T_ZAMS": 8730.6,
+          "regime": "Main-Seq"
+        },
+        "domain_regime": "Anomalous"
+      },
+      "S006": {
+        "stellar_luminosity": {
+          "L_predicted": 1.073967,
+          "L_SB": 0.023156,
+          "delta_L": 0.978438,
+          "lambda_peak": 114.99,
+          "regime": "Anomalous"
+        },
+        "spectral_analysis": {
+          "lambda_peak": 114.99,
+          "T_from_BV": 10515.6,
+          "spectral_embedding": 0.5,
+          "chi2_spectral": 0.339558,
+          "regime": "Excellent"
+        },
+        "distance_ladder": {
+          "d_modulus": 2.8314,
+          "d_parallax": 2.6371,
+          "d_hubble": 0.0,
+          "distance_consistency": 0.035524,
+          "regime": "Moderate"
+        },
+        "stellar_evolution": {
+          "t_MS": 9.4789,
+          "evolutionary_phase": "Main-Seq",
+          "L_ZAMS": 0.751777,
+          "T_ZAMS": 5837.1,
+          "regime": "Main-Seq"
+        },
+        "domain_regime": "Anomalous"
+      },
+      "S007": {
+        "stellar_luminosity": {
+          "L_predicted": 14.21977,
+          "L_SB": 42.549694,
+          "delta_L": 1.992291,
+          "lambda_peak": 301.79,
+          "regime": "Anomalous"
+        },
+        "spectral_analysis": {
+          "lambda_peak": 301.79,
+          "T_from_BV": 10125.2,
+          "spectral_embedding": 0.286,
+          "chi2_spectral": 0.930642,
+          "regime": "Good"
+        },
+        "distance_ladder": {
+          "d_modulus": 7.7625,
+          "d_parallax": 7.657,
+          "d_hubble": 0.0,
+          "distance_consistency": 0.006842,
+          "regime": "High"
+        },
+        "stellar_evolution": {
+          "t_MS": 1.5014,
+          "evolutionary_phase": "Main-Seq",
+          "L_ZAMS": 9.953839,
+          "T_ZAMS": 8903.0,
+          "regime": "Main-Seq"
+        },
+        "domain_regime": "Anomalous"
+      },
+      "S008": {
+        "stellar_luminosity": {
+          "L_predicted": 1.360489,
+          "L_SB": 195.328651,
+          "delta_L": 142.572389,
+          "lambda_peak": 676.1,
+          "regime": "Anomalous"
+        },
+        "spectral_analysis": {
+          "lambda_peak": 676.1,
+          "T_from_BV": 4250.7,
+          "spectral_embedding": 0.7283,
+          "chi2_spectral": 0.095664,
+          "regime": "Excellent"
+        },
+        "distance_ladder": {
+          "d_modulus": 11.2202,
+          "d_parallax": 11.2486,
+          "d_hubble": 0.0,
+          "distance_consistency": 0.001264,
+          "regime": "High"
+        },
+        "stellar_evolution": {
+          "t_MS": 7.9383,
+          "evolutionary_phase": "Main-Seq",
+          "L_ZAMS": 0.952342,
+          "T_ZAMS": 6037.1,
+          "regime": "Main-Seq"
+        },
+        "domain_regime": "Anomalous"
+      },
+      "S009": {
+        "stellar_luminosity": {
+          "L_predicted": 24743.080487,
+          "L_SB": 87960.273322,
+          "delta_L": 2.554944,
+          "lambda_peak": 804.94,
+          "regime": "Anomalous"
+        },
+        "spectral_analysis": {
+          "lambda_peak": 804.94,
+          "T_from_BV": 3333.2,
+          "spectral_embedding": 0.8856,
+          "chi2_spectral": 1.434699,
+          "regime": "Good"
+        },
+        "distance_ladder": {
+          "d_modulus": 179.4734,
+          "d_parallax": 201.2072,
+          "d_hubble": 0.0,
+          "distance_consistency": 0.057092,
+          "regime": "Low"
+        },
+        "stellar_evolution": {
+          "t_MS": 0.0073,
+          "evolutionary_phase": "Giant",
+          "L_ZAMS": 17320.156341,
+          "T_ZAMS": 30011.2,
+          "regime": "Giant"
+        },
+        "domain_regime": "Anomalous"
+      },
+      "S010": {
+        "stellar_luminosity": {
+          "L_predicted": 42439.233511,
+          "L_SB": 119725.135616,
+          "delta_L": 1.821096,
+          "lambda_peak": 239.49,
+          "regime": "Anomalous"
+        },
+        "spectral_analysis": {
+          "lambda_peak": 239.49,
+          "T_from_BV": 10515.6,
+          "spectral_embedding": 0.2574,
+          "chi2_spectral": 1.256773,
+          "regime": "Good"
+        },
+        "distance_ladder": {
+          "d_modulus": 392.6449,
+          "d_parallax": 264.5503,
+          "d_hubble": 0.0,
+          "distance_consistency": 0.194911,
+          "regime": "Unreliable"
+        },
+        "stellar_evolution": {
+          "t_MS": 0.0049,
+          "evolutionary_phase": "Post-AGB",
+          "L_ZAMS": 29707.463458,
+          "T_ZAMS": 32767.4,
+          "regime": "Post-AGB"
+        },
+        "domain_regime": "Anomalous"
+      },
+      "S011": {
+        "stellar_luminosity": {
+          "L_predicted": 5.049013,
+          "L_SB": 6.842306,
+          "delta_L": 0.355177,
+          "lambda_peak": 443.76,
+          "regime": "Anomalous"
+        },
+        "spectral_analysis": {
+          "lambda_peak": 443.76,
+          "T_from_BV": 6775.5,
+          "spectral_embedding": 0.5005,
+          "chi2_spectral": 0.172796,
+          "regime": "Excellent"
+        },
+        "distance_ladder": {
+          "d_modulus": 3.4356,
+          "d_parallax": 3.4953,
+          "d_hubble": 0.0,
+          "distance_consistency": 0.008614,
+          "regime": "High"
+        },
+        "stellar_evolution": {
+          "t_MS": 2.9689,
+          "evolutionary_phase": "Main-Seq",
+          "L_ZAMS": 3.534309,
+          "T_ZAMS": 7277.5,
+          "regime": "Main-Seq"
+        },
+        "domain_regime": "Anomalous"
+      },
+      "S012": {
+        "stellar_luminosity": {
+          "L_predicted": 10.266257,
+          "L_SB": 8.290399,
+          "delta_L": 0.192461,
+          "lambda_peak": 377.81,
+          "regime": "Significant"
+        },
+        "spectral_analysis": {
+          "lambda_peak": 377.81,
+          "T_from_BV": 8011.4,
+          "spectral_embedding": 0.3861,
+          "chi2_spectral": 1.493983,
+          "regime": "Good"
+        },
+        "distance_ladder": {
+          "d_modulus": 5.1286,
+          "d_parallax": 5.1361,
+          "d_hubble": 0.0,
+          "distance_consistency": 0.00073,
+          "regime": "High"
+        },
+        "stellar_evolution": {
+          "t_MS": 1.7436,
+          "evolutionary_phase": "Main-Seq",
+          "L_ZAMS": 7.18638,
+          "T_ZAMS": 8052.0,
+          "regime": "Main-Seq"
+        },
+        "domain_regime": "Significant"
+      },
+      "S013": {
+        "stellar_luminosity": {
+          "L_predicted": 13.308634,
+          "L_SB": 32.574852,
+          "delta_L": 1.447648,
+          "lambda_peak": 631.87,
+          "regime": "Anomalous"
+        },
+        "spectral_analysis": {
+          "lambda_peak": 631.87,
+          "T_from_BV": 4742.7,
+          "spectral_embedding": 0.714,
+          "chi2_spectral": 0.066348,
+          "regime": "Excellent"
+        },
+        "distance_ladder": {
+          "d_modulus": 10.0,
+          "d_parallax": 10.3627,
+          "d_hubble": 0.0,
+          "distance_consistency": 0.017812,
+          "regime": "Moderate"
+        },
+        "stellar_evolution": {
+          "t_MS": 1.4352,
+          "evolutionary_phase": "Main-Seq",
+          "L_ZAMS": 9.316044,
+          "T_ZAMS": 8355.4,
+          "regime": "Main-Seq"
+        },
+        "domain_regime": "Anomalous"
+      },
+      "S014": {
+        "stellar_luminosity": {
+          "L_predicted": 13.589545,
+          "L_SB": 16.57455,
+          "delta_L": 0.219655,
+          "lambda_peak": 337.34,
+          "regime": "Significant"
+        },
+        "spectral_analysis": {
+          "lambda_peak": 337.34,
+          "T_from_BV": 9125.5,
+          "spectral_embedding": 0.3289,
+          "chi2_spectral": 0.034711,
+          "regime": "Excellent"
+        },
+        "distance_ladder": {
+          "d_modulus": 7.7268,
+          "d_parallax": 7.6394,
+          "d_hubble": 0.0,
+          "distance_consistency": 0.005687,
+          "regime": "High"
+        },
+        "stellar_evolution": {
+          "t_MS": 1.4129,
+          "evolutionary_phase": "Main-Seq",
+          "L_ZAMS": 9.512681,
+          "T_ZAMS": 8380.3,
+          "regime": "Main-Seq"
+        },
+        "domain_regime": "Significant"
+      },
+      "S015": {
+        "stellar_luminosity": {
+          "L_predicted": 29897.687854,
+          "L_SB": 195280.76892,
+          "delta_L": 5.531634,
+          "lambda_peak": 339.91,
+          "regime": "Anomalous"
+        },
+        "spectral_analysis": {
+          "lambda_peak": 339.91,
+          "T_from_BV": 11091.8,
+          "spectral_embedding": 0.3146,
+          "chi2_spectral": 0.110126,
+          "regime": "Excellent"
+        },
+        "distance_ladder": {
+          "d_modulus": 843.3348,
+          "d_parallax": 431.0345,
+          "d_hubble": 0.0,
+          "distance_consistency": 0.323533,
+          "regime": "Unreliable"
+        },
+        "stellar_evolution": {
+          "t_MS": 0.0064,
+          "evolutionary_phase": "Post-AGB",
+          "L_ZAMS": 20928.381498,
+          "T_ZAMS": 30950.5,
+          "regime": "Post-AGB"
+        },
+        "domain_regime": "Anomalous"
+      },
+      "S016": {
+        "stellar_luminosity": {
+          "L_predicted": 27.175301,
+          "L_SB": 78.564987,
+          "delta_L": 1.891044,
+          "lambda_peak": 583.05,
+          "regime": "Anomalous"
+        },
+        "spectral_analysis": {
+          "lambda_peak": 583.05,
+          "T_from_BV": 5280.7,
+          "spectral_embedding": 0.6854,
+          "chi2_spectral": 4.963204,
+          "regime": "Poor"
+        },
+        "distance_ladder": {
+          "d_modulus": 12.942,
+          "d_parallax": 13.0208,
+          "d_hubble": 0.0,
+          "distance_consistency": 0.003038,
+          "regime": "High"
+        },
+        "stellar_evolution": {
+          "t_MS": 0.9453,
+          "evolutionary_phase": "Main-Seq",
+          "L_ZAMS": 19.022711,
+          "T_ZAMS": 9893.3,
+          "regime": "Main-Seq"
+        },
+        "domain_regime": "Anomalous"
+      },
+      "S017": {
+        "stellar_luminosity": {
+          "L_predicted": 5048.493558,
+          "L_SB": 20512.242316,
+          "delta_L": 3.063042,
+          "lambda_peak": 114.54,
+          "regime": "Anomalous"
+        },
+        "spectral_analysis": {
+          "lambda_peak": 114.54,
+          "T_from_BV": 14632.8,
+          "spectral_embedding": 0.1573,
+          "chi2_spectral": 0.650685,
+          "regime": "Excellent"
+        },
+        "distance_ladder": {
+          "d_modulus": 80.1678,
+          "d_parallax": 80.6452,
+          "d_hubble": 0.0,
+          "distance_consistency": 0.002968,
+          "regime": "High"
+        },
+        "stellar_evolution": {
+          "t_MS": 0.0226,
+          "evolutionary_phase": "Main-Seq",
+          "L_ZAMS": 3533.94549,
+          "T_ZAMS": 23166.7,
+          "regime": "Main-Seq"
+        },
+        "domain_regime": "Anomalous"
+      },
+      "S018": {
+        "stellar_luminosity": {
+          "L_predicted": 6713.915918,
+          "L_SB": 74444.397082,
+          "delta_L": 10.088074,
+          "lambda_peak": 791.74,
+          "regime": "Anomalous"
+        },
+        "spectral_analysis": {
+          "lambda_peak": 791.74,
+          "T_from_BV": 3356.4,
+          "spectral_embedding": 0.8713,
+          "chi2_spectral": 1.764861,
+          "regime": "Marginal"
+        },
+        "distance_ladder": {
+          "d_modulus": 177.0109,
+          "d_parallax": 185.1852,
+          "d_hubble": 0.0,
+          "distance_consistency": 0.022569,
+          "regime": "Moderate"
+        },
+        "stellar_evolution": {
+          "t_MS": 0.0185,
+          "evolutionary_phase": "Main-Seq",
+          "L_ZAMS": 4699.741143,
+          "T_ZAMS": 24267.7,
+          "regime": "Main-Seq"
+        },
+        "domain_regime": "Anomalous"
+      },
+      "S019": {
+        "stellar_luminosity": {
+          "L_predicted": 0.011594,
+          "L_SB": 0.003325,
+          "delta_L": 0.71321,
+          "lambda_peak": 924.62,
+          "regime": "Anomalous"
+        },
+        "spectral_analysis": {
+          "lambda_peak": 924.62,
+          "T_from_BV": 3464.9,
+          "spectral_embedding": 0.9142,
+          "chi2_spectral": 0.038976,
+          "regime": "Excellent"
+        },
+        "distance_ladder": {
+          "d_modulus": 1.8113,
+          "d_parallax": 1.8285,
+          "d_hubble": 0.0,
+          "distance_consistency": 0.004711,
+          "regime": "High"
+        },
+        "stellar_evolution": {
+          "t_MS": 124.202,
+          "evolutionary_phase": "Main-Seq",
+          "L_ZAMS": 0.008116,
+          "T_ZAMS": 1914.5,
+          "regime": "Main-Seq"
+        },
+        "domain_regime": "Anomalous"
+      },
+      "S020": {
+        "stellar_luminosity": {
+          "L_predicted": 0.003933,
+          "L_SB": 0.001412,
+          "delta_L": 0.641075,
+          "lambda_peak": 1034.92,
+          "regime": "Anomalous"
+        },
+        "spectral_analysis": {
+          "lambda_peak": 1034.92,
+          "T_from_BV": 3134.5,
+          "spectral_embedding": 0.9428,
+          "chi2_spectral": 0.302994,
+          "regime": "Excellent"
+        },
+        "distance_ladder": {
+          "d_modulus": 2.3988,
+          "d_parallax": 2.3866,
+          "d_hubble": 0.0,
+          "distance_consistency": 0.002549,
+          "regime": "High"
+        },
+        "stellar_evolution": {
+          "t_MS": 228.8151,
+          "evolutionary_phase": "Pre-MS",
+          "L_ZAMS": 0.002753,
+          "T_ZAMS": 1464.5,
+          "regime": "Pre-MS"
+        },
+        "domain_regime": "Anomalous"
+      },
+      "ORB01": {
+        "orbital_mechanics": {
+          "P_predicted": 31554187.7476,
+          "kepler_residual": 0.000368432,
+          "v_orb": 29788.9,
+          "E_orbital": -443689261.36,
+          "regime": "Stable"
+        },
+        "domain_regime": "Stable"
+      },
+      "ORB02": {
+        "orbital_mechanics": {
+          "P_predicted": 374300756.9269,
+          "kepler_residual": 0.000530355,
+          "v_orb": 13066.06,
+          "E_orbital": -85360936.12,
+          "regime": "Stable"
+        },
+        "domain_regime": "Stable"
+      },
+      "ORB03": {
+        "orbital_mechanics": {
+          "P_predicted": 59365544.5362,
+          "kepler_residual": 0.000186784,
+          "v_orb": 24130.26,
+          "E_orbital": -291134685.93,
+          "regime": "Stable"
+        },
+        "domain_regime": "Stable"
+      },
+      "ORB04": {
+        "orbital_mechanics": {
+          "P_predicted": 7596673.3543,
+          "kepler_residual": 0.000876008,
+          "v_orb": 47884.94,
+          "E_orbital": -1146483879.49,
+          "regime": "Stable"
+        },
+        "domain_regime": "Stable"
+      },
+      "ORB05": {
+        "orbital_mechanics": {
+          "P_predicted": 2369665298.291,
+          "kepler_residual": 0.005353641,
+          "v_orb": 7060.65,
+          "E_orbital": -24926363.0,
+          "regime": "Escape"
+        },
+        "domain_regime": "Escape"
+      },
+      "GAL01": {
+        "gravitational_dynamics": {
+          "M_virial": 15248145699.72,
+          "M_dynamic": 92251281483.3,
+          "dark_matter_fraction": 0.458002,
+          "virial_ratio": 0.69697,
+          "regime": "Unbound"
+        },
+        "domain_regime": "Unbound"
+      },
+      "GAL02": {
+        "gravitational_dynamics": {
+          "M_virial": 502073090112.73,
+          "M_dynamic": 435827335167.3,
+          "dark_matter_fraction": 0.800826,
+          "virial_ratio": 0.2,
+          "regime": "Relaxing"
+        },
+        "domain_regime": "Relaxing"
+      },
+      "GAL03": {
+        "gravitational_dynamics": {
+          "M_virial": 3486618681338375.0,
+          "M_dynamic": 0.0,
+          "dark_matter_fraction": 0.997132,
+          "virial_ratio": 0.0,
+          "regime": "Equilibrium"
+        },
+        "domain_regime": "Equilibrium"
+      }
+    }
+  }
+}
