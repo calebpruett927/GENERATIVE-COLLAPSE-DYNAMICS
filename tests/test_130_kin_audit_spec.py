@@ -984,9 +984,9 @@ class TestReferenceIdentities:
             content = kin_math_path.read_text()
 
             # §9 should have the reference disclaimer
-            assert "REFERENCE IDENTITIES" in content or "NON-GATING" in content, (
-                "§9-§11 should be marked as reference/non-gating"
-            )
+            assert (
+                "REFERENCE IDENTITIES" in content or "NON-GATING" in content
+            ), "§9-§11 should be marked as reference/non-gating"
 
             # Verify the disclaimer mentions enforcement gates
             assert "enforcement gate" in content.lower(), "Should clarify these are not enforcement gates"

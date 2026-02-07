@@ -2477,7 +2477,8 @@ def _cmd_engine(args: argparse.Namespace) -> int:
     if args.casepack:
         cp_path = Path(args.casepack).resolve()
         engine.generate_casepack(
-            result, cp_path,
+            result,
+            cp_path,
             contract_id=args.contract,
         )
         print(f"\n✓ Casepack generated at {cp_path}/")
@@ -2485,8 +2486,7 @@ def _cmd_engine(args: argparse.Namespace) -> int:
         out_dir = Path(args.output).resolve()
         out_dir.mkdir(parents=True, exist_ok=True)
         psi_path = engine.write_psi_csv(result, out_dir / "psi.csv")
-        inv_path = engine.write_invariants_json(result, out_dir / "invariants.json",
-                                                 contract_id=args.contract)
+        inv_path = engine.write_invariants_json(result, out_dir / "invariants.json", contract_id=args.contract)
         print(f"\n✓ psi.csv      → {psi_path}")
         print(f"✓ invariants.json → {inv_path}")
     else:
@@ -2617,9 +2617,13 @@ def build_parser() -> argparse.ArgumentParser:
     eng = sub.add_parser("engine", help="Generate Ψ(t) trace and invariants from raw measurements")
     eng.add_argument("input", help="Path to raw measurements CSV")
     eng.add_argument("-w", "--weights", default=None, help="Comma-separated weights (e.g. 0.4,0.35,0.25)")
-    eng.add_argument("-s", "--strategy", default="min_max",
-                     choices=["linear_scale", "min_max", "max_norm", "zscore_sigmoid"],
-                     help="Embedding strategy (default: min_max)")
+    eng.add_argument(
+        "-s",
+        "--strategy",
+        default="min_max",
+        choices=["linear_scale", "min_max", "max_norm", "zscore_sigmoid"],
+        help="Embedding strategy (default: min_max)",
+    )
     eng.add_argument("--eta", type=float, default=0.10, help="η threshold for return detection (default: 0.10)")
     eng.add_argument("--H-rec", type=int, default=50, help="Recovery horizon for τ_R (default: 50)")
     eng.add_argument("-o", "--output", default=None, help="Output directory for psi.csv + invariants.json")

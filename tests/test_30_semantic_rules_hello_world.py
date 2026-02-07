@@ -74,9 +74,9 @@ def test_E101_wide_psi_has_at_least_one_coordinate_column_when_wide(
     min_matches = int(rule["check"]["min_matches"])
     pattern = str(rule["check"]["pattern"])
 
-    assert matches >= min_matches, (
-        f"E101 failed: expected >= {min_matches} coordinate columns matching {pattern}, observed {matches}."
-    )
+    assert (
+        matches >= min_matches
+    ), f"E101 failed: expected >= {min_matches} coordinate columns matching {pattern}, observed {matches}."
 
 
 def test_W201_F_equals_one_minus_omega(repo_paths: RepoPaths) -> None:
@@ -88,9 +88,9 @@ def test_W201_F_equals_one_minus_omega(repo_paths: RepoPaths) -> None:
     rule = load_rule_by_id(rules_doc, "W201")
     inv = load_json(repo_paths.hello_invariants_json)
 
-    assert isinstance(inv, dict) and "rows" in inv and isinstance(inv["rows"], list), (
-        "expected/invariants.json must contain a top-level 'rows' array."
-    )
+    assert (
+        isinstance(inv, dict) and "rows" in inv and isinstance(inv["rows"], list)
+    ), "expected/invariants.json must contain a top-level 'rows' array."
 
     atol = float(rule.get("atol", 1.0e-9))
     rtol = float(rule.get("rtol", 0.0))
@@ -131,9 +131,9 @@ def test_W202_IC_equals_exp_kappa(repo_paths: RepoPaths) -> None:
     rule = load_rule_by_id(rules_doc, "W202")
     inv = load_json(repo_paths.hello_invariants_json)
 
-    assert isinstance(inv, dict) and "rows" in inv and isinstance(inv["rows"], list), (
-        "expected/invariants.json must contain a top-level 'rows' array."
-    )
+    assert (
+        isinstance(inv, dict) and "rows" in inv and isinstance(inv["rows"], list)
+    ), "expected/invariants.json must contain a top-level 'rows' array."
 
     atol = float(rule.get("atol", 1.0e-9))
     rtol = float(rule.get("rtol", 1.0e-9))
@@ -180,14 +180,14 @@ def test_W301_regime_label_consistency_with_canon(repo_paths: RepoPaths) -> None
     rule = load_rule_by_id(rules_doc, "W301")
 
     inv = load_json(repo_paths.hello_invariants_json)
-    assert isinstance(inv, dict) and "rows" in inv and isinstance(inv["rows"], list), (
-        "expected/invariants.json must contain a top-level 'rows' array."
-    )
+    assert (
+        isinstance(inv, dict) and "rows" in inv and isinstance(inv["rows"], list)
+    ), "expected/invariants.json must contain a top-level 'rows' array."
 
     canon = load_yaml(repo_paths.canon_anchors)
-    assert isinstance(canon, dict) and "umcp_canon" in canon and "regimes" in canon["umcp_canon"], (
-        "canon/anchors.yaml must contain umcp_canon.regimes thresholds."
-    )
+    assert (
+        isinstance(canon, dict) and "umcp_canon" in canon and "regimes" in canon["umcp_canon"]
+    ), "canon/anchors.yaml must contain umcp_canon.regimes thresholds."
     thresholds = canon["umcp_canon"]["regimes"]
 
     omega_path = rule["check"]["fields"]["omega"]

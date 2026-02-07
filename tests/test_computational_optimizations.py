@@ -577,9 +577,7 @@ class TestReturnTimeOptimizations:
         psi_t = trajectory[4]  # Current state
 
         # Use the find_minimal_eta method
-        eta_min = return_computer.find_minimal_eta(
-            psi_t, trajectory, t=4
-        )
+        eta_min = return_computer.find_minimal_eta(psi_t, trajectory, t=4)
 
         # Should find an eta where trajectory returns (exact match to t=0)
         assert eta_min is not None
