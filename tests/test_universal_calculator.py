@@ -20,7 +20,6 @@ import sys
 
 import numpy as np
 import pytest
-
 from umcp.universal_calculator import (
     ComputationMode,
     UniversalCalculator,

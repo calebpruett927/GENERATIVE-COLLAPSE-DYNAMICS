@@ -8,25 +8,29 @@ Tests cover:
 - /weyl/umcp-mapping: WEYL to UMCP invariant mapping
 """
 
+from __future__ import annotations
+
+from typing import Any
+
 import pytest
 
 # Skip if API dependencies not available
 pytest.importorskip("fastapi")
 pytest.importorskip("httpx")
 
-from fastapi.testclient import TestClient
+from fastapi.testclient import TestClient  # noqa: E402
 
-from src.umcp.api_umcp import app
+from src.umcp.api_umcp import app  # noqa: E402
 
 
 @pytest.fixture
-def client():
+def client() -> TestClient:
     """Test client without API key."""
     return TestClient(app)
 
 
 @pytest.fixture
-def auth_headers():
+def auth_headers() -> dict[str, str]:
     """Authentication headers with valid API key."""
     return {"X-API-Key": "umcp-dev-key"}
 
@@ -34,7 +38,7 @@ def auth_headers():
 class TestWeylBackgroundEndpoint:
     """Test /weyl/background endpoint."""
 
-    def test_background_at_z0(self, client, auth_headers):
+    def test_background_at_z0(self, client: Any, auth_headers: Any) -> None:
         """Test background cosmology at z=0."""
         response = client.get("/weyl/background", params={"z": 0.0}, headers=auth_headers)
         assert response.status_code == 200
@@ -46,7 +50,7 @@ class TestWeylBackgroundEndpoint:
         assert data["D1"] == pytest.approx(1.0, rel=0.01)  # D₁(0) = 1
         assert data["sigma8_z"] == pytest.approx(0.811, rel=0.01)  # σ8,0
 
-    def test_background_at_z1(self, client, auth_headers):
+    def test_background_at_z1(self, client: Any, auth_headers: Any) -> None:
         """Test background cosmology at z=1."""
         response = client.get("/weyl/background", params={"z": 1.0}, headers=auth_headers)
         assert response.status_code == 200
@@ -58,7 +62,7 @@ class TestWeylBackgroundEndpoint:
         assert 0 < data["D1"] < 1  # 0 < D₁(z>0) < 1
         assert data["sigma8_z"] < 0.811  # σ8(z>0) < σ8,0
 
-    def test_background_monotonic(self, client, auth_headers):
+    def test_background_monotonic(self, client: Any, auth_headers: Any) -> None:
         """Test H(z) and χ(z) are monotonic."""
         z_values = [0.0, 0.5, 1.0, 2.0]
         results = []
@@ -76,7 +80,7 @@ class TestWeylBackgroundEndpoint:
         chi_values = [r["chi"] for r in results]
         assert chi_values == sorted(chi_values)
 
-    def test_background_invalid_z(self, client, auth_headers):
+    def test_background_invalid_z(self, client: Any, auth_headers: Any) -> None:
         """Test invalid redshift handling."""
         response = client.get("/weyl/background", params={"z": -1.0}, headers=auth_headers)
         assert response.status_code == 422  # Validation error
@@ -88,7 +92,7 @@ class TestWeylBackgroundEndpoint:
 class TestWeylSigmaEndpoint:
     """Test /weyl/sigma endpoint."""
 
-    def test_sigma_gr_case(self, client, auth_headers):
+    def test_sigma_gr_case(self, client: Any, auth_headers: Any) -> None:
         """Test Σ₀=0 gives Σ=1 (GR)."""
         response = client.get(
             "/weyl/sigma", params={"z": 0.5, "Sigma_0": 0.0, "g_model": "constant"}, headers=auth_headers
@@ -100,7 +104,7 @@ class TestWeylSigmaEndpoint:
         assert data["regime"] == "GR_consistent"
         assert data["deviation_from_GR"] == pytest.approx(0.0, abs=1e-6)
 
-    def test_sigma_des_y3_value(self, client, auth_headers):
+    def test_sigma_des_y3_value(self, client: Any, auth_headers: Any) -> None:
         """Test DES Y3 Σ₀ = 0.24 case."""
         response = client.get(
             "/weyl/sigma", params={"z": 0.5, "Sigma_0": 0.24, "g_model": "constant"}, headers=auth_headers
@@ -111,7 +115,7 @@ class TestWeylSigmaEndpoint:
         assert data["Sigma"] == pytest.approx(1.24, rel=0.01)
         assert data["regime"] == "Tension"  # 0.1 ≤ |Σ₀| < 0.3
 
-    def test_sigma_modified_gravity_regime(self, client, auth_headers):
+    def test_sigma_modified_gravity_regime(self, client: Any, auth_headers: Any) -> None:
         """Test large Σ₀ gives modified gravity regime."""
         response = client.get(
             "/weyl/sigma", params={"z": 0.5, "Sigma_0": 0.4, "g_model": "constant"}, headers=auth_headers
@@ -121,7 +125,7 @@ class TestWeylSigmaEndpoint:
         data = response.json()
         assert data["regime"] == "Modified_gravity"
 
-    def test_sigma_all_models(self, client, auth_headers):
+    def test_sigma_all_models(self, client: Any, auth_headers: Any) -> None:
         """Test constant and exponential g(z) models."""
         # Note: 'standard' model requires Omega_Lambda_z parameter
         for model in ["constant", "exponential"]:
@@ -131,7 +135,7 @@ class TestWeylSigmaEndpoint:
             assert response.status_code == 200
             assert response.json()["Sigma_0"] == 0.2
 
-    def test_sigma_invalid_model(self, client, auth_headers):
+    def test_sigma_invalid_model(self, client: Any, auth_headers: Any) -> None:
         """Test invalid g(z) model."""
         response = client.get(
             "/weyl/sigma", params={"z": 0.5, "Sigma_0": 0.2, "g_model": "invalid"}, headers=auth_headers
@@ -142,7 +146,7 @@ class TestWeylSigmaEndpoint:
 class TestDESY3Endpoint:
     """Test /weyl/des-y3 endpoint."""
 
-    def test_des_y3_structure(self, client, auth_headers):
+    def test_des_y3_structure(self, client: Any, auth_headers: Any) -> None:
         """Test DES Y3 data structure."""
         response = client.get("/weyl/des-y3", headers=auth_headers)
         assert response.status_code == 200
@@ -156,7 +160,7 @@ class TestDESY3Endpoint:
         assert "mean" in data["Sigma_0_constant"]
         assert "sigma" in data["Sigma_0_constant"]
 
-    def test_des_y3_values(self, client, auth_headers):
+    def test_des_y3_values(self, client: Any, auth_headers: Any) -> None:
         """Test DES Y3 reference values."""
         response = client.get("/weyl/des-y3", headers=auth_headers)
         data = response.json()
@@ -177,7 +181,7 @@ class TestDESY3Endpoint:
 class TestUMCPMappingEndpoint:
     """Test /weyl/umcp-mapping endpoint."""
 
-    def test_mapping_structure(self, client, auth_headers):
+    def test_mapping_structure(self, client: Any, auth_headers: Any) -> None:
         """Test UMCP mapping structure."""
         response = client.get(
             "/weyl/umcp-mapping", params={"Sigma_0": 0.24, "chi2_Sigma": 1.1, "chi2_LCDM": 2.1}, headers=auth_headers
@@ -190,7 +194,7 @@ class TestUMCPMappingEndpoint:
         assert "regime" in data
         assert "chi2_improvement" in data
 
-    def test_mapping_conservation(self, client, auth_headers):
+    def test_mapping_conservation(self, client: Any, auth_headers: Any) -> None:
         """Test ω + F = 1 conservation."""
         response = client.get(
             "/weyl/umcp-mapping", params={"Sigma_0": 0.24, "chi2_Sigma": 1.1, "chi2_LCDM": 2.1}, headers=auth_headers
@@ -199,7 +203,7 @@ class TestUMCPMappingEndpoint:
 
         assert data["omega_analog"] + data["F_analog"] == pytest.approx(1.0, rel=1e-6)
 
-    def test_mapping_chi2_improvement(self, client, auth_headers):
+    def test_mapping_chi2_improvement(self, client: Any, auth_headers: Any) -> None:
         """Test χ² improvement calculation."""
         response = client.get(
             "/weyl/umcp-mapping", params={"Sigma_0": 0.24, "chi2_Sigma": 1.0, "chi2_LCDM": 2.0}, headers=auth_headers
@@ -209,7 +213,7 @@ class TestUMCPMappingEndpoint:
         # χ² improved from 2.0 to 1.0 = 50% improvement
         assert data["chi2_improvement"] == pytest.approx(0.5, rel=0.1)
 
-    def test_mapping_regimes(self, client, auth_headers):
+    def test_mapping_regimes(self, client: Any, auth_headers: Any) -> None:
         """Test regime classification for different Σ₀ values."""
         # Small Σ₀ → Stable (UMCP analog)
         response = client.get(
@@ -227,7 +231,7 @@ class TestUMCPMappingEndpoint:
 class TestWeylAPIAuth:
     """Test WEYL API authentication."""
 
-    def test_no_api_key(self):
+    def test_no_api_key(self) -> None:
         """Test endpoints require API key."""
         client_no_auth = TestClient(app)  # No API key header
 

@@ -115,7 +115,7 @@ def classify_trust_status(T: float, tau_A: int | str | None, thresholds: dict[st
 
     # High trust with timely return = trusted
     if thresholds["trusted"] <= T and (
-        tau_A is None or (isinstance(tau_A, (int, float)) and tau_A <= thresholds["max_tau_A"])
+        tau_A is None or (isinstance(tau_A, int | float) and tau_A <= thresholds["max_tau_A"])
     ):
         return "TRUSTED"
 

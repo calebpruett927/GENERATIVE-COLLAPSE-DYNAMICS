@@ -5,7 +5,6 @@ Tests the canonical values and functions from The Physics of Coherence.
 
 import numpy as np
 import pytest
-
 from umcp.frozen_contract import (
     ALPHA,
     DEFAULT_CONTRACT,

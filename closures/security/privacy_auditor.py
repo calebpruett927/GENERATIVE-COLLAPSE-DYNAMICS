@@ -180,7 +180,7 @@ def detect_pii(text: str, field_name: str = "unknown", pii_types: list[str] | No
             continue
 
         config = PII_PATTERNS[pii_type]
-        pattern = config["pattern"]
+        pattern: str = str(config["pattern"])
 
         for match in re.finditer(pattern, text, re.IGNORECASE):
             value = match.group()
@@ -189,12 +189,13 @@ def detect_pii(text: str, field_name: str = "unknown", pii_types: list[str] | No
             if config.get("validate") == "luhn" and not luhn_validate(value):
                 continue
 
+            sev: PIISeverity = config["severity"]  # type: ignore[assignment]
             matches.append(
                 PIIMatch(
                     pii_type=pii_type,
                     value_masked=mask_pii(value, pii_type),
                     location=f"{field_name}:{match.start()}-{match.end()}",
-                    severity=config["severity"],
+                    severity=sev,
                 )
             )
 
@@ -236,7 +237,7 @@ def audit_data_privacy(
         if isinstance(value, str):
             pii_matches = detect_pii(value, field_name)
             all_pii.extend(pii_matches)
-        elif isinstance(value, (list, tuple)):
+        elif isinstance(value, list | tuple):
             for i, item in enumerate(value):
                 if isinstance(item, str):
                     pii_matches = detect_pii(item, f"{field_name}[{i}]")
@@ -339,11 +340,11 @@ def generate_privacy_report(audit_result: PrivacyAuditResult) -> dict[str, Any]:
     Returns:
         Report dictionary
     """
-    pii_by_type = {}
+    pii_by_type: dict[str, int] = {}
     for pii in audit_result.pii_found:
         pii_by_type[pii.pii_type] = pii_by_type.get(pii.pii_type, 0) + 1
 
-    violations_by_type = {}
+    violations_by_type: dict[str, int] = {}
     for v in audit_result.violations:
         key = v.violation_type.value
         violations_by_type[key] = violations_by_type.get(key, 0) + 1

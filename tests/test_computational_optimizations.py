@@ -17,7 +17,6 @@ import time
 
 import numpy as np
 import pytest
-
 from umcp.kernel_optimized import (
     CoherenceAnalyzer,
     OptimizedKernelComputer,
@@ -527,7 +526,7 @@ class TestReturnTimeOptimizations:
         spec.loader.exec_module(module)
         return module.OptimizedReturnComputer(H_rec=100, eta=0.1)
 
-    def test_early_exit_with_margin(self, return_computer):  # type: ignore[no-untyped-def]
+    def test_early_exit_with_margin(self, return_computer):
         """OPT-7: Verify margin-based early exit."""
         # Create a trace where current state matches a past state exactly
         trace = np.array(
@@ -539,12 +538,12 @@ class TestReturnTimeOptimizations:
         )
         psi_t = np.array([0.5, 0.5, 0.5])
 
-        result = return_computer.compute_tau_R(psi_t, trace, t=2)  # type: ignore[misc]
+        result = return_computer.compute_tau_R(psi_t, trace, t=2)
 
-        assert result.tau_R == 2.0  # Returns to t=0  # type: ignore[misc]
-        assert result.computation_mode in ["early_exit", "full_search"]  # type: ignore[misc]
+        assert result.tau_R == 2.0  # Returns to t=0
+        assert result.computation_mode in ["early_exit", "full_search"]
 
-    def test_coverage_caching(self, return_computer):  # type: ignore[no-untyped-def]
+    def test_coverage_caching(self, return_computer):
         """OPT-8: Verify coverage set caching."""
         # Create a simple trace
         trace = np.array(
@@ -556,14 +555,14 @@ class TestReturnTimeOptimizations:
         )
 
         # Get coverage - should cache result
-        coverage = return_computer.get_coverage_set(trace, t=2)  # type: ignore[misc]
-        coverage2 = return_computer.get_coverage_set(trace, t=2)  # type: ignore[misc]
+        coverage = return_computer.get_coverage_set(trace, t=2)
+        coverage2 = return_computer.get_coverage_set(trace, t=2)
 
         assert coverage == coverage2
         # Cache should have entry - hasattr is enough to verify caching works
-        assert hasattr(return_computer, "_coverage_cache")  # type: ignore[misc]
+        assert hasattr(return_computer, "_coverage_cache")
 
-    def test_binary_search_eta(self, return_computer):  # type: ignore[no-untyped-def]
+    def test_binary_search_eta(self, return_computer):
         """OPT-9: Verify binary search for minimal η via find_minimal_eta."""
         # Create a trajectory that returns
         trajectory = np.array(
@@ -578,7 +577,7 @@ class TestReturnTimeOptimizations:
         psi_t = trajectory[4]  # Current state
 
         # Use the find_minimal_eta method
-        eta_min = return_computer.find_minimal_eta(  # type: ignore[misc]
+        eta_min = return_computer.find_minimal_eta(
             psi_t, trajectory, t=4
         )
 
