@@ -4,6 +4,9 @@
   "contract_id": "FINANCE.INTSTACK.v1",
   "closure_registry_id": "UMCP.CLOSURES.DEFAULT.v1",
   "canon": {
+    "pre_doi": "10.5281/zenodo.17756705",
+    "post_doi": "10.5281/zenodo.18072852",
+    "weld_id": "W-2026-02-07-FINANCE-CONTINUITY",
     "timezone": "America/Chicago"
   },
   "rows": [
@@ -119,7 +122,7 @@
       "kappa": -2.6855773452501515,
       "IC": 0.06818181818181818,
       "regime": {
-        "label": "Critical",
+        "label": "Collapse",
         "critical_overlay": true
       },
       "kernel_optional": {

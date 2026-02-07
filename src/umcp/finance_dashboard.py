@@ -44,10 +44,10 @@ try:
     _has_viz_deps = True
 except ImportError:
     np = None  # type: ignore[assignment]
-    pd = None  # type: ignore[assignment]
-    go = None  # type: ignore[assignment]
+    pd = None
+    go = None
     st = None  # type: ignore[assignment]
-    make_subplots = None  # type: ignore[assignment]
+    make_subplots = None
 
 
 FINANCE_DIR_NAME = ".umcp-finance"

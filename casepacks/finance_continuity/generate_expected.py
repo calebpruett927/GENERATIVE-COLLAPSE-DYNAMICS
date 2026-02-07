@@ -120,7 +120,7 @@ def main() -> None:
         # Regime classification — finance-calibrated thresholds
         # IC is unweighted product of coordinates, so lower baseline than weighted
         if IC < 0.10:
-            regime_label = "Critical"
+            regime_label = "Collapse"
             critical_overlay = True
         elif omega >= 0.30:
             regime_label = "Collapse"
@@ -167,6 +167,9 @@ def main() -> None:
         "contract_id": "FINANCE.INTSTACK.v1",
         "closure_registry_id": "UMCP.CLOSURES.DEFAULT.v1",
         "canon": {
+            "pre_doi": "10.5281/zenodo.17756705",
+            "post_doi": "10.5281/zenodo.18072852",
+            "weld_id": "W-2026-02-07-FINANCE-CONTINUITY",
             "timezone": "America/Chicago",
         },
         "rows": inv_rows,
