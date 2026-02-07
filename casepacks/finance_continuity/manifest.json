@@ -1,0 +1,30 @@
+{
+  "schema": "schemas/manifest.schema.json",
+  "casepack": {
+    "id": "finance_continuity",
+    "version": "1.0.0",
+    "title": "Financial Continuity CasePack",
+    "description": "Validates month-over-month financial continuity using UMCP kernel invariants. Embeds revenue, expenses, margin, and cash flow as [0,1]^4 coordinates. Seam accounting certifies financial health returns through reporting collapse.",
+    "created_utc": "2026-02-07T00:00:00Z",
+    "timezone": "America/Chicago",
+    "authors": ["UMCP Finance Tool"]
+  },
+  "refs": {
+    "canon_anchors": { "path": "canon/anchors.yaml" },
+    "contract": { "id": "FINANCE.INTSTACK.v1", "path": "contracts/FINANCE.INTSTACK.v1.yaml" },
+    "closures_registry": { "id": "UMCP.CLOSURES.DEFAULT.v1", "path": "closures/registry.yaml" }
+  },
+  "artifacts": {
+    "raw_measurements": {
+      "path": "raw_measurements.csv",
+      "format": "csv"
+    },
+    "expected": {
+      "psi_csv": { "path": "expected/psi.csv" },
+      "invariants_json": { "path": "expected/invariants.json" }
+    }
+  },
+  "run_intent": {
+    "notes": "12-month financial continuity validation. Coordinates: c1=revenue_performance, c2=expense_control, c3=gross_margin, c4=cashflow_health. Weights: [0.30, 0.25, 0.25, 0.20]. Targets: revenue=$200k, expenses=$150k, cashflow=$40k."
+  }
+}

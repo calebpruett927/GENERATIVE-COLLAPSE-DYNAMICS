@@ -134,6 +134,7 @@ umcp-ext = "umcp.umcp_extensions:main"
 umcp-api = "umcp.api_umcp:run_server"
 umcp-dashboard = "umcp.dashboard:main"
 umcp-calc = "umcp.universal_calculator:main"
+umcp-finance = "umcp.finance_cli:main"
 
 # Note: Contract discovery is built into core validation engine.
 # These entry points are for external tool integration only.
@@ -301,7 +302,7 @@ reportMissingTypeStubs = false
 reportUnknownArgumentType = false
 reportUnnecessaryTypeIgnoreComment = false
 
-extraPaths = ["src"]
+extraPaths = ["src", "."]
 
-# Exclude dashboard from strict checking (UI-heavy, lambda-heavy)
-ignore = ["src/umcp/dashboard.py"]
+# Exclude dashboards from strict checking (UI-heavy, lambda-heavy)
+ignore = ["src/umcp/dashboard.py", "src/umcp/finance_dashboard.py"]

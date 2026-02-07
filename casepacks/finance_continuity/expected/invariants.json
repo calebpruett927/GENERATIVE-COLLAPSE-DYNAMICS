@@ -1,0 +1,216 @@
+{
+  "schema": "schemas/invariants.schema.json",
+  "format": "tier1_invariants",
+  "contract_id": "FINANCE.INTSTACK.v1",
+  "closure_registry_id": "UMCP.CLOSURES.DEFAULT.v1",
+  "canon": {
+    "timezone": "America/Chicago"
+  },
+  "rows": [
+    {
+      "t": 0,
+      "omega": 0.14852564552564107,
+      "F": 0.8514743544743589,
+      "S": 0.20629870223828198,
+      "C": 0.4817429181399639,
+      "tau_R": "INF_REC",
+      "kappa": -0.8556661300577204,
+      "IC": 0.4249999915,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      },
+      "kernel_optional": {
+        "IC_min": 0.4358974358974359
+      }
+    },
+    {
+      "t": 1,
+      "omega": 0.14441414591414148,
+      "F": 0.8555858540858585,
+      "S": 0.18792571312207568,
+      "C": 0.48705464181951597,
+      "tau_R": 1,
+      "kappa": -0.8439700902945291,
+      "IC": 0.4299999914,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      },
+      "kernel_optional": {
+        "IC_min": 0.43434343434343436
+      }
+    },
+    {
+      "t": 2,
+      "omega": 0.14024390993902447,
+      "F": 0.8597560900609755,
+      "S": 0.1714232927671502,
+      "C": 0.485819120291992,
+      "tau_R": 1,
+      "kappa": -0.8232003388081434,
+      "IC": 0.4390243770731708,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      },
+      "kernel_optional": {
+        "IC_min": 0.43902439024390244
+      }
+    },
+    {
+      "t": 3,
+      "omega": 0.1773014624724062,
+      "F": 0.8226985375275938,
+      "S": 0.2667066054428874,
+      "C": 0.5053742089851277,
+      "tau_R": "INF_REC",
+      "kappa": -1.0521901104500861,
+      "IC": 0.3491721854304635,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      },
+      "kernel_optional": {
+        "IC_min": 0.3854166666666667
+      }
+    },
+    {
+      "t": 4,
+      "omega": 0.21063898421413862,
+      "F": 0.7893610157858614,
+      "S": 0.342668569581315,
+      "C": 0.4946673289070309,
+      "tau_R": "INF_REC",
+      "kappa": -1.2451308768194436,
+      "IC": 0.2879032258064516,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      },
+      "kernel_optional": {
+        "IC_min": 0.3617021276595745
+      }
+    },
+    {
+      "t": 5,
+      "omega": 0.2916964285714285,
+      "F": 0.7083035714285715,
+      "S": 0.44321922061083885,
+      "C": 0.5085893292897001,
+      "tau_R": "INF_REC",
+      "kappa": -1.8075078261961943,
+      "IC": 0.16406249999999997,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      },
+      "kernel_optional": {
+        "IC_min": 0.2857142857142857
+      }
+    },
+    {
+      "t": 6,
+      "omega": 0.38585227272727274,
+      "F": 0.6141477272727273,
+      "S": 0.48555357880500793,
+      "C": 0.561863448363958,
+      "tau_R": "INF_REC",
+      "kappa": -2.6855773452501515,
+      "IC": 0.06818181818181818,
+      "regime": {
+        "label": "Critical",
+        "critical_overlay": true
+      },
+      "kernel_optional": {
+        "IC_min": 0.1875
+      }
+    },
+    {
+      "t": 7,
+      "omega": 0.3120699925539836,
+      "F": 0.6879300074460164,
+      "S": 0.4580094952050725,
+      "C": 0.512408745450057,
+      "tau_R": "INF_REC",
+      "kappa": -1.9490797238165924,
+      "IC": 0.14240506329113922,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": false
+      },
+      "kernel_optional": {
+        "IC_min": 0.2823529411764706
+      }
+    },
+    {
+      "t": 8,
+      "omega": 0.20290540790540534,
+      "F": 0.7970945920945947,
+      "S": 0.3210855899647996,
+      "C": 0.48877184256087286,
+      "tau_R": 4,
+      "kappa": -1.1833535271232003,
+      "IC": 0.30624999693750005,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      },
+      "kernel_optional": {
+        "IC_min": 0.3783783783783784
+      }
+    },
+    {
+      "t": 9,
+      "omega": 0.15108974808974363,
+      "F": 0.8489102519102564,
+      "S": 0.20558402660581335,
+      "C": 0.4906173971609067,
+      "tau_R": 7,
+      "kappa": -0.8794767787514389,
+      "IC": 0.4149999917,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      },
+      "kernel_optional": {
+        "IC_min": 0.4256410256410256
+      }
+    },
+    {
+      "t": 10,
+      "omega": 0.14250000750000003,
+      "F": 0.8574999925,
+      "S": 0.1708288740486477,
+      "C": 0.49363447149687595,
+      "tau_R": 1,
+      "kappa": -0.8439701002945292,
+      "IC": 0.4299999871000001,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      },
+      "kernel_optional": {
+        "IC_min": 0.43
+      }
+    },
+    {
+      "t": 11,
+      "omega": 0.143765669160401,
+      "F": 0.856234330839599,
+      "S": 0.18887943717371722,
+      "C": 0.4829449462708991,
+      "tau_R": 1,
+      "kappa": -0.8385642004184493,
+      "IC": 0.4323308184210526,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      },
+      "kernel_optional": {
+        "IC_min": 0.4380952380952381
+      }
+    }
+  ],
+  "notes": "Generated by casepacks/finance_continuity/generate_expected.py"
+}

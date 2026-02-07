@@ -1,0 +1,80 @@
+schema: schemas/contract.schema.json
+contract:
+  id: FINANCE.INTSTACK.v1
+  version: 1.0.0
+  timezone: America/Chicago
+  embedding:
+    interval:
+    - 0.0
+    - 1.0
+    face: pre_clip
+    oor_policy: clip_and_flag
+    epsilon: 1.0e-08
+  tier_1_kernel:
+    reserved_symbols:
+    - "\u03C9"
+    - F
+    - S
+    - C
+    - "\u03C4_R"
+    - "\u03BA"
+    - IC
+    - omega
+    - tau_R
+    - kappa
+    weights_policy: nonnegative_sum_to_one
+    frozen_parameters:
+      p: 3
+      alpha: 1.0
+      lambda: 0.2
+      eta: 0.001
+    tolerances:
+      tol_seam: 0.005
+      tol_id: 1.0e-09
+  typed_censoring:
+    tau_R_special_values:
+    - INF_REC
+    - UNIDENTIFIABLE
+    run_status_enum:
+    - CONFORMANT
+    - NONCONFORMANT
+    - NON_EVALUABLE
+    no_return_no_credit: true
+  notes: >
+    FINANCE.INTSTACK.v1 freezes the UMCP contract boundary for business financial
+    continuity validation. Financial metrics (revenue performance, expense control,
+    gross margin, cash flow health) are embedded as coordinates in [0,1]^4.
+    Regime thresholds are calibrated for monthly business cadence:
+    STABLE = within 5% of targets, WATCH = 5-20% deviation, COLLAPSE = >20%.
+    Seam accounting certifies month-over-month financial continuity.
+    The axiom applies: only financial health that returns through reporting collapse is real.
+  extensions:
+    domain: finance
+    cadence: monthly
+    coordinates:
+      c1:
+        name: revenue_performance
+        formula: "min(revenue / revenue_target, 1.0)"
+        description: "Revenue as fraction of target, capped at 1.0"
+      c2:
+        name: expense_control
+        formula: "min(expense_budget / expenses, 1.0)"
+        description: "Budget-to-expense ratio (1 = under budget, <1 = over budget)"
+      c3:
+        name: gross_margin
+        formula: "(revenue - cogs) / revenue"
+        description: "Gross margin ratio, naturally in [0,1]"
+      c4:
+        name: cashflow_health
+        formula: "min(cashflow / cashflow_target, 1.0)"
+        description: "Operating cash flow as fraction of target"
+    default_weights:
+      revenue_performance: 0.30
+      expense_control: 0.25
+      gross_margin: 0.25
+      cashflow_health: 0.20
+    regime_interpretation:
+      STABLE: "Business operating within targets. Low drift, high fidelity."
+      WATCH: "One or more metrics drifting. Review recommended."
+      COLLAPSE: "Significant deviation from targets. Urgent action required."
+      CRITICAL: "Integrity below 0.30. Financial health not demonstrable."

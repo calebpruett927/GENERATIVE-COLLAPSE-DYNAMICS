@@ -1,0 +1,13 @@
+t,month,revenue,expenses,cogs,cashflow,units,notes
+0,2025-01,195000,142000,110000,42000,USD,"Strong Q1 start — near targets across the board"
+1,2025-02,198000,145000,112000,41000,USD,"Steady performance, slight expense creep"
+2,2025-03,205000,148000,115000,44000,USD,"Revenue exceeding target, margin stable"
+3,2025-04,192000,151000,118000,38000,USD,"Revenue dip + expense rise — watch signal"
+4,2025-05,188000,155000,120000,35000,USD,"Continued drift — expense control weakening"
+5,2025-06,175000,160000,125000,28000,USD,"Revenue decline + cost overrun — entering watch zone"
+6,2025-07,160000,165000,130000,20000,USD,"Cash flow squeeze — approaching collapse thresholds"
+7,2025-08,170000,158000,122000,25000,USD,"Partial recovery — expense correction starting"
+8,2025-09,185000,150000,115000,35000,USD,"Revenue returning — seam weld candidate"
+9,2025-10,195000,147000,112000,40000,USD,"Back near target — return demonstrated"
+10,2025-11,200000,149000,114000,42000,USD,"Stable — targets met across dimensions"
+11,2025-12,210000,152000,118000,48000,USD,"Year-end strength — exceeding targets"

@@ -1,0 +1,13 @@
+t,c_1,c_2,c_3,c_4,oor_1,oor_2,oor_3,oor_4,miss_1,miss_2,miss_3,miss_4
+0,0.975,0.99999999,0.4358974358974359,0.99999999,false,false,false,true,false,false,false,false
+1,0.99,0.99999999,0.43434343434343436,0.99999999,false,false,false,true,false,false,false,false
+2,0.99999999,0.99999999,0.43902439024390244,0.99999999,true,false,false,true,false,false,false,false
+3,0.96,0.9933774834437086,0.3854166666666667,0.95,false,true,false,false,false,false,false,false
+4,0.94,0.967741935483871,0.3617021276595745,0.875,false,true,false,false,false,false,false,false
+5,0.875,0.9375,0.2857142857142857,0.7,false,true,false,false,false,false,false,false
+6,0.8,0.9090909090909091,0.1875,0.5,false,true,false,false,false,false,false,false
+7,0.85,0.9493670886075949,0.2823529411764706,0.625,false,true,false,false,false,false,false,false
+8,0.925,0.99999999,0.3783783783783784,0.875,false,false,false,false,false,false,false,false
+9,0.975,0.99999999,0.4256410256410256,0.99999999,false,false,false,false,false,false,false,false
+10,0.99999999,0.99999999,0.43,0.99999999,false,false,false,true,false,false,false,false
+11,0.99999999,0.9868421052631579,0.4380952380952381,0.99999999,true,true,false,true,false,false,false,false

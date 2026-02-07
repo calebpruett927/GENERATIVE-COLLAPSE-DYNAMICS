@@ -18,9 +18,6 @@ registry:
       path: "closures/norms.l2_eta1e-3.v1.yaml"
     curvature_neighborhood:
       path: "closures/curvature_neighborhood.default.v1.yaml"
-  notes: >
-    Default closure registry used by UMA.INTSTACK.v1.
-    Includes gamma, return-domain, norms, and curvature-neighborhood defaults.
   extensions:
     gcd:
       - name: "energy_potential"
@@ -238,3 +235,14 @@ registry:
         contract: "SECURITY.INTSTACK.v1"
         inputs: ["data", "privacy_rules", "consent_records"]
         outputs: ["pii_found", "violations", "privacy_score"]
+
+    finance:
+      - name: "finance_embedding"
+        path: "closures/finance/finance_embedding.py"
+        description: "Financial metric embedding: revenue, expenses, margin, cashflow → [0,1]^4"
+        contract: "FINANCE.INTSTACK.v1"
+        inputs: ["revenue", "expenses", "cogs", "cashflow", "revenue_target", "expense_budget", "cashflow_target"]
+        outputs: ["revenue_performance", "expense_control", "gross_margin", "cashflow_health"]
+        frozen_params:
+          weights: [0.30, 0.25, 0.25, 0.20]
+          epsilon: 1.0e-12

@@ -1,0 +1,52 @@
+schema: "schemas/closures.schema.json"
+
+closure:
+  kind: "finance_embedding"
+  id: "UMCP.FINANCE.EMBEDDING.v1"
+
+  finance_embedding:
+    form: "linear_ratio"
+    description: >
+      Financial metric embedding for business continuity validation.
+      Maps raw dollar-denominated financials to [0,1]^4 coordinates
+      via ratio-to-target normalization.
+
+    coordinates:
+      c1:
+        name: revenue_performance
+        formula: "min(revenue / revenue_target, 1.0)"
+        units_in: USD
+        units_out: dimensionless
+      c2:
+        name: expense_control
+        formula: "min(expense_budget / expenses, 1.0)"
+        units_in: USD
+        units_out: dimensionless
+      c3:
+        name: gross_margin
+        formula: "(revenue - cogs) / revenue"
+        units_in: USD
+        units_out: dimensionless
+      c4:
+        name: cashflow_health
+        formula: "min(cashflow / cashflow_target, 1.0)"
+        units_in: USD
+        units_out: dimensionless
+
+    default_weights:
+      c1: 0.30
+      c2: 0.25
+      c3: 0.25
+      c4: 0.20
+
+    parameters:
+      epsilon: 1.0e-8
+      oor_policy: clip_and_flag
+
+  notes: >
+    Closure for Tier-0 financial embedding under FINANCE.INTSTACK.v1.
+    Targets (revenue_target, expense_budget, cashflow_target) are frozen
+    per-business in the finance configuration file. Changing targets
+    requires a new run — no retroactive re-embedding.
+
+  extensions: {}
