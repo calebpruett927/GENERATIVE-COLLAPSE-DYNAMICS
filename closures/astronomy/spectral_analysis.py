@@ -21,6 +21,7 @@ Cross-references:
   Contract: contracts/ASTRO.INTSTACK.v1.yaml
   Canon: canon/astro_anchors.yaml
 """
+
 from __future__ import annotations
 
 from enum import StrEnum
@@ -39,15 +40,15 @@ class SpectralRegime(StrEnum):
 class SpectralResult(NamedTuple):
     """Result of spectral analysis."""
 
-    lambda_peak: float         # Wien peak wavelength (nm)
-    T_from_BV: float           # Temperature inferred from B−V (K)
+    lambda_peak: float  # Wien peak wavelength (nm)
+    T_from_BV: float  # Temperature inferred from B−V (K)
     spectral_embedding: float  # Spectral class embedded to [0,1]
-    chi2_spectral: float       # Spectral fit quality
-    regime: str                # Regime classification
+    chi2_spectral: float  # Spectral fit quality
+    regime: str  # Regime classification
 
 
 # ── Frozen constants ─────────────────────────────────────────────
-B_WIEN = 2_897_771.955   # Wien displacement constant (nm·K)
+B_WIEN = 2_897_771.955  # Wien displacement constant (nm·K)
 
 # Spectral class embedding: O=0.0, B=0.14, A=0.29, F=0.43, G=0.57, K=0.71, M=0.86
 SPECTRAL_EMBEDDING = {
@@ -215,20 +216,26 @@ def compute_spectral_analysis_array(
 if __name__ == "__main__":
     # Sun: T=5778K, B-V=0.656, G2
     result = compute_spectral_analysis(5778.0, 0.656, "G2")
-    print(f"Sun:    λ_peak={result['lambda_peak']:.1f}nm  T_BV={result['T_from_BV']:.0f}K"
-          f"  embed={result['spectral_embedding']:.3f}  χ²={result['chi2_spectral']:.4f}"
-          f"  regime={result['regime']}")
+    print(
+        f"Sun:    λ_peak={result['lambda_peak']:.1f}nm  T_BV={result['T_from_BV']:.0f}K"
+        f"  embed={result['spectral_embedding']:.3f}  χ²={result['chi2_spectral']:.4f}"
+        f"  regime={result['regime']}"
+    )
 
     # Vega: T=9602K, B-V=0.00, A0
     result = compute_spectral_analysis(9602.0, 0.00, "A0")
-    print(f"Vega:   λ_peak={result['lambda_peak']:.1f}nm  T_BV={result['T_from_BV']:.0f}K"
-          f"  embed={result['spectral_embedding']:.3f}  χ²={result['chi2_spectral']:.4f}"
-          f"  regime={result['regime']}")
+    print(
+        f"Vega:   λ_peak={result['lambda_peak']:.1f}nm  T_BV={result['T_from_BV']:.0f}K"
+        f"  embed={result['spectral_embedding']:.3f}  χ²={result['chi2_spectral']:.4f}"
+        f"  regime={result['regime']}"
+    )
 
     # Betelgeuse: T=3600K, B-V=1.85, M2
     result = compute_spectral_analysis(3600.0, 1.85, "M2")
-    print(f"Betel:  λ_peak={result['lambda_peak']:.1f}nm  T_BV={result['T_from_BV']:.0f}K"
-          f"  embed={result['spectral_embedding']:.3f}  χ²={result['chi2_spectral']:.4f}"
-          f"  regime={result['regime']}")
+    print(
+        f"Betel:  λ_peak={result['lambda_peak']:.1f}nm  T_BV={result['T_from_BV']:.0f}K"
+        f"  embed={result['spectral_embedding']:.3f}  χ²={result['chi2_spectral']:.4f}"
+        f"  regime={result['regime']}"
+    )
 
     print("✓ spectral_analysis self-test passed")

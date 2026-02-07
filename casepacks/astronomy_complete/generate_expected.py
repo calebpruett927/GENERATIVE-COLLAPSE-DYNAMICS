@@ -3,6 +3,7 @@
 Runs all 6 astronomy closures on raw_measurements.csv and produces
 expected/invariants.json with UMCP Tier-1 invariant rows.
 """
+
 from __future__ import annotations
 
 import csv
@@ -243,14 +244,16 @@ def main():
         "extensions": {
             "astronomy_summary": {
                 "total_objects": len(invariant_rows),
-                "stellar": sum(1 for r in rows_raw if r["category"] in
-                               ("main_sequence", "subgiant", "giant", "supergiant", "white_dwarf")),
+                "stellar": sum(
+                    1
+                    for r in rows_raw
+                    if r["category"] in ("main_sequence", "subgiant", "giant", "supergiant", "white_dwarf")
+                ),
                 "orbital": sum(1 for r in rows_raw if r["category"] == "orbital"),
                 "galactic": sum(1 for r in rows_raw if r["category"] == "galactic"),
-                "spectral_types_covered": sorted({
-                    r["spectral_class"][0] for r in rows_raw
-                    if r["spectral_class"] and r["spectral_class"] != "n/a"
-                }),
+                "spectral_types_covered": sorted(
+                    {r["spectral_class"][0] for r in rows_raw if r["spectral_class"] and r["spectral_class"] != "n/a"}
+                ),
             },
             "domain_closure_outputs": all_domain_extensions,
         },

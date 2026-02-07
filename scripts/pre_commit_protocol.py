@@ -1,0 +1,660 @@
+#!/usr/bin/env python3
+"""UMCP Pre-Commit Protocol — typed, repo-aware gate before every commit.
+
+Replaces ad-hoc commit workflows with a deterministic pipeline that
+mirrors .github/workflows/validate.yml exactly.  Every step is typed,
+every path is resolved from a frozen RepoContext, and every result is
+a structured dataclass — not a parsed stdout string.
+
+Usage:
+    python scripts/pre_commit_protocol.py           # Full protocol (auto-fix)
+    python scripts/pre_commit_protocol.py --check    # Dry-run: report only
+    python scripts/pre_commit_protocol.py --fix      # Auto-fix mode (default)
+
+Exit codes:
+    0 = All checks passed, safe to commit
+    1 = Blocking failure, commit blocked
+
+Architecture:
+    RepoContext    — frozen dataclass resolving every critical path once
+    StepStatus     — three-valued enum: PASS / FAIL / WARN (matches UMCP regime)
+    StepResult     — typed output of each pipeline step
+    ProtocolReport — aggregated results, produces final verdict
+    step_*         — pure functions: RepoContext → StepResult
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import re
+import subprocess
+import sys
+import time
+from dataclasses import dataclass, field
+from enum import StrEnum
+from pathlib import Path
+from typing import NamedTuple
+
+# ── Repo Context ─────────────────────────────────────────────────
+# Frozen dataclass that discovers and validates the repo structure once,
+# then threads through every step.  Pattern matches tests/conftest.py RepoPaths.
+
+
+def _find_repo_root() -> Path:
+    """Walk up from this script to find the repo root (contains pyproject.toml)."""
+    candidate = Path(__file__).resolve().parent.parent
+    if (candidate / "pyproject.toml").exists():
+        return candidate
+    # Fallback: walk up from cwd
+    current = Path.cwd()
+    while current != current.parent:
+        if (current / "pyproject.toml").exists():
+            return current
+        current = current.parent
+    msg = "Cannot locate repo root (no pyproject.toml found)"
+    raise FileNotFoundError(msg)
+
+
+@dataclass(frozen=True)
+class RepoContext:
+    """Immutable snapshot of the UMCP repository structure.
+
+    Every path referenced by the protocol is resolved here, once,
+    at protocol start.  If a path does not exist, the protocol can
+    fail early with a clear message rather than a cryptic subprocess error.
+
+    Follows the frozen-dataclass pattern from tests/conftest.py RepoPaths.
+    """
+
+    root: Path
+
+    # Source code
+    src_dir: Path
+    umcp_pkg: Path
+
+    # Integrity
+    integrity_dir: Path
+    integrity_script: Path
+
+    # CI-critical directories
+    schemas_dir: Path
+    contracts_dir: Path
+    closures_dir: Path
+    casepacks_dir: Path
+    tests_dir: Path
+    scripts_dir: Path
+    canon_dir: Path
+
+    # Key files
+    pyproject: Path
+    registry: Path
+    validator_rules: Path
+    ledger_dir: Path
+
+    # Computed metadata
+    version: str
+    python_exe: str
+
+    @classmethod
+    def discover(cls) -> RepoContext:
+        """Build a RepoContext by discovering the repo structure."""
+        root = _find_repo_root()
+
+        # Parse version from pyproject.toml
+        pyproject = root / "pyproject.toml"
+        version = "unknown"
+        if pyproject.exists():
+            for line in pyproject.read_text().splitlines():
+                if line.strip().startswith("version"):
+                    m = re.search(r'"([^"]+)"', line)
+                    if m:
+                        version = m.group(1)
+                    break
+
+        return cls(
+            root=root,
+            src_dir=root / "src",
+            umcp_pkg=root / "src" / "umcp",
+            integrity_dir=root / "integrity",
+            integrity_script=root / "scripts" / "update_integrity.py",
+            schemas_dir=root / "schemas",
+            contracts_dir=root / "contracts",
+            closures_dir=root / "closures",
+            casepacks_dir=root / "casepacks",
+            tests_dir=root / "tests",
+            scripts_dir=root / "scripts",
+            canon_dir=root / "canon",
+            pyproject=pyproject,
+            registry=root / "closures" / "registry.yaml",
+            validator_rules=root / "validator_rules.yaml",
+            ledger_dir=root / "ledger",
+            version=version,
+            python_exe=sys.executable,
+        )
+
+    def validate_structure(self) -> list[str]:
+        """Return list of missing critical paths (empty means all good)."""
+        critical: list[Path] = [
+            self.pyproject,
+            self.umcp_pkg,
+            self.schemas_dir,
+            self.contracts_dir,
+            self.closures_dir,
+            self.tests_dir,
+            self.integrity_script,
+            self.registry,
+            self.validator_rules,
+        ]
+        return [str(p.relative_to(self.root)) for p in critical if not p.exists()]
+
+
+# ── Step Result Types ────────────────────────────────────────────
+
+
+class StepStatus(StrEnum):
+    """Three-valued step outcome — mirrors UMCP Stable/Watch/Collapse."""
+
+    PASS = "PASS"
+    FAIL = "FAIL"
+    WARN = "WARN"  # Non-blocking (e.g., mypy with continue-on-error)
+
+
+class ToolVersions(NamedTuple):
+    """Captured tool versions for reproducibility."""
+
+    python: str
+    ruff: str
+    mypy: str
+    pytest: str
+    umcp: str
+
+
+@dataclass
+class StepResult:
+    """Typed result of a single protocol step."""
+
+    name: str
+    status: StepStatus
+    duration_s: float = 0.0
+    message: str = ""
+    fixed_count: int = 0
+    blocking: bool = True
+
+    @property
+    def passed(self) -> bool:
+        return self.status != StepStatus.FAIL
+
+    @property
+    def icon(self) -> str:
+        icons: dict[str, str] = {
+            "PASS": "✓",
+            "FAIL": "✗",
+            "WARN": "⚠",
+        }
+        return icons[self.status.value]
+
+
+@dataclass
+class ProtocolReport:
+    """Aggregated protocol results."""
+
+    steps: list[StepResult] = field(default_factory=list)
+    mode: str = "fix"
+    context: RepoContext | None = None
+    tool_versions: ToolVersions | None = None
+    start_time: float = 0.0
+    end_time: float = 0.0
+
+    @property
+    def all_pass(self) -> bool:
+        return all(s.passed for s in self.steps)
+
+    @property
+    def duration_s(self) -> float:
+        return self.end_time - self.start_time
+
+    @property
+    def blocking_failures(self) -> list[StepResult]:
+        return [s for s in self.steps if s.status == StepStatus.FAIL and s.blocking]
+
+
+# ── Subprocess Helper ────────────────────────────────────────────
+
+
+def _run(
+    cmd: list[str],
+    *,
+    cwd: Path | None = None,
+    timeout: int = 300,
+) -> subprocess.CompletedProcess[str]:
+    """Run a subprocess and capture output.  Never raises on non-zero exit."""
+    return subprocess.run(
+        cmd,
+        cwd=cwd,
+        capture_output=True,
+        text=True,
+        timeout=timeout,
+    )
+
+
+def _capture_tool_versions(ctx: RepoContext) -> ToolVersions:
+    """Capture tool versions for the report header."""
+
+    def _ver(cmd: list[str]) -> str:
+        try:
+            r = _run(cmd, cwd=ctx.root, timeout=10)
+            out = r.stdout.strip().split("\n")[0] if r.returncode == 0 else "unavailable"
+        except Exception:
+            out = "unavailable"
+        return out
+
+    return ToolVersions(
+        python=f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
+        ruff=_ver(["ruff", "--version"]),
+        mypy=_ver(["mypy", "--version"]),
+        pytest=_ver([ctx.python_exe, "-m", "pytest", "--version"]),
+        umcp=ctx.version,
+    )
+
+
+# ── Protocol Steps ───────────────────────────────────────────────
+# Each step is a typed function: (RepoContext, mode) → StepResult
+
+DIVIDER = "─" * 72
+
+
+def _header(step_num: int, total: int, name: str) -> None:
+    print(f"\n{DIVIDER}")
+    print(f"  Step {step_num}/{total}: {name}")
+    print(DIVIDER)
+
+
+def step_ruff_format(ctx: RepoContext, mode: str) -> StepResult:
+    """Step 1: ruff format — enforce code style."""
+    t0 = time.monotonic()
+
+    if mode == "fix":
+        result = _run(["ruff", "format", "."], cwd=ctx.root)
+        lines = result.stdout.strip().split("\n") if result.stdout.strip() else []
+        fixed = sum(1 for ln in lines if "reformatted" in ln and "left unchanged" not in ln)
+
+        # Verify clean
+        check = _run(["ruff", "format", "--check", "."], cwd=ctx.root)
+        passed = check.returncode == 0
+        msg = f"Formatted {fixed} file(s)" if fixed else "All files clean"
+    else:
+        result = _run(["ruff", "format", "--check", "."], cwd=ctx.root)
+        passed = result.returncode == 0
+        fixed = 0
+        if not passed:
+            bad = [ln for ln in result.stdout.strip().split("\n") if "Would reformat" in ln]
+            msg = f"{len(bad)} file(s) need formatting"
+        else:
+            msg = "All files clean"
+
+    return StepResult(
+        name="ruff format",
+        status=StepStatus.PASS if passed else StepStatus.FAIL,
+        duration_s=time.monotonic() - t0,
+        message=msg,
+        fixed_count=fixed,
+    )
+
+
+def step_ruff_lint(ctx: RepoContext, mode: str) -> StepResult:
+    """Step 2: ruff check — lint rules."""
+    t0 = time.monotonic()
+    fixed = 0
+
+    if mode == "fix":
+        fix_result = _run(["ruff", "check", "--fix", "."], cwd=ctx.root)
+        combined = (fix_result.stdout or "") + "\n" + (fix_result.stderr or "")
+        for ln in combined.split("\n"):
+            m = re.search(r"Fixed\s+(\d+)\s+error", ln, re.IGNORECASE)
+            if m:
+                fixed = int(m.group(1))
+                break
+
+    # Verify clean
+    result = _run(["ruff", "check", "."], cwd=ctx.root)
+    passed = result.returncode == 0
+    msg = "All checks passed"
+    if not passed:
+        for ln in result.stdout.split("\n"):
+            if ln.startswith("Found"):
+                msg = ln.strip()
+                break
+        else:
+            msg = "Lint errors remain"
+
+    return StepResult(
+        name="ruff check",
+        status=StepStatus.PASS if passed else StepStatus.FAIL,
+        duration_s=time.monotonic() - t0,
+        message=msg,
+        fixed_count=fixed,
+    )
+
+
+def step_mypy(ctx: RepoContext) -> StepResult:
+    """Step 3: mypy — type checking (non-blocking, matches CI continue-on-error)."""
+    t0 = time.monotonic()
+    result = _run(
+        ["mypy", str(ctx.umcp_pkg), f"--config-file={ctx.pyproject}"],
+        cwd=ctx.root,
+        timeout=120,
+    )
+
+    error_count = 0
+    for ln in result.stdout.split("\n"):
+        m = re.search(r"Found\s+(\d+)\s+error", ln)
+        if m:
+            error_count = int(m.group(1))
+            break
+
+    passed = result.returncode == 0
+    msg = "Clean" if passed else f"{error_count} error(s) (non-blocking, same as CI)"
+
+    return StepResult(
+        name="mypy",
+        status=StepStatus.PASS if passed else StepStatus.WARN,
+        duration_s=time.monotonic() - t0,
+        message=msg,
+        blocking=False,
+    )
+
+
+def step_stage_files(ctx: RepoContext) -> StepResult:
+    """Step 4: git add -A — stage all changes for integrity scan."""
+    t0 = time.monotonic()
+    result = _run(["git", "add", "-A"], cwd=ctx.root)
+
+    status_result = _run(["git", "status", "--short"], cwd=ctx.root)
+    staged_lines = [ln for ln in status_result.stdout.strip().split("\n") if ln.strip()]
+
+    return StepResult(
+        name="git add -A",
+        status=StepStatus.PASS if result.returncode == 0 else StepStatus.FAIL,
+        duration_s=time.monotonic() - t0,
+        message=f"{len(staged_lines)} file(s) staged",
+    )
+
+
+def step_update_integrity(ctx: RepoContext) -> StepResult:
+    """Step 5: regenerate SHA256 checksums."""
+    t0 = time.monotonic()
+    result = _run(
+        [ctx.python_exe, str(ctx.integrity_script)],
+        cwd=ctx.root,
+    )
+
+    file_count = 0
+    for ln in result.stdout.split("\n"):
+        m = re.search(r"Checksummed\s+(\d+)\s+file", ln)
+        if m:
+            file_count = int(m.group(1))
+            break
+
+    # Re-stage integrity files
+    _run(["git", "add", str(ctx.integrity_dir)], cwd=ctx.root)
+
+    passed = result.returncode == 0
+    msg = f"{file_count} files checksummed" if passed else "Integrity update failed"
+
+    return StepResult(
+        name="update integrity",
+        status=StepStatus.PASS if passed else StepStatus.FAIL,
+        duration_s=time.monotonic() - t0,
+        message=msg,
+    )
+
+
+def step_pytest(ctx: RepoContext) -> StepResult:
+    """Step 6: pytest — full test suite (mirrors CI)."""
+    t0 = time.monotonic()
+    result = _run(
+        [ctx.python_exe, "-m", "pytest", "-q", "--tb=short"],
+        cwd=ctx.root,
+        timeout=600,
+    )
+
+    # Parse pytest summary.
+    # -q output: dots/chars then "1060 passed in 55.70s"
+    # or "3 failed, 1057 passed in 55.70s"
+    # Search all output (stdout + stderr) for the summary pattern.
+    combined = (result.stdout or "") + "\n" + (result.stderr or "")
+    passed_count = 0
+    failed_count = 0
+    warning_count = 0
+
+    # Look for the summary pattern anywhere in combined output
+    summary_match = re.search(
+        r"(?:=+\s+)?(\d+\s+(?:passed|failed)(?:,\s*\d+\s+\w+)*)\s+in\s+[\d.]+s",
+        combined,
+    )
+    if summary_match:
+        summary_text = summary_match.group(1)
+        for match in re.finditer(r"(\d+)\s+(passed|failed|warning|error)", summary_text):
+            count_val = int(match.group(1))
+            kind = match.group(2)
+            if kind == "passed":
+                passed_count = count_val
+            elif kind == "failed":
+                failed_count = count_val
+            elif kind == "warning":
+                warning_count = count_val
+
+    passed = result.returncode == 0
+    if passed_count or failed_count:
+        msg = f"{passed_count} passed, {failed_count} failed"
+        if warning_count:
+            msg += f", {warning_count} warnings"
+    else:
+        msg = "passed" if passed else f"exit code {result.returncode}"
+
+    return StepResult(
+        name="pytest",
+        status=StepStatus.PASS if passed else StepStatus.FAIL,
+        duration_s=time.monotonic() - t0,
+        message=msg,
+    )
+
+
+def step_umcp_validate(ctx: RepoContext) -> StepResult:
+    """Step 7: umcp validate — contract validation (must be CONFORMANT).
+
+    Uses the umcp Python API directly, falling back to CLI subprocess.
+    """
+    t0 = time.monotonic()
+
+    status = "UNKNOWN"
+    target_count = 0
+    error_count = 0
+
+    # Try Python API first — avoids subprocess overhead, uses repo context directly
+    try:
+        orig_path = sys.path[:]
+        sys.path.insert(0, str(ctx.src_dir))
+        from umcp import validate  # type: ignore[import-not-found]
+
+        vr = validate(str(ctx.root))
+        status = vr.status
+        target_count = len(vr.data.get("targets", []))
+        error_count = vr.error_count
+        sys.path[:] = orig_path
+    except Exception:
+        sys.path[:] = orig_path if "orig_path" in dir() else sys.path
+        # Fallback to CLI subprocess
+        result = _run(["umcp", "validate", "."], cwd=ctx.root, timeout=120)
+        stdout = result.stdout
+
+        # Extract JSON from mixed log + JSON output
+        json_start = stdout.find("{")
+        json_end = stdout.rfind("}")
+        if json_start >= 0 and json_end > json_start:
+            try:
+                data = json.loads(stdout[json_start : json_end + 1])
+                status = data.get("run_status", "UNKNOWN")
+                targets = data.get("targets", [])
+                target_count = len(targets)
+                error_count = sum(t.get("counts", {}).get("errors", 0) for t in targets)
+            except json.JSONDecodeError:
+                pass
+
+        # Last-resort grep
+        if status == "UNKNOWN":
+            if "CONFORMANT" in stdout and "NONCONFORMANT" not in stdout:
+                status = "CONFORMANT"
+            elif "NONCONFORMANT" in stdout:
+                status = "NONCONFORMANT"
+
+    passed = status == "CONFORMANT"
+    msg = f"{status} ({target_count} targets, {error_count} errors)"
+
+    return StepResult(
+        name="umcp validate",
+        status=StepStatus.PASS if passed else StepStatus.FAIL,
+        duration_s=time.monotonic() - t0,
+        message=msg,
+    )
+
+
+# ── Protocol Runner ──────────────────────────────────────────────
+
+# Step registry: (display_label, function_key)
+_STEP_REGISTRY: list[tuple[str, str]] = [
+    ("Ruff Format", "ruff_format"),
+    ("Ruff Lint", "ruff_lint"),
+    ("Mypy Type Check", "mypy"),
+    ("Stage Files", "stage"),
+    ("Update Integrity", "integrity"),
+    ("Pytest Suite", "pytest"),
+    ("UMCP Validate", "validate"),
+]
+
+
+def run_protocol(ctx: RepoContext, mode: str = "fix") -> ProtocolReport:
+    """Execute the full pre-commit protocol, threading RepoContext through every step."""
+    report = ProtocolReport(
+        mode=mode,
+        context=ctx,
+        start_time=time.monotonic(),
+    )
+
+    # Capture tool versions for reproducibility
+    report.tool_versions = _capture_tool_versions(ctx)
+
+    # Map keys to step functions (each receives typed RepoContext)
+    step_funcs: dict[str, object] = {
+        "ruff_format": lambda: step_ruff_format(ctx, mode),
+        "ruff_lint": lambda: step_ruff_lint(ctx, mode),
+        "mypy": lambda: step_mypy(ctx),
+        "stage": lambda: step_stage_files(ctx),
+        "integrity": lambda: step_update_integrity(ctx),
+        "pytest": lambda: step_pytest(ctx),
+        "validate": lambda: step_umcp_validate(ctx),
+    }
+
+    total = len(_STEP_REGISTRY)
+
+    for i, (label, key) in enumerate(_STEP_REGISTRY, 1):
+        _header(i, total, label)
+        fn = step_funcs[key]
+        step_result: StepResult = fn()  # type: ignore[operator]
+        report.steps.append(step_result)
+
+        fixed_note = f" (auto-fixed {step_result.fixed_count})" if step_result.fixed_count else ""
+        print(
+            f"  {step_result.icon} {step_result.status.value}: "
+            f"{step_result.message}{fixed_note}  [{step_result.duration_s:.1f}s]"
+        )
+
+        # Abort on blocking failure after format/lint (skip slow tests if code broken)
+        if step_result.status == StepStatus.FAIL and step_result.blocking and i > 2:
+            print(f"\n  ⛔ Blocking failure at step {i}. Aborting protocol.")
+            break
+
+    report.end_time = time.monotonic()
+    return report
+
+
+def print_summary(report: ProtocolReport) -> None:
+    """Print the typed summary report."""
+    print(f"\n{'═' * 72}")
+    print("  UMCP PRE-COMMIT PROTOCOL — SUMMARY")
+    print(f"{'═' * 72}")
+    print(f"  Mode:     {report.mode}")
+    ctx_version = report.context.version if report.context else "unknown"
+    print(f"  Version:  {ctx_version}")
+    print(f"  Duration: {report.duration_s:.1f}s")
+
+    if report.tool_versions:
+        tv = report.tool_versions
+        print(f"  Tools:    Python {tv.python} | {tv.ruff} | {tv.mypy}")
+
+    print()
+    for step in report.steps:
+        fixed = f" [{step.fixed_count} fixed]" if step.fixed_count else ""
+        blocking_tag = "" if step.blocking else " (non-blocking)"
+        print(f"  {step.icon} {step.name:<25s} {step.message}{fixed}{blocking_tag}")
+
+    print()
+    if report.all_pass:
+        print("  ALL CHECKS PASSED — safe to commit and push")
+    else:
+        failures = report.blocking_failures
+        if failures:
+            print(f"  {len(failures)} BLOCKING FAILURE(S) — commit NOT safe")
+            for s in failures:
+                print(f"     -> {s.name}: {s.message}")
+        else:
+            print("  All blocking checks passed (non-blocking warnings present)")
+
+    print(f"{'═' * 72}")
+
+
+# ── Entry Point ──────────────────────────────────────────────────
+
+
+def main() -> int:
+    """Parse args, discover repo context, run protocol."""
+    parser = argparse.ArgumentParser(
+        description="UMCP Pre-Commit Protocol — typed, repo-aware commit gate",
+    )
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("--check", action="store_true", help="Dry-run: report only, no fixes")
+    group.add_argument("--fix", action="store_true", help="Auto-fix mode (default)")
+    args = parser.parse_args()
+
+    mode = "check" if args.check else "fix"
+
+    # Discover and validate repo structure
+    try:
+        ctx = RepoContext.discover()
+    except FileNotFoundError as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        return 1
+
+    missing = ctx.validate_structure()
+    if missing:
+        print("Error: Missing critical paths:", file=sys.stderr)
+        for p in missing:
+            print(f"   -> {p}", file=sys.stderr)
+        return 1
+
+    # Banner
+    print("+" + "=" * 70 + "+")
+    print("|" + " UMCP PRE-COMMIT PROTOCOL ".center(70) + "|")
+    print("|" + f" v{ctx.version} | {mode} mode ".center(70) + "|")
+    print("+" + "=" * 70 + "+")
+    print(f"  Repo root: {ctx.root}")
+
+    # Run protocol
+    report = run_protocol(ctx, mode)
+    print_summary(report)
+    return 0 if report.all_pass else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

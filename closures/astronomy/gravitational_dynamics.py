@@ -21,6 +21,7 @@ Cross-references:
   Contract: contracts/ASTRO.INTSTACK.v1.yaml
   Canon: canon/astro_anchors.yaml
 """
+
 from __future__ import annotations
 
 from enum import StrEnum
@@ -39,19 +40,19 @@ class DynamicsRegime(StrEnum):
 class DynamicsResult(NamedTuple):
     """Result of gravitational dynamics computation."""
 
-    M_virial: float              # Virial mass estimate (M_sun)
-    M_dynamic: float             # Dynamic mass from rotation (M_sun)
+    M_virial: float  # Virial mass estimate (M_sun)
+    M_dynamic: float  # Dynamic mass from rotation (M_sun)
     dark_matter_fraction: float  # f_DM = 1 - M_lum / M_dyn
-    virial_ratio: float          # |2KE/PE + 1| (0 = perfect equilibrium)
-    regime: str                  # Regime classification
+    virial_ratio: float  # |2KE/PE + 1| (0 = perfect equilibrium)
+    regime: str  # Regime classification
 
 
 # ── Frozen constants ─────────────────────────────────────────────
-G_GRAV = 6.67430e-11   # Gravitational constant (m³ kg⁻¹ s⁻²)
-M_SUN = 1.989e+30      # Solar mass (kg)
-PC_TO_M = 3.0857e+16   # Parsec in meters
-KPC_TO_M = 3.0857e+19  # Kiloparsec in meters
-KM_TO_M = 1.0e+03      # km to m
+G_GRAV = 6.67430e-11  # Gravitational constant (m³ kg⁻¹ s⁻²)
+M_SUN = 1.989e30  # Solar mass (kg)
+PC_TO_M = 3.0857e16  # Parsec in meters
+KPC_TO_M = 3.0857e19  # Kiloparsec in meters
+KM_TO_M = 1.0e03  # km to m
 
 # Regime thresholds (virial departure)
 THRESH_EQUILIBRIUM = 0.1
@@ -73,7 +74,7 @@ def _virial_mass(sigma_v_kms: float, r_kpc: float) -> float:
         return 0.0
     sigma_ms = sigma_v_kms * KM_TO_M
     r_m = r_kpc * KPC_TO_M
-    m_kg = 5.0 * sigma_ms ** 2 * r_m / G_GRAV
+    m_kg = 5.0 * sigma_ms**2 * r_m / G_GRAV
     return m_kg / M_SUN
 
 
@@ -91,7 +92,7 @@ def _dynamic_mass(v_rot_kms: float, r_kpc: float) -> float:
         return 0.0
     v_ms = v_rot_kms * KM_TO_M
     r_m = r_kpc * KPC_TO_M
-    m_kg = v_ms ** 2 * r_m / G_GRAV
+    m_kg = v_ms**2 * r_m / G_GRAV
     return m_kg / M_SUN
 
 
@@ -188,20 +189,26 @@ def compute_gravitational_dynamics_array(
 if __name__ == "__main__":
     # Milky Way at solar radius:  v_rot≈220 km/s, r≈8.2 kpc, σ≈40 km/s
     result = compute_gravitational_dynamics(220.0, 8.2, 40.0, 5.0e10)
-    print(f"MW@Sun:  M_vir={result['M_virial']:.2e}  M_dyn={result['M_dynamic']:.2e}"
-          f"  f_DM={result['dark_matter_fraction']:.3f}"
-          f"  virial={result['virial_ratio']:.3f}  regime={result['regime']}")
+    print(
+        f"MW@Sun:  M_vir={result['M_virial']:.2e}  M_dyn={result['M_dynamic']:.2e}"
+        f"  f_DM={result['dark_matter_fraction']:.3f}"
+        f"  virial={result['virial_ratio']:.3f}  regime={result['regime']}"
+    )
 
     # Coma cluster: v_rot≈0, σ≈1000 km/s, r≈3000 kpc
     result = compute_gravitational_dynamics(0.0, 3000.0, 1000.0, 1.0e13)
-    print(f"Coma:    M_vir={result['M_virial']:.2e}  M_dyn={result['M_dynamic']:.2e}"
-          f"  f_DM={result['dark_matter_fraction']:.3f}"
-          f"  virial={result['virial_ratio']:.3f}  regime={result['regime']}")
+    print(
+        f"Coma:    M_vir={result['M_virial']:.2e}  M_dyn={result['M_dynamic']:.2e}"
+        f"  f_DM={result['dark_matter_fraction']:.3f}"
+        f"  virial={result['virial_ratio']:.3f}  regime={result['regime']}"
+    )
 
     # Dwarf galaxy: v_rot≈30 km/s, r≈1.0 kpc, σ≈20 km/s
     result = compute_gravitational_dynamics(30.0, 1.0, 20.0, 1.0e7)
-    print(f"Dwarf:   M_vir={result['M_virial']:.2e}  M_dyn={result['M_dynamic']:.2e}"
-          f"  f_DM={result['dark_matter_fraction']:.3f}"
-          f"  virial={result['virial_ratio']:.3f}  regime={result['regime']}")
+    print(
+        f"Dwarf:   M_vir={result['M_virial']:.2e}  M_dyn={result['M_dynamic']:.2e}"
+        f"  f_DM={result['dark_matter_fraction']:.3f}"
+        f"  virial={result['virial_ratio']:.3f}  regime={result['regime']}"
+    )
 
     print("✓ gravitational_dynamics self-test passed")

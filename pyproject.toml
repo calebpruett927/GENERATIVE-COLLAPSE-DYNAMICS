@@ -240,7 +240,7 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["E501", "SIM105"]  # Allow longer lines and try-except-pass in tests
-"scripts/**" = ["E501", "E741", "SIM108", "SIM118", "UP038"]  # Allow longer lines, physics variable names, and verbose conditionals in scripts
+"scripts/**" = ["E501", "E741", "E402", "SIM108", "SIM118", "UP038"]  # Allow longer lines, physics variable names, path-manipulated imports, and verbose conditionals in scripts
 "src/umcp/__init__.py" = ["E402"]  # Module imports after version check
 "src/umcp/preflight.py" = ["SIM102"]  # Allow nested ifs for clarity in complex condition checks
 

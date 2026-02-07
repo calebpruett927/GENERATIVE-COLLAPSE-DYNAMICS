@@ -42,6 +42,26 @@ umcp validate casepacks/hello_world --strict # Validate casepack (strict = fail 
 
 **CI pipeline** (`.github/workflows/validate.yml`): lint (ruff + mypy) → test (pytest) → validate (baseline + strict, both must return CONFORMANT).
 
+## Pre-Commit Protocol (MANDATORY)
+
+**Before every commit**, run the pre-commit protocol:
+
+```bash
+python scripts/pre_commit_protocol.py       # Auto-fix + validate (default)
+python scripts/pre_commit_protocol.py --check  # Dry-run: report only
+```
+
+This script mirrors CI exactly and must exit 0 before committing. It:
+1. Runs `ruff format` (auto-fixes formatting)
+2. Runs `ruff check --fix` (auto-fixes lint issues)
+3. Runs `mypy src/umcp` (reports, non-blocking)
+4. Stages all changes (`git add -A`)
+5. Regenerates integrity checksums
+6. Runs full pytest suite
+7. Runs `umcp validate .` (must be CONFORMANT)
+
+See `COMMIT_PROTOCOL.md` for the full specification. **Never skip this step.** Every commit that reaches GitHub must pass all CI checks.
+
 ## Code Conventions
 
 **Every source file** starts with `from __future__ import annotations` (PEP 563). Maintain this.

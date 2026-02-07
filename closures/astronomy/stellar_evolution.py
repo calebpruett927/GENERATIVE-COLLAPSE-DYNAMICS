@@ -22,6 +22,7 @@ Cross-references:
   Contract: contracts/ASTRO.INTSTACK.v1.yaml
   Canon: canon/astro_anchors.yaml
 """
+
 from __future__ import annotations
 
 from enum import StrEnum
@@ -41,17 +42,17 @@ class EvolutionRegime(StrEnum):
 class EvolutionResult(NamedTuple):
     """Result of stellar evolution computation."""
 
-    t_MS: float                # Main sequence lifetime (Gyr)
-    evolutionary_phase: str    # Phase classification
-    L_ZAMS: float              # ZAMS luminosity (L_sun)
-    T_ZAMS: float              # ZAMS temperature (K)
-    regime: str                # Regime classification
+    t_MS: float  # Main sequence lifetime (Gyr)
+    evolutionary_phase: str  # Phase classification
+    L_ZAMS: float  # ZAMS luminosity (L_sun)
+    T_ZAMS: float  # ZAMS temperature (K)
+    regime: str  # Regime classification
 
 
 # ── Frozen constants ─────────────────────────────────────────────
-T_SUN_MS = 10.0   # Solar main sequence lifetime (Gyr)
-T_SUN = 5778.0     # Solar temperature (K)
-L_SUN_ZAMS = 0.7   # Sun ZAMS luminosity (70% of current)
+T_SUN_MS = 10.0  # Solar main sequence lifetime (Gyr)
+T_SUN = 5778.0  # Solar temperature (K)
+L_SUN_ZAMS = 0.7  # Sun ZAMS luminosity (70% of current)
 
 # Mass-luminosity exponents
 ML_ALPHA_LOW = 2.3
@@ -71,12 +72,12 @@ def _mass_luminosity(m: float) -> float:
     if m <= 0.0:
         return 0.0
     if m < 0.43:
-        return m ** ML_ALPHA_LOW
+        return m**ML_ALPHA_LOW
     if m < 2.0:
-        return m ** ML_ALPHA_MID
+        return m**ML_ALPHA_MID
     if m < 55.0:
-        return m ** ML_ALPHA_HIGH
-    return m ** ML_ALPHA_MASSIVE
+        return m**ML_ALPHA_HIGH
+    return m**ML_ALPHA_MASSIVE
 
 
 def _main_sequence_lifetime(m_star: float) -> float:
@@ -106,7 +107,7 @@ def _zams_temperature(m_star: float) -> float:
     """
     if m_star <= 0.0:
         return 0.0
-    return T_SUN * m_star ** 0.57
+    return T_SUN * m_star**0.57
 
 
 def _classify_phase(age_gyr: float, t_ms: float) -> EvolutionRegime:
@@ -179,29 +180,39 @@ def compute_stellar_evolution_array(
 if __name__ == "__main__":
     # Sun: M=1, age=4.6 Gyr, t_MS≈10 Gyr → Main-Seq
     result = compute_stellar_evolution(1.0, 1.0, 5778.0, 4.6)
-    print(f"Sun:      t_MS={result['t_MS']:.2f} Gyr  phase={result['evolutionary_phase']}"
-          f"  L_ZAMS={result['L_ZAMS']:.3f}  T_ZAMS={result['T_ZAMS']:.0f} K")
+    print(
+        f"Sun:      t_MS={result['t_MS']:.2f} Gyr  phase={result['evolutionary_phase']}"
+        f"  L_ZAMS={result['L_ZAMS']:.3f}  T_ZAMS={result['T_ZAMS']:.0f} K"
+    )
     assert result["evolutionary_phase"] == "Main-Seq"
 
     # Sirius A: M=2.06, age≈0.25 Gyr
     result = compute_stellar_evolution(2.06, 25.4, 9940.0, 0.25)
-    print(f"Sirius:   t_MS={result['t_MS']:.2f} Gyr  phase={result['evolutionary_phase']}"
-          f"  L_ZAMS={result['L_ZAMS']:.3f}  T_ZAMS={result['T_ZAMS']:.0f} K")
+    print(
+        f"Sirius:   t_MS={result['t_MS']:.2f} Gyr  phase={result['evolutionary_phase']}"
+        f"  L_ZAMS={result['L_ZAMS']:.3f}  T_ZAMS={result['T_ZAMS']:.0f} K"
+    )
 
     # Proxima Centauri: M=0.12, age≈4.85 Gyr → long-lived, Main-Seq
     result = compute_stellar_evolution(0.12, 0.0017, 3042.0, 4.85)
-    print(f"Proxima:  t_MS={result['t_MS']:.2f} Gyr  phase={result['evolutionary_phase']}"
-          f"  L_ZAMS={result['L_ZAMS']:.6f}  T_ZAMS={result['T_ZAMS']:.0f} K")
+    print(
+        f"Proxima:  t_MS={result['t_MS']:.2f} Gyr  phase={result['evolutionary_phase']}"
+        f"  L_ZAMS={result['L_ZAMS']:.6f}  T_ZAMS={result['T_ZAMS']:.0f} K"
+    )
     assert result["evolutionary_phase"] == "Pre-MS" or result["evolutionary_phase"] == "Main-Seq"
 
     # Betelgeuse: M≈18, age≈10 Myr → evolved, possibly Giant/Post-AGB
     result = compute_stellar_evolution(18.0, 126000.0, 3600.0, 0.01)
-    print(f"Betel:    t_MS={result['t_MS']:.4f} Gyr  phase={result['evolutionary_phase']}"
-          f"  L_ZAMS={result['L_ZAMS']:.1f}  T_ZAMS={result['T_ZAMS']:.0f} K")
+    print(
+        f"Betel:    t_MS={result['t_MS']:.4f} Gyr  phase={result['evolutionary_phase']}"
+        f"  L_ZAMS={result['L_ZAMS']:.1f}  T_ZAMS={result['T_ZAMS']:.0f} K"
+    )
 
     # White dwarf remnant: M=0.6, age=12 Gyr
     result = compute_stellar_evolution(0.6, 0.001, 8000.0, 12.0)
-    print(f"WD:       t_MS={result['t_MS']:.2f} Gyr  phase={result['evolutionary_phase']}"
-          f"  L_ZAMS={result['L_ZAMS']:.4f}  T_ZAMS={result['T_ZAMS']:.0f} K")
+    print(
+        f"WD:       t_MS={result['t_MS']:.2f} Gyr  phase={result['evolutionary_phase']}"
+        f"  L_ZAMS={result['L_ZAMS']:.4f}  T_ZAMS={result['T_ZAMS']:.0f} K"
+    )
 
     print("✓ stellar_evolution self-test passed")

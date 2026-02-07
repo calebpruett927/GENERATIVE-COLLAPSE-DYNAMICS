@@ -21,6 +21,7 @@ Cross-references:
   Contract: contracts/ASTRO.INTSTACK.v1.yaml
   Canon: canon/astro_anchors.yaml
 """
+
 from __future__ import annotations
 
 import math
@@ -40,17 +41,17 @@ class DistanceRegime(StrEnum):
 class DistanceResult(NamedTuple):
     """Result of distance ladder computation."""
 
-    d_modulus: float              # Distance from distance modulus (pc)
-    d_parallax: float             # Distance from parallax (pc)
-    d_hubble: float               # Distance from Hubble flow (Mpc)
-    distance_consistency: float   # Fractional consistency between methods
-    regime: str                   # Regime classification
+    d_modulus: float  # Distance from distance modulus (pc)
+    d_parallax: float  # Distance from parallax (pc)
+    d_hubble: float  # Distance from Hubble flow (Mpc)
+    distance_consistency: float  # Fractional consistency between methods
+    regime: str  # Regime classification
 
 
 # ── Frozen constants ─────────────────────────────────────────────
-C_LIGHT = 2.998e+05      # Speed of light (km/s — for Hubble law)
-H_0_FIDUCIAL = 70.0      # Fiducial Hubble constant (km/s/Mpc)
-PC_TO_MPC = 1.0e-06      # Parsec to Megaparsec conversion
+C_LIGHT = 2.998e05  # Speed of light (km/s — for Hubble law)
+H_0_FIDUCIAL = 70.0  # Fiducial Hubble constant (km/s/Mpc)
+PC_TO_MPC = 1.0e-06  # Parsec to Megaparsec conversion
 
 # Regime thresholds
 THRESH_HIGH = 0.01
@@ -175,21 +176,27 @@ if __name__ == "__main__":
     # Sun: m=-26.74, M=4.83, parallax not meaningful at 1AU
     # α Centauri: m=-0.01, M=4.38, π=0.7687", z≈0
     result = compute_distance_ladder(-0.01, 4.38, 0.7687, 0.0)
-    print(f"α Cen:  d_mod={result['d_modulus']:.1f}pc  d_par={result['d_parallax']:.1f}pc"
-          f"  consistency={result['distance_consistency']:.4f}"
-          f"  regime={result['regime']}")
+    print(
+        f"α Cen:  d_mod={result['d_modulus']:.1f}pc  d_par={result['d_parallax']:.1f}pc"
+        f"  consistency={result['distance_consistency']:.4f}"
+        f"  regime={result['regime']}"
+    )
 
     # Sirius: m=-1.46, M=1.42, π=0.3792"
     result = compute_distance_ladder(-1.46, 1.42, 0.3792, 0.0)
-    print(f"Sirius: d_mod={result['d_modulus']:.1f}pc  d_par={result['d_parallax']:.1f}pc"
-          f"  consistency={result['distance_consistency']:.4f}"
-          f"  regime={result['regime']}")
+    print(
+        f"Sirius: d_mod={result['d_modulus']:.1f}pc  d_par={result['d_parallax']:.1f}pc"
+        f"  consistency={result['distance_consistency']:.4f}"
+        f"  regime={result['regime']}"
+    )
 
     # Andromeda (M31): m=3.44, M=-21.5, π≈0, z=−0.001001 (blueshift)
     # Use only distance modulus for this case
     result = compute_distance_ladder(3.44, -21.5, 0.0, 0.0)
-    print(f"M31:    d_mod={result['d_modulus']:.0f}pc  d_par={result['d_parallax']:.0f}pc"
-          f"  consistency={result['distance_consistency']:.4f}"
-          f"  regime={result['regime']}")
+    print(
+        f"M31:    d_mod={result['d_modulus']:.0f}pc  d_par={result['d_parallax']:.0f}pc"
+        f"  consistency={result['distance_consistency']:.4f}"
+        f"  regime={result['regime']}"
+    )
 
     print("✓ distance_ladder self-test passed")

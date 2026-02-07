@@ -20,6 +20,7 @@ Cross-references:
   Contract: contracts/ASTRO.INTSTACK.v1.yaml
   Canon: canon/astro_anchors.yaml
 """
+
 from __future__ import annotations
 
 import math
@@ -39,17 +40,17 @@ class OrbitalRegime(StrEnum):
 class OrbitalResult(NamedTuple):
     """Result of orbital mechanics computation."""
 
-    P_predicted: float       # Predicted period from Kepler III (s)
-    kepler_residual: float   # Fractional Kepler III residual
-    v_orb: float             # Orbital velocity (m/s)
-    E_orbital: float         # Specific orbital energy (J/kg)
-    regime: str              # Regime classification
+    P_predicted: float  # Predicted period from Kepler III (s)
+    kepler_residual: float  # Fractional Kepler III residual
+    v_orb: float  # Orbital velocity (m/s)
+    E_orbital: float  # Specific orbital energy (J/kg)
+    regime: str  # Regime classification
 
 
 # ── Frozen constants ─────────────────────────────────────────────
-G_GRAV = 6.67430e-11   # Gravitational constant (m³ kg⁻¹ s⁻²)
-M_SUN = 1.989e+30      # Solar mass (kg)
-AU_TO_M = 1.496e+11    # AU in meters
+G_GRAV = 6.67430e-11  # Gravitational constant (m³ kg⁻¹ s⁻²)
+M_SUN = 1.989e30  # Solar mass (kg)
+AU_TO_M = 1.496e11  # AU in meters
 
 # Regime thresholds (eccentricity)
 THRESH_STABLE = 0.3
@@ -75,7 +76,7 @@ def _kepler_period(a_m: float, m_total_kg: float) -> float:
     """
     if a_m <= 0.0 or m_total_kg <= 0.0:
         return 0.0
-    return 2.0 * math.pi * math.sqrt(a_m ** 3 / (G_GRAV * m_total_kg))
+    return 2.0 * math.pi * math.sqrt(a_m**3 / (G_GRAV * m_total_kg))
 
 
 def _orbital_velocity(a_m: float, p_s: float) -> float:
@@ -133,7 +134,7 @@ def compute_orbital_mechanics(
     p_predicted = _kepler_period(a_m, m_kg)
 
     # Kepler residual (drift analog)
-    kepler_residual = abs(p_orb ** 2 - p_predicted ** 2) / (p_predicted ** 2) if p_predicted > 0.0 else 1.0
+    kepler_residual = abs(p_orb**2 - p_predicted**2) / (p_predicted**2) if p_predicted > 0.0 else 1.0
     # Orbital velocity (using predicted period for consistency)
     v_orb = _orbital_velocity(a_m, p_predicted)
 
@@ -169,28 +170,34 @@ if __name__ == "__main__":
     # Earth: P = 1 year, a = 1 AU, M = 1 M_sun, e = 0.0167
     year_s = 365.25 * 24 * 3600
     result = compute_orbital_mechanics(year_s, 1.0, 1.0, 0.0167)
-    print(f"Earth:   P_pred={result['P_predicted']:.0f}s  "
-          f"residual={result['kepler_residual']:.6e}  "
-          f"v_orb={result['v_orb']:.0f} m/s  "
-          f"regime={result['regime']}")
+    print(
+        f"Earth:   P_pred={result['P_predicted']:.0f}s  "
+        f"residual={result['kepler_residual']:.6e}  "
+        f"v_orb={result['v_orb']:.0f} m/s  "
+        f"regime={result['regime']}"
+    )
     assert result["regime"] == "Stable"
     assert result["kepler_residual"] < 0.01, "Kepler residual should be tiny for Earth"
 
     # Jupiter: P ≈ 11.86 yr, a = 5.203 AU, M ≈ 1.001 M_sun, e = 0.0489
     p_jup = 11.862 * year_s
     result = compute_orbital_mechanics(p_jup, 5.203, 1.001, 0.0489)
-    print(f"Jupiter: P_pred={result['P_predicted']:.0f}s  "
-          f"residual={result['kepler_residual']:.6e}  "
-          f"v_orb={result['v_orb']:.0f} m/s  "
-          f"regime={result['regime']}")
+    print(
+        f"Jupiter: P_pred={result['P_predicted']:.0f}s  "
+        f"residual={result['kepler_residual']:.6e}  "
+        f"v_orb={result['v_orb']:.0f} m/s  "
+        f"regime={result['regime']}"
+    )
 
     # Halley's comet: P ≈ 75.3 yr, a ≈ 17.8 AU, M ≈ 1.0, e = 0.967
     p_halley = 75.3 * year_s
     result = compute_orbital_mechanics(p_halley, 17.8, 1.0, 0.967)
-    print(f"Halley:  P_pred={result['P_predicted']:.0f}s  "
-          f"residual={result['kepler_residual']:.6e}  "
-          f"v_orb={result['v_orb']:.0f} m/s  "
-          f"regime={result['regime']}")
+    print(
+        f"Halley:  P_pred={result['P_predicted']:.0f}s  "
+        f"residual={result['kepler_residual']:.6e}  "
+        f"v_orb={result['v_orb']:.0f} m/s  "
+        f"regime={result['regime']}"
+    )
     assert result["regime"] == "Escape"
 
     print("✓ orbital_mechanics self-test passed")
