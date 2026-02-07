@@ -298,3 +298,52 @@ registry:
         outputs: ["t_MS", "evolutionary_phase", "L_ZAMS", "T_ZAMS", "regime"]
         frozen_params:
           t_sun_MS: 10.0
+
+    quantum_mechanics:
+      - name: "wavefunction_collapse"
+        path: "closures/quantum_mechanics/wavefunction_collapse.py"
+        description: "Born rule validation: P = |⟨φ|ψ⟩|², state fidelity, purity"
+        contract: "QM.INTSTACK.v1"
+        inputs: ["psi_amplitudes", "measurement_basis", "observed_counts"]
+        outputs: ["P_born", "delta_P", "fidelity_state", "purity", "regime"]
+      - name: "entanglement"
+        path: "closures/quantum_mechanics/entanglement.py"
+        description: "Wootters concurrence, von Neumann entropy, Bell-CHSH parameter"
+        contract: "QM.INTSTACK.v1"
+        inputs: ["rho_eigenvalues", "bell_correlations"]
+        outputs: ["concurrence", "S_vN", "bell_parameter", "negativity", "regime"]
+        frozen_params:
+          bell_classical_limit: 2.0
+          bell_quantum_limit: 2.8284
+      - name: "tunneling"
+        path: "closures/quantum_mechanics/tunneling.py"
+        description: "Rectangular barrier: T ≈ exp(-2κL), κ = √(2m(V₀-E))/ℏ"
+        contract: "QM.INTSTACK.v1"
+        inputs: ["E_particle", "V_barrier", "barrier_width", "particle_mass"]
+        outputs: ["T_coeff", "kappa_barrier", "T_classical", "T_ratio", "regime"]
+        frozen_params:
+          hbar: 1.054571817e-34
+          m_electron: 9.1093837015e-31
+      - name: "harmonic_oscillator"
+        path: "closures/quantum_mechanics/harmonic_oscillator.py"
+        description: "Energy quantization E_n = ℏω(n + ½), coherent & squeezed states"
+        contract: "QM.INTSTACK.v1"
+        inputs: ["n_quanta", "omega_freq", "E_observed"]
+        outputs: ["E_predicted", "delta_E", "coherent_alpha", "squeeze_r", "regime"]
+      - name: "spin_measurement"
+        path: "closures/quantum_mechanics/spin_measurement.py"
+        description: "Stern-Gerlach: S_z eigenvalues, Zeeman splitting ΔE = gμ_B·B, Larmor precession"
+        contract: "QM.INTSTACK.v1"
+        inputs: ["S_total", "S_z_observed", "B_field", "g_factor"]
+        outputs: ["S_z_predicted", "spin_fidelity", "larmor_freq", "zeeman_split", "regime"]
+        frozen_params:
+          mu_B: 9.2740100783e-24
+          g_electron: 2.00231930436
+      - name: "uncertainty_principle"
+        path: "closures/quantum_mechanics/uncertainty_principle.py"
+        description: "Heisenberg: Δx·Δp ≥ ℏ/2, ratio R = (Δx·Δp)/(ℏ/2) must be ≥ 1"
+        contract: "QM.INTSTACK.v1"
+        inputs: ["delta_x", "delta_p", "particle_mass"]
+        outputs: ["heisenberg_product", "heisenberg_ratio", "min_uncertainty", "regime"]
+        frozen_params:
+          hbar_over_2: 5.272859085e-35

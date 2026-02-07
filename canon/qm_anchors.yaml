@@ -1,0 +1,314 @@
+schema: schemas/canon.anchors.schema.json
+id: UMCP.CANON.QM.v1
+version: 1.0.0
+created: '2026-02-07'
+
+scope:
+  hierarchy: GCD → QM (Tier-1)
+  description: |
+    Quantum Mechanics canonical anchors for UMCP.
+    Maps the six foundational pillars of QM into the GCD invariant framework.
+    Wavefunction collapse is the literal archetype of Generative Collapse Dynamics:
+    the indefinite superposition resolves into a definite outcome, generating
+    observable reality from quantum potentiality.
+
+axioms:
+  - id: AX-0
+    statement: Collapse is generative
+    source: GCD Tier-1 (inherited, frozen)
+    qm_realization: |
+      Wavefunction collapse upon measurement generates the classical
+      observable from quantum superposition. The Born rule probability
+      P = |⟨φ|ψ⟩|² is the measure of generative potential released
+      at collapse. Φ_gen ≥ 0 always.
+  - id: AX-1
+    statement: Boundary defines interior
+    source: GCD Tier-1 (inherited, frozen)
+    qm_realization: |
+      The potential well boundary conditions determine the allowed
+      wavefunctions (eigenstates) and energy eigenvalues. Measurement
+      apparatus defines the observable basis.
+  - id: AX-2
+    statement: Entropy measures determinacy
+    source: GCD Tier-1 (inherited, frozen)
+    qm_realization: |
+      von Neumann entropy S_vN = -Tr(ρ log ρ) measures quantum state
+      mixedness. Pure state (S_vN = 0) = fully determinate. Maximally
+      mixed = maximum indeterminacy.
+  - id: AX-Q0
+    statement: Born rule governs measurement outcomes
+    source: QM.INTSTACK.v1
+    qm_realization: |
+      P = |⟨φ|ψ⟩|² bridges amplitudes → probabilities.
+      Born violation (delta_P) maps directly to GCD drift ω.
+  - id: AX-Q1
+    statement: Entanglement is non-local correlation
+    source: QM.INTSTACK.v1
+    qm_realization: |
+      Bell-CHSH S > 2 violates local realism.
+      Concurrence C ∈ [0,1] maps to GCD coupling.
+  - id: AX-Q2
+    statement: Tunneling transcends classical barriers
+    source: QM.INTSTACK.v1
+    qm_realization: |
+      T = exp(-2κL) for E < V₀. Generative collapse through
+      classically forbidden regions.
+  - id: AX-Q3
+    statement: Uncertainty bounds joint measurements
+    source: QM.INTSTACK.v1
+    qm_realization: |
+      Δx·Δp ≥ ℏ/2. Fundamental kernel constraint.
+      Violations indicate measurement error, not physics.
+
+tier_1_invariants:
+  reserved_symbols:
+    # GCD inherited
+    - symbol: omega
+      latex: \omega
+      description: Drift from ideal prediction (Born rule deviation)
+      formula: omega = delta_P = |P_born - P_observed|
+      domain: quantum_mechanics
+      unit: dimensionless
+      interpretation: |
+        In QM, drift measures how far experimental measurement statistics
+        deviate from the Born rule prediction. Perfect fidelity: ω = 0.
+
+    - symbol: F
+      latex: F
+      description: Fidelity to quantum prediction
+      formula: F = 1 - omega
+      domain: quantum_mechanics
+      unit: dimensionless
+      interpretation: |
+        Quantum state fidelity. F = 1 means Born rule perfectly satisfied.
+        Maps to quantum process fidelity for gate operations.
+
+    - symbol: S
+      latex: S
+      description: Entropy proxy (von Neumann or uncertainty excess)
+      formula: S = S_vN / log(d) or S = 1 - purity
+      domain: quantum_mechanics
+      unit: bits (normalized)
+      interpretation: |
+        Normalized von Neumann entropy. S = 0 for pure states, S = 1 for
+        maximally mixed. Measures decoherence strength.
+
+    - symbol: C
+      latex: C
+      description: Coupling (entanglement or correlation strength)
+      formula: C = concurrence or bell_parameter / 2*sqrt(2)
+      domain: quantum_mechanics
+      unit: dimensionless
+      interpretation: |
+        In QM, coupling maps to entanglement. High concurrence = strong
+        non-classical correlations. Bell violation = C above classical bound.
+
+    - symbol: kappa
+      latex: \kappa
+      description: Collapse intensity parameter
+      formula: kappa = ln(IC)
+      domain: quantum_mechanics
+      unit: dimensionless
+      interpretation: |
+        Logarithm of integrity-collapse. In tunneling: maps to barrier decay
+        constant. In measurement: maps to state preparation quality.
+
+    - symbol: IC
+      latex: IC
+      description: Integrity-collapse measure
+      formula: IC = exp(kappa), IC ≤ F (AM-GM bound)
+      domain: quantum_mechanics
+      unit: dimensionless
+      interpretation: |
+        Combined measure of measurement integrity. IC ≤ F by AM-GM.
+        IC < 0.30 triggers critical overlay.
+
+    # QM-specific
+    - symbol: psi
+      latex: \psi
+      description: Wavefunction amplitude (complex norm)
+      formula: "|ψ|² = probability density"
+      domain: quantum_mechanics
+      unit: dimensionless (embedded [0,1])
+      interpretation: Born rule foundation
+
+    - symbol: concurrence
+      latex: C_{ent}
+      description: Wootters concurrence
+      formula: C = max(0, √λ₁ - √λ₂ - √λ₃ - √λ₄)
+      domain: quantum_mechanics
+      unit: dimensionless [0,1]
+      interpretation: Entanglement monotone for 2-qubit systems
+
+    - symbol: T_coeff
+      latex: T
+      description: Tunneling transmission coefficient
+      formula: T ≈ exp(-2κL)
+      domain: quantum_mechanics
+      unit: dimensionless [0,1]
+      interpretation: |
+        Probability of barrier penetration. T = 0 opaque, T = 1 transparent.
+        Classically forbidden (E < V₀) but quantum-mechanically generative.
+
+    - symbol: heisenberg_ratio
+      latex: R_H
+      description: Heisenberg uncertainty ratio
+      formula: R = (Δx·Δp)/(ℏ/2)
+      domain: quantum_mechanics
+      unit: dimensionless (≥ 1)
+      interpretation: |
+        Must be ≥ 1 by Heisenberg uncertainty. R = 1 is minimum uncertainty
+        (Gaussian wavepacket). R < 1 indicates measurement error.
+
+umcp_invariant_mapping:
+  description: |
+    Maps QM observables to GCD Tier-1 invariants.
+    Each quantum experiment type produces a different mapping pathway.
+  mappings:
+    - domain_observable: delta_P (Born rule deviation)
+      gcd_invariant: omega (drift)
+      mapping: omega = min(1, delta_P)
+      rationale: |
+        Born rule violation is the most direct measure of drift from
+        the quantum prediction. Perfect compliance: ω = 0, F = 1.
+
+    - domain_observable: purity (Tr(ρ²))
+      gcd_invariant: S (entropy)
+      mapping: S = 1 - purity
+      rationale: |
+        Purity Tr(ρ²) = 1 for pure states (S = 0). Maximally mixed
+        state has purity 1/d, giving S near 1.
+
+    - domain_observable: concurrence
+      gcd_invariant: C (coupling)
+      mapping: C_coupling = concurrence
+      rationale: |
+        Entanglement strength directly maps to non-local coupling.
+        Separable state: C = 0. Bell state: C = 1.
+
+    - domain_observable: tunneling T_coeff
+      gcd_invariant: F (fidelity)
+      mapping: F = T_coeff (for tunneling experiments)
+      rationale: |
+        Tunneling transmission measures fidelity of quantum state
+        to penetrate the barrier — the generative collapse through
+        the classically forbidden region.
+
+    - domain_observable: heisenberg_ratio
+      gcd_invariant: constraint
+      mapping: R < 1 → NONCONFORMANT
+      rationale: |
+        Heisenberg violation is a hard constraint, not a regime gate.
+        Any measurement with R < 1 is physically impossible and indicates
+        experimental error.
+
+regime_gates:
+  - name: Born deviation gate
+    parameter: delta_P
+    thresholds:
+      Faithful: delta_P < 0.01
+      Perturbed: 0.01 ≤ delta_P < 0.05
+      Decoherent: 0.05 ≤ delta_P < 0.15
+      Anomalous: delta_P ≥ 0.15
+    umcp_mapping:
+      Faithful: Stable
+      Perturbed: Watch
+      Decoherent: Watch
+      Anomalous: Collapse
+
+  - name: Entanglement strength gate
+    parameter: concurrence
+    thresholds:
+      Separable: C < 0.1
+      Weak: 0.1 ≤ C < 0.4
+      Strong: 0.4 ≤ C < 0.8
+      Maximal: C ≥ 0.8
+    umcp_mapping:
+      Separable: Stable
+      Weak: Watch
+      Strong: Watch
+      Maximal: Stable
+
+  - name: Tunneling transparency gate
+    parameter: T_coeff
+    thresholds:
+      Opaque: T < 0.001
+      Suppressed: 0.001 ≤ T < 0.05
+      Moderate: 0.05 ≤ T < 0.3
+      Transparent: T ≥ 0.3
+    umcp_mapping:
+      Opaque: Stable
+      Suppressed: Watch
+      Moderate: Watch
+      Transparent: Stable
+
+  - name: Coherence quality gate
+    parameter: purity
+    thresholds:
+      Pure: γ ≥ 0.99
+      High: 0.90 ≤ γ < 0.99
+      Mixed: 0.50 ≤ γ < 0.90
+      Decoherent: γ < 0.50
+    umcp_mapping:
+      Pure: Stable
+      High: Stable
+      Mixed: Watch
+      Decoherent: Collapse
+
+budget_identity_analog:
+  description: |
+    The QM budget identity relates measurable quantities through
+    conservation laws that mirror the GCD kernel identities:
+
+    (1) F = 1 - ω          (fidelity-drift duality)
+    (2) IC ≈ exp(κ)         (integrity-collapse)
+    (3) IC ≤ F              (AM-GM bound)
+    (4) Σ P_i = 1           (Born normalization — probability conservation)
+    (5) Δx·Δp ≥ ℏ/2        (Heisenberg — not an equality, a bound)
+    (6) S_CHSH ≤ 2√2        (Tsirelson bound — quantum limit)
+
+    Identities (1)-(3) are inherited from GCD.
+    Identities (4)-(6) are QM-specific constraints.
+
+reference:
+  sources:
+    - "Born, M. (1926). Quantenmechanik der Stoßvorgänge. Z. Phys. 38, 803-827."
+    - "Heisenberg, W. (1927). Über den anschaulichen Inhalt der quantentheoretischen Kinematik und Mechanik. Z. Phys. 43, 172-198."
+    - "Dirac, P.A.M. (1930). The Principles of Quantum Mechanics. Oxford University Press."
+    - "von Neumann, J. (1932). Mathematische Grundlagen der Quantenmechanik. Springer."
+    - "Bell, J.S. (1964). On the Einstein Podolsky Rosen Paradox. Physics 1, 195-200."
+    - "Clauser, J.F., Horne, M.A., Shimony, A., Holt, R.A. (1969). Proposed experiment to test local hidden-variable theories. Phys. Rev. Lett. 23, 880."
+    - "Tsirelson, B.S. (1980). Quantum generalizations of Bell's inequality. Lett. Math. Phys. 4, 93-100."
+    - "Wootters, W.K. (1998). Entanglement of Formation of an Arbitrary State of Two Qubits. Phys. Rev. Lett. 80, 2245."
+    - "Gamow, G. (1928). Zur Quantentheorie des Atomkernes. Z. Phys. 51, 204-212."
+    - "Aspect, A., Dalibard, J., Roger, G. (1982). Experimental Realization of Einstein-Podolsky-Rosen-Bohm Gedankenexperiment. Phys. Rev. Lett. 49, 1804."
+
+quantum_constants:
+  hbar:
+    value: 1.054571817e-34
+    unit: J·s
+    description: Reduced Planck constant
+  h_planck:
+    value: 6.62607015e-34
+    unit: J·s
+    description: Planck constant
+  m_electron:
+    value: 9.1093837015e-31
+    unit: kg
+    description: Electron mass
+  e_charge:
+    value: 1.602176634e-19
+    unit: C
+    description: Elementary charge
+  mu_B:
+    value: 9.2740100783e-24
+    unit: J/T
+    description: Bohr magneton
+  a_bohr:
+    value: 5.29177210903e-11
+    unit: m
+    description: Bohr radius
+  alpha_fine:
+    value: 0.0072973525693
+    unit: dimensionless
+    description: Fine-structure constant

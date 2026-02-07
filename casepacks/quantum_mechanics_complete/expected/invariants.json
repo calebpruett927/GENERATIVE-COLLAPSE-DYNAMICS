@@ -1,0 +1,753 @@
+{
+  "schema": "schemas/invariants.schema.json",
+  "format": "tier1_invariants",
+  "contract_id": "QM.INTSTACK.v1",
+  "closure_registry_id": "UMCP.CLOSURES.QM.v1",
+  "canon": {
+    "pre_doi": "10.1103/PhysRev.47.777",
+    "post_doi": "10.5281/zenodo.14854321",
+    "weld_id": "W-2026-02-07-QM-COMPLETE",
+    "timezone": "UTC"
+  },
+  "rows": [
+    {
+      "t": "QM01",
+      "omega": 0.0,
+      "F": 1.0,
+      "S": 0.0,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": 0.0,
+      "IC": 1.0,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "QM02",
+      "omega": 0.02,
+      "F": 0.98,
+      "S": 0.4992,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": -0.020202707317519466,
+      "IC": 0.98,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "QM03",
+      "omega": 0.017,
+      "F": 0.983,
+      "S": 0.6658,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": -0.017146158834970514,
+      "IC": 0.983,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "QM04",
+      "omega": 0.15,
+      "F": 0.85,
+      "S": 0.495,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": -0.16251892949777494,
+      "IC": 0.85,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "QM05",
+      "omega": 0.15,
+      "F": 0.85,
+      "S": 0.75,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": -0.16251892949777494,
+      "IC": 0.85,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "QM06",
+      "omega": 1.0,
+      "F": 0.0,
+      "S": 0.0,
+      "C": 1.0,
+      "tau_R": "INF_REC",
+      "kappa": -6.907755278982137,
+      "IC": 0.001,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": true
+      }
+    },
+    {
+      "t": "QM07",
+      "omega": 1.0,
+      "F": 0.0,
+      "S": 0.0,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": -6.907755278982137,
+      "IC": 0.001,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": true
+      }
+    },
+    {
+      "t": "QM08",
+      "omega": 0.285857,
+      "F": 0.714143,
+      "S": 0.60984,
+      "C": 0.868916,
+      "tau_R": "INF_REC",
+      "kappa": -0.33667205658389204,
+      "IC": 0.714143,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "QM09",
+      "omega": 1.0,
+      "F": 0.0,
+      "S": 0.0,
+      "C": 0.707114,
+      "tau_R": "INF_REC",
+      "kappa": -6.907755278982137,
+      "IC": 0.001,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": true
+      }
+    },
+    {
+      "t": "QM10",
+      "omega": 0.020204,
+      "F": 0.979796,
+      "S": 0.970951,
+      "C": 0.565691,
+      "tau_R": "INF_REC",
+      "kappa": -0.020410892251805257,
+      "IC": 0.979796,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "QM11",
+      "omega": 0.515438,
+      "F": 0.484562,
+      "S": 0.515438,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": -0.724509888862127,
+      "IC": 0.484562,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "QM12",
+      "omega": 0.886225,
+      "F": 0.113775,
+      "S": 0.886225,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": -2.173532465079431,
+      "IC": 0.113775,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": true
+      }
+    },
+    {
+      "t": "QM13",
+      "omega": 0.999286,
+      "F": 0.000714,
+      "S": 0.999286,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": -6.907755278982137,
+      "IC": 0.001,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": true
+      }
+    },
+    {
+      "t": "QM14",
+      "omega": 1.0,
+      "F": 0.0,
+      "S": 1.0,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": -6.907755278982137,
+      "IC": 0.001,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": true
+      }
+    },
+    {
+      "t": "QM15",
+      "omega": 0.0,
+      "F": 1.0,
+      "S": 0.0,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": 0.0,
+      "IC": 1.0,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "QM16",
+      "omega": 0.0,
+      "F": 1.0,
+      "S": 1.0,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": 0.0,
+      "IC": 1.0,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "QM17",
+      "omega": 0.0,
+      "F": 1.0,
+      "S": 0.5,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": 0.0,
+      "IC": 1.0,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "QM18",
+      "omega": 0.028571,
+      "F": 0.971429,
+      "S": 0.25,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": -0.028987095696879035,
+      "IC": 0.971429,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "QM19",
+      "omega": 0.0,
+      "F": 1.0,
+      "S": 0.166667,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": 0.0,
+      "IC": 1.0,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "QM20",
+      "omega": 0.0,
+      "F": 1.0,
+      "S": 1.0,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": 0.0,
+      "IC": 1.0,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "QM21",
+      "omega": 0.0,
+      "F": 1.0,
+      "S": 0.0,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": 0.0,
+      "IC": 1.0,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "QM22",
+      "omega": 0.0,
+      "F": 1.0,
+      "S": 0.0,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": 0.0,
+      "IC": 1.0,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "QM23",
+      "omega": 0.0,
+      "F": 1.0,
+      "S": 0.0,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": 0.0,
+      "IC": 1.0,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "QM24",
+      "omega": 0.0,
+      "F": 1.0,
+      "S": 0.0,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": 0.0,
+      "IC": 1.0,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "QM25",
+      "omega": 0.15,
+      "F": 0.85,
+      "S": 0.15,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": -0.16251892949777494,
+      "IC": 0.85,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "QM26",
+      "omega": 0.499116,
+      "F": 0.500884,
+      "S": 0.069138,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": -0.6913807416322323,
+      "IC": 0.500884,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "QM27",
+      "omega": 0.472714,
+      "F": 0.527286,
+      "S": 0.064001,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": -0.6400121831490236,
+      "IC": 0.527286,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "QM28",
+      "omega": 1.0,
+      "F": 0.0,
+      "S": 1.0,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": -6.907755278982137,
+      "IC": 0.001,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": true
+      }
+    },
+    {
+      "t": "QM29",
+      "omega": 1.0,
+      "F": 0.0,
+      "S": 1.0,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": -6.907755278982137,
+      "IC": 0.001,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": true
+      }
+    },
+    {
+      "t": "QM30",
+      "omega": 0.005121,
+      "F": 0.994879,
+      "S": 0.000513,
+      "C": 0.0,
+      "tau_R": "INF_REC",
+      "kappa": -0.005134157258602572,
+      "IC": 0.994879,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      }
+    }
+  ],
+  "notes": "Complete quantum mechanics casepack covering 30 experiments across 6 subdomains: wavefunction collapse (5), entanglement (5), tunneling (5), harmonic oscillator (5), spin measurement (5), and uncertainty principle (5). Each closure maps quantum observables to UMCP Tier-1 invariants. Wavefunction collapse is the literal archetype of Generative Collapse Dynamics. Domain-specific regime labels mapped to UMCP standard: Stable/Watch/Collapse.",
+  "extensions": {
+    "quantum_mechanics_summary": {
+      "total_experiments": 30,
+      "categories": {
+        "wavefunction": 5,
+        "entanglement": 5,
+        "tunneling": 5,
+        "oscillator": 5,
+        "spin": 5,
+        "uncertainty": 5
+      },
+      "subdomains_covered": [
+        "entanglement",
+        "oscillator",
+        "spin",
+        "tunneling",
+        "uncertainty",
+        "wavefunction"
+      ]
+    },
+    "domain_closure_outputs": {
+      "QM01": {
+        "wavefunction_collapse": {
+          "P_born": 1.0,
+          "delta_P": 0.0,
+          "fidelity_state": 1.0,
+          "purity": 1.0,
+          "regime": "Faithful"
+        },
+        "domain_regime": "Faithful"
+      },
+      "QM02": {
+        "wavefunction_collapse": {
+          "P_born": 0.5,
+          "delta_P": 0.02,
+          "fidelity_state": 0.9996,
+          "purity": 0.5008,
+          "regime": "Perturbed"
+        },
+        "domain_regime": "Perturbed"
+      },
+      "QM03": {
+        "wavefunction_collapse": {
+          "P_born": 0.333,
+          "delta_P": 0.017,
+          "fidelity_state": 0.99935,
+          "purity": 0.3342,
+          "regime": "Perturbed"
+        },
+        "domain_regime": "Perturbed"
+      },
+      "QM04": {
+        "wavefunction_collapse": {
+          "P_born": 0.7,
+          "delta_P": 0.15,
+          "fidelity_state": 0.975961,
+          "purity": 0.505,
+          "regime": "Decoherent"
+        },
+        "domain_regime": "Decoherent"
+      },
+      "QM05": {
+        "wavefunction_collapse": {
+          "P_born": 0.4,
+          "delta_P": 0.15,
+          "fidelity_state": 0.944414,
+          "purity": 0.25,
+          "regime": "Anomalous"
+        },
+        "domain_regime": "Anomalous"
+      },
+      "QM06": {
+        "entanglement": {
+          "concurrence": 0.0,
+          "S_vN": 0.0,
+          "bell_parameter": 2.8284,
+          "negativity": 0.0,
+          "regime": "Separable"
+        },
+        "domain_regime": "Separable"
+      },
+      "QM07": {
+        "entanglement": {
+          "concurrence": 0.0,
+          "S_vN": 0.0,
+          "bell_parameter": 0.0,
+          "negativity": 0.0,
+          "regime": "Separable"
+        },
+        "domain_regime": "Separable"
+      },
+      "QM08": {
+        "entanglement": {
+          "concurrence": 0.714143,
+          "S_vN": 0.60984,
+          "bell_parameter": 2.457641,
+          "negativity": 0.357071,
+          "regime": "Strong"
+        },
+        "domain_regime": "Strong"
+      },
+      "QM09": {
+        "entanglement": {
+          "concurrence": 0.0,
+          "S_vN": 0.0,
+          "bell_parameter": 2.0,
+          "negativity": 0.0,
+          "regime": "Separable"
+        },
+        "domain_regime": "Separable"
+      },
+      "QM10": {
+        "entanglement": {
+          "concurrence": 0.979796,
+          "S_vN": 0.970951,
+          "bell_parameter": 1.6,
+          "negativity": 0.489898,
+          "regime": "Maximal"
+        },
+        "domain_regime": "Maximal"
+      },
+      "QM11": {
+        "tunneling": {
+          "T_coeff": 0.48456195,
+          "kappa_barrier": 3622549988.2563,
+          "T_classical": 0.0,
+          "T_ratio": "INF_REC",
+          "regime": "Transparent"
+        },
+        "domain_regime": "Transparent"
+      },
+      "QM12": {
+        "tunneling": {
+          "T_coeff": 0.11377528,
+          "kappa_barrier": 3622549988.2563,
+          "T_classical": 0.0,
+          "T_ratio": "INF_REC",
+          "regime": "Moderate"
+        },
+        "domain_regime": "Moderate"
+      },
+      "QM13": {
+        "tunneling": {
+          "T_coeff": 0.00071366,
+          "kappa_barrier": 3622549988.2563,
+          "T_classical": 0.0,
+          "T_ratio": "INF_REC",
+          "regime": "Opaque"
+        },
+        "domain_regime": "Opaque"
+      },
+      "QM14": {
+        "tunneling": {
+          "T_coeff": 0.0,
+          "kappa_barrier": 1097771644417.7948,
+          "T_classical": 0.0,
+          "T_ratio": "INF_REC",
+          "regime": "Opaque"
+        },
+        "domain_regime": "Opaque"
+      },
+      "QM15": {
+        "tunneling": {
+          "T_coeff": 1.0,
+          "kappa_barrier": 0.0,
+          "T_classical": 1.0,
+          "T_ratio": 1.0,
+          "regime": "Transparent"
+        },
+        "domain_regime": "Transparent"
+      },
+      "QM16": {
+        "harmonic_oscillator": {
+          "E_predicted": 0.25,
+          "delta_E": 0.0,
+          "coherent_alpha": 0.0,
+          "squeeze_r": 0.0,
+          "regime": "Pure"
+        },
+        "domain_regime": "Pure"
+      },
+      "QM17": {
+        "harmonic_oscillator": {
+          "E_predicted": 0.75,
+          "delta_E": 0.0,
+          "coherent_alpha": 1.0,
+          "squeeze_r": 0.0,
+          "regime": "Pure"
+        },
+        "domain_regime": "Pure"
+      },
+      "QM18": {
+        "harmonic_oscillator": {
+          "E_predicted": 1.75,
+          "delta_E": 0.02857143,
+          "coherent_alpha": 1.732051,
+          "squeeze_r": 0.0,
+          "regime": "High"
+        },
+        "domain_regime": "High"
+      },
+      "QM19": {
+        "harmonic_oscillator": {
+          "E_predicted": 2.75,
+          "delta_E": 0.0,
+          "coherent_alpha": 2.236,
+          "squeeze_r": 0.0,
+          "regime": "Pure"
+        },
+        "domain_regime": "Pure"
+      },
+      "QM20": {
+        "harmonic_oscillator": {
+          "E_predicted": 0.25,
+          "delta_E": 0.0,
+          "coherent_alpha": 0.0,
+          "squeeze_r": 0.5,
+          "regime": "Pure"
+        },
+        "domain_regime": "Pure"
+      },
+      "QM21": {
+        "spin_measurement": {
+          "S_z_predicted": 0.5,
+          "spin_fidelity": 1.0,
+          "larmor_freq": 28024681252.67,
+          "zeeman_split": 0.0001159,
+          "regime": "Faithful"
+        },
+        "domain_regime": "Faithful"
+      },
+      "QM22": {
+        "spin_measurement": {
+          "S_z_predicted": -0.5,
+          "spin_fidelity": 1.0,
+          "larmor_freq": 28024681252.67,
+          "zeeman_split": 0.0001159,
+          "regime": "Faithful"
+        },
+        "domain_regime": "Faithful"
+      },
+      "QM23": {
+        "spin_measurement": {
+          "S_z_predicted": 0.0,
+          "spin_fidelity": 1.0,
+          "larmor_freq": 69981224723.24,
+          "zeeman_split": 0.00028942,
+          "regime": "Faithful"
+        },
+        "domain_regime": "Faithful"
+      },
+      "QM24": {
+        "spin_measurement": {
+          "S_z_predicted": 0.5,
+          "spin_fidelity": 1.0,
+          "larmor_freq": 234536476161.97,
+          "zeeman_split": 0.00096996,
+          "regime": "Faithful"
+        },
+        "domain_regime": "Faithful"
+      },
+      "QM25": {
+        "spin_measurement": {
+          "S_z_predicted": 0.5,
+          "spin_fidelity": 0.85,
+          "larmor_freq": 28024681252.67,
+          "zeeman_split": 0.0001159,
+          "regime": "Decoherent"
+        },
+        "domain_regime": "Decoherent"
+      },
+      "QM26": {
+        "uncertainty_principle": {
+          "heisenberg_product": 1.05271e-34,
+          "heisenberg_ratio": 1.996469,
+          "min_uncertainty": 5.272859085e-35,
+          "regime": "Moderate"
+        },
+        "domain_regime": "Moderate"
+      },
+      "QM27": {
+        "uncertainty_principle": {
+          "heisenberg_product": 1e-34,
+          "heisenberg_ratio": 1.896504,
+          "min_uncertainty": 5.272859085e-35,
+          "regime": "Moderate"
+        },
+        "domain_regime": "Moderate"
+      },
+      "QM28": {
+        "uncertainty_principle": {
+          "heisenberg_product": 5.27076e-35,
+          "heisenberg_ratio": 0.999602,
+          "min_uncertainty": 5.272859085e-35,
+          "regime": "Violation"
+        },
+        "domain_regime": "Violation"
+      },
+      "QM29": {
+        "uncertainty_principle": {
+          "heisenberg_product": 9.999999999999999e-27,
+          "heisenberg_ratio": 189650431.365548,
+          "min_uncertainty": 5.272859085e-35,
+          "regime": "Classical"
+        },
+        "domain_regime": "Classical"
+      },
+      "QM30": {
+        "uncertainty_principle": {
+          "heisenberg_product": 5.3e-35,
+          "heisenberg_ratio": 1.005147,
+          "min_uncertainty": 5.272859085e-35,
+          "regime": "Minimum"
+        },
+        "domain_regime": "Minimum"
+      }
+    }
+  }
+}

@@ -1,0 +1,347 @@
+schema: schemas/contract.schema.json
+contract:
+  id: QM.INTSTACK.v1
+  version: 1.0.0
+  timezone: UTC
+  parent_contract: GCD.INTSTACK.v1
+  tier_level: 1
+  embedding:
+    interval:
+    - 0.0
+    - 1.0
+    face: pre_clip
+    oor_policy: clip_and_flag
+    epsilon: 1.0e-08
+  tier_1_kernel:
+    reserved_symbols:
+    # Inherited from GCD
+    - omega
+    - F
+    - S
+    - C
+    - tau_R
+    - kappa
+    - IC
+    - IC_min
+    # QM-specific observables — Wavefunction & Measurement
+    - psi               # Wavefunction amplitude (complex norm, embedded to [0,1])
+    - P_born            # Born rule probability |⟨φ|ψ⟩|²
+    - fidelity_state    # Quantum state fidelity F_q = |⟨ψ_ideal|ψ_exp⟩|²
+    - delta_P           # Deviation from Born rule prediction
+    - purity            # Tr(ρ²), purity of the density matrix
+    # QM-specific observables — Entanglement
+    - concurrence       # Wootters concurrence C ∈ [0,1]
+    - S_vN              # von Neumann entropy S = -Tr(ρ log ρ)
+    - bell_parameter    # CHSH Bell parameter S_CHSH ∈ [0, 2√2]
+    - negativity        # Entanglement negativity
+    # QM-specific observables — Tunneling
+    - T_coeff           # Transmission coefficient (tunneling probability)
+    - kappa_barrier     # Barrier decay constant κ = √(2m(V₀-E))/ℏ
+    - barrier_width     # Barrier width (nm)
+    - V_barrier         # Barrier potential (eV)
+    - E_particle        # Particle energy (eV)
+    # QM-specific observables — Harmonic Oscillator
+    - n_quanta          # Quantum number n
+    - E_n               # Energy eigenvalue E_n = ℏω(n + 1/2)
+    - delta_E           # Spacing ℏω
+    - coherent_alpha    # Coherent state parameter α
+    - squeeze_r         # Squeeze parameter r
+    # QM-specific observables — Spin
+    - S_z               # Spin projection ⟨Sz⟩
+    - S_total           # Total spin quantum number
+    - g_factor          # Landé g-factor
+    - larmor_freq       # Larmor precession frequency
+    - spin_fidelity     # Fidelity of spin measurement to ideal eigenstate
+    # QM-specific observables — Uncertainty
+    - delta_x           # Position uncertainty Δx
+    - delta_p           # Momentum uncertainty Δp
+    - heisenberg_ratio  # (Δx·Δp)/(ℏ/2) — must be ≥ 1
+    weights_policy: nonnegative_sum_to_one
+    frozen_parameters:
+      # Inherited from GCD
+      p: 3
+      alpha: 1.0
+      lambda: 0.2
+      eta: 0.001
+      alpha_energy: 1.0
+      beta_energy: 0.5
+      tau_0: 10.0
+      C_crit: 0.2
+      # Quantum mechanics constants
+      hbar: 1.054571817e-34        # Reduced Planck constant (J·s)
+      h_planck: 6.62607015e-34     # Planck constant (J·s)
+      m_electron: 9.1093837015e-31 # Electron mass (kg)
+      m_proton: 1.67262192e-27     # Proton mass (kg)
+      e_charge: 1.602176634e-19    # Elementary charge (C)
+      k_B: 1.380649e-23            # Boltzmann constant (J/K)
+      c_light: 2.99792458e+08      # Speed of light (m/s)
+      mu_B: 9.2740100783e-24       # Bohr magneton (J/T)
+      a_bohr: 5.29177210903e-11    # Bohr radius (m)
+      E_hartree: 4.3597447222071e-18 # Hartree energy (J)
+      alpha_fine: 0.0072973525693  # Fine-structure constant
+      eV_to_J: 1.602176634e-19     # eV to Joules conversion
+      # Bell inequality limits
+      bell_classical_limit: 2.0    # Classical CHSH bound
+      bell_quantum_limit: 2.8284   # Tsirelson bound 2√2
+      # Tunneling parameters
+      tunneling_exp_cutoff: 50.0   # Exp argument cutoff for numerical stability
+    tolerances:
+      tol_seam: 0.005
+      tol_id: 1.0e-09
+      tol_energy: 1.0e-06
+      tol_flux: 1.0e-06
+      tol_resonance: 1.0e-06
+      tol_born: 0.001            # Born rule probability tolerance
+      tol_fidelity: 0.005        # State fidelity tolerance
+      tol_heisenberg: 0.01       # Heisenberg ratio tolerance (must be ≥ 1)
+      tol_bell: 0.01             # Bell parameter tolerance
+      tol_tunneling: 0.02        # Tunneling coefficient tolerance
+      tol_energy_level: 1.0e-06  # Energy eigenvalue tolerance
+      tol_spin: 0.001            # Spin measurement tolerance
+  axioms:
+  # Inherited from GCD
+  - id: AX-0
+    statement: Collapse is generative
+    description: |
+      Inherited from GCD Tier-1 (frozen). Every collapse event releases generative
+      potential. In quantum mechanics: wavefunction collapse upon measurement is the
+      literal archetype of generative collapse — the indefinite superposition
+      resolves into a definite outcome, generating observable reality.
+      Φ_gen ≥ 0 always. Measurement doesn't destroy information; it generates
+      the classical world from quantum potentiality.
+  - id: AX-1
+    statement: Boundary defines interior
+    description: |
+      Inherited from GCD Tier-1 (frozen). Boundary conditions fully determine
+      interior dynamics. In QM: the boundary conditions of the potential well
+      determine the allowed wavefunctions and energy eigenvalues.
+      Measurement apparatus (boundary) defines what can be observed (interior).
+  - id: AX-2
+    statement: Entropy measures determinacy
+    description: |
+      Inherited from GCD Tier-1 (frozen). S quantifies system indeterminacy.
+      In QM: von Neumann entropy S_vN = -Tr(ρ log ρ) measures the mixedness
+      of the quantum state. Pure states (S_vN = 0) have full determinacy;
+      maximally mixed states have maximum indeterminacy.
+  # Quantum mechanics-specific axioms
+  - id: AX-Q0
+    statement: Born rule governs measurement outcomes
+    description: |
+      The probability of obtaining measurement outcome |φ⟩ from state |ψ⟩
+      is given by P = |⟨φ|ψ⟩|². This is the fundamental bridge between
+      quantum amplitudes and observable statistics.
+      In UMCP terms: Born rule violation (delta_P) maps directly to drift ω.
+      Perfect Born compliance (delta_P = 0) means F = 1 (full fidelity).
+      This axiom is the QM realization of AX-0: collapse generates the
+      probability distribution that becomes the observable.
+  - id: AX-Q1
+    statement: Entanglement is non-local correlation
+    description: |
+      For entangled states, Bell's inequality S_CHSH > 2 demonstrates
+      correlations exceeding any local hidden-variable theory. Concurrence
+      C ∈ [0,1] quantifies entanglement strength; C = 0 is separable,
+      C = 1 is maximally entangled.
+      In UMCP terms: entanglement maps to coupling C in the kernel.
+      High concurrence = high coupling = departure from independent components.
+      Bell violation is the QM realization of non-trivial correlations
+      that cannot be factored into boundary effects alone.
+  - id: AX-Q2
+    statement: Tunneling transcends classical barriers
+    description: |
+      A particle with energy E < V₀ can penetrate a potential barrier
+      with transmission coefficient T = exp(-2κL), where κ = √(2m(V₀-E))/ℏ.
+      This is impossible in classical mechanics.
+      In UMCP terms: tunneling represents generative collapse through
+      classically forbidden regions. The barrier is the boundary (AX-1),
+      and the tunneling probability measures how the quantum interior
+      transcends the classical boundary constraint.
+  - id: AX-Q3
+    statement: Uncertainty bounds joint measurements
+    description: |
+      Heisenberg uncertainty: Δx·Δp ≥ ℏ/2. No measurement can simultaneously
+      determine conjugate observables with arbitrary precision.
+      In UMCP terms: the uncertainty product normalized by ℏ/2 (heisenberg_ratio)
+      must always be ≥ 1. This is a fundamental kernel constraint —
+      the system entropy S cannot be zero for conjugate observables.
+      Violations indicate measurement error (NONCONFORMANT), not physics.
+  regime_classification:
+    born_deviation:
+      faithful:
+        threshold: 0.01
+        condition: "delta_P < 0.01"
+      perturbed:
+        threshold: 0.05
+        condition: "0.01 ≤ delta_P < 0.05"
+      decoherent:
+        threshold: 0.15
+        condition: "0.05 ≤ delta_P < 0.15"
+      anomalous:
+        threshold: null
+        condition: "delta_P ≥ 0.15"
+    entanglement_strength:
+      separable:
+        threshold: 0.1
+        condition: "concurrence < 0.1"
+      weak:
+        threshold: 0.4
+        condition: "0.1 ≤ concurrence < 0.4"
+      strong:
+        threshold: 0.8
+        condition: "0.4 ≤ concurrence < 0.8"
+      maximal:
+        threshold: null
+        condition: "concurrence ≥ 0.8"
+    tunneling_regime:
+      opaque:
+        threshold: 0.001
+        condition: "T_coeff < 0.001"
+      suppressed:
+        threshold: 0.05
+        condition: "0.001 ≤ T_coeff < 0.05"
+      moderate:
+        threshold: 0.3
+        condition: "0.05 ≤ T_coeff < 0.3"
+      transparent:
+        threshold: null
+        condition: "T_coeff ≥ 0.3"
+    coherence_quality:
+      pure:
+        threshold: 0.99
+        condition: "purity ≥ 0.99"
+      high:
+        threshold: 0.90
+        condition: "0.90 ≤ purity < 0.99"
+      mixed:
+        threshold: 0.50
+        condition: "0.50 ≤ purity < 0.90"
+      decoherent:
+        threshold: null
+        condition: "purity < 0.50"
+    energy:  # Inherited from GCD
+      low:
+        threshold: 0.01
+        condition: E < 0.01
+      medium:
+        threshold: 0.05
+      high:
+        threshold: null
+  mathematical_identities:
+  # Inherited from GCD
+  - name: Fidelity-drift duality
+    formula: "F = 1 - ω"
+    tolerance: 1.0e-09
+  - name: Integrity-collapse relation
+    formula: "IC ≈ exp(κ)"
+    tolerance: 1.0e-06
+  # Quantum mechanics-specific identities
+  - name: Born rule normalization
+    formula: "Σ P_i = 1 over complete basis"
+    tolerance: 0.001
+    source: "QM Postulate III"
+  - name: Heisenberg uncertainty
+    formula: "Δx · Δp ≥ ℏ/2"
+    tolerance: 0.01
+    source: "Heisenberg 1927"
+  - name: Quantum harmonic oscillator
+    formula: "E_n = ℏω(n + 1/2)"
+    tolerance: 1.0e-06
+    source: "Dirac 1930"
+  - name: Bell-CHSH inequality
+    formula: "S_CHSH ≤ 2 (classical), S_CHSH ≤ 2√2 (quantum, Tsirelson)"
+    tolerance: 0.01
+    source: "Clauser, Horne, Shimony, Holt 1969; Tsirelson 1980"
+  - name: Tunneling transmission (rectangular barrier)
+    formula: "T ≈ exp(-2κL), κ = √(2m(V₀-E))/ℏ"
+    tolerance: 0.02
+    source: "Gamow 1928, Gurney & Condon 1928"
+  - name: Purity trace identity
+    formula: "Tr(ρ²) ≤ 1, equality iff pure state"
+    tolerance: 0.001
+    source: "von Neumann 1932"
+  - name: Concurrence-entropy relation
+    formula: "S_vN monotone function of concurrence for 2-qubit states"
+    tolerance: 0.01
+    source: "Wootters 1998"
+  - name: Larmor precession
+    formula: "ω_L = g · e · B / (2m)"
+    tolerance: 0.001
+    source: "Larmor 1897"
+  typed_censoring:
+    tau_R_special_values:
+    - INF_REC
+    - UNIDENTIFIABLE
+    run_status_enum:
+    - CONFORMANT
+    - NONCONFORMANT
+    - NON_EVALUABLE
+    no_return_no_credit: true
+    qm_regime_enums:
+      born_deviation:
+      - Faithful
+      - Perturbed
+      - Decoherent
+      - Anomalous
+      entanglement_strength:
+      - Separable
+      - Weak
+      - Strong
+      - Maximal
+      tunneling_regime:
+      - Opaque
+      - Suppressed
+      - Moderate
+      - Transparent
+      coherence_quality:
+      - Pure
+      - High
+      - Mixed
+      - Decoherent
+  closures:
+    wavefunction_collapse:
+      path: closures/quantum_mechanics/wavefunction_collapse.py
+      inputs: [psi_amplitudes, measurement_basis, observed_counts]
+      outputs: [P_born, delta_P, fidelity_state, purity, regime]
+    entanglement:
+      path: closures/quantum_mechanics/entanglement.py
+      inputs: [rho_eigenvalues, bell_correlations]
+      outputs: [concurrence, S_vN, bell_parameter, negativity, regime]
+    tunneling:
+      path: closures/quantum_mechanics/tunneling.py
+      inputs: [E_particle, V_barrier, barrier_width, particle_mass]
+      outputs: [T_coeff, kappa_barrier, T_classical, T_ratio, regime]
+    harmonic_oscillator:
+      path: closures/quantum_mechanics/harmonic_oscillator.py
+      inputs: [n_quanta, omega_freq, E_observed]
+      outputs: [E_predicted, delta_E, coherent_alpha, squeeze_r, regime]
+    spin_measurement:
+      path: closures/quantum_mechanics/spin_measurement.py
+      inputs: [S_total, S_z_observed, B_field, g_factor]
+      outputs: [S_z_predicted, spin_fidelity, larmor_freq, zeeman_split, regime]
+    uncertainty_principle:
+      path: closures/quantum_mechanics/uncertainty_principle.py
+      inputs: [delta_x, delta_p, particle_mass]
+      outputs: [heisenberg_product, heisenberg_ratio, min_uncertainty, regime]
+  notes: |
+    QM.INTSTACK.v1 extends GCD.INTSTACK.v1 with quantum mechanics.
+    Quantum mechanics is the original and most natural domain for Generative
+    Collapse Dynamics: wavefunction collapse upon measurement is the literal
+    archetype of the GCD axiom "Collapse is generative."
+
+    The six closures cover the foundational pillars of quantum mechanics:
+    1. Wavefunction collapse & Born rule (measurement theory)
+    2. Entanglement & Bell inequalities (non-local correlations)
+    3. Quantum tunneling (barrier penetration)
+    4. Harmonic oscillator (energy quantization)
+    5. Spin measurement & Zeeman effect (discrete observables)
+    6. Heisenberg uncertainty principle (conjugate variable bounds)
+
+    Each closure maps quantum observables to UMCP invariants (ω, F, S, C)
+    through physically motivated embeddings. The UMCP regime classification
+    (Stable/Watch/Collapse) maps onto quantum coherence regimes:
+    Stable = coherent/faithful, Watch = perturbed/mixed, Collapse = decoherent.
+  provenance:
+    created: '2026-02-07'
+    author: UMCP-QM Working Group
+    canonical_anchor: canon/qm_anchors.yaml
+    parent_version: GCD.INTSTACK.v1.0.0
+  extensions: {}
