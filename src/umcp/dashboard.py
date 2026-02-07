@@ -216,6 +216,14 @@ def load_ledger() -> Any:
 
     df = pd.read_csv(ledger_path)
 
+    # Ensure tau_R stays as string column — INF_REC is a typed sentinel
+    # that cannot be coerced to int64 by PyArrow serialization.
+    # Uses canonical tau_R_display for consistent formatting.
+    if "tau_R" in df.columns:
+        from .measurement_engine import tau_R_display
+
+        df["tau_R"] = df["tau_R"].apply(tau_R_display)
+
     # Parse timestamp
     if "timestamp" in df.columns:
         df["timestamp"] = pd.to_datetime(df["timestamp"], errors="coerce")
@@ -7104,6 +7112,7 @@ def render_layer3_seam_graph() -> None:
     st.markdown("#### Seam Details")
 
     display_df = df_seams.copy()
+    display_df["tau_R"] = display_df["tau_R"].astype(str)  # Prevent PyArrow mixed-type error
     display_df["residual"] = display_df["residual"].apply(lambda x: f"{x:.5f}" if x is not None else "N/A")
     display_df["delta_kappa_budget"] = display_df["delta_kappa_budget"].apply(
         lambda x: f"{x:.5f}" if x is not None else "N/A"
@@ -7153,7 +7162,7 @@ def render_unified_geometry_view() -> None:
     )
     c3 = 0.85 - 0.1 * np.sin(2 * np.pi * t / 50) - 0.3 * drift_intensity * t / n_steps + 0.02 * np.random.randn(n_steps)
 
-    c1, c2, c3 = [np.clip(c, 0.01, 0.99) for c in [c1, c2, c3]]
+    c1, c2, c3 = (np.clip(c, 0.01, 0.99) for c in (c1, c2, c3))
 
     # Weights
     w = np.array([0.4, 0.35, 0.25])

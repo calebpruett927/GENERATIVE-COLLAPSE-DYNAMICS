@@ -1,18 +1,19 @@
 """
 UMCP — Universal Measurement Contract Protocol
 
-This package provides a contract-first validator surface for UMCP repositories and CasePacks.
+This package provides a contract-first validator surface for UMCP repositories and CasePacks,
+plus a raw measurement engine for generating Ψ(t) traces and Tier-1 kernel invariants from
+arbitrary domain data.
 
-Primary entry point:
-- CLI: `umcp` (see src/umcp/cli.py)
+Primary entry points:
+- CLI: ``umcp`` (see src/umcp/cli.py)
+- Engine: ``MeasurementEngine`` — raw data → Ψ(t) → invariants
+- Calculator: ``UniversalCalculator`` — coordinate-level computation
 
 Design intent:
 - Keep the kernel enforcement and artifact validation portable across implementations.
 - Treat contracts + closures + schemas + receipts as the minimum audit surface.
-
-This package intentionally does not implement a full numerical “engine” for generating Ψ(t) and
-Tier-1 invariants from arbitrary raw measurements yet. The current deliverable is a validator
-and repo conformance toolchain.
+- Bridge raw domain data into the UMCP validation pipeline via the measurement engine.
 """
 # pyright: reportPrivateUsage=false
 
@@ -28,14 +29,23 @@ __all__ = [
     "ClosureLoader",
     "ComputationMode",
     "EditionTriad",
+    "EmbeddingConfig",
+    "EmbeddingSpec",
+    "EmbeddingStrategy",
+    "EngineResult",
     "FrozenContract",
+    "InvariantRow",
     "KernelGradients",
     "KernelOutput",
+    # Measurement engine (raw data → Ψ(t) → invariants)
+    "MeasurementEngine",
+    "measurement_engine",
     # Computational optimizations (KERNEL_SPECIFICATION.md Lemmas 1-34)
     "OptimizedKernelComputer",
     "Regime",
     "RootFileValidator",
     "SeamChainAccumulator",
+    "TraceRow",
     "UMCPFiles",
     "UncertaintyBounds",
     "UniversalCalculator",
@@ -57,8 +67,10 @@ __all__ = [
     "get_root_validator",
     "get_umcp_files",
     "propagate_uncertainty",
+    "safe_tau_R",
     # Mathematical architecture (MATHEMATICAL_ARCHITECTURE.md)
     "ss1m_triad",
+    "tau_R_display",
     "triad_to_eid12",
     "umcp_extensions",
     "uncertainty",
@@ -74,7 +86,15 @@ VALIDATOR_NAME = "umcp-validator"
 DEFAULT_TZ = "America/Chicago"
 
 # Import utilities
-from . import compute_utils, frozen_contract, ss1m_triad, umcp_extensions, uncertainty, universal_calculator
+from . import (
+    compute_utils,
+    frozen_contract,
+    measurement_engine,
+    ss1m_triad,
+    umcp_extensions,
+    uncertainty,
+    universal_calculator,
+)
 from .closures import ClosureLoader, get_closure_loader
 from .file_refs import UMCPFiles, get_umcp_files
 from .frozen_contract import (
@@ -88,6 +108,17 @@ from .frozen_contract import (
     gamma_omega,
 )
 from .kernel_optimized import OptimizedKernelComputer
+from .measurement_engine import (
+    EmbeddingConfig,
+    EmbeddingSpec,
+    EmbeddingStrategy,
+    EngineResult,
+    InvariantRow,
+    MeasurementEngine,
+    TraceRow,
+    safe_tau_R,
+    tau_R_display,
+)
 from .seam_optimized import SeamChainAccumulator
 from .ss1m_triad import EditionTriad, compute_triad, triad_to_eid12, verify_triad
 from .uncertainty import (

@@ -26,7 +26,7 @@ try:
     import yaml
 except ImportError:
     yaml = None
-from jsonschema import Draft202012Validator
+from jsonschema import Draft202012Validator  # pyright: ignore[reportMissingTypeStubs]
 
 from umcp import VALIDATOR_NAME, __version__
 from umcp.logging_utils import HealthCheck, get_logger
@@ -1941,11 +1941,29 @@ def _cmd_list(args: argparse.Namespace) -> int:
             if registry_file.exists() and yaml:
                 with open(registry_file) as f:
                     registry = yaml.safe_load(f)
-                for domain, closures in registry.get("closures", {}).items():
+                reg_data = registry.get("registry", {})
+                # List base closures
+                base_closures = reg_data.get("closures", {})
+                if base_closures:
+                    print("  [base]")
+                    for name, info in base_closures.items():
+                        path = info.get("path", "") if isinstance(info, dict) else str(info)
+                        print(f"    {name:30} {path}")
+                # List domain extension closures
+                extensions = reg_data.get("extensions", {})
+                for domain, closure_list in extensions.items():
                     print(f"  [{domain}]")
-                    for name, info in closures.items():
-                        version = info.get("version", "v1")
-                        print(f"    {name}: {version}")
+                    if isinstance(closure_list, list):
+                        for entry in closure_list:
+                            name = entry.get("name", "?") if isinstance(entry, dict) else str(entry)
+                            desc = entry.get("description", "") if isinstance(entry, dict) else ""
+                            if args.verbose:
+                                print(f"    {name:30} {desc}")
+                            else:
+                                print(f"    {name}")
+                    elif isinstance(closure_list, dict):
+                        for name, _info in closure_list.items():
+                            print(f"    {name}")
             else:
                 for cf in sorted(closures_dir.glob("*.py")):
                     print(f"  {cf.stem}")
@@ -2021,12 +2039,59 @@ def _cmd_integrity(args: argparse.Namespace) -> int:
             h = hashlib.sha256(target_file.read()).hexdigest()
         print(f"{target_path.name}: {h}")
     elif target_path.is_dir():
-        for item in sorted(target_path.rglob("*")):
-            if item.is_file() and not item.name.startswith("."):
-                with open(item, "rb") as item_file:
-                    h = hashlib.sha256(item_file.read()).hexdigest()
-                rel_path = item.relative_to(target_path)
-                print(f"  {rel_path}: {h[:16]}...")
+        # Use tracked checksum file if available (avoids scanning .venv, __pycache__, etc.)
+        checksum_file = target_path / "integrity" / "sha256.txt"
+        if checksum_file.exists():
+            mismatches = 0
+            verified = 0
+            missing = 0
+            with open(checksum_file) as cf:
+                for line in cf:
+                    line = line.strip()
+                    if not line or line.startswith("#"):
+                        continue
+                    parts = line.split("  ", 1)
+                    if len(parts) != 2:
+                        continue
+                    expected_hash, rel_path_str = parts
+                    file_path = target_path / rel_path_str
+                    if not file_path.exists():
+                        print(f"  {rel_path_str:50} ✗ MISSING")
+                        missing += 1
+                        continue
+                    with open(file_path, "rb") as item_file:
+                        actual = hashlib.sha256(item_file.read()).hexdigest()
+                    if actual == expected_hash:
+                        print(f"  {rel_path_str:50} ✓ OK")
+                        verified += 1
+                    else:
+                        print(f"  {rel_path_str:50} ✗ MISMATCH")
+                        mismatches += 1
+            print(f"\nIntegrity: {verified} verified, {mismatches} mismatches, {missing} missing")
+            if mismatches or missing:
+                return 1
+        else:
+            # Fallback: scan directory but skip common non-project dirs
+            skip_dirs = {
+                ".venv",
+                "venv",
+                "__pycache__",
+                ".git",
+                "node_modules",
+                "build",
+                ".mypy_cache",
+                ".pytest_cache",
+                ".ruff_cache",
+            }
+            for item in sorted(target_path.rglob("*")):
+                if item.is_file() and not item.name.startswith("."):
+                    # Skip files inside excluded directories
+                    if any(part in skip_dirs for part in item.relative_to(target_path).parts):
+                        continue
+                    with open(item, "rb") as item_file:
+                        h = hashlib.sha256(item_file.read()).hexdigest()
+                    rel_path = item.relative_to(target_path)
+                    print(f"  {rel_path}: {h[:16]}...")
 
     return 0
 
@@ -2363,6 +2428,83 @@ def _cmd_preflight(args: argparse.Namespace) -> int:
     return report.exit_code
 
 
+# --------------------------------------------------------------------------
+# Engine command — generate Ψ(t) from raw measurements
+# --------------------------------------------------------------------------
+
+
+def _cmd_engine(args: argparse.Namespace) -> int:
+    """Generate Ψ(t) trace and invariants from raw measurements."""
+    from .measurement_engine import EmbeddingConfig, EmbeddingStrategy, MeasurementEngine
+
+    input_path = Path(args.input).resolve()
+    if not input_path.exists():
+        print(f"Error: input file not found: {input_path}", file=sys.stderr)
+        return 1
+
+    # Parse weights
+    weights: list[float] | None = None
+    if args.weights:
+        weights = [float(x.strip()) for x in args.weights.split(",")]
+
+    # Embedding strategy
+    strategy_map = {
+        "linear_scale": EmbeddingStrategy.LINEAR_SCALE,
+        "min_max": EmbeddingStrategy.MIN_MAX,
+        "max_norm": EmbeddingStrategy.MAX_NORM,
+        "zscore_sigmoid": EmbeddingStrategy.ZSCORE_SIGMOID,
+    }
+    strategy = strategy_map[args.strategy]
+    embedding = EmbeddingConfig(default_strategy=strategy)
+
+    # Build engine
+    engine = MeasurementEngine(eta=args.eta, H_rec=args.H_rec)
+
+    print(f"Loading raw measurements from {input_path}")
+    result = engine.from_csv(input_path, weights=weights, embedding=embedding)
+
+    # Print summary
+    summary = result.summary()
+    print(f"  Timesteps: {summary['n_timesteps']}")
+    print(f"  Dimensions: {summary['n_dims']}")
+    print(f"  Weights: {[f'{w:.4f}' for w in result.weights]}")
+    print(f"  Final regime: {summary['final_regime']}")
+    print(f"  Regime counts: {summary['regime_counts']}")
+    print(f"  ω range: [{summary['omega_range'][0]:.6f}, {summary['omega_range'][1]:.6f}]")
+    print(f"  IC range: [{summary['IC_range'][0]:.6f}, {summary['IC_range'][1]:.6f}]")
+
+    # Write outputs
+    if args.casepack:
+        cp_path = Path(args.casepack).resolve()
+        engine.generate_casepack(
+            result, cp_path,
+            contract_id=args.contract,
+        )
+        print(f"\n✓ Casepack generated at {cp_path}/")
+    elif args.output:
+        out_dir = Path(args.output).resolve()
+        out_dir.mkdir(parents=True, exist_ok=True)
+        psi_path = engine.write_psi_csv(result, out_dir / "psi.csv")
+        inv_path = engine.write_invariants_json(result, out_dir / "invariants.json",
+                                                 contract_id=args.contract)
+        print(f"\n✓ psi.csv      → {psi_path}")
+        print(f"✓ invariants.json → {inv_path}")
+    else:
+        # Print invariants to stdout
+        print("\n--- Invariants ---")
+        for inv in result.invariants:
+            d = inv.to_dict()
+            tau_str = d["tau_R"]
+            print(
+                f"  t={d['t']}: ω={d['omega']:.6f}  F={d['F']:.6f}  "
+                f"S={d['S']:.6f}  C={d['C']:.6f}  τ_R={tau_str}  "
+                f"κ={d['kappa']:.6f}  IC={d['IC']:.6f}  "
+                f"regime={d['regime']['label']}"
+            )
+
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="umcp", description="UMCP contract-first validator CLI")
     p.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
@@ -2470,6 +2612,20 @@ def build_parser() -> argparse.ArgumentParser:
     rp = sub.add_parser("report", help="Generate audit reports")
     rp.add_argument("-o", "--output", default=None, help="Output file path")
     rp.set_defaults(func=_cmd_report)
+
+    # Engine command - generate Ψ(t) from raw measurements
+    eng = sub.add_parser("engine", help="Generate Ψ(t) trace and invariants from raw measurements")
+    eng.add_argument("input", help="Path to raw measurements CSV")
+    eng.add_argument("-w", "--weights", default=None, help="Comma-separated weights (e.g. 0.4,0.35,0.25)")
+    eng.add_argument("-s", "--strategy", default="min_max",
+                     choices=["linear_scale", "min_max", "max_norm", "zscore_sigmoid"],
+                     help="Embedding strategy (default: min_max)")
+    eng.add_argument("--eta", type=float, default=0.10, help="η threshold for return detection (default: 0.10)")
+    eng.add_argument("--H-rec", type=int, default=50, help="Recovery horizon for τ_R (default: 50)")
+    eng.add_argument("-o", "--output", default=None, help="Output directory for psi.csv + invariants.json")
+    eng.add_argument("--casepack", default=None, help="Generate a full casepack at this directory")
+    eng.add_argument("--contract", default="UMA.INTSTACK.v1", help="Contract ID (default: UMA.INTSTACK.v1)")
+    eng.set_defaults(func=_cmd_engine)
 
     return p
 

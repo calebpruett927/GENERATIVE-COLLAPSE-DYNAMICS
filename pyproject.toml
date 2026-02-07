@@ -289,6 +289,9 @@ reportUnknownLambdaType = false
 reportUnknownMemberType = false
 reportMissingTypeStubs = false
 reportUnknownArgumentType = false
+reportUnnecessaryTypeIgnoreComment = false
+
+extraPaths = ["src"]
 
 # Exclude dashboard from strict checking (UI-heavy, lambda-heavy)
 ignore = ["src/umcp/dashboard.py"]

@@ -14,7 +14,6 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-
 from umcp.dashboard import (
     KERNEL_SYMBOLS,
     REGIME_COLORS,
@@ -250,7 +249,7 @@ class TestDashboardNewFunctions:
             result = detect_anomalies(data, threshold=2.0)
             assert isinstance(result, pd.Series)
             # The outlier should be detected (last element is anomaly)
-            last_val: bool = result.tolist()[-1]  # type: ignore[assignment]
+            last_val: bool = result.tolist()[-1]
             assert last_val is True
         except ImportError:
             pytest.skip("pandas/numpy not installed")
