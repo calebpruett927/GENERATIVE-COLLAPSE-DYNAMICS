@@ -32,7 +32,6 @@ import json
 import math
 import os
 import sys
-from dataclasses import asdict, dataclass
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -42,20 +41,18 @@ import numpy as np  # pyright: ignore[reportMissingImports]
 # UMCP core imports
 from umcp.frozen_contract import (
     EPSILON,
+    P_EXPONENT,
     Regime,
     RegimeThresholds,
-    classify_regime,
-    compute_kernel,
-    compute_tau_R,
-    gamma_omega,
-    cost_curvature,
-    compute_seam_residual,
-    compute_budget_delta_kappa,
     check_seam_pass,
-    P_EXPONENT,
-    TOL_SEAM,
+    classify_regime,
+    compute_budget_delta_kappa,
+    compute_kernel,
+    compute_seam_residual,
+    compute_tau_R,
+    cost_curvature,
+    gamma_omega,
 )
-from umcp.kernel_optimized import OptimizedKernelComputer
 
 # Finance-specific imports — add closures root to path for direct import
 _closures_root = str(Path(__file__).resolve().parents[2])
@@ -63,9 +60,8 @@ if _closures_root not in sys.path:
     sys.path.insert(0, _closures_root)
 from closures.finance.finance_embedding import (  # noqa: E402  # pyright: ignore[reportMissingImports]
     DEFAULT_WEIGHTS,
-    COORDINATE_NAMES,
-    FinanceTargets,
     FinanceRecord,
+    FinanceTargets,
     embed_finance,
 )
 
@@ -116,11 +112,7 @@ LEDGER_HEADERS = [
 
 def _get_workspace(workspace: str | None = None) -> Path:
     """Resolve the finance workspace directory."""
-    if workspace:
-        ws = Path(workspace)
-    else:
-        ws = Path.cwd() / FINANCE_DIR_NAME
-    return ws
+    return Path(workspace) if workspace else Path.cwd() / FINANCE_DIR_NAME
 
 
 def _ensure_workspace(ws: Path) -> None:
@@ -186,7 +178,7 @@ def cmd_init(args: argparse.Namespace) -> None:
             w.writerow(RAW_HEADERS)
 
     print(f"Finance workspace initialized at {ws}")
-    print(f"  Contract: FINANCE.INTSTACK.v1")
+    print("  Contract: FINANCE.INTSTACK.v1")
     print(f"  Revenue target:  ${args.revenue_target:,.2f}")
     print(f"  Expense budget:  ${args.expense_budget:,.2f}")
     print(f"  Cash flow target: ${args.cashflow_target:,.2f}")

@@ -24,7 +24,6 @@ from typing import Any
 
 import numpy as np  # pyright: ignore[reportMissingImports]
 
-
 EPSILON: float = 1e-8
 
 # Default weights: revenue-weighted for business priority

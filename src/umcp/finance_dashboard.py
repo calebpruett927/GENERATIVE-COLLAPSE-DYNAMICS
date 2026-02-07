@@ -13,7 +13,15 @@ Cross-references:
     - src/umcp/finance_cli.py (data generation)
     - contracts/FINANCE.INTSTACK.v1.yaml
     - closures/finance/finance_embedding.py
+
+Note: This module uses optional visualization dependencies (pandas, plotly, streamlit)
+that may not be installed. Type errors for these are suppressed with pyright directives.
 """
+# pyright: reportUnknownMemberType=false
+# pyright: reportUnknownVariableType=false
+# pyright: reportUnknownArgumentType=false
+# pyright: reportOptionalMemberAccess=false
+# pyright: reportMissingTypeStubs=false
 
 from __future__ import annotations
 
@@ -25,14 +33,6 @@ from pathlib import Path
 from typing import Any
 
 # Optional visualization dependencies (matches dashboard.py pattern)
-# pyright: reportMissingImports=false
-# pyright: reportMissingModuleSource=false
-# pyright: reportUnknownMemberType=false
-# pyright: reportUnknownVariableType=false
-# pyright: reportUnknownArgumentType=false
-# pyright: reportOptionalMemberAccess=false
-# pyright: reportMissingTypeStubs=false
-# pyright: reportAssignmentType=false
 _has_viz_deps = False
 try:
     import numpy as np
@@ -43,11 +43,11 @@ try:
 
     _has_viz_deps = True
 except ImportError:
-    np = None
-    pd = None
-    go = None
-    st = None
-    make_subplots = None
+    np = None  # type: ignore[assignment]
+    pd = None  # type: ignore[assignment]
+    go = None  # type: ignore[assignment]
+    st = None  # type: ignore[assignment]
+    make_subplots = None  # type: ignore[assignment]
 
 
 FINANCE_DIR_NAME = ".umcp-finance"
@@ -176,9 +176,9 @@ def main() -> None:
         hovertemplate="Month: %{x}<br>Regime: %{text}<extra></extra>",
     ))
     fig_regime.update_layout(
-        yaxis=dict(tickvals=[1, 2, 3, 4], ticktext=["STABLE", "WATCH", "COLLAPSE", "CRITICAL"]),
+        yaxis={"tickvals": [1, 2, 3, 4], "ticktext": ["STABLE", "WATCH", "COLLAPSE", "CRITICAL"]},
         height=250,
-        margin=dict(t=20, b=20),
+        margin={"t": 20, "b": 20},
     )
     st.plotly_chart(fig_regime, use_container_width=True)
 
@@ -189,24 +189,24 @@ def main() -> None:
                             subplot_titles=("Drift (ω)", "Fidelity (F)", "Entropy (S)", "Integrity (IC)"))
 
     fig_inv.add_trace(go.Scatter(x=df_inv["month"], y=df_inv["omega"], mode="lines+markers",
-                                  name="ω", line=dict(color="#f44336")), row=1, col=1)
+                                  name="ω", line={"color": "#f44336"}), row=1, col=1)
     fig_inv.add_hline(y=0.038, line_dash="dash", line_color="green", annotation_text="Stable threshold",
                       row=1, col=1)
     fig_inv.add_hline(y=0.30, line_dash="dash", line_color="red", annotation_text="Collapse threshold",
                       row=1, col=1)
 
     fig_inv.add_trace(go.Scatter(x=df_inv["month"], y=df_inv["F"], mode="lines+markers",
-                                  name="F", line=dict(color="#4caf50")), row=1, col=2)
+                                  name="F", line={"color": "#4caf50"}), row=1, col=2)
 
     fig_inv.add_trace(go.Scatter(x=df_inv["month"], y=df_inv["S"], mode="lines+markers",
-                                  name="S", line=dict(color="#2196f3")), row=2, col=1)
+                                  name="S", line={"color": "#2196f3"}), row=2, col=1)
 
     fig_inv.add_trace(go.Scatter(x=df_inv["month"], y=df_inv["IC"], mode="lines+markers",
-                                  name="IC", line=dict(color="#9c27b0")), row=2, col=2)
+                                  name="IC", line={"color": "#9c27b0"}), row=2, col=2)
     fig_inv.add_hline(y=0.30, line_dash="dash", line_color="red", annotation_text="Critical threshold",
                       row=2, col=2)
 
-    fig_inv.update_layout(height=500, showlegend=False, margin=dict(t=40, b=20))
+    fig_inv.update_layout(height=500, showlegend=False, margin={"t": 40, "b": 20})
     st.plotly_chart(fig_inv, use_container_width=True)
 
     # ---- Coordinates ----
@@ -224,7 +224,7 @@ def main() -> None:
             ))
         fig_coords.update_layout(
             yaxis_title="Coordinate value [0, 1]",
-            height=350, margin=dict(t=20, b=20),
+            height=350, margin={"t": 20, "b": 20},
         )
         st.plotly_chart(fig_coords, use_container_width=True)
 
@@ -259,7 +259,7 @@ def main() -> None:
         fig_seam.add_hline(y=-0.005, line_dash="dash", line_color="orange", annotation_text="-tol_seam")
         fig_seam.update_layout(
             yaxis_title="Seam residual (s)",
-            height=300, margin=dict(t=20, b=20),
+            height=300, margin={"t": 20, "b": 20},
         )
         st.plotly_chart(fig_seam, use_container_width=True)
 
