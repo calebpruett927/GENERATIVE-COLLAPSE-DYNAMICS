@@ -7,6 +7,7 @@ the preprocessing and validation as specified in KERNEL_SPECIFICATION.md.
 
 import numpy as np
 import pytest
+
 from umcp.compute_utils import (
     ClippingResult,
     PruningResult,

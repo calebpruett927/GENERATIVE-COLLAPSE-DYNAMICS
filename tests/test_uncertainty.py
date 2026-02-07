@@ -4,6 +4,7 @@ Tests delta-method uncertainty propagation through kernel statistics.
 """
 
 import numpy as np
+
 from umcp.uncertainty import (
     KernelGradients,
     UncertaintyBounds,

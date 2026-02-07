@@ -18,9 +18,9 @@ import pytest
 pytest.importorskip("fastapi")
 pytest.importorskip("httpx")
 
-from fastapi.testclient import TestClient  # noqa: E402
+from fastapi.testclient import TestClient
 
-from src.umcp.api_umcp import app  # noqa: E402
+from src.umcp.api_umcp import app
 
 
 @pytest.fixture

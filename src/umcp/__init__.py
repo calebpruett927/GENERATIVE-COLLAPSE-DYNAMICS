@@ -39,7 +39,6 @@ __all__ = [
     "KernelOutput",
     # Measurement engine (raw data → Ψ(t) → invariants)
     "MeasurementEngine",
-    "measurement_engine",
     # Computational optimizations (KERNEL_SPECIFICATION.md Lemmas 1-34)
     "OptimizedKernelComputer",
     "Regime",
@@ -66,6 +65,7 @@ __all__ = [
     "get_closure_loader",
     "get_root_validator",
     "get_umcp_files",
+    "measurement_engine",
     "propagate_uncertainty",
     "safe_tau_R",
     # Mathematical architecture (MATHEMATICAL_ARCHITECTURE.md)

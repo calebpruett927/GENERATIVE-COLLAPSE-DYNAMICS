@@ -7,6 +7,7 @@ the formal specifications in KERNEL_SPECIFICATION.md.
 
 import numpy as np
 import pytest
+
 from umcp.kernel_optimized import (
     ErrorBounds,
     KernelOutputs,
