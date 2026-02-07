@@ -1,6 +1,6 @@
 import pytest
 
-from src.umcp.logging_utils import HealthCheck, StructuredLogger, get_logger
+from umcp.logging_utils import HealthCheck, StructuredLogger, get_logger
 
 
 def test_structured_logger_basic():

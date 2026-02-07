@@ -4,7 +4,7 @@ from pathlib import Path
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
 
-from src.umcp.closures import ClosureLoader, get_closure_loader
+from umcp.closures import ClosureLoader, get_closure_loader
 
 
 def test_closure_loader_init():

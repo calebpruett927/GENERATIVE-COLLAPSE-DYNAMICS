@@ -4,7 +4,7 @@ from pathlib import Path
 
 from _pytest.monkeypatch import MonkeyPatch
 
-from src.umcp.file_refs import UMCPFiles, get_umcp_files
+from umcp.file_refs import UMCPFiles, get_umcp_files
 
 
 def test_umcpfiles_init():

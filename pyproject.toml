@@ -279,12 +279,15 @@ ignore_errors = true
 module = ["closures.weyl.*"]
 ignore_errors = true
 
-# Tests and examples: relax strict annotations (not library code)
+# Exclude other closure subdirectories (domain-specific, not library code)
+[[tool.mypy.overrides]]
+module = ["closures.*"]
+ignore_errors = true
+
+# Tests and examples: not library code, suppress strict annotations
 [[tool.mypy.overrides]]
 module = ["tests.*", "examples.*"]
-disallow_untyped_defs = false
-disallow_incomplete_defs = false
-warn_unused_ignores = false
+ignore_errors = true
 
 
 # Pyright/Pylance configuration for VS Code

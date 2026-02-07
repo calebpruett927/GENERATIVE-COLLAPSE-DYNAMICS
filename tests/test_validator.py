@@ -1,4 +1,4 @@
-from src.umcp.validator import RootFileValidator, get_root_validator
+from umcp.validator import RootFileValidator, get_root_validator
 
 
 def test_validator_init():

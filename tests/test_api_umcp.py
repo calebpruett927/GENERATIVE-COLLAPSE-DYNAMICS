@@ -10,7 +10,7 @@ import pytest
 try:
     from fastapi.testclient import TestClient
 
-    from src.umcp import api_umcp
+    from umcp import api_umcp
 
     FASTAPI_AVAILABLE = True
 except ImportError:

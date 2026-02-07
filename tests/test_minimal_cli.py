@@ -1,6 +1,6 @@
 import pytest
 
-from src.umcp import minimal_cli
+from umcp import minimal_cli
 
 
 def test_main_runs():

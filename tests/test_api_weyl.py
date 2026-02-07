@@ -20,7 +20,7 @@ pytest.importorskip("httpx")
 
 from fastapi.testclient import TestClient
 
-from src.umcp.api_umcp import app
+from umcp.api_umcp import app
 
 
 @pytest.fixture
