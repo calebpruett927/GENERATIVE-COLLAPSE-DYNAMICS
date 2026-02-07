@@ -2452,9 +2452,9 @@ KINEMATICS_EQUATIONS: dict[str, dict[str, Any]] = {  # type: ignore[misc]
         "latex": r"H = \frac{v_0^2 \sin^2(\theta)}{2g}",
         "inputs": {"v0": "initial velocity", "theta": "launch angle (rad)", "g": "gravity"},
         "output": "position",
-        "calculate": lambda v0, theta, g=9.80665: v0**2 * np.sin(theta) ** 2 / (2 * g)
-        if np is not None and g != 0
-        else 0,
+        "calculate": lambda v0, theta, g=9.80665: (
+            v0**2 * np.sin(theta) ** 2 / (2 * g) if np is not None and g != 0 else 0
+        ),
     },
     "projectile_time_flight": {
         "name": "Projectile Time of Flight",

@@ -99,9 +99,20 @@ RAW_HEADERS = ["t", "month", "revenue", "expenses", "cogs", "cashflow", "recorde
 TRACE_HEADERS = ["t", "month", "c_1", "c_2", "c_3", "c_4", "oor_1", "oor_2", "oor_3", "oor_4"]
 INVARIANT_HEADERS = ["t", "month", "F", "omega", "S", "C", "kappa", "IC", "tau_R", "regime", "critical"]
 LEDGER_HEADERS = [
-    "weld_id", "t0", "t1", "month_from", "month_to",
-    "dk_ledger", "dk_budget", "D_omega", "D_C", "R", "tau_R",
-    "residual_s", "tol_seam", "pass",
+    "weld_id",
+    "t0",
+    "t1",
+    "month_from",
+    "month_to",
+    "dk_ledger",
+    "dk_budget",
+    "D_omega",
+    "D_C",
+    "R",
+    "tau_R",
+    "residual_s",
+    "tol_seam",
+    "pass",
 ]
 
 
@@ -216,10 +227,17 @@ def cmd_record(args: argparse.Namespace) -> None:
     # Append to raw CSV
     with open(raw_path, "a", encoding="utf-8", newline="") as f:
         w = csv.writer(f)
-        w.writerow([
-            t, args.month, args.revenue, args.expenses, args.cogs, args.cashflow,
-            datetime.now(UTC).isoformat(),
-        ])
+        w.writerow(
+            [
+                t,
+                args.month,
+                args.revenue,
+                args.expenses,
+                args.cogs,
+                args.cashflow,
+                datetime.now(UTC).isoformat(),
+            ]
+        )
 
     # Quick embed and report
     targets = _get_targets(config)
@@ -292,13 +310,20 @@ def cmd_analyze(args: argparse.Namespace) -> None:
         trace_data.append(embedded.c)
 
         # Trace row
-        trace_rows.append({
-            "t": t, "month": row["month"],
-            "c_1": embedded.c[0], "c_2": embedded.c[1],
-            "c_3": embedded.c[2], "c_4": embedded.c[3],
-            "oor_1": embedded.oor_flags[0], "oor_2": embedded.oor_flags[1],
-            "oor_3": embedded.oor_flags[2], "oor_4": embedded.oor_flags[3],
-        })
+        trace_rows.append(
+            {
+                "t": t,
+                "month": row["month"],
+                "c_1": embedded.c[0],
+                "c_2": embedded.c[1],
+                "c_3": embedded.c[2],
+                "c_4": embedded.c[3],
+                "oor_1": embedded.oor_flags[0],
+                "oor_2": embedded.oor_flags[1],
+                "oor_3": embedded.oor_flags[2],
+                "oor_4": embedded.oor_flags[3],
+            }
+        )
 
         # Compute tau_R
         tau_R_val = float("inf")
@@ -321,15 +346,21 @@ def cmd_analyze(args: argparse.Namespace) -> None:
 
         tau_display = "INF_REC" if math.isinf(kernel.tau_R) else str(int(kernel.tau_R))
 
-        inv_rows.append({
-            "t": t, "month": row["month"],
-            "F": kernel.F, "omega": kernel.omega,
-            "S": kernel.S, "C": kernel.C,
-            "kappa": kernel.kappa, "IC": kernel.IC,
-            "tau_R": tau_display,
-            "regime": regime.value,
-            "critical": regime == Regime.CRITICAL,
-        })
+        inv_rows.append(
+            {
+                "t": t,
+                "month": row["month"],
+                "F": kernel.F,
+                "omega": kernel.omega,
+                "S": kernel.S,
+                "C": kernel.C,
+                "kappa": kernel.kappa,
+                "IC": kernel.IC,
+                "tau_R": tau_display,
+                "regime": regime.value,
+                "critical": regime == Regime.CRITICAL,
+            }
+        )
 
     # Write trace CSV
     trace_path = ws / TRACE_CSV
@@ -381,16 +412,24 @@ def cmd_analyze(args: argparse.Namespace) -> None:
 
         weld_id = f"W-{curr['month']}"
 
-        ledger_rows.append({
-            "weld_id": weld_id,
-            "t0": prev["t"], "t1": curr["t"],
-            "month_from": prev["month"], "month_to": curr["month"],
-            "dk_ledger": dk_ledger, "dk_budget": dk_budget,
-            "D_omega": D_omega, "D_C": D_C,
-            "R": R, "tau_R": curr["tau_R"],
-            "residual_s": residual, "tol_seam": FINANCE_TOL_SEAM,
-            "pass": "PASS" if passed else "FAIL",
-        })
+        ledger_rows.append(
+            {
+                "weld_id": weld_id,
+                "t0": prev["t"],
+                "t1": curr["t"],
+                "month_from": prev["month"],
+                "month_to": curr["month"],
+                "dk_ledger": dk_ledger,
+                "dk_budget": dk_budget,
+                "D_omega": D_omega,
+                "D_C": D_C,
+                "R": R,
+                "tau_R": curr["tau_R"],
+                "residual_s": residual,
+                "tol_seam": FINANCE_TOL_SEAM,
+                "pass": "PASS" if passed else "FAIL",
+            }
+        )
 
     # Write ledger
     ledger_path = ws / LEDGER_CSV
@@ -414,8 +453,9 @@ def cmd_analyze(args: argparse.Namespace) -> None:
             regime_str = "◆ WATCH"
         else:
             regime_str = "● STABLE"
-        print(f"{r['month']:>8s}  {r['omega']:7.4f}  {r['F']:7.4f}  "
-              f"{r['IC']:7.4f}  {r['tau_R']:>7s}  {regime_str:>10s}")
+        print(
+            f"{r['month']:>8s}  {r['omega']:7.4f}  {r['F']:7.4f}  {r['IC']:7.4f}  {r['tau_R']:>7s}  {regime_str:>10s}"
+        )
 
     print()
     if ledger_rows:
@@ -428,9 +468,11 @@ def cmd_analyze(args: argparse.Namespace) -> None:
 
         for lr in ledger_rows:
             status = "✓" if lr["pass"] == "PASS" else "✗"
-            print(f"  {status} {lr['month_from']} → {lr['month_to']}: "
-                  f"Δκ={lr['dk_ledger']:+.5f}  s={lr['residual_s']:+.5f}  "
-                  f"τ_R={lr['tau_R']}")
+            print(
+                f"  {status} {lr['month_from']} → {lr['month_to']}: "
+                f"Δκ={lr['dk_ledger']:+.5f}  s={lr['residual_s']:+.5f}  "
+                f"τ_R={lr['tau_R']}"
+            )
 
     print()
     print(f"Trace:      {trace_path}")
@@ -572,8 +614,13 @@ def main() -> None:
     p_init.add_argument("--revenue-target", type=float, required=True, help="Monthly revenue target ($)")
     p_init.add_argument("--expense-budget", type=float, required=True, help="Monthly expense budget ($)")
     p_init.add_argument("--cashflow-target", type=float, required=True, help="Monthly cash flow target ($)")
-    p_init.add_argument("--weights", type=float, nargs=4, default=None,
-                        help="Coordinate weights [rev, exp, margin, cf] (default: 0.30 0.25 0.25 0.20)")
+    p_init.add_argument(
+        "--weights",
+        type=float,
+        nargs=4,
+        default=None,
+        help="Coordinate weights [rev, exp, margin, cf] (default: 0.30 0.25 0.25 0.20)",
+    )
     p_init.add_argument("--workspace", type=str, default=None, help="Workspace directory")
 
     # record

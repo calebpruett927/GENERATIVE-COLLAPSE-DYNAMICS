@@ -167,14 +167,16 @@ def main() -> None:
     fig_regime = go.Figure()
     regime_y = {"STABLE": 1, "WATCH": 2, "COLLAPSE": 3, "CRITICAL": 4}
     colors = [REGIME_COLORS.get(r, "#999") for r in df_inv["regime"]]
-    fig_regime.add_trace(go.Bar(
-        x=df_inv["month"],
-        y=[regime_y.get(r, 0) for r in df_inv["regime"]],
-        marker_color=colors,
-        text=df_inv["regime"],
-        textposition="auto",
-        hovertemplate="Month: %{x}<br>Regime: %{text}<extra></extra>",
-    ))
+    fig_regime.add_trace(
+        go.Bar(
+            x=df_inv["month"],
+            y=[regime_y.get(r, 0) for r in df_inv["regime"]],
+            marker_color=colors,
+            text=df_inv["regime"],
+            textposition="auto",
+            hovertemplate="Month: %{x}<br>Regime: %{text}<extra></extra>",
+        )
+    )
     fig_regime.update_layout(
         yaxis={"tickvals": [1, 2, 3, 4], "ticktext": ["STABLE", "WATCH", "COLLAPSE", "CRITICAL"]},
         height=250,
@@ -185,26 +187,36 @@ def main() -> None:
     # ---- Kernel Invariants ----
     st.subheader("Kernel Invariants")
 
-    fig_inv = make_subplots(rows=2, cols=2,
-                            subplot_titles=("Drift (ω)", "Fidelity (F)", "Entropy (S)", "Integrity (IC)"))
+    fig_inv = make_subplots(
+        rows=2, cols=2, subplot_titles=("Drift (ω)", "Fidelity (F)", "Entropy (S)", "Integrity (IC)")
+    )
 
-    fig_inv.add_trace(go.Scatter(x=df_inv["month"], y=df_inv["omega"], mode="lines+markers",
-                                  name="ω", line={"color": "#f44336"}), row=1, col=1)
-    fig_inv.add_hline(y=0.038, line_dash="dash", line_color="green", annotation_text="Stable threshold",
-                      row=1, col=1)
-    fig_inv.add_hline(y=0.30, line_dash="dash", line_color="red", annotation_text="Collapse threshold",
-                      row=1, col=1)
+    fig_inv.add_trace(
+        go.Scatter(x=df_inv["month"], y=df_inv["omega"], mode="lines+markers", name="ω", line={"color": "#f44336"}),
+        row=1,
+        col=1,
+    )
+    fig_inv.add_hline(y=0.038, line_dash="dash", line_color="green", annotation_text="Stable threshold", row=1, col=1)
+    fig_inv.add_hline(y=0.30, line_dash="dash", line_color="red", annotation_text="Collapse threshold", row=1, col=1)
 
-    fig_inv.add_trace(go.Scatter(x=df_inv["month"], y=df_inv["F"], mode="lines+markers",
-                                  name="F", line={"color": "#4caf50"}), row=1, col=2)
+    fig_inv.add_trace(
+        go.Scatter(x=df_inv["month"], y=df_inv["F"], mode="lines+markers", name="F", line={"color": "#4caf50"}),
+        row=1,
+        col=2,
+    )
 
-    fig_inv.add_trace(go.Scatter(x=df_inv["month"], y=df_inv["S"], mode="lines+markers",
-                                  name="S", line={"color": "#2196f3"}), row=2, col=1)
+    fig_inv.add_trace(
+        go.Scatter(x=df_inv["month"], y=df_inv["S"], mode="lines+markers", name="S", line={"color": "#2196f3"}),
+        row=2,
+        col=1,
+    )
 
-    fig_inv.add_trace(go.Scatter(x=df_inv["month"], y=df_inv["IC"], mode="lines+markers",
-                                  name="IC", line={"color": "#9c27b0"}), row=2, col=2)
-    fig_inv.add_hline(y=0.30, line_dash="dash", line_color="red", annotation_text="Critical threshold",
-                      row=2, col=2)
+    fig_inv.add_trace(
+        go.Scatter(x=df_inv["month"], y=df_inv["IC"], mode="lines+markers", name="IC", line={"color": "#9c27b0"}),
+        row=2,
+        col=2,
+    )
+    fig_inv.add_hline(y=0.30, line_dash="dash", line_color="red", annotation_text="Critical threshold", row=2, col=2)
 
     fig_inv.update_layout(height=500, showlegend=False, margin={"t": 40, "b": 20})
     st.plotly_chart(fig_inv, use_container_width=True)
@@ -218,13 +230,18 @@ def main() -> None:
 
         fig_coords = go.Figure()
         for col, label in COORDINATE_LABELS.items():
-            fig_coords.add_trace(go.Scatter(
-                x=df_trace["month"], y=df_trace[col],
-                mode="lines+markers", name=label,
-            ))
+            fig_coords.add_trace(
+                go.Scatter(
+                    x=df_trace["month"],
+                    y=df_trace[col],
+                    mode="lines+markers",
+                    name=label,
+                )
+            )
         fig_coords.update_layout(
             yaxis_title="Coordinate value [0, 1]",
-            height=350, margin={"t": 20, "b": 20},
+            height=350,
+            margin={"t": 20, "b": 20},
         )
         st.plotly_chart(fig_coords, use_container_width=True)
 
@@ -248,18 +265,21 @@ def main() -> None:
         # Residual chart
         fig_seam = go.Figure()
         colors_seam = ["#4caf50" if p == "PASS" else "#f44336" for p in df_ledger["pass"]]
-        fig_seam.add_trace(go.Bar(
-            x=df_ledger["month_to"],
-            y=df_ledger["residual_s"],
-            marker_color=colors_seam,
-            text=df_ledger["pass"],
-            hovertemplate="To: %{x}<br>Residual: %{y:.5f}<br>%{text}<extra></extra>",
-        ))
+        fig_seam.add_trace(
+            go.Bar(
+                x=df_ledger["month_to"],
+                y=df_ledger["residual_s"],
+                marker_color=colors_seam,
+                text=df_ledger["pass"],
+                hovertemplate="To: %{x}<br>Residual: %{y:.5f}<br>%{text}<extra></extra>",
+            )
+        )
         fig_seam.add_hline(y=0.005, line_dash="dash", line_color="orange", annotation_text="+tol_seam")
         fig_seam.add_hline(y=-0.005, line_dash="dash", line_color="orange", annotation_text="-tol_seam")
         fig_seam.update_layout(
             yaxis_title="Seam residual (s)",
-            height=300, margin={"t": 20, "b": 20},
+            height=300,
+            margin={"t": 20, "b": 20},
         )
         st.plotly_chart(fig_seam, use_container_width=True)
 

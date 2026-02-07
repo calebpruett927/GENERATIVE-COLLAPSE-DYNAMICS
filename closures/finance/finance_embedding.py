@@ -45,9 +45,9 @@ class FinanceTargets:
     Changing targets requires a new contract variant.
     """
 
-    revenue_target: float    # Monthly revenue target ($)
-    expense_budget: float    # Monthly expense budget ($)
-    cashflow_target: float   # Monthly cash flow target ($)
+    revenue_target: float  # Monthly revenue target ($)
+    expense_budget: float  # Monthly expense budget ($)
+    cashflow_target: float  # Monthly cash flow target ($)
 
     def to_dict(self) -> dict[str, float]:
         return {
@@ -64,11 +64,11 @@ class FinanceRecord:
     These are Tier-0 observables — raw measurements with units (USD).
     """
 
-    month: str           # YYYY-MM format
-    revenue: float       # Monthly revenue ($)
-    expenses: float      # Monthly total expenses ($)
-    cogs: float          # Cost of goods sold ($)
-    cashflow: float      # Operating cash flow ($)
+    month: str  # YYYY-MM format
+    revenue: float  # Monthly revenue ($)
+    expenses: float  # Monthly total expenses ($)
+    cogs: float  # Cost of goods sold ($)
+    cashflow: float  # Operating cash flow ($)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -87,9 +87,9 @@ class EmbeddedFinance:
     Result of Tier-0 embedding: raw → Ψ(t) ∈ [ε, 1-ε]^4.
     """
 
-    c: np.ndarray          # Coordinates [c1, c2, c3, c4]
+    c: np.ndarray  # Coordinates [c1, c2, c3, c4]
     oor_flags: list[bool]  # Out-of-range flags per dimension
-    month: str             # Source month
+    month: str  # Source month
 
 
 def embed_finance(

@@ -27,7 +27,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 from typing import NamedTuple
 
 import numpy as np
@@ -35,7 +35,7 @@ from numpy.typing import NDArray
 from scipy import special
 
 
-class BeyondLimberRegime(str, Enum):
+class BeyondLimberRegime(StrEnum):
     """Beyond-Limber computation regime."""
 
     REQUIRED = "Beyond_Limber_required"  # ℓ < 100

@@ -26,14 +26,14 @@ Reference: Eq. 2 of Nature Comms 15:9295 (2024)
 from __future__ import annotations
 
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 from typing import NamedTuple
 
 import numpy as np
 from numpy.typing import NDArray
 
 
-class WeylRegime(str, Enum):
+class WeylRegime(StrEnum):
     """Weyl transfer function regime classification."""
 
     GR_CONSISTENT = "GR_consistent"  # J ≈ 1, no deviation

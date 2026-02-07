@@ -28,14 +28,14 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 from typing import NamedTuple
 
 import numpy as np
 from numpy.typing import NDArray
 
 
-class NonlinearRegime(str, Enum):
+class NonlinearRegime(StrEnum):
     """Nonlinear regime classification."""
 
     LINEAR = "Linear"  # B ≈ 1

@@ -75,13 +75,23 @@ def main() -> None:
             cashflow / CASHFLOW_TARGET > 1.0 or cashflow < 0,
         ]
 
-        psi_rows.append({
-            "t": t,
-            "c_1": cs[0], "c_2": cs[1], "c_3": cs[2], "c_4": cs[3],
-            "oor_1": str(oor[0]).lower(), "oor_2": str(oor[1]).lower(),
-            "oor_3": str(oor[2]).lower(), "oor_4": str(oor[3]).lower(),
-            "miss_1": "false", "miss_2": "false", "miss_3": "false", "miss_4": "false",
-        })
+        psi_rows.append(
+            {
+                "t": t,
+                "c_1": cs[0],
+                "c_2": cs[1],
+                "c_3": cs[2],
+                "c_4": cs[3],
+                "oor_1": str(oor[0]).lower(),
+                "oor_2": str(oor[1]).lower(),
+                "oor_3": str(oor[2]).lower(),
+                "oor_4": str(oor[3]).lower(),
+                "miss_1": "false",
+                "miss_2": "false",
+                "miss_3": "false",
+                "miss_4": "false",
+            }
+        )
 
         # Kernel invariants
         wts = WEIGHTS
@@ -132,33 +142,62 @@ def main() -> None:
             regime_label = "Watch"
             critical_overlay = False
 
-        inv_rows.append({
-            "t": t,
-            "omega": omega,
-            "F": F,
-            "S": S,
-            "C": C,
-            "tau_R": tau_R,
-            "kappa": kappa,
-            "IC": IC,
-            "regime": {
-                "label": regime_label,
-                "critical_overlay": critical_overlay,
-            },
-            "kernel_optional": {"IC_min": min(cs)},
-        })
+        inv_rows.append(
+            {
+                "t": t,
+                "omega": omega,
+                "F": F,
+                "S": S,
+                "C": C,
+                "tau_R": tau_R,
+                "kappa": kappa,
+                "IC": IC,
+                "regime": {
+                    "label": regime_label,
+                    "critical_overlay": critical_overlay,
+                },
+                "kernel_optional": {"IC_min": min(cs)},
+            }
+        )
 
     # Write psi.csv
     with PSI_CSV.open("w", encoding="utf-8", newline="") as f:
         w = csv.writer(f)
-        w.writerow(["t", "c_1", "c_2", "c_3", "c_4",
-                     "oor_1", "oor_2", "oor_3", "oor_4",
-                     "miss_1", "miss_2", "miss_3", "miss_4"])
+        w.writerow(
+            [
+                "t",
+                "c_1",
+                "c_2",
+                "c_3",
+                "c_4",
+                "oor_1",
+                "oor_2",
+                "oor_3",
+                "oor_4",
+                "miss_1",
+                "miss_2",
+                "miss_3",
+                "miss_4",
+            ]
+        )
         for pr in psi_rows:
-            w.writerow([pr["t"],
-                        pr["c_1"], pr["c_2"], pr["c_3"], pr["c_4"],
-                        pr["oor_1"], pr["oor_2"], pr["oor_3"], pr["oor_4"],
-                        pr["miss_1"], pr["miss_2"], pr["miss_3"], pr["miss_4"]])
+            w.writerow(
+                [
+                    pr["t"],
+                    pr["c_1"],
+                    pr["c_2"],
+                    pr["c_3"],
+                    pr["c_4"],
+                    pr["oor_1"],
+                    pr["oor_2"],
+                    pr["oor_3"],
+                    pr["oor_4"],
+                    pr["miss_1"],
+                    pr["miss_2"],
+                    pr["miss_3"],
+                    pr["miss_4"],
+                ]
+            )
 
     # Write invariants.json
     inv = {
@@ -189,9 +228,11 @@ def main() -> None:
         regime_label = str(regime_info["label"]) if isinstance(regime_info, dict) else str(regime_info)
         tr = r["tau_R"]
         t_idx = int(str(r["t"]))
-        print(f"  t={t_idx:2d} ({rows[t_idx]['month']}): "
-              f"ω={r['omega']:.4f} F={r['F']:.4f} IC={r['IC']:.4f} "
-              f"τ_R={tr!s:>7s} → {regime_label}")
+        print(
+            f"  t={t_idx:2d} ({rows[t_idx]['month']}): "
+            f"ω={r['omega']:.4f} F={r['F']:.4f} IC={r['IC']:.4f} "
+            f"τ_R={tr!s:>7s} → {regime_label}"
+        )
 
 
 if __name__ == "__main__":

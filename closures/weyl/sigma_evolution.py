@@ -38,7 +38,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 from typing import NamedTuple
 
 import numpy as np
@@ -46,7 +46,7 @@ from numpy.typing import NDArray
 from scipy import optimize
 
 
-class SigmaRegime(str, Enum):
+class SigmaRegime(StrEnum):
     """Σ deviation regime classification."""
 
     GR_CONSISTENT = "GR_consistent"  # |Σ₀| < 0.1
@@ -55,7 +55,7 @@ class SigmaRegime(str, Enum):
     UNDEFINED = "Undefined"
 
 
-class GzModel(str, Enum):
+class GzModel(StrEnum):
     """g(z) evolution models from the paper."""
 
     STANDARD = "standard"  # g(z) = Ω_Λ(z)

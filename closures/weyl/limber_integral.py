@@ -33,7 +33,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 from typing import NamedTuple
 
 import numpy as np
@@ -41,7 +41,7 @@ from numpy.typing import NDArray
 from scipy import integrate
 
 
-class LimberRegime(str, Enum):
+class LimberRegime(StrEnum):
     """Limber approximation validity regime."""
 
     VALID = "Limber_valid"  # ℓ ≥ 200
