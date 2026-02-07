@@ -12,7 +12,7 @@
   <a href="https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/actions/workflows/validate.yml"><img src="https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/actions/workflows/validate.yml/badge.svg" alt="CI"></a>
   <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.11+-3776AB?logo=python&logoColor=white" alt="Python 3.11+"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License: MIT"></a>
-  <a href="tests/"><img src="https://img.shields.io/badge/tests-1002%20passing-brightgreen?logo=pytest" alt="Tests: 1002 passing"></a>
+  <a href="tests/"><img src="https://img.shields.io/badge/tests-1060%20passing-brightgreen?logo=pytest" alt="Tests: 1060 passing"></a>
   <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-1.5.0-blue" alt="Version: 1.5.0"></a>
   <a href="src/umcp/api_umcp.py"><img src="https://img.shields.io/badge/API-37%2B%20endpoints-orange?logo=fastapi" alt="API: 37+ endpoints"></a>
 </p>
