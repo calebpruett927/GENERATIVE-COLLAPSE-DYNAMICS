@@ -22,7 +22,7 @@ This document provides the **complete formal specification** of the UMCP kernel.
 **Frozen Means Consistent, Not Constant**: The parameters frozen in a contract (ε, p, α, λ, tol_seam) are not arbitrary design choices locked for convenience. They are frozen because **the seam demands it**. A seam is a verification boundary: you run forward, things collapse, and something returns. To verify that what returned is the same thing that collapsed, the rules of measurement must be identical on both sides. If ε changes between the outbound run and the return, closures cannot be compared. If tol_seam shifts, the PASS/FAIL boundary moves, and "CONFORMANT" on one side of collapse means something different than "CONFORMANT" on the other. The values are consistent across the seam — from front to end, through collapse and back. That is what frozen means in this protocol.
 
 **See Also**: [TIER_SYSTEM.md](TIER_SYSTEM.md) for the complete tier architecture and constitutional clauses.  
-**See Also**: [TAU_R_STAR_THERMODYNAMICS.md](TAU_R_STAR_THERMODYNAMICS.md) for the complete τ_R* analysis — phase diagram, trapping threshold, arrow of time, critical exponents, and testable predictions derived from the budget identity (Def 11).
+**See Also**: [src/umcp/tau_r_star.py](src/umcp/tau_r_star.py) for the complete τ_R* diagnostic implementation — phase diagram, trapping threshold, arrow of time, critical exponents, and testable predictions derived from the budget identity (Def 11).
 
 ---
 
@@ -163,7 +163,7 @@ s := Δκ_budget - Δκ_ledger
 
 Typed censoring is an **algebraic safeguard**: it prevents "infinite credit" artifacts by enforcing "no return, no credit." This is not a convenience — it is structural. If you never observed return, you have zero budget for the seam, because the seam does not exist for you. The anti-cheat condition (INF_REC → budget = 0) ensures that continuity cannot be synthesized from structure alone — it must be measured.
 
-**Extended analysis**: The budget model solved for τ_R yields the critical return delay τ_R* = (Γ(ω) + αC + Δκ) / R, which is a thermodynamic potential with regime-dependent dominance, a trapping threshold at c ≈ 0.60, critical exponent zν = 1, and an emergent arrow of time. See [TAU_R_STAR_THERMODYNAMICS.md](TAU_R_STAR_THERMODYNAMICS.md) for the complete analysis.
+**Extended analysis**: The budget model solved for τ_R yields the critical return delay τ_R* = (Γ(ω) + αC + Δκ) / R, which is a thermodynamic potential with regime-dependent dominance, a trapping threshold at c ≈ 0.315 (where Γ(ω) = α), critical exponent zν = 1, and an emergent arrow of time. See [src/umcp/tau_r_star.py](src/umcp/tau_r_star.py) for the complete implementation.
 
 ---
 
@@ -1202,7 +1202,7 @@ In every case, the framework stops working if the prescription is removed. The c
 
 UMCP's frozen parameters are **not prescribed**. They are the unique values where seams close consistently across all domains.
 
-**$p = 3$ is not "we chose cubic."** It is the exponent where $\Gamma(\omega) = \omega^p/(1-\omega)$ produces a budget that separates all three regimes simultaneously. At $p = 2$: Watch and Collapse do not separate cleanly. At $p = 4$: Stable becomes degenerate. The cubic is the unique exponent where the crossover from $\omega^p$ suppression to $1/(1-\omega)$ pole dominance happens near $\omega \approx 0.30$–$0.40$ — exactly the Watch-to-Collapse boundary defined by the data (see TAU_R_STAR_THERMODYNAMICS.md §5.5).
+**$p = 3$ is not "we chose cubic."** It is the exponent where $\Gamma(\omega) = \omega^p/(1-\omega)$ produces a budget that separates all three regimes simultaneously. At $p = 2$: Watch and Collapse do not separate cleanly. At $p = 4$: Stable becomes degenerate. The cubic is the unique exponent where the crossover from $\omega^p$ suppression to $1/(1-\omega)$ pole dominance happens near $\omega \approx 0.30$–$0.40$ — exactly the Watch-to-Collapse boundary defined by the data (see `src/umcp/tau_r_star.py` module docstring §5.5).
 
 **$\text{tol\_seam} = 0.005$ is not "we chose a tolerance."** It is the width at which $\text{IC} \leq F$ holds at 100% across 8 domains. Tighter, and boundary cases produce false violations. Wider, and the bound loses diagnostic power — genuine heterogeneity violations become invisible. The seam tells you its own width.
 

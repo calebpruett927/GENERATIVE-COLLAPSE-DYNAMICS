@@ -12,7 +12,7 @@ Validates:
 - Prediction verification (§6 testable predictions)
 - Edge cases: pole at ω=1, zero R, extreme values
 
-Reference: TAU_R_STAR_THERMODYNAMICS.md
+Reference: KERNEL_SPECIFICATION.md §3 (Budget Model), §5 (Empirical Verification)
 Reference: KERNEL_SPECIFICATION.md §5
 """
 
@@ -25,8 +25,6 @@ import pytest
 
 from umcp.frozen_contract import (
     ALPHA,
-    EPSILON,
-    P_EXPONENT,
     TOL_SEAM,
     Regime,
     gamma_omega,
@@ -50,7 +48,6 @@ from umcp.tau_r_star import (
     verify_R_min_divergence,
     verify_trapping_threshold,
 )
-
 
 # =============================================================================
 # τ_R* CORE COMPUTATION
@@ -239,7 +236,7 @@ class TestTrapping:
         trapped_high_C = is_trapped(omega, 0.50)
         # At least one should differ (high C provides escape route)
         if trapped_low_C:
-            assert not trapped_high_C or True  # High C should help escape
+            assert not trapped_high_C  # High C should help escape
 
 
 # =============================================================================
@@ -388,7 +385,7 @@ class TestTier1Identities:
         F = 0.01
         kappa = -10.0
         IC = math.exp(kappa)  # ≈ 4.5e-5
-        id_F, id_IC, bound, failures = check_tier1_identities(F, omega, IC, kappa)
+        id_F, id_IC, bound, _failures = check_tier1_identities(F, omega, IC, kappa)
         assert id_F is True
         assert id_IC is True
         assert bound is True
@@ -402,20 +399,24 @@ class TestTier1Identities:
 class TestDiagnose:
     """Test complete diagnostic pipeline."""
 
-    def _make_consistent_state(
-        self, omega: float = 0.1, C: float = 0.1
-    ) -> dict[str, float]:
-        """Create a Tier-1 consistent state."""
-        F = 1.0 - omega
-        S = 0.1
-        kappa = -0.5
-        IC = math.exp(kappa)
-        return {"omega": omega, "F": F, "S": S, "C": C, "kappa": kappa, "IC": IC}
+    @staticmethod
+    def _make_diagnose_call(
+        omega: float = 0.1, C: float = 0.1, R: float = 0.01,
+        F: float | None = None, S: float = 0.1,
+        kappa: float = -0.5, IC: float | None = None,
+    ) -> ThermodynamicDiagnostic:
+        """Create a Tier-1 consistent state and run diagnose."""
+        if F is None:
+            F = 1.0 - omega
+        if IC is None:
+            IC = math.exp(kappa)
+        return diagnose(
+            omega=omega, F=F, S=S, C=C, kappa=kappa, IC=IC, R=R,
+        )
 
     def test_stable_state_diagnosis(self) -> None:
         """Stable state: small τ_R*, surplus or low deficit."""
-        state = self._make_consistent_state(omega=0.02, C=0.05)
-        diag = diagnose(**state, R=0.01)
+        diag = self._make_diagnose_call(omega=0.02, C=0.05)
         assert isinstance(diag, ThermodynamicDiagnostic)
         assert diag.tier1_identity_F is True
         assert diag.tier1_identity_IC is True
@@ -427,8 +428,7 @@ class TestDiagnose:
 
     def test_collapse_state_diagnosis(self) -> None:
         """Collapse state: large τ_R*, drift dominates."""
-        state = self._make_consistent_state(omega=0.50, C=0.15)
-        diag = diagnose(**state, R=0.01)
+        diag = self._make_diagnose_call(omega=0.50, C=0.15)
         assert diag.regime == Regime.COLLAPSE or diag.regime == Regime.CRITICAL
         assert diag.dominance == DominanceTerm.DRIFT
         # Large τ_R* due to Γ(0.5) = 0.125/0.5 = 0.25
@@ -436,15 +436,13 @@ class TestDiagnose:
 
     def test_diagnostic_frozen(self) -> None:
         """ThermodynamicDiagnostic is frozen."""
-        state = self._make_consistent_state()
-        diag = diagnose(**state, R=0.01)
+        diag = self._make_diagnose_call()
         with pytest.raises(AttributeError):
             diag.tau_R_star = 0.0  # type: ignore[misc]
 
     def test_to_dict(self) -> None:
         """Serialization to dict works."""
-        state = self._make_consistent_state()
-        diag = diagnose(**state, R=0.01)
+        diag = self._make_diagnose_call()
         d = diag.to_dict()
         assert isinstance(d, dict)
         assert d["phase"] in ["SURPLUS", "DEFICIT", "FREE_RETURN", "TRAPPED", "POLE"]
@@ -453,9 +451,8 @@ class TestDiagnose:
 
     def test_R_positive_required(self) -> None:
         """Diagnose raises on R ≤ 0."""
-        state = self._make_consistent_state()
         with pytest.raises(ValueError, match="R must be positive"):
-            diagnose(**state, R=0.0)
+            self._make_diagnose_call(R=0.0)
 
     def test_tier0_failure_warning(self) -> None:
         """Tier-0 failure produces warnings."""
@@ -634,14 +631,12 @@ class TestEdgeCases:
 
     def test_very_small_R(self) -> None:
         """Very small R amplifies τ_R*."""
-        state = {"omega": 0.1, "F": 0.9, "S": 0.1, "C": 0.1, "kappa": -0.5, "IC": math.exp(-0.5)}
-        diag = diagnose(**state, R=1e-10)
+        diag = diagnose(omega=0.1, F=0.9, S=0.1, C=0.1, kappa=-0.5, IC=math.exp(-0.5), R=1e-10)
         assert diag.tau_R_star > 1e8  # Hugely amplified
 
     def test_large_R(self) -> None:
         """Large R suppresses τ_R*."""
-        state = {"omega": 0.1, "F": 0.9, "S": 0.1, "C": 0.1, "kappa": -0.5, "IC": math.exp(-0.5)}
-        diag = diagnose(**state, R=1000.0)
+        diag = diagnose(omega=0.1, F=0.9, S=0.1, C=0.1, kappa=-0.5, IC=math.exp(-0.5), R=1000.0)
         assert diag.tau_R_star < 0.001  # Suppressed
 
     def test_all_enum_values_accessible(self) -> None:

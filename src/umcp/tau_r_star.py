@@ -17,15 +17,71 @@ All computations use frozen constants from the contract. Promoting any
 Tier-2 diagnostic produced here to a Tier-0 gate requires a formal seam
 weld and contract version bump.
 
-Reference: TAU_R_STAR_THERMODYNAMICS.md (Defs T1–T6, Theorems T1–T9)
-Reference: KERNEL_SPECIFICATION.md §3 (Def 11, Budget Model)
-Reference: KERNEL_SPECIFICATION.md §5 (Empirical Verification)
+Implemented Theorems & Definitions (from budget identity Def 11):
+    Def  T1: τ_R* = (Γ(ω) + αC + Δκ) / R — critical return delay
+    Def  T2: Γ(ω) = ω^p/(1-ω+ε) — simple pole at ω=1, residue 1
+    Def  T3: τ_R* phase surface over (ω, C) space
+    Def  T4: Free-return surface Δκ* = −Γ(ω) − αC
+    Def  T5: R as the only externally controllable variable
+    Def  T6: Δκ as the unique temporal variable (arrow of time)
+    Thm  T1: Regime-dependent dominance (STABLE→Δκ, WATCH→αC, COLLAPSE→Γ)
+    Thm  T2: Surplus (τ_R*<0) and deficit (τ_R*>0) phases
+    Thm  T3: Trapping threshold at c_trap where Γ(ω_trap) = α
+    Thm  T4: R_critical = numerator / tol_seam
+    Thm  T5: R_min diverges as 1/(1-ω); R_min·(1-ω) → 1/tol_seam = 200
+    Thm  T6: Degradation budget paradox — near-death systems have the
+             largest degradation budgets because Γ → ∞. This is not a
+             paradox: cost is already absorbed into the existing catastrophe.
+    Thm  T7: Asymmetric arrow of time (Second Law analog) —
+             degradation is free (releases surplus), improvement costs time.
+             Improvement costs ~200× more than degradation at c = 0.60.
+             The arrow emerges from the budget identity without postulate.
+    Thm  T8: Path dependence and multi-step penalty — N-step transitions
+             cost more than direct paths; each step incurs Γ(ω_k) overhead.
+             No reversible limit exists (irreducible Γ per observation).
+    Thm  T9: Measurement cost (Zeno analog) — N observations of a
+             stationary system incur N×Γ(ω) overhead. Observing more makes
+             seam closure harder. Optimal: observe as rarely as allowed.
+
+Physical Analogs & Universality (§5):
+    - Critical exponent zν = 1 (simple pole) — between mean-field (1/2)
+      and Ising 2D (≈2.17). Cleanest possible critical behavior.
+    - Thermodynamic correspondence: R↔T, Γ↔TΔS_irr, Δκ↔W_rev,
+      τ_R*<0 ↔ exothermic, τ_R*>0 ↔ endothermic.
+    - Black hole analog: ω³ numerator parallels M³ in Hawking evaporation.
+      Pole at ω=1 is "event horizon" — information cannot return.
+    - Landau theory: τ_R* is susceptibility χ ~ 1/|1-ω|; ω is order
+      parameter; ordered (ω≪1) vs disordered (ω→1) phases.
+    - p=3 Goldilocks: cubic is the unique exponent where the ω^p→1/(1-ω)
+      crossover happens at ω≈0.30–0.40 (Watch-to-Collapse boundary).
+
+Foundational Results (from kernel analysis):
+    F1: AM-GM gap = Fisher Information = Var(c)/(2·c̄) — exact.
+    F2: S ≤ h(F) tight bound — entropy controlled by drift proxy.
+    F3: IC and κ are renormalization group invariants (scale-free).
+    F4: Fisher metric volume diverges near collapse (det G → ∞ as c_i → 0).
+    F5: Dimensional fragility: c* = 0.70^(1/n) — higher dimensions need
+        higher per-component fidelity to avoid collapse.
+
+Capabilities enabled:
+    - Complete thermodynamic potential from five frozen constants (no fitting)
+    - Arrow of time without postulate (Second Law from budget arithmetic)
+    - Measurement cost theory (Zeno analog: observation has cost)
+    - Sharp decision boundary at c_trap (recoverable vs requires intervention)
+    - Natural clock R_natural = 1/τ_R* as system heartbeat metric
+    - Cross-domain applicability (finance, physics, biology, engineering)
+
+References:
+    KERNEL_SPECIFICATION.md §3 (Def 11, Budget Model)
+    KERNEL_SPECIFICATION.md §5 (Empirical Verification)
+    AXIOM.md (Core axiom, constants, rederived principles)
+    MATHEMATICAL_ARCHITECTURE.md (interconnection map)
+    TIER_SYSTEM.md (Tier-0/1/2 architecture)
 
 Interconnections:
     - Reads: frozen_contract.py (gamma_omega, cost_curvature, check_seam_pass)
     - Reads: kernel_optimized.py (OptimizedKernelComputer, KernelOutputs)
     - Reads: seam_optimized.py (SeamChainAccumulator)
-    - Documents: TAU_R_STAR_THERMODYNAMICS.md §1–§9
     - Tests: tests/test_145_tau_r_star.py
 """
 
@@ -43,12 +99,9 @@ from umcp.frozen_contract import (
     TOL_SEAM,
     Regime,
     classify_regime,
-    compute_budget_delta_kappa,
-    compute_seam_residual,
     cost_curvature,
     gamma_omega,
 )
-
 
 # =============================================================================
 # TIER-2 PHASE CLASSIFICATION
@@ -476,7 +529,7 @@ def check_tier1_identities(
         failures.append(f"|IC-exp(κ)|={abs(IC-exp_kappa):.2e} ≥ tol={tol_IC}")
 
     # IC ≤ F (AM-GM)
-    bound_AMGM = IC <= F + tol_seam
+    bound_AMGM = F + tol_seam >= IC
     if not bound_AMGM:
         failures.append(f"IC={IC:.6f} > F+tol={F+tol_seam:.6f} (AM-GM violated)")
 
@@ -695,7 +748,7 @@ def verify_cubic_slowing(
 
     gammas = [gamma_omega(o, p, epsilon) for o in omega_values]
     # Sort by ω
-    pairs = sorted(zip(omega_values, gammas))
+    pairs = sorted(zip(omega_values, gammas, strict=True))
     low_omega, low_gamma = pairs[0]
     high_omega, high_gamma = pairs[-1]
 

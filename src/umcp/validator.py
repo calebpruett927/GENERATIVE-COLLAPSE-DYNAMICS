@@ -361,7 +361,7 @@ class RootFileValidator:
         extension, not a core validation gate. Promotion to a Tier-0 gate
         requires a formal seam weld and contract version bump.
 
-        Reference: TAU_R_STAR_THERMODYNAMICS.md, KERNEL_SPECIFICATION.md §5
+        Reference: KERNEL_SPECIFICATION.md §3, §5
         """
         try:
             inv_path = self.root / "outputs" / "invariants.csv"

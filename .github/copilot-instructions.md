@@ -110,7 +110,7 @@ Extensions use `typing.Protocol` (`ExtensionProtocol` requiring `name`, `version
 | Math identities | `src/umcp/validator.py` (`_validate_invariant_identities`) |
 | Kernel computation | `src/umcp/kernel_optimized.py` |
 | Constants & regimes | `src/umcp/constants.py` |
-| Budget thermodynamics | `TAU_R_STAR_THERMODYNAMICS.md` (τ_R*, phase diagram, arrow of time) |
+| Budget thermodynamics | `src/umcp/tau_r_star.py` (τ_R*, phase diagram, arrow of time) |
 | Prediction scorecard & nuances | `KERNEL_SPECIFICATION.md` §5 (measured accuracy, outliers as limits, rederived principles, seam-derived constants) |
 | Test fixtures | `tests/conftest.py` (first 100 lines) |
 | Casepack structure | `casepacks/hello_world/` |
