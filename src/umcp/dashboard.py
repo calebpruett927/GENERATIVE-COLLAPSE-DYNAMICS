@@ -112,6 +112,21 @@ def _setup_closures_path() -> None:
 _setup_closures_path()
 
 
+def _ensure_closures_path() -> None:
+    """Ensure closures/ package is importable (idempotent, safe to call multiple times).
+
+    This is a safety net for Streamlit subprocesses where _setup_closures_path()
+    may not have resolved the repo root correctly. Uses get_repo_root() which
+    interrogates ``pyproject.toml`` location at runtime.
+    """
+    import sys
+
+    repo_root = get_repo_root()
+    repo_str = str(repo_root)
+    if repo_str not in sys.path:
+        sys.path.insert(0, repo_str)
+
+
 # ============================================================================
 # Constants and Configuration
 # ============================================================================
@@ -7487,6 +7502,8 @@ def render_astronomy_page() -> None:
     if st is None or go is None or pd is None:
         return
 
+    _ensure_closures_path()
+
     st.title("🔭 Astronomy Domain")
     st.caption(
         "ASTRO.INTSTACK.v1 — Stellar luminosity, distance ladder, spectral analysis, evolution, orbits, dynamics"
@@ -7932,6 +7949,8 @@ def render_nuclear_page() -> None:
     """Render interactive Nuclear Physics domain page with all 6 closures."""
     if st is None or go is None or pd is None:
         return
+
+    _ensure_closures_path()
 
     st.title("☢️ Nuclear Physics Domain")
     st.caption(
@@ -8604,6 +8623,8 @@ def render_quantum_page() -> None:
     if st is None or go is None or pd is None:
         return
 
+    _ensure_closures_path()
+
     st.title("🔮 Quantum Mechanics Domain")
     st.caption("QM.INTSTACK.v1 — Born rule, entanglement, tunneling, harmonic oscillator, spin, uncertainty")
 
@@ -9103,6 +9124,8 @@ def render_finance_page() -> None:
     if st is None or go is None or pd is None:
         return
 
+    _ensure_closures_path()
+
     st.title("💰 Finance Domain")
     st.caption("FINANCE.INTSTACK.v1 — Business financial continuity validation via UMCP embedding")
 
@@ -9411,6 +9434,8 @@ def render_rcft_page() -> None:
     """Render interactive RCFT domain page with all 4 closures and professional visualizations."""
     if st is None or go is None or pd is None or np is None:
         return
+
+    _ensure_closures_path()
 
     st.title("🌀 RCFT Domain")
     st.caption(
