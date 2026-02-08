@@ -155,6 +155,24 @@ EXTENSIONS: dict[str, ExtensionInfo] = {
             "Contract linting",
         ],
     ),
+    "thermodynamics": ExtensionInfo(
+        name="thermodynamics",
+        description="τ_R* thermodynamic diagnostic — Tier-2 budget analysis with Tier-0 checks",
+        type="validator",
+        module="umcp.tau_r_star",
+        class_name="ThermodynamicDiagnostic",
+        requires=[],
+        features=[
+            "τ_R* critical return delay computation",
+            "R_critical / R_min estimation",
+            "Thermodynamic phase classification (surplus/deficit/trapped/pole)",
+            "Budget dominance analysis (drift/curvature/memory)",
+            "Trapping threshold computation",
+            "Tier-1 identity verification (F=1−ω, IC≈exp(κ), IC≤F)",
+            "Batch invariant diagnostics",
+            "Prediction verification (§6 testable predictions)",
+        ],
+    ),
 }
 
 

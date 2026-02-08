@@ -97,6 +97,7 @@ class RootFileValidator:
         self._validate_trace_bounds()
         self._validate_invariant_identities()
         self._validate_regime_classification()
+        self._validate_thermodynamic_diagnostic()
 
         # Validate integrity
         self._validate_checksums()
@@ -346,6 +347,61 @@ class RootFileValidator:
                 )
         except Exception as e:
             self.errors.append(f"✗ Error validating regime classification: {e}")
+
+    def _validate_thermodynamic_diagnostic(self) -> None:
+        """Run Tier-2 τ_R* thermodynamic diagnostic on invariant data.
+
+        This is a Tier-2 diagnostic with Tier-0 checks. It reads Tier-1
+        kernel invariants (read-only, no back-edges) and produces:
+        - Budget decomposition (Γ, αC, Δκ)
+        - Phase classification (surplus/deficit/trapped/pole)
+        - Tier-1 identity verification (cross-check of existing checks)
+
+        Results are reported as warnings/info since τ_R* is a diagnostic
+        extension, not a core validation gate. Promotion to a Tier-0 gate
+        requires a formal seam weld and contract version bump.
+
+        Reference: TAU_R_STAR_THERMODYNAMICS.md, KERNEL_SPECIFICATION.md §5
+        """
+        try:
+            inv_path = self.root / "outputs" / "invariants.csv"
+            with open(inv_path) as f:
+                reader = csv.DictReader(f)
+                rows = list(reader)
+
+            if not rows:
+                return  # No data to diagnose (file existence checked elsewhere)
+
+            from .tau_r_star import diagnose
+
+            row = rows[0]
+            omega = float(row["omega"])
+            F = float(row["F"])
+            S = float(row.get("S", 0.0))
+            C = float(row.get("C", 0.0))
+            kappa = float(row["kappa"])
+            IC = float(row["IC"])
+
+            # Default R = 0.01 for diagnostic purposes
+            diag = diagnose(omega=omega, F=F, S=S, C=C, kappa=kappa, IC=IC, R=0.01)
+
+            # Report Tier-0 identity cross-check
+            if diag.tier0_checks_pass:
+                self.passed.append("✓ τ_R* Tier-0 identity cross-check passed")
+            else:
+                for w in diag.warnings:
+                    if "≠" in w or "violated" in w:
+                        self.warnings.append(f"⚠ τ_R* identity cross-check: {w}")
+
+            # Report Tier-2 diagnostic results (informational)
+            self.passed.append(
+                f"✓ τ_R* diagnostic: phase={diag.phase.value}, "
+                f"dominance={diag.dominance.value}, "
+                f"trapped={diag.is_trapped}"
+            )
+
+        except Exception as e:
+            self.warnings.append(f"⚠ τ_R* diagnostic skipped: {e}")
 
     def _validate_checksums(self) -> None:
         """Validate SHA256 checksums in integrity/sha256.txt.

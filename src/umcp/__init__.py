@@ -59,6 +59,9 @@ __all__ = [
     "compute_regime",
     "compute_triad",
     "compute_utils",
+    # τ_R* thermodynamic diagnostic (Tier-2 with Tier-0 checks)
+    "diagnose_thermodynamic",
+    "diagnose_thermodynamic_batch",
     # Frozen contract (The Physics of Coherence)
     "frozen_contract",
     "gamma_omega",
@@ -71,6 +74,8 @@ __all__ = [
     # Mathematical architecture (MATHEMATICAL_ARCHITECTURE.md)
     "ss1m_triad",
     "tau_R_display",
+    # τ_R* thermodynamic diagnostic module
+    "tau_r_star",
     "triad_to_eid12",
     "umcp_extensions",
     "uncertainty",
@@ -91,6 +96,7 @@ from . import (
     frozen_contract,
     measurement_engine,
     ss1m_triad,
+    tau_r_star,
     umcp_extensions,
     uncertainty,
     universal_calculator,
@@ -121,6 +127,8 @@ from .measurement_engine import (
 )
 from .seam_optimized import SeamChainAccumulator
 from .ss1m_triad import EditionTriad, compute_triad, triad_to_eid12, verify_triad
+from .tau_r_star import diagnose as diagnose_thermodynamic
+from .tau_r_star import diagnose_invariants as diagnose_thermodynamic_batch
 from .uncertainty import (
     KernelGradients,
     UncertaintyBounds,
