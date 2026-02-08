@@ -2648,8 +2648,7 @@ async def compute_nuclear_binding(
         from closures.nuclear_physics import compute_binding
 
         result = compute_binding(req.Z, req.A)
-        result_dict = result.to_dict() if hasattr(result, "to_dict") else vars(result)
-        return ClosureResult(result=result_dict, domain="NUC", closure="nuclide_binding")
+        return ClosureResult(result=result._asdict(), domain="NUC", closure="nuclide_binding")
     except ImportError as e:
         raise HTTPException(status_code=500, detail="Nuclear physics closures not available") from e
 
@@ -2664,7 +2663,7 @@ async def compute_nuclear_alpha(
         from closures.nuclear_physics import compute_alpha_decay
 
         result = compute_alpha_decay(req.Z, req.A, req.Q_alpha_MeV)
-        return ClosureResult(result=result, domain="NUC", closure="alpha_decay")
+        return ClosureResult(result=result._asdict(), domain="NUC", closure="alpha_decay")
     except ImportError as e:
         raise HTTPException(status_code=500, detail="Nuclear physics closures not available") from e
 
@@ -2679,7 +2678,7 @@ async def compute_nuclear_shell(
         from closures.nuclear_physics import compute_shell
 
         result = compute_shell(req.Z, req.A)
-        return ClosureResult(result=result, domain="NUC", closure="shell_structure")
+        return ClosureResult(result=result._asdict(), domain="NUC", closure="shell_structure")
     except ImportError as e:
         raise HTTPException(status_code=500, detail="Nuclear physics closures not available") from e
 
@@ -2694,7 +2693,7 @@ async def compute_nuclear_fissility(
         from closures.nuclear_physics import compute_fissility
 
         result = compute_fissility(req.Z, req.A)
-        return ClosureResult(result=result, domain="NUC", closure="fissility")
+        return ClosureResult(result=result._asdict(), domain="NUC", closure="fissility")
     except ImportError as e:
         raise HTTPException(status_code=500, detail="Nuclear physics closures not available") from e
 
@@ -2708,10 +2707,14 @@ async def compute_nuclear_decay_chain(
 ) -> ClosureResult:
     """Compute sequential decay chain from parent nuclide."""
     try:
-        from closures.nuclear_physics import compute_decay_chain
+        from closures.nuclear_physics.decay_chain import ChainStep, compute_decay_chain
 
-        result = compute_decay_chain(Z, A, max_steps=max_steps)
-        return ClosureResult(result=result, domain="NUC", closure="decay_chain")
+        # Build a minimal single-step chain input for the closure
+        steps: list[ChainStep] = [
+            ChainStep(isotope=f"Z{Z}-A{A}", Z=Z, A=A, decay_mode="alpha", half_life_s=1.0, Q_MeV=0.0)
+        ]
+        result = compute_decay_chain(steps)
+        return ClosureResult(result=result._asdict(), domain="NUC", closure="decay_chain")
     except ImportError as e:
         raise HTTPException(status_code=500, detail="Nuclear physics closures not available") from e
 
@@ -2723,10 +2726,12 @@ async def compute_nuclear_double_sided(
 ) -> ClosureResult:
     """Compute double-sided collapse: fusion vs fission convergence on iron peak."""
     try:
-        from closures.nuclear_physics import compute_double_sided
+        from closures.nuclear_physics import compute_binding, compute_double_sided
 
-        result = compute_double_sided(req.Z, req.A)
-        return ClosureResult(result=result, domain="NUC", closure="double_sided_collapse")
+        # Compute BE/A first, then pass to double-sided
+        binding = compute_binding(req.Z, req.A)
+        result = compute_double_sided(req.Z, req.A, binding.BE_per_A)
+        return ClosureResult(result=result._asdict(), domain="NUC", closure="double_sided_collapse")
     except ImportError as e:
         raise HTTPException(status_code=500, detail="Nuclear physics closures not available") from e
 
