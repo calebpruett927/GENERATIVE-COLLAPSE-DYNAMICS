@@ -4,7 +4,7 @@
 
 UMCP (Universal Measurement Contract Protocol) validates reproducible computational workflows against mathematical contracts. The unit of work is a **casepack** — a directory containing raw data, a contract reference, closures, and expected outputs. The validator checks schema conformance, Tier-1 kernel identities (F = 1 − ω, IC ≈ exp(κ), IC ≤ F), regime classification, and SHA256 integrity, producing a CONFORMANT/NONCONFORMANT verdict and appending to `ledger/return_log.csv`.
 
-> **Core Axiom**: *"What Returns Through Collapse Is Real"* — Within-run: frozen causes only (no back-edges). Between-run: continuity only by return-weld (τ_R finite + seam residual within tolerance).
+> **Core Axiom**: *"What Returns Through Collapse Is Real"* — Within-run: frozen causes only (no back-edges). Between-run: continuity only by return-weld (τ_R finite + seam residual within tolerance). Reality is declared by showing closure after collapse: each claim is welded to a seam. Frozen parameters (ε, p, α, λ, tol_seam) are not arbitrary constants — they are **consistent across the seam**, meaning the same rules govern both sides of every collapse-return boundary.
 
 ## Architecture
 
@@ -72,7 +72,7 @@ See `COMMIT_PROTOCOL.md` for the full specification. **Never skip this step.** E
 
 **Three-valued status**: `CONFORMANT` / `NONCONFORMANT` / `NON_EVALUABLE` — never boolean. CLI exit: 0 = CONFORMANT, 1 = NONCONFORMANT.
 
-**`INF_REC` is a typed sentinel**: In CSV/YAML/JSON data it stays as the string `"INF_REC"`. In Python it maps to `float("inf")`. Never coerce the string to a number in data files.
+**`INF_REC` is a typed sentinel**: In CSV/YAML/JSON data it stays as the string `"INF_REC"`. In Python it maps to `float("inf")`. Never coerce the string to a number in data files. When τ_R = INF_REC, the seam budget is zero (no return → no credit). Continuity cannot be synthesized from structure alone — it must be measured.
 
 **Greek letters** (`ω`, `κ`, `Ψ`, `Γ`, `τ`) appear in comments and strings. Ruff rules RUF001/002/003 are suppressed. Line length: 120 chars.
 

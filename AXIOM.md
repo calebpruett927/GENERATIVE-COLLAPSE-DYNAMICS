@@ -26,6 +26,8 @@ This is the fundamental axiom upon which the entire Universal Measurement Contra
 | **Entropy** (S) | Shannon entropy: S = -Σ wᵢ[cᵢ ln(cᵢ) + (1-cᵢ)ln(1-cᵢ)] | Thermodynamic entropy, chaos, disorder as vibe |
 | **Coherence** | Continuity under contract: stability of meaning via frozen interface + seam auditing | Agreement, stylistic clarity, "makes sense" |
 | **Contract** | Frozen interface snapshot: pins units, embedding, clipping, weights, return settings | Social agreement, vague assumptions |
+| **Frozen** | Consistent across the seam — same rules on both sides of collapse-return | "Constant" as arbitrary choice, immutable for its own sake |
+| **Seam** | The verification boundary between outbound collapse and demonstrated return | A join, a border, a narrative transition |
 
 ---
 
@@ -51,13 +53,17 @@ no_return_no_credit: true
 
 ### The Principle
 
-The axiom states that **reality is defined by what persists through collapse events**. Only that which returns—that which survives the collapse and reconstruction process—can be considered real and measurable.
+The axiom states that **reality is declared by demonstrating closure after collapse** — not by asserting existence, but by showing return. Every claim is welded to a seam: the claim runs forward, collapses, and something comes back. The seam is where you verify that what came back is consistent with what went in, under the same frozen rules.
 
 1. **Observables Must Survive Measurement**: Like quantum measurement, observation involves collapse. Only observables that survive their own measurement are real.
 
 2. **Reproducibility Defines Reality**: If something cannot be reproduced (returned to) after collapse, it has no claim to objective reality.
 
 3. **Structure Through Constraint**: The boundary conditions (what is preserved through collapse) define the interior dynamics (what is real).
+
+4. **Constants Are Consistent, Not Constant**: Frozen parameters (ε, p, α, λ, tol_seam) are not arbitrary design decisions — they are consistent across the seam. To verify that what returned is the same thing that collapsed, the rules of measurement must be identical on both sides. "Constant" implies the value matters in itself. "Consistent" implies the value matters because it is the *same* on both sides of the collapse-return boundary.
+
+5. **Boundedness Is a Return Guarantee**: The ε-clamp (cᵢ ≥ 10⁻⁸) does not just prevent NaN — it guarantees that no closure can fully die. If cᵢ = 0, that component has no path back through collapse. The clamp ensures even the most degraded closure retains enough structure to return.
 
 ---
 
@@ -154,7 +160,9 @@ return:
 
 ### 2. Seam Validation
 
-The "seam" represents the closure of the collapse cycle. Seam validation ensures continuity:
+The "seam" represents the verification boundary of the collapse-return cycle. What makes a seam meaningful is not just that something returns, but that the **rules of measurement are consistent across it**. If ε changes between the outbound run and the return, closures cannot be compared. If tol_seam shifts, CONFORMANT on one side of collapse means something different than CONFORMANT on the other.
+
+This is why frozen parameters are frozen: not because someone chose them forever, but because the seam demands consistency. The word is not "constant" — it is **consistent**. The values are consistent across the seam, from front to end, through collapse and back.
 
 ```yaml
 seam_checks:

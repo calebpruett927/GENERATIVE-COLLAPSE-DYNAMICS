@@ -19,7 +19,7 @@ The **UMCP tier system** has exactly three tiers. No half-tiers. No confusion.
 
 **Tier-1** is immutable because it describes the **structure of collapse itself** — not because someone chose convenient equations. F + ω = 1 is the structural fact that fidelity and drift are complements. IC ≤ F is AM-GM. These hold across 146 experiments in 7 domains because the structure forces them.
 
-**Tier-0** is the protocol that makes Tier-1 actionable — regime gates, validator, diagnostics (kinematics, PHYS-04), seam calculus, contract enforcement, integrity verification. Everything that tests, confirms, and enforces.
+**Tier-0** is the protocol that makes Tier-1 actionable — regime gates, validator, diagnostics (kinematics, PHYS-04), seam calculus, contract enforcement, integrity verification. Everything that tests, confirms, and enforces. The seam is where consistency is verified: the same frozen rules must govern both sides of collapse-return.
 
 **Tier-2** is the space where expansions live with validity checks. Domain closures map raw measurements into the Tier-1 invariants. Every expansion is validated *through* Tier-0 *against* Tier-1.
 
@@ -82,6 +82,7 @@ Tier-2   EXPANSION SPACE
 - **Not "the math we picked"**: The identities describe structure discovered across domains, not equations selected for convenience.
 - **Not computation**: Computation is Tier-0's job. Tier-1 is the structure that computation must find.
 - **Not a model of the world**: Tier-1 makes no domain claims. It says fidelity and drift are complements; it does not say what fidelity *means* for a nuclide versus a star versus a market. That meaning-mapping is Tier-2.
+- **Not "constants"**: The frozen parameters (ε, p, α, λ, tol_seam) are not constant because someone chose them arbitrarily. They are **consistent** across the seam — the same rules on both sides of collapse-return. Freezing is a seam demand, not a design preference.
 
 ---
 
@@ -236,6 +237,8 @@ Tier-2 (domain expansion; validated through Tier-0 against Tier-1):
 ### Freeze Gate
 
 **Rule**: `/freeze` is a **hard gate**. Tier-0 declarations (observables, embedding, flags, weights, return settings) and closure registry (if weld is used) must be frozen **before** invariant computation and seam evaluation. If `/freeze` is missing or incomplete, the run is **nonconformant**.
+
+**Why frozen**: The seam demands it. To verify that what returned through collapse is consistent with what went in, the rules of measurement must be identical on both sides of the seam. If ε changes between the outbound run and the return, closures cannot be compared. If tol_seam shifts, "CONFORMANT" on one side means something different than "CONFORMANT" on the other. Frozen does not mean "we decided this forever" — it means "this does not change within a single collapse-return cycle." The word is not "constant" but **consistent**.
 
 ### One-Way Dependency Within Runs
 

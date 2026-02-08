@@ -3,6 +3,14 @@
 Twelve claim groups derived from the January 12, 2026 contract snapshot.
 Each test is a direct falsification of a stated computational invariant.
 
+Every claim is welded to a seam: the claim runs forward through collapse
+and must demonstrate return under frozen rules.  "Frozen" means consistent
+across the seam — the same ε, the same tol_seam, the same closure forms on
+both sides of the collapse-return boundary.  Constants are not constant in
+the arbitrary sense; they are consistent in the seam sense.  Reality is
+declared by showing closure after collapse, which is why each claim's
+falsification tests verify seam-level consistency, not just numerical output.
+
 Reference: UMA.INTSTACK.v1.yaml, frozen_contract.py, KERNEL_SPECIFICATION.md
 """
 
@@ -62,7 +70,15 @@ def _uniform_weights(n: int) -> np.ndarray:
 
 
 class TestClaim1_Boundedness:
-    """oor_policy = clip_and_flag with ε = 1e-8."""
+    """oor_policy = clip_and_flag with ε = 1e-8.
+
+    Boundedness is a return guarantee, not a numerical safety net.
+    The ε-clamp ensures no closure can fully die — if cᵢ = 0, that
+    component has no path back through collapse.  The clamp at ε = 1e-8
+    guarantees even the most degraded closure retains enough structure
+    to return.  This is seam-critical: without it, ln(0) = −∞ makes
+    κ = −∞, IC = 0, and the entire identity stack collapses.
+    """
 
     @pytest.mark.parametrize("raw", [-0.1, 0.0, 1.0, 1.2])
     def test_clip_forces_into_epsilon_band(self, raw: float) -> None:
@@ -326,7 +342,11 @@ class TestClaim6_TauR:
     def test_no_return_budget_zero(self) -> None:
         """When τ_R = INF_REC, the contract forces R·τ_R = 0 for budgeting.
 
-        In practice: seam pass check fails when τ_R = inf (condition 2).
+        If you never observed return, you have zero budget for the seam,
+        because the seam does not exist for you.  This is the anti-cheat
+        condition: continuity cannot be synthesized from structure alone —
+        it must be measured.  In practice: seam pass check fails when
+        τ_R = inf (condition 2).
         """
         _, failures = check_seam_pass(
             residual=0.0,
@@ -344,7 +364,15 @@ class TestClaim6_TauR:
 
 
 class TestClaim7_WeldBudget:
-    """Δκ_budget = R·τ_R − (D_ω + D_C); residual s must close to zero."""
+    """Δκ_budget = R·τ_R − (D_ω + D_C); residual s must close to zero.
+
+    The weld budget is the load-bearing claim of the protocol.  It prices
+    the cost of crossing the seam: if the budget is positive, you can afford
+    the return; if zero or negative, you cannot.  The residual s measures
+    the gap between modeled and measured change in log-integrity.  Every
+    term is computed under frozen (seam-consistent) closures — same Γ, same
+    D_C, same R on both sides.
+    """
 
     def test_budget_formula(self) -> None:
         """Verify the budget formula directly."""
@@ -417,7 +445,15 @@ class TestClaim7_WeldBudget:
 
 
 class TestClaim8_FrozenClosures:
-    """Γ(ω)=ω^p/(1−ω+ε) with p=3; D_C=α·C with α=1; R=λ with λ=0.2."""
+    """Γ(ω)=ω^p/(1−ω+ε) with p=3; D_C=α·C with α=1; R=λ with λ=0.2.
+
+    These values are not arbitrary constants — they are consistent across
+    the seam.  The same Γ form, the same α, the same λ must govern both
+    the outbound computation and the return verification.  If any of these
+    changed between sides, the seam would be undefined and the weld could
+    not be evaluated.  "Frozen" means "does not change within a single
+    collapse-return cycle."
+    """
 
     def test_gamma_formula(self) -> None:
         """Γ(ω) = ω³ / (1 − ω + ε) with p=3."""
@@ -451,7 +487,12 @@ class TestClaim8_FrozenClosures:
         assert abs(cost_curvature(C, alpha=ALPHA) - C) < 1e-15
 
     def test_frozen_constants(self) -> None:
-        """Verify frozen constants match contract."""
+        """Verify frozen constants match contract.
+
+        These values are consistent across the seam — same on both sides
+        of any collapse-return boundary.  They are not "chosen" constants;
+        they are the rules under which return is evaluated.
+        """
         assert P_EXPONENT == 3
         assert abs(ALPHA - 1.0) < 1e-15
         assert abs(EPSILON - 1e-8) < 1e-20
@@ -464,7 +505,15 @@ class TestClaim8_FrozenClosures:
 
 
 class TestClaim9_RegimeGates:
-    """Stable/Watch/Collapse/Critical from declared thresholds; worst-of join."""
+    """Stable/Watch/Collapse/Critical from declared thresholds; worst-of join.
+
+    The regime classification is a phase diagram, not a status bar.  The
+    gates partition the invariant space into regions where different dynamical
+    behaviors dominate. In Stable, small perturbations decay. In Watch, they
+    persist. In Collapse, they grow.  The thresholds are frozen (consistent
+    across the seam) so that regime labels have the same meaning on both
+    sides of collapse-return.
+    """
 
     @pytest.mark.parametrize(
         "omega, F, S, C, IC, expected_regime",

@@ -19,6 +19,8 @@ This document provides the **complete formal specification** of the UMCP kernel.
 
 **Core Invariance Property**: For any run r with frozen config φ_r and bounded trace Ψ_r(t), the Tier-1 structural invariants K_r(t) := K(Ψ_r(t); φ_r) hold regardless of any Tier-2 domain object. Tier-1 is invariant because it describes the **structure of collapse itself** — the identities are discovered in the data, not imposed on it. Within a frozen run, the invariant computation is a pure function of the frozen interface — no back-edges, no retroactive tuning. Between runs, canon edges require demonstrated return (τ_R finite) and weld closure (ledger–budget residual within tolerance).
 
+**Frozen Means Consistent, Not Constant**: The parameters frozen in a contract (ε, p, α, λ, tol_seam) are not arbitrary design choices locked for convenience. They are frozen because **the seam demands it**. A seam is a verification boundary: you run forward, things collapse, and something returns. To verify that what returned is the same thing that collapsed, the rules of measurement must be identical on both sides. If ε changes between the outbound run and the return, closures cannot be compared. If tol_seam shifts, the PASS/FAIL boundary moves, and "CONFORMANT" on one side of collapse means something different than "CONFORMANT" on the other. The values are consistent across the seam — from front to end, through collapse and back. That is what frozen means in this protocol.
+
 **See Also**: [TIER_SYSTEM.md](TIER_SYSTEM.md) for the complete tier architecture and constitutional clauses.
 
 ---
@@ -158,7 +160,7 @@ s := Δκ_budget - Δκ_ledger
 - **Geometry**: τ_R(t_1) exists only because return neighborhoods and admissible domains are declared.
 - **Calculus**: τ_R is a discrete event-time; residuals can change discontinuously when the minimizer changes.
 
-Typed censoring is an **algebraic safeguard**: it prevents "infinite credit" artifacts by enforcing "no return, no credit."
+Typed censoring is an **algebraic safeguard**: it prevents "infinite credit" artifacts by enforcing "no return, no credit." This is not a convenience — it is structural. If you never observed return, you have zero budget for the seam, because the seam does not exist for you. The anti-cheat condition (INF_REC → budget = 0) ensures that continuity cannot be synthesized from structure alone — it must be measured.
 
 ---
 
@@ -171,7 +173,7 @@ A weld claim requires a **frozen closure registry** specifying at minimum:
 3. A deterministic R estimator (form + inputs + timing)
 4. Any aggregation/timing rules used to evaluate these terms
 
-**Rule**: Closures are **Tier-0 protocol objects**. They may depend on Tier-1 outputs, but they must be **frozen before seam evaluation**. Changing closure form, timing, or aggregation rules is a **structural change** and must be treated as a seam event if continuity is asserted across it.
+**Rule**: Closures are **Tier-0 protocol objects**. They may depend on Tier-1 outputs, but they must be **frozen before seam evaluation**. Changing closure form, timing, or aggregation rules is a **structural change** and must be treated as a seam event if continuity is asserted across it. Frozen here means consistent across the seam: the same closure form must govern both the outbound computation and the return verification. If the closure changes between the two sides, the seam is undefined and the weld cannot be evaluated.
 
 ---
 
