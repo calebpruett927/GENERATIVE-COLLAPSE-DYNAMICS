@@ -89,9 +89,18 @@ except ImportError:
 # Ensure closures package is importable (needed for Docker container)
 # Add the repo root to sys.path so closures/ can be imported
 def _setup_closures_path() -> None:
-    """Add repo root to sys.path so closures package is importable."""
+    """Add repo root to sys.path so closures package is importable.
+
+    Works across editable installs, Docker, and Streamlit subprocess contexts.
+    """
+    import importlib
     import sys
     from pathlib import Path
+
+    # Check if closures is already importable via editable install
+    spec = importlib.util.find_spec("closures")
+    if spec is not None and spec.origin is not None:
+        return  # Already resolvable — nothing to do
 
     # Find repo root (contains pyproject.toml)
     current = Path(__file__).parent.resolve()
@@ -5396,7 +5405,9 @@ def render_cosmology_page() -> None:
     st.title("🌌 WEYL Cosmology")
     st.caption("Modified gravity analysis with Σ(z) parametrization | Nature Comms 15:9295 (2024)")
 
-    # Try to import WEYL closures - with path fix for Docker
+    # Ensure closures path is available
+    _ensure_closures_path()
+
     weyl_available = False
     Omega_Lambda_of_z = None  # Initialize for scope
     try:
@@ -5414,31 +5425,8 @@ def render_cosmology_page() -> None:
         )
 
         weyl_available = True
-    except ImportError:
-        # Add closures directory to path for Docker container
-        import sys
-
-        repo_root = get_repo_root()
-        closures_path = str(repo_root / "closures")
-        if closures_path not in sys.path:
-            sys.path.insert(0, str(repo_root))
-        try:
-            from closures.weyl import (
-                DES_Y3_DATA,
-                PLANCK_2018,
-                D1_of_z,
-                GzModel,
-                H_of_z,
-                Omega_Lambda_of_z,
-                Sigma_to_UMCP_invariants,
-                chi_of_z,
-                compute_Sigma,
-                sigma8_of_z,
-            )
-
-            weyl_available = True
-        except ImportError as e:
-            st.error(f"❌ WEYL closures import failed: {e}")
+    except ImportError as e:
+        st.error(f"❌ WEYL closures import failed: {e}")
 
     if not weyl_available:
         st.error("❌ WEYL closures not available. Please ensure closures/weyl/ is installed.")
@@ -8028,7 +8016,7 @@ def render_nuclear_page() -> None:
                 result = compute_binding(z_val, a_val)
                 rd = result._asdict()
                 regime = rd["regime"]
-                regime_color = {"STABLE": "🟢", "WATCH": "🟡"}.get(regime, "🔴")
+                regime_color = {"Peak": "🟢", "Plateau": "🟢", "Slope": "🟡"}.get(regime, "🔴")
 
                 rc1, rc2, rc3, rc4 = st.columns(4)
                 with rc1:
@@ -8137,7 +8125,9 @@ def render_nuclear_page() -> None:
                 result = compute_alpha_decay(z_ad, a_ad, q_alpha)
                 rd = result._asdict()
                 regime = rd["regime"]
-                regime_color = {"STABLE": "🟢", "WATCH": "🟡"}.get(regime, "🔴")
+                regime_color = {"Stable": "🟢", "Geological": "🟢", "Laboratory": "🟡", "Eternal": "🟢"}.get(
+                    regime, "🔴"
+                )
 
                 rc1, rc2, rc3, rc4 = st.columns(4)
                 with rc1:
@@ -8220,7 +8210,7 @@ def render_nuclear_page() -> None:
                 result = compute_shell(z_sh, a_sh)
                 rd = result._asdict()
                 regime = rd["regime"]
-                regime_color = {"STABLE": "🟢", "WATCH": "🟡"}.get(regime, "🔴")
+                regime_color = {"DoublyMagic": "🟢", "SinglyMagic": "🟢", "NearMagic": "🟡"}.get(regime, "🔴")
                 n_val = rd["N"]
 
                 rc1, rc2, rc3, rc4 = st.columns(4)
@@ -8334,7 +8324,7 @@ def render_nuclear_page() -> None:
                 result = compute_fissility(z_fi, a_fi)
                 rd = result._asdict()
                 regime = rd["regime"]
-                regime_color = {"STABLE": "🟢", "WATCH": "🟡"}.get(regime, "🔴")
+                regime_color = {"Subfissile": "🟢", "Transitional": "🟡", "Fissile": "🔴"}.get(regime, "🔴")
 
                 rc1, rc2, rc3, rc4 = st.columns(4)
                 with rc1:
@@ -8413,7 +8403,7 @@ def render_nuclear_page() -> None:
                 result = compute_decay_chain(u238_chain)
                 rd = result._asdict()
                 regime = rd["regime"]
-                regime_color = {"STABLE": "🟢", "WATCH": "🟡"}.get(regime, "🔴")
+                regime_color = {"ZeroStep": "🟢", "Dominated": "🟢", "Cascade": "🟡"}.get(regime, "🔴")
 
                 rc1, rc2, rc3, rc4 = st.columns(4)
                 with rc1:
@@ -8524,7 +8514,7 @@ def render_nuclear_page() -> None:
                 result = compute_double_sided(z_ds, a_ds, binding.BE_per_A)
                 rd = result._asdict()
                 regime = rd["regime"]
-                regime_color = {"STABLE": "🟢", "WATCH": "🟡"}.get(regime, "🔴")
+                regime_color = {"AtPeak": "🟢", "NearPeak": "🟢", "Convergent": "🟡"}.get(regime, "🔴")
 
                 rc1, rc2, rc3, rc4 = st.columns(4)
                 with rc1:
@@ -8850,7 +8840,9 @@ def render_quantum_page() -> None:
                 with rc2:
                     st.metric("κ barrier (1/nm)", f"{result['kappa_barrier']:.4f}")
                 with rc3:
-                    st.metric("T/T_classical", f"{result['T_ratio']:.4e}")
+                    _t_ratio = result["T_ratio"]
+                    _t_str = "INF_REC" if _t_ratio == "INF_REC" else f"{_t_ratio:.4e}"
+                    st.metric("T/T_classical", _t_str)
                 with rc4:
                     st.metric("Regime", f"{regime_color} {regime}")
 
@@ -8926,7 +8918,7 @@ def render_quantum_page() -> None:
 
                 result = compute_harmonic_oscillator(n_q, omega_f, e_obs)
                 regime = result["regime"]
-                regime_color = {"Faithful": "🟢", "Accurate": "🟢", "Perturbed": "🟡"}.get(regime, "🔴")
+                regime_color = {"Pure": "🟢", "High": "🟢", "Mixed": "🟡"}.get(regime, "🔴")
 
                 rc1, rc2, rc3, rc4 = st.columns(4)
                 with rc1:
@@ -9064,18 +9056,18 @@ def render_quantum_page() -> None:
             "🌊 Spread Wavepacket": (10.0, 1e-24),
             "⚛️ Atomic Scale": (0.053, 1.99e-24),
         }
-        _dx, _dp = presets_unc.get(up, (1.0, 0.1))
+        _dx, _dp = presets_unc.get(up, (1.0, 5.27e-25))
         c1, c2 = st.columns(2)
         with c1:
             dx = st.number_input("Δx (nm)", 0.001, 10000.0, _dx, 0.01, key="qm_dx")
         with c2:
-            dp = st.number_input("Δp (kg·m/s)", 1e-30, 1e-20, _dp, 1e-26, key="qm_dp", format="%.4e")
+            dp = st.number_input("Δp (kg·m/s)", 1e-30, 1e-18, _dp, 1e-26, key="qm_dp", format="%.4e")
 
         if st.button("Check Uncertainty", key="qm_unc", type="primary"):
             try:
                 from closures.quantum_mechanics.uncertainty_principle import compute_uncertainty
 
-                result = compute_uncertainty(dx, dp)
+                result = compute_uncertainty(dx * 1e-9, dp)  # Convert nm → meters
                 regime = result["regime"]
                 regime_color = {"Minimum": "🟢", "Moderate": "🟡", "Dispersed": "🟡"}.get(regime, "🔴")
 
