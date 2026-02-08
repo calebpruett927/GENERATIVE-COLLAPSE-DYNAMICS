@@ -275,7 +275,7 @@ ignore_missing_imports = true
 
 # Exclude extension files from strict type checking (UI-heavy, optional deps)
 [[tool.mypy.overrides]]
-module = ["umcp.dashboard", "umcp.api_umcp", "umcp.outputs"]
+module = ["umcp.dashboard", "umcp.dashboard.*", "umcp.api_umcp", "umcp.outputs"]
 ignore_errors = true
 
 # Exclude Weyl closures from strict checking (scientific computing, scipy-heavy)
