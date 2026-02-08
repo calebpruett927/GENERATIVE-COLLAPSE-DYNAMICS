@@ -207,7 +207,7 @@ typed_censoring:
 ║                                                                   ║
 ║   FRAMEWORKS:                                                     ║
 ║   ┌──────────────┐  ┌──────────────┐  ┌──────────────┐           ║
-║   │ GCD (Tier-1) │  │ KIN (Tier-1) │  │ RCFT (Tier-2)│           ║
+║   │ GCD (Tier-2) │  │ KIN (Tier-0) │  │ RCFT (Tier-2)│           ║
 ║   │ Energy/      │  │ Phase Space  │  │ Fractal/     │           ║
 ║   │ Collapse     │  │ Return       │  │ Recursive    │           ║
 ║   └──────────────┘  └──────────────┘  └──────────────┘           ║
@@ -260,8 +260,8 @@ typed_censoring:
 │       │                │                 │                 │        │
 │       ▼                ▼                 ▼                 ▼        │
 │  ┌─────────┐    ┌─────────────┐    ┌─────────────┐    ┌──────────┐ │
-│  │ Tier-0  │    │ Tier-1      │    │ Seam Tests  │    │ SHA256   │ │
-│  │ Bounded │    │ Invariants  │    │ |s| ≤ 0.005 │    │ Verified │ │
+│  │ Tier-0  │    │ Tier-1      │    │ Tier-0 Seam │    │ SHA256   │ │
+│  │ Protocol│    │ Invariants  │    │ |s| ≤ 0.005 │    │ Verified │ │
 │  └─────────┘    └─────────────┘    └─────────────┘    └──────────┘ │
 │                                                                     │
 │  ┌─────────────────────────────────────────────────────────────┐   │
@@ -412,11 +412,11 @@ umcp-dashboard              # Start dashboard (port 8501)
 
 | Framework | Tier | Best For | Closures |
 |-----------|:----:|----------|:--------:|
-| **GCD** | 1 | Energy/collapse analysis, phase transitions | 5 |
-| **Kinematics** | 1 | Physics-based motion, phase space return | 6 |
+| **GCD** | 2 | Energy/collapse analysis, phase transitions | 5 |
+| **Kinematics** | 0 | Physics-based motion, phase space return (diagnostic) | 6 |
 | **RCFT** | 2 | Trajectory complexity, memory effects | 4 |
 | **WEYL** | 2 | Cosmological analysis, modified gravity | 5 |
-| **Security** | 1 | Validation security, input sanitization | 8 |
+| **Security** | 2 | Validation security, input sanitization | 8 |
 
 <details>
 <summary><strong>🔬 GCD (Generative Collapse Dynamics)</strong></summary>
@@ -505,7 +505,7 @@ pytest -m "not slow"        # Skip slow tests
 | [AXIOM.md](AXIOM.md) | Core axiom: "What returns is real" |
 | [KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md) | Formal definitions (46 lemmas) |
 | [MATHEMATICAL_ARCHITECTURE.md](MATHEMATICAL_ARCHITECTURE.md) | Complete mathematical framework |
-| [TIER_SYSTEM.md](TIER_SYSTEM.md) | Tier-0/1/1.5/2 boundaries |
+| [TIER_SYSTEM.md](TIER_SYSTEM.md) | Tier-0/1/2 architecture (v3.0.0) |
 | [INFRASTRUCTURE_GEOMETRY.md](INFRASTRUCTURE_GEOMETRY.md) | Three-layer geometric architecture |
 
 ### 🔧 Developer Guides

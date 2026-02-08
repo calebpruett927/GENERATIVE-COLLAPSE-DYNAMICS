@@ -13,9 +13,10 @@ from __future__ import annotations
 import csv
 import json
 from pathlib import Path
+from typing import Any
 
 
-def load_casepack(base: Path) -> tuple[list[dict], list[dict]]:
+def load_casepack(base: Path) -> tuple[list[dict[str, str]], list[dict[str, Any]]]:
     """Load raw measurements and expected invariants from a casepack."""
     with open(base / "raw_measurements.csv") as f:
         raw = list(csv.DictReader(f))
@@ -41,7 +42,7 @@ def regime_marker(label: str) -> str:
     return {"Stable": "+", "Watch": "~", "Collapse": "X"}.get(label, "?")
 
 
-def count_regimes(rows: list[dict]) -> tuple[int, int, int]:
+def count_regimes(rows: list[dict[str, Any]]) -> tuple[int, int, int]:
     s = sum(1 for r in rows if r["regime"]["label"] == "Stable")
     w = sum(1 for r in rows if r["regime"]["label"] == "Watch")
     c = sum(1 for r in rows if r["regime"]["label"] == "Collapse")
@@ -215,7 +216,7 @@ def main() -> None:
 
     # ── QM BY CATEGORY ───────────────────────────────────────────────────
     print("\n  --- QM Stability by Category ---")
-    categories: dict[str, list[tuple[dict, dict]]] = {}
+    categories: dict[str, list[tuple[dict[str, str], dict[str, Any]]]] = {}
     for raw, inv in zip(qm_raw, qm_inv, strict=True):
         cat = raw["category"]
         categories.setdefault(cat, []).append((raw, inv))
