@@ -55,7 +55,7 @@ This reference guide provides fast pathways to all protocol infrastructure, ensu
 **Canonical Definitions:** [canon/gcd_anchors.yaml](canon/gcd_anchors.yaml)  
 **Glossary Section:** [GLOSSARY.md#tier-1-reserved-symbols-gcd-framework](GLOSSARY.md#tier-1-reserved-symbols-gcd-framework)
 
-### Tier-1.5: Seam and Weld
+### Tier-0: Seam and Weld
 
 | Term | Symbol | Formula | Gate Use |
 |------|--------|---------|----------|
@@ -65,7 +65,7 @@ This reference guide provides fast pathways to all protocol infrastructure, ensu
 | Weld Gate | PASS/FAIL | Finite τ_R + tolerances | Binding decision |
 
 **Canonical Definitions:** [contracts/GCD.INTSTACK.v1.yaml](contracts/GCD.INTSTACK.v1.yaml)  
-**Glossary Section:** [GLOSSARY.md#tier-15-seam-and-weld-calculus](GLOSSARY.md#tier-15-seam-and-weld-calculus)
+**Glossary Section:** [GLOSSARY.md#tier-0-seam-and-weld-calculus](GLOSSARY.md#tier-0-seam-and-weld-calculus)
 
 ### Tier-2: RCFT Extensions
 

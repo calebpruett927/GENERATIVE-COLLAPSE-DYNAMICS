@@ -11,7 +11,7 @@
     },
     "tier_tag": {
       "type": "string",
-      "enum": ["Tier-0", "Tier-1", "Tier-1.5", "Tier-2", "Meta", "Procedure", "Boundary"],
+      "enum": ["Tier-0", "Tier-1", "Tier-2", "Meta", "Procedure", "Boundary"],
       "description": "Hierarchical tier classification"
     },
     "definition": {

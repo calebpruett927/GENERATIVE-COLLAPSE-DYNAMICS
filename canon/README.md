@@ -10,7 +10,7 @@ canon/
 ├── anchors.yaml           # UMCP.CANON.v1 - Base framework
 ├── gcd_anchors.yaml       # UMCP.GCD.v1 - Tier-1 invariant structure (GCD)
 ├── rcft_anchors.yaml      # UMCP.RCFT.v1 - Tier-2 domain expansion (RCFT)
-├── kin_anchors.yaml       # UMCP.KIN.v1 - Tier-1.5 diagnostic (Kinematics)
+├── kin_anchors.yaml       # UMCP.KIN.v1 - Tier-0 diagnostic (Kinematics)
 ├── astro_anchors.yaml     # UMCP.ASTRO.v1 - Tier-2 domain expansion (Astronomy)
 ├── weyl_anchors.yaml      # UMCP.WEYL.v1 - Weyl geometry extension
 └── docs/
@@ -23,7 +23,7 @@ canon/
 |------|------------|-----------|-------------|
 | Base | [anchors.yaml](anchors.yaml) | UMCP.CANON.v1 | Base framework: hygiene rules, DOI anchors, contract defaults |
 | 1 | [gcd_anchors.yaml](gcd_anchors.yaml) | UMCP.GCD.v1 | Invariant structure: frozen structural identities (ω, F, S, C, τ_R, κ, IC) |
-| 1.5 | [kin_anchors.yaml](kin_anchors.yaml) | UMCP.KIN.v1 | Diagnostic: kinematics control experiments (x, v, a, E_kin, τ_kin, K_stability) |
+| 0-diag | [kin_anchors.yaml](kin_anchors.yaml) | UMCP.KIN.v1 | Protocol diagnostic: kinematics control experiments (x, v, a, E_kin, τ_kin, K_stability) |
 | 2 | [astro_anchors.yaml](astro_anchors.yaml) | UMCP.ASTRO.v1 | Domain expansion: stellar luminosity, orbital mechanics, spectral analysis |
 | 2 | [weyl_anchors.yaml](weyl_anchors.yaml) | UMCP.WEYL.v1 | Domain expansion: conformal symmetry, curvature invariants |
 | 2 | [rcft_anchors.yaml](rcft_anchors.yaml) | UMCP.RCFT.v1 | Domain expansion: recursive collapse field theory (D_f, Ψ_r, λ_p, Θ) |
@@ -33,7 +33,7 @@ canon/
 ### Tier Discipline
 - **Tier-1 structural invariants are frozen**: Domain expansions cannot redefine ω, F, S, C, τ_R, κ, IC
 - **Tier-2 expands, never overrides**: Domain closures map domain observables into Tier-1 invariants but cannot alter structural identities
-- **Tier-1.5 diagnostics confirm**: Kinematics and PHYS-04 verify the translation layer works
+- **Tier-0 diagnostics confirm**: Kinematics and PHYS-04 verify the protocol works
 - **No improvisation**: All terms must trace to canonical definitions
 
 ### Immutability

@@ -21,7 +21,7 @@ See also:
 
 Each entry contains:
 - **Term** (canonical spelling)
-- **Tier tag**: Tier-0 / Tier-1 / Tier-1.5 / Tier-2 / Meta
+- **Tier tag**: Tier-0 / Tier-1 / Tier-2 / Meta
 - **Definition**: Operational, non-narrative
 - **Not to be confused with**: Common collisions and misreads
 - **Inputs/outputs**: Required if procedural
@@ -434,11 +434,11 @@ See [canon/gcd_anchors.yaml](canon/gcd_anchors.yaml) for complete machine-readab
 
 ---
 
-## Tier-1.5: Seam and Weld Calculus
+## Seam and Weld Calculus (Tier-0 Protocol)
 
 ### Seam
 
-**Tier tag:** Tier-1.5 (context object)
+**Tier tag:** Tier-0 (context object)
 
 **Definition:** A declared transition context t_0 → t_1 across which continuity is evaluated. A seam is not automatically a weld; it becomes weld-claimable only when a weld row is computed under a frozen closure registry.
 
@@ -466,7 +466,7 @@ See [canon/gcd_anchors.yaml](canon/gcd_anchors.yaml) for complete machine-readab
 
 ### Weld
 
-**Tier tag:** Tier-1.5 (seam event with PASS/FAIL gate)
+**Tier tag:** Tier-0 (seam event with PASS/FAIL gate)
 
 **Definition:** A seam event with explicit continuity accounting: ledger identity plus budget closure, residual computation, and a PASS/FAIL gate under frozen tolerances and finite return.
 
@@ -494,7 +494,7 @@ See [canon/gcd_anchors.yaml](canon/gcd_anchors.yaml) for complete machine-readab
 
 ### Ledger Delta (Δκ_ledger)
 
-**Tier tag:** Tier-1.5 (identity)
+**Tier tag:** Tier-0 (identity)
 
 **Definition:** The identity-based continuity ledger: Δκ_ledger = κ_1 - κ_0. It is not a model; it is an accounting identity.
 
@@ -521,7 +521,7 @@ See [canon/gcd_anchors.yaml](canon/gcd_anchors.yaml) for complete machine-readab
 
 ### Budget Delta (Δκ_budget)
 
-**Tier tag:** Tier-1.5 (closure-dependent)
+**Tier tag:** Tier-0 (closure-dependent)
 
 **Definition:** The closure-driven continuity budget, typically Δκ_budget = R·τ_R - (D_ω + D_C) with typed censoring when τ_R = ∞_rec.
 
@@ -547,7 +547,7 @@ See [canon/gcd_anchors.yaml](canon/gcd_anchors.yaml) for complete machine-readab
 
 ### Residual (Seam Residual s)
 
-**Tier tag:** Tier-1.5 (gate term)
+**Tier tag:** Tier-0 (gate term)
 
 **Definition:** The reconciliation residual s = Δκ_budget - Δκ_ledger. PASS/FAIL is determined by whether |s| is within the frozen seam tolerance, alongside other gate conditions (finite return, identity check).
 
@@ -574,7 +574,7 @@ See [canon/gcd_anchors.yaml](canon/gcd_anchors.yaml) for complete machine-readab
 
 ### PASS / FAIL (Weld Gate)
 
-**Tier tag:** Tier-1.5 gate
+**Tier tag:** Tier-0 gate
 
 **Definition:** A binding continuity decision computed deterministically under a frozen contract and closure registry. Diagnostics may explain failure but cannot convert FAIL into PASS.
 
@@ -780,7 +780,7 @@ See [canon/weyl_anchors.yaml](canon/weyl_anchors.yaml) for complete machine-read
 
 ### Closure
 
-**Tier tag:** Tier-1.5 (declared auxiliary specification)
+**Tier tag:** Tier-0 (declared auxiliary specification)
 
 **Definition:** Any additional specification needed to complete seam computation beyond Tier-1 identities, especially the weld budget and neighborhood-dependent computation. Closures are declared as "form + parameters" and frozen before compute.
 
@@ -808,7 +808,7 @@ See [canon/weyl_anchors.yaml](canon/weyl_anchors.yaml) for complete machine-read
 
 ### Closure Registry (closures.yaml)
 
-**Tier tag:** Tier-1.5 governance artifact (mandatory for weld claims)
+**Tier tag:** Tier-0 governance artifact (mandatory for weld claims)
 
 **Definition:** A machine-readable declaration of all closure forms, parameters, timing/aggregation rules, and stable IDs/versions. No weld claim is admissible without a complete closure registry.
 
@@ -837,9 +837,9 @@ See [canon/weyl_anchors.yaml](canon/weyl_anchors.yaml) for complete machine-read
 
 ### Freeze
 
-**Tier tag:** Procedure (Tier-0 + Tier-1.5 gating step)
+**Tier tag:** Procedure (Tier-0 gating step)
 
-**Definition:** The required step that locks the measurement interface (Tier-0 artifacts) and the closure registry (Tier-1.5) prior to any kernel or seam computation. Without freeze, results are nonconformant.
+**Definition:** The required step that locks the measurement interface and the closure registry (Tier-0) prior to any kernel or seam computation. Without freeze, results are nonconformant.
 
 **Not to be confused with:**
 - Software snapshot without artifact hashes

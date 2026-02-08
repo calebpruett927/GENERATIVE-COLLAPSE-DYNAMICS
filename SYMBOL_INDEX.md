@@ -97,7 +97,7 @@ See also:
 | **ĥJ** | hJ | Tier-1 | [0,1] | Weyl evolution proxy (WEYL) | [canon/weyl_anchors.yaml](canon/weyl_anchors.yaml) |
 | **Ψ_W** | Psi_W | Tier-1 | [-1,1] | Weyl potential (Φ+Ψ)/2 (WEYL) | [canon/weyl_anchors.yaml](canon/weyl_anchors.yaml) |
 | **∞_rec** | INF_REC | Boundary | typed | No-return typed state | [contracts/UMA.INTSTACK.v1.yaml](contracts/UMA.INTSTACK.v1.yaml) |
-| **Δκ** | Delta_kappa | Tier-1.5 | ℝ | Ledger/budget delta (seam) | [contracts/GCD.INTSTACK.v1.yaml](contracts/GCD.INTSTACK.v1.yaml) |
+| **Δκ** | Delta_kappa | Tier-0 | ℝ | Ledger/budget delta (seam) | [contracts/GCD.INTSTACK.v1.yaml](contracts/GCD.INTSTACK.v1.yaml) |
 
 ---
 
@@ -171,7 +171,7 @@ IC = exp(κ)         (exact inverse)
 
 ---
 
-## Tier-1.5: Seam and Weld Symbols
+## Tier-0: Seam and Weld Symbols
 
 ### Continuity Accounting
 

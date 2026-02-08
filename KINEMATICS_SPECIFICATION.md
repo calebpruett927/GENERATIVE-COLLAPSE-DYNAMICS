@@ -546,10 +546,9 @@ return_time:
 
 | UMCP Tier | Kinematics Component |
 |-----------|---------------------|
-| Tier-0 (Interface) | Contract KIN.INTSTACK.v1 |
+| Tier-0 (Protocol) | Contract KIN.INTSTACK.v1, Phase space return detection |
 | Tier-1 (Kernel) | Linear/Rotational kinematics |
-| Tier-1.5 (Seam) | Phase space return detection |
-| Tier-2 (Overlay) | Stability classification |
+| Tier-2 (Expansion) | Stability classification |
 
 ### Ledger Integration
 

@@ -11,7 +11,7 @@ Key optimizations:
 
 Interconnections:
 - Used by: weld computation, publication infrastructure
-- Implements: TIER_SYSTEM.md Tier-1.5 seam accounting
+- Implements: TIER_SYSTEM.md Tier-0 seam accounting (protocol)
 - Validates: AXIOM-0 bounded residual accumulation principle
 - Documentation: COMPUTATIONAL_OPTIMIZATIONS.md
 """

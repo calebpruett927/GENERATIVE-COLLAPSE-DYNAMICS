@@ -412,7 +412,7 @@ notes:
 ```
 UMCP-REF-CASEPACK-0001/
 ├── contract.yaml                    # Frozen contract (Tier-0 interface)
-├── closures.yaml                    # Closure registry (Tier-1.5)
+├── closures.yaml                    # Closure registry (Tier-2)
 ├── embedding.yaml                   # Embedding specification
 ├── observables.yaml                 # Observable definitions
 ├── return.yaml                      # Return machinery specification
@@ -511,7 +511,7 @@ The case ID is a human-readable identifier for the CasePack. See [PUBLICATION_IN
 
 This reference structure is governed by:
 
-- **[TIER_SYSTEM.md](TIER_SYSTEM.md)**: Tier-0 (interface), Tier-1 (kernel), Tier-1.5 (weld), Tier-2 (overlays)
+- **[TIER_SYSTEM.md](TIER_SYSTEM.md)**: Tier-0 (protocol), Tier-1 (kernel), Tier-2 (expansion)
 - **[KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md)**: Formal definitions for kernel outputs (F, ω, S, C, κ, IC, τ_R)
 - **[UHMP.md](UHMP.md)**: 5-phase mint for manifest identity
 - **[PUBLICATION_INFRASTRUCTURE.md](PUBLICATION_INFRASTRUCTURE.md)**: Publication row format, Case IDs, Weld ID vs EID

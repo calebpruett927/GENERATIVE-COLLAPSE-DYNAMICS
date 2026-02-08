@@ -20,7 +20,7 @@ AXIOM-0 ENFORCEMENT (Core Protocol):
   Non-returning motion (drifting, divergent, chaotic) receives τ_kin = INF_KIN
   and is classified as "Non_Returning" with kinematic_credit = 0.
 
-NOTE: This is a DOMAIN CLOSURE (return overlay), not UMCP Tier-1.5 weld.
+NOTE: This is a DOMAIN CLOSURE (return overlay), not UMCP Tier-0 protocol weld.
 τ_kin is NOT τ_R (kernel return time). They use distinct symbols.
 """
 

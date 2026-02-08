@@ -3432,7 +3432,7 @@ def render_kinematics_interface_page() -> None:
             "type": "kinematics",
             "tier0": {},
             "tier1": {},
-            "tier15": {},  # Tier 1.5 for kinematics
+            "tier15": {},  # Tier-0 protocol for kinematics
             "tier2": {},
             "status": "PROCESSING",
         }
@@ -3501,8 +3501,8 @@ def render_kinematics_interface_page() -> None:
             "is_homogeneous": np.allclose(c, c[0], atol=1e-15),
         }
 
-        # TIER 1.5: Phase space analysis (kinematics-specific)
-        progress.progress(60, text="Tier 1.5: Computing phase space return metrics...")
+        # TIER-0 Protocol: Phase space analysis (kinematics-specific)
+        progress.progress(60, text="Protocol: Computing phase space return metrics...")
 
         gamma = (x_norm, v_norm)
         phase_mag_sq = x_norm**2 + v_norm**2
@@ -3591,7 +3591,7 @@ def render_kinematics_interface_page() -> None:
             unsafe_allow_html=True,
         )
 
-        # Four-column display for kinematics (includes Tier 1.5)
+        # Four-column display for kinematics (includes Protocol tier)
         tier_cols = st.columns(4)
 
         with tier_cols[0]:
@@ -3613,7 +3613,7 @@ def render_kinematics_interface_page() -> None:
             st.metric("IC", f"{t1['IC']:.4f}")
 
         with tier_cols[2]:
-            st.markdown("### 🔄 Tier 1.5: Phase")
+            st.markdown("### 🔄 Protocol: Phase")
             t15 = audit_entry["tier15"]
             st.metric("|γ| (Phase Mag)", f"{t15['phase_magnitude']:.4f}")
             st.metric("τ_kin", t15["tau_kin_estimate"])
@@ -7507,7 +7507,7 @@ def main() -> None:
     st.sidebar.markdown("""
     - **Tier-0**: Interface (freeze)
     - **Tier-1**: Kernel (F, ω, S, C, κ, IC)
-    - **Tier-1.5**: Seam Weld
+    - **Tier-0**: Protocol (Seam Weld)
     - **Tier-2**: Overlays
     """)
 

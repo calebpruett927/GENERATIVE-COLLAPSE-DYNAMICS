@@ -300,7 +300,7 @@ The UMCP tier system embodies the return axiom through **return-based canonizati
 
 **Within a Frozen Run** (No Feedback):
 ```
-Tier-1 (invariant structure) → Tier-0 (translation) → Tier-1.5 (diagnostics + weld) → Tier-2 (domain expansion)
+Tier-1 (immutable invariants) → Tier-0 (protocol: translation + diagnostics + weld) → Tier-2 (expansion space)
                                                                                         ✗ NO FEEDBACK
 ```
 
@@ -318,7 +318,7 @@ Run N+1: M promoted to Tier-1 canon in new contract version
 ### Why This Embodies the Axiom
 
 1. **Collapse = Validation Event**
-   - Tier-2 hypothesis → Tier-1.5 seam weld = collapse test
+   - Tier-2 hypothesis → Tier-0 seam weld = collapse test
    - Only results that survive validation "return" to canonical status
 
 2. **Return = Demonstrated Continuity**
@@ -388,10 +388,9 @@ curl http://localhost:8000/stats
 
 The contract system enforces return across tiers:
 
-- **Tier-1 (Invariant Structure)**: Structural identities that define what return means (F + ω = 1, IC ≤ F)
-- **Tier-0 (Translation)**: Contract validation, regime gates, three-valued verdicts
-- **Tier-1.5 (Diagnostics + Seam)**: Confirms translation is faithful; seam weld accounting
-- **Tier-2 (Domain Expansion)**: GCD's generative return, RCFT's recursive return, all physics domains
+- **Tier-1 (Immutable Invariants)**: Structural identities that define what return means (F + ω = 1, IC ≤ F)
+- **Tier-0 (Protocol)**: Contract validation, regime gates, diagnostics, seam calculus, verdicts
+- **Tier-2 (Expansion Space)**: Domain closures with validity checks — all physics domains
 
 ---
 

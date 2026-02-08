@@ -144,7 +144,7 @@ The three geometric layers map directly to the tier system:
 |------|-------|----------------|-----------|
 | **Tier-0** | State-Space Setup | Declare the manifold, embedding, distance, tolerance, domain | `contract.yaml`, `embedding.yaml`, `trace.csv` |
 | **Tier-1** | Invariant Computation | Compute projections deterministically from frozen state | `invariants.csv` |
-| **Tier-1.5** | Seam Certification | Verify weld closure under frozen closures | `welds.csv`, `closures.yaml`, `ss1m_receipt.json` |
+| **Tier-0** | Seam Certification | Verify weld closure under frozen closures | `welds.csv`, `closures.yaml`, `ss1m_receipt.json` |
 | **Tier-2** | Overlay (Subordinate) | Interpret without authority to override geometry | `diagnostics.csv`, `interpretation.md` |
 
 **Flow** (geometry propagates downward, never upward within a run):
@@ -156,8 +156,8 @@ Tier-0: Freeze State-Space Geometry
 Tier-1: Compute Invariant Projections
         (ω, F, S, C, κ, IC, τ_R, regime)
               ↓
-Tier-1.5: Evaluate Seam Geometry
-          (Δκ_ledger, Δκ_budget, residual s, PASS/FAIL)
+Tier-0: Evaluate Seam Geometry (protocol)
+        (Δκ_ledger, Δκ_budget, residual s, PASS/FAIL)
               ↓
 Tier-2: Interpret (subordinate, non-authoritative)
         (diagnostics, models, narrative)
@@ -196,7 +196,7 @@ Tier-2: Interpret (subordinate, non-authoritative)
 **Example closures**:
 - `return_domain.window64.v1.yaml`: Sliding window of 64 prior samples
 
-### 3.4 Closure Registry (Tier-1.5)
+### 3.4 Closure Registry (Tier-0)
 
 **What you freeze**: Γ form, R estimator, D_C definition, tolerances
 
@@ -369,7 +369,7 @@ If the seam does not close:
         ╚════════════════════════════╤════════════════════════════╝
                                      │
                     ┌────────────────▼────────────────┐
-                    │ TIER-1.5: SEAM CALCULUS         │
+                    │ TIER-0: SEAM CALCULUS (PROTOCOL) │
                     │  Freeze closures (Γ, R, D_C)    │
                     │  Compute Δκ_ledger, Δκ_budget, s│
                     │  Evaluate weld PASS/FAIL        │

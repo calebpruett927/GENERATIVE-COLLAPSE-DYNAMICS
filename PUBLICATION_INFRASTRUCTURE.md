@@ -617,7 +617,7 @@ frozen_params:
 ---
 
 **See Also**:
-- [TIER_SYSTEM.md](TIER_SYSTEM.md) - Tier-1.5 weld accounting requirements
+- [TIER_SYSTEM.md](TIER_SYSTEM.md) - Tier-0 weld accounting requirements
 - [UHMP.md](UHMP.md) - Manifest root hash computation (sha256 field)
 - [SYMBOL_INDEX.md](SYMBOL_INDEX.md) - ASCII to typeset symbol mapping
 - [contracts/](contracts/) - Base contracts and variant examples

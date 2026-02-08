@@ -99,11 +99,11 @@ Quick alphabetical index of all protocol terms with definitions and file locatio
 
 ## D
 
-**Diagnostic** - Insight without gate authority (Tier-1.5)
+**Diagnostic** - Protocol self-validation (Tier-0)
 - Boundary: [GLOSSARY.md](GLOSSARY.md#diagnostic-vs-gate)
 - Rule: Cannot decide labels or admissibility
 - Examples: Kinematics (5/5 Stable), PHYS-04 (perfect fixed point)
-- Purpose: Confirms Tier-0 translation faithfully implements Tier-1 structure
+- Purpose: Confirms the protocol works before domain results are trusted
 - Files: Separate from invariants.csv
 
 **Drift** (ω) - Collapse proximity metric
@@ -395,10 +395,9 @@ Quick alphabetical index of all protocol terms with definitions and file locatio
 ## T
 
 **Tier** - Hierarchical classification system
-- Tier-1: Invariant structure of collapse (structural identities: F+ω=1, IC≤F)
-- Tier-0: Translation layer (regime gates, validator, verdicts)
-- Tier-1.5: Diagnostics (control experiments) + Seam/weld accounting
-- Tier-2: Domain expansion closures (all physics domains)
+- Tier-1: Immutable invariants (structural identities: F+ω=1, IC≤F)
+- Tier-0: Protocol (regime gates, validator, diagnostics, seam calculus, verdicts)
+- Tier-2: Expansion space (domain closures with validity checks)
 - Meta: Governance and reporting
 
 **Tolerance** - Frozen gate threshold

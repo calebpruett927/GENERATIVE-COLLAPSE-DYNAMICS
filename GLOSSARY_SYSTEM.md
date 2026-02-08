@@ -152,9 +152,8 @@ Each glossary entry contains **"Where defined"** and **"Where used"** fields tha
 
 | Tier | Count | Examples |
 |------|-------|----------|
-| Tier-0 | 8 | Observable, Bounded Trace, Embedding, Weights |
+| Tier-0 | 14 | Observable, Bounded Trace, Embedding, Weights, Seam, Weld, Ledger, Budget, Residual, PASS/FAIL |
 | Tier-1 | 8 | ω, F, S, C, τ_R, κ, IC, Regime Labels |
-| Tier-1.5 | 6 | Seam, Weld, Ledger, Budget, Residual, PASS/FAIL |
 | Tier-2 | 4 | D_fractal, Ψ_recursive, λ_pattern, Θ_phase |
 | Meta | 10+ | Manifest, EID, Nonconformance, Freeze, etc. |
 
@@ -201,9 +200,8 @@ Each glossary entry contains **"Where defined"** and **"Where used"** fields tha
 ### Q.3 Tier-tagging discipline ✅
 
 **All entries tier-tagged:**
-- Tier-0: Interface (observables, embedding)
+- Tier-0: Protocol (observables, embedding, seam/weld accounting)
 - Tier-1: GCD reserved symbols (frozen)
-- Tier-1.5: Seam/weld accounting
 - Tier-2: RCFT overlay (augmentation)
 - Meta: Governance and reporting
 

@@ -137,11 +137,11 @@ Seam weld:
 ### Within a Frozen Run (NO FEEDBACK)
 
 ```
-Tier-0 (frozen) → Tier-1 (compute) → Tier-1.5 (weld) → Tier-2 (diagnostics)
+Tier-0 (frozen + weld) → Tier-1 (compute) → Tier-2 (diagnostics)
                                                         ✗ NO FEEDBACK
 ```
 
-**Rule**: Tier-2 cannot alter Tier-0/1/1.5 outcomes within the same run
+**Rule**: Tier-2 cannot alter Tier-0/1 outcomes within the same run
 
 **Rationale**: 
 - Prevents narrative rescue ("let's adjust parameters to get better results")
@@ -414,7 +414,7 @@ When auditing claimed promotions:
 
 ## Relation to Other Concepts
 
-### Connection to Seam Accounting (Tier-1.5)
+### Connection to Seam Accounting (Tier-0 Protocol)
 
 Return-based canonization **is** seam accounting applied to tier promotion:
 

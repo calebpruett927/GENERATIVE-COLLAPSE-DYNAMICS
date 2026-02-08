@@ -12,7 +12,7 @@ This document provides the **complete formal specification** of the UMCP kernel.
 
 1. **Kernel invariants** (F, ω, S, C, κ, IC) with precise mathematical formulas
 2. **Return machinery** (Tier-1 structural invariants; typed boundaries for τ_R computation)
-3. **Seam accounting** (Tier-1.5; diagnostics + weld interface with residual computation)
+3. **Seam accounting** (Tier-0 protocol; weld interface with residual computation)
 4. **Fundamental bounds and sensitivity facts** (34 implementation-critical lemmas)
 
 **Critical principle**: These definitions are **algebraic + geometric + calculus objects**. They are not trend statistics or heuristics. Changes to conventions (normalization, domain, neighborhood) constitute **structural changes** and must be handled via closures and seam accounting.
@@ -118,7 +118,7 @@ If U_θ(t) ≠ ∅, define:
 
 ---
 
-## 3. Seam Accounting (Tier-1.5; Weld Interface)
+## 3. Seam Accounting (Tier-0 Protocol; Weld Interface)
 
 ### Definition
 
@@ -171,7 +171,7 @@ A weld claim requires a **frozen closure registry** specifying at minimum:
 3. A deterministic R estimator (form + inputs + timing)
 4. Any aggregation/timing rules used to evaluate these terms
 
-**Rule**: Closures are **Tier-1.5 objects**. They may depend on Tier-1 outputs, but they must be **frozen before seam evaluation**. Changing closure form, timing, or aggregation rules is a **structural change** and must be treated as a seam event if continuity is asserted across it.
+**Rule**: Closures are **Tier-0 protocol objects**. They may depend on Tier-1 outputs, but they must be **frozen before seam evaluation**. Changing closure form, timing, or aggregation rules is a **structural change** and must be treated as a seam event if continuity is asserted across it.
 
 ---
 
@@ -1083,7 +1083,7 @@ Lemmas 35–46 extend the formal foundation to **empirical physics**:
 
 This specification document is referenced by and depends on:
 
-- **[TIER_SYSTEM.md](TIER_SYSTEM.md)**: Tier-1 (invariant structure), Tier-0 (translation), Tier-1.5 (diagnostics + seam), Tier-2 (domain expansion)
+- **[TIER_SYSTEM.md](TIER_SYSTEM.md)**: Tier-1 (immutable invariants), Tier-0 (protocol), Tier-2 (expansion space)
 - **[AXIOM.md](AXIOM.md)**: Operational definitions for Return, Drift, Integrity, Entropy, Collapse
 - **[SYMBOL_INDEX.md](SYMBOL_INDEX.md)**: One-page symbol table preventing namespace collisions
 - **[FACE_POLICY.md](FACE_POLICY.md)**: Boundary governance and admissible clipping rules
