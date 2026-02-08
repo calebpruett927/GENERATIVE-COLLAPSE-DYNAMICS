@@ -4,7 +4,7 @@
 # Interconnections:
 # - Referenced by: contracts/KIN.INTSTACK.v1.yaml, casepacks/kinematics_complete/
 # - Parent: canon/anchors.yaml (UMCP.CANON.v1)
-# - Sibling: canon/gcd_anchors.yaml (GCD Tier-1), canon/rcft_anchors.yaml (RCFT Tier-2)
+# - Sibling: canon/gcd_anchors.yaml (GCD Tier-1 invariant structure), canon/rcft_anchors.yaml (RCFT Tier-2 domain expansion)
 # - Implements: Tier-1 kinematics invariants (x, v, a, E_kin, τ_kin, K_stability)
 # - Documentation: GLOSSARY.md#kinematics, KINEMATICS_SPECIFICATION.md
 # - Related: closures/kinematics/*.py (computational implementations)

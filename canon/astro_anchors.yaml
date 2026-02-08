@@ -1,10 +1,10 @@
 # Astronomy Canon Anchor (UMCP.ASTRO.v1)
-# Observational Astronomy — Tier-1 Extension
+# Observational Astronomy — Tier-2 Domain Expansion
 #
 # Interconnections:
 # - Referenced by: contracts/ASTRO.INTSTACK.v1.yaml, casepacks/astronomy_complete/
-# - Parent: canon/gcd_anchors.yaml (ASTRO extends GCD)
-# - Implements: Tier-1 invariants for astronomical observables
+# - Parent: canon/gcd_anchors.yaml (ASTRO extends GCD Tier-1 invariant structure)
+# - Implements: Tier-2 domain expansion mapping astronomical observables to Tier-1 invariants
 # - Documentation: GLOSSARY.md#astronomy, SYMBOL_INDEX.md#astronomy
 # - Related: closures/astronomy/*.py (computational implementations)
 # - Sources: fundamental astrophysics, empirical stellar relations

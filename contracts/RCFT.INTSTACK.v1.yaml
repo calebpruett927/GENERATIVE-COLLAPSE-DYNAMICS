@@ -325,7 +325,7 @@ contract:
       tier: 2
       description: Analyze resonance patterns via Fourier analysis to extract wavelength
         and phase
-  notes: "RCFT.INTSTACK.v1 is a Tier-2 overlay contract that extends GCD.INTSTACK.v1\
+  notes: "RCFT.INTSTACK.v1 is a Tier-2 domain expansion contract that extends GCD.INTSTACK.v1\
     \ without modifying any Tier-1 components. It adds three closures for geometric\
     \ and topological analysis:\n1. Fractal Dimension (D_f): Quantifies trajectory\
     \ complexity using box-counting 2. Recursive Field (\u03A8_r): Measures collapse\

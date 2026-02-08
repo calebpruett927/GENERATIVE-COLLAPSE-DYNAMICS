@@ -518,11 +518,11 @@ class PreflightValidator:
                             "FN-011",
                             "ERROR",
                             {
-                                "issue": "Tier-2 overlay symbols used in gate context",
+                                "issue": "Tier-2 domain expansion symbols used in gate context",
                                 "matches": matches[:5],
                                 "reserved_prefixes": tier2_prefixes,
                             },
-                            "Remove overlay symbols from decision gates; use kernel symbols only",
+                            "Remove domain expansion symbols from decision gates; use kernel symbols only",
                             "A",
                         )
                         break

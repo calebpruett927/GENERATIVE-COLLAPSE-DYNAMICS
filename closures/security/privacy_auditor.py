@@ -1,5 +1,5 @@
 """
-UMCP Security Domain - Tier-2 Overlay: Privacy Auditor
+UMCP Security Domain - Tier-2 Domain Expansion: Privacy Auditor
 
 Audits data for privacy violations (PII detection, consent, retention).
 This is a DIAGNOSTIC overlay - it reads data and compares against

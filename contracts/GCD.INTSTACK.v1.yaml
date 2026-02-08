@@ -197,7 +197,7 @@ contract:
     \ - AX-1: Boundary defines interior (resonance patterns couple boundary to interior)\
     \ - AX-2: Entropy measures determinacy (S=0 is deterministic, S\u21921 is maximum\
     \ disorder)\nThis contract is compatible with all UMCP tools and can be used as\
-    \ a parent contract for Tier-2 overlays (e.g., RCFT). The frozen Tier-1 invariants\
+    \ a parent contract for Tier-2 domain expansions (e.g., RCFT). The frozen Tier-1 structural invariants\
     \ cannot be overridden by child contracts, ensuring mathematical consistency across\
     \ the hierarchy.\n"
   provenance:

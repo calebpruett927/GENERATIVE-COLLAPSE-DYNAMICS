@@ -47,7 +47,7 @@ axioms:
       S approaching maximum represents maximum uncertainty. Entropy reduction is system evolution.
 
 tier_1_invariants:
-  description: "Frozen invariant skeleton - cannot be redefined by Tier-2 overlays"
+  description: "Frozen invariant skeleton - cannot be redefined by Tier-2 domain expansion closures"
   reserved_symbols:
     - symbol: omega
       latex: ω
@@ -204,7 +204,7 @@ provenance:
 notes: |
   This anchor formalizes the Generative Collapse Dynamics framework as Tier-1.
   All domain programmes (UMCP) and overlays (RCFT) must respect these definitions.
-  Tier-2 overlays may add new invariants but cannot redefine Tier-1 symbols.
+  Tier-2 domain expansion closures may add new invariants but cannot redefine Tier-1 structural identities.
   
   Zero entropy state (S=0) achieved in commit a69fbb18.
   Current system state: ω=0, F=1.0, S=0, C=0 (deterministic precision).

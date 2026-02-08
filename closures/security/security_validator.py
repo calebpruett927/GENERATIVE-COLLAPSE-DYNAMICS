@@ -38,7 +38,7 @@ from closures.security.reputation_analyzer import (
 )
 from closures.security.security_entropy import compute_security_entropy, compute_signal_dispersion
 
-# Tier-2 overlay imports
+# Tier-2 domain expansion imports
 from closures.security.threat_classifier import (
     classify_threat,
     classify_threat_series,

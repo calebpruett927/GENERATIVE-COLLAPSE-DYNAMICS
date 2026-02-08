@@ -1,5 +1,5 @@
 # RCFT Canon Anchor (UMCP.RCFT.v1)
-# Recursive Collapse Field Theory - Tier-2 Overlay
+# Recursive Collapse Field Theory - Tier-2 Domain Expansion
 #
 # Interconnections:
 # - Referenced by: contracts/RCFT.INTSTACK.v1.yaml, casepacks/rcft_complete/
@@ -19,11 +19,11 @@ version: "1.0.0"
 created: "2026-01-18"
 
 scope:
-  hierarchy: "RCFT > GCD > UMCP (Tier-2 overlay)"
+  hierarchy: "RCFT > GCD > UMCP (Tier-2 domain expansion)"
   tier: 2
   parent_framework: "UMCP.GCD.v1"
   description: |
-    Recursive Collapse Field Theory (RCFT) is a Tier-2 overlay on GCD that analyzes
+    Recursive Collapse Field Theory (RCFT) is a Tier-2 domain expansion on GCD that analyzes
     recursive patterns, fractal structures, and field dynamics in collapse events.
     RCFT augments GCD's Tier-1 invariants with advanced geometric and topological metrics
     without modifying or overriding the frozen Tier-1 foundation.
@@ -214,8 +214,8 @@ provenance:
     - "GCD Tier-1 invariants (frozen foundation)"
 
 notes: |
-  RCFT is a Tier-2 overlay that analyzes geometric and topological properties of
-  collapse trajectories without modifying GCD's Tier-1 invariants. It provides:
+  RCFT is a Tier-2 domain expansion that analyzes geometric and topological properties of
+  collapse trajectories without modifying GCD's Tier-1 structural invariants. It provides:
   - Fractal dimension analysis (D_f) for trajectory complexity
   - Recursive field strength (Ψ_r) for collapse memory quantification
   - Pattern wavelength (λ_p) for oscillation scale analysis

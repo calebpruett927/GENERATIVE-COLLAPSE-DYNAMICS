@@ -189,49 +189,49 @@ registry:
     security:
       - name: "trust_fidelity"
         path: "closures/security/trust_fidelity.py"
-        description: "Trust Fidelity (T) and Threat Drift (θ) - Tier-1 kernel"
+        description: "Trust Fidelity (T) and Threat Drift (θ) - Tier-1 structural invariant"
         contract: "SECURITY.INTSTACK.v1"
         inputs: ["signals", "weights", "reference"]
         outputs: ["T", "theta", "residual", "regime"]
       - name: "security_entropy"
         path: "closures/security/security_entropy.py"
-        description: "Security Entropy (H) and Signal Dispersion (D) - Tier-1 kernel"
+        description: "Security Entropy (H) and Signal Dispersion (D) - Tier-1 structural invariant"
         contract: "SECURITY.INTSTACK.v1"
         inputs: ["signals", "weights"]
         outputs: ["H", "D", "regime"]
       - name: "trust_integrity"
         path: "closures/security/trust_integrity.py"
-        description: "Log-Integrity (σ) and Trust IC (TIC) - Tier-1 kernel"
+        description: "Log-Integrity (σ) and Trust IC (TIC) - Tier-1 structural invariant"
         contract: "SECURITY.INTSTACK.v1"
         inputs: ["signals", "weights"]
         outputs: ["sigma", "TIC", "sigma_components", "regime"]
       - name: "anomaly_return"
         path: "closures/security/anomaly_return.py"
-        description: "Anomaly Return Time (τ_A) - Tier-1 kernel"
+        description: "Anomaly Return Time (τ_A) - Tier-1 structural invariant"
         contract: "SECURITY.INTSTACK.v1"
         inputs: ["t", "signal_history", "eta", "horizon", "weights"]
         outputs: ["tau_A", "baseline", "regime"]
       - name: "threat_classifier"
         path: "closures/security/threat_classifier.py"
-        description: "Threat classification from invariants - Tier-2 overlay"
+        description: "Threat classification from invariants - Tier-2 domain expansion"
         contract: "SECURITY.INTSTACK.v1"
         inputs: ["T", "theta", "H", "D", "sigma", "TIC", "tau_A"]
         outputs: ["threat_type", "confidence", "severity", "recommendations"]
       - name: "reputation_analyzer"
         path: "closures/security/reputation_analyzer.py"
-        description: "URL/file/IP reputation analysis - Tier-2 overlay"
+        description: "URL/file/IP reputation analysis - Tier-2 domain expansion"
         contract: "SECURITY.INTSTACK.v1"
         inputs: ["url", "file_hash", "ip_address"]
         outputs: ["reputation_type", "score", "indicators"]
       - name: "behavior_profiler"
         path: "closures/security/behavior_profiler.py"
-        description: "Behavior baseline profiling - Tier-2 overlay"
+        description: "Behavior baseline profiling - Tier-2 domain expansion"
         contract: "SECURITY.INTSTACK.v1"
         inputs: ["signal_series", "weights"]
         outputs: ["mean", "std", "percentiles", "trend"]
       - name: "privacy_auditor"
         path: "closures/security/privacy_auditor.py"
-        description: "PII detection and privacy audit - Tier-2 overlay"
+        description: "PII detection and privacy audit - Tier-2 domain expansion"
         contract: "SECURITY.INTSTACK.v1"
         inputs: ["data", "privacy_rules", "consent_records"]
         outputs: ["pii_found", "violations", "privacy_score"]

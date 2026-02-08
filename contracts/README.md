@@ -26,7 +26,7 @@ CasePack manifests must pin:
 - `contract_version`
 
 3) Kernel symbols are reserved  
-Contracts define the Tier-1 kernel boundary. Overlays and closures must not redefine Tier-1 symbols.
+Contracts define the Tier-1 invariant structure boundary. Domain expansion closures (Tier-2) must not redefine Tier-1 symbols (F, ω, S, C, κ, IC, τ_R, regime). See [TIER_SYSTEM.md](../TIER_SYSTEM.md).
 
 4) Typed semantics are part of correctness  
 Typed boundary values (e.g. `tau_R = INF_REC`) must remain typed; implementations must not silently coerce them into floats.

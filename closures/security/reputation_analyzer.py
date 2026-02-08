@@ -1,5 +1,5 @@
 """
-UMCP Security Domain - Tier-2 Overlay: Reputation Analyzer
+UMCP Security Domain - Tier-2 Domain Expansion: Reputation Analyzer
 
 Analyzes reputation of URLs, domains, IPs, and file hashes.
 This is a DIAGNOSTIC overlay - it reads external data sources but results

@@ -1,5 +1,5 @@
 """
-UMCP Security Domain - Tier-2 Overlay: Behavior Profiler
+UMCP Security Domain - Tier-2 Domain Expansion: Behavior Profiler
 
 Builds and analyzes behavior profiles for anomaly detection.
 This is a DIAGNOSTIC overlay - it reads signal history but results

@@ -1,5 +1,5 @@
 """
-UMCP Security Domain - Tier-2 Overlay: Threat Classifier
+UMCP Security Domain - Tier-2 Domain Expansion: Threat Classifier
 
 Classifies threat types based on Tier-1 invariants.
 This is a DIAGNOSTIC overlay - it reads Tier-1 outputs but cannot modify them.

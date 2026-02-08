@@ -11,19 +11,19 @@
 This document provides the **complete formal specification** of the UMCP kernel. It defines:
 
 1. **Kernel invariants** (F, ω, S, C, κ, IC) with precise mathematical formulas
-2. **Return machinery** (Tier-1; typed boundaries for τ_R computation)
-3. **Seam accounting** (Tier-1.5; weld interface with residual computation)
+2. **Return machinery** (Tier-1 structural invariants; typed boundaries for τ_R computation)
+3. **Seam accounting** (Tier-1.5; diagnostics + weld interface with residual computation)
 4. **Fundamental bounds and sensitivity facts** (34 implementation-critical lemmas)
 
 **Critical principle**: These definitions are **algebraic + geometric + calculus objects**. They are not trend statistics or heuristics. Changes to conventions (normalization, domain, neighborhood) constitute **structural changes** and must be handled via closures and seam accounting.
 
-**Core Invariance Property**: For any run r with frozen config φ_r and bounded trace Ψ_r(t), the Tier-1 kernel K_r(t) := K(Ψ_r(t); φ_r) is invariant to any Tier-2 object. Within a frozen run, the kernel computation is a pure function of the frozen interface—no back-edges, no retroactive tuning. Between runs, canon edges require demonstrated return (τ_R finite) and weld closure (ledger–budget residual within tolerance).
+**Core Invariance Property**: For any run r with frozen config φ_r and bounded trace Ψ_r(t), the Tier-1 structural invariants K_r(t) := K(Ψ_r(t); φ_r) hold regardless of any Tier-2 domain object. Tier-1 is invariant because it describes the **structure of collapse itself** — the identities are discovered in the data, not imposed on it. Within a frozen run, the invariant computation is a pure function of the frozen interface — no back-edges, no retroactive tuning. Between runs, canon edges require demonstrated return (τ_R finite) and weld closure (ledger–budget residual within tolerance).
 
 **See Also**: [TIER_SYSTEM.md](TIER_SYSTEM.md) for the complete tier architecture and constitutional clauses.
 
 ---
 
-## 1. Kernel Invariants (Tier-1 Outputs)
+## 1. Kernel Invariants (Tier-1 Structural Invariants)
 
 ### Definition 7: Curvature Proxy (Default; Closure if Varied)
 
@@ -1083,7 +1083,7 @@ Lemmas 35–46 extend the formal foundation to **empirical physics**:
 
 This specification document is referenced by and depends on:
 
-- **[TIER_SYSTEM.md](TIER_SYSTEM.md)**: Tier-1 (kernel invariants), Tier-1.5 (seam accounting), Tier-2 (overlays)
+- **[TIER_SYSTEM.md](TIER_SYSTEM.md)**: Tier-1 (invariant structure), Tier-0 (translation), Tier-1.5 (diagnostics + seam), Tier-2 (domain expansion)
 - **[AXIOM.md](AXIOM.md)**: Operational definitions for Return, Drift, Integrity, Entropy, Collapse
 - **[SYMBOL_INDEX.md](SYMBOL_INDEX.md)**: One-page symbol table preventing namespace collisions
 - **[FACE_POLICY.md](FACE_POLICY.md)**: Boundary governance and admissible clipping rules

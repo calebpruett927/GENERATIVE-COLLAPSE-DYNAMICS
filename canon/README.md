@@ -8,10 +8,10 @@ The **canon** directory contains the authoritative specifications for UMCP's mat
 canon/
 ├── README.md              # This file
 ├── anchors.yaml           # UMCP.CANON.v1 - Base framework
-├── gcd_anchors.yaml       # UMCP.GCD.v1 - Tier-1 framework (GCD)
-├── rcft_anchors.yaml      # UMCP.RCFT.v1 - Tier-2 overlay (RCFT)
-├── kin_anchors.yaml       # UMCP.KIN.v1 - Kinematics extension
-├── astro_anchors.yaml     # UMCP.ASTRO.v1 - Astronomy extension
+├── gcd_anchors.yaml       # UMCP.GCD.v1 - Tier-1 invariant structure (GCD)
+├── rcft_anchors.yaml      # UMCP.RCFT.v1 - Tier-2 domain expansion (RCFT)
+├── kin_anchors.yaml       # UMCP.KIN.v1 - Tier-1.5 diagnostic (Kinematics)
+├── astro_anchors.yaml     # UMCP.ASTRO.v1 - Tier-2 domain expansion (Astronomy)
 ├── weyl_anchors.yaml      # UMCP.WEYL.v1 - Weyl geometry extension
 └── docs/
     └── validator_usage.md # Validation guidance
@@ -22,17 +22,18 @@ canon/
 | Tier | Canon File | Framework | Description |
 |------|------------|-----------|-------------|
 | Base | [anchors.yaml](anchors.yaml) | UMCP.CANON.v1 | Base framework: hygiene rules, DOI anchors, contract defaults |
-| 1 | [gcd_anchors.yaml](gcd_anchors.yaml) | UMCP.GCD.v1 | Generative Collapse Dynamics: frozen invariants (ω, F, S, C, τ_R, κ, IC) |
-| 1 | [kin_anchors.yaml](kin_anchors.yaml) | UMCP.KIN.v1 | Kinematics: physics-based motion (x, v, a, E_kin, τ_kin, K_stability) |
-| 1 | [astro_anchors.yaml](astro_anchors.yaml) | UMCP.ASTRO.v1 | Astronomy: stellar luminosity, orbital mechanics, spectral analysis, distance ladder, gravitational dynamics, stellar evolution |
-| 1 | [weyl_anchors.yaml](weyl_anchors.yaml) | UMCP.WEYL.v1 | Weyl geometry: conformal symmetry, curvature invariants |
-| 2 | [rcft_anchors.yaml](rcft_anchors.yaml) | UMCP.RCFT.v1 | Recursive Collapse Field Theory: overlay extensions (D_f, Ψ_r, λ_p, Θ) |
+| 1 | [gcd_anchors.yaml](gcd_anchors.yaml) | UMCP.GCD.v1 | Invariant structure: frozen structural identities (ω, F, S, C, τ_R, κ, IC) |
+| 1.5 | [kin_anchors.yaml](kin_anchors.yaml) | UMCP.KIN.v1 | Diagnostic: kinematics control experiments (x, v, a, E_kin, τ_kin, K_stability) |
+| 2 | [astro_anchors.yaml](astro_anchors.yaml) | UMCP.ASTRO.v1 | Domain expansion: stellar luminosity, orbital mechanics, spectral analysis |
+| 2 | [weyl_anchors.yaml](weyl_anchors.yaml) | UMCP.WEYL.v1 | Domain expansion: conformal symmetry, curvature invariants |
+| 2 | [rcft_anchors.yaml](rcft_anchors.yaml) | UMCP.RCFT.v1 | Domain expansion: recursive collapse field theory (D_f, Ψ_r, λ_p, Θ) |
 
 ## Key Principles
 
 ### Tier Discipline
-- **Tier-1 symbols are frozen**: Domain programmes cannot redefine ω, F, S, C, τ_R, κ, IC
-- **Tier-2 augments, never overrides**: RCFT adds metrics but cannot change GCD definitions
+- **Tier-1 structural invariants are frozen**: Domain expansions cannot redefine ω, F, S, C, τ_R, κ, IC
+- **Tier-2 expands, never overrides**: Domain closures map domain observables into Tier-1 invariants but cannot alter structural identities
+- **Tier-1.5 diagnostics confirm**: Kinematics and PHYS-04 verify the translation layer works
 - **No improvisation**: All terms must trace to canonical definitions
 
 ### Immutability
@@ -154,7 +155,7 @@ Canon validation checks:
 - ✅ All Tier-1 symbols are properly defined
 - ✅ Mathematical identities hold within tolerance
 - ✅ Regime thresholds are consistent
-- ✅ No Tier-2 overlay redefines Tier-1 symbols
+- ✅ No Tier-2 domain expansion redefines Tier-1 structural invariants
 
 ## Usage in Code
 

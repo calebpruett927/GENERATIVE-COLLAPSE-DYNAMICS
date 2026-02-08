@@ -63,7 +63,11 @@ The axiom states that **reality is defined by what persists through collapse eve
 
 ## Hierarchical Expression Across Tiers
 
-### Tier-0: UMCP (Core)
+### Tier-1: Invariant Structure
+
+The axiom at its most fundamental level: the structural identities (F + ω = 1, IC ≤ F, IC ≈ exp(κ)) embody the return principle — what isn't lost to drift IS fidelity, and coherence cannot exceed fidelity. These hold across 146 experiments in 7 domains not because they were imposed, but because the structure of collapse forces them.
+
+### Tier-0: Translation Layer (Protocol)
 
 ```yaml
 contract:
@@ -71,9 +75,9 @@ contract:
     no_return_no_credit: true
 ```
 
-**Interpretation**: The validation receipt itself must return. Non-returning measurements receive special values (`INF_REC`, `UNIDENTIFIABLE`) but no numerical credit.
+**Interpretation**: The translation layer makes the axiom operational. The validation receipt itself must return. Non-returning measurements receive special values (`INF_REC`, `UNIDENTIFIABLE`) but no numerical credit. Regime gates filter the invariant space into verdicts.
 
-### Tier-1: GCD (Generative Collapse Dynamics)
+### Tier-2 Expression: GCD (Generative Collapse Dynamics)
 
 **AX-0**: "Collapse is generative"
 
@@ -95,7 +99,7 @@ $$
 
 The generative flux `Φ_gen` quantifies what is produced/returned through collapse.
 
-### Tier-2: RCFT (Recursive Collapse Field Theory)
+### Tier-2 Expression: RCFT (Recursive Collapse Field Theory)
 
 **P-RCFT-1**: "Recursion reveals hidden structure"  
 **P-RCFT-2**: "Fields carry collapse memory"
@@ -283,7 +287,7 @@ The UMCP tier system embodies the return axiom through **return-based canonizati
 
 **Core Principle**: One-way dependency flow within a frozen run, with return-based canonization between runs.
 
-**Within-run**: Authority flows in one direction. The frozen interface (ingest + embedding + contract + closures + weights) determines the bounded trace Ψ(t); Tier-1 invariants are computed as functions of that frozen trace; Tier-2 overlays may read Tier-1 outputs but cannot reach upstream to alter the interface, the trace, or the kernel definitions. No back-edges, no retroactive tuning, no "the result changed the rules that produced it."
+**Within-run**: Authority flows in one direction. The frozen interface (ingest + embedding + contract + closures + weights) determines the bounded trace Ψ(t); the Tier-1 structural invariants are computed as functions of that frozen trace; Tier-2 domain expansion closures may read Tier-1 outputs but cannot reach upstream to alter the interface, the trace, or the structural definitions. No back-edges, no retroactive tuning, no "the result changed the rules that produced it."
 
 **Between-run**: Continuity is never presumed. A new run may exist freely, but it is only "canon-continuous" with a prior run if it returns and welds: the seam has admissible return (no continuity credit in ∞_rec segments), and the κ/IC continuity claim closes under the weld tolerances and identity checks. If that closure fails, the new run is still valid as an experiment or variant—but it does not become a canon edge.
 
@@ -292,12 +296,12 @@ The UMCP tier system embodies the return axiom through **return-based canonizati
 - "Runs are deterministic under /freeze; canon is a graph whose edges require returned seam closure."
 - "No back-edges inside a run; no canon claims between runs without welded return."
 
-**Formal Statement**: For any run r with frozen config φ_r and bounded trace Ψ_r(t), Tier-1 kernel K_r(t) := K(Ψ_r(t); φ_r) is invariant to any Tier-2 object. For two runs r₀, r₁, the statement "r₁ canonizes r₀" is admissible iff the seam returns (τ_R finite under policy) and the weld closes (ledger–budget residual within tol + identity check). Otherwise, r₁ is non-canon relative to r₀.
+**Formal Statement**: For any run r with frozen config φ_r and bounded trace Ψ_r(t), the Tier-1 structural invariants K_r(t) := K(Ψ_r(t); φ_r) hold regardless of any Tier-2 domain object. For two runs r₀, r₁, the statement "r₁ canonizes r₀" is admissible iff the seam returns (τ_R finite under policy) and the weld closes (ledger–budget residual within tol + identity check). Otherwise, r₁ is non-canon relative to r₀.
 
 **Within a Frozen Run** (No Feedback):
 ```
-Tier-0 (interface) → Tier-1 (kernel) → Tier-1.5 (weld) → Tier-2 (overlay)
-                                                            ✗ NO FEEDBACK
+Tier-1 (invariant structure) → Tier-0 (translation) → Tier-1.5 (diagnostics + weld) → Tier-2 (domain expansion)
+                                                                                        ✗ NO FEEDBACK
 ```
 
 **Across Runs** (Return Validation):
@@ -384,9 +388,10 @@ curl http://localhost:8000/stats
 
 The contract system enforces return across tiers:
 
-- **Tier-0 (UMA)**: Base return domain
-- **Tier-1 (GCD)**: Generative return (collapse produces new returns)
-- **Tier-2 (RCFT)**: Recursive return (returns accumulate memory)
+- **Tier-1 (Invariant Structure)**: Structural identities that define what return means (F + ω = 1, IC ≤ F)
+- **Tier-0 (Translation)**: Contract validation, regime gates, three-valued verdicts
+- **Tier-1.5 (Diagnostics + Seam)**: Confirms translation is faithful; seam weld accounting
+- **Tier-2 (Domain Expansion)**: GCD's generative return, RCFT's recursive return, all physics domains
 
 ---
 
@@ -411,9 +416,9 @@ The contract system enforces return across tiers:
 ## References
 
 ### Core Documents
-- [contracts/UMA.INTSTACK.v1.yaml](contracts/UMA.INTSTACK.v1.yaml) - Tier-0 specification
-- [contracts/GCD.INTSTACK.v1.yaml](contracts/GCD.INTSTACK.v1.yaml) - Tier-1 axioms
-- [contracts/RCFT.INTSTACK.v1.yaml](contracts/RCFT.INTSTACK.v1.yaml) - Tier-2 principles
+- [contracts/UMA.INTSTACK.v1.yaml](contracts/UMA.INTSTACK.v1.yaml) - Base contract (Translation layer)
+- [contracts/GCD.INTSTACK.v1.yaml](contracts/GCD.INTSTACK.v1.yaml) - GCD axioms (Tier-1 invariant structure)
+- [contracts/RCFT.INTSTACK.v1.yaml](contracts/RCFT.INTSTACK.v1.yaml) - RCFT principles (Tier-2 domain expansion)
 - [canon/anchors.yaml](canon/anchors.yaml) - Canonical return domain definitions
 
 ### Theory

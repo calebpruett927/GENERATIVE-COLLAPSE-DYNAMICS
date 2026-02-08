@@ -413,7 +413,7 @@ See [canon/gcd_anchors.yaml](canon/gcd_anchors.yaml) for complete machine-readab
 **Not to be confused with:**
 - Diagnostic severity tags (Tier-2)
 - Narrative judgments about system state
-- Model-based classifications (Tier-2 overlays)
+- Model-based classifications (Tier-2 domain expansion closures)
 
 **Inputs/outputs:**
 - Consumes: (ω, F, S, C) and frozen thresholds from contract

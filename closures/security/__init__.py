@@ -70,7 +70,7 @@ from closures.security.security_entropy import compute_security_entropy, compute
 # Main Validator
 from closures.security.security_validator import SecurityInvariants, SecurityValidator, ValidationResult
 
-# Tier-2 Overlays
+# Tier-2 Domain Expansion Closures
 from closures.security.threat_classifier import (
     ThreatClassification,
     ThreatType,
@@ -116,7 +116,7 @@ __all__ = [
     "analyze_trend",
     "analyze_url_reputation",
     "audit_data_privacy",
-    # Tier-2 Overlays
+    # Tier-2 Domain Expansion Closures
     "classify_threat",
     "classify_threat_series",
     "classify_trust_status",

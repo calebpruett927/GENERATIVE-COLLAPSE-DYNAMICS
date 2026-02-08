@@ -6,13 +6,13 @@
 # - Referenced by: manifest.yaml (refs.canon_anchors), contracts/*.yaml
 # - Defines: UMCP.CANON.v1 (base framework), weld definitions, DOI anchors
 # - Documentation: GLOSSARY.md, AXIOM.md, PROTOCOL_REFERENCE.md
-# - Related: canon/gcd_anchors.yaml (Tier-1), canon/rcft_anchors.yaml (Tier-2)
+# - Related: canon/gcd_anchors.yaml (Tier-1 invariant structure), canon/rcft_anchors.yaml (Tier-2 domain expansion)
 
 schema: "schemas/canon.anchors.schema.json"
 
 umcp_canon:
   canon_id: "UMCP.CANON.v1"
-  scope: "GCD > UMCP (contract-first) | RCFT allowed as Tier-2 overlay only"
+  scope: "GCD > UMCP (contract-first) | RCFT allowed as Tier-2 domain expansion only"
   timezone: "America/Chicago"
   address: "Clement Paulus"
 
@@ -20,7 +20,7 @@ umcp_canon:
     # Definitions (do not conflate)
     weld_definition: "Weld = PRE→POST seam event (continuity bridge); continuity claims require seam receipt."
     eid_definition: "EID = artifact structural fingerprint (component counts); distinct from DOI and Weld."
-    tier_discipline: "Tier-1 symbols are reserved; Tier-2 overlays may not redefine Tier-1."
+    tier_discipline: "Tier-1 structural invariants are reserved; Tier-2 domain expansion closures may not redefine Tier-1."
     no_improvisation: true
 
   anchors:
@@ -118,9 +118,9 @@ umcp_canon:
       note: "Diagnostic only; never used as a gate."
 
   # Extension canon anchors documented in canon/README.md:
-  # - canon/gcd_anchors.yaml (UMCP.GCD.v1) - Tier-1 GCD framework
-  # - canon/kin_anchors.yaml (UMCP.KIN.v1) - Tier-1 Kinematics extension
-  # - canon/rcft_anchors.yaml (UMCP.RCFT.v1) - Tier-2 RCFT overlay
+  # - canon/gcd_anchors.yaml (UMCP.GCD.v1) - Tier-1 invariant structure
+  # - canon/kin_anchors.yaml (UMCP.KIN.v1) - Tier-1.5 Kinematics diagnostic
+  # - canon/rcft_anchors.yaml (UMCP.RCFT.v1) - Tier-2 RCFT domain expansion
 
   change_control:
     mutation_policy: "append-only; bump canon_id on any semantic change"

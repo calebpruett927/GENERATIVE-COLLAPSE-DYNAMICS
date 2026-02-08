@@ -4,7 +4,7 @@ version: 1.0.0
 created: '2026-02-08'
 
 scope:
-  hierarchy: GCD → NUC (Tier-1)
+  hierarchy: GCD → NUC (Tier-2 domain expansion)
   description: |
     Nuclear Physics canonical anchors for UMCP.
     Maps nuclear binding, decay dynamics, shell structure, and fissility
@@ -196,7 +196,7 @@ tier_1_invariants:
 
 umcp_invariant_mapping:
   description: |
-    Maps nuclear observables to GCD Tier-1 invariants.
+    Maps nuclear observables to GCD Tier-1 structural invariants.
     The primary mapping axis is binding deficit → drift.
   mappings:
     - domain_observable: BE_per_A (binding energy per nucleon)
