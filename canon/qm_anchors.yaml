@@ -127,7 +127,7 @@ tier_1_invariants:
     - symbol: psi
       latex: \psi
       description: Wavefunction amplitude (complex norm)
-      formula: "|ψ|² = probability density"
+      formula: 'probability density = |ψ|²'
       domain: quantum_mechanics
       unit: "dimensionless (embedded [0,1])"
       interpretation: Born rule foundation

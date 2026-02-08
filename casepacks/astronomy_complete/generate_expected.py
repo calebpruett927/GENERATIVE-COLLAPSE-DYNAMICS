@@ -11,6 +11,7 @@ import json
 import math
 import os
 import sys
+from typing import Any
 
 # Add project root so closures are importable
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -72,7 +73,7 @@ def _map_regime(domain_label: str) -> str:
     return _REGIME_MAP.get(domain_label, "Watch")
 
 
-def compute_invariants_for_star(row: dict) -> tuple[dict, dict]:
+def compute_invariants_for_star(row: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
     """Compute UMCP Tier-1 invariants for a single star/object row.
 
     Returns (invariant_row, domain_extensions) where domain_extensions
@@ -89,7 +90,7 @@ def compute_invariants_for_star(row: dict) -> tuple[dict, dict]:
     kappa = 0.0
     IC = 1.0
     domain_regime = "Stable"
-    domain_extensions = {}
+    domain_extensions: dict[str, Any] = {}
 
     if cat in ("main_sequence", "subgiant", "giant", "supergiant", "white_dwarf"):
         m_star = _safe_float(row["M_star"])
@@ -202,7 +203,7 @@ def compute_invariants_for_star(row: dict) -> tuple[dict, dict]:
     return invariant_row, domain_extensions
 
 
-def main():
+def main() -> None:
     casepack_dir = os.path.dirname(os.path.abspath(__file__))
     csv_path = os.path.join(casepack_dir, "raw_measurements.csv")
     expected_dir = os.path.join(casepack_dir, "expected")
@@ -267,7 +268,7 @@ def main():
     print(f"  {len(invariant_rows)} rows written")
 
     # Print summary
-    regimes = {}
+    regimes: dict[str, int] = {}
     for row in invariant_rows:
         r = row["regime"]["label"]
         regimes[r] = regimes.get(r, 0) + 1
