@@ -162,11 +162,12 @@ class TestDeps:
 
         assert np is not None
 
-    def test_pd_is_available(self) -> None:
-        """pandas should be available."""
+    def test_pd_is_available_or_none(self) -> None:
+        """pandas availability depends on install extras."""
         from umcp.dashboard._deps import pd
 
-        assert pd is not None
+        # pd may be None if installed without [viz] or [all] extras
+        assert pd is None or hasattr(pd, "DataFrame")
 
 
 # ============================================================================
@@ -277,7 +278,7 @@ class TestUtilsDetectAnomaliesExtended:
     """Extended anomaly detection tests."""
 
     def test_no_anomalies_uniform(self) -> None:
-        import pandas as pd
+        pd = pytest.importorskip("pandas")
 
         from umcp.dashboard._utils import detect_anomalies
 
@@ -286,7 +287,7 @@ class TestUtilsDetectAnomaliesExtended:
         assert not any(result)
 
     def test_detects_single_outlier(self) -> None:
-        import pandas as pd
+        pd = pytest.importorskip("pandas")
 
         from umcp.dashboard._utils import detect_anomalies
 
@@ -295,7 +296,7 @@ class TestUtilsDetectAnomaliesExtended:
         assert bool(result.tolist()[-1]) is True
 
     def test_zero_std_returns_no_anomalies(self) -> None:
-        import pandas as pd
+        pd = pytest.importorskip("pandas")
 
         from umcp.dashboard._utils import detect_anomalies
 
@@ -304,7 +305,7 @@ class TestUtilsDetectAnomaliesExtended:
         assert not any(result)
 
     def test_custom_threshold(self) -> None:
-        import pandas as pd
+        pd = pytest.importorskip("pandas")
 
         from umcp.dashboard._utils import detect_anomalies
 
@@ -318,7 +319,7 @@ class TestUtilsDataLoaders:
     """Tests for data loading functions."""
 
     def test_load_ledger_has_columns(self) -> None:
-        import pandas as pd
+        pd = pytest.importorskip("pandas")
 
         from umcp.dashboard._utils import load_ledger
 
