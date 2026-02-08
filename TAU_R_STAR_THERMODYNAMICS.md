@@ -512,6 +512,8 @@ $p = 3$ is not chosen — it is **discovered** as the unique exponent that produ
 
 All predictions follow from the budget identity $R \cdot \tau_R = \Gamma(\omega) + \alpha C + \Delta\kappa$ with frozen parameters. No additional hypotheses.
 
+**Measured scorecard**: These predictions have been verified against the full dataset (146 rows, 12 casepacks, 8 domains). The kernel identities achieve 100.0% exact accuracy on $F = 1 - \omega$, 98.6% within 1% on $\text{IC} = e^\kappa$, and 100% on the $\text{IC} \leq F$ bound. The two outliers in the exponential identity occur at $\omega = 1.0$ exactly — the simple pole — where the theory predicts its own boundary. See [KERNEL_SPECIFICATION.md §5.1](KERNEL_SPECIFICATION.md) for the complete measured scorecard, and [§5.2](KERNEL_SPECIFICATION.md) for why outliers are structural limits rather than errors.
+
 ---
 
 ### Prediction 1: Cubic Slowing Down

@@ -3,7 +3,8 @@
 **Version**: 1.0.0  
 **Status**: Reference Documentation  
 **Prerequisites**: [KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md), [INFRASTRUCTURE_GEOMETRY.md](INFRASTRUCTURE_GEOMETRY.md)  
-**See Also**: [TAU_R_STAR_THERMODYNAMICS.md](TAU_R_STAR_THERMODYNAMICS.md) for thermodynamic potential, Fisher Information geometry, and phase structure derived from the budget identity
+**See Also**: [TAU_R_STAR_THERMODYNAMICS.md](TAU_R_STAR_THERMODYNAMICS.md) for thermodynamic potential, Fisher Information geometry, and phase structure derived from the budget identity  
+**See Also**: [KERNEL_SPECIFICATION.md §5](KERNEL_SPECIFICATION.md) for measured prediction scorecard, outlier analysis, rederived principle comparisons, and seam-derived constants
 
 ---
 
