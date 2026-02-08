@@ -1,0 +1,108 @@
+# UMCP LaTeX Publication Protocol — YAML Spec Template
+# NOTE: This file is a paper spec for generate_latex.py, not a UMCP artifact.
+#
+# This file defines a complete paper structure for generate_latex.py.
+# All fields are documented.  Copy this file and fill in your content.
+#
+# Usage:
+#   python scripts/generate_latex.py spec paper/specs/my_paper.yaml
+#   python scripts/generate_latex.py spec paper/specs/my_paper.yaml -o paper/my_paper.tex
+#   python scripts/generate_latex.py spec paper/specs/my_paper.yaml --no-compile
+
+# ── Document class ──
+# Options: revtex-aps-prd, revtex-aps-prl, revtex-aps-prx,
+#          revtex-aps-rmp, article, preprint
+document_class: revtex-aps-prd
+
+# ── Title ──
+# Use \\\\ for line breaks within the title.
+title: "Your Paper Title"
+
+# ── Authors ──
+authors:
+  - name: "First Author"
+    affiliation: "Department, University"
+    email: "first@example.edu"
+  - name: "Second Author"
+    affiliation: "Other Department, Other University"
+
+# ── Abstract ──
+# Multi-line text.  LaTeX commands are allowed.
+abstract: |
+  We present results showing that...
+  The main contribution is threefold.
+
+# ── Date ──
+# Leave empty for \today.
+date: ""
+
+# ── Bibliography ──
+# Name of the .bib file (without extension).
+# Must exist in the same directory as the output .tex file.
+bibliography_file: "Bibliography"
+
+# ── Extra preamble ──
+# Additional LaTeX to insert before \begin{document}.
+# Useful for package imports or configuration.
+extra_preamble: ""
+
+# ── Extra macros ──
+# Additional \newcommand definitions beyond the UMCP standard set.
+# The standard set (see generate_latex.py UMCP_MACROS) is always included.
+extra_macros: ""
+
+# ── Sections ──
+# Each section has: title, label, body, and optional level (1/2/3).
+# body is raw LaTeX — theorems, tables, equations all go inline.
+sections:
+  - title: "Introduction"
+    label: "sec:intro"
+    level: 1
+    body: |
+      The problem we address is ...
+
+      Prior work~\cite{some_reference} established that ...
+
+  - title: "Methods"
+    label: "sec:methods"
+    level: 1
+    body: |
+      We use the framework defined in Ref.~\cite{another_reference}.
+
+      \begin{equation}\label{eq:main}
+        f(x) = \int_0^\infty g(t)\, \dd t
+      \end{equation}
+
+  - title: "A Subsection"
+    label: "sec:methods:sub"
+    level: 2
+    body: |
+      Details of the numerical procedure.
+
+  - title: "Results"
+    label: "sec:results"
+    level: 1
+    body: |
+      \begin{theorem}[Main Result]\label{thm:main}
+        Statement of the theorem.
+      \end{theorem}
+
+      \begin{proof}
+        Proof follows directly from Eq.~\eqref{eq:main}.
+      \end{proof}
+
+  - title: "Discussion"
+    label: "sec:discussion"
+    level: 1
+    body: |
+      The implications of Theorem~\ref{thm:main} are ...
+
+  - title: "Conclusion"
+    label: "sec:conclusion"
+    level: 1
+    body: |
+      We have shown ...
+
+# ── Acknowledgments ──
+acknowledgments: |
+  The authors thank ...

@@ -463,5 +463,9 @@ def main() -> None:
 
 
 # ── Streamlit direct execution ───────────────────────────────────────────────
-if _is_running_in_streamlit():
+# When `streamlit run __init__.py` executes this file, it also triggers a
+# package import of umcp.dashboard (via the top-level imports from _deps/_utils),
+# running __init__.py a second time under __name__ == "umcp.dashboard".
+# Only call main() from the Streamlit-exec'd instance (where __name__ differs).
+if _is_running_in_streamlit() and __name__ != "umcp.dashboard":
     main()

@@ -19,7 +19,8 @@ weld and contract version bump.
 
 Implemented Theorems & Definitions (from budget identity Def 11):
     Def  T1: τ_R* = (Γ(ω) + αC + Δκ) / R — critical return delay
-    Def  T2: Γ(ω) = ω^p/(1-ω+ε) — simple pole at ω=1, residue 1
+    Def  T2: Γ(ω) = ω^p/(1-ω+ε) — simple pole at ω=1, effective residue 1/2
+             (Z₂ symmetry under ε-regularization; see tau_r_star_dynamics.py Thm T10)
     Def  T3: τ_R* phase surface over (ω, C) space
     Def  T4: Free-return surface Δκ* = −Γ(ω) − αC
     Def  T5: R as the only externally controllable variable

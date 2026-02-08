@@ -37,9 +37,7 @@ __all__ = [
     "InvariantRow",
     "KernelGradients",
     "KernelOutput",
-    # Measurement engine (raw data → Ψ(t) → invariants)
     "MeasurementEngine",
-    # Computational optimizations (KERNEL_SPECIFICATION.md Lemmas 1-34)
     "OptimizedKernelComputer",
     "Regime",
     "RootFileValidator",
@@ -59,10 +57,9 @@ __all__ = [
     "compute_regime",
     "compute_triad",
     "compute_utils",
-    # τ_R* thermodynamic diagnostic (Tier-2 with Tier-0 checks)
+    "diagnose_extended",
     "diagnose_thermodynamic",
     "diagnose_thermodynamic_batch",
-    # Frozen contract (The Physics of Coherence)
     "frozen_contract",
     "gamma_omega",
     "get_closure_loader",
@@ -71,15 +68,13 @@ __all__ = [
     "measurement_engine",
     "propagate_uncertainty",
     "safe_tau_R",
-    # Mathematical architecture (MATHEMATICAL_ARCHITECTURE.md)
     "ss1m_triad",
     "tau_R_display",
-    # τ_R* thermodynamic diagnostic module
     "tau_r_star",
+    "tau_r_star_dynamics",
     "triad_to_eid12",
     "umcp_extensions",
     "uncertainty",
-    # Universal Calculator (unified computation interface)
     "universal_calculator",
     "validate",
     "verify_triad",
@@ -97,6 +92,7 @@ from . import (
     measurement_engine,
     ss1m_triad,
     tau_r_star,
+    tau_r_star_dynamics,
     umcp_extensions,
     uncertainty,
     universal_calculator,
@@ -129,6 +125,7 @@ from .seam_optimized import SeamChainAccumulator
 from .ss1m_triad import EditionTriad, compute_triad, triad_to_eid12, verify_triad
 from .tau_r_star import diagnose as diagnose_thermodynamic
 from .tau_r_star import diagnose_invariants as diagnose_thermodynamic_batch
+from .tau_r_star_dynamics import diagnose_extended
 from .uncertainty import (
     KernelGradients,
     UncertaintyBounds,
