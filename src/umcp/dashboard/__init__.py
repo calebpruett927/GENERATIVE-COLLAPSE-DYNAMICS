@@ -327,7 +327,11 @@ def main() -> None:
     }
 
     page = st.sidebar.radio(
-        "Select Page", list(pages.keys()), format_func=lambda x: f"{pages[x][0]} {x}", label_visibility="collapsed"
+        "Select Page",
+        list(pages.keys()),
+        format_func=lambda x: f"{pages[x][0]} {x}",
+        label_visibility="collapsed",
+        key="umcp_page_nav",
     )
 
     st.sidebar.divider()

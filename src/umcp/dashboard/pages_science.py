@@ -2611,11 +2611,11 @@ def render_rcft_page() -> None:
             )
 
         presets_basin = {
-            "🎯 Monostable (tight cluster)": (100, (0.3, 0.5), (0.2, 0.4), (0.1, 0.2)),
-            "⚖️ Bistable (two basins)": (200, (0.1, 0.9), (0.1, 0.8), (0.05, 0.5)),
-            "🌀 Multistable (chaotic)": (400, (0.0, 1.0), (0.0, 1.0), (0.0, 1.0)),
+            "🎯 Monostable (tight cluster)": (100, "monostable"),
+            "⚖️ Bistable (two basins)": (200, "bistable"),
+            "🌀 Multistable (chaotic)": (400, "multistable"),
         }
-        _nb, _omega_r, _s_r, _c_r = presets_basin.get(fp3, (100, (0.1, 0.9), (0.1, 0.8), (0.05, 0.5)))
+        _nb, _mode_basin = presets_basin.get(fp3, (100, "bistable"))
 
         n_basin = st.slider("Series length", 20, 500, _nb, key="rcft_nbasin")
 
@@ -2623,9 +2623,26 @@ def render_rcft_page() -> None:
             try:
                 from closures.rcft.attractor_basin import compute_attractor_basin
 
-                omega_arr = np.random.uniform(_omega_r[0], _omega_r[1], n_basin)
-                S_arr = np.random.uniform(_s_r[0], _s_r[1], n_basin)
-                C_arr = np.random.uniform(_c_r[0], _c_r[1], n_basin)
+                # Generate time-correlated trajectories so the pathway connects
+                t_basin = np.linspace(0, 10, n_basin)
+                if _mode_basin == "monostable":
+                    # Exponential convergence to a single fixed point
+                    omega_arr = 0.05 + 0.25 * np.exp(-t_basin / 2) + 0.01 * np.random.randn(n_basin)
+                    S_arr = 0.10 + 0.15 * np.exp(-t_basin / 2) + 0.01 * np.random.randn(n_basin)
+                    C_arr = 0.03 + 0.10 * np.exp(-t_basin / 2) + 0.005 * np.random.randn(n_basin)
+                elif _mode_basin == "bistable":
+                    # Oscillation between two attractor basins
+                    omega_arr = 0.15 + 0.12 * np.sin(2 * np.pi * t_basin / 5) + 0.02 * np.random.randn(n_basin)
+                    S_arr = 0.20 + 0.10 * np.sin(2 * np.pi * t_basin / 5 + np.pi / 2) + 0.02 * np.random.randn(n_basin)
+                    C_arr = 0.10 + 0.08 * np.sin(2 * np.pi * t_basin / 5) + 0.01 * np.random.randn(n_basin)
+                else:
+                    # Random walk — chaotic / multistable
+                    omega_arr = np.clip(0.20 + 0.05 * np.random.randn(n_basin).cumsum() / 10, 0, 0.5)
+                    S_arr = np.clip(0.30 + 0.08 * np.random.randn(n_basin).cumsum() / 10, 0, 1)
+                    C_arr = np.clip(0.15 + 0.05 * np.random.randn(n_basin).cumsum() / 10, 0, 0.5)
+                omega_arr = np.clip(omega_arr, 0, 1)
+                S_arr = np.clip(S_arr, 0, 1)
+                C_arr = np.clip(C_arr, 0, 1)
                 result = compute_attractor_basin(omega_arr, S_arr, C_arr)
 
                 st.divider()
@@ -2647,9 +2664,22 @@ def render_rcft_page() -> None:
 
                 viz_l, viz_r = st.columns(2)
                 with viz_l:
-                    # 3D scatter of trajectory with basin coloring
+                    # 3D trajectory with connected pathway and basin coloring
                     traj_class = result.get("trajectory_classification", [])
                     fig = go.Figure()
+                    # Connected trajectory line (the pathway)
+                    fig.add_trace(
+                        go.Scatter3d(
+                            x=omega_arr.tolist(),
+                            y=S_arr.tolist(),
+                            z=C_arr.tolist(),
+                            mode="lines",
+                            line={"color": "rgba(0,123,255,0.3)", "width": 2},
+                            name="Trajectory path",
+                            showlegend=True,
+                        )
+                    )
+                    # Points colored by basin assignment
                     if len(traj_class) == n_basin:
                         fig.add_trace(
                             go.Scatter3d(
@@ -2663,6 +2693,7 @@ def render_rcft_page() -> None:
                                     "colorscale": "Set1",
                                     "colorbar": {"title": "Basin"},
                                 },
+                                name="Points (basin)",
                             )
                         )
                     else:
@@ -2673,8 +2704,30 @@ def render_rcft_page() -> None:
                                 z=C_arr.tolist(),
                                 mode="markers",
                                 marker={"size": 3, "color": "#007bff"},
+                                name="Points",
                             )
                         )
+                    # Mark start and end of trajectory
+                    fig.add_trace(
+                        go.Scatter3d(
+                            x=[omega_arr[0]],
+                            y=[S_arr[0]],
+                            z=[C_arr[0]],
+                            mode="markers",
+                            marker={"size": 8, "color": "#28a745", "symbol": "circle"},
+                            name="Start",
+                        )
+                    )
+                    fig.add_trace(
+                        go.Scatter3d(
+                            x=[omega_arr[-1]],
+                            y=[S_arr[-1]],
+                            z=[C_arr[-1]],
+                            mode="markers",
+                            marker={"size": 8, "color": "#ffc107", "symbol": "square"},
+                            name="End",
+                        )
+                    )
 
                     # Mark attractor locations
                     locs = result.get("attractor_locations", [])

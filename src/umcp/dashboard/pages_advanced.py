@@ -1278,6 +1278,16 @@ def _load_canon_files() -> dict[str, Any]:
                 result[yf.stem] = data
         except Exception:
             pass
+    # Also load anchors.yaml (root canon) if present
+    root_anchor = canon_dir / "anchors.yaml"
+    if root_anchor.exists():
+        try:
+            with open(root_anchor) as f:
+                data = yaml.safe_load(f)
+            if data:
+                result["anchors"] = data
+        except Exception:
+            pass
     return result
 
 
@@ -1295,9 +1305,9 @@ def render_canon_explorer_page() -> None:
         They specify:
         - **Axioms** — foundational truths the domain assumes
         - **Reserved symbols** — Greek letters and variables with fixed meanings
-        - **Regime gates** — threshold values for STABLE / WATCH / COLLAPSE classification
-        - **Budget identities** — Tier-1 mathematical relationships (F + ω = 1, IC ≤ F, IC ≈ exp(κ))
-        - **Physical constants** — domain-specific reference values
+        - **Regime classification** — threshold values for STABLE / WATCH / COLLAPSE
+        - **Mathematical identities** — Tier-1 relationships (F + ω = 1, IC ≤ F, IC ≈ exp(κ))
+        - **Tolerances** — numerical precision requirements
 
         Canon files are **frozen at release** — they define the contract that closures must satisfy.
         """)
@@ -1313,7 +1323,7 @@ def render_canon_explorer_page() -> None:
         "kin_anchors": "🎯 KIN",
         "rcft_anchors": "🌀 RCFT",
         "weyl_anchors": "🌌 WEYL",
-        "anchors": "🔒 Security",
+        "anchors": "🔒 UMCP Root",
         "astro_anchors": "🔭 ASTRO",
         "nuc_anchors": "☢️ NUC",
         "qm_anchors": "🔮 QM",
@@ -1324,48 +1334,73 @@ def render_canon_explorer_page() -> None:
         "Select Domain Canon",
         domain_names,
         format_func=lambda x: domain_icons.get(x, x.replace("_anchors", "").upper()),
+        key="canon_domain_select",
     )
 
     data = canon[selected]
 
-    # Header info with styled card
-    meta = data.get("metadata", data.get("canon", {}))
-    canon_id = meta.get("id", meta.get("canon_id", "N/A"))
-    version = meta.get("version", "N/A")
-    tier = str(meta.get("tier", meta.get("scope", "N/A")))
-    created = str(meta.get("created", "N/A"))
+    # ── Header card ──
+    # Handle varying metadata locations across canon files
+    canon_id = data.get("id", "")
+    version = data.get("version", "")
+    created = str(data.get("created", ""))
+    scope_data = data.get("scope", {})
+    tier_str = str(scope_data.get("tier", scope_data.get("hierarchy", "")))
 
-    # Tier color badge
-    tier_color = "#1976d2" if "0" in tier else "#388e3c" if "1" in tier else "#f57c00"
+    # Root anchors.yaml uses umcp_canon as top-level
+    if not canon_id and "umcp_canon" in data:
+        root = data["umcp_canon"]
+        canon_id = root.get("canon_id", "")
+        scope_str = root.get("scope", "")
+        tier_str = scope_str if isinstance(scope_str, str) else str(scope_str)
+
+    if not canon_id:
+        canon_id = selected.replace("_", ".").upper()
+
+    tier_color = "#1976d2" if "1" in tier_str else "#388e3c" if "2" in tier_str else "#f57c00"
     st.markdown(
         f"""<div style="padding:12px 16px; border-radius:8px; background:linear-gradient(135deg, #f8f9fa, #ffffff);
              border-left:4px solid {tier_color}; margin-bottom:16px;">
         <span style="font-size:1.2em; font-weight:bold;">{canon_id}</span>
         <span style="background:{tier_color}; color:white; padding:2px 8px; border-radius:4px;
-              font-size:0.8em; margin-left:8px;">{tier}</span>
+              font-size:0.8em; margin-left:8px;">Tier {tier_str}</span>
         <span style="color:#666; margin-left:12px;">v{version} · Created: {created}</span>
         </div>""",
         unsafe_allow_html=True,
     )
 
+    # Show scope description
+    scope_desc = scope_data.get("description", "")
+    if scope_desc:
+        st.info(scope_desc.strip())
+
     st.divider()
 
-    # Axioms
-    axioms = data.get("axioms", [])
+    # ── Axioms / Principles ──
+    axioms = data.get("axioms", data.get("principles", []))
     if axioms:
         st.subheader("📜 Axioms")
         for idx, ax in enumerate(axioms):
             if isinstance(ax, dict):
                 ax_id = ax.get("id", ax.get("axiom_id", f"A{idx + 1}"))
-                label = ax.get("label", ax.get("name", ""))
-                desc = ax.get("description", ax.get("statement", ""))
+                label = ax.get("label", ax.get("statement", ax.get("name", "")))
+                desc = ax.get("description", "")
+                # Some domains add realization fields (nuc_realization, qm_realization, etc.)
+                realization = ""
+                for k, v in ax.items():
+                    if k.endswith("_realization") and isinstance(v, str):
+                        realization = v
                 with st.expander(f"**{ax_id}**: {label}", expanded=idx == 0):
-                    st.markdown(desc)
+                    if desc:
+                        st.markdown(desc)
+                    if realization:
+                        st.markdown(f"**Domain realization**: {realization.strip()}")
             elif isinstance(ax, str):
                 st.markdown(f"- {ax}")
 
-    # Reserved symbols
-    symbols = data.get("tier_1_symbols", data.get("reserved_symbols", data.get("symbols", [])))
+    # ── Reserved Symbols ──
+    # Symbols live in various nested locations depending on domain
+    symbols = _extract_symbols(data)
     if symbols:
         st.subheader("🔣 Reserved Symbols")
         sym_rows: list[dict[str, str]] = []
@@ -1373,62 +1408,278 @@ def render_canon_explorer_page() -> None:
             if isinstance(sym, dict):
                 sym_rows.append(
                     {
-                        "Symbol": sym.get("symbol", sym.get("name", "")),
-                        "Label": sym.get("label", sym.get("description", "")),
-                        "Domain": str(sym.get("domain", sym.get("range", ""))),
-                        "Unit": sym.get("unit", sym.get("units", "")),
+                        "Symbol": sym.get("symbol", sym.get("latex", sym.get("name", sym.get("ascii", "")))),
+                        "Description": sym.get("description", sym.get("label", "")),
+                        "Domain": str(sym.get("domain", "")),
+                        "Formula": sym.get("formula", sym.get("identity", "")),
                     }
                 )
         if sym_rows:
             st.dataframe(pd.DataFrame(sym_rows), use_container_width=True, hide_index=True)
 
-    # Regime gates
-    gates = data.get("regime_gates", data.get("gates", []))
-    if gates:
-        st.subheader("🚦 Regime Gates")
-        gate_rows: list[dict[str, str]] = []
-        for gate in gates:
-            if isinstance(gate, dict):
-                gate_rows.append(
-                    {
-                        "Gate": gate.get("name", gate.get("id", "")),
-                        "🟢 Stable": str(gate.get("stable", gate.get("STABLE", ""))),
-                        "🟡 Watch": str(gate.get("watch", gate.get("WATCH", ""))),
-                        "🔴 Collapse": str(gate.get("collapse", gate.get("COLLAPSE", ""))),
-                    }
-                )
-        if gate_rows:
-            st.dataframe(pd.DataFrame(gate_rows), use_container_width=True, hide_index=True)
+    # ── Tier hierarchy (RCFT) ──
+    tier_hier = data.get("tier_hierarchy", {})
+    if tier_hier:
+        frozen = tier_hier.get("tier_1_frozen_symbols", [])
+        if frozen:
+            st.subheader("🔒 Tier-1 Frozen Symbols (inherited)")
+            st.markdown(", ".join(f"`{s}`" for s in frozen))
+        hier_desc = tier_hier.get("description", "")
+        if hier_desc:
+            st.info(hier_desc.strip())
 
-    # Constants
-    constants = data.get("constants", data.get("physical_constants", {}))
-    if constants:
-        st.subheader("🔢 Constants")
-        if isinstance(constants, dict):
-            const_rows = [{"Name": k, "Value": str(v)} for k, v in constants.items()]
-            st.dataframe(pd.DataFrame(const_rows), use_container_width=True, hide_index=True)
-        elif isinstance(constants, list):
-            for c in constants:
-                if isinstance(c, dict):
-                    st.markdown(f"- **{c.get('name', '')}**: {c.get('value', '')} {c.get('unit', '')}")
+    # ── Regime Classification ──
+    regime_data = data.get("regime_classification", {})
+    if regime_data:
+        st.subheader("🚦 Regime Classification")
+        # Standard regimes list
+        regimes = regime_data.get("regimes", [])
+        if regimes:
+            gate_rows: list[dict[str, str]] = []
+            for r in regimes:
+                if isinstance(r, dict):
+                    gate_rows.append(
+                        {
+                            "Regime": r.get("label", r.get("name", "")),
+                            "Condition": r.get("condition", ""),
+                            "Interpretation": r.get("interpretation", ""),
+                        }
+                    )
+            if gate_rows:
+                st.dataframe(pd.DataFrame(gate_rows), use_container_width=True, hide_index=True)
+        # RCFT-style sub-classifications (fractal_complexity, recursive_strength, etc.)
+        for key, items in regime_data.items():
+            if key in ("description", "regimes"):
+                continue
+            if isinstance(items, list):
+                st.markdown(f"**{key.replace('_', ' ').title()}**")
+                sub_rows: list[dict[str, str]] = []
+                for item in items:
+                    if isinstance(item, dict):
+                        sub_rows.append(
+                            {
+                                "Label": item.get("label", ""),
+                                "Condition": item.get("condition", ""),
+                                "Interpretation": item.get("interpretation", ""),
+                            }
+                        )
+                if sub_rows:
+                    st.dataframe(pd.DataFrame(sub_rows), use_container_width=True, hide_index=True)
 
-    # Budget identities
-    identities = data.get("budget_identities", data.get("identities", data.get("mathematical_identities", [])))
+    # ── Root anchors: regime gates from umcp_canon ──
+    if "umcp_canon" in data:
+        root = data["umcp_canon"]
+        regimes_root = root.get("regimes", {})
+        if regimes_root:
+            st.subheader("🚦 Regime Gates")
+            for rname, rval in regimes_root.items():
+                if isinstance(rval, dict):
+                    items = [f"**{k}**: {v}" for k, v in rval.items() if k != "note"]
+                    note = rval.get("note", "")
+                    with st.expander(f"**{rname.replace('_', ' ').title()}**"):
+                        for item in items:
+                            st.markdown(f"- {item}")
+                        if note:
+                            st.caption(note)
+
+    # ── Mathematical Identities ──
+    identities = data.get("mathematical_identities", [])
     if identities:
-        st.subheader("📐 Budget Identities")
-        for ident in identities:
+        st.subheader("📐 Mathematical Identities")
+        id_list = identities.get("identities", []) if isinstance(identities, dict) else identities
+        for ident in id_list:
             if isinstance(ident, dict):
-                ident_id = ident.get("id", ident.get("name", ""))
-                expr = ident.get("expression", ident.get("formula", ident.get("description", "")))
-                st.markdown(f"- **{ident_id}**: `{expr}`")
+                name = ident.get("name", ident.get("id", ""))
+                formula = ident.get("formula", ident.get("expression", ""))
+                tol = ident.get("tolerance", "")
+                desc = ident.get("description", ident.get("interpretation", ""))
+                label = f"**{name}**: `{formula}`" if name else f"`{formula}`"
+                if tol:
+                    label += f"  (tol: {tol})"
+                st.markdown(f"- {label}")
+                if desc:
+                    st.caption(f"  {desc}")
             elif isinstance(ident, str):
                 st.markdown(f"- {ident}")
 
-    # Raw YAML view
+    # ── Tolerances ──
+    tolerances = data.get("tolerances", {})
+    if tolerances:
+        st.subheader("🎯 Tolerances")
+        tol_desc = tolerances.get("description", "")
+        if tol_desc:
+            st.caption(tol_desc)
+        gates = tolerances.get("gates", [])
+        if gates:
+            tol_rows: list[dict[str, str]] = []
+            for g in gates:
+                if isinstance(g, dict):
+                    tol_rows.append(
+                        {
+                            "Name": g.get("name", ""),
+                            "Value": str(g.get("value", "")),
+                            "Description": g.get("description", g.get("formula", "")),
+                        }
+                    )
+            if tol_rows:
+                st.dataframe(pd.DataFrame(tol_rows), use_container_width=True, hide_index=True)
+
+    # ── Typed Censoring ──
+    censoring = data.get("typed_censoring", {})
+    if censoring:
+        st.subheader("🏷️ Typed Censoring")
+        tc_desc = censoring.get("description", "")
+        if tc_desc:
+            st.caption(tc_desc)
+        values = censoring.get("values", [])
+        if values and isinstance(values, list):
+            for v in values:
+                if isinstance(v, dict):
+                    st.markdown(f"- **{v.get('symbol', '')}**: {v.get('interpretation', '')} — _{v.get('usage', '')}_")
+        # Enum-style fields (RCFT)
+        for key, val in censoring.items():
+            if key == "description":
+                continue
+            if isinstance(val, list) and all(isinstance(x, str) for x in val):
+                st.markdown(f"**{key.replace('_', ' ').title()}**: {', '.join(f'`{x}`' for x in val)}")
+
+    # ── Domain-specific extensions ──
+    for ext_key in ("gcd_extensions", "tier_2_extensions", "computational_notes"):
+        ext = data.get(ext_key, {})
+        if ext and isinstance(ext, dict):
+            title = ext_key.replace("_", " ").title()
+            st.subheader(f"🔧 {title}")
+            ext_desc = ext.get("description", "")
+            if ext_desc:
+                st.caption(ext_desc)
+            for k, v in ext.items():
+                if k in ("description", "reserved_symbols"):
+                    continue
+                if isinstance(v, list):
+                    st.markdown(f"**{k.replace('_', ' ').title()}**")
+                    for item in v:
+                        if isinstance(item, dict):
+                            sym = item.get("symbol", item.get("name", ""))
+                            desc = item.get("description", "")
+                            st.markdown(f"- **{sym}**: {desc}")
+                        elif isinstance(item, str):
+                            st.markdown(f"- {item}")
+                elif isinstance(v, str):
+                    st.markdown(f"**{k.replace('_', ' ').title()}**: {v.strip()}")
+
+    # ── Root anchors: contract defaults, identifiers, artifacts ──
+    if "umcp_canon" in data:
+        root = data["umcp_canon"]
+        # Contract defaults
+        defaults = root.get("contract_defaults", {})
+        if defaults:
+            st.subheader("📋 Contract Defaults")
+            contract_id = defaults.get("contract_id", "")
+            if contract_id:
+                st.markdown(f"**Contract**: `{contract_id}`")
+
+            embedding = defaults.get("embedding", {})
+            if embedding:
+                st.markdown("**Embedding**")
+                for k, v in embedding.items():
+                    st.markdown(f"- **{k}**: `{v}`")
+
+            kernel = defaults.get("tier_1_kernel", {})
+            if kernel:
+                st.markdown("**Tier-1 Kernel**")
+                for k, v in kernel.items():
+                    if isinstance(v, list):
+                        st.markdown(f"- **{k}**: {', '.join(f'`{x}`' for x in v)}")
+                    elif isinstance(v, dict):
+                        st.markdown(f"- **{k}**:")
+                        for sk, sv in v.items():
+                            st.markdown(f"  - {sk}: `{sv}`")
+                    else:
+                        st.markdown(f"- **{k}**: `{v}`")
+
+        # Anchors (DOIs, weld)
+        anchors = root.get("anchors", {})
+        if anchors:
+            st.subheader("🔗 Anchors")
+            for name, info in anchors.items():
+                if isinstance(info, dict):
+                    title = info.get("title", info.get("id", name))
+                    doi = info.get("doi", "")
+                    with st.expander(f"**{name.title()}**: {title}"):
+                        if doi:
+                            st.markdown(f"DOI: `{doi}`")
+                        for k, v in info.items():
+                            if k not in ("title", "doi"):
+                                st.markdown(f"- **{k}**: {v}")
+
+    # ── Provenance ──
+    provenance = data.get("provenance", {})
+    if provenance:
+        st.subheader("📜 Provenance")
+        for k, v in provenance.items():
+            if isinstance(v, list):
+                st.markdown(f"**{k.replace('_', ' ').title()}**")
+                for item in v:
+                    st.markdown(f"- {item}")
+            else:
+                st.markdown(f"**{k.replace('_', ' ').title()}**: {v}")
+
+    # ── Notes ──
+    notes = data.get("notes", "")
+    if notes:
+        with st.expander("📝 Notes"):
+            st.markdown(notes.strip())
+
+    # ── Raw YAML view ──
     with st.expander("📄 Raw YAML"):
         import yaml
 
         st.code(yaml.dump(data, default_flow_style=False, allow_unicode=True), language="yaml")
+
+
+def _extract_symbols(data: dict[str, Any]) -> list[dict[str, Any]]:
+    """Extract reserved symbols from varying canon YAML structures."""
+    symbols: list[dict[str, Any]] = []
+
+    # Direct top-level lists
+    for key in ("reserved_symbols", "symbols", "tier_1_symbols"):
+        val = data.get(key, [])
+        if isinstance(val, list):
+            symbols.extend(val)
+
+    # Nested under tier_1_invariants.reserved_symbols (GCD, WEYL, KIN, ASTRO)
+    t1 = data.get("tier_1_invariants", {})
+    if isinstance(t1, dict):
+        rs = t1.get("reserved_symbols", [])
+        if isinstance(rs, list):
+            symbols.extend(rs)
+        elif isinstance(rs, dict):
+            # KIN-style: each symbol is a dict value keyed by name
+            for name, info in rs.items():
+                if isinstance(info, dict):
+                    entry = dict(info)
+                    if "symbol" not in entry:
+                        entry["symbol"] = name
+                    symbols.append(entry)
+
+    # Nested under tier_2_extensions.reserved_symbols (RCFT)
+    t2 = data.get("tier_2_extensions", {})
+    if isinstance(t2, dict):
+        rs = t2.get("reserved_symbols", [])
+        if isinstance(rs, list):
+            symbols.extend(rs)
+
+    # Root anchors: umcp_canon.contract_defaults.tier_1_kernel.reserved_symbols_unicode
+    if "umcp_canon" in data:
+        root = data["umcp_canon"]
+        kernel = root.get("contract_defaults", {}).get("tier_1_kernel", {})
+        unicode_syms = kernel.get("reserved_symbols_unicode", [])
+        ascii_syms = kernel.get("reserved_symbols_ascii", [])
+        if unicode_syms and not symbols:
+            for u, a in zip(unicode_syms, ascii_syms, strict=False):
+                symbols.append({"symbol": u, "description": a, "domain": "", "formula": ""})
+
+    return symbols
 
 
 # ============================================================================
