@@ -129,7 +129,7 @@ tier_1_invariants:
       description: Wavefunction amplitude (complex norm)
       formula: "|ψ|² = probability density"
       domain: quantum_mechanics
-      unit: dimensionless (embedded [0,1])
+      unit: "dimensionless (embedded [0,1])"
       interpretation: Born rule foundation
 
     - symbol: concurrence
