@@ -28,8 +28,10 @@ import json
 import sys
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any, cast
 
 import numpy as np
+from numpy.typing import NDArray
 from scipy import stats
 
 # Add project root so closures can be imported
@@ -60,7 +62,7 @@ np.set_printoptions(precision=6, suppress=True)
 # SECTION 0: Setup
 # ═══════════════════════════════════════════════════════════════════════
 
-z_bins = DES_Y3_DATA["z_bins"]
+z_bins = cast(NDArray[np.floating[Any]], DES_Y3_DATA["z_bins"])
 n_bins = len(z_bins)
 
 # Background quantities at anchor z*=10
@@ -72,17 +74,17 @@ sigma8_star = bg_star.sigma8_z
 des_bg = compute_des_y3_background()
 
 # Data variants
-DATA_VARIANTS = {
-    "CMB_prior": DES_Y3_DATA["hJ_cmb"],
-    "No_CMB": DES_Y3_DATA["hJ_no_cmb"],
-    "Pessimistic_CMB": DES_Y3_DATA["hJ_pessimistic_cmb"],
-    "Pessimistic_No_CMB": DES_Y3_DATA["hJ_pessimistic_no_cmb"],
+DATA_VARIANTS: dict[str, dict[str, Any]] = {
+    "CMB_prior": cast(dict[str, Any], DES_Y3_DATA["hJ_cmb"]),
+    "No_CMB": cast(dict[str, Any], DES_Y3_DATA["hJ_no_cmb"]),
+    "Pessimistic_CMB": cast(dict[str, Any], DES_Y3_DATA["hJ_pessimistic_cmb"]),
+    "Pessimistic_No_CMB": cast(dict[str, Any], DES_Y3_DATA["hJ_pessimistic_no_cmb"]),
 }
 
 # g(z) models
 GZ_MODELS = [GzModel.STANDARD, GzModel.CONSTANT, GzModel.EXPONENTIAL]
 
-results: dict = {
+results: dict[str, Any] = {
     "timestamp": datetime.now(UTC).isoformat(),
     "reference": "Nature Communications 15:9295 (2024)",
     "sections": {},
@@ -102,7 +104,7 @@ print("\n\n" + "━" * 80)
 print("  SECTION 1: Full Σ₀ Fitting (12 combinations)")
 print("━" * 80)
 
-fit_results: dict = {}
+fit_results: dict[str, Any] = {}
 
 for variant_name, variant_data in DATA_VARIANTS.items():
     fit_results[variant_name] = {}
@@ -154,7 +156,7 @@ print("  SECTION 2: Bin-by-Bin Σ(z) Inversion — Redshift Dependence")
 print("━" * 80)
 print("  Question: Is the deviation from GR constant or evolving?")
 
-bin_inversions: dict = {}
+bin_inversions: dict[str, Any] = {}
 
 for variant_name, variant_data in DATA_VARIANTS.items():
     bin_inversions[variant_name] = []
@@ -232,18 +234,18 @@ print("\n\n" + "━" * 80)
 print("  SECTION 3: σ₈ Tension Quantification")
 print("━" * 80)
 
-s8_data = DES_Y3_DATA["sigma8_comparison"]
+s8_data = cast(dict[str, Any], DES_Y3_DATA["sigma8_comparison"])
 
 # CMB-derived vs lensing-derived
-s8_cmb_params = s8_data["from_params_cmb"]
-s8_cmb_hJ = s8_data["from_hJ_cmb"]
-s8_nocmb_params = s8_data["from_params_no_cmb"]
-s8_nocmb_hJ = s8_data["from_hJ_no_cmb"]
+s8_cmb_params = cast(dict[str, Any], s8_data["from_params_cmb"])
+s8_cmb_hJ = cast(dict[str, Any], s8_data["from_hJ_cmb"])
+s8_nocmb_params = cast(dict[str, Any], s8_data["from_params_no_cmb"])
+s8_nocmb_hJ = cast(dict[str, Any], s8_data["from_hJ_no_cmb"])
 
 
 # Tension = |μ₁ - μ₂| / √(σ₁² + σ₂²)
 def compute_tension(m1: float, s1: float, m2: float, s2: float) -> float:
-    return abs(m1 - m2) / np.sqrt(s1**2 + s2**2)
+    return float(abs(m1 - m2) / np.sqrt(s1**2 + s2**2))
 
 
 tension_cmb = compute_tension(
@@ -325,8 +327,8 @@ z_scan = np.linspace(0.01, 3.0, 60)
 # Compute T_Weyl across redshift for GR and modified gravity
 print("\n  Scanning z = [0.01, 3.0] with Σ₀ = 0.0 (GR) and 0.24 (DES)")
 
-transfer_gr: list = []
-transfer_mg: list = []
+transfer_gr: list[Any] = []
+transfer_mg: list[Any] = []
 
 H_star = H_of_z(10.0)
 D1_star_val = D1_of_z(10.0)
@@ -454,10 +456,10 @@ print("\n\n" + "━" * 80)
 print("  SECTION 6: χ² Landscape Scan")
 print("━" * 80)
 
-hJ_cmb = DES_Y3_DATA["hJ_cmb"]
+hJ_cmb = cast(dict[str, Any], DES_Y3_DATA["hJ_cmb"])
 Sigma_0_scan = np.linspace(-0.8, 0.8, 161)
 
-chi2_landscape: dict = {}
+chi2_landscape: dict[str, Any] = {}
 
 for model in GZ_MODELS:
     chi2_vals = []
@@ -530,7 +532,7 @@ print("━" * 80)
 print("  Comparing: GR (0 params) vs Σ₀ models (1 param each)")
 
 n_data = n_bins  # 4 data points
-bic_results: dict = {}
+bic_results: dict[str, Any] = {}
 
 # GR model: 0 free parameters
 chi2_gr_val = chi2_landscape["standard"]["chi2_at_GR"]
@@ -644,7 +646,7 @@ Sigma_0_regime_scan = np.linspace(-0.5, 0.5, 101)
 print(f"\n  {'Σ₀':>8}  {'ω':>6}  {'F':>6}  {'Regime':>12}  {'χ² imp':>8}")
 print("  " + "-" * 50)
 
-transitions_found: list = []
+transitions_found: list[Any] = []
 prev_regime = None
 for S0 in Sigma_0_regime_scan:
     mapping = Sigma_to_UMCP_invariants(S0, 1.1, 2.1)
@@ -845,8 +847,8 @@ findings = [
     f"8. 5σ discovery forecast: requires σ(Σ₀) ≤ {sigma_5sig:.3f} — achievable by ~LSST Y10 / Stage-IV combined",
 ]
 
-for f in findings:
-    print(f"\n  {f}")
+for finding in findings:
+    print(f"\n  {finding}")
 
 results["sections"]["summary"] = findings
 
@@ -857,8 +859,8 @@ results["sections"]["summary"] = findings
 output_path = Path(__file__).resolve().parent.parent / "outputs" / "cosmology_exploration.json"
 output_path.parent.mkdir(parents=True, exist_ok=True)
 
-with open(output_path, "w") as f:
-    json.dump(results, f, indent=2, default=str)
+with open(output_path, "w") as fout:
+    json.dump(results, fout, indent=2, default=str)
 
 print(f"\n\n  📄 Full results written to: {output_path}")
 print("=" * 80)
