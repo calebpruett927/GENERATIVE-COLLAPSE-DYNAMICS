@@ -115,11 +115,11 @@ class ThermodynamicPhase(Enum):
     or requires deficit spending (return costs time).
     """
 
-    SURPLUS = "SURPLUS"          # τ_R* < 0: system generates budget credit
-    DEFICIT = "DEFICIT"          # τ_R* > 0: return costs more than budget allows
+    SURPLUS = "SURPLUS"  # τ_R* < 0: system generates budget credit
+    DEFICIT = "DEFICIT"  # τ_R* > 0: return costs more than budget allows
     FREE_RETURN = "FREE_RETURN"  # τ_R* ≈ 0: exactly at the break-even surface
-    TRAPPED = "TRAPPED"          # τ_R* > 0 AND no single-step escape (Theorem T3)
-    POLE = "POLE"                # ω → 1: singular, Γ diverges (Def T2)
+    TRAPPED = "TRAPPED"  # τ_R* > 0 AND no single-step escape (Theorem T3)
+    POLE = "POLE"  # ω → 1: singular, Γ diverges (Def T2)
 
 
 class DominanceTerm(Enum):
@@ -129,9 +129,9 @@ class DominanceTerm(Enum):
     Collapse → Γ(ω).
     """
 
-    DRIFT = "DRIFT"       # Γ(ω) dominates — collapse regime
+    DRIFT = "DRIFT"  # Γ(ω) dominates — collapse regime
     CURVATURE = "CURVATURE"  # αC dominates — watch regime
-    MEMORY = "MEMORY"     # Δκ dominates — stable regime
+    MEMORY = "MEMORY"  # Δκ dominates — stable regime
 
 
 # =============================================================================
@@ -142,12 +142,12 @@ class DominanceTerm(Enum):
 class TauRStarResult(NamedTuple):
     """Core τ_R* computation result."""
 
-    tau_R_star: float        # Critical return delay
-    gamma: float            # Γ(ω) = ω^p / (1 - ω + ε)
-    D_C: float              # αC curvature cost
-    delta_kappa: float      # Memory term
-    R: float                # Return rate (input)
-    numerator: float        # Γ + αC + Δκ (total budget numerator)
+    tau_R_star: float  # Critical return delay
+    gamma: float  # Γ(ω) = ω^p / (1 - ω + ε)
+    D_C: float  # αC curvature cost
+    delta_kappa: float  # Memory term
+    R: float  # Return rate (input)
+    numerator: float  # Γ + αC + Δκ (total budget numerator)
 
 
 @dataclass(frozen=True)
@@ -175,10 +175,10 @@ class ThermodynamicDiagnostic:
     numerator: float
     phase: ThermodynamicPhase
     dominance: DominanceTerm
-    R_critical: float       # Minimum R for seam viability
-    R_min: float            # Minimum R for seam closure at current state
-    is_trapped: bool        # Whether single-step escape is impossible
-    c_trap: float           # Trapping threshold (≈ 0.60)
+    R_critical: float  # Minimum R for seam viability
+    R_min: float  # Minimum R for seam closure at current state
+    is_trapped: bool  # Whether single-step escape is impossible
+    c_trap: float  # Trapping threshold (≈ 0.60)
 
     # ── Tier-1 inputs (read-only, never modified) ──
     omega: float
@@ -190,10 +190,10 @@ class ThermodynamicDiagnostic:
 
     # ── Tier-0 check results ──
     regime: Regime
-    tier1_identity_F: bool      # F = 1 - ω (machine precision)
-    tier1_identity_IC: bool     # |IC - exp(κ)| < tol
-    tier1_bound_AMGM: bool     # IC ≤ F + tol_seam
-    tier0_checks_pass: bool    # All Tier-0 checks satisfied
+    tier1_identity_F: bool  # F = 1 - ω (machine precision)
+    tier1_identity_IC: bool  # |IC - exp(κ)| < tol
+    tier1_bound_AMGM: bool  # IC ≤ F + tol_seam
+    tier0_checks_pass: bool  # All Tier-0 checks satisfied
 
     # ── Diagnostic metadata ──
     warnings: list[str] = field(default_factory=list)
@@ -455,9 +455,7 @@ def classify_phase(tau_R_star: float, omega: float, *, epsilon: float = EPSILON)
     return ThermodynamicPhase.DEFICIT
 
 
-def classify_dominance(
-    gamma: float, D_C: float, delta_kappa: float
-) -> DominanceTerm:
+def classify_dominance(gamma: float, D_C: float, delta_kappa: float) -> DominanceTerm:
     """Identify which term dominates the budget (Theorem T1).
 
     Regime-dependent dominance:
@@ -520,18 +518,18 @@ def check_tier1_identities(
     # F = 1 - ω
     identity_F = abs(F - (1.0 - omega)) < tol_F
     if not identity_F:
-        failures.append(f"F={F:.10f} ≠ 1-ω={1.0-omega:.10f} (|Δ|={abs(F-(1.0-omega)):.2e})")
+        failures.append(f"F={F:.10f} ≠ 1-ω={1.0 - omega:.10f} (|Δ|={abs(F - (1.0 - omega)):.2e})")
 
     # IC ≈ exp(κ)
     exp_kappa = math.exp(kappa) if kappa > -700 else 0.0  # Avoid underflow
     identity_IC = abs(IC - exp_kappa) < tol_IC or (IC == 0.0 and exp_kappa < tol_IC)
     if not identity_IC:
-        failures.append(f"|IC-exp(κ)|={abs(IC-exp_kappa):.2e} ≥ tol={tol_IC}")
+        failures.append(f"|IC-exp(κ)|={abs(IC - exp_kappa):.2e} ≥ tol={tol_IC}")
 
     # IC ≤ F (AM-GM)
     bound_AMGM = F + tol_seam >= IC
     if not bound_AMGM:
-        failures.append(f"IC={IC:.6f} > F+tol={F+tol_seam:.6f} (AM-GM violated)")
+        failures.append(f"IC={IC:.6f} > F+tol={F + tol_seam:.6f} (AM-GM violated)")
 
     return identity_F, identity_IC, bound_AMGM, failures
 
@@ -598,9 +596,7 @@ def diagnose(
     warnings: list[str] = []
 
     # ── Tier-0: Identity checks ──
-    id_F, id_IC, bound_AMGM, id_failures = check_tier1_identities(
-        F, omega, IC, kappa, tol_seam=tol_seam
-    )
+    id_F, id_IC, bound_AMGM, id_failures = check_tier1_identities(F, omega, IC, kappa, tol_seam=tol_seam)
     if id_failures:
         warnings.extend(id_failures)
 
@@ -611,9 +607,7 @@ def diagnose(
     regime = classify_regime(omega, F, S, C, integrity_val)
 
     # ── Tier-2: τ_R* computation ──
-    result = compute_tau_R_star(
-        omega, C, R, delta_kappa, p=p, alpha=alpha, epsilon=epsilon
-    )
+    result = compute_tau_R_star(omega, C, R, delta_kappa, p=p, alpha=alpha, epsilon=epsilon)
 
     # ── Tier-2: Phase classification ──
     phase = classify_phase(result.tau_R_star, omega, epsilon=epsilon)
@@ -629,9 +623,7 @@ def diagnose(
     c_trap = compute_trapping_threshold(p=p, alpha=alpha, epsilon=epsilon)
 
     # ── Tier-2: R_critical and R_min ──
-    r_crit = compute_R_critical(
-        omega, C, delta_kappa, p=p, alpha=alpha, epsilon=epsilon, tol_seam=tol_seam
-    )
+    r_crit = compute_R_critical(omega, C, delta_kappa, p=p, alpha=alpha, epsilon=epsilon, tol_seam=tol_seam)
     r_min = compute_R_min(omega, C, tol_seam, delta_kappa, p=p, alpha=alpha, epsilon=epsilon)
 
     # ── Diagnostic warnings ──
@@ -712,9 +704,18 @@ def diagnose_invariants(
         prev_kappa = kappa_val
 
         diag = diagnose(
-            omega=omega, F=F_val, S=S_val, C=C_val,
-            kappa=kappa_val, IC=IC_val, R=R, delta_kappa=dk,
-            p=p, alpha=alpha, epsilon=epsilon, tol_seam=tol_seam,
+            omega=omega,
+            F=F_val,
+            S=S_val,
+            C=C_val,
+            kappa=kappa_val,
+            IC=IC_val,
+            R=R,
+            delta_kappa=dk,
+            p=p,
+            alpha=alpha,
+            epsilon=epsilon,
+            tol_seam=tol_seam,
         )
         results.append(diag)
 

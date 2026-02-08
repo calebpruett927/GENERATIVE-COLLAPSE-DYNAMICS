@@ -401,9 +401,13 @@ class TestDiagnose:
 
     @staticmethod
     def _make_diagnose_call(
-        omega: float = 0.1, C: float = 0.1, R: float = 0.01,
-        F: float | None = None, S: float = 0.1,
-        kappa: float = -0.5, IC: float | None = None,
+        omega: float = 0.1,
+        C: float = 0.1,
+        R: float = 0.01,
+        F: float | None = None,
+        S: float = 0.1,
+        kappa: float = -0.5,
+        IC: float | None = None,
     ) -> ThermodynamicDiagnostic:
         """Create a Tier-1 consistent state and run diagnose."""
         if F is None:
@@ -411,7 +415,13 @@ class TestDiagnose:
         if IC is None:
             IC = math.exp(kappa)
         return diagnose(
-            omega=omega, F=F, S=S, C=C, kappa=kappa, IC=IC, R=R,
+            omega=omega,
+            F=F,
+            S=S,
+            C=C,
+            kappa=kappa,
+            IC=IC,
+            R=R,
         )
 
     def test_stable_state_diagnosis(self) -> None:
