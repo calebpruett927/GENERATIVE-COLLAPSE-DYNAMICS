@@ -21,7 +21,8 @@ This document provides the **complete formal specification** of the UMCP kernel.
 
 **Frozen Means Consistent, Not Constant**: The parameters frozen in a contract (ε, p, α, λ, tol_seam) are not arbitrary design choices locked for convenience. They are frozen because **the seam demands it**. A seam is a verification boundary: you run forward, things collapse, and something returns. To verify that what returned is the same thing that collapsed, the rules of measurement must be identical on both sides. If ε changes between the outbound run and the return, closures cannot be compared. If tol_seam shifts, the PASS/FAIL boundary moves, and "CONFORMANT" on one side of collapse means something different than "CONFORMANT" on the other. The values are consistent across the seam — from front to end, through collapse and back. That is what frozen means in this protocol.
 
-**See Also**: [TIER_SYSTEM.md](TIER_SYSTEM.md) for the complete tier architecture and constitutional clauses.
+**See Also**: [TIER_SYSTEM.md](TIER_SYSTEM.md) for the complete tier architecture and constitutional clauses.  
+**See Also**: [TAU_R_STAR_THERMODYNAMICS.md](TAU_R_STAR_THERMODYNAMICS.md) for the complete τ_R* analysis — phase diagram, trapping threshold, arrow of time, critical exponents, and testable predictions derived from the budget identity (Def 11).
 
 ---
 
@@ -161,6 +162,8 @@ s := Δκ_budget - Δκ_ledger
 - **Calculus**: τ_R is a discrete event-time; residuals can change discontinuously when the minimizer changes.
 
 Typed censoring is an **algebraic safeguard**: it prevents "infinite credit" artifacts by enforcing "no return, no credit." This is not a convenience — it is structural. If you never observed return, you have zero budget for the seam, because the seam does not exist for you. The anti-cheat condition (INF_REC → budget = 0) ensures that continuity cannot be synthesized from structure alone — it must be measured.
+
+**Extended analysis**: The budget model solved for τ_R yields the critical return delay τ_R* = (Γ(ω) + αC + Δκ) / R, which is a thermodynamic potential with regime-dependent dominance, a trapping threshold at c ≈ 0.60, critical exponent zν = 1, and an emergent arrow of time. See [TAU_R_STAR_THERMODYNAMICS.md](TAU_R_STAR_THERMODYNAMICS.md) for the complete analysis.
 
 ---
 

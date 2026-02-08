@@ -2,7 +2,8 @@
 
 **Version**: 1.0.0  
 **Status**: Reference Documentation  
-**Prerequisites**: [KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md), [INFRASTRUCTURE_GEOMETRY.md](INFRASTRUCTURE_GEOMETRY.md)
+**Prerequisites**: [KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md), [INFRASTRUCTURE_GEOMETRY.md](INFRASTRUCTURE_GEOMETRY.md)  
+**See Also**: [TAU_R_STAR_THERMODYNAMICS.md](TAU_R_STAR_THERMODYNAMICS.md) for thermodynamic potential, Fisher Information geometry, and phase structure derived from the budget identity
 
 ---
 
