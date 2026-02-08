@@ -1,3 +1,28 @@
-"""Astronomy __init__.py — closure package for ASTRO.INTSTACK.v1."""
+"""Astronomy Closures — ASTRO.INTSTACK.v1
+
+Provides closures for stellar luminosity, distance ladder, spectral
+analysis, stellar evolution, orbital mechanics, and gravitational dynamics.
+
+Cross-references:
+    Contract:  contracts/ASTRO.INTSTACK.v1.yaml
+    Canon:     canon/astro_anchors.yaml
+    Registry:  closures/registry.yaml (extensions.astronomy)
+"""
 
 from __future__ import annotations
+
+from closures.astronomy.distance_ladder import compute_distance_ladder
+from closures.astronomy.gravitational_dynamics import compute_gravitational_dynamics
+from closures.astronomy.orbital_mechanics import compute_orbital_mechanics
+from closures.astronomy.spectral_analysis import compute_spectral_analysis
+from closures.astronomy.stellar_evolution import compute_stellar_evolution
+from closures.astronomy.stellar_luminosity import compute_stellar_luminosity
+
+__all__ = [
+    "compute_distance_ladder",
+    "compute_gravitational_dynamics",
+    "compute_orbital_mechanics",
+    "compute_spectral_analysis",
+    "compute_stellar_evolution",
+    "compute_stellar_luminosity",
+]

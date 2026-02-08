@@ -1,10 +1,10 @@
 """
-UMCP REST API - FastAPI Communication Extension
+UMCP REST API - FastAPI Communication Extension (v2.0.0)
 
-Provides HTTP endpoints for remote validation, ledger access, and system health.
-This is an optional extension that requires: pip install umcp[api]
+Provides HTTP endpoints for remote validation, ledger access, system health,
+and domain-specific closure computations across all 9 UMCP domains.
 
-Endpoints:
+Core Endpoints:
   GET  /health           - System health check
   GET  /version          - API and validator version info
   POST /validate         - Validate a casepack or repository
@@ -14,6 +14,16 @@ Endpoints:
   GET  /ledger           - Query the return log ledger
   GET  /contracts        - List available contracts
   GET  /closures         - List available closures
+
+Domain Endpoints:
+  GET  /domains          - List all 9 UMCP domains
+  GET  /canon            - List canon anchor files
+  GET  /canon/{domain}   - Get full canon data for a domain
+  POST /astro/*          - Astronomy closures (6 endpoints)
+  POST /nuclear/*        - Nuclear physics closures (6 endpoints)
+  POST /qm/*             - Quantum mechanics closures (6 endpoints)
+  POST /finance/embed    - Finance embedding
+  GET  /weyl/*           - WEYL cosmology endpoints (4 endpoints)
 
 Usage:
   uvicorn umcp.api_umcp:app --reload --host 0.0.0.0 --port 8000
@@ -58,12 +68,16 @@ except ImportError:
 API_VERSION = "1.0.0"
 API_TITLE = "UMCP REST API"
 API_DESCRIPTION = """
-Universal Measurement Contract Protocol REST API.
+Universal Measurement Contract Protocol REST API (v2.0.0)
 
 Provides HTTP endpoints for validating computational workflows,
-querying the ledger, and managing casepacks.
+querying the ledger, managing casepacks, and running domain-specific
+closure computations across all 9 UMCP domains.
+
+**Domains**: GCD, KIN, RCFT, WEYL, Security, ASTRO, NUC, QM, FIN
 
 **Authentication**: API key required via `X-API-Key` header.
+Set `UMCP_DEV_MODE=1` to disable for local development.
 """
 
 # API key from environment (production should use secrets management)
@@ -2261,6 +2275,625 @@ async def analyze_ledger(
         recent_conformant_rate=recent_conformant_rate,
         recent_avg_omega=recent_avg_omega,
     )
+
+
+# ============================================================================
+# WEYL Cosmology Endpoints
+# ============================================================================
+
+
+# ============================================================================
+# Domain Summary & Canon Endpoints
+# ============================================================================
+
+
+class DomainInfo(BaseModel):
+    """Information about a UMCP domain."""
+
+    name: str = Field(description="Domain short name")
+    description: str = Field(description="Domain description")
+    tier: str = Field(description="Tier classification")
+    closures: int = Field(description="Number of closures")
+    contract: str = Field(description="Contract identifier")
+    canon: str = Field(description="Canon anchor file")
+    casepack: str = Field(description="Primary casepack")
+
+
+class CanonAnchor(BaseModel):
+    """Summary of a canon anchor file."""
+
+    id: str = Field(description="Canon identifier")
+    version: str = Field(description="Canon version")
+    domain: str = Field(description="Domain name")
+    axiom_count: int = Field(description="Number of axioms")
+    symbol_count: int = Field(description="Number of reserved symbols")
+    gate_count: int = Field(description="Number of regime gates")
+
+
+class AstroLuminosityRequest(BaseModel):
+    """Request for stellar luminosity computation."""
+
+    m_star: float = Field(description="Stellar mass in solar masses")
+    t_eff: float = Field(description="Effective temperature in K")
+    r_star: float = Field(description="Stellar radius in solar radii")
+
+
+class AstroDistanceRequest(BaseModel):
+    """Request for distance ladder computation."""
+
+    m_app: float = Field(description="Apparent magnitude")
+    m_abs: float = Field(description="Absolute magnitude")
+    pi_arcsec: float = Field(description="Parallax in arcseconds")
+    z_cosmo: float = Field(description="Cosmological redshift")
+    h0: float = Field(default=70.0, description="Hubble constant km/s/Mpc")
+
+
+class NucBindingRequest(BaseModel):
+    """Request for nuclear binding energy computation."""
+
+    Z: int = Field(description="Proton number", ge=1, le=120)
+    A: int = Field(description="Mass number", ge=1, le=300)
+
+
+class NucAlphaRequest(BaseModel):
+    """Request for alpha decay computation."""
+
+    Z: int = Field(description="Parent proton number", ge=2, le=120)
+    A: int = Field(description="Parent mass number", ge=4, le=300)
+    Q_alpha_MeV: float = Field(default=0.0, description="Q-value for alpha decay (MeV), auto-computed if 0")
+
+
+class QMCollapseRequest(BaseModel):
+    """Request for wavefunction collapse computation."""
+
+    psi_amplitudes: list[float] = Field(description="Wavefunction amplitudes")
+    measurement_probs: list[float] = Field(description="Measured probabilities")
+    observed_outcome_idx: int = Field(default=0, description="Observed outcome index")
+
+
+class QMTunnelingRequest(BaseModel):
+    """Request for tunneling computation."""
+
+    e_particle: float = Field(description="Particle energy (eV)")
+    v_barrier: float = Field(description="Barrier height (eV)")
+    barrier_width: float = Field(description="Barrier width (nm)")
+    particle_mass: float | None = Field(default=None, description="Particle mass (kg), default electron")
+
+
+class QMEntanglementRequest(BaseModel):
+    """Request for entanglement computation."""
+
+    rho_eigenvalues: list[float] = Field(description="Density matrix eigenvalues")
+    bell_correlations: list[float] | None = Field(default=None, description="Bell correlation values (4)")
+
+
+class ClosureResult(BaseModel):
+    """Generic result from a domain closure computation."""
+
+    result: dict[str, Any] = Field(description="Computation results")
+    domain: str = Field(description="Domain name")
+    closure: str = Field(description="Closure name")
+
+
+@app.get("/domains", response_model=list[DomainInfo], tags=["Domains"])
+async def list_domains(
+    api_key: str = Security(validate_api_key),
+) -> list[DomainInfo]:
+    """List all 9 UMCP domains with metadata."""
+    return [
+        DomainInfo(
+            name="GCD",
+            description="Generic Collapse Dynamics — foundational kernel",
+            tier="Tier-1",
+            closures=5,
+            contract="UMA.INTSTACK.v1",
+            canon="gcd_anchors.yaml",
+            casepack="gcd_complete",
+        ),
+        DomainInfo(
+            name="KIN",
+            description="Kinematics — Tier-0 protocol diagnostic",
+            tier="Tier-0",
+            closures=6,
+            contract="KIN.INTSTACK.v1",
+            canon="kin_anchors.yaml",
+            casepack="kinematics_complete",
+        ),
+        DomainInfo(
+            name="RCFT",
+            description="Recursive Collapse Field Theory — fractal overlays",
+            tier="Tier-2",
+            closures=4,
+            contract="RCFT.INTSTACK.v1",
+            canon="rcft_anchors.yaml",
+            casepack="rcft_complete",
+        ),
+        DomainInfo(
+            name="WEYL",
+            description="Modified gravity — DES Y3 Σ(z) analysis",
+            tier="Tier-2",
+            closures=6,
+            contract="WEYL.INTSTACK.v1",
+            canon="weyl_anchors.yaml",
+            casepack="weyl_des_y3",
+        ),
+        DomainInfo(
+            name="Security",
+            description="Security validation and integrity checking",
+            tier="Tier-2",
+            closures=15,
+            contract="SECURITY.INTSTACK.v1",
+            canon="anchors.yaml",
+            casepack="security_validation",
+        ),
+        DomainInfo(
+            name="ASTRO",
+            description="Astronomy — stars, orbits, distances, spectra",
+            tier="Tier-2",
+            closures=6,
+            contract="ASTRO.INTSTACK.v1",
+            canon="astro_anchors.yaml",
+            casepack="astronomy_complete",
+        ),
+        DomainInfo(
+            name="NUC",
+            description="Nuclear physics — binding, decay, shells, fissility",
+            tier="Tier-2",
+            closures=6,
+            contract="NUC.INTSTACK.v1",
+            canon="nuc_anchors.yaml",
+            casepack="nuclear_chain",
+        ),
+        DomainInfo(
+            name="QM",
+            description="Quantum mechanics — Born rule, tunneling, spin",
+            tier="Tier-2",
+            closures=6,
+            contract="QM.INTSTACK.v1",
+            canon="qm_anchors.yaml",
+            casepack="quantum_mechanics_complete",
+        ),
+        DomainInfo(
+            name="FIN",
+            description="Finance — business continuity embedding",
+            tier="Tier-2",
+            closures=1,
+            contract="FINANCE.INTSTACK.v1",
+            canon="—",
+            casepack="finance_continuity",
+        ),
+    ]
+
+
+@app.get("/canon", response_model=list[CanonAnchor], tags=["Domains"])
+async def list_canon_anchors(
+    api_key: str = Security(validate_api_key),
+) -> list[CanonAnchor]:
+    """List all canon anchor files with summary metadata."""
+    repo_root = get_repo_root()
+    canon_dir = repo_root / "canon"
+    results: list[CanonAnchor] = []
+    if not canon_dir.exists():
+        return results
+
+    yaml_mod = None
+    try:
+        import yaml as yaml_mod  # type: ignore[no-redef]
+    except ImportError:
+        return results
+
+    for yf in sorted(canon_dir.glob("*_anchors.yaml")):
+        try:
+            with open(yf) as f:
+                data = yaml_mod.safe_load(f)
+            if not data:
+                continue
+            meta = data.get("metadata", data.get("canon", {}))
+            results.append(
+                CanonAnchor(
+                    id=meta.get("id", meta.get("canon_id", yf.stem)),
+                    version=str(meta.get("version", "1.0.0")),
+                    domain=yf.stem.replace("_anchors", "").upper(),
+                    axiom_count=len(data.get("axioms", [])),
+                    symbol_count=len(data.get("tier_1_symbols", data.get("reserved_symbols", data.get("symbols", [])))),
+                    gate_count=len(data.get("regime_gates", data.get("gates", []))),
+                )
+            )
+        except Exception:
+            pass
+
+    return results
+
+
+@app.get("/canon/{domain}", tags=["Domains"])
+async def get_canon_detail(
+    domain: str,
+    api_key: str = Security(validate_api_key),
+) -> dict[str, Any]:
+    """Get full canon anchor data for a specific domain."""
+    repo_root = get_repo_root()
+    canon_dir = repo_root / "canon"
+    target = canon_dir / f"{domain.lower()}_anchors.yaml"
+    if not target.exists():
+        raise HTTPException(status_code=404, detail=f"Canon not found for domain: {domain}")
+
+    try:
+        import yaml
+
+        with open(target) as f:
+            data = yaml.safe_load(f)
+        return cast(dict[str, Any], data or {})
+    except ImportError as e:
+        raise HTTPException(status_code=500, detail="PyYAML not available") from e
+
+
+# ============================================================================
+# Astronomy Endpoints
+# ============================================================================
+
+
+@app.post("/astro/luminosity", response_model=ClosureResult, tags=["ASTRO"])
+async def compute_astro_luminosity(
+    req: AstroLuminosityRequest,
+    api_key: str = Security(validate_api_key),
+) -> ClosureResult:
+    """Compute stellar luminosity via Stefan-Boltzmann and mass-luminosity relations."""
+    try:
+        from closures.astronomy.stellar_luminosity import compute_stellar_luminosity
+
+        result = compute_stellar_luminosity(req.m_star, req.t_eff, req.r_star)
+        return ClosureResult(result=result, domain="ASTRO", closure="stellar_luminosity")
+    except ImportError as e:
+        raise HTTPException(status_code=500, detail="Astronomy closures not available") from e
+
+
+@app.post("/astro/distance", response_model=ClosureResult, tags=["ASTRO"])
+async def compute_astro_distance(
+    req: AstroDistanceRequest,
+    api_key: str = Security(validate_api_key),
+) -> ClosureResult:
+    """Cross-validate distances via modulus, parallax, and Hubble flow."""
+    try:
+        from closures.astronomy.distance_ladder import compute_distance_ladder
+
+        result = compute_distance_ladder(req.m_app, req.m_abs, req.pi_arcsec, req.z_cosmo, req.h0)
+        return ClosureResult(result=result, domain="ASTRO", closure="distance_ladder")
+    except ImportError as e:
+        raise HTTPException(status_code=500, detail="Astronomy closures not available") from e
+
+
+@app.post("/astro/spectral", response_model=ClosureResult, tags=["ASTRO"])
+async def compute_astro_spectral(
+    t_eff: float = Query(..., description="Effective temperature (K)"),
+    b_v: float = Query(..., description="B-V color index"),
+    spectral_class: str = Query(default="G", description="Spectral class (O,B,A,F,G,K,M)"),
+    api_key: str = Security(validate_api_key),
+) -> ClosureResult:
+    """Analyze spectrum: Wien peak, color-temperature, spectral embedding."""
+    try:
+        from closures.astronomy.spectral_analysis import compute_spectral_analysis
+
+        result = compute_spectral_analysis(t_eff, b_v, spectral_class)
+        return ClosureResult(result=result, domain="ASTRO", closure="spectral_analysis")
+    except ImportError as e:
+        raise HTTPException(status_code=500, detail="Astronomy closures not available") from e
+
+
+@app.post("/astro/evolution", response_model=ClosureResult, tags=["ASTRO"])
+async def compute_astro_evolution(
+    m_star: float = Query(..., description="Stellar mass (solar masses)"),
+    l_obs: float = Query(..., description="Observed luminosity (L☉)"),
+    t_eff: float = Query(..., description="Effective temperature (K)"),
+    age_gyr: float = Query(..., description="Age in Gyr"),
+    api_key: str = Security(validate_api_key),
+) -> ClosureResult:
+    """Compute stellar evolution: MS lifetime, phase, ZAMS properties."""
+    try:
+        from closures.astronomy.stellar_evolution import compute_stellar_evolution
+
+        result = compute_stellar_evolution(m_star, l_obs, t_eff, age_gyr)
+        return ClosureResult(result=result, domain="ASTRO", closure="stellar_evolution")
+    except ImportError as e:
+        raise HTTPException(status_code=500, detail="Astronomy closures not available") from e
+
+
+@app.post("/astro/orbital", response_model=ClosureResult, tags=["ASTRO"])
+async def compute_astro_orbital(
+    p_orb: float = Query(..., description="Orbital period (years)"),
+    a_semi: float = Query(..., description="Semi-major axis (AU)"),
+    m_total: float = Query(..., description="Total mass (solar masses)"),
+    e_orb: float = Query(..., ge=0.0, lt=1.0, description="Eccentricity"),
+    api_key: str = Security(validate_api_key),
+) -> ClosureResult:
+    """Validate Kepler III, compute orbital velocity and energy."""
+    try:
+        from closures.astronomy.orbital_mechanics import compute_orbital_mechanics
+
+        result = compute_orbital_mechanics(p_orb, a_semi, m_total, e_orb)
+        return ClosureResult(result=result, domain="ASTRO", closure="orbital_mechanics")
+    except ImportError as e:
+        raise HTTPException(status_code=500, detail="Astronomy closures not available") from e
+
+
+@app.post("/astro/dynamics", response_model=ClosureResult, tags=["ASTRO"])
+async def compute_astro_dynamics(
+    v_rot: float = Query(..., description="Rotation velocity (km/s)"),
+    r_obs: float = Query(..., description="Observed radius (kpc)"),
+    sigma_v: float = Query(..., description="Velocity dispersion (km/s)"),
+    m_luminous: float = Query(..., description="Luminous mass (solar masses)"),
+    api_key: str = Security(validate_api_key),
+) -> ClosureResult:
+    """Compute virial mass, dark matter fraction, virial ratio."""
+    try:
+        from closures.astronomy.gravitational_dynamics import compute_gravitational_dynamics
+
+        result = compute_gravitational_dynamics(v_rot, r_obs, sigma_v, m_luminous)
+        return ClosureResult(result=result, domain="ASTRO", closure="gravitational_dynamics")
+    except ImportError as e:
+        raise HTTPException(status_code=500, detail="Astronomy closures not available") from e
+
+
+# ============================================================================
+# Nuclear Physics Endpoints
+# ============================================================================
+
+
+@app.post("/nuclear/binding", response_model=ClosureResult, tags=["NUC"])
+async def compute_nuclear_binding(
+    req: NucBindingRequest,
+    api_key: str = Security(validate_api_key),
+) -> ClosureResult:
+    """Compute SEMF binding energy per nucleon and regime classification."""
+    try:
+        from closures.nuclear_physics import compute_binding
+
+        result = compute_binding(req.Z, req.A)
+        result_dict = result.to_dict() if hasattr(result, "to_dict") else vars(result)
+        return ClosureResult(result=result_dict, domain="NUC", closure="nuclide_binding")
+    except ImportError as e:
+        raise HTTPException(status_code=500, detail="Nuclear physics closures not available") from e
+
+
+@app.post("/nuclear/alpha-decay", response_model=ClosureResult, tags=["NUC"])
+async def compute_nuclear_alpha(
+    req: NucAlphaRequest,
+    api_key: str = Security(validate_api_key),
+) -> ClosureResult:
+    """Compute alpha decay Q-value and Geiger-Nuttall half-life estimate."""
+    try:
+        from closures.nuclear_physics import compute_alpha_decay
+
+        result = compute_alpha_decay(req.Z, req.A, req.Q_alpha_MeV)
+        return ClosureResult(result=result, domain="NUC", closure="alpha_decay")
+    except ImportError as e:
+        raise HTTPException(status_code=500, detail="Nuclear physics closures not available") from e
+
+
+@app.post("/nuclear/shell", response_model=ClosureResult, tags=["NUC"])
+async def compute_nuclear_shell(
+    req: NucBindingRequest,
+    api_key: str = Security(validate_api_key),
+) -> ClosureResult:
+    """Compute shell structure: magic number proximity and shell closure strength."""
+    try:
+        from closures.nuclear_physics import compute_shell
+
+        result = compute_shell(req.Z, req.A)
+        return ClosureResult(result=result, domain="NUC", closure="shell_structure")
+    except ImportError as e:
+        raise HTTPException(status_code=500, detail="Nuclear physics closures not available") from e
+
+
+@app.post("/nuclear/fissility", response_model=ClosureResult, tags=["NUC"])
+async def compute_nuclear_fissility(
+    req: NucBindingRequest,
+    api_key: str = Security(validate_api_key),
+) -> ClosureResult:
+    """Compute fissility parameter Z²/A vs critical value."""
+    try:
+        from closures.nuclear_physics import compute_fissility
+
+        result = compute_fissility(req.Z, req.A)
+        return ClosureResult(result=result, domain="NUC", closure="fissility")
+    except ImportError as e:
+        raise HTTPException(status_code=500, detail="Nuclear physics closures not available") from e
+
+
+@app.post("/nuclear/decay-chain", response_model=ClosureResult, tags=["NUC"])
+async def compute_nuclear_decay_chain(
+    Z: int = Query(..., ge=2, le=120, description="Starting proton number"),
+    A: int = Query(..., ge=4, le=300, description="Starting mass number"),
+    max_steps: int = Query(default=14, ge=1, le=50, description="Maximum chain length"),
+    api_key: str = Security(validate_api_key),
+) -> ClosureResult:
+    """Compute sequential decay chain from parent nuclide."""
+    try:
+        from closures.nuclear_physics import compute_decay_chain
+
+        result = compute_decay_chain(Z, A, max_steps=max_steps)
+        return ClosureResult(result=result, domain="NUC", closure="decay_chain")
+    except ImportError as e:
+        raise HTTPException(status_code=500, detail="Nuclear physics closures not available") from e
+
+
+@app.post("/nuclear/double-sided", response_model=ClosureResult, tags=["NUC"])
+async def compute_nuclear_double_sided(
+    req: NucBindingRequest,
+    api_key: str = Security(validate_api_key),
+) -> ClosureResult:
+    """Compute double-sided collapse: fusion vs fission convergence on iron peak."""
+    try:
+        from closures.nuclear_physics import compute_double_sided
+
+        result = compute_double_sided(req.Z, req.A)
+        return ClosureResult(result=result, domain="NUC", closure="double_sided_collapse")
+    except ImportError as e:
+        raise HTTPException(status_code=500, detail="Nuclear physics closures not available") from e
+
+
+# ============================================================================
+# Quantum Mechanics Endpoints
+# ============================================================================
+
+
+@app.post("/qm/collapse", response_model=ClosureResult, tags=["QM"])
+async def compute_qm_collapse(
+    req: QMCollapseRequest,
+    api_key: str = Security(validate_api_key),
+) -> ClosureResult:
+    """Compute Born-rule wavefunction collapse: deviation, fidelity, purity."""
+    try:
+        from closures.quantum_mechanics.wavefunction_collapse import compute_wavefunction_collapse
+
+        result = compute_wavefunction_collapse(req.psi_amplitudes, req.measurement_probs, req.observed_outcome_idx)
+        return ClosureResult(result=result, domain="QM", closure="wavefunction_collapse")
+    except ImportError as e:
+        raise HTTPException(status_code=500, detail="QM closures not available") from e
+
+
+@app.post("/qm/entanglement", response_model=ClosureResult, tags=["QM"])
+async def compute_qm_entanglement(
+    req: QMEntanglementRequest,
+    api_key: str = Security(validate_api_key),
+) -> ClosureResult:
+    """Compute entanglement metrics: concurrence, von Neumann entropy, Bell-CHSH parameter."""
+    try:
+        from closures.quantum_mechanics.entanglement import compute_entanglement
+
+        result = compute_entanglement(req.rho_eigenvalues, req.bell_correlations)
+        return ClosureResult(result=result, domain="QM", closure="entanglement")
+    except ImportError as e:
+        raise HTTPException(status_code=500, detail="QM closures not available") from e
+
+
+@app.post("/qm/tunneling", response_model=ClosureResult, tags=["QM"])
+async def compute_qm_tunneling(
+    req: QMTunnelingRequest,
+    api_key: str = Security(validate_api_key),
+) -> ClosureResult:
+    """Compute quantum tunneling: WKB transmission coefficient."""
+    try:
+        from closures.quantum_mechanics.tunneling import compute_tunneling
+
+        result = compute_tunneling(req.e_particle, req.v_barrier, req.barrier_width, req.particle_mass)
+        return ClosureResult(result=result, domain="QM", closure="tunneling")
+    except ImportError as e:
+        raise HTTPException(status_code=500, detail="QM closures not available") from e
+
+
+@app.post("/qm/harmonic-oscillator", response_model=ClosureResult, tags=["QM"])
+async def compute_qm_oscillator(
+    n_quanta: int = Query(..., ge=0, description="Quantum number"),
+    omega_freq: float = Query(..., description="Angular frequency (rad/s)"),
+    e_observed: float = Query(..., description="Observed energy (eV)"),
+    coherent_alpha: float = Query(default=0.0, description="Coherent state amplitude"),
+    squeeze_r: float = Query(default=0.0, description="Squeeze parameter"),
+    api_key: str = Security(validate_api_key),
+) -> ClosureResult:
+    """Compute quantized energy levels E_n = ℏω(n+½)."""
+    try:
+        from closures.quantum_mechanics.harmonic_oscillator import compute_harmonic_oscillator
+
+        result = compute_harmonic_oscillator(n_quanta, omega_freq, e_observed, coherent_alpha, squeeze_r)
+        return ClosureResult(result=result, domain="QM", closure="harmonic_oscillator")
+    except ImportError as e:
+        raise HTTPException(status_code=500, detail="QM closures not available") from e
+
+
+@app.post("/qm/spin", response_model=ClosureResult, tags=["QM"])
+async def compute_qm_spin(
+    s_total: float = Query(..., description="Total spin quantum number"),
+    s_z_observed: float = Query(..., description="Observed S_z component"),
+    b_field: float = Query(..., description="Magnetic field (T)"),
+    g_factor: float | None = Query(default=None, description="Landé g-factor"),
+    api_key: str = Security(validate_api_key),
+) -> ClosureResult:
+    """Compute spin measurement: Stern-Gerlach, Larmor frequency, Zeeman splitting."""
+    try:
+        from closures.quantum_mechanics.spin_measurement import compute_spin_measurement
+
+        result = compute_spin_measurement(s_total, s_z_observed, b_field, g_factor)
+        return ClosureResult(result=result, domain="QM", closure="spin_measurement")
+    except ImportError as e:
+        raise HTTPException(status_code=500, detail="QM closures not available") from e
+
+
+@app.post("/qm/uncertainty", response_model=ClosureResult, tags=["QM"])
+async def compute_qm_uncertainty(
+    delta_x: float = Query(..., description="Position uncertainty (nm)"),
+    delta_p: float = Query(..., description="Momentum uncertainty"),
+    units: str = Query(default="SI", description="Unit system: SI or natural"),
+    api_key: str = Security(validate_api_key),
+) -> ClosureResult:
+    """Check Heisenberg uncertainty: Δx·Δp ≥ ℏ/2."""
+    try:
+        from closures.quantum_mechanics.uncertainty_principle import compute_uncertainty
+
+        result = compute_uncertainty(delta_x, delta_p, units)
+        return ClosureResult(result=result, domain="QM", closure="uncertainty_principle")
+    except ImportError as e:
+        raise HTTPException(status_code=500, detail="QM closures not available") from e
+
+
+# ============================================================================
+# Finance Endpoints
+# ============================================================================
+
+
+class FinanceEmbedRequest(BaseModel):
+    """Request for finance embedding computation."""
+
+    month: str = Field(description="Period identifier (e.g. 2026-01)")
+    revenue: float = Field(description="Revenue ($)")
+    expenses: float = Field(description="Expenses ($)")
+    cogs: float = Field(description="Cost of goods sold ($)")
+    cashflow: float = Field(description="Net cashflow ($)")
+    revenue_target: float = Field(description="Revenue target ($)")
+    expense_budget: float = Field(description="Expense budget ($)")
+    cashflow_target: float = Field(description="Cashflow target ($)")
+
+
+@app.post("/finance/embed", response_model=ClosureResult, tags=["FIN"])
+async def compute_finance_embed(
+    req: FinanceEmbedRequest,
+    api_key: str = Security(validate_api_key),
+) -> ClosureResult:
+    """Embed financial data into UMCP [0,1]⁴ coordinates and compute invariants."""
+    try:
+        from closures.finance.finance_embedding import FinanceRecord, FinanceTargets, embed_finance
+
+        record = FinanceRecord(
+            month=req.month,
+            revenue=req.revenue,
+            expenses=req.expenses,
+            cogs=req.cogs,
+            cashflow=req.cashflow,
+        )
+        targets = FinanceTargets(
+            revenue_target=req.revenue_target,
+            expense_budget=req.expense_budget,
+            cashflow_target=req.cashflow_target,
+        )
+        embedded = embed_finance(record, targets)
+        import math
+
+        coords = list(embedded.c)
+        weights = [0.30, 0.25, 0.25, 0.20]
+        epsilon = 1e-8
+        kappa = sum(w * math.log(max(c, epsilon)) for w, c in zip(weights, coords, strict=False))
+        omega = 1.0 - sum(w * c for w, c in zip(weights, coords, strict=False))
+        result: dict[str, Any] = {
+            "coordinates": coords,
+            "oor_flags": embedded.oor_flags,
+            "omega": omega,
+            "F": 1.0 - omega,
+            "kappa": kappa,
+            "IC": math.exp(kappa),
+            "regime": "STABLE" if 0.3 <= omega <= 0.7 else "WATCH" if 0.1 <= omega <= 0.9 else "COLLAPSE",
+        }
+        return ClosureResult(result=result, domain="FIN", closure="finance_embedding")
+    except ImportError as e:
+        raise HTTPException(status_code=500, detail="Finance closures not available") from e
 
 
 # ============================================================================

@@ -366,6 +366,14 @@ def load_closures() -> list[dict[str, Any]]:
             return "WEYL"
         if "security" in combined:
             return "SECURITY"
+        if "astro" in combined:
+            return "ASTRO"
+        if "nuclear" in combined or "nuc" in combined:
+            return "NUC"
+        if "quantum" in combined or "qm" in combined:
+            return "QM"
+        if "finance" in combined or "fin" in combined:
+            return "FIN"
         return "unknown"
 
     # Python closures (recursive)
@@ -7290,6 +7298,1115 @@ def render_unified_geometry_view() -> None:
 
 
 # ============================================================================
+# Canon Explorer Page
+# ============================================================================
+
+
+def _load_canon_files() -> dict[str, Any]:
+    """Load all canon anchor YAML files."""
+    repo_root = get_repo_root()
+    canon_dir = repo_root / "canon"
+    result: dict[str, Any] = {}
+    if not canon_dir.exists():
+        return result
+    try:
+        import yaml
+    except ImportError:
+        return result
+    for yf in sorted(canon_dir.glob("*_anchors.yaml")):
+        try:
+            with open(yf) as f:
+                data = yaml.safe_load(f)
+            if data:
+                result[yf.stem] = data
+        except Exception:
+            pass
+    return result
+
+
+def render_canon_explorer_page() -> None:
+    """Render the canon anchor explorer page — browse all domain anchors."""
+    if st is None or pd is None:
+        return
+
+    st.title("📖 Canon Explorer")
+    st.caption("Browse Tier-1 / Tier-2 anchor definitions across all domains")
+
+    canon = _load_canon_files()
+    if not canon:
+        st.warning("No canon anchor files found in canon/")
+        return
+
+    # Domain selector
+    domain_names = list(canon.keys())
+    selected = st.selectbox(
+        "Select Domain Canon",
+        domain_names,
+        format_func=lambda x: x.replace("_anchors", "").upper(),
+    )
+
+    data = canon[selected]
+
+    # Header info
+    meta = data.get("metadata", data.get("canon", {}))
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.metric("ID", meta.get("id", meta.get("canon_id", "N/A")))
+    with col2:
+        st.metric("Version", meta.get("version", "N/A"))
+    with col3:
+        st.metric("Tier", str(meta.get("tier", meta.get("scope", "N/A"))))
+    with col4:
+        st.metric("Created", str(meta.get("created", "N/A")))
+
+    st.divider()
+
+    # Axioms
+    axioms = data.get("axioms", [])
+    if axioms:
+        st.subheader("📜 Axioms")
+        for ax in axioms:
+            if isinstance(ax, dict):
+                ax_id = ax.get("id", ax.get("axiom_id", ""))
+                label = ax.get("label", ax.get("name", ""))
+                desc = ax.get("description", ax.get("statement", ""))
+                with st.expander(f"**{ax_id}**: {label}"):
+                    st.markdown(desc)
+            elif isinstance(ax, str):
+                st.markdown(f"- {ax}")
+
+    # Reserved symbols
+    symbols = data.get("tier_1_symbols", data.get("reserved_symbols", data.get("symbols", [])))
+    if symbols:
+        st.subheader("🔣 Reserved Symbols")
+        sym_rows: list[dict[str, str]] = []
+        for sym in symbols:
+            if isinstance(sym, dict):
+                sym_rows.append(
+                    {
+                        "Symbol": sym.get("symbol", sym.get("name", "")),
+                        "Label": sym.get("label", sym.get("description", "")),
+                        "Domain": str(sym.get("domain", sym.get("range", ""))),
+                        "Unit": sym.get("unit", sym.get("units", "")),
+                    }
+                )
+        if sym_rows:
+            st.dataframe(pd.DataFrame(sym_rows), use_container_width=True, hide_index=True)
+
+    # Regime gates
+    gates = data.get("regime_gates", data.get("gates", []))
+    if gates:
+        st.subheader("🚦 Regime Gates")
+        gate_rows: list[dict[str, str]] = []
+        for gate in gates:
+            if isinstance(gate, dict):
+                gate_rows.append(
+                    {
+                        "Gate": gate.get("name", gate.get("id", "")),
+                        "Stable": str(gate.get("stable", gate.get("STABLE", ""))),
+                        "Watch": str(gate.get("watch", gate.get("WATCH", ""))),
+                        "Collapse": str(gate.get("collapse", gate.get("COLLAPSE", ""))),
+                    }
+                )
+        if gate_rows:
+            st.dataframe(pd.DataFrame(gate_rows), use_container_width=True, hide_index=True)
+
+    # Constants
+    constants = data.get("constants", data.get("physical_constants", {}))
+    if constants:
+        st.subheader("🔢 Constants")
+        if isinstance(constants, dict):
+            const_rows = [{"Name": k, "Value": str(v)} for k, v in constants.items()]
+            st.dataframe(pd.DataFrame(const_rows), use_container_width=True, hide_index=True)
+        elif isinstance(constants, list):
+            for c in constants:
+                if isinstance(c, dict):
+                    st.markdown(f"- **{c.get('name', '')}**: {c.get('value', '')} {c.get('unit', '')}")
+
+    # Budget identities
+    identities = data.get("budget_identities", data.get("identities", data.get("mathematical_identities", [])))
+    if identities:
+        st.subheader("📐 Budget Identities")
+        for ident in identities:
+            if isinstance(ident, dict):
+                st.markdown(
+                    f"- **{ident.get('id', ident.get('name', ''))}**: {ident.get('expression', ident.get('formula', ident.get('description', '')))}"
+                )
+            elif isinstance(ident, str):
+                st.markdown(f"- {ident}")
+
+    # Raw YAML view
+    with st.expander("📄 Raw YAML"):
+        import yaml
+
+        st.code(yaml.dump(data, default_flow_style=False, allow_unicode=True), language="yaml")
+
+
+# ============================================================================
+# Domain-Specific Pages
+# ============================================================================
+
+
+def render_astronomy_page() -> None:
+    """Render interactive Astronomy domain page with all 6 closures."""
+    if st is None or go is None or pd is None:
+        return
+
+    st.title("🔭 Astronomy Domain")
+    st.caption(
+        "ASTRO.INTSTACK.v1 — Stellar luminosity, distance ladder, spectral analysis, evolution, orbits, dynamics"
+    )
+
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
+        [
+            "⭐ Stellar Luminosity",
+            "📏 Distance Ladder",
+            "🌈 Spectral Analysis",
+            "🔄 Stellar Evolution",
+            "🪐 Orbital Mechanics",
+            "🌀 Gravitational Dynamics",
+        ]
+    )
+
+    with tab1:
+        st.subheader("⭐ Stellar Luminosity Calculator")
+        st.markdown("Stefan-Boltzmann luminosity, mass-luminosity relation, and Wien peak wavelength.")
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            m_star = st.number_input("M★ (solar masses)", 0.1, 100.0, 1.0, 0.1, key="astro_mstar")
+        with c2:
+            t_eff = st.number_input("T_eff (K)", 2000.0, 50000.0, 5778.0, 100.0, key="astro_teff")
+        with c3:
+            r_star = st.number_input("R★ (solar radii)", 0.01, 1000.0, 1.0, 0.1, key="astro_rstar")
+
+        if st.button("Compute Luminosity", key="astro_lum"):
+            try:
+                from closures.astronomy.stellar_luminosity import compute_stellar_luminosity
+
+                result = compute_stellar_luminosity(m_star, t_eff, r_star)
+                rc1, rc2, rc3, rc4 = st.columns(4)
+                with rc1:
+                    st.metric("L predicted (L☉)", f"{result['L_predicted']:.4f}")
+                with rc2:
+                    st.metric("L Stefan-Boltzmann (L☉)", f"{result['L_SB']:.4f}")
+                with rc3:
+                    st.metric("δ_L (deviation)", f"{result['delta_L']:.6f}")
+                with rc4:
+                    regime = result["regime"]
+                    color = "🟢" if regime == "Consistent" else "🟡" if regime == "Mild" else "🔴"
+                    st.metric("Regime", f"{color} {regime}")
+                st.info(f"λ_peak = {result['lambda_peak']:.1f} nm (Wien peak)")
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    with tab2:
+        st.subheader("📏 Distance Ladder Cross-Validation")
+        st.markdown("Compares distance modulus, parallax, and Hubble flow distances.")
+        c1, c2 = st.columns(2)
+        with c1:
+            m_app = st.number_input("m (apparent mag)", -30.0, 30.0, 10.0, 0.1, key="astro_mapp")
+            m_abs = st.number_input("M (absolute mag)", -30.0, 30.0, 4.83, 0.1, key="astro_mabs")
+        with c2:
+            pi_arcsec = st.number_input("π (arcsec)", 0.0001, 1.0, 0.01, 0.001, key="astro_pi", format="%.4f")
+            z_cosmo = st.number_input("z (redshift)", 0.0, 5.0, 0.01, 0.001, key="astro_z", format="%.4f")
+
+        if st.button("Compute Distances", key="astro_dist"):
+            try:
+                from closures.astronomy.distance_ladder import compute_distance_ladder
+
+                result = compute_distance_ladder(m_app, m_abs, pi_arcsec, z_cosmo)
+                rc1, rc2, rc3 = st.columns(3)
+                with rc1:
+                    st.metric("d (modulus) [pc]", f"{result['d_modulus']:.2f}")
+                with rc2:
+                    st.metric("d (parallax) [pc]", f"{result['d_parallax']:.2f}")
+                with rc3:
+                    st.metric("d (Hubble) [pc]", f"{result['d_hubble']:.2f}")
+                st.metric("Consistency", f"{result['distance_consistency']:.4f}")
+                regime = result["regime"]
+                color = "🟢" if regime == "High" else "🟡" if regime == "Moderate" else "🔴"
+                st.info(f"Regime: {color} {regime}")
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    with tab3:
+        st.subheader("🌈 Spectral Analysis")
+        st.markdown("Wien peak, B−V color-temperature, spectral class embedding.")
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            t_eff_s = st.number_input("T_eff (K)", 2000.0, 50000.0, 5778.0, 100.0, key="astro_teff_s")
+        with c2:
+            b_v = st.number_input("B−V (mag)", -0.5, 2.5, 0.65, 0.01, key="astro_bv")
+        with c3:
+            spec_class = st.selectbox("Spectral Class", ["O", "B", "A", "F", "G", "K", "M"], index=4, key="astro_spec")
+
+        if st.button("Analyze Spectrum", key="astro_spec_btn"):
+            try:
+                from closures.astronomy.spectral_analysis import compute_spectral_analysis
+
+                result = compute_spectral_analysis(t_eff_s, b_v, spec_class)
+                rc1, rc2, rc3 = st.columns(3)
+                with rc1:
+                    st.metric("λ_peak (nm)", f"{result['lambda_peak']:.1f}")
+                with rc2:
+                    st.metric("T from B−V (K)", f"{result['T_from_BV']:.0f}")
+                with rc3:
+                    st.metric("χ² spectral", f"{result['chi2_spectral']:.4f}")
+                regime = result["regime"]
+                color = "🟢" if regime == "Excellent" else "🟡" if regime in ("Good", "Marginal") else "🔴"
+                st.info(f"Spectral fit: {color} {regime}")
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    with tab4:
+        st.subheader("🔄 Stellar Evolution")
+        st.markdown("Main-sequence lifetime, evolutionary phase, ZAMS properties.")
+        c1, c2 = st.columns(2)
+        with c1:
+            m_star_e = st.number_input("M★ (solar masses)", 0.1, 100.0, 1.0, 0.1, key="astro_mstar_e")
+            l_obs = st.number_input("L_obs (L☉)", 0.01, 1e6, 1.0, 0.1, key="astro_lobs")
+        with c2:
+            t_eff_e = st.number_input("T_eff (K)", 2000.0, 50000.0, 5778.0, 100.0, key="astro_teff_e")
+            age_gyr = st.number_input("Age (Gyr)", 0.001, 15.0, 4.6, 0.1, key="astro_age")
+
+        if st.button("Compute Evolution", key="astro_evol"):
+            try:
+                from closures.astronomy.stellar_evolution import compute_stellar_evolution
+
+                result = compute_stellar_evolution(m_star_e, l_obs, t_eff_e, age_gyr)
+                rc1, rc2, rc3 = st.columns(3)
+                with rc1:
+                    st.metric("t_MS (Gyr)", f"{result['t_MS']:.3f}")
+                with rc2:
+                    st.metric("Phase", result["evolutionary_phase"])
+                with rc3:
+                    st.metric("L_ZAMS (L☉)", f"{result['L_ZAMS']:.4f}")
+                regime = result["regime"]
+                st.info(f"Evolutionary regime: {regime}")
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    with tab5:
+        st.subheader("🪐 Orbital Mechanics")
+        st.markdown("Kepler III validation, orbital velocity, specific energy.")
+        c1, c2 = st.columns(2)
+        with c1:
+            p_orb = st.number_input("P_orb (years)", 0.001, 1000.0, 1.0, 0.01, key="astro_porb")
+            a_semi = st.number_input("a (AU)", 0.01, 100.0, 1.0, 0.01, key="astro_asemi")
+        with c2:
+            m_total = st.number_input("M_total (M☉)", 0.1, 100.0, 1.0, 0.1, key="astro_mtotal")
+            e_orb = st.number_input("e (eccentricity)", 0.0, 0.99, 0.017, 0.001, key="astro_eorb", format="%.3f")
+
+        if st.button("Compute Orbit", key="astro_orbit"):
+            try:
+                from closures.astronomy.orbital_mechanics import compute_orbital_mechanics
+
+                result = compute_orbital_mechanics(p_orb, a_semi, m_total, e_orb)
+                rc1, rc2, rc3 = st.columns(3)
+                with rc1:
+                    st.metric("P_predicted (yr)", f"{result['P_predicted']:.4f}")
+                with rc2:
+                    st.metric("Kepler residual", f"{result['kepler_residual']:.6f}")
+                with rc3:
+                    st.metric("v_orb (km/s)", f"{result['v_orb'] / 1000:.2f}")
+                regime = result["regime"]
+                color = "🟢" if regime == "Stable" else "🟡" if regime == "Eccentric" else "🔴"
+                st.info(f"Orbital regime: {color} {regime}")
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    with tab6:
+        st.subheader("🌀 Gravitational Dynamics")
+        st.markdown("Virial mass, dark matter fraction, virial equilibrium ratio.")
+        c1, c2 = st.columns(2)
+        with c1:
+            v_rot = st.number_input("v_rot (km/s)", 1.0, 500.0, 220.0, 1.0, key="astro_vrot")
+            r_obs = st.number_input("r_obs (kpc)", 0.1, 100.0, 8.0, 0.1, key="astro_robs")
+        with c2:
+            sigma_v = st.number_input("σ_v (km/s)", 1.0, 500.0, 150.0, 1.0, key="astro_sigmav")
+            m_lum = st.number_input("M_luminous (M☉)", 1e6, 1e12, 5e10, 1e9, key="astro_mlum", format="%.2e")
+
+        if st.button("Compute Dynamics", key="astro_dyn"):
+            try:
+                from closures.astronomy.gravitational_dynamics import compute_gravitational_dynamics
+
+                result = compute_gravitational_dynamics(v_rot, r_obs, sigma_v, m_lum)
+                rc1, rc2, rc3 = st.columns(3)
+                with rc1:
+                    st.metric("M_virial (M☉)", f"{result['M_virial']:.3e}")
+                with rc2:
+                    st.metric("DM fraction", f"{result['dark_matter_fraction']:.2%}")
+                with rc3:
+                    st.metric("Virial ratio", f"{result['virial_ratio']:.3f}")
+                regime = result["regime"]
+                color = "🟢" if regime == "Equilibrium" else "🟡" if regime == "Relaxing" else "🔴"
+                st.info(f"Dynamics regime: {color} {regime}")
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+
+def render_nuclear_page() -> None:
+    """Render interactive Nuclear Physics domain page with all 6 closures."""
+    if st is None or go is None or pd is None:
+        return
+
+    st.title("☢️ Nuclear Physics Domain")
+    st.caption(
+        "NUC.INTSTACK.v1 — Binding energy, alpha decay, shell structure, fissility, decay chains, double-sided collapse"
+    )
+
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
+        [
+            "⚛️ Binding Energy",
+            "💫 Alpha Decay",
+            "🐚 Shell Structure",
+            "💣 Fissility",
+            "🔗 Decay Chain",
+            "🔄 Double-Sided Collapse",
+        ]
+    )
+
+    with tab1:
+        st.subheader("⚛️ Nuclide Binding Energy (SEMF)")
+        st.markdown("Semi-Empirical Mass Formula: BE/A vs iron peak (Ni-62 = 8.7945 MeV/nucleon)")
+        c1, c2 = st.columns(2)
+        with c1:
+            z_val = st.number_input("Z (protons)", 1, 120, 26, key="nuc_z")
+        with c2:
+            a_val = st.number_input("A (mass number)", 1, 300, 56, key="nuc_a")
+
+        if st.button("Compute Binding", key="nuc_bind"):
+            try:
+                from closures.nuclear_physics import compute_binding
+
+                result = compute_binding(z_val, a_val)
+                rc1, rc2, rc3, rc4 = st.columns(4)
+                with rc1:
+                    st.metric("BE/A (MeV)", f"{result['BE_per_A']:.4f}")
+                with rc2:
+                    st.metric("ω (deficit)", f"{result['omega']:.4f}")
+                with rc3:
+                    st.metric("F (fidelity)", f"{result['F']:.4f}")
+                with rc4:
+                    regime = result["regime"]
+                    color = "🟢" if regime == "STABLE" else "🟡" if regime == "WATCH" else "🔴"
+                    st.metric("Regime", f"{color} {regime}")
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    with tab2:
+        st.subheader("💫 Alpha Decay (Geiger-Nuttall)")
+        st.markdown("Alpha-particle Q-value, Gamow tunneling, predicted half-life")
+        c1, c2 = st.columns(2)
+        with c1:
+            z_ad = st.number_input("Z (parent)", 2, 120, 92, key="nuc_z_ad")
+        with c2:
+            a_ad = st.number_input("A (parent)", 4, 300, 238, key="nuc_a_ad")
+
+        if st.button("Compute Alpha Decay", key="nuc_alpha"):
+            try:
+                from closures.nuclear_physics import compute_alpha_decay
+
+                result = compute_alpha_decay(z_ad, a_ad)
+                rc1, rc2, rc3 = st.columns(3)
+                with rc1:
+                    st.metric("Q_alpha (MeV)", f"{result['Q_alpha']:.4f}")
+                with rc2:
+                    st.metric("log₁₀(T½/s)", f"{result.get('log_half_life', 0):.2f}")
+                with rc3:
+                    regime = result["regime"]
+                    color = "🟢" if regime == "STABLE" else "🟡" if regime == "WATCH" else "🔴"
+                    st.metric("Regime", f"{color} {regime}")
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    with tab3:
+        st.subheader("🐚 Shell Structure")
+        st.markdown("Magic number proximity, shell closure strength")
+        c1, c2 = st.columns(2)
+        with c1:
+            z_sh = st.number_input("Z (protons)", 1, 120, 50, key="nuc_z_sh")
+        with c2:
+            a_sh = st.number_input("A (mass number)", 1, 300, 120, key="nuc_a_sh")
+
+        if st.button("Compute Shell", key="nuc_shell"):
+            try:
+                from closures.nuclear_physics import compute_shell
+
+                result = compute_shell(z_sh, a_sh)
+                for k, v in result.items():
+                    if k != "regime":
+                        st.metric(k, f"{v:.4f}" if isinstance(v, float) else str(v))
+                regime = result.get("regime", "")
+                st.info(f"Shell regime: {regime}")
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    with tab4:
+        st.subheader("💣 Fissility Assessment")
+        st.markdown("Z²/A fissility parameter vs critical value (Z²/A)_crit ≈ 48.26")
+        c1, c2 = st.columns(2)
+        with c1:
+            z_fi = st.number_input("Z", 1, 120, 92, key="nuc_z_fi")
+        with c2:
+            a_fi = st.number_input("A", 1, 300, 235, key="nuc_a_fi")
+
+        if st.button("Compute Fissility", key="nuc_fiss"):
+            try:
+                from closures.nuclear_physics import compute_fissility
+
+                result = compute_fissility(z_fi, a_fi)
+                rc1, rc2, rc3 = st.columns(3)
+                with rc1:
+                    st.metric("x (fissility)", f"{result.get('fissility_x', result.get('x', 0)):.4f}")
+                with rc2:
+                    st.metric("Z²/A", f"{z_fi**2 / a_fi:.2f}")
+                with rc3:
+                    regime = result.get("regime", "")
+                    st.metric("Regime", regime)
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    with tab5:
+        st.subheader("🔗 Decay Chain")
+        st.markdown("Sequential decay pathway from parent nuclide")
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            z_dc = st.number_input("Z (start)", 2, 120, 92, key="nuc_z_dc")
+        with c2:
+            a_dc = st.number_input("A (start)", 4, 300, 238, key="nuc_a_dc")
+        with c3:
+            max_steps = st.number_input("Max steps", 1, 50, 14, key="nuc_steps")
+
+        if st.button("Compute Chain", key="nuc_chain"):
+            try:
+                from closures.nuclear_physics import compute_decay_chain
+
+                result = compute_decay_chain(z_dc, a_dc, max_steps=max_steps)
+                chain = result.get("chain", [])
+                if chain:
+                    chain_df = pd.DataFrame(chain)
+                    st.dataframe(chain_df, use_container_width=True, hide_index=True)
+                regime = result.get("regime", "")
+                st.info(f"Chain regime: {regime} | Steps: {len(chain)}")
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    with tab6:
+        st.subheader("🔄 Double-Sided Collapse")
+        st.markdown("AX-N4: Collapse converges from both sides — fusion (light nuclei) and fission (heavy nuclei)")
+        c1, c2 = st.columns(2)
+        with c1:
+            z_ds = st.number_input("Z", 1, 120, 26, key="nuc_z_ds")
+        with c2:
+            a_ds = st.number_input("A", 1, 300, 56, key="nuc_a_ds")
+
+        if st.button("Compute Double-Sided", key="nuc_ds"):
+            try:
+                from closures.nuclear_physics import compute_double_sided
+
+                result = compute_double_sided(z_ds, a_ds)
+                for k, v in result.items():
+                    if k != "regime" and k != "components":
+                        st.metric(k, f"{v:.4f}" if isinstance(v, float) else str(v))
+                regime = result.get("regime", "")
+                st.info(f"Double-sided regime: {regime}")
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+
+def render_quantum_page() -> None:
+    """Render interactive Quantum Mechanics domain page with all 6 closures."""
+    if st is None or go is None or pd is None:
+        return
+
+    st.title("🔮 Quantum Mechanics Domain")
+    st.caption("QM.INTSTACK.v1 — Born rule, entanglement, tunneling, harmonic oscillator, spin, uncertainty")
+
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
+        [
+            "🎲 Wavefunction Collapse",
+            "🔗 Entanglement",
+            "🚇 Tunneling",
+            "🎵 Harmonic Oscillator",
+            "🧭 Spin Measurement",
+            "📏 Uncertainty Principle",
+        ]
+    )
+
+    with tab1:
+        st.subheader("🎲 Wavefunction Collapse (Born Rule)")
+        st.markdown("Born-rule deviation, state fidelity, purity — `|ψ|² → P_i`")
+        c1, c2 = st.columns(2)
+        with c1:
+            st.markdown("**ψ amplitudes** (comma-separated)")
+            psi_str = st.text_input("ψ amplitudes", "0.6, 0.8", key="qm_psi")
+        with c2:
+            st.markdown("**Measured probabilities** (comma-separated)")
+            prob_str = st.text_input("P measured", "0.35, 0.65", key="qm_prob")
+
+        if st.button("Compute Collapse", key="qm_collapse"):
+            try:
+                from closures.quantum_mechanics.wavefunction_collapse import compute_wavefunction_collapse
+
+                psi = [float(x.strip()) for x in psi_str.split(",")]
+                probs = [float(x.strip()) for x in prob_str.split(",")]
+                result = compute_wavefunction_collapse(psi, probs)
+                rc1, rc2, rc3, rc4 = st.columns(4)
+                with rc1:
+                    st.metric("P_born", f"{result['P_born']:.4f}")
+                with rc2:
+                    st.metric("δP (deviation)", f"{result['delta_P']:.4f}")
+                with rc3:
+                    st.metric("Fidelity", f"{result['fidelity_state']:.4f}")
+                with rc4:
+                    st.metric("Purity", f"{result['purity']:.4f}")
+                regime = result["regime"]
+                color = "🟢" if regime == "Faithful" else "🟡" if regime == "Perturbed" else "🔴"
+                st.info(f"Born regime: {color} {regime}")
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    with tab2:
+        st.subheader("🔗 Entanglement Analysis")
+        st.markdown("Concurrence, von Neumann entropy, Bell-CHSH parameter, negativity")
+        rho_str = st.text_input("ρ eigenvalues (comma-separated)", "0.5, 0.3, 0.15, 0.05", key="qm_rho")
+        bell_str = st.text_input("Bell correlations (4 values, optional)", "0.7, 0.7, 0.7, -0.7", key="qm_bell")
+
+        if st.button("Compute Entanglement", key="qm_ent"):
+            try:
+                from closures.quantum_mechanics.entanglement import compute_entanglement
+
+                rho = [float(x.strip()) for x in rho_str.split(",")]
+                bell = [float(x.strip()) for x in bell_str.split(",")] if bell_str.strip() else None
+                result = compute_entanglement(rho, bell)
+                rc1, rc2, rc3, rc4 = st.columns(4)
+                with rc1:
+                    st.metric("Concurrence", f"{result['concurrence']:.4f}")
+                with rc2:
+                    st.metric("S_vN (entropy)", f"{result['S_vN']:.4f}")
+                with rc3:
+                    st.metric("Bell param", f"{result['bell_parameter']:.4f}")
+                with rc4:
+                    st.metric("Negativity", f"{result['negativity']:.4f}")
+                regime = result["regime"]
+                color = "🟢" if regime == "Maximal" else "🟡" if regime in ("Strong", "Weak") else "⚪"
+                st.info(f"Entanglement regime: {color} {regime}")
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    with tab3:
+        st.subheader("🚇 Quantum Tunneling (WKB)")
+        st.markdown("Rectangular barrier transmission coefficient via WKB approximation")
+        c1, c2 = st.columns(2)
+        with c1:
+            e_p = st.number_input("E particle (eV)", 0.01, 100.0, 5.0, 0.1, key="qm_ep")
+            v_b = st.number_input("V barrier (eV)", 0.01, 200.0, 10.0, 0.1, key="qm_vb")
+        with c2:
+            bw = st.number_input("Barrier width (nm)", 0.01, 10.0, 1.0, 0.01, key="qm_bw")
+
+        if st.button("Compute Tunneling", key="qm_tunnel"):
+            try:
+                from closures.quantum_mechanics.tunneling import compute_tunneling
+
+                result = compute_tunneling(e_p, v_b, bw)
+                rc1, rc2, rc3 = st.columns(3)
+                with rc1:
+                    st.metric("T (transmission)", f"{result['T_coeff']:.6f}")
+                with rc2:
+                    st.metric("κ barrier", f"{result['kappa_barrier']:.4f}")
+                with rc3:
+                    regime = result["regime"]
+                    color = "🟢" if regime == "Transparent" else "🟡" if regime == "Moderate" else "🔴"
+                    st.metric("Regime", f"{color} {regime}")
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    with tab4:
+        st.subheader("🎵 Quantum Harmonic Oscillator")
+        st.markdown("E_n = ℏω(n + ½), coherent states, squeeze parameter")
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            n_q = st.number_input("n (quanta)", 0, 100, 0, key="qm_n")
+        with c2:
+            omega_f = st.number_input("ω (rad/s)", 1e10, 1e16, 1e13, key="qm_omega", format="%.2e")
+        with c3:
+            e_obs = st.number_input("E_obs (eV)", 0.0, 100.0, 0.05, 0.001, key="qm_eobs", format="%.4f")
+
+        if st.button("Compute Oscillator", key="qm_osc"):
+            try:
+                from closures.quantum_mechanics.harmonic_oscillator import compute_harmonic_oscillator
+
+                result = compute_harmonic_oscillator(n_q, omega_f, e_obs)
+                rc1, rc2, rc3 = st.columns(3)
+                with rc1:
+                    st.metric("E_predicted (eV)", f"{result['E_predicted']:.6f}")
+                with rc2:
+                    st.metric("δE", f"{result['delta_E']:.6f}")
+                with rc3:
+                    st.metric("Regime", result["regime"])
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    with tab5:
+        st.subheader("🧭 Spin Measurement (Stern-Gerlach)")
+        st.markdown("Spin projection, Larmor frequency, Zeeman splitting")
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            s_tot = st.number_input("S total", 0.0, 10.0, 0.5, 0.5, key="qm_stot")
+        with c2:
+            sz_obs = st.number_input("S_z observed", -10.0, 10.0, 0.5, 0.5, key="qm_sz")
+        with c3:
+            b_field = st.number_input("B field (T)", 0.0, 50.0, 1.0, 0.1, key="qm_bfield")
+
+        if st.button("Compute Spin", key="qm_spin"):
+            try:
+                from closures.quantum_mechanics.spin_measurement import compute_spin_measurement
+
+                result = compute_spin_measurement(s_tot, sz_obs, b_field)
+                rc1, rc2, rc3 = st.columns(3)
+                with rc1:
+                    st.metric("S_z predicted", f"{result['S_z_predicted']:.4f}")
+                with rc2:
+                    st.metric("Larmor freq (GHz)", f"{result['larmor_freq'] / 1e9:.4f}")
+                with rc3:
+                    st.metric("Spin fidelity", f"{result['spin_fidelity']:.4f}")
+                regime = result["regime"]
+                color = "🟢" if regime == "Faithful" else "🟡" if regime == "Perturbed" else "🔴"
+                st.info(f"Spin regime: {color} {regime}")
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    with tab6:
+        st.subheader("📏 Uncertainty Principle")
+        st.markdown("Heisenberg: Δx · Δp ≥ ℏ/2")
+        c1, c2 = st.columns(2)
+        with c1:
+            dx = st.number_input("Δx (nm)", 0.001, 1000.0, 1.0, 0.01, key="qm_dx")
+        with c2:
+            dp = st.number_input("Δp (eV·s/m → auto-converted)", 0.001, 1000.0, 0.1, 0.001, key="qm_dp", format="%.4f")
+
+        if st.button("Check Uncertainty", key="qm_unc"):
+            try:
+                from closures.quantum_mechanics.uncertainty_principle import compute_uncertainty
+
+                result = compute_uncertainty(dx, dp)
+                rc1, rc2, rc3 = st.columns(3)
+                with rc1:
+                    st.metric("ΔxΔp product", f"{result['heisenberg_product']:.4e}")
+                with rc2:
+                    st.metric("ratio to ℏ/2", f"{result['heisenberg_ratio']:.4f}")
+                with rc3:
+                    regime = result["regime"]
+                    color = "🟢" if regime == "Minimum" else "🟡" if regime in ("Moderate", "Dispersed") else "🔴"
+                    st.metric("Regime", f"{color} {regime}")
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+
+def render_finance_page() -> None:
+    """Render interactive Finance domain page."""
+    if st is None or go is None or pd is None:
+        return
+
+    st.title("💰 Finance Domain")
+    st.caption("FINANCE.INTSTACK.v1 — Business financial continuity validation via UMCP embedding")
+
+    st.subheader("📊 Financial Continuity Embedding")
+    st.markdown("""
+    Maps financial data into UMCP [0,1]⁴ coordinate space:
+    - **c₁** = revenue performance = min(revenue / target, 1.0)
+    - **c₂** = expense control = 1 − min(expenses / budget, 1.0)
+    - **c₃** = gross margin = (revenue − COGS) / revenue
+    - **c₄** = cashflow health = min(cashflow / target, 1.0)
+
+    Default weights: [0.30, 0.25, 0.25, 0.20]
+    """)
+
+    st.divider()
+
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown("**📈 Financial Record**")
+        month = st.text_input("Month", "2026-01", key="fin_month")
+        revenue = st.number_input("Revenue ($)", 0.0, 1e9, 500000.0, 1000.0, key="fin_rev")
+        expenses = st.number_input("Expenses ($)", 0.0, 1e9, 400000.0, 1000.0, key="fin_exp")
+        cogs = st.number_input("COGS ($)", 0.0, 1e9, 200000.0, 1000.0, key="fin_cogs")
+        cashflow = st.number_input("Cashflow ($)", -1e9, 1e9, 80000.0, 1000.0, key="fin_cf")
+
+    with col2:
+        st.markdown("**🎯 Targets**")
+        rev_target = st.number_input("Revenue Target ($)", 0.0, 1e9, 500000.0, 1000.0, key="fin_rev_t")
+        exp_budget = st.number_input("Expense Budget ($)", 0.0, 1e9, 450000.0, 1000.0, key="fin_exp_t")
+        cf_target = st.number_input("Cashflow Target ($)", 0.0, 1e9, 75000.0, 1000.0, key="fin_cf_t")
+
+    if st.button("Embed & Analyze", key="fin_embed"):
+        try:
+            from closures.finance.finance_embedding import FinanceRecord, FinanceTargets, embed_finance
+
+            record = FinanceRecord(month=month, revenue=revenue, expenses=expenses, cogs=cogs, cashflow=cashflow)
+            targets = FinanceTargets(revenue_target=rev_target, expense_budget=exp_budget, cashflow_target=cf_target)
+            embedded = embed_finance(record, targets)
+
+            st.subheader("📐 UMCP Embedding Coordinates")
+            coord_names = ["c₁ (Revenue)", "c₂ (Expense)", "c₃ (Margin)", "c₄ (Cashflow)"]
+            c_cols = st.columns(4)
+            for i, (name, val) in enumerate(zip(coord_names, embedded.c, strict=False)):
+                with c_cols[i]:
+                    flag = "⚠️ OOR" if embedded.oor_flags[i] else "✅"
+                    st.metric(name, f"{val:.4f}", delta=flag)
+
+            # Compute κ from coordinates
+            import math
+
+            weights = [0.30, 0.25, 0.25, 0.20]
+            epsilon = 1e-8
+            kappa = sum(w * math.log(max(c, epsilon)) for w, c in zip(weights, embedded.c, strict=False))
+            ic = math.exp(kappa)
+            omega = 1.0 - sum(w * c for w, c in zip(weights, embedded.c, strict=False))
+            f_val = 1.0 - omega
+
+            st.divider()
+            st.subheader("🧮 UMCP Invariants")
+            inv_cols = st.columns(5)
+            with inv_cols[0]:
+                st.metric("ω (drift)", f"{omega:.4f}")
+            with inv_cols[1]:
+                st.metric("F = 1−ω", f"{f_val:.4f}")
+            with inv_cols[2]:
+                st.metric("κ", f"{kappa:.4f}")
+            with inv_cols[3]:
+                st.metric("IC = exp(κ)", f"{ic:.4f}")
+            with inv_cols[4]:
+                regime = "STABLE" if 0.3 <= omega <= 0.7 else "WATCH" if 0.1 <= omega <= 0.9 else "COLLAPSE"
+                color = "🟢" if regime == "STABLE" else "🟡" if regime == "WATCH" else "🔴"
+                st.metric("Regime", f"{color} {regime}")
+
+            # Radar chart
+            if go is not None:
+                fig = go.Figure()
+                fig.add_trace(
+                    go.Scatterpolar(
+                        r=[*list(embedded.c), embedded.c[0]],
+                        theta=[*coord_names, coord_names[0]],
+                        fill="toself",
+                        name="Financial Health",
+                        fillcolor="rgba(0, 123, 255, 0.2)",
+                        line={"color": "#007bff"},
+                    )
+                )
+                fig.update_layout(
+                    polar={"radialaxis": {"visible": True, "range": [0, 1]}},
+                    height=350,
+                    margin={"t": 30, "b": 30},
+                    title="Financial Health Radar",
+                )
+                st.plotly_chart(fig, use_container_width=True)
+
+        except Exception as e:
+            st.error(f"Computation error: {e}")
+
+
+def render_rcft_page() -> None:
+    """Render interactive RCFT domain page with all 4 closures."""
+    if st is None or go is None or pd is None or np is None:
+        return
+
+    st.title("🌀 RCFT Domain")
+    st.caption(
+        "RCFT.INTSTACK.v1 — Recursive Collapse Field Theory: fractal dimension, recursive fields, attractor basins, resonance"
+    )
+
+    tab1, tab2, tab3, tab4 = st.tabs(
+        [
+            "📐 Fractal Dimension",
+            "🌊 Recursive Field",
+            "🎯 Attractor Basin",
+            "🔊 Resonance Pattern",
+        ]
+    )
+
+    with tab1:
+        st.subheader("📐 Fractal Dimension (Box-Counting)")
+        st.markdown("Computes D_f of collapse trajectories. Domain: [1, 3]")
+        st.markdown("Regimes: **Smooth** (D_f < 1.2) | **Wrinkled** (1.2–1.8) | **Turbulent** (≥ 1.8)")
+
+        n_pts = st.slider("Trajectory points", 50, 500, 200, key="rcft_npts")
+        noise = st.slider("Noise level", 0.0, 1.0, 0.3, 0.05, key="rcft_noise")
+
+        if st.button("Compute Fractal Dimension", key="rcft_frac"):
+            try:
+                from closures.rcft.fractal_dimension import compute_fractal_dimension
+
+                t = np.linspace(0, 10, n_pts)
+                trajectory = np.column_stack(
+                    [np.sin(t) + noise * np.random.randn(n_pts), np.cos(t) + noise * np.random.randn(n_pts)]
+                )
+                result = compute_fractal_dimension(trajectory)
+                rc1, rc2, rc3 = st.columns(3)
+                with rc1:
+                    st.metric("D_fractal", f"{result['D_fractal']:.4f}")
+                with rc2:
+                    st.metric("R²", f"{result.get('r_squared', 0):.4f}")
+                with rc3:
+                    regime = result["regime"]
+                    color = "🟢" if regime == "Smooth" else "🟡" if regime == "Wrinkled" else "🔴"
+                    st.metric("Regime", f"{color} {regime}")
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    with tab2:
+        st.subheader("🌊 Recursive Field Strength (Ψ_r)")
+        st.markdown("Ψ_r = Σ αⁿ · Ψₙ from Tier-1 invariant time series")
+        n_series = st.slider("Series length", 10, 200, 50, key="rcft_nseries")
+        alpha_param = st.slider("α (decay)", 0.1, 0.99, 0.8, 0.01, key="rcft_alpha")
+
+        if st.button("Compute Recursive Field", key="rcft_field"):
+            try:
+                from closures.rcft.recursive_field import compute_recursive_field
+
+                S_arr = np.random.uniform(0.2, 0.8, n_series)
+                C_arr = np.random.uniform(0.1, 0.5, n_series)
+                F_arr = np.random.uniform(0.3, 0.9, n_series)
+                result = compute_recursive_field(S_arr, C_arr, F_arr, alpha=alpha_param)
+                rc1, rc2, rc3 = st.columns(3)
+                with rc1:
+                    st.metric("Ψ_recursive", f"{result['Psi_recursive']:.4f}")
+                with rc2:
+                    st.metric("Iterations", result.get("n_iterations", "N/A"))
+                with rc3:
+                    regime = result["regime"]
+                    color = "🟢" if regime == "Resonant" else "🟡" if regime == "Active" else "⚪"
+                    st.metric("Regime", f"{color} {regime}")
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    with tab3:
+        st.subheader("🎯 Attractor Basin Topology")
+        st.markdown("Analyzes attractor basins in (ω, S, C) phase space")
+        n_basin = st.slider("Series length", 20, 500, 100, key="rcft_nbasin")
+
+        if st.button("Compute Attractor Basin", key="rcft_basin"):
+            try:
+                from closures.rcft.attractor_basin import compute_attractor_basin
+
+                omega_arr = np.random.uniform(0.1, 0.9, n_basin)
+                S_arr = np.random.uniform(0.1, 0.8, n_basin)
+                C_arr = np.random.uniform(0.05, 0.5, n_basin)
+                result = compute_attractor_basin(omega_arr, S_arr, C_arr)
+                rc1, rc2, rc3 = st.columns(3)
+                with rc1:
+                    st.metric("Attractors found", result.get("n_attractors_found", 0))
+                with rc2:
+                    st.metric("Dominant", str(result.get("dominant_attractor", "N/A")))
+                with rc3:
+                    regime = result.get("regime", "")
+                    st.metric("Regime", regime)
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    with tab4:
+        st.subheader("🔊 Resonance Pattern (FFT)")
+        st.markdown("Extracts dominant wavelength λ_p and phase Θ from field time series")
+        n_res = st.slider("Series length", 32, 512, 128, key="rcft_nres")
+        freq = st.slider("Dominant frequency", 0.01, 0.5, 0.1, 0.01, key="rcft_freq")
+
+        if st.button("Compute Resonance", key="rcft_res"):
+            try:
+                from closures.rcft.resonance_pattern import compute_resonance_pattern
+
+                t = np.arange(n_res)
+                signal = np.sin(2 * np.pi * freq * t) + 0.3 * np.random.randn(n_res)
+                result = compute_resonance_pattern(signal)
+                rc1, rc2, rc3 = st.columns(3)
+                with rc1:
+                    st.metric("λ_pattern", f"{result['lambda_pattern']:.4f}")
+                with rc2:
+                    st.metric("Θ_phase", f"{result['Theta_phase']:.4f}")
+                with rc3:
+                    ptype = result.get("pattern_type", "")
+                    st.metric("Pattern", ptype)
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+
+def render_domain_overview_page() -> None:
+    """Render cross-domain summary page showing all 9 domains."""
+    if st is None or px is None or pd is None:
+        return
+
+    st.title("🗺️ Domain Overview")
+    st.caption("Cross-domain summary of all 9 UMCP domains — closures, contracts, casepacks, canon anchors")
+
+    # Domain metadata
+    domains = [
+        {
+            "name": "GCD",
+            "icon": "🔧",
+            "tier": "Tier-1",
+            "closures": 5,
+            "contract": "UMA.INTSTACK.v1",
+            "canon": "gcd_anchors.yaml",
+            "casepack": "gcd_complete",
+            "desc": "Generic Collapse Dynamics — foundational kernel",
+        },
+        {
+            "name": "KIN",
+            "icon": "🎯",
+            "tier": "Tier-0 (diagnostic)",
+            "closures": 6,
+            "contract": "KIN.INTSTACK.v1",
+            "canon": "kin_anchors.yaml",
+            "casepack": "kinematics_complete",
+            "desc": "Kinematics — Tier-0 protocol diagnostic",
+        },
+        {
+            "name": "RCFT",
+            "icon": "🌀",
+            "tier": "Tier-2",
+            "closures": 4,
+            "contract": "RCFT.INTSTACK.v1",
+            "canon": "rcft_anchors.yaml",
+            "casepack": "rcft_complete",
+            "desc": "Recursive Collapse Field Theory — fractal overlays",
+        },
+        {
+            "name": "WEYL",
+            "icon": "🌌",
+            "tier": "Tier-2",
+            "closures": 6,
+            "contract": "WEYL.INTSTACK.v1",
+            "canon": "weyl_anchors.yaml",
+            "casepack": "weyl_des_y3",
+            "desc": "Modified gravity — DES Y3 Σ(z) analysis",
+        },
+        {
+            "name": "Security",
+            "icon": "🔒",
+            "tier": "Tier-2",
+            "closures": 15,
+            "contract": "SECURITY.INTSTACK.v1",
+            "canon": "anchors.yaml",
+            "casepack": "security_validation",
+            "desc": "Security validation and integrity checking",
+        },
+        {
+            "name": "ASTRO",
+            "icon": "🔭",
+            "tier": "Tier-2",
+            "closures": 6,
+            "contract": "ASTRO.INTSTACK.v1",
+            "canon": "astro_anchors.yaml",
+            "casepack": "astronomy_complete",
+            "desc": "Astronomy — stars, orbits, distances, spectra",
+        },
+        {
+            "name": "NUC",
+            "icon": "☢️",
+            "tier": "Tier-2",
+            "closures": 6,
+            "contract": "NUC.INTSTACK.v1",
+            "canon": "nuc_anchors.yaml",
+            "casepack": "nuclear_chain",
+            "desc": "Nuclear physics — binding, decay, shells, fissility",
+        },
+        {
+            "name": "QM",
+            "icon": "🔮",
+            "tier": "Tier-2",
+            "closures": 6,
+            "contract": "QM.INTSTACK.v1",
+            "canon": "qm_anchors.yaml",
+            "casepack": "quantum_mechanics_complete",
+            "desc": "Quantum mechanics — Born rule, tunneling, spin",
+        },
+        {
+            "name": "FIN",
+            "icon": "💰",
+            "tier": "Tier-2",
+            "closures": 1,
+            "contract": "FINANCE.INTSTACK.v1",
+            "canon": "—",
+            "casepack": "finance_continuity",
+            "desc": "Finance — business continuity embedding",
+        },
+    ]
+
+    # Top-level metrics
+    c1, c2, c3, c4 = st.columns(4)
+    with c1:
+        st.metric("🌐 Domains", len(domains))
+    with c2:
+        st.metric("🔧 Total Closures", sum(d["closures"] for d in domains))
+    with c3:
+        st.metric("📜 Contracts", len(domains))
+    with c4:
+        st.metric("📖 Canon Files", sum(1 for d in domains if d["canon"] != "—"))
+
+    st.divider()
+
+    # Domain cards
+    for i in range(0, len(domains), 3):
+        cols = st.columns(3)
+        for j, col in enumerate(cols):
+            if i + j < len(domains):
+                d = domains[i + j]
+                with col:
+                    st.markdown(
+                        f"""
+                    <div style="padding:16px; border-radius:12px; border: 1px solid #ddd;
+                         background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+                         margin-bottom:10px;">
+                        <h3>{d["icon"]} {d["name"]}</h3>
+                        <p style="color:#555; font-size:0.9em;">{d["desc"]}</p>
+                        <hr style="margin:8px 0;">
+                        <small>
+                        <b>Tier:</b> {d["tier"]}<br>
+                        <b>Closures:</b> {d["closures"]}<br>
+                        <b>Contract:</b> {d["contract"]}<br>
+                        <b>Canon:</b> {d["canon"]}<br>
+                        <b>Casepack:</b> {d["casepack"]}
+                        </small>
+                    </div>
+                    """,
+                        unsafe_allow_html=True,
+                    )
+
+    st.divider()
+
+    # Domain distribution chart
+    st.subheader("📊 Domain Distribution")
+    df_domains = pd.DataFrame(domains)
+
+    col_l, col_r = st.columns(2)
+    with col_l:
+        fig = px.bar(
+            df_domains,
+            x="name",
+            y="closures",
+            color="tier",
+            title="Closures per Domain",
+            labels={"name": "Domain", "closures": "Closure Count", "tier": "Tier"},
+            color_discrete_sequence=px.colors.qualitative.Set2,
+        )
+        fig.update_layout(height=350, margin={"t": 40, "b": 40})
+        st.plotly_chart(fig, use_container_width=True)
+
+    with col_r:
+        tier_counts = df_domains.groupby("tier")["closures"].sum().reset_index()
+        fig = px.pie(
+            tier_counts,
+            values="closures",
+            names="tier",
+            title="Closures by Tier",
+            hole=0.4,
+            color_discrete_sequence=px.colors.qualitative.Pastel,
+        )
+        fig.update_layout(height=350, margin={"t": 40, "b": 40})
+        st.plotly_chart(fig, use_container_width=True)
+
+
+# ============================================================================
 # Main Application
 # ============================================================================
 
@@ -7367,6 +8484,8 @@ def main() -> None:
     pages = {
         # Core Pages
         "Overview": ("📊", render_overview_page),
+        "Domain Overview": ("🗺️", render_domain_overview_page),
+        "Canon Explorer": ("📖", render_canon_explorer_page),
         "Precision": ("🎯", render_precision_page),
         "Geometry": ("🔷", render_geometry_page),
         "Ledger": ("📒", render_ledger_page),
@@ -7380,12 +8499,17 @@ def main() -> None:
         "Live Runner": ("▶️", render_live_runner_page),
         "Batch Validation": ("📦", render_batch_validation_page),
         "Test Templates": ("🧮", render_test_templates_page),
-        # Scientific Pages
+        # Domain Pages (Tier-2 Expansion)
+        "Astronomy": ("🔭", render_astronomy_page),
+        "Nuclear": ("☢️", render_nuclear_page),
+        "Quantum": ("🔮", render_quantum_page),
+        "Finance": ("💰", render_finance_page),
+        "RCFT": ("🌀", render_rcft_page),
         "Physics": ("⚛️", render_physics_interface_page),
         "Kinematics": ("🎯", render_kinematics_interface_page),
-        "Formula Builder": ("🔧", render_formula_builder_page),
         "Cosmology": ("🌌", render_cosmology_page),
         # Analysis Pages
+        "Formula Builder": ("🔧", render_formula_builder_page),
         "Time Series": ("📈", render_time_series_page),
         "Comparison": ("🔀", render_comparison_page),
         # Management Pages
@@ -7503,12 +8627,11 @@ def main() -> None:
     st.sidebar.divider()
 
     # ========== Protocol Tiers ==========
-    st.sidebar.markdown("### 🏛️ Protocol Tiers")
+    st.sidebar.markdown("### 🏛️ Protocol Tiers (v3.0.0)")
     st.sidebar.markdown("""
-    - **Tier-0**: Interface (freeze)
-    - **Tier-1**: Kernel (F, ω, S, C, κ, IC)
-    - **Tier-0**: Protocol (Seam Weld)
-    - **Tier-2**: Overlays
+    - **Tier-0**: Protocol — validation, regime gates, SHA256, seam calculus
+    - **Tier-1**: Immutable Invariants — F+ω=1, IC≤F, IC≈exp(κ)
+    - **Tier-2**: Expansion Space — domain closures with validity checks
     """)
 
     st.sidebar.divider()
