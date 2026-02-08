@@ -12,7 +12,7 @@
   <a href="https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/actions/workflows/validate.yml"><img src="https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/actions/workflows/validate.yml/badge.svg" alt="CI"></a>
   <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.11+-3776AB?logo=python&logoColor=white" alt="Python 3.11+"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License: MIT"></a>
-  <a href="tests/"><img src="https://img.shields.io/badge/tests-1060%20passing-brightgreen?logo=pytest" alt="Tests: 1060 passing"></a>
+  <a href="tests/"><img src="https://img.shields.io/badge/tests-1312%20passing-brightgreen?logo=pytest" alt="Tests: 1312 passing"></a>
   <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-2.0.0-blue" alt="Version: 2.0.0"></a>
   <a href="src/umcp/api_umcp.py"><img src="https://img.shields.io/badge/API-37%2B%20endpoints-orange?logo=fastapi" alt="API: 37+ endpoints"></a>
 </p>
@@ -32,8 +32,9 @@
 
 > **Core Axiom**: *"What Returns Through Collapse Is Real"*
 >
-> Reality is defined by what persists through collapse-reconstruction cycles.
-> Only measurements that return—that survive transformation and can be reproduced—receive credit as real, valid observations.
+> Within-run: frozen causes only (no back-edges). Between-run: continuity only by return-weld (τ_R finite + seam residual within tolerance).
+> Reality is declared by showing closure after collapse: each claim is welded to a seam.
+> Frozen parameters (ε, p, α, λ, tol_seam) are not arbitrary constants — they are **consistent across the seam**.
 
 </div>
 
@@ -98,7 +99,7 @@ pip install -e ".[all]"               # Everything
 ```bash
 umcp health           # System health check
 umcp validate .       # Validate repository
-pytest                # Run 1060 tests
+pytest                # Run 1312 tests
 ```
 
 <details>
@@ -126,8 +127,8 @@ UMCP is built on a single axiom that drives all design decisions:
 
 This means:
 - ✅ Only measurements that **return** (survive transformation) are valid
-- ✅ No credit without **reproducibility**
-- ✅ Mathematical contracts are **frozen** artifacts
+- ✅ No credit without **reproducibility** — τ_R = INF_REC means zero budget
+- ✅ Mathematical contracts are **frozen** — consistent across the seam
 - ✅ Provenance is **cryptographically verified**
 
 ```yaml
@@ -199,9 +200,9 @@ typed_censoring:
 ║                    UMCP SYSTEM AT A GLANCE                        ║
 ╠═══════════════════════════════════════════════════════════════════╣
 ║                                                                   ║
-║   📊 1060 Tests        🔌 37+ API Endpoints    📈 21 Dashboard    ║
-║   📦 13 Casepacks      🔧 10 CLI Commands      🧮 46 Lemmas       ║
-║   🔬 60 Closures       📜 9 Frameworks         🔒 SHA256 Verified ║
+║   📊 1312 Tests       🔌 37+ API Endpoints    📈 21 Dashboard    ║
+║   📦 13 Casepacks      🔧 10 CLI Commands      🧲 46 Lemmas       ║
+║   🔬 69 Closures       📜 12 Contracts         🔒 SHA256 Verified ║
 ║                                                                   ║
 ╠═══════════════════════════════════════════════════════════════════╣
 ║                                                                   ║
@@ -516,7 +517,7 @@ umcp validate casepacks/finance_continuity
 ## 🧪 Testing
 
 ```bash
-pytest                      # Run all 1060 tests
+pytest                      # Run all 1312 tests
 pytest -v                   # Verbose output
 pytest --cov                # With coverage
 pytest -k "gcd"             # Pattern matching
@@ -527,19 +528,23 @@ pytest -m "not slow"        # Skip slow tests
 
 | Category | Tests | Description |
 |----------|------:|-------------|
-| Schema validation | 50 | JSON/YAML schema tests |
+| Schema validation | 73 | JSON/YAML schema tests |
 | Kernel invariants | 84 | Core metric tests |
 | GCD framework | 92 | Energy/collapse tests |
 | Kinematics | 133 | Motion analysis tests |
 | RCFT framework | 78 | Fractal/recursive tests |
 | WEYL framework | 43 | Cosmology tests |
-| Extended Lemmas | 53 | Lemmas 35-46 tests |
-| Frozen contract | 36 | Canonical constants |
+| Extended Lemmas | 75 | Lemmas 24–46 tests |
+| Frozen contract | 113 | Contract claims + constants |
 | SS1m triads | 35 | Checksum tests |
 | Uncertainty | 23 | Delta-method tests |
 | API | 32 | REST endpoint tests |
 | Dashboard | 30 | UI component tests |
 | Security | 45 | Input validation tests |
+| CLI subcommands | 13 | CLI integration tests |
+| Batch / compute | 39 | Vectorized pipeline tests |
+| Public API | 11 | validate() + ValidationResult |
+| Finance / closures | 48 | Domain coverage tests |
 | Integration | 150+ | End-to-end tests |
 
 ---
@@ -600,7 +605,7 @@ UMCP-Metadata-Runnable-Code/
 │   ├── ss1m_triad.py              # Mod-97 checksums
 │   └── umcp_extensions.py         # Extension registry
 │
-├── 📁 tests/                      # Test suite (1002 tests)
+├── 📁 tests/                      # Test suite (1312 tests, 64 files)
 │   ├── test_frozen_contract.py    # Frozen contract tests
 │   ├── test_extended_lemmas.py    # Lemmas 35-46 tests
 │   ├── test_api_umcp.py           # API tests
@@ -869,13 +874,13 @@ copies or substantial portions of the Software.
 ║   ⚙️  Frozen:       ε=10⁻⁸  p=3  α=1.0  λ=0.2  tol=0.005              ║
 ║                                                                       ║
 ║   📊 Status:        CONFORMANT ✅                                     ║
-║   🧪 Tests:         1060 passing                                     ║
+║   🧪 Tests:         1312 passing                                     ║
 ║   📦 Casepacks:     13 validated                                     ║
 ║   🔧 CLI:           10 commands                                       ║
 ║   🌐 API:           37+ endpoints                                     ║
 ║   📈 Dashboard:     21 pages                                          ║
 ║   🧮 Lemmas:        46 formal proofs                                  ║
-║   🔬 Closures:      60+ functions                                     ║
+║   🔬 Closures:      69+ functions                                     ║
 ║   📦 Contracts:     12 domain contracts                                ║
 ║   🌍 Domains:       9 (GCD, KIN, RCFT, WEYL, SEC, ASTRO, NUC, QM, FIN)║
 ║   🔒 Integrity:     SHA256 verified                                   ║

@@ -43,6 +43,7 @@ def _load_schema(name: str) -> dict[str, Any]:
 
 
 def _validate(instance: Any, schema: dict[str, Any]) -> list[str]:
+    assert jsonschema is not None
     validator_cls = jsonschema.Draft202012Validator
     validator = validator_cls(schema)
     return [e.message for e in validator.iter_errors(instance)]

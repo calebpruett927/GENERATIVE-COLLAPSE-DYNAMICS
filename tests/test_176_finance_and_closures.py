@@ -20,6 +20,13 @@ except ImportError:
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
+def _load_yaml(path: Path) -> Any:
+    """Load YAML with skip if pyyaml not installed."""
+    if yaml is None:
+        pytest.skip("pyyaml not installed")
+    return yaml.safe_load(path.read_text(encoding="utf-8"))
+
+
 # ============================================================================
 # finance_cli — module-level tests
 # ============================================================================
@@ -105,7 +112,7 @@ class TestClosureDomainAnchors:
     def test_canon_anchor_exists_and_loads(self, anchor_file: str) -> None:
         path = REPO_ROOT / "canon" / anchor_file
         assert path.exists(), f"Missing canon anchor: {anchor_file}"
-        data = yaml.safe_load(path.read_text(encoding="utf-8"))
+        data = _load_yaml(path)
         assert isinstance(data, dict)
         assert "schema" in data or "anchors" in data or "canon" in data
 
@@ -121,7 +128,7 @@ class TestClosureDomainAnchors:
     )
     def test_anchor_has_domain_entries(self, anchor_file: str) -> None:
         path = REPO_ROOT / "canon" / anchor_file
-        data = yaml.safe_load(path.read_text(encoding="utf-8"))
+        data = _load_yaml(path)
         # Anchors should have at least one entry beyond metadata
         assert len(data) >= 2, f"{anchor_file} has only {len(data)} top-level keys"
 
@@ -192,7 +199,7 @@ class TestClosureRegistry:
     def registry(self) -> dict[str, Any]:
         path = REPO_ROOT / "closures" / "registry.yaml"
         assert path.exists()
-        return yaml.safe_load(path.read_text(encoding="utf-8"))
+        return _load_yaml(path)
 
     def test_registry_has_schema(self, registry: dict[str, Any]) -> None:
         assert "schema" in registry
