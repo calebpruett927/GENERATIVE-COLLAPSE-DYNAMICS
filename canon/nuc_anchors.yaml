@@ -1,0 +1,342 @@
+schema: schemas/canon.anchors.schema.json
+id: UMCP.CANON.NUC.v1
+version: 1.0.0
+created: '2026-02-08'
+
+scope:
+  hierarchy: GCD → NUC (Tier-1)
+  description: |
+    Nuclear Physics canonical anchors for UMCP.
+    Maps nuclear binding, decay dynamics, shell structure, and fissility
+    into the GCD invariant framework.  The iron peak (Ni-62, BE/A = 8.7945
+    MeV/nucleon) serves as the collapse attractor, with both fusion (light
+    side) and decay/fission (heavy side) converging on it — the "double-
+    sided collapse" (AX-N4).
+
+    Frozen choices (per expert review, 2026-02-08):
+      - Lifetime: mean lifetime τ = T½/ln(2), not half-life T½
+      - Peak reference: Ni-62 at 8.7945 MeV/nucleon (not Fe-56)
+      - Decay scaling: Geiger-Nuttall log₁₀(T½) = a/√Q_α + b
+      - SEMF coefficients: a_V=15.67, a_S=17.23, a_C=0.714, a_A=23.29, a_P=11.2
+
+axioms:
+  - id: AX-0
+    statement: Collapse is generative
+    source: GCD Tier-1 (inherited, frozen)
+    nuc_realization: |
+      Nuclear binding energy release (both fusion and fission) is the
+      literal generation of energy from mass deficit.  E = Δm·c².
+      The strong force generates stability by binding nucleons into
+      configurations of decreasing mass-per-nucleon.
+
+  - id: AX-1
+    statement: Boundary defines interior
+    source: GCD Tier-1 (inherited, frozen)
+    nuc_realization: |
+      The nuclear potential well (Saxon-Woods) defines the shell
+      structure (magic numbers, spin-orbit splitting).  The Coulomb
+      barrier defines the boundary for alpha decay and fission.
+
+  - id: AX-2
+    statement: Entropy measures determinacy
+    source: GCD Tier-1 (inherited, frozen)
+    nuc_realization: |
+      Nuclear entropy is primarily Coulomb repulsion vs surface tension.
+      High-Z nuclei (Z > 82) have increasingly disordered Coulomb fields
+      relative to the strong force binding, driving radioactive decay.
+
+  - id: AX-N0
+    statement: Iron peak is the collapse attractor
+    source: NUC.INTSTACK.v1
+    nuc_realization: |
+      Ni-62 (BE/A = 8.7945 MeV/nucleon) is the global maximum of
+      binding energy per nucleon.  All nuclear processes — fusion for
+      A < 62, decay/fission for A > 62 — move toward this peak in
+      the thermodynamic limit.
+
+  - id: AX-N1
+    statement: Half-life is the return time τ_R
+    source: NUC.INTSTACK.v1
+    nuc_realization: |
+      Mean lifetime τ = T½/ln(2) maps directly to the GCD return time.
+      τ_R → ∞ for stable nuclei (permanent return).
+      τ_R → 0 for superheavy elements (immediate collapse).
+      Frozen choice: use mean lifetime, not half-life.
+
+  - id: AX-N2
+    statement: Gamow tunneling governs decay scaling
+    source: NUC.INTSTACK.v1
+    nuc_realization: |
+      log₁₀(T½) = a(Z)/√Q_α + b(Z)  (Geiger-Nuttall).
+      The alpha particle tunnels through the Coulomb barrier; tunneling
+      probability is exponentially sensitive to Q_α (decay energy).
+      This is the SAME quantum tunneling from QM closures, applied to
+      the nuclear Coulomb barrier.
+
+  - id: AX-N3
+    statement: Mass is an entropy reservoir (substrate axiom)
+    source: NUC.INTSTACK.v1
+    nuc_realization: |
+      Nucleon count A determines total available binding budget.
+      More massive nuclei can host more entropy channels (Coulomb,
+      surface, asymmetry, pairing).  The balance of these channels
+      determines stability.
+
+  - id: AX-N4
+    statement: Collapse converges from both sides
+    source: NUC.INTSTACK.v1
+    nuc_realization: |
+      Light-side (A < 62): fusion increases A, moves toward peak.
+      Heavy-side (A > 62): decay/fission decreases A, moves toward peak.
+      The iron peak is the unique stable fixed point of the binding
+      energy landscape.  This is the Double-Sided Collapse.
+
+tier_1_invariants:
+  reserved_symbols:
+    # GCD inherited
+    - symbol: omega
+      latex: \omega
+      description: Drift from Ni-62 peak binding (binding deficit)
+      formula: omega_eff = 1 - BE_per_A / 8.7945
+      domain: nuclear_physics
+      unit: dimensionless
+      interpretation: |
+        Nuclear drift measures how far a nuclide's binding energy per
+        nucleon falls below the Ni-62 peak.  ω = 0 at peak.
+
+    - symbol: F
+      latex: F
+      description: Fidelity to peak binding
+      formula: F_eff = BE_per_A / 8.7945
+      domain: nuclear_physics
+      unit: dimensionless
+      interpretation: |
+        Fraction of peak binding achieved.  F = 1 at Ni-62.
+        F < 0.85 indicates significant binding deficit.
+
+    - symbol: S
+      latex: S
+      description: Entropy proxy (Coulomb disorder)
+      formula: S_nuc = coulomb_fraction / total_binding
+      domain: nuclear_physics
+      unit: dimensionless
+      interpretation: |
+        Ratio of Coulomb repulsion to total binding.  Increases
+        monotonically with Z beyond the proton drip line.
+
+    - symbol: C
+      latex: C
+      description: Coupling (shell closure strength)
+      formula: C_shell = shell_correction / reference
+      domain: nuclear_physics
+      unit: dimensionless
+      interpretation: |
+        Shell effects as coupling.  Magic numbers produce large
+        shell corrections (extra stability).
+
+    - symbol: kappa
+      latex: \kappa
+      description: Collapse intensity parameter
+      formula: kappa = ln(IC)
+      domain: nuclear_physics
+      unit: dimensionless
+      interpretation: |
+        Logarithm of integrity-collapse.  In nuclear context: maps
+        to barrier penetrability and decay urgency.
+
+    - symbol: IC
+      latex: IC
+      description: Integrity-collapse measure
+      formula: IC = exp(kappa), IC ≤ F (AM-GM bound)
+      domain: nuclear_physics
+      unit: dimensionless
+
+    # NUC-specific
+    - symbol: BE_per_A
+      latex: B/A
+      description: Binding energy per nucleon
+      formula: BE_per_A = BE_total / A (MeV/nucleon)
+      domain: nuclear_physics
+      unit: MeV/nucleon
+      interpretation: |
+        The fundamental nuclear stability measure.  Maximum at Ni-62
+        (8.7945 MeV/nucleon).  SEMF provides smooth estimate; AME2020
+        provides measured values.
+
+    - symbol: Q_alpha
+      latex: Q_\alpha
+      description: Alpha decay energy
+      formula: Q_alpha = M_parent - M_daughter - M_He4 (MeV)
+      domain: nuclear_physics
+      unit: MeV
+      interpretation: |
+        Kinetic energy released in alpha decay.  Q > 0 means alpha
+        decay is energetically allowed.  Controls tunneling rate.
+
+    - symbol: fissility_x
+      latex: x
+      description: Fissility parameter
+      formula: x = (Z²/A) / (Z²/A)_crit
+      domain: nuclear_physics
+      unit: dimensionless
+      interpretation: |
+        Competition between Coulomb repulsion and surface tension.
+        x = 1: barrier vanishes (spontaneous fission).
+        x < 0.7: subfissile (rare fission).
+
+    - symbol: tau_mean
+      latex: \tau
+      description: Mean lifetime
+      formula: tau = T_half / ln(2)
+      domain: nuclear_physics
+      unit: seconds
+      interpretation: |
+        Mean lifetime (1/e decay constant).  Frozen choice: use τ,
+        not T½, per Clement Paulus review 2026-02-08.
+
+umcp_invariant_mapping:
+  description: |
+    Maps nuclear observables to GCD Tier-1 invariants.
+    The primary mapping axis is binding deficit → drift.
+  mappings:
+    - domain_observable: BE_per_A (binding energy per nucleon)
+      gcd_invariant: omega (drift)
+      mapping: omega_eff = max(0, 1 - BE_per_A / 8.7945)
+      rationale: |
+        Binding deficit from peak is the nuclear meaning of drift.
+        Higher deficit → higher ω → less stable.
+
+    - domain_observable: fissility_x
+      gcd_invariant: S (entropy proxy)
+      mapping: S_nuc proportional to fissility
+      rationale: |
+        Fissility measures Coulomb disorder vs binding cohesion.
+        High fissility → high entropy → collapse imminent.
+
+    - domain_observable: shell_correction
+      gcd_invariant: C (coupling)
+      mapping: C_shell = |shell_correction| / reference
+      rationale: |
+        Shell effects create extra stability at magic numbers,
+        analogous to non-local correlations in QM.
+
+    - domain_observable: Q_alpha (decay energy)
+      gcd_invariant: barrier height
+      mapping: Geiger-Nuttall log₁₀(T½) = a/√Q_α + b
+      rationale: |
+        Q_α controls Coulomb barrier penetration.  Higher Q → thinner
+        barrier → faster decay → shorter τ.
+
+    - domain_observable: tau_mean (mean lifetime)
+      gcd_invariant: tau_R (return time)
+      mapping: tau_R = tau_mean = T½/ln(2)
+      rationale: |
+        Mean lifetime IS the return time.  τ → ∞ for stable nuclei.
+        τ → 0 for superheavy elements.
+
+regime_gates:
+  - name: Binding deficit gate
+    parameter: omega_eff
+    thresholds:
+      Peak: omega_eff < 0.01
+      Plateau: 0.01 ≤ omega_eff < 0.05
+      Slope: 0.05 ≤ omega_eff < 0.15
+      Deficit: omega_eff ≥ 0.15
+    umcp_mapping:
+      Peak: Stable
+      Plateau: Stable
+      Slope: Watch
+      Deficit: Collapse
+
+  - name: Decay urgency gate
+    parameter: log10_tau_s
+    thresholds:
+      Eternal: log₁₀(τ/s) > 24.5
+      Geological: 10.5 < log₁₀(τ/s) ≤ 24.5
+      Laboratory: -3 ≤ log₁₀(τ/s) ≤ 10.5
+      Ephemeral: log₁₀(τ/s) < -3
+    umcp_mapping:
+      Eternal: Stable
+      Geological: Watch
+      Laboratory: Watch
+      Ephemeral: Collapse
+
+  - name: Fissility gate
+    parameter: fissility_x
+    thresholds:
+      Subfissile: x < 0.70
+      Transitional: 0.70 ≤ x < 0.90
+      Fissile: 0.90 ≤ x < 1.00
+      Supercritical: x ≥ 1.00
+    umcp_mapping:
+      Subfissile: Stable
+      Transitional: Watch
+      Fissile: Collapse
+      Supercritical: Collapse
+
+  - name: Shell structure gate
+    parameter: magic_proximity
+    thresholds:
+      DoublyMagic: both Z and N magic
+      SinglyMagic: one of Z, N magic
+      NearMagic: within ±2 of magic
+      MidShell: far from magic
+    umcp_mapping:
+      DoublyMagic: Stable
+      SinglyMagic: Stable
+      NearMagic: Watch
+      MidShell: Watch
+
+budget_identity_analog:
+  description: |
+    Nuclear budget identities mirror GCD kernel identities:
+
+    (1) F_eff = 1 − ω_eff                 (fidelity-drift duality)
+    (2) IC ≈ exp(κ)                        (integrity-collapse)
+    (3) IC ≤ F                             (AM-GM bound)
+    (4) BE = a_V·A − a_S·A^(2/3) − ...    (SEMF mass formula)
+    (5) Q_α = BE(d) + BE(He-4) − BE(p)    (alpha decay energy)
+    (6) log₁₀(T½) = a/√Q_α + b            (Geiger-Nuttall scaling)
+    (7) τ = T½/ln(2)                       (mean lifetime definition)
+
+    Identities (1)-(3) are inherited from GCD.
+    Identities (4)-(7) are nuclear-specific.
+
+reference:
+  sources:
+    - "von Weizsäcker, C.F. (1935). Zur Theorie der Kernmassen. Z. Phys. 96, 431-458."
+    - "Bethe, H.A., Bacher, R.F. (1936). Nuclear Physics A. Rev. Mod. Phys. 8, 82-229."
+    - "Bohr, N., Wheeler, J.A. (1939). Mechanism of Nuclear Fission. Phys. Rev. 56, 426."
+    - "Mayer, M.G. (1949). On Closed Shells in Nuclei. Phys. Rev. 75, 1969."
+    - "Geiger, H., Nuttall, J.M. (1911). Ranges of α-particles. Phil. Mag. 22, 613."
+    - "Gamow, G. (1928). Zur Quantentheorie des Atomkernes. Z. Phys. 51, 204-212."
+    - "Viola, V.E., Seaborg, G.T. (1966). Nuclear Systematics. J. Inorg. Nucl. Chem. 28, 741."
+    - "Burbidge, E.M., Burbidge, G.R., Fowler, W.A., Hoyle, F. (1957). Rev. Mod. Phys. 29, 547."
+    - "Wang, M. et al. (2021). AME2020. Chinese Physics C 45, 030003."
+
+nuclear_constants:
+  BE_peak_nucleon:
+    value: 8.7945
+    unit: MeV/nucleon
+    description: Ni-62 binding energy per nucleon (AME2020)
+  BE_Fe56:
+    value: 8.7903
+    unit: MeV/nucleon
+    description: Fe-56 binding energy per nucleon (AME2020)
+  BE_Rb85:
+    value: 8.6970
+    unit: MeV/nucleon
+    description: Rb-85 binding energy per nucleon (AME2020, corrected)
+  Z2A_crit:
+    value: 48.26
+    unit: dimensionless
+    description: Critical fissility parameter (2·a_S/a_C)
+  magic_protons:
+    value: [2, 8, 20, 28, 50, 82, 114]
+    description: Proton magic numbers
+  magic_neutrons:
+    value: [2, 8, 20, 28, 50, 82, 126, 184]
+    description: Neutron magic numbers (184 is theoretical)
+  ln2:
+    value: 0.693147180559945
+    description: Natural log of 2 (for τ = T½/ln2)

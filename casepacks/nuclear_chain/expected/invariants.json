@@ -1,0 +1,434 @@
+{
+  "schema": "schemas/invariants.schema.json",
+  "format": "tier1_invariants",
+  "contract_id": "NUC.INTSTACK.v1",
+  "closure_registry_id": "UMCP.CLOSURES.NUC.v1",
+  "canon": {
+    "pre_doi": "10.1007/BF01333234",
+    "post_doi": "10.5281/zenodo.14854321",
+    "weld_id": "W-2026-02-08-NUC-CHAIN",
+    "timezone": "UTC"
+  },
+  "rows": [
+    {
+      "t": "NUC01",
+      "omega": 1.0,
+      "F": 0.0,
+      "S": 0.0,
+      "C": 0.0,
+      "tau_R": 0.0,
+      "kappa": -30.0,
+      "IC": 0.0,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": true
+      }
+    },
+    {
+      "t": "NUC02",
+      "omega": 0.195645,
+      "F": 0.804355,
+      "S": 0.0,
+      "C": 0.0,
+      "tau_R": 0.0,
+      "kappa": -0.269008,
+      "IC": 0.764137,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "NUC03",
+      "omega": 0.126716,
+      "F": 0.873284,
+      "S": 0.0,
+      "C": 0.0,
+      "tau_R": 0.0,
+      "kappa": -0.186788,
+      "IC": 0.82962,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "NUC04",
+      "omega": 0.093047,
+      "F": 0.906953,
+      "S": 0.0,
+      "C": 0.0,
+      "tau_R": 0.0,
+      "kappa": -0.148958,
+      "IC": 0.861605,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "NUC05",
+      "omega": 0.000478,
+      "F": 0.999522,
+      "S": 0.0,
+      "C": 0.0,
+      "tau_R": 0.0,
+      "kappa": -0.051771,
+      "IC": 0.949546,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "NUC06",
+      "omega": 0.0,
+      "F": 1.0,
+      "S": 0.0,
+      "C": 0.0,
+      "tau_R": 0.0,
+      "kappa": -0.051293,
+      "IC": 0.95,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "NUC07",
+      "omega": 0.011086,
+      "F": 0.988914,
+      "S": 0.0,
+      "C": 0.0,
+      "tau_R": 0.0,
+      "kappa": -0.062441,
+      "IC": 0.939468,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "NUC08",
+      "omega": 0.03293,
+      "F": 0.96707,
+      "S": 0.0,
+      "C": 0.0,
+      "tau_R": 0.0,
+      "kappa": -0.084778,
+      "IC": 0.918716,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "NUC09",
+      "omega": 0.105407,
+      "F": 0.894593,
+      "S": 0.0,
+      "C": 0.0,
+      "tau_R": 0.0,
+      "kappa": -0.16268,
+      "IC": 0.849863,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "NUC10",
+      "omega": 0.139223,
+      "F": 0.860777,
+      "S": 0.0,
+      "C": 0.0,
+      "tau_R": 0.0,
+      "kappa": -0.201213,
+      "IC": 0.817738,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "NUC11",
+      "omega": 0.139223,
+      "F": 0.860777,
+      "S": 0.427,
+      "C": 0.0,
+      "tau_R": 2.0342000076534384e+17,
+      "kappa": -0.201213,
+      "IC": 0.817738,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "NUC12",
+      "omega": 0.136176,
+      "F": 0.863824,
+      "S": 0.4857,
+      "C": 0.0,
+      "tau_R": 3000805.685049,
+      "kappa": -0.19768,
+      "IC": 0.820633,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "NUC13",
+      "omega": 0.128762,
+      "F": 0.871238,
+      "S": 0.4871,
+      "C": 0.0,
+      "tau_R": 72856099564.89265,
+      "kappa": -0.189133,
+      "IC": 0.827676,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "NUC14",
+      "omega": 0.125067,
+      "F": 0.874933,
+      "S": 0.559,
+      "C": 0.0,
+      "tau_R": 476089.363493,
+      "kappa": -0.184901,
+      "IC": 0.831186,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "NUC15",
+      "omega": 0.114663,
+      "F": 0.885337,
+      "S": 0.7833,
+      "C": 0.0,
+      "tau_R": 0.000237,
+      "kappa": -0.17308,
+      "IC": 0.84107,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "NUC16",
+      "omega": 0.109125,
+      "F": 0.890875,
+      "S": 0.5407,
+      "C": 0.0,
+      "tau_R": 17312340.490668,
+      "kappa": -0.166844,
+      "IC": 0.846331,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "NUC17",
+      "omega": 0.107624,
+      "F": 0.892376,
+      "S": 0.3137,
+      "C": 0.0,
+      "tau_R": 8.67059719574267e+26,
+      "kappa": -0.165161,
+      "IC": 0.847757,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "NUC18",
+      "omega": 0.139223,
+      "F": 0.860777,
+      "S": 1.0,
+      "C": 0.0,
+      "tau_R": 2.0342005375483123e+17,
+      "kappa": -0.201213,
+      "IC": 0.817738,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "NUC19",
+      "omega": 0.134118,
+      "F": 0.865882,
+      "S": 0.85316,
+      "C": 0.0,
+      "tau_R": 6.391140695985124e+17,
+      "kappa": -0.1953,
+      "IC": 0.822588,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "NUC20",
+      "omega": 0.13687,
+      "F": 0.86313,
+      "S": 0.92806,
+      "C": 0.0,
+      "tau_R": 3.2027838250760664e+16,
+      "kappa": -0.198483,
+      "IC": 0.819973,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "NUC21",
+      "omega": 0.139223,
+      "F": 0.860777,
+      "S": 0.147371,
+      "C": 0.0,
+      "tau_R": 0.0,
+      "kappa": -0.201213,
+      "IC": 0.817738,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "NUC22",
+      "omega": 0.140338,
+      "F": 0.859662,
+      "S": 0.153204,
+      "C": 0.0,
+      "tau_R": 0.0,
+      "kappa": -0.202509,
+      "IC": 0.816679,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "NUC23",
+      "omega": 0.105407,
+      "F": 0.894593,
+      "S": 0.133961,
+      "C": 0.0,
+      "tau_R": 0.0,
+      "kappa": -0.16268,
+      "IC": 0.849863,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "NUC24",
+      "omega": 0.000478,
+      "F": 0.999522,
+      "S": 0.050023,
+      "C": 0.0,
+      "tau_R": 0.0,
+      "kappa": -0.051771,
+      "IC": 0.949546,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "NUC25",
+      "omega": 0.195645,
+      "F": 0.804355,
+      "S": 0.0,
+      "C": 0.1,
+      "tau_R": 0.0,
+      "kappa": -0.269008,
+      "IC": 0.764137,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "NUC26",
+      "omega": 0.027654,
+      "F": 0.972346,
+      "S": 0.0,
+      "C": 0.1,
+      "tau_R": 0.0,
+      "kappa": -0.079337,
+      "IC": 0.923729,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "NUC27",
+      "omega": 0.105407,
+      "F": 0.894593,
+      "S": 0.0,
+      "C": 0.1,
+      "tau_R": 0.0,
+      "kappa": -0.16268,
+      "IC": 0.849863,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "NUC28",
+      "omega": 1.0,
+      "F": 0.0,
+      "S": 0.0,
+      "C": 0.0,
+      "tau_R": 0.0,
+      "kappa": -30.0,
+      "IC": 0.0,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": true
+      }
+    },
+    {
+      "t": "NUC29",
+      "omega": 0.0,
+      "F": 1.0,
+      "S": 0.0,
+      "C": 0.0,
+      "tau_R": 0.0,
+      "kappa": -0.051293,
+      "IC": 0.95,
+      "regime": {
+        "label": "Stable",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": "NUC30",
+      "omega": 0.139223,
+      "F": 0.860777,
+      "S": 0.0,
+      "C": 0.0,
+      "tau_R": 0.0,
+      "kappa": -0.201213,
+      "IC": 0.817738,
+      "regime": {
+        "label": "Watch",
+        "critical_overlay": false
+      }
+    }
+  ]
+}

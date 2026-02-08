@@ -1,0 +1,39 @@
+{
+  "schema": "schemas/manifest.schema.json",
+  "casepack": {
+    "id": "nuclear_chain",
+    "version": "1.0.0",
+    "title": "Nuclear Chain Dynamics — Binding, Decay, Fissility, Shell Structure & Double-Sided Collapse",
+    "description": "Nuclear physics casepack covering 6 subdomains: nuclide binding (SEMF), alpha decay (Geiger-Nuttall), decay chains (U-238 series), fissility (Bohr-Wheeler), shell structure (magic numbers), and double-sided collapse (iron peak convergence). Contains 30 experiments spanning the periodic table from H-1 to Og-294, with the U-238 decay chain as paradigm case. All frozen choices per expert review: mean lifetime τ=T½/ln(2), Ni-62 peak at 8.7945 MeV/nucleon, Geiger-Nuttall scaling.",
+    "created_utc": "2026-02-08T14:00:00Z",
+    "timezone": "UTC",
+    "authors": ["UMCP-NUC Working Group"]
+  },
+  "refs": {
+    "canon_anchors": {"path": "canon/nuc_anchors.yaml"},
+    "contract": {"id": "NUC.INTSTACK.v1", "path": "contracts/NUC.INTSTACK.v1.yaml"},
+    "closures_registry": {"id": "UMCP.CLOSURES.NUC.v1", "path": "closures/registry.yaml"}
+  },
+  "artifacts": {
+    "raw_measurements": {"path": "raw_measurements.csv", "format": "csv"},
+    "expected": {
+      "invariants_json": {"path": "expected/invariants.json"}
+    }
+  },
+  "run_intent": {
+    "notes": "Validate 30 nuclear experiments across 6 closures against NUC.INTSTACK.v1 contract"
+  },
+  "extensions": {
+    "domain": "nuclear_physics",
+    "subdomain_count": 6,
+    "experiment_count": 30,
+    "subdomains": [
+      "nuclide_binding",
+      "alpha_decay",
+      "decay_chain",
+      "fissility",
+      "shell_structure",
+      "double_sided_collapse"
+    ]
+  }
+}

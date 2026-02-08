@@ -1,0 +1,385 @@
+schema: schemas/contract.schema.json
+contract:
+  id: NUC.INTSTACK.v1
+  version: 1.0.0
+  timezone: UTC
+  parent_contract: GCD.INTSTACK.v1
+  tier_level: 1
+  embedding:
+    interval:
+    - 0.0
+    - 1.0
+    face: pre_clip
+    oor_policy: clip_and_flag
+    epsilon: 1.0e-08
+  tier_1_kernel:
+    reserved_symbols:
+    # Inherited from GCD
+    - omega
+    - F
+    - S
+    - C
+    - tau_R
+    - kappa
+    - IC
+    - IC_min
+    # NUC-specific observables — Nuclide identity
+    - Z                 # Atomic number (proton count)
+    - N_neutrons        # Neutron number
+    - A                 # Mass number Z + N
+    - mass_amu          # Atomic mass (unified atomic mass units)
+    - mass_excess_keV   # Mass excess Δ = (M - A·u)c² in keV
+    # NUC-specific observables — Binding & stability
+    - BE_total          # Total binding energy (MeV)
+    - BE_per_A          # Binding energy per nucleon (MeV/nucleon)
+    - BE_per_A_norm     # BE/A normalized to Ni-62 peak: BE_per_A / 8.7945
+    - separation_alpha  # Alpha separation energy S_α (MeV)
+    - Q_alpha           # Alpha-decay Q-value (MeV): Q_α = M_parent - M_daughter - M_He4
+    - Q_beta            # Beta-decay Q-value (MeV)
+    # NUC-specific observables — Decay dynamics
+    - half_life_s       # Half-life in seconds (INF_REC for stable)
+    - mean_lifetime_s   # Mean lifetime τ = T½ / ln(2) in seconds (FROZEN CHOICE)
+    - log10_tau         # log₁₀(mean_lifetime_s) for scaling
+    - decay_mode        # Primary decay mode (alpha, beta_minus, beta_plus, EC, fission, stable)
+    - branching_ratio   # Branching ratio of primary mode [0,1]
+    # NUC-specific observables — Fissility & Coulomb
+    - fissility_x       # Fissility parameter x = Z²/A / (Z²/A)_crit ≈ Z²/(50.88·A)
+    - coulomb_energy     # Coulomb self-energy a_C · Z(Z-1) / A^(1/3)
+    - surface_energy     # Surface energy a_S · A^(2/3)
+    # NUC-specific observables — Shell structure
+    - magic_proton       # Boolean: Z is a magic number (2,8,20,28,50,82,114)
+    - magic_neutron      # Boolean: N is a magic number (2,8,20,28,50,82,126,184)
+    - doubly_magic       # Boolean: both Z and N are magic
+    - shell_correction   # Shell correction energy δ_shell (MeV), negative = extra binding
+    # NUC-specific observables — Adapter channels (Ψ traces)
+    - Psi_BE             # Normalized BE/A channel: BE_per_A / BE_peak_ref
+    - Psi_fiss           # Normalized fissility: fissility_x (already [0,1]-ish)
+    - Psi_Q_alpha        # Normalized Q_alpha: Q_alpha / Q_ref (adapter-defined)
+    - Psi_log_tau        # Normalized log lifetime: (log10_tau - log_min) / (log_max - log_min)
+    weights_policy: nonnegative_sum_to_one
+    frozen_parameters:
+      # Inherited from GCD
+      p: 3
+      alpha: 1.0
+      lambda: 0.2
+      eta: 0.001
+      alpha_energy: 1.0
+      beta_energy: 0.5
+      tau_0: 10.0
+      C_crit: 0.2
+      # FROZEN CHOICE: lifetime constant
+      # We use MEAN LIFETIME τ = T½ / ln(2), not half-life T½.
+      # Rationale: τ is the natural decay-rate parameter (λ = 1/τ),
+      # and maps directly to GCD τ_R as the 1/e return time of the
+      # parent population. T½ = τ · ln(2) is the median, not the mean.
+      lifetime_constant: mean_lifetime     # τ = T½ / ln(2)
+      ln2: 0.6931471805599453              # frozen value of ln(2)
+      # Nuclear physics constants
+      u_amu_kg: 1.66053906660e-27          # Unified atomic mass unit (kg)
+      u_amu_MeV: 931.49410242              # Unified atomic mass unit (MeV/c²)
+      m_proton_amu: 1.007276466621         # Proton mass (u)
+      m_neutron_amu: 1.008664915956        # Neutron mass (u)
+      m_alpha_amu: 4.002603254             # He-4 mass (u)
+      m_electron_amu: 0.000548579909065    # Electron mass (u)
+      # Bethe-Weizsäcker semi-empirical mass formula coefficients
+      # (von Weizsäcker 1935, Bethe & Bacher 1936)
+      a_V: 15.67                           # Volume term (MeV)
+      a_S: 17.23                           # Surface term (MeV)
+      a_C: 0.714                           # Coulomb term (MeV)
+      a_A: 23.29                           # Asymmetry term (MeV)
+      a_P: 11.2                            # Pairing term (MeV)
+      # Binding energy peak reference
+      # FROZEN CHOICE: Ni-62 as peak BE/A reference (8.7945 MeV/nucleon)
+      # Fe-56 is extremely close at 8.7903 MeV/nucleon.
+      # We freeze to Ni-62 per CSU Physics / Shurtleff & Derringh (1989).
+      BE_peak_ref: 8.7945                  # Ni-62 BE/A (MeV/nucleon)
+      BE_peak_Z: 28                        # Ni
+      BE_peak_A: 62                        # Ni-62
+      # Critical fissility (Z²/A at which Coulomb = surface)
+      fissility_crit: 50.88               # (Z²/A)_crit ≈ 2a_S/a_C
+      # Geiger-Nuttall law form (for alpha decay)
+      # log₁₀(T½) ≈ a / √Q_α + b  within isotopic chains
+      # This is the Gamow tunneling dependence (1928).
+      geiger_nuttall_form: "log10_halflife = a_GN / sqrt(Q_alpha) + b_GN"
+      # Magic numbers (shell closures — Goeppert Mayer & Jensen 1963)
+      magic_numbers_Z: [2, 8, 20, 28, 50, 82, 114]
+      magic_numbers_N: [2, 8, 20, 28, 50, 82, 126, 184]
+      # Qα reference for normalization (MeV) — typical high-Q alpha
+      Q_alpha_ref: 10.0
+      # Log-lifetime normalization bounds
+      log_tau_min: -25.0                   # ~10^-25 s (W/Z boson scale)
+      log_tau_max: 35.0                    # ~10^35 s (Bi-209 scale)
+    tolerances:
+      tol_seam: 0.005
+      tol_id: 1.0e-09
+      tol_BE: 0.010                       # BE/A tolerance (MeV)
+      tol_Q: 0.010                        # Q-value tolerance (MeV)
+      tol_lifetime: 0.05                  # log10(τ) tolerance (decades)
+      tol_fissility: 0.01                 # Fissility parameter tolerance
+      tol_SEMF: 0.5                       # Semi-empirical mass formula tolerance (MeV)
+  axioms:
+  # Inherited from GCD
+  - id: AX-0
+    statement: Collapse is generative
+    description: |
+      Inherited from GCD Tier-1 (frozen). Nuclear decay IS generative collapse:
+      the parent nucleus transitions to a more tightly bound configuration,
+      releasing binding-energy deficit as kinetic energy of decay products.
+      Every decay event generates particles (alpha, beta, gamma, neutrons)
+      that carry the released energy. Φ_gen = ΔBE ≥ 0 for all spontaneous decays.
+  - id: AX-1
+    statement: Boundary defines interior
+    description: |
+      Inherited from GCD Tier-1 (frozen). The nuclear potential well
+      (strong-force + Coulomb barrier) defines the bound-state interior.
+      Shell closures (magic numbers) are boundary resonances that enhance
+      binding. The Coulomb barrier height determines accessible decay modes.
+  - id: AX-2
+    statement: Entropy measures determinacy
+    description: |
+      Inherited from GCD Tier-1 (frozen). Nuclear entropy measures the
+      system's distance from the binding-energy peak attractor.
+      S ∝ (BE_peak - BE/A) = binding deficit from the Ni-62/Fe-56 peak.
+      Higher S = less bound = more prone to collapse (decay).
+  # Nuclear-specific axioms
+  - id: AX-N0
+    statement: The iron peak is the collapse attractor
+    description: |
+      The global maximum of binding energy per nucleon occurs at Ni-62
+      (BE/A = 8.7945 MeV) with Fe-56 extremely close (8.7903 MeV).
+      ALL nuclear processes — fusion (light side) and decay/fission
+      (heavy side) — drive systems toward this attractor.
+      In GCD terms: F_eff = 1 at the iron peak; ω_eff = 0.
+      Every nuclear reaction with positive Q moves the system
+      closer to the peak (lower ω_eff, higher F_eff).
+  - id: AX-N1
+    statement: Half-life is the return time of collapse
+    description: |
+      The mean lifetime τ = T½ / ln(2) of a radioactive nuclide
+      is identified with the GCD return time τ_R. Each decay event
+      is an individual collapse; the exponential decay law
+      N(t) = N₀·exp(-t/τ) is the statistical shadow of independent
+      collapse events occurring at rate λ = 1/τ.
+      Stable nuclides: τ_R = INF_REC (already at attractor or within
+      the stability basin). Unstable: τ_R = τ = T½/ln(2), finite.
+      FROZEN: we use mean lifetime τ, not half-life T½.
+  - id: AX-N2
+    statement: Decay rate scales as Gamow tunneling
+    description: |
+      For alpha decay, the canonical scaling law is Geiger-Nuttall:
+        log₁₀(T½) ≈ a(Z) / √Q_α + b(Z)
+      where Q_α is the alpha-decay energy and a(Z), b(Z) are
+      empirical constants within isotopic chains (Gamow 1928,
+      Geiger & Nuttall 1911). The half-life is exponentially
+      sensitive to 1/√Q_α, which is the Coulomb barrier penetration
+      factor from WKB approximation.
+      In GCD terms: the collapse time τ_R depends exponentially on
+      the barrier height relative to the available energy — small
+      energy differences produce astronomical τ_R variations.
+  - id: AX-N3
+    statement: Mass is the entropy reservoir
+    description: |
+      The mass (nucleon count A) serves as the reservoir that absorbs
+      or generates entropy. On the light side (A < 62), adding nucleons
+      increases BE/A (fusion is energetically favored). On the heavy side
+      (A > 62), adding nucleons decreases BE/A — each nucleon adds more
+      Coulomb entropy than the strong force can bind.
+      The strong force saturates (~12 nearest neighbors, range ~1.4 fm).
+      Coulomb repulsion is long-range (every proton repels every proton).
+      Past the iron peak, mass itself becomes the entropy source.
+  - id: AX-N4
+    statement: Double-sided collapse converges on the attractor
+    description: |
+      Two gradients point toward the same peak:
+        Light side: dBE/dA > 0 → fusion is downhill
+        Heavy side: dBE/dA < 0 → fission/decay is downhill
+      Both are GCD collapse processes: the system sheds entropy
+      (binding deficit) by moving toward the attractor.
+      Fusion = collapse upward through mass (combining sub-critical
+      systems to gain stability). Decay = collapse downward through
+      mass (shedding excess nucleons that the force cannot bind).
+      This "double-sided collapse" is the nuclear realization of the
+      stability window theorem: stability is not monotone in mass
+      but exists in a band centered on the iron peak.
+  regime_classification:
+    binding_deficit:
+      peak:
+        threshold: 0.01
+        condition: "omega_eff < 0.01 (within 1% of Ni-62 peak)"
+      plateau:
+        threshold: 0.05
+        condition: "0.01 ≤ omega_eff < 0.05 (iron group ± margin)"
+      slope:
+        threshold: 0.15
+        condition: "0.05 ≤ omega_eff < 0.15 (main sequence, still stable)"
+      deficit:
+        threshold: null
+        condition: "omega_eff ≥ 0.15 (significant binding deficit)"
+    decay_urgency:
+      eternal:
+        threshold: null
+        condition: "stable isotope; τ = INF_REC"
+      geological:
+        threshold: 1.0e+15
+        condition: "τ > 10^15 s (~32 Myr); quasi-stable"
+      laboratory:
+        threshold: 1.0e+06
+        condition: "10^6 < τ ≤ 10^15 s (observable in lab)"
+      ephemeral:
+        threshold: null
+        condition: "τ ≤ 10^6 s (short-lived)"
+    fissility:
+      subfissile:
+        threshold: 0.70
+        condition: "x < 0.70; fission not spontaneous"
+      fissile:
+        threshold: 0.90
+        condition: "0.70 ≤ x < 0.90; induced fission possible"
+      supercritical:
+        threshold: null
+        condition: "x ≥ 0.90; spontaneous fission likely"
+    energy:  # Inherited from GCD
+      low:
+        threshold: 0.01
+        condition: E < 0.01
+      medium:
+        threshold: 0.05
+      high:
+        threshold: null
+  mathematical_identities:
+  # Inherited from GCD
+  - name: Fidelity-drift duality
+    formula: "F = 1 - ω"
+    tolerance: 1.0e-09
+  - name: Integrity-collapse relation
+    formula: "IC ≈ exp(κ)"
+    tolerance: 1.0e-06
+  # Nuclear-specific identities
+  - name: Mean lifetime definition
+    formula: "τ = T½ / ln(2)"
+    tolerance: 1.0e-09
+    source: "Rutherford & Soddy 1903"
+  - name: Exponential decay law
+    formula: "N(t) = N₀ · exp(-t/τ)"
+    tolerance: 1.0e-06
+    source: "Rutherford & Soddy 1903"
+  - name: Geiger-Nuttall law (alpha decay)
+    formula: "log₁₀(T½) ≈ a(Z) / √Q_α + b(Z)"
+    tolerance: 0.5
+    source: "Geiger & Nuttall 1911; Gamow 1928"
+  - name: Bethe-Weizsäcker semi-empirical mass formula
+    formula: "BE = a_V·A - a_S·A^(2/3) - a_C·Z(Z-1)/A^(1/3) - a_A·(A-2Z)²/A ± a_P/A^(1/2)"
+    tolerance: 0.5
+    source: "von Weizsäcker 1935; Bethe & Bacher 1936"
+  - name: Fissility parameter
+    formula: "x = (Z²/A) / (Z²/A)_crit ≈ Z²/(50.88·A)"
+    tolerance: 0.01
+    source: "Bohr & Wheeler 1939"
+  - name: Alpha-decay Q-value
+    formula: "Q_α = [M(Z,A) - M(Z-2,A-4) - M(He-4)] · c²"
+    tolerance: 0.010
+    source: "Nuclear Data Sheets"
+  - name: Binding energy per nucleon normalization
+    formula: "Ψ_BE = BE_per_A / 8.7945"
+    tolerance: 0.001
+    source: "Normalized to Ni-62 peak"
+  typed_censoring:
+    tau_R_special_values:
+    - INF_REC
+    - UNIDENTIFIABLE
+    run_status_enum:
+    - CONFORMANT
+    - NONCONFORMANT
+    - NON_EVALUABLE
+    no_return_no_credit: true
+    nuc_regime_enums:
+      binding_deficit:
+      - Peak
+      - Plateau
+      - Slope
+      - Deficit
+      decay_urgency:
+      - Eternal
+      - Geological
+      - Laboratory
+      - Ephemeral
+      fissility:
+      - Subfissile
+      - Fissile
+      - Supercritical
+  closures:
+    nuclide_binding:
+      path: closures/nuclear_physics/nuclide_binding.py
+      inputs: [Z, A]
+      outputs: [BE_total, BE_per_A, BE_per_A_norm, Psi_BE, omega_eff, F_eff, regime]
+    alpha_decay:
+      path: closures/nuclear_physics/alpha_decay.py
+      inputs: [Z, A, Q_alpha]
+      outputs: [mean_lifetime_s, log10_tau, Psi_log_tau, Psi_Q_alpha, regime]
+    decay_chain:
+      path: closures/nuclear_physics/decay_chain.py
+      inputs: [chain_steps]
+      outputs: [chain_length, total_nucleons_shed, total_protons_shed, endpoint_Z, endpoint_A, total_time_s, regime]
+    fissility:
+      path: closures/nuclear_physics/fissility.py
+      inputs: [Z, A]
+      outputs: [fissility_x, coulomb_energy, surface_energy, Psi_fiss, regime]
+    shell_structure:
+      path: closures/nuclear_physics/shell_structure.py
+      inputs: [Z, N_neutrons]
+      outputs: [magic_proton, magic_neutron, doubly_magic, shell_correction, regime]
+    double_sided_collapse:
+      path: closures/nuclear_physics/double_sided_collapse.py
+      inputs: [Z, A, BE_per_A]
+      outputs: [side, distance_to_peak, signed_distance, convergence_direction, regime]
+  notes: |
+    NUC.INTSTACK.v1 extends GCD.INTSTACK.v1 with nuclear physics.
+
+    FROZEN CHOICES (explicit, per feedback):
+    1. LIFETIME: mean lifetime τ = T½/ln(2), NOT half-life T½.
+       τ is the natural 1/e decay constant; T½ is the median.
+    2. PEAK REFERENCE: Ni-62 at BE/A = 8.7945 MeV/nucleon.
+       Fe-56 at 8.7903 is extremely close but Ni-62 is the true maximum.
+    3. DECAY SCALING: Geiger-Nuttall form log₁₀(T½) = a/√Q_α + b,
+       NOT 1/ΔBE. The Gamow tunneling factor gives 1/√Q dependence.
+    4. Q-VALUE DEFINITION: Q_α = M_parent - M_daughter - M_He4 (in MeV),
+       NOT vague "ΔBE/A from peak." Q is what controls barrier penetration.
+
+    The six closures cover:
+    1. Nuclide binding (SEMF, BE/A normalization, ω_eff)
+    2. Alpha decay dynamics (Geiger-Nuttall, Q-value, mean lifetime)
+    3. Decay chain traversal (multi-step collapse cascade)
+    4. Fissility assessment (Coulomb vs surface competition)
+    5. Shell structure (magic numbers, shell corrections)
+    6. Double-sided collapse overlay (signed distance to peak, convergence)
+
+    Each closure maps nuclear observables to GCD invariants:
+    - ω_eff = 1 - BE_per_A/BE_peak_ref (binding deficit = drift)
+    - F_eff = BE_per_A/BE_peak_ref (binding fraction = fidelity)
+    - τ_R = τ = T½/ln(2) (mean lifetime = return time)
+    - S ∝ (BE_peak - BE/A) (entropy ∝ binding deficit)
+    - Ψ_BE(k) is the normalized trace channel for binding
+    - Ψ_fiss(k) is the normalized fissility proxy Z²/A
+    - Ψ_Q(k) is the normalized Q_alpha for alpha steps
+    - Ψ_logτ(k) is the normalized log lifetime
+
+    The double-sided collapse overlay (O.NUC.DOUBLEFACE.v1) tests
+    whether trajectories from both sides of the iron peak converge
+    in the signed distance-to-peak coordinate. This is the
+    falsifiable prediction: if convergence disappears under alternate
+    frozen choices (Q proxy, peak reference, lifetime constant),
+    it is not kernel-robust.
+  provenance:
+    created: '2026-02-07'
+    author: UMCP-NUC Working Group
+    canonical_anchor: canon/nuc_anchors.yaml
+    parent_version: GCD.INTSTACK.v1.0.0
+    references:
+      - "Geiger & Nuttall (1911) Phil. Mag. 22:613"
+      - "Gamow (1928) Z. Phys. 51:204"
+      - "von Weizsäcker (1935) Z. Phys. 96:431"
+      - "Bethe & Bacher (1936) Rev. Mod. Phys. 8:82"
+      - "Bohr & Wheeler (1939) Phys. Rev. 56:426"
+      - "Goeppert Mayer (1950) Phys. Rev. 78:16"
+      - "Shurtleff & Derringh (1989) Am. J. Phys. 57:552"
+  extensions: {}

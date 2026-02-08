@@ -347,3 +347,59 @@ registry:
         outputs: ["heisenberg_product", "heisenberg_ratio", "min_uncertainty", "regime"]
         frozen_params:
           hbar_over_2: 5.272859085e-35
+
+    nuclear_physics:
+      - name: "nuclide_binding"
+        path: "closures/nuclear_physics/nuclide_binding.py"
+        description: "Bethe-Weizsäcker SEMF: BE/A computation, normalization to Ni-62 peak"
+        contract: "NUC.INTSTACK.v1"
+        inputs: ["Z", "A", "BE_per_A_measured"]
+        outputs: ["BE_total", "BE_per_A", "BE_per_A_norm", "Psi_BE", "omega_eff", "F_eff", "regime"]
+        frozen_params:
+          a_V: 15.67
+          a_S: 17.23
+          a_C: 0.714
+          a_A: 23.29
+          a_P: 11.2
+          BE_peak_ref: 8.7945
+      - name: "alpha_decay"
+        path: "closures/nuclear_physics/alpha_decay.py"
+        description: "Geiger-Nuttall: log₁₀(T½) = a/√Q_α + b, mean lifetime τ = T½/ln(2)"
+        contract: "NUC.INTSTACK.v1"
+        inputs: ["Z_parent", "A_parent", "Q_alpha_MeV", "half_life_s_measured"]
+        outputs: ["Q_alpha", "half_life_s", "mean_lifetime_s", "log10_tau_s", "Psi_log_tau", "Psi_Q_alpha", "regime"]
+        frozen_params:
+          lifetime_convention: "mean_lifetime"
+          Q_alpha_scale: 10.0
+          tau_scale: 25.0
+      - name: "decay_chain"
+        path: "closures/nuclear_physics/decay_chain.py"
+        description: "Multi-step collapse cascade: U-238 → Pb-206 (8α + 6β⁻) as paradigm"
+        contract: "NUC.INTSTACK.v1"
+        inputs: ["steps"]
+        outputs: ["chain_length", "total_nucleons_shed", "endpoint_isotope", "bottleneck_step", "total_Q_MeV", "regime"]
+      - name: "fissility"
+        path: "closures/nuclear_physics/fissility.py"
+        description: "Bohr-Wheeler: x = (Z²/A)/(Z²/A)_crit, Coulomb vs surface competition"
+        contract: "NUC.INTSTACK.v1"
+        inputs: ["Z", "A"]
+        outputs: ["Z_squared_over_A", "fissility_x", "coulomb_energy", "surface_energy", "Psi_fiss", "regime"]
+        frozen_params:
+          a_S: 17.23
+          a_C: 0.714
+          Z2A_crit: 48.26
+      - name: "shell_structure"
+        path: "closures/nuclear_physics/shell_structure.py"
+        description: "Magic numbers: Z=[2,8,20,28,50,82,114], N=[2,8,20,28,50,82,126,184]"
+        contract: "NUC.INTSTACK.v1"
+        inputs: ["Z", "A", "BE_total_measured"]
+        outputs: ["magic_proton", "magic_neutron", "doubly_magic", "shell_correction", "regime"]
+      - name: "double_sided_collapse"
+        path: "closures/nuclear_physics/double_sided_collapse.py"
+        description: "O.NUC.DOUBLEFACE.v1: signed distance to Ni-62 peak, convergence direction"
+        contract: "NUC.INTSTACK.v1"
+        inputs: ["Z", "A", "BE_per_A"]
+        outputs: ["signed_distance", "side", "convergence_direction", "omega_eff", "regime"]
+        frozen_params:
+          BE_peak_ref: 8.7945
+          A_peak: 62
