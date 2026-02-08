@@ -302,7 +302,7 @@ The field is required by `schemas/contract.schema.json` and `schemas/canon.ancho
 
 ---
 
-## Implementation Status (v1.5.0)
+## Implementation Status (v2.0.0)
 
 - ✅ **Tier-1**: Immutable invariants defined and verified
   - Structural identities: F+ω=1, IC≤F — 146/146 hold

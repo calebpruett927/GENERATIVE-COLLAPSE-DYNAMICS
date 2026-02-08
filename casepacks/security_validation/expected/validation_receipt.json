@@ -5,7 +5,7 @@
   "created_utc": "2026-02-04T00:00:00Z",
   "validator": {
     "name": "umcp-validator",
-    "version": "1.5.0"
+    "version": "2.0.0"
   },
   "status": "CONFORMANT",
   "summary": {

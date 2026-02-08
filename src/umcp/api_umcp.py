@@ -49,7 +49,7 @@ try:
     from . import __version__
 except ImportError:
     # Fallback for direct execution
-    __version__ = "1.5.0"
+    __version__ = "2.0.0"
 
 # ============================================================================
 # Configuration

@@ -13,7 +13,7 @@
   <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.11+-3776AB?logo=python&logoColor=white" alt="Python 3.11+"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License: MIT"></a>
   <a href="tests/"><img src="https://img.shields.io/badge/tests-1060%20passing-brightgreen?logo=pytest" alt="Tests: 1060 passing"></a>
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-1.5.0-blue" alt="Version: 1.5.0"></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-2.0.0-blue" alt="Version: 2.0.0"></a>
   <a href="src/umcp/api_umcp.py"><img src="https://img.shields.io/badge/API-37%2B%20endpoints-orange?logo=fastapi" alt="API: 37+ endpoints"></a>
 </p>
 
@@ -98,7 +98,7 @@ pip install -e ".[all]"               # Everything
 ```bash
 umcp health           # System health check
 umcp validate .       # Validate repository
-pytest                # Run 1002 tests
+pytest                # Run 1060 tests
 ```
 
 <details>
@@ -199,9 +199,9 @@ typed_censoring:
 ║                    UMCP SYSTEM AT A GLANCE                        ║
 ╠═══════════════════════════════════════════════════════════════════╣
 ║                                                                   ║
-║   📊 1002 Tests        🔌 37+ API Endpoints    📈 21 Dashboard    ║
-║   📦 11 Casepacks      🔧 10 CLI Commands      🧮 46 Lemmas       ║
-║   🔬 28 Closures       📜 5 Frameworks         🔒 SHA256 Verified ║
+║   📊 1060 Tests        🔌 37+ API Endpoints    📈 21 Dashboard    ║
+║   📦 13 Casepacks      🔧 10 CLI Commands      🧮 46 Lemmas       ║
+║   🔬 60 Closures       📜 9 Frameworks         🔒 SHA256 Verified ║
 ║                                                                   ║
 ╠═══════════════════════════════════════════════════════════════════╣
 ║                                                                   ║
@@ -249,7 +249,7 @@ typed_censoring:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                     UMCP WORKFLOW (v1.5.0)                          │
+│                     UMCP WORKFLOW (v2.0.0)                          │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
 │  ┌─────────┐    ┌─────────────┐    ┌─────────────┐    ┌──────────┐ │
@@ -265,7 +265,7 @@ typed_censoring:
 │  └─────────┘    └─────────────┘    └─────────────┘    └──────────┘ │
 │                                                                     │
 │  ┌─────────────────────────────────────────────────────────────┐   │
-│  │ COST CLOSURES (Frozen Contract v1.5.0)                      │   │
+│  │ COST CLOSURES (Frozen Contract v2.0.0)                      │   │
 │  │ ────────────────────────────────────────────────────────── │   │
 │  │ Γ(ω) = ω³/(1-ω+ε)           [Drift cost - cubic barrier]   │   │
 │  │ D_C = α·C                    [Curvature cost]               │   │
@@ -417,6 +417,10 @@ umcp-dashboard              # Start dashboard (port 8501)
 | **RCFT** | 2 | Trajectory complexity, memory effects | 4 |
 | **WEYL** | 2 | Cosmological analysis, modified gravity | 5 |
 | **Security** | 2 | Validation security, input sanitization | 8 |
+| **Astronomy** | 2 | Stellar classification, HR diagram stability | 6 |
+| **Nuclear** | 2 | Binding energy, decay chains, shell structure | 6 |
+| **Quantum Mechanics** | 2 | Wavefunction, entanglement, tunneling, spin | 6 |
+| **Finance** | 2 | Portfolio continuity, market coherence | 6 |
 
 <details>
 <summary><strong>🔬 GCD (Generative Collapse Dynamics)</strong></summary>
@@ -463,12 +467,56 @@ umcp validate casepacks/weyl_des_y3
 
 </details>
 
+<details>
+<summary><strong>🌟 Astronomy (ASTRO)</strong></summary>
+
+**Closures**: `stellar_luminosity`, `main_sequence_stability`, `hr_diagram_classification`, `spectral_type_analysis`, `metallicity_evolution`, `stellar_age_coherence`
+
+```bash
+umcp validate casepacks/astronomy_complete
+```
+
+</details>
+
+<details>
+<summary><strong>☢️ Nuclear Physics (NUC)</strong></summary>
+
+**Closures**: `binding_energy_stability`, `alpha_decay_chain`, `fissility_parameter`, `nuclear_shell_model`, `decay_chain_analysis`, `double_sided_collapse`
+
+```bash
+umcp validate casepacks/nuclear_chain
+```
+
+</details>
+
+<details>
+<summary><strong>⚗️ Quantum Mechanics (QM)</strong></summary>
+
+**Closures**: `wavefunction_coherence`, `density_matrix_stability`, `bell_state_entanglement`, `tunneling_transmission`, `harmonic_oscillator_fidelity`, `spin_measurement_stability`
+
+```bash
+umcp validate casepacks/quantum_mechanics_complete
+```
+
+</details>
+
+<details>
+<summary><strong>💰 Finance (FIN)</strong></summary>
+
+**Closures**: `portfolio_continuity`, `market_coherence`, `volatility_regime`, `correlation_stability`, `drawdown_analysis`, `return_fidelity`
+
+```bash
+umcp validate casepacks/finance_continuity
+```
+
+</details>
+
 ---
 
 ## 🧪 Testing
 
 ```bash
-pytest                      # Run all 1002 tests
+pytest                      # Run all 1060 tests
 pytest -v                   # Verbose output
 pytest --cov                # With coverage
 pytest -k "gcd"             # Pattern matching
@@ -815,19 +863,21 @@ copies or substantial portions of the Software.
 ╠═══════════════════════════════════════════════════════════════════════╣
 ║                                                                       ║
 ║   🎯 Core Axiom:    "What Returns Through Collapse Is Real"           ║
-║   📜 Contract:      UMA.INTSTACK.v1 + Frozen Contract v1.5.0          ║
+║   📜 Contract:      UMA.INTSTACK.v1 + Frozen Contract v2.0.0          ║
 ║   🔐 Canon:         UMCP.CANON.v1                                     ║
 ║                                                                       ║
 ║   ⚙️  Frozen:       ε=10⁻⁸  p=3  α=1.0  λ=0.2  tol=0.005              ║
 ║                                                                       ║
 ║   📊 Status:        CONFORMANT ✅                                     ║
-║   🧪 Tests:         1002 passing                                      ║
-║   📦 Casepacks:     11 validated                                      ║
+║   🧪 Tests:         1060 passing                                     ║
+║   📦 Casepacks:     13 validated                                     ║
 ║   🔧 CLI:           10 commands                                       ║
 ║   🌐 API:           37+ endpoints                                     ║
 ║   📈 Dashboard:     21 pages                                          ║
 ║   🧮 Lemmas:        46 formal proofs                                  ║
-║   🔬 Closures:      28+ functions                                     ║
+║   🔬 Closures:      60+ functions                                     ║
+║   📦 Contracts:     12 domain contracts                                ║
+║   🌍 Domains:       9 (GCD, KIN, RCFT, WEYL, SEC, ASTRO, NUC, QM, FIN)║
 ║   🔒 Integrity:     SHA256 verified                                   ║
 ║                                                                       ║
 ╚═══════════════════════════════════════════════════════════════════════╝
