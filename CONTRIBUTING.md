@@ -58,11 +58,11 @@ Violations may result in removal from the project.
 ```bash
 # 1. Fork the repository on GitHub
 # 2. Clone your fork
-git clone https://github.com/YOUR_USERNAME/UMCP-Metadata-Runnable-Code.git
-cd UMCP-Metadata-Runnable-Code
+git clone https://github.com/YOUR_USERNAME/GENERATIVE-COLLAPSE-DYNAMICS.git
+cd GENERATIVE-COLLAPSE-DYNAMICS
 
 # 3. Add upstream remote
-git remote add upstream https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code.git
+git remote add upstream https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS.git
 
 # 4. Create virtual environment
 python -m venv .venv
@@ -86,7 +86,7 @@ pytest --co -q  # Should show 932 tests
 ### Project Structure Overview
 
 ```
-UMCP-Metadata-Runnable-Code/
+GENERATIVE-COLLAPSE-DYNAMICS/
 ├── src/umcp/              # Core Python implementation
 │   ├── frozen_contract.py # Canonical constants
 │   ├── validator.py       # Core validation engine
@@ -825,7 +825,7 @@ async def my_endpoint():
 
 ### Q: Where do I report bugs?
 
-Open an issue on [GitHub Issues](https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/issues) with:
+Open an issue on [GitHub Issues](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/issues) with:
 - Exact command that failed
 - Expected vs actual behavior
 - Python version and OS

@@ -242,16 +242,16 @@ stateDiagram-v2
     WATCH --> STABLE : recovery
     WATCH --> COLLAPSE : ω < 0.1 or > 0.9
     COLLAPSE --> [*] : terminate
-    
+
     STABLE --> CRITICAL : |s| > 0.01
     WATCH --> CRITICAL : |s| > 0.01
     CRITICAL --> [*] : abort
-    
+
     note right of STABLE
         Optimal operating regime
         Near-equilibrium conditions
     end note
-    
+
     note right of COLLAPSE
         Near-boundary regime
         Saturation effects
@@ -667,7 +667,7 @@ class SARIFGenerator:
                         "driver": {
                             "name": "UMCP Validator",
                             "version": __version__,
-                            "informationUri": "https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code",
+                            "informationUri": "https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS",
                             "rules": [
                                 {
                                     "id": "UMCP001",

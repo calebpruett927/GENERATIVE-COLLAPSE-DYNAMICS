@@ -1168,7 +1168,7 @@ def _cmd_demo(args: argparse.Namespace) -> int:
         acknowledgments=(
             "C.P.\\ thanks C.Pau.\\ for the frozen-contract discipline. "
             "Reference implementation: "
-            "\\url{https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code}."
+            "\\url{https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS}."
         ),
     )
 

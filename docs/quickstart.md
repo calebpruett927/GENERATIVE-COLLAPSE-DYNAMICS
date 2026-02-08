@@ -1,7 +1,7 @@
 
 ---
 
-UMCP-Metadata-Runnable-Code/umcp/docs/quickstart.md
+GENERATIVE-COLLAPSE-DYNAMICS/umcp/docs/quickstart.md
 ```markdown
 # Quickstart — run and validate UMCP artifacts
 

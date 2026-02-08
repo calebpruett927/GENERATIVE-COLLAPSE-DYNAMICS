@@ -25,7 +25,7 @@ The repository uses **token-based authentication** for PyPI publishing.
    - **COPY THE TOKEN** (shown only once!)
 
 2. **Add secret to GitHub**:
-   - Go to https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/settings/secrets/actions
+   - Go to https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/settings/secrets/actions
    - Click "New repository secret"
    - Name: `PYPI_PUBLISH_TOKEN`
    - Value: Paste the PyPI token
@@ -61,7 +61,7 @@ To confirm the secret is configured:
 # You cannot read secrets locally, but you can verify the workflow works:
 git tag v1.5.0-test
 git push origin v1.5.0-test
-# Watch: https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/actions
+# Watch: https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/actions
 # If successful, delete test tag: git push --delete origin v1.5.0-test
 ```
 
@@ -72,7 +72,7 @@ For enhanced security without managing tokens, you can switch to **Trusted Publi
 ### Steps to Enable Trusted Publishing
 
 1. **On PyPI** (https://pypi.org/manage/project/umcp/settings/publishing/):
-   - Add publisher: `calebpruett927/UMCP-Metadata-Runnable-Code`
+   - Add publisher: `calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS`
    - Workflow: `publish.yml`
    - Environment: (leave blank)
 

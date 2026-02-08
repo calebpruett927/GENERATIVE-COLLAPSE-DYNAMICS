@@ -47,8 +47,8 @@ This installs:
 
 ```bash
 # Clone repository
-git clone https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code.git
-cd UMCP-Metadata-Runnable-Code
+git clone https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS.git
+cd GENERATIVE-COLLAPSE-DYNAMICS
 
 # Create virtual environment
 python3.12 -m venv .venv
@@ -394,7 +394,7 @@ umcp validate --verbose
 
 ### Support
 
-- **GitHub Issues**: https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/issues
+- **GitHub Issues**: https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/issues
 - **Documentation**: See `docs/` directory
 - **Health Check**: Run `umcp health` for system diagnostics
 

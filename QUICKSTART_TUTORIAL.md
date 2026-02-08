@@ -11,8 +11,8 @@ This tutorial walks you through your first UMCP validation from installation to 
 
 ```bash
 # Clone the repository
-git clone https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code.git
-cd UMCP-Metadata-Runnable-Code
+git clone https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS.git
+cd GENERATIVE-COLLAPSE-DYNAMICS
 
 # Create virtual environment
 python3 -m venv .venv
@@ -261,7 +261,7 @@ A: Key docs:
 
 ## Getting Help
 
-- **GitHub Issues**: [Report bugs or request features](https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/issues)
+- **GitHub Issues**: [Report bugs or request features](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/issues)
 - **Documentation**: Browse the 164 `.md` files in the repository
 - **Tests**: See `tests/` for 777 examples of API usage
 - **Examples**: All casepacks in `casepacks/` are fully documented

@@ -1,6 +1,6 @@
 # Test package for UMCP validator
 """
-Test package initializer for UMCP-Metadata-Runnable-Code.
+Test package initializer for GENERATIVE-COLLAPSE-DYNAMICS.
 
 Goals:
 - Make `umcp` importable when running tests from repo root (and in CI).

@@ -317,8 +317,8 @@ umcp-format --validate contracts/GCD.INTSTACK.v1.yaml
 
 ```bash
 # Clone repository
-git clone https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code.git
-cd UMCP-Metadata-Runnable-Code
+git clone https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS.git
+cd GENERATIVE-COLLAPSE-DYNAMICS
 
 # Install core + all communication extensions
 pip install -e ".[communications]"

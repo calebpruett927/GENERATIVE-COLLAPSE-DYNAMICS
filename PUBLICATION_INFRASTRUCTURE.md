@@ -221,8 +221,8 @@ OK: PASS basic checks (budget closure, dial consistency)
 
 HUD: weld_id=W-2025-12-31-PHYS-COHERENCE | manifest=manifest:gcd_complete | I=0.884123 | kappa=-0.123456 | tol=0.005000 | residual=0.002000000000 | seed=fixed_2026-01-21 | sha256=9a2f83b8...c57e9
 
-Wrote: /workspaces/UMCP-Metadata-Runnable-Code/casepacks/gcd_complete/outputs/publication_row.csv
-Receipt: /workspaces/UMCP-Metadata-Runnable-Code/casepacks/gcd_complete/weld/ss1m.json
+Wrote: /workspaces/GENERATIVE-COLLAPSE-DYNAMICS/casepacks/gcd_complete/outputs/publication_row.csv
+Receipt: /workspaces/GENERATIVE-COLLAPSE-DYNAMICS/casepacks/gcd_complete/weld/ss1m.json
 Root sha256 = sha256(integrity/sha256.txt) = 9a2f83b8...c57e9
 ```
 

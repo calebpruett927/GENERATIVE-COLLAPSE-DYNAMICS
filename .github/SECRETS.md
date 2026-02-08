@@ -16,7 +16,7 @@
    - Copy the token (shown only once!)
 
 2. **Add to GitHub Repository**:
-   - Visit: https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/settings/secrets/actions
+   - Visit: https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/settings/secrets/actions
    - Click "New repository secret"
    - Name: `PYPI_PUBLISH_TOKEN`
    - Value: Paste the PyPI token
@@ -31,7 +31,7 @@ If you see `Context access might be invalid: PYPI_PUBLISH_TOKEN` in VS Code:
 
 **Verification**:
 The secret is configured correctly if:
-- You can see it listed at: https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/settings/secrets/actions
+- You can see it listed at: https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/settings/secrets/actions
 - The `publish.yml` workflow succeeds when you push a version tag
 
 ## Alternative: Trusted Publishing (Recommended)
@@ -40,7 +40,7 @@ To eliminate secrets entirely and remove VS Code warnings:
 
 1. **Configure on PyPI**:
    - Go to: https://pypi.org/manage/project/umcp/settings/publishing/
-   - Add publisher: `calebpruett927/UMCP-Metadata-Runnable-Code`
+   - Add publisher: `calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS`
    - Workflow: `publish.yml`
 
 2. **Update Workflow**:

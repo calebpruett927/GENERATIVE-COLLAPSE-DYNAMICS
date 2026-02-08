@@ -68,7 +68,7 @@ python compute_pipeline.py
 python generate_manifest.py
 
 # Validate (from repo root) - baseline mode
-cd /workspaces/UMCP-Metadata-Runnable-Code
+cd /workspaces/GENERATIVE-COLLAPSE-DYNAMICS
 umcp validate casepacks/UMCP-REF-E2E-0001
 
 # Validate with strict mode (publication lint gate)

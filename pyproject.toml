@@ -123,11 +123,11 @@ all = [
 
 # These MUST be strings; do not put lists here.
 [project.urls]
-Homepage = "https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code"
-Repository = "https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code"
-Documentation = "https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/blob/main/README.md"
-Issues = "https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/issues"
-Changelog = "https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS"
+Repository = "https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS"
+Documentation = "https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/blob/main/README.md"
+Issues = "https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/issues"
+Changelog = "https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/blob/main/CHANGELOG.md"
 
 [project.scripts]
 umcp = "umcp.cli:main"

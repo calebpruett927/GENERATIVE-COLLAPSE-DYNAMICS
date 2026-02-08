@@ -621,4 +621,4 @@ None - fully backward compatible with GCD.INTSTACK.v1.
 
 For contract-specific changes, see [contracts/CHANGELOG.md](contracts/CHANGELOG.md).
 
-[0.1.0]: https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/releases/tag/v0.1.0
+[0.1.0]: https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/releases/tag/v0.1.0

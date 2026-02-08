@@ -1,6 +1,6 @@
 # UMCP Repository Assessment
 **Date**: January 23, 2026  
-**Repository**: calebpruett927/UMCP-Metadata-Runnable-Code  
+**Repository**: calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS  
 **Branch**: main  
 **Version**: 1.4.0
 
@@ -53,11 +53,11 @@
 ## ⚠️ ISSUES IDENTIFIED
 
 ### Critical Issue
-- ❌ **NESTED DIRECTORY DUPLICATION**: `UMCP-Metadata-Runnable-Code/UMCP-Metadata-Runnable-Code/`
+- ❌ **NESTED DIRECTORY DUPLICATION**: `GENERATIVE-COLLAPSE-DYNAMICS/GENERATIVE-COLLAPSE-DYNAMICS/`
   - **Size**: 242MB duplicate content
   - **Impact**: Workspace bloat, potential confusion
   - **Action needed**: Remove nested directory
-  - **Command**: `rm -rf UMCP-Metadata-Runnable-Code/`
+  - **Command**: `rm -rf GENERATIVE-COLLAPSE-DYNAMICS/`
 
 ### Minor Issues
 - ⚠️ **Ledger uncommitted**: `ledger/return_log.csv` has local changes (6 new entries)
@@ -89,7 +89,7 @@ docs/             - Additional documentation
 ```
 
 ### Git Status
-- **Remote**: https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code
+- **Remote**: https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS
 - **Branch**: main (up to date)
 - **Latest commit**: ca1b0ff (Fix publish.yml for OIDC)
 - **Recent commits**: 
@@ -105,7 +105,7 @@ docs/             - Additional documentation
 ### Immediate Actions (Priority 1)
 1. **Remove nested directory**:
    ```bash
-   rm -rf /workspaces/UMCP-Metadata-Runnable-Code/UMCP-Metadata-Runnable-Code/
+   rm -rf /workspaces/GENERATIVE-COLLAPSE-DYNAMICS/GENERATIVE-COLLAPSE-DYNAMICS/
    git add -A
    git commit -m "Remove duplicate nested directory structure"
    git push origin main
@@ -132,7 +132,7 @@ docs/             - Additional documentation
 ### Long-term Enhancements (Priority 3)
 5. **Configure PyPI trusted publishing**:
    - Visit: https://pypi.org/manage/account/publishing/
-   - Add: calebpruett927/UMCP-Metadata-Runnable-Code
+   - Add: calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS
    - Workflow: publish.yml
 
 6. **Consider adding**:
@@ -172,8 +172,8 @@ The repository is **production-ready** for:
 ---
 
 ## 📞 Support Contacts
-- **Repository**: https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code
-- **Issues**: https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code/issues
+- **Repository**: https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS
+- **Issues**: https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/issues
 - **Documentation**: See docs/ and root-level *.md files
 
 ---

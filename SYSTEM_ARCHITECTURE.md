@@ -10,7 +10,7 @@
 ## System Hierarchy
 
 ```
-UMCP-Metadata-Runnable-Code
+GENERATIVE-COLLAPSE-DYNAMICS
 │
 ├─── TIER 0: Base UMCP ────────────────────────────────────────
 │    │

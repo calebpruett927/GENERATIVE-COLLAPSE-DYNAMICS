@@ -108,7 +108,7 @@ case "${question,,}" in
     echo "📌 VERSION INFO"
     echo "  Package: umcp 0.1.0"
     echo "  Python:  $(python --version 2>&1)"
-    echo "  Repo:    UMCP-Metadata-Runnable-Code"
+    echo "  Repo:    GENERATIVE-COLLAPSE-DYNAMICS"
     ;;
 
   # Help

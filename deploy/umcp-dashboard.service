@@ -1,5 +1,5 @@
 # UMCP Dashboard systemd Service
-# 
+#
 # Installation:
 #   1. Copy this file to /etc/systemd/system/umcp-dashboard.service
 #   2. Update paths and user as needed
@@ -15,7 +15,7 @@
 
 [Unit]
 Description=UMCP Dashboard (Streamlit)
-Documentation=https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code
+Documentation=https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS
 After=network.target
 
 [Service]

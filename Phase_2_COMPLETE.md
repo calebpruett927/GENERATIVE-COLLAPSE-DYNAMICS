@@ -289,7 +289,7 @@ Past collapses influence future through exponentially-decaying field memory.
 **Tier-1**: GCD (Generative Collapse Dynamics)  
 **Tier-2**: RCFT (Recursive Collapse Field Theory)  
 **Author**: Clement Paulus  
-**Repository**: [github.com/calebpruett927/UMCP-Metadata-Runnable-Code](https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code)
+**Repository**: [github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS)
 
 ---
 

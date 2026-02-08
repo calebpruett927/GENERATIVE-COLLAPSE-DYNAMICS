@@ -1,4 +1,4 @@
-# Copilot Instructions for UMCP-Metadata-Runnable-Code
+# Copilot Instructions for GENERATIVE-COLLAPSE-DYNAMICS
 
 ## What This Project Is
 

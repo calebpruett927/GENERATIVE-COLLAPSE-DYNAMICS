@@ -247,7 +247,7 @@ pip install --force-reinstall streamlit pandas plotly
 
 ```bash
 # Ensure you're in repo root
-cd /path/to/UMCP-Metadata-Runnable-Code
+cd /path/to/GENERATIVE-COLLAPSE-DYNAMICS
 
 # Check files exist
 ls receipt.json

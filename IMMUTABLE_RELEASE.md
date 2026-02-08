@@ -184,8 +184,8 @@ grep -r "no_return_no_credit: true" contracts/*.yaml
 
 ```bash
 # Clone at specific tag
-git clone --branch v1.3.2-immutable https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code.git
-cd UMCP-Metadata-Runnable-Code
+git clone --branch v1.3.2-immutable https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS.git
+cd GENERATIVE-COLLAPSE-DYNAMICS
 
 # Verify commit
 git log -1 --oneline
@@ -269,7 +269,7 @@ MIT License - See LICENSE file
 - **DOI: 10.5281/zenodo.18226878** - "CasePack Publication"
 
 ### Repository
-- **GitHub**: https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code
+- **GitHub**: https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS
 - **Tag**: v1.3.2-immutable
 
 ---
