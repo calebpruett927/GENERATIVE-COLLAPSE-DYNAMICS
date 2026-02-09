@@ -408,3 +408,23 @@ registry:
         frozen_params:
           BE_peak_ref: 8.7945
           A_peak: 62
+      - name: "element_data"
+        path: "closures/nuclear_physics/element_data.py"
+        description: "Reference nuclear data for 118 elements (AME2020/NUBASE2020) with dimensionless coordinate mapping"
+        contract: "NUC.INTSTACK.v1"
+        inputs: ["Z"]
+        outputs: ["symbol", "name", "A", "BE_per_A", "half_life_s", "N", "c1", "c2", "c3"]
+        frozen_params:
+          BE_peak_ref: 8.7945
+          age_universe_s: 4.35e17
+          nz_valley_scale: 0.5
+      - name: "periodic_table"
+        path: "closures/nuclear_physics/periodic_table.py"
+        description: "Tier-2 diagnostic: classifies all 118 elements through GCD collapse dynamics (binding coherence, temporal return, valley proximity)"
+        contract: "NUC.INTSTACK.v1"
+        inputs: ["Z"]
+        outputs: ["symbol", "name", "c1", "c2", "c3", "omega", "F", "S", "C", "IC", "kappa", "regime", "physics_note"]
+        frozen_params:
+          epsilon: 1.0e-8
+          weights: [0.333333, 0.333333, 0.333333]
+          BE_peak_ref: 8.7945

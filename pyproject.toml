@@ -183,7 +183,11 @@ filterwarnings = [
   "ignore::DeprecationWarning"
 ]
 markers = [
-  "slow: marks tests as slow (deselect with '-m \"not slow\"')"
+  "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+  "layer0: Layer 0 — algebraic identity bounds (F+ω=1, IC≤F, ranges)",
+  "layer1: Layer 1 — regime gate boundary probes (STABLE/WATCH/CRITICAL/COLLAPSE)",
+  "layer2: Layer 2 — domain embedding reference points",
+  "manifold: all manifold bound tests (layers 0-2)",
 ]
 
 # Parallel execution hint: run with `pytest -n auto` for multi-core speedup
