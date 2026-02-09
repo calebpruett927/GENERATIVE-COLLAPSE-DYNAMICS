@@ -66,6 +66,11 @@ registry:
         description: "Attractor basin topology: B = -∇²Ψ_r / ||∇Ψ_r||"
         inputs: ["omega_series", "S_series", "C_series", "psi_r_series"]
         outputs: ["n_attractors_found", "attractor_locations", "basin_strengths", "regime", "convergence_rates", "basin_volumes"]
+      - name: "active_matter"
+        path: "closures/rcft/active_matter.py"
+        description: "Active matter frictional cooling: 4D Ψ-embedding, corrected regime analysis (Antonov et al. 2025)"
+        inputs: ["velocities", "phase_boundaries"]
+        outputs: ["phases", "fisher_distances", "path_efficiency", "universality", "grammar", "corrected_thresholds"]
     optimizations:
       - name: "tau_R_optimized"
         path: "src/umcp/tau_R_optimized.py"

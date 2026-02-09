@@ -281,7 +281,7 @@ class TestRegistryIntegration:
         assert "rcft" in registry["registry"]["extensions"]
 
         rcft_closures = registry["registry"]["extensions"]["rcft"]
-        assert len(rcft_closures) == 4  # Updated: 3 original + attractor_basin
+        assert len(rcft_closures) == 5  # 3 original + attractor_basin + active_matter
 
     def test_registry_closure_paths_resolve(self):
         """All closure paths in registry should resolve."""
