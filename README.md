@@ -12,7 +12,7 @@
   <a href="https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/actions/workflows/validate.yml"><img src="https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/actions/workflows/validate.yml/badge.svg" alt="CI"></a>
   <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.11+-3776AB?logo=python&logoColor=white" alt="Python 3.11+"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License: MIT"></a>
-  <a href="tests/"><img src="https://img.shields.io/badge/tests-1391%20passing-brightgreen?logo=pytest" alt="Tests: 1391 passing"></a>
+  <a href="tests/"><img src="https://img.shields.io/badge/tests-1817%20passing-brightgreen?logo=pytest" alt="Tests: 1817 passing"></a>
   <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-2.0.0-blue" alt="Version: 2.0.0"></a>
   <a href="src/umcp/api_umcp.py"><img src="https://img.shields.io/badge/API-57%20endpoints-orange?logo=fastapi" alt="API: 57 endpoints"></a>
 </p>
@@ -81,7 +81,7 @@ pip install -e ".[all]"
 # Verify
 umcp health                  # System health check
 umcp validate .              # Validate entire repository (must be CONFORMANT)
-pytest                       # Run 1,391 tests
+pytest                       # Run 1,817 tests
 ```
 
 One-liner:
@@ -129,7 +129,7 @@ Every validation produces one of three outcomes -- never a boolean:
 
 | Metric | Value |
 |--------|-------|
-| **Tests** | 1,391 passing (66 files) |
+| **Tests** | 1,817 passing (71 files) |
 | **API Endpoints** | 57 (25 GET, 32 POST) |
 | **Dashboard Pages** | 31 |
 | **CLI Commands** | 11 subcommands, 6 entry points |
@@ -140,7 +140,7 @@ Every validation produces one of three outcomes -- never a boolean:
 | **Domains** | 9 (GCD, KIN, RCFT, WEYL, Security, Astronomy, Nuclear, QM, Finance) |
 | **Lemmas** | 46 formal proofs |
 | **Canonical Anchors** | 8 domain anchor files |
-| **Source Modules** | 24 Python files |
+| **Source Modules** | 25 Python files |
 | **Extensions** | 5 built-in |
 | **Integrity** | SHA256 verified |
 | **Status** | CONFORMANT |
@@ -174,6 +174,20 @@ Every validation produces one of three outcomes -- never a boolean:
 | alpha | Curvature scale | 1.0 | D\_C cost closure |
 | lambda | Damping | 0.2 | Reserved |
 | tol\_seam | Seam tolerance | 0.005 | Budget residual threshold |
+
+### Epistemic Framework
+
+Every emission is classified into exactly one of three **epistemic verdicts**:
+
+| Verdict | Condition | Meaning |
+|---------|-----------|---------|
+| **RETURN** | Seam closes, tau\_R finite, identity holds | What came back is consistent with what collapsed -- epistemic credit earned |
+| **GESTURE** | Emission exists but seam did not close | Internally consistent, but did not complete the collapse-return cycle -- no credit |
+| **DISSOLUTION** | omega >= 0.30 (COLLAPSE regime) | Epistemic trace degraded past viable return -- not failure, but the boundary that makes return meaningful |
+
+The **positional illusion** is the belief that observation is free. Theorem T9 proves each observation costs Gamma(omega) in seam budget -- there is no external vantage point. This is quantified by `epistemic_weld.py`.
+
+**Reference**: "The Seam of Reality" (Paulus, 2025; DOI: 10.5281/zenodo.17619502)
 
 ---
 
@@ -339,7 +353,7 @@ Runs all checks that CI will run: lint, type-check, test, validate.
 ### `umcp test` -- Run Tests
 
 ```bash
-umcp test                     # Run all 1,391 tests
+umcp test                     # Run all 1,817 tests
 umcp test --coverage          # With coverage report
 umcp test -k "gcd"            # Pattern matching
 umcp test -m "not slow"       # Skip slow markers
@@ -775,6 +789,43 @@ chain = accumulate_seam_chain(
 # Returns cumulative seam residuals for the chain
 ```
 
+### Epistemic Weld (Gesture / Return / Dissolution)
+
+```python
+from umcp.epistemic_weld import (
+    classify_epistemic_act,
+    quantify_positional_illusion,
+    assess_seam_epistemology,
+    diagnose_gesture,
+)
+from umcp.frozen_contract import Regime
+
+# Classify an epistemic emission
+verdict, reasons = classify_epistemic_act(
+    seam_pass=True, tau_R=1.85, regime=Regime.STABLE
+)
+print(f"Verdict: {verdict.value}")  # "return"
+
+# Quantify the positional illusion (observation cost)
+illusion = quantify_positional_illusion(omega=0.031, n_observations=10)
+print(f"Cost per observation: {illusion.gamma:.2e}")
+print(f"Illusion severity: {illusion.illusion_severity:.4f}")
+
+# Complete seam epistemology assessment
+epi = assess_seam_epistemology(
+    seam_pass=True, seam_failures=[], seam_residual=0.0,
+    seam_budget=1.697, tau_R=1.85, omega=0.031, regime=Regime.STABLE
+)
+print(f"Is real: {epi.is_real}")       # True — earned epistemic credit
+print(f"Verdict: {epi.verdict.value}")  # "return"
+
+# Diagnose why a gesture did not return
+diag = diagnose_gesture(
+    seam_residual=0.01, tau_R=float("inf"), omega=0.15, regime=Regime.WATCH
+)
+print(f"Return status: {diag['return_status']}")  # "INF_REC"
+```
+
 ---
 
 ## Frameworks & Domains
@@ -785,7 +836,7 @@ UMCP validates computational workflows across **9 scientific domains**. Each dom
 |--------|:----:|:----:|:--------:|----------|----------|
 | **GCD** (Generative Collapse Dynamics) | gcd | 2 | 5 | GCD.INTSTACK.v1 | `gcd_complete` |
 | **Kinematics** | kin | 0 | 7 | KIN.INTSTACK.v1 | `kinematics_complete` |
-| **RCFT** (Recursive Collapse Field Theory) | rcft | 2 | 4 | RCFT.INTSTACK.v1 | `rcft_complete` |
+| **RCFT** (Recursive Collapse Field Theory) | rcft | 2 | 5 | RCFT.INTSTACK.v1 | `rcft_complete` |
 | **WEYL** (Cosmology) | weyl | 2 | 6 | WEYL.INTSTACK.v1 | `weyl_des_y3` |
 | **Security** | security | 2 | 8 | SECURITY.INTSTACK.v1 | `security_validation` |
 | **Astronomy** | astronomy | 2 | 6 | ASTRO.INTSTACK.v1 | `astronomy_complete` |
@@ -812,7 +863,7 @@ umcp casepack kin_ref_phase_oscillator
 
 ### RCFT Closures
 
-All GCD closures + `fractal_dimension`, `recursive_field`, `resonance_pattern`
+All GCD closures + `fractal_dimension`, `recursive_field`, `resonance_pattern`, `information_geometry`, `universality_class`, `collapse_grammar`, `active_matter`
 
 ```bash
 umcp validate casepacks/rcft_complete
@@ -961,7 +1012,7 @@ umcp test
 umcp test --coverage
 ```
 
-### Test Distribution (66 files, 1,391 tests)
+### Test Distribution (71 files, 1,817 tests)
 
 | Category | Tests | Description |
 |----------|------:|-------------|
@@ -969,7 +1020,7 @@ umcp test --coverage
 | Kernel invariants | 84 | Core metric computation |
 | GCD framework | 92 | Energy/collapse closures |
 | Kinematics | 133 | Motion analysis, phase space |
-| RCFT framework | 78 | Fractal/recursive closures |
+| RCFT framework | 140 | Fractal/recursive/universality/active matter closures |
 | WEYL framework | 43 | Cosmology closures |
 | Extended lemmas | 75 | Lemmas 24-46 |
 | Frozen contract | 113 | Contract claims, constants |
@@ -986,6 +1037,8 @@ umcp test --coverage
 | Nuclear | 24 | Binding/decay |
 | Quantum | 24 | Wavefunction/entanglement |
 | tau\_R\* thermodynamics | 79 | Budget, phase, predictions |
+| Epistemic weld | 55 | Gesture/return/dissolution trichotomy, positional illusion |
+| Active matter | 62 | Frictional cooling, Antonov et al. predictions |
 | Integration | 150+ | End-to-end workflows |
 
 ---
@@ -1097,6 +1150,14 @@ class ExtensionProtocol(Protocol):
 | [GLOSSARY.md](GLOSSARY.md) | Authoritative term definitions |
 | [SYMBOL\_INDEX.md](SYMBOL_INDEX.md) | Symbol reference table |
 
+### Epistemic & Foundational
+
+| Document | Description |
+|----------|-------------|
+| [src/umcp/epistemic\_weld.py](src/umcp/epistemic_weld.py) | Seam epistemology module (gesture/return/dissolution, positional illusion) |
+| [src/umcp/tau\_r\_star.py](src/umcp/tau_r_star.py) | tau\_R\* thermodynamics, Thm T9 (measurement cost / positional illusion) |
+| [src/umcp/frozen\_contract.py](src/umcp/frozen_contract.py) | Frozen constants, seam PASS/FAIL, NonconformanceType (incl. GESTURE) |
+
 ### Developer Guides
 
 | Document | Description |
@@ -1138,7 +1199,7 @@ class ExtensionProtocol(Protocol):
 ```
 GENERATIVE-COLLAPSE-DYNAMICS/
 |
-|-- src/umcp/                     # Core Python implementation (24 modules)
+|-- src/umcp/                     # Core Python implementation (25 modules)
 |   |-- __init__.py               # Public API, __version__
 |   |-- __main__.py               # python -m umcp
 |   |-- cli.py                    # CLI engine (11 subcommands)
@@ -1151,7 +1212,8 @@ GENERATIVE-COLLAPSE-DYNAMICS/
 |   |-- ss1m_triad.py             # Mod-97 checksums
 |   |-- seam_optimized.py         # Seam chain accumulation
 |   |-- compute_utils.py          # Computational utilities
-|   |-- measurement_engine.py     # Raw CSV to invariants
+|   |-- measurement_engine.py     # Raw CSV to epistemic trace production
+|   |-- epistemic_weld.py         # Seam epistemology (gesture/return/dissolution)
 |   |-- closures.py               # Closure utilities
 |   |-- outputs.py                # Multi-format output
 |   |-- preflight.py              # Pre-commit checks
@@ -1165,7 +1227,7 @@ GENERATIVE-COLLAPSE-DYNAMICS/
 |   |-- dashboard.py              # Streamlit dashboard (31 pages)
 |   '-- umcp_extensions.py        # Extension registry (5 extensions)
 |
-|-- tests/                        # Test suite (66 files, 1,391 tests)
+|-- tests/                        # Test suite (71 files, 1,817 tests)
 |   |-- conftest.py               # Fixtures: RepoPaths, caching helpers
 |   |-- test_00_* .. test_145_*   # Numbered test groups
 |   '-- closures/                 # Closure-specific tests
@@ -1244,7 +1306,7 @@ git push origin feat/your-feature
 
 | Check | Command | Requirement |
 |-------|---------|-------------|
-| Tests | `pytest` | All 1,391 pass |
+| Tests | `pytest` | All 1,817 pass |
 | Lint | `ruff check src/umcp tests` | Zero errors |
 | Format | `ruff format src/umcp tests` | Formatted |
 | Types | `mypy src/umcp` | Clean |
@@ -1263,7 +1325,7 @@ Copyright (c) 2026 Clement Paulus
 
 <div align="center">
 
-**UMCP v2.0.0** &bull; 1,391 tests &bull; 57 API endpoints &bull; 31 dashboard pages &bull; 11 CLI commands &bull; 13 casepacks &bull; 9 domains &bull; 46 lemmas &bull; CONFORMANT
+**UMCP v2.0.0** &bull; 1,817 tests &bull; 57 API endpoints &bull; 31 dashboard pages &bull; 11 CLI commands &bull; 13 casepacks &bull; 9 domains &bull; 46 lemmas &bull; CONFORMANT
 
 *"What Returns Through Collapse Is Real"*
 
