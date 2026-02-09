@@ -595,9 +595,9 @@ class TestPhysicsConsistency:
         )
         for i in range(len(sh) - 1):
             # Allowing small non-monotonicity from half-life variation
-            assert (
-                sh[i + 1].omega >= sh[i].omega - 0.02
-            ), f"{sh[i].symbol}(ω={sh[i].omega}) → {sh[i + 1].symbol}(ω={sh[i + 1].omega})"
+            assert sh[i + 1].omega >= sh[i].omega - 0.02, (
+                f"{sh[i].symbol}(ω={sh[i].omega}) → {sh[i + 1].symbol}(ω={sh[i + 1].omega})"
+            )
 
     def test_noble_gases_not_collapse(self, all_classified: list[ElementClassification]) -> None:
         """Stable noble gases (He, Ne, Ar, Kr, Xe) are not COLLAPSE."""
