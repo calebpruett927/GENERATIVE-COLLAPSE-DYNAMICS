@@ -30,9 +30,26 @@ T22  Thermodynamic Efficiency Ratio
 
 Cross-references
     Lemma 4   (AM-GM gap = Fisher Information)
+    Lemma 5   (S = ln 2 iff c = 1/2 — equator maximum entropy)
     Lemma 15  (Entropy-fidelity envelope S ≤ h(F))
+    Lemma 41  (S + κ ≤ 0, equality at c = 1/2 — equator coupling)
     kernel_optimized.py  (Bernoulli embedding, Def 1-8)
     tau_r_star.py  (budget identity)
+    frozen_contract.py   (equator_phi diagnostic — Φ_eq = 0 on equator)
+
+Epistemic mapping (Three-Agent Model, DOI: 10.5281/zenodo.16526052)
+    Agent 1 (Present/Measuring) → ω = drift — the act of observation
+    Agent 2 (Retained/Archive)  → F = fidelity — what survives
+    Agent 3 (Unknown/Horizon)   → Γ(ω) = cost of crossing into the unknown
+    The geodesic (T18) is the optimal path for Agent 3 → Agent 1
+    transitions; the efficiency (T22) measures deviation from optimal.
+    The equator c = 1/2 is the boundary of maximum epistemic symmetry
+    between Agent 1 and Agent 2.
+
+Collapse Equator Fidelity Law (DOI: 10.5281/zenodo.16423283)
+    Ψ(t) ∈ F ⟺ ∃ t* : Ψ(t*) ∈ E ∧ IC(t*) > θ
+    The Fano-Fisher duality (T19) proves the equator E is the unique
+    axis of self-duality, analogous to Re(s) = 1/2 in the zeta field.
 """
 
 from __future__ import annotations

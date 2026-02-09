@@ -297,6 +297,16 @@ def equator_phi(omega: float, F: float, C: float) -> float:
         Φ < 0: Below equator (lower fidelity than expected)
         Φ = 0: On equator (balanced trade-off)
 
+    The equator is the locus of maximum epistemic symmetry where
+    four independent conditions converge on c = 1/2:
+        (1) Fisher metric minimized:  g_F(1/2) = 4
+        (2) Entropy maximized:        S(1/2) = ln 2  (Lemma 5)
+        (3) S + κ = 0 exactly:        entropy-integrity cancel (Lemma 41)
+        (4) Fano-Fisher duality:       h''(c) = -g_F(c)  (T19)
+    This diagnostic measures deviation from that self-consistent axis.
+    See: closures/rcft/information_geometry.py for the geodesic
+    structure and thermodynamic efficiency relative to the equator.
+
     WARNING: This is a DIAGNOSTIC, not a gate. Promoting to gate
     requires explicit closure declaration.
 

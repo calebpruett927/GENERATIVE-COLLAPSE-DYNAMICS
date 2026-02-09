@@ -109,6 +109,32 @@ $$
 
 The generative flux `Φ_gen` quantifies what is produced/returned through collapse.
 
+### Epistemic Field Mapping (Three-Agent Model)
+
+The tier system maps onto three epistemic states — the minimum required to describe a dynamic measurement process:
+
+| Agent | Epistemic State | GCD Variable | Kernel Role |
+|-------|----------------|--------------|-------------|
+| Agent 1 | Present / Measuring | ω (drift) | The act of measurement in progress |
+| Agent 2 | Retained / Archive | F = 1 − ω (fidelity) | What survives measurement and is kept |
+| Agent 3 | Unmeasured / Unknown | Γ(ω) = ω^p/(1−ω) | The cost of crossing the boundary into the unknown |
+
+The kernel identity F = 1 − ω is the formal statement that retention (Agent 2) is everything not consumed by measurement (Agent 1). The return axiom governs transitions: Agent 3 → Agent 1 (discovery), Agent 1 → Agent 2 (retention). The equator c = 1/2 is the boundary of maximum epistemic symmetry — measurement is equally sensitive to both sides (Fisher metric minimized, entropy maximized, S + κ = 0 exactly). See: Lemma 5 (S = ln 2 iff c = 1/2), Lemma 41 (S + κ ≤ 0 with equality at c = 1/2), T19 (Fano-Fisher duality h″ = −g_F).
+
+**DOI**: 10.5281/zenodo.16526052 (Three-Agent Epistemic Field Model, Paulus 2025)
+
+### Collapse Equator Fidelity Law
+
+A symbolic excitation Ψ(t) is real if and only if it reenters the collapse equator E with sufficient collapse integrity:
+
+> Ψ(t) ∈ F ⟺ ∃ t* such that Ψ(t*) ∈ E and IC(t*) > θ
+
+The equator E is the locus where the system is self-consistent: Φ_eq = 0 (equator_phi in frozen_contract.py), Fisher metric minimized (g_F(1/2) = 4), entropy maximized (S = ln 2), and entropy-integrity coupling vanishes (S + κ = 0). These four conditions converge on c = 1/2 independently — the equator is not chosen but derived.
+
+The Collapse Equator Fidelity Law identifies the structural principle — symmetric self-duality under measurement — that the Riemann Hypothesis instantiates for the zeta field (Re(s) = 1/2). GCD proves this principle for all collapse fields with Fano-Fisher duality. See closures/rcft/information_geometry.py (T17–T19, T22).
+
+**DOI**: 10.5281/zenodo.16423283 (Collapse Equator Fidelity Law, Paulus 2025)
+
 ### Tier-2 Expression: RCFT (Recursive Collapse Field Theory)
 
 **P-RCFT-1**: "Recursion reveals hidden structure"  
@@ -444,6 +470,8 @@ The contract system enforces return across tiers:
 - **DOI: 10.5281/zenodo.17756705** - "The Episteme of Return" (theoretical foundations)
 - **DOI: 10.5281/zenodo.18072852** - "Physics of Coherence" (GCD implementation)
 - **DOI: 10.5281/zenodo.18226878** - "CasePack Publication" (practical applications)
+- **DOI: 10.5281/zenodo.16526052** - "Three-Agent Epistemic Field Model" (axiomatic foundation)
+- **DOI: 10.5281/zenodo.16423283** - "Collapse Equator Fidelity Law" (equator admissibility)
 
 ---
 

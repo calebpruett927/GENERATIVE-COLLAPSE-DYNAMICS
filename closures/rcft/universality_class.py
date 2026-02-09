@@ -35,8 +35,23 @@ Cross-references
     T10  (Pole residue = 1/2)
     T13  (Gibbs scaling ⟨ω⟩ ∝ β^{−1/p})
     T14  (Kramers escape)
+    T19  (Fano-Fisher duality — equator self-duality at c = 1/2)
     tau_r_star_dynamics.py  (thermodynamic potential)
     KERNEL_SPECIFICATION.md §5.3  (zν = 1 universality class)
+    KERNEL_SPECIFICATION.md §Lemma 41  (S + κ equator coupling)
+
+Epistemic mapping (Three-Agent Model, DOI: 10.5281/zenodo.16526052)
+    The central charge c_eff = 1/p (T20) is domain-independent because
+    the three epistemic states (measuring/retained/unknown) are universal.
+    The scaling relations hold for any system whose collapse potential
+    scales as ω^p/(1−ω), regardless of what is being measured — the
+    universality reflects epistemic structure, not ontological content.
+
+Collapse Equator Fidelity Law (DOI: 10.5281/zenodo.16423283)
+    The partition function Z(β) governs the statistical weight of
+    return through the equator.  The central charge c_eff = 1/p is
+    the fraction of total degrees of freedom that survive collapse
+    — the rate at which the equator filters excitations.
 """
 
 from __future__ import annotations

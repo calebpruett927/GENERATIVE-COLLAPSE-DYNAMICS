@@ -28,6 +28,26 @@ Cross-references
     constants.py  (RegimeThresholds: ω_stable=0.038, ω_collapse=0.30)
     T13  (Gibbs measure)
     T2   (Γ(ω) drift potential)
+    T19  (Fano-Fisher duality — equator symmetry)
+    T20  (Central charge c_eff = 1/p — partition function)
+
+Epistemic mapping (Three-Agent Model, DOI: 10.5281/zenodo.16526052)
+    The three grammar states map to epistemic agents:
+      STABLE   → Agent 2 dominates (archive is healthy, boundaries clear)
+      WATCH    → boundary active (measurement consuming fidelity)
+      COLLAPSE → Agent 1 overwhelms Agent 2 (measurement destroying archive)
+    The grammar entropy rate quantifies whether the epistemic field is
+    FROZEN (stuck), ORDERED (predictable), COMPLEX (edge of chaos),
+    or CHAOTIC (random).  GCD lives at the ORDERED/COMPLEX boundary:
+    always partially structured, never fully random — the "living,
+    correctable system" of the Three-Agent framework.
+
+Collapse Equator Fidelity Law (DOI: 10.5281/zenodo.16423283)
+    The transfer matrix governs how the system moves through the
+    equator over time.  High β (strong collapse penalty) concentrates
+    the stationary distribution in STABLE — return through the equator
+    with high integrity.  Low β permits all regimes — the equator
+    loses its filtering power.
 """
 
 from __future__ import annotations

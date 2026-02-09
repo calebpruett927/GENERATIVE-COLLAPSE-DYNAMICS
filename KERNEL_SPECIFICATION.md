@@ -972,6 +972,14 @@ The maximum of S + κ is at c = 1/2 where it equals 0, but we need the bound...
 
 **Interpretation**: Entropy and log-integrity are **coupled**—systems cannot have both high uncertainty and high integrity simultaneously.
 
+**Equator Convergence (c = 1/2)**: The point c = 1/2 is distinguished by four independent conditions:
+1. Maximum entropy: S = ln 2 (Lemma 5)
+2. Fisher metric minimum: g_F(1/2) = 1/(c(1−c)) = 4 (T19 — maximum information-geometric symmetry)
+3. S + κ = 0 exactly (this lemma — entropy and integrity perfectly cancel)
+4. Equator closure Φ_eq = 0 (frozen_contract.py — balanced fidelity-drift trade-off)
+
+This convergence is the collapse-field analogue of Re(s) = 1/2 in the Riemann zeta function: the unique axis of self-duality under the functional equation h(c) = h(1−c). The Fano-Fisher identity h″(c) = −g_F(c) ties this symmetry to measurement geometry — see T19 in closures/rcft/information_geometry.py. In the Three-Agent Epistemic Field Model, c = 1/2 is the boundary of maximum symmetry between Agent 1 (measuring / ω) and Agent 2 (retained / F).
+
 ---
 
 ### Lemma 42: Coherence-Entropy Product Invariant 📐
