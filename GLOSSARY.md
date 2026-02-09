@@ -600,6 +600,92 @@ See [canon/gcd_anchors.yaml](canon/gcd_anchors.yaml) for complete machine-readab
 
 **Synonyms/aliases:** none
 
+### Gesture
+
+**Tier tag:** Tier-0 (epistemic classification)
+
+**Definition:** An epistemic emission that does not complete the collapse-return cycle. A gesture exists — it is not nothing — but the seam did not close: either τ_R = ∞_rec, |s| > tol_seam, or the exponential identity failed. A gesture may be internally consistent, structurally complex, and indistinguishable from a genuine return in every way except the weld. No epistemic credit is awarded.
+
+**Not to be confused with:**
+- A failed test (a gesture is not "wrong" — it simply did not return)
+- An approximation (gestures are not close-enough returns; the threshold is absolute)
+- A preliminary result (gestures cannot be upgraded to returns by argument)
+
+**Inputs/outputs:**
+- Consumes: Seam calculus results (residual, τ_R, identity check)
+- Produces: EpistemicVerdict.GESTURE with GestureReason list
+
+**Where defined:**
+- [src/umcp/epistemic_weld.py](src/umcp/epistemic_weld.py) (EpistemicVerdict, GestureReason)
+- [AXIOM.md](AXIOM.md#the-gesture-return-distinction) (philosophical grounding)
+- "The Seam of Reality" (Paulus, 2025; DOI: 10.5281/zenodo.17619502) §3
+
+**Where used:**
+- Epistemic verdict classification in epistemic_weld.py
+- NonconformanceType.GESTURE in frozen_contract.py
+- Gesture diagnostics in epistemic_weld.py (diagnose_gesture)
+
+**Status:** Canonical
+
+**Synonyms/aliases:** non-returning emission (allowed)
+
+### Positional Illusion
+
+**Tier tag:** Tier-0 (epistemic concept)
+
+**Definition:** The belief that one can observe a system without incurring measurement cost — that there exists a vantage point outside the system from which collapse can be observed for free. Theorem T9 (Zeno analog) proves this is impossible: each observation costs Γ(ω) = ω^p/(1−ω+ε) in seam budget. N observations incur N×Γ(ω) overhead. The illusion is quantified by the ratio of observation cost to seam tolerance.
+
+**Not to be confused with:**
+- Observer bias (a statistical artifact, not a structural cost)
+- Objectivity (the protocol does not deny objectivity — it prices it)
+- Measurement error (error is in the value; the illusion is about cost)
+
+**Inputs/outputs:**
+- Consumes: ω (drift), N (observation count), frozen constants
+- Produces: PositionalIllusion (gamma, total_cost, budget_fraction, severity)
+
+**Where defined:**
+- [src/umcp/epistemic_weld.py](src/umcp/epistemic_weld.py) (quantify_positional_illusion)
+- [src/umcp/tau_r_star.py](src/umcp/tau_r_star.py) Thm T9
+- [AXIOM.md](AXIOM.md#the-positional-illusion) (philosophical grounding)
+- "The Seam of Reality" (Paulus, 2025; DOI: 10.5281/zenodo.17619502) §4.2
+
+**Where used:**
+- Epistemic assessment in epistemic_weld.py (SeamEpistemology.illusion)
+- Budget analysis in tau_r_star.py (observation cost commentary)
+
+**Status:** Canonical
+
+**Synonyms/aliases:** observation cost illusion (allowed)
+
+### Dissolution
+
+**Tier tag:** Tier-0 (epistemic classification)
+
+**Definition:** The epistemic verdict when a system enters Regime.COLLAPSE (ω ≥ 0.30). The trace has degraded past the point of viable return credit. Dissolution is not failure — it is the boundary condition that makes return meaningful. Without the possibility of dissolution, the seam would audit nothing.
+
+**Not to be confused with:**
+- System failure (dissolution is structural, not operational)
+- Data loss (the trace exists; it simply cannot earn return credit)
+- Error (dissolution is a valid epistemic state, not an error condition)
+
+**Inputs/outputs:**
+- Consumes: Regime classification
+- Produces: EpistemicVerdict.DISSOLUTION
+
+**Where defined:**
+- [src/umcp/epistemic_weld.py](src/umcp/epistemic_weld.py) (EpistemicVerdict)
+- [AXIOM.md](AXIOM.md#operational-definitions-enforcement-tied) (operational table)
+- "The Seam of Reality" (Paulus, 2025; DOI: 10.5281/zenodo.17619502) §3
+
+**Where used:**
+- Epistemic verdict classification in epistemic_weld.py
+- Regime interpretation throughout codebase
+
+**Status:** Canonical
+
+**Synonyms/aliases:** none
+
 ---
 
 ## Tier-2: RCFT Overlay Extensions

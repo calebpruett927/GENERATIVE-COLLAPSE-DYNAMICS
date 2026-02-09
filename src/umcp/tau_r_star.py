@@ -43,6 +43,15 @@ Implemented Theorems & Definitions (from budget identity Def 11):
     Thm  T9: Measurement cost (Zeno analog) — N observations of a
              stationary system incur N×Γ(ω) overhead. Observing more makes
              seam closure harder. Optimal: observe as rarely as allowed.
+             This is not a design choice — it is a consequence of the
+             budget identity. There is no vantage point outside the system
+             from which collapse can be observed without cost. The belief
+             that one can measure without being measured, observe without
+             being inside, or validate without incurring budget is the
+             "positional illusion" ("The Seam of Reality", Paulus 2025).
+             Γ(ω) is the irreducible price of being inside the system
+             you are measuring. See: epistemic_weld.py
+             (quantify_positional_illusion).
 
 Physical Analogs & Universality (§5):
     - Critical exponent zν = 1 (simple pole) — between mean-field (1/2)

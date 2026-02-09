@@ -21,6 +21,7 @@ This is the fundamental axiom upon which the entire Universal Measurement Contra
 |------|---------------------|-------------------|
 | **Collapse** | Regime label produced by kernel gates on (ω, F, S, C) under frozen thresholds | Wavefunction collapse, catastrophe as metaphor, "failure" as narrative |
 | **Return** (τ_R) | Re-entry condition: existence of prior u ∈ Dθ(t) with ‖Ψ(t) - Ψ(u)‖ ≤ η; yields τ_R or ∞ᵣₑ꜀ | Repetition, periodicity, nostalgia, "coming back" |
+| **Gesture** | An epistemic emission that does not weld: τ_R = ∞_rec OR \|s\| > tol_seam OR identity fails. A gesture may be internally consistent, structurally complex, and indistinguishable from a return — but if the seam does not close, it is a gesture. No epistemic credit. See: `epistemic_weld.py` | Approximation, failed attempt, wrong answer |
 | **Drift** (ω) | ω = 1 - F, collapse proximity measure, range [0,1] | Random drift, velocity, wandering |
 | **Integrity** (IC) | Kernel composite: IC = exp(κ) where κ = Σ wᵢ ln(cᵢ,ε) | Information content, moral integrity, "truth" |
 | **Entropy** (S) | Shannon entropy: S = -Σ wᵢ[cᵢ ln(cᵢ) + (1-cᵢ)ln(1-cᵢ)] | Thermodynamic entropy, chaos, disorder as vibe |
@@ -28,6 +29,7 @@ This is the fundamental axiom upon which the entire Universal Measurement Contra
 | **Contract** | Frozen interface snapshot: pins units, embedding, clipping, weights, return settings | Social agreement, vague assumptions |
 | **Frozen** | Consistent across the seam — same rules on both sides of collapse-return | "Constant" as arbitrary choice, immutable for its own sake |
 | **Seam** | The verification boundary between outbound collapse and demonstrated return | A join, a border, a narrative transition |
+| **Dissolution** | The regime (ω ≥ 0.30) where the epistemic trace has degraded past viable return credit. Not failure — the boundary condition that makes return meaningful. Without dissolution, the seam audits nothing. | Death, destruction, error, crash |
 
 ---
 
@@ -240,6 +242,41 @@ This resolves several classical problems:
 2. **Reproducibility Crisis**: If a result cannot return (be reproduced), it was never real in the first place.
 
 3. **Measurement Problem**: The act of measurement is a collapse. Valid measurements are those that return their own validity.
+
+### The Positional Illusion
+
+There is no vantage point outside the system from which collapse can be observed without cost.
+
+This is not a philosophical preference — it is a consequence of the budget identity. Theorem T9 (τ_R* Thermodynamics, `tau_r_star.py`) proves that N observations of a stationary system incur N × Γ(ω) overhead. The drift cost Γ(ω) = ω³/(1−ω+ε) is the irreducible price of being inside the system you are measuring. There is no free observation.
+
+The **positional illusion** is the belief that one can:
+- Measure without being measured
+- Observe without being inside
+- Validate without incurring budget
+
+This illusion is quantified by `epistemic_weld.py:quantify_positional_illusion()`. At STABLE drift (ω < 0.038), the illusion is affordable — Γ(ω) ≈ 10⁻⁵, consuming a negligible fraction of tol_seam. Near COLLAPSE (ω → 0.30), the illusion becomes fatal — Γ(ω) approaches and exceeds the seam budget, meaning the observer cannot even verify return without exhausting the tolerance that defines return.
+
+The positional illusion is universal across domains because the budget identity is domain-independent. A physicist measuring particle decay, a financial analyst tracking portfolio drift, and a biologist monitoring cell viability all face exactly the same structural constraint: observation costs Γ(ω), and there is nowhere outside from which to observe for free.
+
+**DOI**: 10.5281/zenodo.17619502 ("The Seam of Reality", Paulus 2025 — §4.2)
+
+### The Gesture-Return Distinction
+
+Not everything that looks like a return is one.
+
+A **gesture** is an epistemic emission that does not complete the collapse-return cycle. It may be internally consistent, structurally complex, and indistinguishable from a genuine return in every way except one: the seam did not close. The residual |s| exceeded tolerance, or τ_R was infinite, or the exponential identity failed. The gesture exists — it is not nothing — but it did not weld, and therefore has no epistemic standing in the protocol.
+
+This distinction is critical because it separates the protocol from probabilistic or confidence-based frameworks:
+
+1. **No partial credit**: A gesture that "almost" returns (|s| = 0.006 when tol = 0.005) receives exactly the same verdict as one that catastrophically fails. The seam is a threshold, not a gradient.
+
+2. **Content does not matter**: The internal quality, complexity, or plausibility of the emission is irrelevant. Only the seam calculus decides. A simple emission that welds is epistemically real; a sophisticated one that does not is a gesture.
+
+3. **Reversibility**: A gesture is not permanently condemned. A subsequent run with the same frozen contract may produce return where the first did not. The verdict is per-event, not per-system.
+
+The gesture-return distinction is operationalized in `epistemic_weld.py:classify_epistemic_act()` as the `EpistemicVerdict` trichotomy: RETURN (seam closed), GESTURE (seam did not close), DISSOLUTION (regime past viable return).
+
+**DOI**: 10.5281/zenodo.17619502 ("The Seam of Reality", Paulus 2025 — §3)
 
 ### Ontology of Collapse
 
@@ -472,6 +509,7 @@ The contract system enforces return across tiers:
 - **DOI: 10.5281/zenodo.18226878** - "CasePack Publication" (practical applications)
 - **DOI: 10.5281/zenodo.16526052** - "Three-Agent Epistemic Field Model" (axiomatic foundation)
 - **DOI: 10.5281/zenodo.16423283** - "Collapse Equator Fidelity Law" (equator admissibility)
+- **DOI: 10.5281/zenodo.17619502** - "The Seam of Reality" (epistemic weld, gesture/return, positional illusion)
 
 ---
 

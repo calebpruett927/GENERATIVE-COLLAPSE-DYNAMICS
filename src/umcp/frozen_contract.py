@@ -64,7 +64,24 @@ TIMEZONE: str = "America/Chicago"
 
 
 class Regime(Enum):
-    """Collapse regime classification."""
+    """Collapse regime classification.
+
+    These are not severity labels — they are epistemic categories.
+    STABLE means the system can demonstrate return with low cost.
+    WATCH means return is structurally possible but epistemically
+    uncertain (curvature cost dominates the budget). COLLAPSE means
+    the epistemic trace has degraded past the point of viable return
+    credit — this is not failure, it is the boundary condition that
+    makes return meaningful. Without the possibility of COLLAPSE,
+    STABLE would be trivial and the seam would audit nothing.
+
+    CRITICAL is a severity overlay (IC < 0.30) that can accompany
+    any regime — it flags that integrity is dangerously low regardless
+    of the regime classification.
+
+    See: epistemic_weld.py (EpistemicVerdict — the epistemic
+    interpretation of regime + seam outcome).
+    """
 
     STABLE = "STABLE"
     WATCH = "WATCH"
@@ -242,10 +259,26 @@ def check_seam_pass(
     """
     Check PASS conditions for seam weld.
 
+    The seam is the verification boundary between outbound collapse and
+    demonstrated return. It does not *create* reality — it *recognizes*
+    that return has occurred under the rules that were declared before
+    collapse. The frozen parameters (ε, p, α, λ, tol_seam) must be
+    identical on both sides of the seam; otherwise the comparison is
+    incomparable and the weld is meaningless. "Frozen" means consistent
+    across the seam, not constant for its own sake.
+
     PASS requires ALL of:
-        1. |s| ≤ tol_seam
-        2. τ_R is finite (not INF_REC)
-        3. |I_post/I_pre - exp(Δκ)| < tol_exp
+        1. |s| ≤ tol_seam — the budget identity closed
+        2. τ_R is finite (not INF_REC) — something returned
+        3. |I_post/I_pre - exp(Δκ)| < tol_exp — the exponential identity held
+
+    If any condition fails, the emission is a GESTURE: it exists, it may
+    be internally consistent, but it did not complete the collapse-return
+    cycle under the frozen contract. A gesture has no epistemic standing —
+    not because it is wrong, but because it did not weld.
+
+    See: epistemic_weld.py for the full epistemic interpretation of
+    PASS/FAIL verdicts (RETURN / GESTURE / DISSOLUTION trichotomy).
 
     Args:
         residual: Seam residual s
@@ -259,7 +292,8 @@ def check_seam_pass(
     Returns:
         (pass_status, list of failure reasons)
 
-    Reference: The Physics of Coherence, PASS conditions
+    Reference: The Physics of Coherence, PASS conditions;
+               The Seam of Reality (Paulus, 2025) §3
     """
     failures: list[str] = []
 
@@ -461,10 +495,23 @@ def compute_kernel(
 
 
 class NonconformanceType(Enum):
-    """Types of nonconformance (decidable failure modes)."""
+    """Types of nonconformance (decidable failure modes).
+
+    These are the decidable reasons why an emission does not earn
+    epistemic credit. Each maps to a specific structural failure
+    in the collapse-return cycle.
+
+    The distinction between GESTURE and NO_RETURN is important:
+    NO_RETURN means τ_R = ∞_rec (nothing came back at all).
+    GESTURE means something came back but the seam did not close —
+    the emission exists but did not weld. A gesture may be internally
+    consistent and structurally complex, but it did not return through
+    collapse under the frozen rules. See: epistemic_weld.py.
+    """
 
     SEAM_FAILURE = "seam_failure"  # |s| > tol
     NO_RETURN = "no_return"  # τ_R = INF_REC
+    GESTURE = "gesture"  # Emission exists but seam did not close
     TIER0_FAILURE = "tier0_failure"  # Missing N_K or Ψ(t)
     CLOSURE_FAILURE = "closure_failure"  # Missing Γ, α, R, τ_R params
     SYMBOL_FAILURE = "symbol_failure"  # Redefining Tier-1 symbols

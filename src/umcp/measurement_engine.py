@@ -1,16 +1,32 @@
 """
-Raw Measurement Engine
+Raw Measurement Engine — Epistemic Trace Production
 
 Transforms arbitrary raw measurement data into UMCP-compliant Ψ(t) traces
 and computes Tier-1 kernel invariants.  This module bridges the gap between
 raw domain data and the UMCP validation pipeline.
+
+Ψ(t) is not a representation of the system viewed from outside — it IS the
+system's epistemic emission under measurement. What the engine produces is
+not "data about the thing" but "what the thing reveals when observed under
+the frozen contract." The bounded trace [ε, 1−ε] is not a numerical
+convenience; it is the guarantee that even the most degraded closure retains
+enough structure to potentially return through collapse. If c_i = 0 were
+permitted, that component would have no path back — the ε-clamp is the
+protocol's promise that dissolution is always a boundary, never an
+annihilation.
+
+The observer is always inside. Every embedding, every normalization, every
+clip to [ε, 1−ε] is an act of measurement that costs Γ(ω) in seam budget
+(Thm T9, tau_r_star.py). There is no free observation. The positional
+illusion — the belief that one can measure from outside — is quantified
+and bounded by the budget identity. See: epistemic_weld.py.
 
 Data flow::
 
     raw data (CSV / array / DataFrame)
       → embedding (normalize to [0,1]ⁿ)
       → clip to [ε, 1−ε]
-      → Ψ(t) trace
+      → Ψ(t) trace (epistemic emission)
       → kernel: ω, F, S, C, κ, IC per timestep
       → τ_R via return metric
       → regime classification
@@ -25,12 +41,13 @@ Supported embedding strategies:
 
 Cross-references:
 
-- KERNEL_SPECIFICATION.md  (Lemmas 1-46)
-- AXIOM.md                 (return-based epistemology)
-- embedding.yaml           (transform specification)
-- frozen_contract.py       (constants, kernel computation, τ_R)
-- kernel_optimized.py      (optimized computation)
-- compute_utils.py         (preprocessing: clip, prune, normalize)
+- KERNEL_SPECIFICATION.md   (Lemmas 1-46)
+- AXIOM.md                  (return-based epistemology)
+- embedding.yaml            (transform specification)
+- frozen_contract.py        (constants, kernel computation, τ_R)
+- kernel_optimized.py       (optimized computation)
+- compute_utils.py          (preprocessing: clip, prune, normalize)
+- epistemic_weld.py         (epistemic verdict: RETURN / GESTURE / DISSOLUTION)
 """
 
 from __future__ import annotations
