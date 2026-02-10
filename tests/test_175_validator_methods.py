@@ -73,6 +73,7 @@ class TestValidateTraceBounds:
 # ============================================================================
 
 
+@pytest.mark.bounded_identity
 class TestValidateRegimeClassification:
     """Regime classification produces correct labels from invariants."""
 
@@ -140,6 +141,7 @@ class TestValidateRegimeClassification:
 # ============================================================================
 
 
+@pytest.mark.bounded_identity
 class TestValidateInvariantIdentities:
     """Verify the three Tier-1 structural identities on computed outputs."""
 

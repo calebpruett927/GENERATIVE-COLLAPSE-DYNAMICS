@@ -130,9 +130,9 @@ class TestClaim2_FidelityDrift:
             c = _random_psi(n=8, rng=RNG)
             w = RNG.dirichlet(np.ones(8))
             ko = compute_kernel(c, w, tau_R=1.0, epsilon=EPSILON)
-            assert abs(ko.omega - (1 - ko.F)) < 1e-15, (
-                f"ω={ko.omega}, 1-F={1 - ko.F}, diff={abs(ko.omega - (1 - ko.F))}"
-            )
+            assert (
+                abs(ko.omega - (1 - ko.F)) < 1e-15
+            ), f"ω={ko.omega}, 1-F={1 - ko.F}, diff={abs(ko.omega - (1 - ko.F))}"
 
     def test_identity_homogeneous(self) -> None:
         """Homogeneous case: all c_i equal."""
@@ -276,6 +276,7 @@ class TestClaim5_LogIntegrity:
         product = float(np.prod(c))
         assert abs(ko.IC - product) < 1e-12, f"IC={ko.IC}, ∏cᵢ={product}"
 
+    @pytest.mark.bounded_identity
     def test_amgm_inequality_holds(self) -> None:
         """IC ≤ F always (AM-GM inequality)."""
         for _ in range(100):
@@ -550,9 +551,9 @@ class TestClaim9_RegimeGates:
         expected_regime: Regime,
     ) -> None:
         result = classify_regime(omega, F, S, C, IC)
-        assert result == expected_regime, (
-            f"ω={omega}, F={F}, S={S}, C={C}, IC={IC}: expected {expected_regime}, got {result}"
-        )
+        assert (
+            result == expected_regime
+        ), f"ω={omega}, F={F}, S={S}, C={C}, IC={IC}: expected {expected_regime}, got {result}"
 
     def test_critical_overlay_overrides_stable(self) -> None:
         """Critical overlay takes precedence over stable conditions."""

@@ -68,8 +68,8 @@
 
 ```bash
 # Clone
-git clone https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS.git
-cd GENERATIVE-COLLAPSE-DYNAMICS
+git clone https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code.git
+cd UMCP-Metadata-Runnable-Code
 
 # Create virtual environment
 python3 -m venv .venv
@@ -81,13 +81,13 @@ pip install -e ".[all]"
 # Verify
 umcp health                  # System health check
 umcp validate .              # Validate entire repository (must be CONFORMANT)
-pytest                       # Run 1,817 tests
+pytest                       # Run 1,934 tests
 ```
 
 One-liner:
 
 ```bash
-git clone https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS.git && cd GENERATIVE-COLLAPSE-DYNAMICS && python3 -m venv .venv && source .venv/bin/activate && pip install -e ".[all]" && umcp health
+git clone https://github.com/calebpruett927/UMCP-Metadata-Runnable-Code.git && cd UMCP-Metadata-Runnable-Code && python3 -m venv .venv && source .venv/bin/activate && pip install -e ".[all]" && umcp health
 ```
 
 ---
@@ -1197,7 +1197,7 @@ class ExtensionProtocol(Protocol):
 ## Repository Structure
 
 ```
-GENERATIVE-COLLAPSE-DYNAMICS/
+UMCP-Metadata-Runnable-Code/
 |
 |-- src/umcp/                     # Core Python implementation (25 modules)
 |   |-- __init__.py               # Public API, __version__
@@ -1281,8 +1281,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full guide.
 
 ```bash
 # 1. Fork and clone
-git clone https://github.com/YOUR_USERNAME/GENERATIVE-COLLAPSE-DYNAMICS.git
-cd GENERATIVE-COLLAPSE-DYNAMICS
+git clone https://github.com/YOUR_USERNAME/UMCP-Metadata-Runnable-Code.git
+cd UMCP-Metadata-Runnable-Code
 
 # 2. Set up development environment
 python -m venv .venv

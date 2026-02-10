@@ -188,6 +188,13 @@ markers = [
   "layer1: Layer 1 — regime gate boundary probes (STABLE/WATCH/CRITICAL/COLLAPSE)",
   "layer2: Layer 2 — domain embedding reference points",
   "manifold: all manifold bound tests (layers 0-2)",
+  "bounded_identity: test is subsumed by manifold bound surface (auto-validated when bounds pass)",
+  "tier0: T0 — manifold bounds (runs first, gates all other tiers)",
+  "tier1: T1 — pure kernel/math (no subprocess, no IO)",
+  "tier2: T2 — domain embeddings + measurement pipelines",
+  "tier3: T3 — schema/contract/file structure (default tier)",
+  "tier4: T4 — CLI/integration/e2e (subprocess-heavy)",
+  "tier5: T5 — benchmark (runs last, informational)",
 ]
 
 # Parallel execution hint: run with `pytest -n auto` for multi-core speedup

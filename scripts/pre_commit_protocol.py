@@ -270,6 +270,46 @@ def _header(step_num: int, total: int, name: str) -> None:
     print(DIVIDER)
 
 
+def step_manifold_bounds(ctx: RepoContext) -> StepResult:
+    """Step 0: Manifold Bound Surface — fast identity gate (~3 s).
+
+    Runs test_000_manifold_bounds.py (Layer 0-2) before the full suite.
+    If the algebraic bound surface fails, there is no point running 1900+
+    tests that depend on the same kernel identities.
+    """
+    t0 = time.monotonic()
+    result = _run(
+        [ctx.python_exe, "-m", "pytest", str(ctx.tests_dir / "test_000_manifold_bounds.py"), "-q", "--tb=short"],
+        cwd=ctx.root,
+        timeout=60,
+    )
+
+    combined = (result.stdout or "") + "\n" + (result.stderr or "")
+    passed_count = 0
+    failed_count = 0
+    for match in re.finditer(r"(\d+)\s+(passed|failed)", combined):
+        count_val = int(match.group(1))
+        kind = match.group(2)
+        if kind == "passed":
+            passed_count = count_val
+        elif kind == "failed":
+            failed_count = count_val
+
+    passed = result.returncode == 0
+    msg = (
+        f"{passed_count} bounds passed, {failed_count} failed"
+        if (passed_count or failed_count)
+        else ("bound surface verified" if passed else f"exit code {result.returncode}")
+    )
+
+    return StepResult(
+        name="manifold bounds",
+        status=StepStatus.PASS if passed else StepStatus.FAIL,
+        duration_s=time.monotonic() - t0,
+        message=msg,
+    )
+
+
 def step_ruff_format(ctx: RepoContext, mode: str) -> StepResult:
     """Step 1: ruff format — enforce code style."""
     t0 = time.monotonic()
@@ -524,6 +564,7 @@ def step_umcp_validate(ctx: RepoContext) -> StepResult:
 
 # Step registry: (display_label, function_key)
 _STEP_REGISTRY: list[tuple[str, str]] = [
+    ("Manifold Bounds", "bounds"),
     ("Ruff Format", "ruff_format"),
     ("Ruff Lint", "ruff_lint"),
     ("Mypy Type Check", "mypy"),
@@ -547,6 +588,7 @@ def run_protocol(ctx: RepoContext, mode: str = "fix") -> ProtocolReport:
 
     # Map keys to step functions (each receives typed RepoContext)
     step_funcs: dict[str, object] = {
+        "bounds": lambda: step_manifold_bounds(ctx),
         "ruff_format": lambda: step_ruff_format(ctx, mode),
         "ruff_lint": lambda: step_ruff_lint(ctx, mode),
         "mypy": lambda: step_mypy(ctx),
@@ -570,8 +612,10 @@ def run_protocol(ctx: RepoContext, mode: str = "fix") -> ProtocolReport:
             f"{step_result.message}{fixed_note}  [{step_result.duration_s:.1f}s]"
         )
 
-        # Abort on blocking failure after format/lint (skip slow tests if code broken)
-        if step_result.status == StepStatus.FAIL and step_result.blocking and i > 2:
+        # Abort on blocking failure:
+        # - Step 1 (bounds): kernel is broken, nothing else can be trusted
+        # - Steps 3+ (after format/lint): skip slow tests if code broken
+        if step_result.status == StepStatus.FAIL and step_result.blocking and (i == 1 or i > 3):
             print(f"\n  ⛔ Blocking failure at step {i}. Aborting protocol.")
             break
 

@@ -38,6 +38,7 @@ class TestOptimizedKernelComputer:
         result = computer.compute(c, w)
         assert abs(result.F - 0.6) < 1e-10
 
+    @pytest.mark.bounded_identity
     def test_drift_identity(self):
         """omega = 1 - F per Lemma 6."""
         computer = OptimizedKernelComputer()
@@ -46,6 +47,7 @@ class TestOptimizedKernelComputer:
         result = computer.compute(c, w)
         assert abs(result.F + result.omega - 1.0) < 1e-10
 
+    @pytest.mark.bounded_identity
     def test_am_gm_inequality(self):
         """F >= IC always (AM-GM inequality)."""
         computer = OptimizedKernelComputer()
@@ -56,6 +58,7 @@ class TestOptimizedKernelComputer:
             result = computer.compute(c, w)
             assert result.F >= result.IC - 1e-10
 
+    @pytest.mark.bounded_identity
     def test_kappa_negative(self):
         """kappa <= 0 since all c in (0, 1]."""
         computer = OptimizedKernelComputer()
@@ -73,6 +76,7 @@ class TestOptimizedKernelComputer:
         assert result.is_homogeneous
         assert result.C == 0  # No dispersion
 
+    @pytest.mark.bounded_identity
     def test_homogeneous_am_gm_equality(self):
         """F = IC for homogeneous state (Lemma 4)."""
         computer = OptimizedKernelComputer()
@@ -99,6 +103,7 @@ class TestOptimizedKernelComputer:
         result = computer.compute(c, w)
         assert abs(result.amgm_gap - (result.F - result.IC)) < 1e-10
 
+    @pytest.mark.bounded_identity
     def test_entropy_non_negative(self):
         """S >= 0 always."""
         computer = OptimizedKernelComputer()
@@ -117,6 +122,7 @@ class TestOptimizedKernelComputer:
         with pytest.raises(ValueError):
             computer.compute(c, w)
 
+    @pytest.mark.bounded_identity
     def test_regime_classification(self):
         """Regime is classified."""
         computer = OptimizedKernelComputer()

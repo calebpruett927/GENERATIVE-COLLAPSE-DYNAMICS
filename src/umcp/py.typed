@@ -1,6 +1,0 @@
-from pathlib import Path
-
-path = Path("GENERATIVE-COLLAPSE-DYNAMICS/umcp/py.typed")
-path.parent.mkdir(parents=True, exist_ok=True)
-path.write_bytes(b"")  # PEP 561: py.typed is an empty marker file
-print(f"Wrote zero-byte marker: {path} ({path.stat().st_size} bytes)")

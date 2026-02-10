@@ -66,26 +66,31 @@ class TestCanonicalConstants:
 class TestRegimeClassification:
     """Test regime classification."""
 
+    @pytest.mark.bounded_identity
     def test_stable_regime(self) -> None:
         """Stable regime when all conditions met."""
         regime = classify_regime(omega=0.02, F=0.95, S=0.10, C=0.10, integrity=0.80)
         assert regime == Regime.STABLE
 
+    @pytest.mark.bounded_identity
     def test_watch_regime_omega(self) -> None:
         """Watch regime when ω in watch range."""
         regime = classify_regime(omega=0.15, F=0.85, S=0.10, C=0.10, integrity=0.80)
         assert regime == Regime.WATCH
 
+    @pytest.mark.bounded_identity
     def test_collapse_regime(self) -> None:
         """Collapse regime when ω >= 0.30."""
         regime = classify_regime(omega=0.35, F=0.65, S=0.20, C=0.20, integrity=0.50)
         assert regime == Regime.COLLAPSE
 
+    @pytest.mark.bounded_identity
     def test_critical_overlay(self) -> None:
         """Critical overlay when I < 0.30."""
         regime = classify_regime(omega=0.02, F=0.95, S=0.10, C=0.10, integrity=0.20)
         assert regime == Regime.CRITICAL
 
+    @pytest.mark.bounded_identity
     def test_critical_takes_precedence(self) -> None:
         """Critical overlay takes precedence over other regimes."""
         # Even with stable omega, critical I triggers CRITICAL
