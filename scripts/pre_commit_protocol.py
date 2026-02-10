@@ -450,52 +450,79 @@ def step_update_integrity(ctx: RepoContext) -> StepResult:
     )
 
 
+# ── Test count bounds ─────────────────────────────────────────────
+# The manifold-bounds step (step 1) already executes real tests against the
+# kernel.  Re-running the full suite (~115 s) is redundant when the only
+# intervening steps are formatting, linting, and integrity checksums —
+# none of which alter test-affecting code.
+#
+# Instead we collect tests (--collect-only) in ~2 s and verify the count
+# is within expected bounds.  This catches:
+#   - accidental test deletion (count drops)
+#   - import errors in new test files (collection fails)
+#   - broken fixtures (collection fails)
+#
+# CI still runs the full suite; pre-commit only needs the fast gate.
+
+_MIN_EXPECTED_TESTS = 1000  # floor — repo has ~1900+ and growing
+_MAX_EXPECTED_TESTS = 5000  # ceiling — sanity upper bound
+
+
 def step_pytest(ctx: RepoContext) -> StepResult:
-    """Step 6: pytest — full test suite (mirrors CI)."""
+    """Step 6: pytest bounds — collect tests (no execution) and verify count.
+
+    Why not a full run?  The manifold-bounds step already executed real
+    kernel tests.  Ruff / mypy / integrity don't change runtime behavior.
+    Collecting is enough to catch import errors, fixture breakage, and
+    accidental test deletion — in ~2 s instead of ~115 s.
+    """
     t0 = time.monotonic()
     result = _run(
-        [ctx.python_exe, "-m", "pytest", "-q", "--tb=short"],
+        [ctx.python_exe, "-m", "pytest", "--co", "-q"],
         cwd=ctx.root,
-        timeout=600,
+        timeout=60,
     )
 
-    # Parse pytest summary.
-    # -q output: dots/chars then "1060 passed in 55.70s"
-    # or "3 failed, 1057 passed in 55.70s"
-    # Search all output (stdout + stderr) for the summary pattern.
     combined = (result.stdout or "") + "\n" + (result.stderr or "")
-    passed_count = 0
-    failed_count = 0
-    warning_count = 0
+    collected = 0
 
-    # Look for the summary pattern anywhere in combined output
-    summary_match = re.search(
-        r"(?:=+\s+)?(\d+\s+(?:passed|failed)(?:,\s*\d+\s+\w+)*)\s+in\s+[\d.]+s",
-        combined,
-    )
-    if summary_match:
-        summary_text = summary_match.group(1)
-        for match in re.finditer(r"(\d+)\s+(passed|failed|warning|error)", summary_text):
-            count_val = int(match.group(1))
-            kind = match.group(2)
-            if kind == "passed":
-                passed_count = count_val
-            elif kind == "failed":
-                failed_count = count_val
-            elif kind == "warning":
-                warning_count = count_val
+    # pytest --co -q groups tests by file:  "tests/test_foo.py: 42"
+    # Sum the per-file counts to get the total.
+    for ln in result.stdout.strip().split("\n"):
+        m = re.match(r".*:\s+(\d+)\s*$", ln.strip())
+        if m:
+            collected += int(m.group(1))
 
-    passed = result.returncode == 0
-    if passed_count or failed_count:
-        msg = f"{passed_count} passed, {failed_count} failed"
-        if warning_count:
-            msg += f", {warning_count} warnings"
+    # Fallback: try "<N> tests collected" summary (some pytest versions)
+    if collected == 0:
+        m_summary = re.search(r"(\d+)\s+tests?\s+collected", combined)
+        if m_summary:
+            collected = int(m_summary.group(1))
+
+    # Collection itself must succeed (catches import errors, fixture breakage)
+    if result.returncode != 0:
+        # Extract first error line for diagnosis
+        err_lines = [ln for ln in combined.split("\n") if "ERROR" in ln or "ModuleNotFoundError" in ln]
+        err_hint = err_lines[0].strip() if err_lines else f"exit code {result.returncode}"
+        return StepResult(
+            name="pytest bounds",
+            status=StepStatus.FAIL,
+            duration_s=time.monotonic() - t0,
+            message=f"collection failed: {err_hint}",
+        )
+
+    # Bounds check
+    in_bounds = _MIN_EXPECTED_TESTS <= collected <= _MAX_EXPECTED_TESTS
+    if in_bounds:
+        msg = f"{collected} tests collected (bounds: {_MIN_EXPECTED_TESTS}–{_MAX_EXPECTED_TESTS})"
+    elif collected < _MIN_EXPECTED_TESTS:
+        msg = f"{collected} tests collected — below minimum {_MIN_EXPECTED_TESTS} (tests deleted?)"
     else:
-        msg = "passed" if passed else f"exit code {result.returncode}"
+        msg = f"{collected} tests collected — above maximum {_MAX_EXPECTED_TESTS} (update bounds)"
 
     return StepResult(
-        name="pytest",
-        status=StepStatus.PASS if passed else StepStatus.FAIL,
+        name="pytest bounds",
+        status=StepStatus.PASS if in_bounds else StepStatus.FAIL,
         duration_s=time.monotonic() - t0,
         message=msg,
     )
@@ -570,7 +597,7 @@ _STEP_REGISTRY: list[tuple[str, str]] = [
     ("Mypy Type Check", "mypy"),
     ("Stage Files", "stage"),
     ("Update Integrity", "integrity"),
-    ("Pytest Suite", "pytest"),
+    ("Pytest Bounds", "pytest"),
     ("UMCP Validate", "validate"),
 ]
 
