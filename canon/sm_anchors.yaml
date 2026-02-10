@@ -1,0 +1,121 @@
+# canon/sm_anchors.yaml
+# Standard Model Canon Anchors — UMCP.CANON.SM.v1
+# Cross-references: contracts/SM.INTSTACK.v1.yaml, closures/standard_model/
+id: "UMCP.CANON.SM.v1"
+version: "1.0.0"
+domain: "Standard Model (Particle Physics)"
+hierarchy: "GCD > SM (Tier-2)"
+description: >
+  Canon anchors for the Standard Model of particle physics.
+  Maps SM observables (particle masses, coupling constants, mixing matrices,
+  cross sections, symmetry breaking) to GCD Tier-1 invariants.
+  Enables cross-domain comparison between SM predictions and measurements.
+
+axioms:
+  - id: "AX-SM0"
+    name: "Mass Generation via Higgs"
+    statement: >
+      Fermion masses arise from Yukawa couplings to the Higgs field:
+      m_f = y_f · v / √2,  v ≈ 246.22 GeV.
+      Mass prediction accuracy maps to ω_eff (mass drift).
+    frozen: true
+
+  - id: "AX-SM1"
+    name: "Asymptotic Freedom"
+    statement: >
+      The strong coupling α_s decreases logarithmically at high energy
+      (asymptotic freedom) and grows at low energy (confinement).
+      α_s running is validated against R-ratio measurements.
+    frozen: true
+
+  - id: "AX-SM2"
+    name: "CKM Unitarity"
+    statement: >
+      The CKM matrix is unitary: V†V = I. Row/column unitarity
+      deviations map to ω_eff. Jarlskog J measures CP violation.
+    frozen: true
+
+  - id: "AX-SM3"
+    name: "Gauge Symmetry SU(3)×SU(2)×U(1)"
+    statement: >
+      Three gauge groups with coupling constants g₃, g₂, g₁ run with
+      energy via RGE. Near-convergence at high energy suggests GUT.
+    frozen: true
+
+  - id: "AX-SM4"
+    name: "R-ratio QCD Validation"
+    statement: >
+      R = σ(e⁺e⁻→hadrons)/σ(e⁺e⁻→μ⁺μ⁻) = N_c·Σ Q_f²·(1+α_s/π+...)
+      validates QCD and counts colors (N_c=3) and active flavors.
+    frozen: true
+
+symbols:
+  tier_1_mapping:
+    omega_eff: "mass_drift | coupling_drift | unitarity_deficit"
+    F_eff: "1 − ω_eff"
+    S: "generation_entropy (flavor mixing complexity)"
+    C: "running_curvature (β-function slope)"
+
+  tier_2_expansion:
+    alpha_s: "Strong coupling constant at energy Q"
+    alpha_em: "Electromagnetic coupling at energy Q"
+    V_CKM: "CKM mixing matrix magnitudes"
+    J_CP: "Jarlskog invariant (CP violation measure)"
+    R_ratio: "e⁺e⁻ → hadrons R-ratio"
+    v_EW: "Electroweak VEV (246.22 GeV)"
+    lambda_quartic: "Higgs quartic coupling"
+    m_f_predicted: "Yukawa-predicted fermion mass"
+
+regime_gates:
+  coupling:
+    Perturbative: "α_s < 0.3"
+    Transitional: "0.3 ≤ α_s < 0.6"
+    NonPerturbative: "α_s ≥ 0.6 (confinement)"
+
+  cross_section:
+    Validated: "ω_eff < 0.02"
+    Tension: "0.02 ≤ ω_eff < 0.10"
+    Anomalous: "ω_eff ≥ 0.10"
+
+  symmetry_breaking:
+    Consistent: "ω_eff < 0.01 (SM agreement)"
+    Tension: "0.01 ≤ ω_eff < 0.05"
+    BSM_hint: "ω_eff ≥ 0.05 (possible BSM)"
+
+  ckm_mixing:
+    Unitary: "|1 − row_sum| < 0.001"
+    Tension: "0.001 ≤ deficit < 0.01"
+    BSM_hint: "deficit ≥ 0.01"
+
+  particle_stability:
+    Stable: "τ > age_of_universe or τ = ∞"
+    LongLived: "τ > 10⁻¹⁰ s"
+    Resonance: "τ < 10⁻¹⁰ s, Γ < 0.1 GeV"
+    Virtual: "Γ ≥ 0.1 GeV"
+
+constants:
+  alpha_s_MZ: {value: 0.1180, unit: "dimensionless", source: "PDG 2024"}
+  alpha_em_0: {value: 0.00729735, unit: "dimensionless", source: "CODATA 2022"}
+  G_Fermi: {value: 1.1663788e-5, unit: "GeV⁻²", source: "PDG 2024"}
+  sin2_theta_W: {value: 0.23122, unit: "dimensionless", source: "PDG 2024"}
+  v_EW: {value: 246.22, unit: "GeV", source: "PDG 2024"}
+  m_H: {value: 125.25, unit: "GeV", source: "PDG 2024 (ATLAS+CMS)"}
+  m_W: {value: 80.377, unit: "GeV", source: "PDG 2024"}
+  m_Z: {value: 91.1876, unit: "GeV", source: "PDG 2024"}
+  m_top: {value: 172.69, unit: "GeV", source: "PDG 2024"}
+  lambda_CKM: {value: 0.22650, unit: "dimensionless", source: "PDG 2024"}
+  J_CP: {value: 3.08e-5, unit: "dimensionless", source: "PDG 2024"}
+
+particle_count:
+  quarks: 6
+  leptons: 6
+  gauge_bosons: 4
+  scalar_bosons: 1
+  total_SM: 17
+
+closures:
+  - particle_catalog
+  - coupling_constants
+  - cross_sections
+  - symmetry_breaking
+  - ckm_mixing

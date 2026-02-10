@@ -1,5 +1,6 @@
 """
-Science domain dashboard pages: Cosmology, Astronomy, Nuclear, Quantum, Finance, RCFT.
+Science domain dashboard pages: Cosmology, Astronomy, Nuclear, Quantum, Finance, RCFT,
+Atomic Physics, Standard Model.
 """
 # pyright: reportUnknownMemberType=false
 # pyright: reportUnknownVariableType=false
@@ -80,13 +81,13 @@ def render_cosmology_page() -> None:
         - Dark energy: Ω_Λ,0 = 0.685
         - Hubble constant: H₀ = 67.4 km/s/Mpc
         - σ8 amplitude: σ8,0 = 0.811
-        
+
         **Key Functions:**
         - H(z) = H₀ √[Ω_m(1+z)³ + Ω_Λ] - Hubble parameter
         - χ(z) = ∫ c/H(z') dz' - Comoving distance
         - D₁(z) - Linear growth function (normalized to 1 at z=0)
         - σ8(z) = σ8,0 × D₁(z) - Amplitude evolution
-        
+
         **UMCP Integration:**
         - Background cosmology = embedding specification (Tier-0)
         - Frozen parameters (Ω_m, σ8, H₀) define the coordinate system
@@ -150,22 +151,22 @@ def render_cosmology_page() -> None:
     with st.expander("📖 About Σ Parametrization", expanded=False):
         st.markdown("""
         **Σ(z) Definition (Eq. 11):**
-        
+
         The Σ parameter encodes deviations from General Relativity:
-        
+
         $$ k^2 (\\Phi + \\Psi)/2 = -4\\pi G a^2 \\Sigma(z,k) \\bar{\\rho}(z) \\Delta_m(z,k) $$
-        
+
         - **Σ = 1**: General Relativity
         - **Σ ≠ 1**: Modified gravity or gravitational slip
-        
+
         **Parametrization (Eq. 13):**
         $$ \\Sigma(z) = 1 + \\Sigma_0 \\cdot g(z) $$
-        
+
         Where g(z) models:
         - **constant**: g(z) = 1 for z ∈ [0,1]
         - **exponential**: g(z) = exp(1+z) for z ∈ [0,1]
         - **standard**: g(z) = Ω_Λ(z)
-        
+
         **UMCP Regime Mapping:**
         | Σ₀ Range | Regime | UMCP Analog |
         |----------|--------|-------------|
@@ -246,18 +247,18 @@ def render_cosmology_page() -> None:
     with st.expander("📖 About DES Y3 Analysis", expanded=False):
         st.markdown("""
         **Dark Energy Survey Year 3 Results:**
-        
+
         The Nature Communications paper analyzes:
         - 4 lens redshift bins: z ∈ [0.295, 0.467, 0.626, 0.771]
         - Galaxy-galaxy lensing + galaxy clustering
         - Cross-correlation with CMB lensing from Planck
-        
+
         **Key Measurements (CMB prior):**
         - ĥJ(z₁) = 0.326 ± 0.062
         - ĥJ(z₂) = 0.332 ± 0.052
         - ĥJ(z₃) = 0.387 ± 0.059
         - ĥJ(z₄) = 0.354 ± 0.085
-        
+
         **Fitted Σ₀:**
         - Standard model: Σ₀ = 0.17 ± 0.12
         - Constant model: Σ₀ = 0.24 ± 0.14
@@ -304,11 +305,11 @@ def render_cosmology_page() -> None:
         st.markdown("""
         **Core Principle Alignment:**
         > "Within-run: frozen causes only. Between-run: continuity only by return-weld."
-        
+
         **WEYL Implementation:**
         - **Within-run**: Frozen cosmological parameters (Ω_m, σ8, z*) determine the Weyl trace
         - **Between-run**: Canonization requires return-weld (Σ → 1 at high z)
-        
+
         **Invariant Mapping:**
         | WEYL Quantity | UMCP Analog | Interpretation |
         |---------------|-------------|----------------|
@@ -2283,7 +2284,7 @@ def render_finance_page() -> None:
 
 
 def render_rcft_page() -> None:
-    """Render interactive RCFT domain page with all 4 closures and professional visualizations."""
+    """Render interactive RCFT domain page with 7 closures and professional visualizations."""
     if st is None or go is None or pd is None or np is None:
         return
 
@@ -2303,6 +2304,9 @@ def render_rcft_page() -> None:
         - **Recursive field strength** Ψ_r = Σ αⁿ · Ψₙ (memory-weighted invariant accumulation)
         - **Attractor topology** in (ω, S, C) phase space (monostable vs multistable)
         - **Resonance patterns** via FFT (dominant wavelength λ, phase coherence Θ)
+        - **Information geometry** on the Bernoulli manifold (Fisher distance, geodesics)
+        - **Universality class** via partition function Z(β) (central charge, critical exponents)
+        - **Collapse grammar** as Markov chain (transfer matrix, spectral gap, entropy rate)
 
         | Closure | Output | Regime Classification |
         |---------|--------|----------------------|
@@ -2310,14 +2314,20 @@ def render_rcft_page() -> None:
         | Recursive Field | Ψ_r ≥ 0 | Dormant < 0.1 · Active 0.1–1.0 · Resonant ≥ 1.0 |
         | Attractor Basin | n_attractors ≥ 1 | Monostable · Bistable · Multistable |
         | Resonance Pattern | λ, Θ | Standing · Traveling · Mixed |
+        | Information Geometry | d_F, η | Geodesic · SubOptimal · Divergent |
+        | Universality Class | c_eff, ν, γ | Ising · GCD · MeanField |
+        | Collapse Grammar | h, Δ | FROZEN · ORDERED · COMPLEX · CHAOTIC |
         """)
 
-    tab1, tab2, tab3, tab4 = st.tabs(
+    tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(
         [
             "📐 Fractal Dimension",
             "🌊 Recursive Field",
             "🎯 Attractor Basin",
             "🔊 Resonance Pattern",
+            "📐 Information Geometry",
+            "🌡️ Universality Class",
+            "🔤 Collapse Grammar",
         ]
     )
 
@@ -2927,6 +2937,2358 @@ def render_rcft_page() -> None:
                             margin={"t": 40, "b": 20},
                         )
                         st.plotly_chart(fig2, use_container_width=True)
+
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    # ── Tab 5: Information Geometry ───────────────────────────────
+    with tab5:
+        st.subheader("📐 Information Geometry (Fisher Geodesics)")
+        st.markdown(
+            "**Fisher distance**: d_F(c₁,c₂) = 2|arcsin(√c₁) − arcsin(√c₂)|  \n"
+            "**Geodesic**: c(t) = sin²((1−t)θ₁ + tθ₂)  \n"
+            "**Efficiency**: η = d_F / L(path) ∈ (0,1]"
+        )
+
+        c1_ig, c2_ig = st.columns(2)
+        with c1_ig:
+            st.markdown("**State A**")
+            ca1 = st.slider("c₁ (A)", 0.01, 0.99, 0.10, 0.01, key="ig_ca1")
+            ca2 = st.slider("c₂ (A)", 0.01, 0.99, 0.20, 0.01, key="ig_ca2")
+            ca3 = st.slider("c₃ (A)", 0.01, 0.99, 0.30, 0.01, key="ig_ca3")
+        with c2_ig:
+            st.markdown("**State B**")
+            cb1 = st.slider("c₁ (B)", 0.01, 0.99, 0.80, 0.01, key="ig_cb1")
+            cb2 = st.slider("c₂ (B)", 0.01, 0.99, 0.70, 0.01, key="ig_cb2")
+            cb3 = st.slider("c₃ (B)", 0.01, 0.99, 0.90, 0.01, key="ig_cb3")
+
+        if st.button("Compute Fisher Geometry", key="ig_compute", type="primary"):
+            try:
+                from closures.rcft.information_geometry import (
+                    fisher_distance_weighted,
+                    fisher_geodesic,
+                    verify_fano_fisher_duality,
+                )
+
+                c_a = [ca1, ca2, ca3]
+                c_b = [cb1, cb2, cb3]
+                w = [1.0 / 3, 1.0 / 3, 1.0 / 3]
+
+                dist_result = fisher_distance_weighted(c_a, c_b, w)
+                r = dist_result._asdict()
+
+                rc1, rc2, rc3 = st.columns(3)
+                with rc1:
+                    st.metric(
+                        "Fisher Distance",
+                        f"{r['distance']:.4f} rad",
+                    )
+                with rc2:
+                    st.metric(
+                        "Max Possible",
+                        f"{r['max_possible']:.4f} rad",
+                    )
+                with rc3:
+                    st.metric(
+                        "Normalized",
+                        f"{r['normalized']:.4f}",
+                    )
+
+                # Geodesic path visualization
+                geodesic_pts = fisher_geodesic(ca1, cb1, n_points=50)
+                if geodesic_pts:
+                    fig = go.Figure()
+                    ts = [pt.t for pt in geodesic_pts]
+                    cs = [pt.c for pt in geodesic_pts]
+                    thetas = [pt.theta for pt in geodesic_pts]
+
+                    fig.add_trace(
+                        go.Scatter(
+                            x=ts,
+                            y=cs,
+                            mode="lines",
+                            name="c(t) geodesic",
+                            line={"color": "#007bff", "width": 2},
+                        )
+                    )
+                    fig.add_trace(
+                        go.Scatter(
+                            x=ts,
+                            y=thetas,
+                            mode="lines",
+                            name="θ(t)",
+                            line={
+                                "color": "#dc3545",
+                                "dash": "dash",
+                                "width": 1.5,
+                            },
+                        )
+                    )
+                    fig.add_trace(
+                        go.Scatter(
+                            x=[0, 1],
+                            y=[ca1, cb1],
+                            mode="markers",
+                            marker={
+                                "size": 12,
+                                "color": "#28a745",
+                                "symbol": "diamond",
+                            },
+                            name="A → B",
+                        )
+                    )
+                    fig.update_layout(
+                        title="Fisher Geodesic Path (c₁ channel)",
+                        xaxis_title="t ∈ [0,1]",
+                        yaxis_title="Value",
+                        height=350,
+                        margin={"t": 40, "b": 20},
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+
+                # Fano-Fisher duality check
+                st.markdown("**Fano-Fisher Duality** (T19): h″(c) = −g_F(c)")
+                c_check = np.linspace(0.05, 0.95, 50)
+                duality_data = []
+                for cv in c_check:
+                    ff = verify_fano_fisher_duality(float(cv))
+                    duality_data.append(
+                        {
+                            "c": float(cv),
+                            "h_pp": ff.h_double_prime,
+                            "neg_gF": ff.neg_g_fisher,
+                            "rel_err": ff.relative_error,
+                        }
+                    )
+
+                fig2 = go.Figure()
+                fig2.add_trace(
+                    go.Scatter(
+                        x=[d["c"] for d in duality_data],
+                        y=[d["h_pp"] for d in duality_data],
+                        mode="lines",
+                        name="h″(c)",
+                        line={"color": "#007bff", "width": 2},
+                    )
+                )
+                fig2.add_trace(
+                    go.Scatter(
+                        x=[d["c"] for d in duality_data],
+                        y=[d["neg_gF"] for d in duality_data],
+                        mode="markers",
+                        name="−g_F(c)",
+                        marker={
+                            "size": 4,
+                            "color": "#dc3545",
+                        },
+                    )
+                )
+                fig2.update_layout(
+                    title="Fano-Fisher Duality Verification",
+                    xaxis_title="c",
+                    yaxis_title="Curvature",
+                    height=320,
+                    margin={"t": 40, "b": 20},
+                )
+                st.plotly_chart(fig2, use_container_width=True)
+
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    # ── Tab 6: Universality Class ─────────────────────────────────
+    with tab6:
+        st.subheader("🌡️ Universality Class (Partition Function)")
+        st.markdown(
+            "**Central charge**: c_eff = 1/p = 1/3  \n"
+            "**Critical exponents**: ν=1/3, γ=1/3, η=1, α=0, β=5/6, δ=7/5  \n"
+            "**Scaling relations**: Rushbrooke ✓  Widom ✓  Hyperscaling ✓"
+        )
+
+        uc1, uc2 = st.columns(2)
+        with uc1:
+            beta_u = st.number_input(
+                "β (inverse temperature)",
+                0.1,
+                200.0,
+                10.0,
+                0.5,
+                key="univ_beta",
+            )
+        with uc2:
+            p_exp = st.number_input("p (drift exponent)", 2, 6, 3, key="univ_p")
+
+        if st.button(
+            "Compute Universality Class",
+            key="univ_compute",
+            type="primary",
+        ):
+            try:
+                from closures.rcft.universality_class import (
+                    compute_central_charge,
+                    compute_critical_exponents,
+                    compute_partition_function,
+                    verify_scaling_relations,
+                )
+
+                pf = compute_partition_function(beta_u, p=p_exp)
+                r = pf._asdict()
+
+                rc1, rc2, rc3, rc4 = st.columns(4)
+                with rc1:
+                    st.metric("Z(β)", f"{r['Z']:.6f}")
+                with rc2:
+                    st.metric("Free energy F", f"{r['free_energy']:.4f}")
+                with rc3:
+                    st.metric(
+                        "Internal energy U",
+                        f"{r['internal_energy']:.4f}",
+                    )
+                with rc4:
+                    st.metric(
+                        "Specific heat C_V",
+                        f"{r['specific_heat']:.4f}",
+                    )
+
+                mc1, mc2, mc3 = st.columns(3)
+                with mc1:
+                    st.metric("⟨ω⟩", f"{r['mean_omega']:.6f}")
+                with mc2:
+                    st.metric("Var(ω)", f"{r['var_omega']:.8f}")
+                with mc3:
+                    st.metric(
+                        "χ (susceptibility)",
+                        f"{r['susceptibility']:.6f}",
+                    )
+
+                # Central charge
+                cc = compute_central_charge(beta_high=max(50.0, beta_u * 5), p=p_exp)
+                st.markdown(
+                    f"**Central charge**: c_eff = 1/p = {cc.c_eff:.4f}, "
+                    f"C_V measured = {cc.C_V_measured:.4f}, "
+                    f"relative error = {cc.relative_error:.2e}"
+                )
+
+                # Critical exponents table
+                ce = compute_critical_exponents(p=p_exp)
+                exp_data = [
+                    {
+                        "Exponent": "ν",
+                        "Value": f"{ce.nu:.4f}",
+                        "Formula": "1/p",
+                    },
+                    {
+                        "Exponent": "γ",
+                        "Value": f"{ce.gamma:.4f}",
+                        "Formula": "(p−2)/p",
+                    },
+                    {
+                        "Exponent": "η",
+                        "Value": f"{ce.eta:.4f}",
+                        "Formula": "4−p",
+                    },
+                    {
+                        "Exponent": "α",
+                        "Value": f"{ce.alpha:.4f}",
+                        "Formula": "0",
+                    },
+                    {
+                        "Exponent": "β",
+                        "Value": f"{ce.beta_exp:.4f}",
+                        "Formula": "(p+2)/(2p)",
+                    },
+                    {
+                        "Exponent": "δ",
+                        "Value": f"{ce.delta:.4f}",
+                        "Formula": "(3p−2)/(p+2)",
+                    },
+                    {
+                        "Exponent": "d_eff",
+                        "Value": f"{ce.d_eff:.1f}",
+                        "Formula": "2p",
+                    },
+                ]
+                st.dataframe(
+                    pd.DataFrame(exp_data),
+                    use_container_width=True,
+                    hide_index=True,
+                )
+
+                # Scaling relations
+                sr = verify_scaling_relations(p=p_exp)
+                sr_data = [
+                    {
+                        "Relation": s.name,
+                        "LHS": f"{s.lhs:.6f}",
+                        "RHS": f"{s.rhs:.6f}",
+                        "Status": "✅" if s.satisfied else "❌",
+                    }
+                    for s in sr
+                ]
+                st.dataframe(
+                    pd.DataFrame(sr_data),
+                    use_container_width=True,
+                    hide_index=True,
+                )
+
+                # Thermodynamic sweep over β
+                beta_range = np.logspace(np.log10(0.5), np.log10(200), 60)
+                thermo = []
+                for b in beta_range:
+                    try:
+                        pf_b = compute_partition_function(float(b), p=p_exp)
+                        thermo.append(
+                            {
+                                "beta": float(b),
+                                "C_V": pf_b.specific_heat,
+                                "mean_omega": pf_b.mean_omega,
+                                "chi": pf_b.susceptibility,
+                            }
+                        )
+                    except Exception:
+                        pass
+
+                if thermo:
+                    fig = go.Figure()
+                    fig.add_trace(
+                        go.Scatter(
+                            x=[d["beta"] for d in thermo],
+                            y=[d["C_V"] for d in thermo],
+                            mode="lines",
+                            name="C_V",
+                            line={"color": "#dc3545", "width": 2},
+                        )
+                    )
+                    fig.add_hline(
+                        y=1.0 / p_exp,
+                        line_dash="dash",
+                        line_color="#28a745",
+                        annotation_text=f"c_eff = 1/{p_exp}",
+                    )
+                    fig.update_layout(
+                        title="Specific Heat vs β",
+                        xaxis_title="β",
+                        xaxis_type="log",
+                        yaxis_title="C_V",
+                        height=350,
+                        margin={"t": 40, "b": 20},
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    # ── Tab 7: Collapse Grammar ───────────────────────────────────
+    with tab7:
+        st.subheader("🔤 Collapse Grammar (Transfer Matrix)")
+        st.markdown(
+            "Metropolis dynamics under Γ(ω) at inverse temperature β.  \n"
+            "**Spectral gap** Δ controls mixing time. "
+            "**Entropy rate** h classifies complexity."
+        )
+
+        gc1, gc2 = st.columns(2)
+        with gc1:
+            beta_g = st.number_input(
+                "β (inverse temperature)",
+                0.1,
+                100.0,
+                5.0,
+                0.5,
+                key="gram_beta",
+            )
+        with gc2:
+            seed_g = st.number_input("Random seed", 0, 99999, 42, key="gram_seed")
+
+        if st.button("Compute Grammar", key="gram_compute", type="primary"):
+            try:
+                from closures.rcft.collapse_grammar import (
+                    compute_grammar_entropy,
+                    compute_transfer_matrix,
+                )
+
+                tm = compute_transfer_matrix(beta_g, seed=int(seed_g))
+                ge = compute_grammar_entropy(tm.T)
+                r_tm = tm._asdict()
+                r_ge = ge._asdict()
+
+                rc1, rc2, rc3, rc4 = st.columns(4)
+                with rc1:
+                    st.metric(
+                        "Spectral Gap Δ",
+                        f"{r_tm['spectral_gap']:.4f}",
+                    )
+                with rc2:
+                    st.metric(
+                        "Mixing Time τ",
+                        f"{r_tm['mixing_time']:.2f}",
+                    )
+                with rc3:
+                    st.metric(
+                        "Entropy Rate h",
+                        f"{r_ge['entropy_rate']:.4f} bits",
+                    )
+                with rc4:
+                    cc = r_ge["complexity_class"]
+                    cc_color = {
+                        "FROZEN": "🟢",
+                        "ORDERED": "🟡",
+                        "COMPLEX": "🟠",
+                    }.get(cc, "🔴")
+                    st.metric("Class", f"{cc_color} {cc}")
+
+                # Stationary distribution
+                pi_stat = r_tm["stationary"]
+                labels = ["STABLE", "WATCH", "COLLAPSE"]
+                sd1, sd2, sd3 = st.columns(3)
+                with sd1:
+                    st.metric(
+                        f"π({labels[0]})",
+                        f"{float(pi_stat[0]):.4f}",
+                    )
+                with sd2:
+                    st.metric(
+                        f"π({labels[1]})",
+                        f"{float(pi_stat[1]):.4f}",
+                    )
+                with sd3:
+                    st.metric(
+                        f"π({labels[2]})",
+                        f"{float(pi_stat[2]):.4f}",
+                    )
+
+                # Transfer matrix heatmap
+                T_matrix = r_tm["T"]
+                fig = go.Figure(
+                    go.Heatmap(
+                        z=T_matrix.tolist(),
+                        x=labels,
+                        y=labels,
+                        colorscale="Viridis",
+                        text=[[f"{v:.3f}" for v in row] for row in T_matrix.tolist()],
+                        texttemplate="%{text}",
+                        textfont={"size": 14},
+                        colorbar={"title": "P"},
+                    )
+                )
+                fig.update_layout(
+                    title=f"Transfer Matrix T (β = {beta_g})",
+                    xaxis_title="From",
+                    yaxis_title="To",
+                    height=350,
+                    margin={"t": 40, "b": 20},
+                )
+                st.plotly_chart(fig, use_container_width=True)
+
+                # Grammar phase diagram over β
+                st.markdown("**Grammar Phase Diagram**")
+                beta_sweep = np.logspace(np.log10(0.5), np.log10(50), 30)
+                phase_data: list[dict[str, object]] = []
+                for b in beta_sweep:
+                    try:
+                        _tm = compute_transfer_matrix(float(b), seed=int(seed_g))
+                        _ge = compute_grammar_entropy(_tm.T)
+                        phase_data.append(
+                            {
+                                "beta": float(b),
+                                "h_norm": _ge.normalized_entropy,
+                                "gap": _tm.spectral_gap,
+                                "class": _ge.complexity_class,
+                            }
+                        )
+                    except Exception:
+                        pass
+
+                if phase_data:
+                    fig2 = go.Figure()
+                    fig2.add_trace(
+                        go.Scatter(
+                            x=[d["beta"] for d in phase_data],
+                            y=[d["h_norm"] for d in phase_data],
+                            mode="lines+markers",
+                            name="h / h_max",
+                            line={
+                                "color": "#dc3545",
+                                "width": 2,
+                            },
+                            marker={"size": 5},
+                        )
+                    )
+                    fig2.add_trace(
+                        go.Scatter(
+                            x=[d["beta"] for d in phase_data],
+                            y=[d["gap"] for d in phase_data],
+                            mode="lines+markers",
+                            name="Spectral Gap Δ",
+                            line={
+                                "color": "#007bff",
+                                "width": 2,
+                            },
+                            marker={"size": 5},
+                        )
+                    )
+                    # Region boundaries
+                    fig2.add_hline(
+                        y=0.2,
+                        line_dash="dot",
+                        line_color="#28a745",
+                        annotation_text="FROZEN/ORDERED",
+                    )
+                    fig2.add_hline(
+                        y=0.5,
+                        line_dash="dot",
+                        line_color="#ffc107",
+                        annotation_text="ORDERED/COMPLEX",
+                    )
+                    fig2.add_hline(
+                        y=0.8,
+                        line_dash="dot",
+                        line_color="#dc3545",
+                        annotation_text="COMPLEX/CHAOTIC",
+                    )
+                    fig2.update_layout(
+                        title="Grammar Phase Diagram",
+                        xaxis_title="β",
+                        xaxis_type="log",
+                        yaxis_title="Value",
+                        height=380,
+                        margin={"t": 40, "b": 20},
+                    )
+                    st.plotly_chart(fig2, use_container_width=True)
+
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+
+# ══════════════════════════════════════════════════════════════════
+#  ATOMIC PHYSICS PAGE
+# ══════════════════════════════════════════════════════════════════
+
+
+def render_atomic_physics_page() -> None:
+    """Render interactive Atomic Physics domain page with 6 closures."""
+    if st is None or go is None or pd is None or np is None:
+        return
+
+    _ensure_closures_path()
+
+    st.title("⚛️ Atomic Physics Domain")
+    st.caption(
+        "ATOM.INTSTACK.v1 — Ionization, spectral lines, electron config, fine structure, selection rules, field effects"
+    )
+
+    with st.expander("📖 Domain Overview", expanded=False):
+        st.markdown(
+            """
+        The **Atomic Physics** domain maps atomic structure observables into
+        UMCP contract space.  Each closure validates fundamental atomic
+        principles against reference data (NIST ASD, CODATA 2022).
+
+        | Closure | Principle | Key Observable |
+        |---------|-----------|---------------|
+        | Ionization Energy | Hydrogen-like + Slater screening | IE₁ deviation |
+        | Spectral Lines | Rydberg formula | Wavelength precision |
+        | Electron Config | Aufbau principle + Hund's rules | Shell completeness |
+        | Fine Structure | Dirac relativistic correction (Zα)² | Energy splitting |
+        | Selection Rules | E1: Δl=±1, Δm=0,±1, Δj=0,±1 | Rule compliance |
+        | Zeeman/Stark | External field perturbation | Level splitting |
+        """
+        )
+
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
+        [
+            "⚡ Ionization Energy",
+            "🌈 Spectral Lines",
+            "🔘 Electron Config",
+            "🔬 Fine Structure",
+            "📏 Selection Rules",
+            "🧲 Zeeman & Stark",
+        ]
+    )
+
+    # ── Tab 1: Ionization Energy ──────────────────────────────────
+    with tab1:
+        st.subheader("⚡ Ionization Energy (Hydrogen-like + Screening)")
+        st.markdown("**Model**: IE = 13.6 eV · Z_eff² / n_eff²  — Slater screening reduces Z_eff.")
+
+        preset_col, _ = st.columns([1, 2])
+        with preset_col:
+            ip = st.selectbox(
+                "Element preset",
+                [
+                    "Custom",
+                    "H – Hydrogen (Z=1)",
+                    "He – Helium (Z=2)",
+                    "Li – Lithium (Z=3)",
+                    "C – Carbon (Z=6)",
+                    "N – Nitrogen (Z=7)",
+                    "O – Oxygen (Z=8)",
+                    "Ne – Neon (Z=10)",
+                    "Na – Sodium (Z=11)",
+                    "Si – Silicon (Z=14)",
+                    "Ar – Argon (Z=18)",
+                    "Ca – Calcium (Z=20)",
+                    "Fe – Iron (Z=26)",
+                    "Cu – Copper (Z=29)",
+                    "Kr – Krypton (Z=36)",
+                    "Ag – Silver (Z=47)",
+                    "Au – Gold (Z=79)",
+                    "U – Uranium (Z=92)",
+                ],
+                key="atom_ie_preset",
+            )
+        presets_ie = {
+            "H – Hydrogen (Z=1)": 1,
+            "He – Helium (Z=2)": 2,
+            "Li – Lithium (Z=3)": 3,
+            "C – Carbon (Z=6)": 6,
+            "N – Nitrogen (Z=7)": 7,
+            "O – Oxygen (Z=8)": 8,
+            "Ne – Neon (Z=10)": 10,
+            "Na – Sodium (Z=11)": 11,
+            "Si – Silicon (Z=14)": 14,
+            "Ar – Argon (Z=18)": 18,
+            "Ca – Calcium (Z=20)": 20,
+            "Fe – Iron (Z=26)": 26,
+            "Cu – Copper (Z=29)": 29,
+            "Kr – Krypton (Z=36)": 36,
+            "Ag – Silver (Z=47)": 47,
+            "Au – Gold (Z=79)": 79,
+            "U – Uranium (Z=92)": 92,
+        }
+        _lk_ie = "_last_atom_ie"
+        if ip != "Custom" and st.session_state.get(_lk_ie) != ip:
+            st.session_state["atom_z_ie"] = presets_ie[ip]
+        st.session_state[_lk_ie] = ip
+        _z = presets_ie.get(ip, 1)
+        z_val = st.number_input("Z (atomic number)", 1, 118, _z, key="atom_z_ie")
+
+        if st.button("Compute Ionization Energy", key="atom_ie", type="primary"):
+            try:
+                from closures.atomic_physics.ionization_energy import (
+                    compute_ionization,
+                )
+
+                result = compute_ionization(z_val)
+                r = result._asdict()
+                regime = r["regime"]
+                regime_color = {
+                    "Precise": "🟢",
+                    "Approximate": "🟡",
+                    "Screened": "🟠",
+                }.get(regime, "🔴")
+
+                rc1, rc2, rc3, rc4 = st.columns(4)
+                with rc1:
+                    st.metric("IE predicted (eV)", f"{r['IE_predicted_eV']:.3f}")
+                with rc2:
+                    st.metric("IE measured (eV)", f"{r['IE_measured_eV']:.3f}")
+                with rc3:
+                    st.metric("ω_eff", f"{r['omega_eff']:.4f}")
+                with rc4:
+                    st.metric("Regime", f"{regime_color} {regime}")
+
+                mc1, mc2, mc3 = st.columns(3)
+                with mc1:
+                    st.metric("Z_eff (Slater)", f"{r['Z_eff']:.3f}")
+                with mc2:
+                    st.metric("n_eff", f"{r['n_eff']:.3f}")
+                with mc3:
+                    st.metric("Ψ_IE", f"{r['Psi_IE']:.4f}")
+
+                # IE trend across elements
+                z_range = list(range(1, min(37, max(z_val + 5, 37))))
+                ie_data: list[dict[str, float]] = []
+                for _zz in z_range:
+                    try:
+                        _r = compute_ionization(_zz)
+                        ie_data.append(
+                            {
+                                "Z": _zz,
+                                "IE_pred": _r.IE_predicted_eV,
+                                "IE_meas": _r.IE_measured_eV,
+                            }
+                        )
+                    except Exception:
+                        pass
+
+                if ie_data:
+                    fig = go.Figure()
+                    fig.add_trace(
+                        go.Scatter(
+                            x=[d["Z"] for d in ie_data],
+                            y=[d["IE_meas"] for d in ie_data],
+                            mode="lines+markers",
+                            name="NIST measured",
+                            marker={"size": 5, "color": "#007bff"},
+                            line={"width": 2},
+                        )
+                    )
+                    fig.add_trace(
+                        go.Scatter(
+                            x=[d["Z"] for d in ie_data],
+                            y=[d["IE_pred"] for d in ie_data],
+                            mode="lines",
+                            name="Predicted",
+                            line={
+                                "color": "#dc3545",
+                                "dash": "dash",
+                                "width": 1.5,
+                            },
+                        )
+                    )
+                    fig.add_trace(
+                        go.Scatter(
+                            x=[z_val],
+                            y=[r["IE_measured_eV"]],
+                            mode="markers",
+                            name=f"Z={z_val}",
+                            marker={
+                                "size": 12,
+                                "color": "red",
+                                "symbol": "star",
+                            },
+                        )
+                    )
+                    fig.update_layout(
+                        title="First Ionization Energy Across Elements",
+                        xaxis_title="Atomic Number Z",
+                        yaxis_title="IE₁ (eV)",
+                        height=380,
+                        margin={"t": 40, "b": 20},
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    # ── Tab 2: Spectral Lines ─────────────────────────────────────
+    with tab2:
+        st.subheader("🌈 Spectral Lines (Rydberg Formula)")
+        st.markdown("**Rydberg**: 1/λ = R∞ Z²(1/n₁² − 1/n₂²).  Series: Lyman (UV), Balmer (vis), Paschen (IR).")
+
+        preset_col2, _ = st.columns([1, 2])
+        with preset_col2:
+            sp = st.selectbox(
+                "Series preset",
+                [
+                    "Custom",
+                    "Lyman series (UV, n₁=1)",
+                    "Balmer series (visible, n₁=2)",
+                    "Paschen series (IR, n₁=3)",
+                    "Brackett series (far-IR, n₁=4)",
+                    "Pfund series (n₁=5)",
+                    "Balmer-α (Hα 656 nm, n=3→2)",
+                    "Lyman-β (n=3→1)",
+                    "He⁺ Lyman-α (Z=2, n=2→1)",
+                    "He⁺ Balmer (Z=2, n=4→2)",
+                    "Li²⁺ Lyman (Z=3, n=2→1)",
+                ],
+                key="atom_spec_preset",
+            )
+        presets_spec = {
+            "Lyman series (UV, n₁=1)": (1, 1, 4),
+            "Balmer series (visible, n₁=2)": (1, 2, 6),
+            "Paschen series (IR, n₁=3)": (1, 3, 6),
+            "Brackett series (far-IR, n₁=4)": (1, 4, 7),
+            "Pfund series (n₁=5)": (1, 5, 8),
+            "Balmer-α (Hα 656 nm, n=3→2)": (1, 2, 3),
+            "Lyman-β (n=3→1)": (1, 1, 3),
+            "He⁺ Lyman-α (Z=2, n=2→1)": (2, 1, 2),
+            "He⁺ Balmer (Z=2, n=4→2)": (2, 2, 4),
+            "Li²⁺ Lyman (Z=3, n=2→1)": (3, 1, 2),
+        }
+        _lk_sp = "_last_atom_spec"
+        if sp != "Custom" and st.session_state.get(_lk_sp) != sp:
+            _sv = presets_spec[sp]
+            st.session_state["atom_z_spec"] = _sv[0]
+            st.session_state["atom_n1"] = _sv[1]
+            st.session_state["atom_n2"] = _sv[2]
+        st.session_state[_lk_sp] = sp
+        _z_s, _n1, _n2 = presets_spec.get(sp, (1, 2, 3))
+
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            z_spec = st.number_input("Z", 1, 118, _z_s, key="atom_z_spec")
+        with c2:
+            n_lower = st.number_input("n₁ (lower)", 1, 10, _n1, key="atom_n1")
+        with c3:
+            n_upper = st.number_input("n₂ (upper)", 2, 20, _n2, key="atom_n2")
+
+        if st.button("Compute Spectral Series", key="atom_spec", type="primary"):
+            try:
+                from closures.atomic_physics.spectral_lines import (
+                    compute_series,
+                )
+
+                series = compute_series(  # type: ignore[arg-type]
+                    z_spec, n_lower, min(n_upper + 3, 12)
+                )
+
+                if series:
+                    df = pd.DataFrame(series)
+                    display_cols = [
+                        "n_lower",
+                        "n_upper",
+                        "lambda_predicted_nm",
+                        "energy_eV",
+                        "series_name",
+                        "regime",
+                    ]
+                    st.dataframe(
+                        df[display_cols],
+                        use_container_width=True,
+                        hide_index=True,
+                    )
+
+                    # Spectrum visualisation
+                    fig = go.Figure()
+                    colors_map = {
+                        "Lyman": "#9b59b6",
+                        "Balmer": "#e74c3c",
+                        "Paschen": "#e67e22",
+                        "Brackett": "#2ecc71",
+                    }
+                    for row in series:
+                        lam = row["lambda_predicted_nm"]
+                        sname = row["series_name"]
+                        color = colors_map.get(sname, "#3498db")
+                        fig.add_trace(
+                            go.Scatter(
+                                x=[lam, lam],
+                                y=[0, 1],
+                                mode="lines",
+                                line={"color": color, "width": 3},
+                                name=f"n={row['n_upper']}→{row['n_lower']} ({lam:.1f} nm)",
+                                showlegend=True,
+                            )
+                        )
+
+                    fig.update_layout(
+                        title=f"Emission Spectrum — Z={z_spec}",
+                        xaxis_title="Wavelength (nm)",
+                        yaxis={"visible": False},
+                        height=300,
+                        margin={"t": 40, "b": 20},
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+
+                    # Energy level diagram
+                    fig2 = go.Figure()
+                    levels_shown = sorted(set([n_lower] + [r_row["n_upper"] for r_row in series]))
+                    for n_lev in levels_shown:
+                        e_lev = -13.6 * z_spec**2 / n_lev**2
+                        fig2.add_trace(
+                            go.Scatter(
+                                x=[0, 1],
+                                y=[e_lev, e_lev],
+                                mode="lines",
+                                line={"color": "#333", "width": 2},
+                                name=f"n={n_lev} ({e_lev:.3f} eV)",
+                            )
+                        )
+                        fig2.add_annotation(
+                            x=1.1,
+                            y=e_lev,
+                            text=f"n={n_lev}",
+                            showarrow=False,
+                        )
+
+                    fig2.update_layout(
+                        title="Energy Level Diagram",
+                        xaxis={
+                            "visible": False,
+                            "range": [-0.2, 1.5],
+                        },
+                        yaxis_title="Energy (eV)",
+                        height=350,
+                        margin={"t": 40, "b": 20},
+                    )
+                    st.plotly_chart(fig2, use_container_width=True)
+
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    # ── Tab 3: Electron Configuration ─────────────────────────────
+    with tab3:
+        st.subheader("🔘 Electron Configuration (Aufbau Principle)")
+        st.markdown(
+            "Noble gas configurations (closed shells) are **collapse attractors** "
+            "— they have maximum shell completeness (F_eff → 1)."
+        )
+
+        preset_col3, _ = st.columns([1, 2])
+        with preset_col3:
+            ec_p = st.selectbox(
+                "Element preset",
+                [
+                    "Custom",
+                    "H – Hydrogen (Z=1)",
+                    "He – Noble gas (Z=2)",
+                    "C – Carbon (Z=6)",
+                    "N – Half-filled 2p (Z=7)",
+                    "Ne – Noble gas (Z=10)",
+                    "Na – Alkali metal (Z=11)",
+                    "Ar – Noble gas (Z=18)",
+                    "Cr – Anomalous 3d⁵4s¹ (Z=24)",
+                    "Fe – Iron (Z=26)",
+                    "Cu – Anomalous 3d¹⁰4s¹ (Z=29)",
+                    "Kr – Noble gas (Z=36)",
+                    "Ag – Anomalous 4d¹⁰5s¹ (Z=47)",
+                    "Au – Anomalous 5d¹⁰6s¹ (Z=79)",
+                    "U – Uranium (Z=92)",
+                ],
+                key="atom_config_preset",
+            )
+        presets_config = {
+            "H – Hydrogen (Z=1)": 1,
+            "He – Noble gas (Z=2)": 2,
+            "C – Carbon (Z=6)": 6,
+            "N – Half-filled 2p (Z=7)": 7,
+            "Ne – Noble gas (Z=10)": 10,
+            "Na – Alkali metal (Z=11)": 11,
+            "Ar – Noble gas (Z=18)": 18,
+            "Cr – Anomalous 3d⁵4s¹ (Z=24)": 24,
+            "Fe – Iron (Z=26)": 26,
+            "Cu – Anomalous 3d¹⁰4s¹ (Z=29)": 29,
+            "Kr – Noble gas (Z=36)": 36,
+            "Ag – Anomalous 4d¹⁰5s¹ (Z=47)": 47,
+            "Au – Anomalous 5d¹⁰6s¹ (Z=79)": 79,
+            "U – Uranium (Z=92)": 92,
+        }
+        _lk_ec = "_last_atom_config"
+        if ec_p != "Custom" and st.session_state.get(_lk_ec) != ec_p:
+            st.session_state["atom_z_config"] = presets_config[ec_p]
+        st.session_state[_lk_ec] = ec_p
+        _z_c = presets_config.get(ec_p, 26)
+        z_config = st.number_input("Z (atomic number)", 1, 118, _z_c, key="atom_z_config")
+
+        if st.button("Compute Configuration", key="atom_config", type="primary"):
+            try:
+                from closures.atomic_physics.electron_config import (
+                    compute_electron_config,
+                )
+
+                result = compute_electron_config(z_config)
+                r = result._asdict()
+                regime = r["regime"]
+                regime_color = {
+                    "ClosedShell": "🟢",
+                    "NearClosed": "🟢",
+                    "HalfFilled": "🟡",
+                }.get(regime, "🟠")
+
+                st.markdown(f"### Configuration: `{r['configuration']}`")
+                if r.get("noble_gas_core"):
+                    st.caption(f"Noble gas core: {r['noble_gas_core']}")
+
+                rc1, rc2, rc3, rc4 = st.columns(4)
+                with rc1:
+                    st.metric("Valence e⁻", r["valence_electrons"])
+                with rc2:
+                    st.metric(
+                        "Shell Completeness",
+                        f"{r['shell_completeness']:.3f}",
+                    )
+                with rc3:
+                    st.metric("Block", r["group_block"])
+                with rc4:
+                    st.metric("Regime", f"{regime_color} {regime}")
+
+                mc1, mc2, mc3 = st.columns(3)
+                with mc1:
+                    st.metric("Period", r["period"])
+                with mc2:
+                    st.metric("ω_eff", f"{r['omega_eff']:.4f}")
+                with mc3:
+                    st.metric("F_eff", f"{r['F_eff']:.4f}")
+
+                # Shell completeness across elements
+                z_range = list(range(1, min(z_config + 20, 119)))
+                comp_data: list[dict[str, object]] = []
+                for _zz in z_range:
+                    try:
+                        _r = compute_electron_config(_zz)
+                        comp_data.append(
+                            {
+                                "Z": _zz,
+                                "completeness": _r.shell_completeness,
+                                "regime": _r.regime,
+                            }
+                        )
+                    except Exception:
+                        pass
+
+                if comp_data:
+                    fig = go.Figure()
+                    colors = [
+                        (
+                            "#28a745"
+                            if d["regime"] == "ClosedShell"
+                            else (
+                                "#ffc107"
+                                if d["regime"] == "HalfFilled"
+                                else ("#007bff" if d["regime"] == "NearClosed" else "#6c757d")
+                            )
+                        )
+                        for d in comp_data
+                    ]
+                    fig.add_trace(
+                        go.Bar(
+                            x=[d["Z"] for d in comp_data],
+                            y=[d["completeness"] for d in comp_data],
+                            marker_color=colors,
+                            name="Shell Completeness",
+                        )
+                    )
+                    fig.add_trace(
+                        go.Scatter(
+                            x=[z_config],
+                            y=[r["shell_completeness"]],
+                            mode="markers",
+                            marker={
+                                "size": 14,
+                                "color": "red",
+                                "symbol": "star",
+                            },
+                            name=f"Z={z_config}",
+                        )
+                    )
+                    fig.update_layout(
+                        title="Shell Completeness Across Elements",
+                        xaxis_title="Z",
+                        yaxis_title="Completeness",
+                        height=350,
+                        margin={"t": 40, "b": 20},
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    # ── Tab 4: Fine Structure ─────────────────────────────────────
+    with tab4:
+        st.subheader("🔬 Fine Structure (Relativistic Correction)")
+        st.markdown(
+            "The relativistic parameter (Zα)² determines the regime: NonRelativistic → Relativistic → HeavyAtom."
+        )
+
+        preset_col4, _ = st.columns([1, 2])
+        with preset_col4:
+            fs_p = st.selectbox(
+                "State preset",
+                [
+                    "Custom",
+                    "H 2p₃/₂ (n=2, l=1, j=3/2)",
+                    "H 2p₁/₂ (n=2, l=1, j=1/2)",
+                    "H 2s₁/₂ (n=2, l=0, j=1/2)",
+                    "H 3d₅/₂ (n=3, l=2, j=5/2)",
+                    "Na 3p₃/₂ – D-line (Z=11)",
+                    "He⁺ 2p₃/₂ (Z=2)",
+                    "Li 2p₁/₂ (Z=3)",
+                    "Cs 6p₃/₂ (Z=55)",
+                    "U 2p₃/₂ – heavy atom (Z=92)",
+                ],
+                key="atom_fs_preset",
+            )
+        presets_fs: dict[str, tuple[int, int, int, float]] = {
+            "H 2p₃/₂ (n=2, l=1, j=3/2)": (1, 2, 1, 1.5),
+            "H 2p₁/₂ (n=2, l=1, j=1/2)": (1, 2, 1, 0.5),
+            "H 2s₁/₂ (n=2, l=0, j=1/2)": (1, 2, 0, 0.5),
+            "H 3d₅/₂ (n=3, l=2, j=5/2)": (1, 3, 2, 2.5),
+            "Na 3p₃/₂ – D-line (Z=11)": (11, 3, 1, 1.5),
+            "He⁺ 2p₃/₂ (Z=2)": (2, 2, 1, 1.5),
+            "Li 2p₁/₂ (Z=3)": (3, 2, 1, 0.5),
+            "Cs 6p₃/₂ (Z=55)": (55, 6, 1, 1.5),
+            "U 2p₃/₂ – heavy atom (Z=92)": (92, 2, 1, 1.5),
+        }
+        _lk_fs = "_last_atom_fs"
+        if fs_p != "Custom" and st.session_state.get(_lk_fs) != fs_p:
+            _fv = presets_fs[fs_p]
+            st.session_state["atom_z_fs"] = _fv[0]
+            st.session_state["atom_n_fs"] = _fv[1]
+            st.session_state["atom_l_fs"] = _fv[2]
+            st.session_state["atom_j_fs"] = _fv[3]
+        st.session_state[_lk_fs] = fs_p
+
+        c1, c2, c3, c4 = st.columns(4)
+        with c1:
+            z_fs = st.number_input("Z", 1, 118, 1, key="atom_z_fs")
+        with c2:
+            n_fs = st.number_input("n", 1, 10, 2, key="atom_n_fs")
+        with c3:
+            l_fs = st.number_input("l", 0, min(n_fs - 1, 6), 1, key="atom_l_fs")
+        with c4:
+            j_options: list[float] = [l_fs - 0.5, l_fs + 0.5] if l_fs > 0 else [0.5]
+            j_fs = st.selectbox("j", j_options, key="atom_j_fs")
+
+        if st.button("Compute Fine Structure", key="atom_fs", type="primary"):
+            try:
+                from closures.atomic_physics.fine_structure import (
+                    compute_fine_structure,
+                )
+
+                result = compute_fine_structure(z_fs, n_fs, l_fs, j_fs)
+                r = result._asdict()
+                regime = r["regime"]
+                regime_color = {
+                    "NonRelativistic": "🟢",
+                    "Relativistic": "🟡",
+                }.get(regime, "🔴")
+
+                rc1, rc2, rc3, rc4 = st.columns(4)
+                with rc1:
+                    st.metric("E_n (eV)", f"{r['E_n_eV']:.4f}")
+                with rc2:
+                    st.metric("ΔE_fine (eV)", f"{r['E_fine_eV']:.8f}")
+                with rc3:
+                    st.metric("(Zα)²", f"{r['Z_alpha_squared']:.6f}")
+                with rc4:
+                    st.metric("Regime", f"{regime_color} {regime}")
+
+                mc1, mc2, mc3 = st.columns(3)
+                with mc1:
+                    st.metric("Lamb shift (eV)", f"{r['E_lamb_eV']:.10f}")
+                with mc2:
+                    st.metric("j-splitting (eV)", f"{r['splitting_eV']:.8f}")
+                with mc3:
+                    st.metric("ω_eff", f"{r['omega_eff']:.6f}")
+
+                # (Zα)² vs Z
+                z_range = list(range(1, 93))
+                za_data = [{"Z": _zz, "Za_sq": (_zz / 137.036) ** 2} for _zz in z_range]
+
+                fig = go.Figure()
+                fig.add_trace(
+                    go.Scatter(
+                        x=[d["Z"] for d in za_data],
+                        y=[d["Za_sq"] for d in za_data],
+                        mode="lines",
+                        name="(Zα)²",
+                        line={"color": "#007bff", "width": 2},
+                    )
+                )
+                fig.add_hline(
+                    y=0.01,
+                    line_dash="dash",
+                    line_color="#28a745",
+                    annotation_text="NonRelativistic boundary",
+                )
+                fig.add_hline(
+                    y=0.1,
+                    line_dash="dash",
+                    line_color="#dc3545",
+                    annotation_text="HeavyAtom boundary",
+                )
+                fig.add_trace(
+                    go.Scatter(
+                        x=[z_fs],
+                        y=[r["Z_alpha_squared"]],
+                        mode="markers",
+                        marker={
+                            "size": 12,
+                            "color": "red",
+                            "symbol": "star",
+                        },
+                        name=f"Z={z_fs}",
+                    )
+                )
+                fig.update_layout(
+                    title="Relativistic Parameter (Zα)² Across Elements",
+                    xaxis_title="Z",
+                    yaxis_title="(Zα)²",
+                    yaxis_type="log",
+                    height=350,
+                    margin={"t": 40, "b": 20},
+                )
+                st.plotly_chart(fig, use_container_width=True)
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    # ── Tab 5: Selection Rules ────────────────────────────────────
+    with tab5:
+        st.subheader("📏 Selection Rules (E1 Dipole Transitions)")
+        st.markdown("**E1 rules**: Δl=±1, Δm_l=0/±1, Δj=0/±1 (j=0→0 forbidden), Δs=0, parity change.")
+
+        preset_col5, _ = st.columns([1, 2])
+        with preset_col5:
+            sr_p = st.selectbox(
+                "Transition preset",
+                [
+                    "Custom",
+                    "Lyman-α: 2p → 1s (allowed)",
+                    "Balmer-α: 3d → 2p (allowed)",
+                    "Balmer-β: 4d → 2p (allowed)",
+                    "Na D₁: 3p → 3s (allowed)",
+                    "σ⁺: 2p(m=1) → 1s (allowed)",
+                    "Forbidden: 2s → 1s (Δl=0)",
+                    "Forbidden: 3s → 2s (Δl=0)",
+                    "Forbidden: 3d → 1s (Δl=2)",
+                ],
+                key="atom_sel_preset",
+            )
+        # Each preset: (n_i, l_i, ml_i, n_f, l_f, ml_f)
+        presets_sel: dict[str, tuple[int, int, int, int, int, int]] = {
+            "Lyman-α: 2p → 1s (allowed)": (2, 1, 0, 1, 0, 0),
+            "Balmer-α: 3d → 2p (allowed)": (3, 2, 0, 2, 1, 0),
+            "Balmer-β: 4d → 2p (allowed)": (4, 2, 0, 2, 1, 0),
+            "Na D₁: 3p → 3s (allowed)": (3, 1, 0, 3, 0, 0),
+            "σ⁺: 2p(m=1) → 1s (allowed)": (2, 1, 1, 1, 0, 0),
+            "Forbidden: 2s → 1s (Δl=0)": (2, 0, 0, 1, 0, 0),
+            "Forbidden: 3s → 2s (Δl=0)": (3, 0, 0, 2, 0, 0),
+            "Forbidden: 3d → 1s (Δl=2)": (3, 2, 0, 1, 0, 0),
+        }
+        _lk_sr = "_last_atom_sel"
+        if sr_p != "Custom" and st.session_state.get(_lk_sr) != sr_p:
+            _srv = presets_sel[sr_p]
+            st.session_state["atom_ni"] = _srv[0]
+            st.session_state["atom_li"] = _srv[1]
+            st.session_state["atom_mli"] = _srv[2]
+            st.session_state["atom_nf"] = _srv[3]
+            st.session_state["atom_lf"] = _srv[4]
+            st.session_state["atom_mlf"] = _srv[5]
+        st.session_state[_lk_sr] = sr_p
+
+        st.markdown("**Initial state**")
+        ic1, ic2, ic3, _ = st.columns(4)
+        with ic1:
+            n_i = st.number_input("n_i", 1, 10, 2, key="atom_ni")
+        with ic2:
+            l_i = st.number_input("l_i", 0, min(n_i - 1, 6), 1, key="atom_li")
+        with ic3:
+            ml_i = st.number_input("m_l_i", -l_i, l_i, 0, key="atom_mli")
+        j_i_sel = l_i + 0.5
+
+        st.markdown("**Final state**")
+        fc1, fc2, fc3, _ = st.columns(4)
+        with fc1:
+            n_f = st.number_input("n_f", 1, 10, 1, key="atom_nf")
+        with fc2:
+            l_f = st.number_input("l_f", 0, min(n_f - 1, 6), 0, key="atom_lf")
+        with fc3:
+            ml_f = st.number_input("m_l_f", -max(l_f, 1), max(l_f, 1), 0, key="atom_mlf")
+        j_f_sel = l_f + 0.5
+
+        if st.button("Check Selection Rules", key="atom_sel", type="primary"):
+            try:
+                from closures.atomic_physics.selection_rules import (
+                    compute_selection_rules,
+                )
+
+                result = compute_selection_rules(
+                    n_i,
+                    l_i,
+                    ml_i,
+                    0.5,
+                    j_i_sel,
+                    n_f,
+                    l_f,
+                    ml_f,
+                    0.5,
+                    j_f_sel,
+                )
+                r = result._asdict()
+                regime = r["regime"]
+                regime_color = {
+                    "Allowed": "🟢",
+                    "ForbiddenWeak": "🟡",
+                }.get(regime, "🔴")
+
+                rc1, rc2, rc3, rc4 = st.columns(4)
+                with rc1:
+                    st.metric("Transition", r["transition_type"])
+                with rc2:
+                    st.metric(
+                        "Rules Met",
+                        f"{r['rules_satisfied']}/{r['rules_total']}",
+                    )
+                with rc3:
+                    st.metric("ω_eff", f"{r['omega_eff']:.4f}")
+                with rc4:
+                    st.metric("Regime", f"{regime_color} {regime}")
+
+                rules_data = [
+                    {
+                        "Rule": "Δl = ±1",
+                        "Value": f"Δl = {r['delta_l']}",
+                        "Status": "✅" if r["l_rule_ok"] else "❌",
+                    },
+                    {
+                        "Rule": "Δm_l = 0,±1",
+                        "Value": f"Δm = {r['delta_ml']}",
+                        "Status": "✅" if r["ml_rule_ok"] else "❌",
+                    },
+                    {
+                        "Rule": "Δj = 0,±1",
+                        "Value": f"Δj = {r['delta_j']}",
+                        "Status": "✅" if r["j_rule_ok"] else "❌",
+                    },
+                    {
+                        "Rule": "Δs = 0",
+                        "Value": f"Δs = {r['delta_s']}",
+                        "Status": "✅" if r["s_rule_ok"] else "❌",
+                    },
+                    {
+                        "Rule": "Parity change",
+                        "Value": str(r["parity_change"]),
+                        "Status": "✅" if r["parity_rule_ok"] else "❌",
+                    },
+                ]
+                st.dataframe(
+                    pd.DataFrame(rules_data),
+                    use_container_width=True,
+                    hide_index=True,
+                )
+
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    # ── Tab 6: Zeeman & Stark ─────────────────────────────────────
+    with tab6:
+        st.subheader("🧲 Zeeman & Stark Effects")
+        st.markdown("**Zeeman**: ΔE = m_j · g_J · μ_B · B  **Stark**: ΔE = −½ α_D E²")
+
+        preset_col6, _ = st.columns([1, 2])
+        with preset_col6:
+            zs_p = st.selectbox(
+                "Scenario preset",
+                [
+                    "Custom",
+                    "H 2p in 1 T (weak Zeeman)",
+                    "H 2p in 10 T (strong Zeeman)",
+                    "Na D-line in 0.5 T (Z=11)",
+                    "Cs 6p in 0.1 T (Z=55)",
+                    "Stark: H n=2 in 10⁶ V/m",
+                    "Combined: B=1 T + E=10⁵ V/m",
+                ],
+                key="atom_zs_preset",
+            )
+        # Each preset: (Z, n, l, B_tesla, E_Vm)
+        presets_zs: dict[str, tuple[int, int, int, float, float]] = {
+            "H 2p in 1 T (weak Zeeman)": (1, 2, 1, 1.0, 0.0),
+            "H 2p in 10 T (strong Zeeman)": (1, 2, 1, 10.0, 0.0),
+            "Na D-line in 0.5 T (Z=11)": (11, 3, 1, 0.5, 0.0),
+            "Cs 6p in 0.1 T (Z=55)": (55, 6, 1, 0.1, 0.0),
+            "Stark: H n=2 in 10⁶ V/m": (1, 2, 1, 0.0, 1e6),
+            "Combined: B=1 T + E=10⁵ V/m": (1, 2, 1, 1.0, 1e5),
+        }
+        _lk_zs = "_last_atom_zs"
+        if zs_p != "Custom" and st.session_state.get(_lk_zs) != zs_p:
+            _zsv = presets_zs[zs_p]
+            st.session_state["atom_z_zs"] = _zsv[0]
+            st.session_state["atom_n_zs"] = _zsv[1]
+            st.session_state["atom_l_zs"] = _zsv[2]
+            st.session_state["atom_b_zs"] = _zsv[3]
+            st.session_state["atom_e_zs"] = _zsv[4]
+        st.session_state[_lk_zs] = zs_p
+
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            z_zs = st.number_input("Z", 1, 118, 1, key="atom_z_zs")
+            n_zs = st.number_input("n", 1, 10, 2, key="atom_n_zs")
+        with c2:
+            l_zs = st.number_input("l", 0, min(n_zs - 1, 6), 1, key="atom_l_zs")
+            j_zs_opts = [l_zs + 0.5] if l_zs == 0 else [l_zs - 0.5, l_zs + 0.5]
+            j_zs = st.selectbox("j", j_zs_opts, key="atom_j_zs")
+        with c3:
+            mj_range = [x * 0.5 for x in range(int(-2 * j_zs), int(2 * j_zs) + 1)]
+            mj_zs = st.selectbox(
+                "m_j",
+                mj_range,
+                index=len(mj_range) // 2,
+                key="atom_mj_zs",
+            )
+
+        fc1, fc2 = st.columns(2)
+        with fc1:
+            b_field = st.number_input("B (Tesla)", 0.0, 100.0, 1.0, 0.1, key="atom_b_zs")
+        with fc2:
+            e_field = st.number_input("E (V/m)", 0.0, 1e8, 0.0, 1e4, key="atom_e_zs")
+
+        if st.button("Compute Field Effects", key="atom_zs", type="primary"):
+            try:
+                from closures.atomic_physics.zeeman_stark import (
+                    compute_zeeman_stark,
+                )
+
+                result = compute_zeeman_stark(
+                    z_zs,
+                    n_zs,
+                    l_zs,
+                    0.5,
+                    j_zs,
+                    mj_zs,
+                    B_tesla=b_field,
+                    E_field_Vm=e_field,
+                )
+                r = result._asdict()
+                regime = r["regime"]
+                regime_color = {
+                    "Weak": "🟢",
+                    "Moderate": "🟡",
+                }.get(regime, "🔴")
+
+                rc1, rc2, rc3, rc4 = st.columns(4)
+                with rc1:
+                    st.metric(
+                        "ΔE_Zeeman (eV)",
+                        f"{r['delta_E_zeeman_eV']:.8f}",
+                    )
+                with rc2:
+                    st.metric(
+                        "ΔE_Stark (eV)",
+                        f"{r['delta_E_stark_eV']:.8f}",
+                    )
+                with rc3:
+                    st.metric("g_J (Landé)", f"{r['g_lande']:.4f}")
+                with rc4:
+                    st.metric("Regime", f"{regime_color} {regime}")
+
+                mc1, mc2, mc3 = st.columns(3)
+                with mc1:
+                    st.metric("E_n (eV)", f"{r['E_n_eV']:.4f}")
+                with mc2:
+                    st.metric(
+                        "ΔE_total (eV)",
+                        f"{r['delta_E_total_eV']:.8f}",
+                    )
+                with mc3:
+                    st.metric("Zeeman sub-levels", r["n_zeeman_levels"])
+
+                # Zeeman splitting diagram for all m_j values
+                if b_field > 0:
+                    mj_all = [x * 0.5 for x in range(int(-2 * j_zs), int(2 * j_zs) + 1)]
+                    fig = go.Figure()
+                    for mj_v in mj_all:
+                        r_v = compute_zeeman_stark(
+                            z_zs,
+                            n_zs,
+                            l_zs,
+                            0.5,
+                            j_zs,
+                            mj_v,
+                            B_tesla=b_field,
+                        )
+                        # Unperturbed
+                        fig.add_trace(
+                            go.Scatter(
+                                x=[0, 0.4],
+                                y=[r_v.E_n_eV, r_v.E_n_eV],
+                                mode="lines",
+                                line={"color": "#333", "width": 2},
+                                showlegend=False,
+                            )
+                        )
+                        # Perturbed
+                        e_p = r_v.E_n_eV + r_v.delta_E_zeeman_eV
+                        fig.add_trace(
+                            go.Scatter(
+                                x=[0.6, 1],
+                                y=[e_p, e_p],
+                                mode="lines",
+                                line={
+                                    "color": "#007bff",
+                                    "width": 2,
+                                },
+                                name=f"m_j = {mj_v:+.1f}",
+                            )
+                        )
+                        # Connector
+                        fig.add_trace(
+                            go.Scatter(
+                                x=[0.4, 0.6],
+                                y=[r_v.E_n_eV, e_p],
+                                mode="lines",
+                                line={
+                                    "color": "#ccc",
+                                    "width": 1,
+                                    "dash": "dot",
+                                },
+                                showlegend=False,
+                            )
+                        )
+
+                    fig.update_layout(
+                        title=f"Zeeman Splitting at B = {b_field} T",
+                        xaxis={
+                            "visible": False,
+                            "range": [-0.1, 1.2],
+                        },
+                        yaxis_title="Energy (eV)",
+                        height=400,
+                        margin={"t": 40, "b": 20},
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+
+# ══════════════════════════════════════════════════════════════════
+#  STANDARD MODEL COMPARISON PAGE
+# ══════════════════════════════════════════════════════════════════
+
+
+def render_standard_model_page() -> None:
+    """Render interactive Standard Model comparison page with 5 closures."""
+    if st is None or go is None or pd is None or np is None:
+        return
+
+    _ensure_closures_path()
+
+    st.title("🔬 Standard Model Comparison")
+    st.caption("SM.INTSTACK.v1 — Particle catalog, coupling constants, cross sections, Higgs mechanism, CKM mixing")
+
+    with st.expander("📖 Domain Overview", expanded=False):
+        st.markdown(
+            """
+        The **Standard Model** domain maps particle physics observables
+        into UMCP contract space.
+
+        | Closure | Principle | Key Observable |
+        |---------|-----------|---------------|
+        | Particle Catalog | 17-particle SM table | Mass/charge/spin |
+        | Coupling Constants | 1-loop RGE: α_s(Q²) | Running drift |
+        | Cross Sections | R-ratio: σ(e⁺e⁻→had)/σ(μμ) | QCD validation |
+        | Symmetry Breaking | Higgs VEV, Yukawa | Mass prediction |
+        | CKM Mixing | Wolfenstein parametrization | Unitarity deficit |
+        """
+        )
+
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(
+        [
+            "📋 Particle Catalog",
+            "📉 Running Couplings",
+            "📊 Cross Sections",
+            "⚡ Higgs Mechanism",
+            "🔀 CKM Mixing",
+        ]
+    )
+
+    # ── Tab 1: Particle Catalog ───────────────────────────────────
+    with tab1:
+        st.subheader("📋 Standard Model Particle Catalog")
+        st.markdown(
+            "All 17 fundamental particles (PDG 2024). "
+            "Mass, charge, spin embedded into UMCP coordinates c₁,c₂,c₃ ∈ [0,1]."
+        )
+
+        try:
+            from closures.standard_model.particle_catalog import (
+                list_particles,
+                particle_table,
+            )
+
+            cat_filter = st.selectbox(
+                "Filter by category",
+                [
+                    "All",
+                    "Quark",
+                    "Lepton",
+                    "GaugeBoson",
+                    "ScalarBoson",
+                ],
+                key="sm_cat_filter",
+            )
+
+            particles = particle_table()
+            if cat_filter != "All":
+                particles = [p for p in particles if p["category"] == cat_filter]
+
+            display_cols = [
+                "symbol",
+                "name",
+                "category",
+                "mass_GeV",
+                "charge_e",
+                "spin",
+                "generation",
+                "c1",
+                "c2",
+                "c3",
+                "omega",
+                "F",
+                "regime",
+            ]
+            df = pd.DataFrame(particles)
+            if not df.empty:
+                st.dataframe(
+                    df[display_cols],
+                    use_container_width=True,
+                    hide_index=True,
+                )
+
+            # Mass spectrum
+            all_particles = particle_table()
+            masses = [p for p in all_particles if p["mass_GeV"] > 0]
+            if masses:
+                import math as _math
+
+                fig = go.Figure()
+                cat_colors = {
+                    "Quark": "#e74c3c",
+                    "Lepton": "#3498db",
+                    "GaugeBoson": "#2ecc71",
+                    "ScalarBoson": "#f39c12",
+                }
+                for cat in cat_colors:
+                    cat_p = [p for p in masses if p["category"] == cat]
+                    if cat_p:
+                        fig.add_trace(
+                            go.Scatter(
+                                x=[p["symbol"] for p in cat_p],
+                                y=[_math.log10(p["mass_GeV"]) for p in cat_p],
+                                mode="markers+text",
+                                marker={
+                                    "size": 12,
+                                    "color": cat_colors[cat],
+                                },
+                                text=[p["symbol"] for p in cat_p],
+                                textposition="top center",
+                                name=cat,
+                            )
+                        )
+
+                fig.update_layout(
+                    title="SM Mass Spectrum (log₁₀ scale)",
+                    xaxis_title="Particle",
+                    yaxis_title="log₁₀(m / GeV)",
+                    height=450,
+                    margin={"t": 40, "b": 20},
+                )
+                st.plotly_chart(fig, use_container_width=True)
+
+            # Radar chart
+            st.markdown("**UMCP Coordinate Embedding**")
+            radar_particles = list_particles()[:6]
+            if radar_particles:
+                fig2 = go.Figure()
+                categories = [
+                    "c₁ (mass)",
+                    "c₂ (charge)",
+                    "c₃ (spin)",
+                    "F (stability)",
+                    "c₁ (mass)",
+                ]
+                for p in radar_particles:
+                    values = [p.c1, p.c2, p.c3, p.F, p.c1]
+                    fig2.add_trace(
+                        go.Scatterpolar(
+                            r=values,
+                            theta=categories,
+                            fill="toself",
+                            name=f"{p.symbol} ({p.name})",
+                            opacity=0.6,
+                        )
+                    )
+                fig2.update_layout(
+                    polar={
+                        "radialaxis": {
+                            "visible": True,
+                            "range": [0, 1],
+                        }
+                    },
+                    title="Particle Embedding Radar",
+                    height=400,
+                )
+                st.plotly_chart(fig2, use_container_width=True)
+
+        except Exception as e:
+            st.error(f"Computation error: {e}")
+
+    # ── Tab 2: Running Couplings ──────────────────────────────────
+    with tab2:
+        st.subheader("📉 Running Coupling Constants (1-loop RGE)")
+        st.markdown(
+            "**Asymptotic freedom**: α_s(Q) decreases at high energy.  \n"
+            "**QED screening**: α_em(Q) increases at high energy."
+        )
+
+        preset_col_c, _ = st.columns([1, 2])
+        with preset_col_c:
+            cp_p = st.selectbox(
+                "Energy range preset",
+                [
+                    "Custom",
+                    "QCD region (1–10 GeV)",
+                    "Charm → bottom (1–5 GeV)",
+                    "Z-pole region (50–150 GeV)",
+                    "LHC range (10–14000 GeV)",
+                    "Full survey (0.5–100k GeV)",
+                    "Grand unification (100–10⁶ GeV)",
+                ],
+                key="sm_coupling_preset",
+            )
+        presets_coup: dict[str, tuple[float, float]] = {
+            "QCD region (1–10 GeV)": (1.0, 10.0),
+            "Charm → bottom (1–5 GeV)": (1.0, 5.0),
+            "Z-pole region (50–150 GeV)": (50.0, 150.0),
+            "LHC range (10–14000 GeV)": (10.0, 14000.0),
+            "Full survey (0.5–100k GeV)": (0.5, 1e5),
+            "Grand unification (100–10⁶ GeV)": (100.0, 1e6),
+        }
+        _lk_cp = "_last_sm_coupling"
+        if cp_p != "Custom" and st.session_state.get(_lk_cp) != cp_p:
+            _cpv = presets_coup[cp_p]
+            st.session_state["sm_qmin"] = _cpv[0]
+            st.session_state["sm_qmax"] = _cpv[1]
+        st.session_state[_lk_cp] = cp_p
+        _qd = presets_coup.get(cp_p, (1.0, 1000.0))
+
+        c1, c2 = st.columns(2)
+        with c1:
+            q_min = st.number_input("Q_min (GeV)", 0.5, 1e4, _qd[0], key="sm_qmin")
+        with c2:
+            q_max = st.number_input("Q_max (GeV)", 10.0, 1e6, _qd[1], key="sm_qmax")
+
+        if st.button("Compute Running Couplings", key="sm_coupling", type="primary"):
+            try:
+                from closures.standard_model.coupling_constants import (
+                    ALPHA_S_MZ,
+                    M_Z_GEV,
+                    compute_running_coupling,
+                )
+
+                q_values = np.logspace(np.log10(q_min), np.log10(q_max), 100)
+                results = []
+                for q in q_values:
+                    rr = compute_running_coupling(float(q))
+                    results.append(rr._asdict())
+
+                df = pd.DataFrame(results)
+
+                # Summary at landmark scales
+                summary_scales = [1.0, 2.0, 10.0, 91.2, 500.0, 1000.0]
+                summary_data = []
+                for q in summary_scales:
+                    if q_min <= q <= q_max:
+                        rr = compute_running_coupling(q)
+                        summary_data.append(
+                            {
+                                "Q (GeV)": q,
+                                "α_s": f"{rr.alpha_s:.4f}",
+                                "α_em": f"{rr.alpha_em:.6f}",
+                                "n_f": rr.n_flavors,
+                                "ω_eff": f"{rr.omega_eff:.4f}",
+                                "Regime": rr.regime,
+                            }
+                        )
+                if summary_data:
+                    st.dataframe(
+                        pd.DataFrame(summary_data),
+                        use_container_width=True,
+                        hide_index=True,
+                    )
+
+                # α_s running plot
+                fig = go.Figure()
+                fig.add_trace(
+                    go.Scatter(
+                        x=df["Q_GeV"].tolist(),
+                        y=df["alpha_s"].tolist(),
+                        mode="lines",
+                        name="α_s(Q)",
+                        line={"color": "#dc3545", "width": 2},
+                    )
+                )
+                fig.add_trace(
+                    go.Scatter(
+                        x=df["Q_GeV"].tolist(),
+                        y=(df["alpha_em"] * 100).tolist(),
+                        mode="lines",
+                        name="α_em(Q) × 100",
+                        line={"color": "#007bff", "width": 2},
+                    )
+                )
+                fig.add_hline(
+                    y=ALPHA_S_MZ,
+                    line_dash="dash",
+                    line_color="#28a745",
+                    annotation_text=f"α_s(M_Z) = {ALPHA_S_MZ}",
+                )
+                fig.add_vline(
+                    x=M_Z_GEV,
+                    line_dash="dot",
+                    line_color="#6c757d",
+                    annotation_text=f"M_Z = {M_Z_GEV}",
+                )
+                fig.update_layout(
+                    title="Running Coupling Constants",
+                    xaxis_title="Q (GeV)",
+                    xaxis_type="log",
+                    yaxis_title="Coupling strength",
+                    height=400,
+                    margin={"t": 40, "b": 20},
+                )
+                st.plotly_chart(fig, use_container_width=True)
+
+                # Unification proximity
+                uni_data: list[dict[str, float]] = []
+                q_wide = np.logspace(0, 6, 200)
+                for q in q_wide:
+                    rr = compute_running_coupling(float(q))
+                    uni_data.append(
+                        {
+                            "Q": float(q),
+                            "proximity": rr.unification_proximity,
+                        }
+                    )
+
+                fig2 = go.Figure()
+                fig2.add_trace(
+                    go.Scatter(
+                        x=[d["Q"] for d in uni_data],
+                        y=[d["proximity"] for d in uni_data],
+                        mode="lines",
+                        name="Unification Proximity",
+                        line={"color": "#9b59b6", "width": 2},
+                        fill="tozeroy",
+                        fillcolor="rgba(155,89,182,0.1)",
+                    )
+                )
+                fig2.update_layout(
+                    title="Coupling Unification Proximity",
+                    xaxis_title="Q (GeV)",
+                    xaxis_type="log",
+                    yaxis_title="Proximity [0,1]",
+                    height=300,
+                    margin={"t": 40, "b": 20},
+                )
+                st.plotly_chart(fig2, use_container_width=True)
+
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    # ── Tab 3: Cross Sections ─────────────────────────────────────
+    with tab3:
+        st.subheader("📊 e⁺e⁻ → Hadrons & R-ratio")
+        st.markdown("R = σ(e⁺e⁻→had) / σ(e⁺e⁻→μ⁺μ⁻) = N_c Σ Q_f² · (1 + α_s/π + …)")
+
+        preset_col_xs, _ = st.columns([1, 2])
+        with preset_col_xs:
+            xs_p = st.selectbox(
+                "Energy preset",
+                [
+                    "Custom",
+                    "Low energy (2.0 GeV)",
+                    "J/ψ resonance (3.10 GeV)",
+                    "τ threshold (3.56 GeV)",
+                    "Υ(1S) resonance (9.46 GeV)",
+                    "B-factory (10.58 GeV)",
+                    "Z-pole (91.2 GeV)",
+                    "W⁺W⁻ threshold (161 GeV)",
+                    "LEP-II (200 GeV)",
+                ],
+                key="sm_xs_preset",
+            )
+        presets_xs: dict[str, float] = {
+            "Low energy (2.0 GeV)": 2.0,
+            "J/ψ resonance (3.10 GeV)": 3.10,
+            "τ threshold (3.56 GeV)": 3.56,
+            "Υ(1S) resonance (9.46 GeV)": 9.46,
+            "B-factory (10.58 GeV)": 10.58,
+            "Z-pole (91.2 GeV)": 91.2,
+            "W⁺W⁻ threshold (161 GeV)": 161.0,
+            "LEP-II (200 GeV)": 200.0,
+        }
+        _lk_xs = "_last_sm_xs"
+        if xs_p != "Custom" and st.session_state.get(_lk_xs) != xs_p:
+            st.session_state["sm_sqrts"] = presets_xs[xs_p]
+        st.session_state[_lk_xs] = xs_p
+        _sqd = presets_xs.get(xs_p, 91.2)
+
+        sqrt_s = st.number_input("√s (GeV)", 1.0, 500.0, _sqd, 0.1, key="sm_sqrts")
+
+        if st.button("Compute Cross Section", key="sm_xsec", type="primary"):
+            try:
+                from closures.standard_model.cross_sections import (
+                    R_EXPERIMENTAL,
+                    compute_cross_section,
+                )
+
+                result = compute_cross_section(sqrt_s)
+                r = result._asdict()
+                regime = r["regime"]
+                regime_color = {
+                    "Validated": "🟢",
+                    "Tension": "🟡",
+                }.get(regime, "🔴")
+
+                rc1, rc2, rc3, rc4 = st.columns(4)
+                with rc1:
+                    st.metric("R (tree)", f"{r['R_predicted']:.4f}")
+                with rc2:
+                    st.metric("R (QCD)", f"{r['R_QCD_corrected']:.4f}")
+                with rc3:
+                    st.metric("σ_point (pb)", f"{r['sigma_point_pb']:.2f}")
+                with rc4:
+                    st.metric("Regime", f"{regime_color} {regime}")
+
+                mc1, mc2, mc3, mc4 = st.columns(4)
+                with mc1:
+                    st.metric("N_c (colors)", r["n_colors"])
+                with mc2:
+                    st.metric("n_f (flavors)", r["n_active_flavors"])
+                with mc3:
+                    st.metric("Σ Q_f²", f"{r['sum_Qf_squared']:.4f}")
+                with mc4:
+                    st.metric("α_s at √s", f"{r['alpha_s_at_s']:.4f}")
+
+                # R-ratio vs √s
+                s_range = np.logspace(np.log10(1.5), np.log10(300), 200)
+                r_data: list[dict[str, float]] = []
+                for s_val in s_range:
+                    try:
+                        _r = compute_cross_section(float(s_val))
+                        r_data.append(
+                            {
+                                "sqrt_s": float(s_val),
+                                "R_tree": _r.R_predicted,
+                                "R_QCD": _r.R_QCD_corrected,
+                            }
+                        )
+                    except Exception:
+                        pass
+
+                if r_data:
+                    fig = go.Figure()
+                    fig.add_trace(
+                        go.Scatter(
+                            x=[d["sqrt_s"] for d in r_data],
+                            y=[d["R_QCD"] for d in r_data],
+                            mode="lines",
+                            name="R (QCD)",
+                            line={
+                                "color": "#007bff",
+                                "width": 2,
+                            },
+                        )
+                    )
+                    fig.add_trace(
+                        go.Scatter(
+                            x=[d["sqrt_s"] for d in r_data],
+                            y=[d["R_tree"] for d in r_data],
+                            mode="lines",
+                            name="R (tree)",
+                            line={
+                                "color": "#dc3545",
+                                "width": 1.5,
+                                "dash": "dash",
+                            },
+                        )
+                    )
+
+                    for name, (s_exp, r_exp) in R_EXPERIMENTAL.items():
+                        fig.add_trace(
+                            go.Scatter(
+                                x=[s_exp],
+                                y=[r_exp],
+                                mode="markers",
+                                marker={
+                                    "size": 10,
+                                    "color": "#28a745",
+                                    "symbol": "diamond",
+                                },
+                                name=f"{name} (exp)",
+                            )
+                        )
+
+                    thresholds = [
+                        (3.0, "cc̄"),
+                        (10.0, "bb̄"),
+                    ]
+                    for s_th, label in thresholds:
+                        fig.add_vline(
+                            x=s_th,
+                            line_dash="dot",
+                            line_color="#ffc107",
+                            annotation_text=label,
+                            annotation_position="top right",
+                        )
+
+                    fig.update_layout(
+                        title="R-ratio vs √s",
+                        xaxis_title="√s (GeV)",
+                        xaxis_type="log",
+                        yaxis_title="R",
+                        height=450,
+                        margin={"t": 40, "b": 20},
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    # ── Tab 4: Higgs Mechanism ────────────────────────────────────
+    with tab4:
+        st.subheader("⚡ Higgs Mechanism & EWSB")
+        st.markdown("V(φ) = μ²|φ|² + λ|φ|⁴  →  v ≈ 246.22 GeV  →  m_f = y_f v/√2,  M_W = g₂v/2,  M_Z = v√(g₁²+g₂²)/2")
+
+        preset_col_h, _ = st.columns([1, 2])
+        with preset_col_h:
+            hg_p = st.selectbox(
+                "Scenario preset",
+                [
+                    "Custom",
+                    "SM measured (PDG 2024)",
+                    "Heavy Higgs (m_H = 150 GeV)",
+                    "Light Higgs (m_H = 100 GeV)",
+                    "High VEV (v = 260 GeV)",
+                    "Low VEV (v = 230 GeV)",
+                    "Pre-discovery prediction (m_H = 115)",
+                ],
+                key="sm_higgs_preset",
+            )
+        presets_higgs: dict[str, tuple[float, float]] = {
+            "SM measured (PDG 2024)": (246.22, 125.25),
+            "Heavy Higgs (m_H = 150 GeV)": (246.22, 150.0),
+            "Light Higgs (m_H = 100 GeV)": (246.22, 100.0),
+            "High VEV (v = 260 GeV)": (260.0, 125.25),
+            "Low VEV (v = 230 GeV)": (230.0, 125.25),
+            "Pre-discovery prediction (m_H = 115)": (246.22, 115.0),
+        }
+        _lk_hg = "_last_sm_higgs"
+        if hg_p != "Custom" and st.session_state.get(_lk_hg) != hg_p:
+            _hv = presets_higgs[hg_p]
+            st.session_state["sm_vev"] = _hv[0]
+            st.session_state["sm_mh"] = _hv[1]
+        st.session_state[_lk_hg] = hg_p
+        _hd = presets_higgs.get(hg_p, (246.22, 125.25))
+
+        c1, c2 = st.columns(2)
+        with c1:
+            v_input = st.number_input(
+                "VEV (GeV)",
+                200.0,
+                300.0,
+                _hd[0],
+                0.01,
+                key="sm_vev",
+            )
+        with c2:
+            mh_input = st.number_input(
+                "m_H (GeV)",
+                100.0,
+                200.0,
+                _hd[1],
+                0.01,
+                key="sm_mh",
+            )
+
+        if st.button("Compute Higgs Mechanism", key="sm_higgs", type="primary"):
+            try:
+                from closures.standard_model.symmetry_breaking import (
+                    M_W_MEASURED,
+                    M_Z_MEASURED,
+                    compute_higgs_mechanism,
+                )
+
+                result = compute_higgs_mechanism(v_input, mh_input)
+                r = result._asdict()
+                regime = r["regime"]
+                regime_color = {
+                    "Consistent": "🟢",
+                    "Tension": "🟡",
+                }.get(regime, "🔴")
+
+                rc1, rc2, rc3, rc4 = st.columns(4)
+                with rc1:
+                    st.metric("VEV (GeV)", f"{r['v_GeV']:.2f}")
+                with rc2:
+                    st.metric("λ (quartic)", f"{r['lambda_quartic']:.6f}")
+                with rc3:
+                    st.metric("μ² (GeV²)", f"{r['mu_squared']:.2f}")
+                with rc4:
+                    st.metric("Regime", f"{regime_color} {regime}")
+
+                mc1, mc2 = st.columns(2)
+                with mc1:
+                    st.metric(
+                        "M_W predicted",
+                        f"{r['m_W_predicted']:.3f} GeV",
+                        f"meas: {M_W_MEASURED}",
+                    )
+                with mc2:
+                    st.metric(
+                        "M_Z predicted",
+                        f"{r['m_Z_predicted']:.3f} GeV",
+                        f"meas: {M_Z_MEASURED}",
+                    )
+
+                # Yukawa chart
+                import math as _math
+
+                yukawas = r["yukawa_couplings"]
+                sorted_y = sorted(yukawas.items(), key=lambda x: -x[1])
+                fig = go.Figure()
+                fig.add_trace(
+                    go.Bar(
+                        x=[name for name, _ in sorted_y],
+                        y=[_math.log10(y) if y > 0 else -10 for _, y in sorted_y],
+                        marker_color=[
+                            (
+                                "#dc3545"
+                                if name
+                                in [
+                                    "top",
+                                    "bottom",
+                                    "charm",
+                                    "strange",
+                                    "up",
+                                    "down",
+                                ]
+                                else "#007bff"
+                            )
+                            for name, _ in sorted_y
+                        ],
+                        text=[f"{y:.2e}" for _, y in sorted_y],
+                        textposition="outside",
+                    )
+                )
+                fig.update_layout(
+                    title="Yukawa Couplings (log₁₀ scale)",
+                    xaxis_title="Fermion",
+                    yaxis_title="log₁₀(y_f)",
+                    height=400,
+                    margin={"t": 40, "b": 20},
+                )
+                st.plotly_chart(fig, use_container_width=True)
+
+                # Higgs potential
+                phi_range = np.linspace(-300, 300, 500)
+                lam = r["lambda_quartic"]
+                mu_sq = r["mu_squared"]
+                V = mu_sq * (phi_range**2) / (r["v_GeV"] ** 2) + lam * (phi_range**4) / (r["v_GeV"] ** 4)
+                V = V / 1e6  # scale for display
+
+                fig2 = go.Figure()
+                fig2.add_trace(
+                    go.Scatter(
+                        x=phi_range.tolist(),
+                        y=V.tolist(),
+                        mode="lines",
+                        name="V(φ)",
+                        line={"color": "#9b59b6", "width": 2},
+                    )
+                )
+                fig2.add_vline(
+                    x=r["v_GeV"],
+                    line_dash="dash",
+                    line_color="#28a745",
+                    annotation_text=f"v = {r['v_GeV']:.1f} GeV",
+                )
+                fig2.add_vline(
+                    x=-r["v_GeV"],
+                    line_dash="dash",
+                    line_color="#28a745",
+                )
+                fig2.update_layout(
+                    title="Higgs Potential (Mexican Hat)",
+                    xaxis_title="φ (GeV)",
+                    yaxis_title="V(φ) (arb. units)",
+                    height=350,
+                    margin={"t": 40, "b": 20},
+                )
+                st.plotly_chart(fig2, use_container_width=True)
+
+            except Exception as e:
+                st.error(f"Computation error: {e}")
+
+    # ── Tab 5: CKM Mixing ────────────────────────────────────────
+    with tab5:
+        st.subheader("🔀 CKM Quark Mixing Matrix")
+        st.markdown(
+            "**Wolfenstein**: λ ≈ 0.2265, A ≈ 0.790, ρ̄ ≈ 0.141, η̄ ≈ 0.357  \n"
+            "**Jarlskog**: J ≈ 3.08 × 10⁻⁵ (CP violation)"
+        )
+
+        preset_col_ckm, _ = st.columns([1, 2])
+        with preset_col_ckm:
+            ckm_p = st.selectbox(
+                "Parameter set",
+                [
+                    "Custom",
+                    "PDG 2024 central values",
+                    "PDG 2020 values",
+                    "Enhanced CP violation",
+                    "No CP violation (η̄ = 0)",
+                    "Cabibbo limit (A = 0)",
+                    "Large mixing (λ = 0.30)",
+                ],
+                key="sm_ckm_preset",
+            )
+        presets_ckm: dict[str, tuple[float, float, float, float]] = {
+            "PDG 2024 central values": (0.22650, 0.790, 0.141, 0.357),
+            "PDG 2020 values": (0.22500, 0.826, 0.159, 0.348),
+            "Enhanced CP violation": (0.22650, 0.790, 0.200, 0.400),
+            "No CP violation (η̄ = 0)": (0.22650, 0.790, 0.141, 0.000),
+            "Cabibbo limit (A = 0)": (0.22650, 0.001, 0.001, 0.001),
+            "Large mixing (λ = 0.30)": (0.300, 0.790, 0.141, 0.357),
+        }
+        _lk_ckm = "_last_sm_ckm"
+        if ckm_p != "Custom" and st.session_state.get(_lk_ckm) != ckm_p:
+            _cv = presets_ckm[ckm_p]
+            st.session_state["sm_lam"] = _cv[0]
+            st.session_state["sm_a"] = _cv[1]
+            st.session_state["sm_rho"] = _cv[2]
+            st.session_state["sm_eta"] = _cv[3]
+        st.session_state[_lk_ckm] = ckm_p
+        _cd = presets_ckm.get(ckm_p, (0.22650, 0.790, 0.141, 0.357))
+
+        c1, c2 = st.columns(2)
+        with c1:
+            lam_w = st.number_input(
+                "λ_W",
+                0.1,
+                0.5,
+                _cd[0],
+                0.0001,
+                key="sm_lam",
+                format="%.5f",
+            )
+            rho_bar = st.number_input(
+                "ρ̄",
+                0.0,
+                1.0,
+                _cd[2],
+                0.001,
+                key="sm_rho",
+                format="%.3f",
+            )
+        with c2:
+            a_w = st.number_input(
+                "A",
+                0.1,
+                2.0,
+                _cd[1],
+                0.001,
+                key="sm_a",
+                format="%.3f",
+            )
+            eta_bar = st.number_input(
+                "η̄",
+                0.0,
+                1.0,
+                _cd[3],
+                0.001,
+                key="sm_eta",
+                format="%.3f",
+            )
+
+        if st.button("Compute CKM Matrix", key="sm_ckm", type="primary"):
+            try:
+                from closures.standard_model.ckm_mixing import (
+                    compute_ckm_mixing,
+                )
+
+                result = compute_ckm_mixing(lam_w, a_w, rho_bar, eta_bar)
+                r = result._asdict()
+                regime = r["regime"]
+                regime_color = {
+                    "Unitary": "🟢",
+                    "Tension": "🟡",
+                }.get(regime, "🔴")
+
+                # Display matrix
+                st.markdown("**|V_CKM| matrix:**")
+                labels_r = ["u", "c", "t"]
+                labels_c = ["d", "s", "b"]
+                matrix_df = pd.DataFrame(
+                    r["V_matrix"],
+                    index=labels_r,
+                    columns=labels_c,
+                )
+                st.dataframe(matrix_df, use_container_width=True)
+
+                rc1, rc2, rc3, rc4 = st.columns(4)
+                with rc1:
+                    st.metric("J_CP", f"{r['J_CP']:.8f}")
+                with rc2:
+                    st.metric(
+                        "Row 1 unitarity",
+                        f"{r['unitarity_row1']:.6f}",
+                    )
+                with rc3:
+                    st.metric("ω_eff", f"{r['omega_eff']:.6f}")
+                with rc4:
+                    st.metric("Regime", f"{regime_color} {regime}")
+
+                angles = r["triangle_angles"]
+                st.markdown(
+                    f"**Unitarity Triangle**: α = {angles['alpha_deg']:.1f}°, "
+                    f"β = {angles['beta_deg']:.1f}°, "
+                    f"γ = {angles['gamma_deg']:.1f}°"
+                )
+
+                # Triangle visualisation
+                fig = go.Figure()
+                fig.add_trace(
+                    go.Scatter(
+                        x=[0, 1, rho_bar, 0],
+                        y=[0, 0, eta_bar, 0],
+                        mode="lines+markers",
+                        fill="toself",
+                        fillcolor="rgba(0,123,255,0.1)",
+                        line={"color": "#007bff", "width": 2},
+                        marker={"size": 8},
+                        name="Unitarity Triangle",
+                    )
+                )
+                fig.add_annotation(x=0, y=-0.03, text="(0,0)", showarrow=False)
+                fig.add_annotation(x=1, y=-0.03, text="(1,0)", showarrow=False)
+                fig.add_annotation(
+                    x=rho_bar,
+                    y=eta_bar + 0.03,
+                    text=f"(ρ̄,η̄)=({rho_bar:.3f},{eta_bar:.3f})",
+                    showarrow=False,
+                )
+                fig.add_annotation(
+                    x=rho_bar,
+                    y=eta_bar * 0.7,
+                    text=f"α={angles['alpha_deg']:.0f}°",
+                    showarrow=False,
+                )
+                fig.add_annotation(
+                    x=0.85,
+                    y=0.03,
+                    text=f"β={angles['beta_deg']:.0f}°",
+                    showarrow=False,
+                )
+                fig.add_annotation(
+                    x=0.15,
+                    y=0.03,
+                    text=f"γ={angles['gamma_deg']:.0f}°",
+                    showarrow=False,
+                )
+                fig.update_layout(
+                    title="CKM Unitarity Triangle",
+                    xaxis_title="ρ̄",
+                    yaxis_title="η̄",
+                    xaxis={"range": [-0.1, 1.2]},
+                    yaxis={"range": [-0.1, 0.5]},
+                    height=400,
+                    margin={"t": 40, "b": 20},
+                    yaxis_scaleanchor="x",
+                )
+                st.plotly_chart(fig, use_container_width=True)
+
+                # CKM heatmap
+                fig2 = go.Figure(
+                    go.Heatmap(
+                        z=r["V_matrix"],
+                        x=labels_c,
+                        y=labels_r,
+                        colorscale="Blues",
+                        text=[[f"{v:.4f}" for v in row] for row in r["V_matrix"]],
+                        texttemplate="%{text}",
+                        textfont={"size": 14},
+                        colorbar={"title": "|V_ij|"},
+                    )
+                )
+                fig2.update_layout(
+                    title="CKM Matrix Heatmap",
+                    height=300,
+                    margin={"t": 40, "b": 20},
+                )
+                st.plotly_chart(fig2, use_container_width=True)
 
             except Exception as e:
                 st.error(f"Computation error: {e}")

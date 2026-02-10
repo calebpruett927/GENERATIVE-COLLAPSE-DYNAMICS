@@ -428,3 +428,98 @@ registry:
           epsilon: 1.0e-8
           weights: [0.333333, 0.333333, 0.333333]
           BE_peak_ref: 8.7945
+
+    atomic_physics:
+      - name: "ionization_energy"
+        path: "closures/atomic_physics/ionization_energy.py"
+        description: "Hydrogen-like ionization energy with Slater screening vs NIST IE₁ (Z=1-36)"
+        contract: "ATOM.INTSTACK.v1"
+        inputs: ["Z"]
+        outputs: ["IE_predicted_eV", "IE_measured_eV", "Z_eff", "n_eff", "omega_eff", "F_eff", "Psi_IE", "regime"]
+        frozen_params:
+          epsilon: 1.0e-8
+          weights: [0.333333, 0.333333, 0.333333]
+      - name: "spectral_lines"
+        path: "closures/atomic_physics/spectral_lines.py"
+        description: "Rydberg formula spectral line computation (Lyman, Balmer, Paschen, Brackett series)"
+        contract: "ATOM.INTSTACK.v1"
+        inputs: ["Z", "n_lower", "n_upper"]
+        outputs: ["lambda_predicted_nm", "energy_eV", "series_name", "omega_eff", "F_eff", "regime"]
+        frozen_params:
+          epsilon: 1.0e-8
+          R_inf: 1.0973731568160e7
+      - name: "electron_config"
+        path: "closures/atomic_physics/electron_config.py"
+        description: "Aufbau electron configuration, shell completeness, noble gas core abbreviation"
+        contract: "ATOM.INTSTACK.v1"
+        inputs: ["Z"]
+        outputs: ["configuration", "shell_completeness", "group_block", "valence_electrons", "omega_eff", "F_eff", "regime"]
+        frozen_params:
+          epsilon: 1.0e-8
+      - name: "fine_structure"
+        path: "closures/atomic_physics/fine_structure.py"
+        description: "Dirac fine structure correction and Lamb shift estimates"
+        contract: "ATOM.INTSTACK.v1"
+        inputs: ["Z", "n", "l", "j"]
+        outputs: ["E_n_eV", "E_fine_eV", "E_lamb_eV", "Z_alpha_squared", "splitting_eV", "omega_eff", "regime"]
+        frozen_params:
+          alpha: 7.2973525693e-3
+      - name: "selection_rules"
+        path: "closures/atomic_physics/selection_rules.py"
+        description: "E1 electric dipole selection rule validation (Δl, Δm, Δj, parity)"
+        contract: "ATOM.INTSTACK.v1"
+        inputs: ["n_i", "l_i", "ml_i", "s_i", "j_i", "n_f", "l_f", "ml_f", "s_f", "j_f"]
+        outputs: ["transition_type", "rules_satisfied", "rules_total", "omega_eff", "regime"]
+      - name: "zeeman_stark"
+        path: "closures/atomic_physics/zeeman_stark.py"
+        description: "Zeeman and Stark effect energy splitting (Landé g-factor, anomalous Zeeman)"
+        contract: "ATOM.INTSTACK.v1"
+        inputs: ["Z", "n", "l", "s", "j", "mj", "B_tesla", "E_field_Vm"]
+        outputs: ["delta_E_zeeman_eV", "delta_E_stark_eV", "g_lande", "n_zeeman_levels", "omega_eff", "regime"]
+        frozen_params:
+          mu_B: 5.7883818060e-5
+
+    standard_model:
+      - name: "particle_catalog"
+        path: "closures/standard_model/particle_catalog.py"
+        description: "Complete SM particle table (17 particles) with PDG 2024 masses, UMCP coordinate embedding"
+        contract: "SM.INTSTACK.v1"
+        inputs: ["particle_name"]
+        outputs: ["symbol", "mass_GeV", "charge_e", "spin", "c1", "c2", "c3", "omega", "F", "regime"]
+      - name: "coupling_constants"
+        path: "closures/standard_model/coupling_constants.py"
+        description: "1-loop RGE running of α_s and α_em with quark mass thresholds"
+        contract: "SM.INTSTACK.v1"
+        inputs: ["Q_GeV"]
+        outputs: ["alpha_s", "alpha_em", "sin2_theta_W", "n_flavors", "unification_proximity", "omega_eff", "regime"]
+        frozen_params:
+          alpha_s_MZ: 0.1179
+          M_Z: 91.1876
+      - name: "cross_sections"
+        path: "closures/standard_model/cross_sections.py"
+        description: "e⁺e⁻→hadrons R-ratio and point cross section with QCD corrections"
+        contract: "SM.INTSTACK.v1"
+        inputs: ["sqrt_s_GeV"]
+        outputs: ["R_predicted", "R_QCD_corrected", "sigma_point_pb", "n_colors", "n_active_flavors", "omega_eff", "regime"]
+        frozen_params:
+          N_c: 3
+      - name: "symmetry_breaking"
+        path: "closures/standard_model/symmetry_breaking.py"
+        description: "Higgs mechanism: VEV, quartic coupling, Yukawa couplings, W/Z mass predictions"
+        contract: "SM.INTSTACK.v1"
+        inputs: ["v_GeV", "m_H_GeV"]
+        outputs: ["v_GeV", "lambda_quartic", "mu_squared", "yukawa_couplings", "m_W_predicted", "m_Z_predicted", "omega_eff", "regime"]
+        frozen_params:
+          v_pdg: 246.22
+          m_H_pdg: 125.25
+      - name: "ckm_mixing"
+        path: "closures/standard_model/ckm_mixing.py"
+        description: "CKM quark mixing matrix from Wolfenstein parametrization, unitarity triangle, Jarlskog invariant"
+        contract: "SM.INTSTACK.v1"
+        inputs: ["lambda_W", "A", "rho_bar", "eta_bar"]
+        outputs: ["V_matrix", "J_CP", "triangle_angles", "unitarity_row1", "omega_eff", "regime"]
+        frozen_params:
+          lambda_pdg: 0.22650
+          A_pdg: 0.790
+          rho_bar_pdg: 0.141
+          eta_bar_pdg: 0.357

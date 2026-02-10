@@ -1,0 +1,113 @@
+# canon/atom_anchors.yaml
+# Atomic Physics Canon Anchors — UMCP.CANON.ATOM.v1
+# Cross-references: contracts/ATOM.INTSTACK.v1.yaml, closures/atomic_physics/
+id: "UMCP.CANON.ATOM.v1"
+version: "1.0.0"
+domain: "Atomic Physics"
+hierarchy: "GCD > ATOM (Tier-2)"
+description: >
+  Canon anchors for atomic physics: electron configuration, ionization energies,
+  spectral lines, fine structure, selection rules, and field effects (Zeeman/Stark).
+  Maps atomic observables to GCD Tier-1 invariants through shell completeness,
+  spectral precision, and energy level structure.
+
+axioms:
+  - id: "AX-AT0"
+    name: "Shell Closure Attractor"
+    statement: >
+      Noble gas configurations (filled shells) represent collapse attractors
+      in electron configuration space. Shell completeness → F_eff = 1.
+    frozen: true
+
+  - id: "AX-AT1"
+    name: "Rydberg Spectral Law"
+    statement: >
+      Hydrogen-like spectral lines follow 1/λ = R∞·Z²·(1/n₁² − 1/n₂²).
+      Deviation from Rydberg prediction maps to ω_eff (spectral drift).
+    frozen: true
+
+  - id: "AX-AT2"
+    name: "Fine Structure Hierarchy"
+    statement: >
+      Relativistic corrections scale as (Zα)², creating a natural hierarchy:
+      NonRelativistic → Relativistic → HeavyAtom as Z increases.
+    frozen: true
+
+  - id: "AX-AT3"
+    name: "Selection Rule Conservation"
+    statement: >
+      E1 transitions require Δl=±1, Δml=0,±1, Δj=0,±1, Δs=0, parity change.
+      Rule violations map to ω_eff; allowed transitions have F_eff = 1.
+    frozen: true
+
+  - id: "AX-AT4"
+    name: "Field Perturbation Scaling"
+    statement: >
+      External fields (B, E) perturb atomic levels. The perturbation fraction
+      |ΔE|/|E_n| maps to ω_eff, with regime gates at Weak/Moderate/Strong.
+    frozen: true
+
+symbols:
+  tier_1_mapping:
+    omega_eff: "1 − (shell_completeness | spectral_precision | 1−perturbation_fraction)"
+    F_eff: "1 − ω_eff"
+    S: "configurational_entropy (subshell diversity)"
+    C: "fine_structure_curvature ((Zα)² parameter)"
+
+  tier_2_expansion:
+    Psi_IE: "IE₁/13.598 (ionization embedding)"
+    lambda_pred: "Rydberg-predicted wavelength (nm)"
+    g_J: "Landé g-factor"
+    delta_fine: "Fine structure correction (eV)"
+    shell_completeness: "Fraction of outermost shell filled"
+
+regime_gates:
+  ionization:
+    Precise: "ω_eff < 0.01"
+    Approximate: "0.01 ≤ ω_eff < 0.05"
+    Screened: "0.05 ≤ ω_eff < 0.15"
+    Anomalous: "ω_eff ≥ 0.15"
+
+  spectral:
+    Resolved: "ω_eff < 0.001"
+    Broadened: "0.001 ≤ ω_eff < 0.01"
+    Blended: "0.01 ≤ ω_eff < 0.05"
+    Unresolved: "ω_eff ≥ 0.05"
+
+  fine_structure:
+    NonRelativistic: "(Zα)² < 0.01"
+    Relativistic: "0.01 ≤ (Zα)² < 0.1"
+    HeavyAtom: "(Zα)² ≥ 0.1"
+
+  selection_rules:
+    Allowed: "All 5 E1 rules satisfied"
+    ForbiddenWeak: "3–4 rules satisfied"
+    ForbiddenStrong: "< 3 rules satisfied"
+
+  field_effects:
+    Weak: "|ΔE|/|E_n| < 0.01"
+    Moderate: "0.01 ≤ ratio < 0.1"
+    Strong: "ratio ≥ 0.1 (Paschen-Back)"
+
+  electron_config:
+    ClosedShell: "completeness ≥ 0.99"
+    NearClosed: "0.85 ≤ completeness < 0.99"
+    HalfFilled: "0.45 ≤ completeness ≤ 0.55"
+    OpenShell: "otherwise"
+
+constants:
+  R_inf: {value: 1.0973731568539e7, unit: "m⁻¹", source: "CODATA 2022"}
+  alpha_fine: {value: 0.0072973525693, unit: "dimensionless", source: "CODATA 2022"}
+  mu_B: {value: 9.2740100783e-24, unit: "J/T", source: "CODATA 2022"}
+  a_bohr: {value: 5.29177210903e-11, unit: "m", source: "CODATA 2022"}
+  hbar: {value: 1.054571817e-34, unit: "J·s", source: "CODATA 2022"}
+  IE_H: {value: 13.598, unit: "eV", source: "NIST ASD"}
+  m_electron: {value: 9.1093837015e-31, unit: "kg", source: "CODATA 2022"}
+
+closures:
+  - ionization_energy
+  - spectral_lines
+  - electron_config
+  - fine_structure
+  - selection_rules
+  - zeeman_stark

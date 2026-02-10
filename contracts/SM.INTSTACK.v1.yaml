@@ -1,0 +1,294 @@
+schema: schemas/contract.schema.json
+contract:
+  id: SM.INTSTACK.v1
+  version: 1.0.0
+  timezone: UTC
+  parent_contract: GCD.INTSTACK.v1
+  tier_level: 1
+  embedding:
+    interval: [0.0, 1.0]
+    face: pre_clip
+    oor_policy: clip_and_flag
+    epsilon: 1.0e-08
+  tier_1_kernel:
+    reserved_symbols:
+      # === GCD Tier-1 invariants (inherited, frozen) ===
+      - omega
+      - F
+      - S
+      - C
+      - tau_R
+      - kappa
+      - IC
+      - IC_min
+      # === Standard Model particle properties ===
+      - mass_GeV                # particle rest mass
+      - charge_e                # electric charge in units of e
+      - spin                    # intrinsic spin
+      - generation              # fermion generation (1, 2, 3)
+      - c1                      # UMCP mass embedding [0,1]
+      - c2                      # UMCP charge embedding [0,1]
+      - c3                      # UMCP spin embedding [0,1]
+      # === Coupling constants ===
+      - alpha_s                 # strong coupling constant
+      - alpha_em                # electromagnetic coupling constant
+      - sin2_theta_W            # weak mixing angle
+      - Q_GeV                   # energy scale
+      # === Cross sections ===
+      - R_predicted             # R-ratio tree level
+      - R_QCD_corrected         # R-ratio with QCD corrections
+      - sigma_point_pb          # point cross section (pb)
+      # === Higgs sector ===
+      - v_GeV                   # Higgs VEV
+      - lambda_quartic          # quartic self-coupling
+      - mu_squared              # mass parameter μ²
+      - m_W_predicted           # W boson mass prediction
+      - m_Z_predicted           # Z boson mass prediction
+      # === CKM mixing ===
+      - V_matrix                # 3×3 CKM matrix |V_ij|
+      - J_CP                    # Jarlskog invariant
+      - lambda_W                # Wolfenstein λ
+      - A_W                     # Wolfenstein A
+      - rho_bar                 # Wolfenstein ρ̄
+      - eta_bar                 # Wolfenstein η̄
+    weights_policy: nonnegative_sum_to_one
+    frozen_parameters:
+      # === GCD inherited (frozen) ===
+      p: 3
+      alpha: 1.0
+      lambda: 0.2
+      eta: 0.001
+      alpha_energy: 1.0
+      beta_energy: 0.5
+      tau_0: 10.0
+      C_crit: 0.2
+      # === Standard Model constants (PDG 2024) ===
+      alpha_s_MZ: 0.1179                # α_s(M_Z)
+      alpha_em_0: 7.2973525693e-03      # α_em(0) = 1/137.036
+      sin2_theta_W_0: 0.23122           # sin²θ_W (on-shell)
+      M_Z_GeV: 91.1876                  # Z boson mass (GeV)
+      M_W_GeV: 80.3692                  # W boson mass (GeV)
+      M_H_GeV: 125.25                   # Higgs boson mass (GeV)
+      v_GeV: 246.22                     # Higgs VEV (GeV)
+      G_F: 1.1663788e-05               # Fermi constant (GeV⁻²)
+      N_c: 3                            # number of colors
+      N_generations: 3                   # number of fermion generations
+      lambda_W_pdg: 0.22650             # Wolfenstein λ
+      A_pdg: 0.790                       # Wolfenstein A
+      rho_bar_pdg: 0.141                # Wolfenstein ρ̄
+      eta_bar_pdg: 0.357                # Wolfenstein η̄
+      # === Quark masses (MS-bar, PDG 2024) ===
+      m_u_GeV: 2.16e-03
+      m_d_GeV: 4.67e-03
+      m_s_GeV: 0.0934
+      m_c_GeV: 1.27
+      m_b_GeV: 4.18
+      m_t_GeV: 172.69
+      # === Lepton masses (PDG 2024) ===
+      m_e_GeV: 0.000511
+      m_mu_GeV: 0.10566
+      m_tau_GeV: 1.77686
+    tolerances:
+      tol_seam: 0.005
+      tol_id: 1.0e-09
+      tol_coupling: 0.01               # 1% for running couplings
+      tol_R_ratio: 0.05                # 5% for R-ratio
+      tol_mass_prediction: 0.01        # 1% for mass predictions
+      tol_unitarity: 1.0e-06           # CKM unitarity deficit
+  axioms:
+    # === GCD Tier-1 inherited ===
+    - id: AX-0
+      statement: Collapse is generative
+      description: |
+        Inherited from GCD Tier-1 (frozen). In particle physics, collider
+        events generate new particles from vacuum fluctuations — the
+        quintessential collapse-creation cycle. The Higgs mechanism
+        generates mass from symmetry breaking.
+    - id: AX-1
+      statement: Boundary defines interior
+      description: |
+        Inherited from GCD Tier-1 (frozen). The gauge symmetry group
+        SU(3)×SU(2)×U(1) defines the boundary conditions. Particle content
+        is fixed by anomaly cancellation constraints at the boundary.
+    - id: AX-2
+      statement: Entropy measures determinacy
+      description: |
+        Inherited from GCD Tier-1 (frozen). Cross-section ratios and
+        branching fractions encode the entropy of particle production.
+        High R-ratio = many accessible channels = high S.
+    # === Standard Model domain axioms ===
+    - id: AX-SM0
+      statement: Higgs mechanism generates mass
+      description: |
+        Spontaneous symmetry breaking of SU(2)×U(1) → U(1)_EM gives
+        masses to W±, Z, and all fermions via Yukawa couplings.
+        V(φ) = μ²|φ|² + λ|φ|⁴ with v = √(−μ²/λ) ≈ 246.22 GeV.
+        Mass predictions map to ω_eff via deviation from PDG values.
+    - id: AX-SM1
+      statement: Asymptotic freedom governs strong coupling
+      description: |
+        α_s(Q) decreases logarithmically with Q (1-loop β-function).
+        Regime: Perturbative (α_s < 0.3), Transitional (0.3–1.0),
+        NonPerturbative (> 1.0). At M_Z, α_s ≈ 0.1179 (PDG 2024).
+    - id: AX-SM2
+      statement: CKM matrix is unitary
+      description: |
+        The Cabibbo-Kobayashi-Maskawa matrix satisfies V†V = I.
+        The unitarity triangle has angles α + β + γ = 180°.
+        Jarlskog invariant J ≈ 3.08 × 10⁻⁵ measures CP violation.
+    - id: AX-SM3
+      statement: Gauge symmetry fixes particle content
+      description: |
+        SU(3)_C × SU(2)_L × U(1)_Y with anomaly cancellation requires
+        exactly 3 generations of quarks and leptons. The photon and
+        gluons are massless gauge bosons; W±, Z acquire mass via Higgs.
+    - id: AX-SM4
+      statement: R-ratio validates N_c = 3
+      description: |
+        R = σ(e⁺e⁻→had)/σ(e⁺e⁻→μ⁺μ⁻) = N_c Σ Q_f² at tree level.
+        QCD corrections (1 + α_s/π + ...) refine the prediction.
+        Experimental agreement validates the color factor N_c = 3.
+  regime_classification:
+    energy:
+      low:
+        threshold: 0.01
+        condition: "E < 0.01"
+      medium:
+        threshold: 0.05
+        condition: "0.01 ≤ E < 0.05"
+      high:
+        threshold: null
+        condition: "E ≥ 0.05"
+    coupling:
+      Perturbative:
+        threshold: 0.30
+        condition: "α_s < 0.3"
+      Transitional:
+        threshold: 1.00
+        condition: "0.3 ≤ α_s < 1.0"
+      NonPerturbative:
+        threshold: null
+        condition: "α_s ≥ 1.0"
+    higgs:
+      Consistent:
+        threshold: 0.01
+        condition: "|m_pred − m_meas| / m_meas < 1%"
+      Tension:
+        threshold: 0.05
+        condition: "1% ≤ deviation < 5%"
+      BSM_hint:
+        threshold: null
+        condition: "deviation ≥ 5%"
+    ckm:
+      Unitary:
+        threshold: 1.0e-03
+        condition: "|row sum − 1| < 10⁻³"
+      Tension:
+        threshold: 1.0e-02
+        condition: "10⁻³ ≤ deficit < 10⁻²"
+      BSM_hint:
+        threshold: null
+        condition: "deficit ≥ 10⁻²"
+    cross_section:
+      Validated:
+        threshold: 0.05
+        condition: "|R_pred − R_exp| / R_exp < 5%"
+      Tension:
+        threshold: 0.15
+        condition: "5% ≤ deviation < 15%"
+      Anomalous:
+        threshold: null
+        condition: "deviation ≥ 15%"
+  mathematical_identities:
+    - name: Fidelity-drift duality
+      formula: "F = 1 - ω"
+      tolerance: 1.0e-09
+    - name: Integrity-collapse relation
+      formula: "IC ≈ exp(κ)"
+      tolerance: 1.0e-06
+    - name: Higgs VEV relation
+      formula: "v = √(−μ²/λ)"
+      tolerance: 1.0e-06
+      source: "Weinberg (1967)"
+    - name: W boson mass
+      formula: "M_W = g₂ v / 2"
+      tolerance: 0.01
+      source: "PDG 2024"
+    - name: Z boson mass
+      formula: "M_Z = v √(g₁² + g₂²) / 2"
+      tolerance: 0.01
+      source: "PDG 2024"
+    - name: R-ratio (tree level)
+      formula: "R = N_c Σ Q_f²"
+      tolerance: 0.05
+      source: "Particle Data Group"
+    - name: CKM unitarity
+      formula: "Σ_k |V_ik|² = 1"
+      tolerance: 1.0e-03
+      source: "PDG 2024"
+    - name: Jarlskog invariant
+      formula: "J = Im(V_us V_cb V*_ub V*_cs)"
+      tolerance: 0.05
+      source: "PDG 2024"
+  typed_censoring:
+    tau_R_special_values: [INF_REC, UNIDENTIFIABLE]
+    run_status_enum: [CONFORMANT, NONCONFORMANT, NON_EVALUABLE]
+    no_return_no_credit: true
+    sm_regime_enums:
+      coupling: [Perturbative, Transitional, NonPerturbative]
+      higgs: [Consistent, Tension, BSM_hint]
+      ckm: [Unitary, Tension, BSM_hint]
+      cross_section: [Validated, Tension, Anomalous]
+  closures:
+    particle_catalog:
+      path: closures/standard_model/particle_catalog.py
+      inputs: [particle_name]
+      outputs: [symbol, mass_GeV, charge_e, spin, c1, c2, c3, omega, F, regime]
+    coupling_constants:
+      path: closures/standard_model/coupling_constants.py
+      inputs: [Q_GeV]
+      outputs: [alpha_s, alpha_em, sin2_theta_W, n_flavors, unification_proximity, omega_eff, regime]
+    cross_sections:
+      path: closures/standard_model/cross_sections.py
+      inputs: [sqrt_s_GeV]
+      outputs: [R_predicted, R_QCD_corrected, sigma_point_pb, n_colors, n_active_flavors, omega_eff, regime]
+    symmetry_breaking:
+      path: closures/standard_model/symmetry_breaking.py
+      inputs: [v_GeV, m_H_GeV]
+      outputs: [v_GeV, lambda_quartic, mu_squared, yukawa_couplings, m_W_predicted, m_Z_predicted, omega_eff, regime]
+    ckm_mixing:
+      path: closures/standard_model/ckm_mixing.py
+      inputs: [lambda_W, A, rho_bar, eta_bar]
+      outputs: [V_matrix, J_CP, triangle_angles, unitarity_row1, omega_eff, regime]
+  notes: |
+    SM.INTSTACK.v1 — Standard Model contract for UMCP validation.
+
+    This Tier-2 contract inherits GCD.INTSTACK.v1 and extends it with
+    5 particle physics closures: full SM particle catalog (17 particles,
+    PDG 2024), running coupling constants (1-loop RGE with thresholds),
+    e⁺e⁻→hadrons R-ratio, Higgs mechanism and electroweak symmetry
+    breaking, and CKM quark mixing matrix.
+
+    All observables are embedded into UMCP coordinates (c₁, c₂, c₃) ∈ [0,1]³
+    using mass/charge/spin normalization against SM scale maxima.
+    ω_eff = deviation from experimental reference; F_eff = 1 − ω_eff.
+
+    Design choice: the particle catalog uses log-mass embedding
+    (c₁ = log(m)/log(m_top)) to spread the mass hierarchy across [0,1].
+
+    The coupling constant closure validates asymptotic freedom by
+    tracking α_s(Q) from 1 GeV to 10⁶ GeV with quark mass thresholds.
+
+    The CKM closure uses Wolfenstein parametrization (λ, A, ρ̄, η̄)
+    and checks unitarity row-by-row plus the triangle angle sum.
+  provenance:
+    created: '2025-06-28'
+    author: UMCP Working Group
+    canonical_anchor: canon/sm_anchors.yaml
+    parent_version: GCD.INTSTACK.v1.0.0
+    references:
+      - "Particle Data Group — Review of Particle Physics (PDG 2024)"
+      - "Weinberg, S. — A Model of Leptons (1967)"
+      - "Cabibbo, N. — Unitary Symmetry and Leptonic Decays (1963)"
+      - "Kobayashi, M. & Maskawa, T. — CP Violation (1973)"
+  extensions: {}

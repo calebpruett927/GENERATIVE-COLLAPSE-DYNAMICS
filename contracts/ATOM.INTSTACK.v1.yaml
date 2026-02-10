@@ -1,0 +1,242 @@
+schema: schemas/contract.schema.json
+contract:
+  id: ATOM.INTSTACK.v1
+  version: 1.0.0
+  timezone: UTC
+  parent_contract: GCD.INTSTACK.v1
+  tier_level: 1
+  embedding:
+    interval: [0.0, 1.0]
+    face: pre_clip
+    oor_policy: clip_and_flag
+    epsilon: 1.0e-08
+  tier_1_kernel:
+    reserved_symbols:
+      # === GCD Tier-1 invariants (inherited, frozen) ===
+      - omega
+      - F
+      - S
+      - C
+      - tau_R
+      - kappa
+      - IC
+      - IC_min
+      # === Atomic physics observables ===
+      - Z                       # atomic number
+      - Z_eff                   # Slater effective nuclear charge
+      - n_eff                   # effective principal quantum number
+      - IE_predicted_eV         # predicted first ionization energy
+      - IE_measured_eV          # NIST reference IE₁
+      - Psi_IE                  # ionization trace channel
+      - lambda_nm               # spectral wavelength (nm)
+      - E_transition_eV         # transition energy
+      - shell_completeness      # electron shell fraction filled
+      - E_fine_eV               # fine structure correction
+      - E_lamb_eV               # Lamb shift estimate
+      - Z_alpha_squared         # (Z α)² relativistic parameter
+      - delta_E_zeeman_eV       # Zeeman splitting
+      - delta_E_stark_eV        # Stark shift
+      - g_lande                 # Landé g-factor
+    weights_policy: nonnegative_sum_to_one
+    frozen_parameters:
+      # === GCD inherited (frozen) ===
+      p: 3
+      alpha: 1.0
+      lambda: 0.2
+      eta: 0.001
+      alpha_energy: 1.0
+      beta_energy: 0.5
+      tau_0: 10.0
+      C_crit: 0.2
+      # === Atomic physics constants (CODATA 2022, NIST ASD) ===
+      R_inf: 1.0973731568160e+07       # Rydberg constant (1/m)
+      a_0: 5.29177210903e-11           # Bohr radius (m)
+      alpha_fs: 7.2973525693e-03       # fine-structure constant
+      mu_B: 5.7883818060e-05           # Bohr magneton (eV/T)
+      E_H: 13.605693122994             # hydrogen ground state (eV)
+      hbar_eV_s: 6.582119569e-16       # reduced Planck constant (eV·s)
+    tolerances:
+      tol_seam: 0.005
+      tol_id: 1.0e-09
+      tol_IE: 0.10                     # 10% tolerance for IE prediction
+      tol_spectral: 0.001              # 0.1% wavelength tolerance
+      tol_fine_structure: 0.05         # 5% for fine-structure splitting
+  axioms:
+    # === GCD Tier-1 inherited ===
+    - id: AX-0
+      statement: Collapse is generative
+      description: |
+        Inherited from GCD Tier-1 (frozen). In atomic physics, quantum state
+        collapse during measurement generates observable outcomes — ionization
+        energies, spectral lines, and field splittings.
+    - id: AX-1
+      statement: Boundary defines interior
+      description: |
+        Inherited from GCD Tier-1 (frozen). The electron shell structure defines
+        the boundary (closed-shell = attractor, open-shell = drift). Shell
+        completeness sets the fidelity F_eff of the atomic configuration.
+    - id: AX-2
+      statement: Entropy measures determinacy
+      description: |
+        Inherited from GCD Tier-1 (frozen). Shannon entropy of orbital
+        occupation encodes how determined the electron configuration is.
+        Closed-shell atoms have low S (high determinacy).
+    # === Atomic physics domain axioms ===
+    - id: AX-AT0
+      statement: Shell closure is an attractor
+      description: |
+        Noble gas configurations (Z = 2, 10, 18, 36, 54, 86) have maximum
+        shell completeness → F_eff → 1, ω_eff → 0. These are collapse
+        attractors in the UMCP sense: states to which neighboring
+        configurations relax under perturbation.
+    - id: AX-AT1
+      statement: Rydberg formula is exact for hydrogen
+      description: |
+        For Z = 1 (no screening), 1/λ = R∞(1/n₁² − 1/n₂²) recovers all
+        series (Lyman, Balmer, Paschen, Brackett) with ω_eff ≈ 0.
+    - id: AX-AT2
+      statement: Fine structure scales as (Zα)²
+      description: |
+        The Dirac fine-structure correction ΔE/E ~ (Zα)²/n classifies
+        regimes: NonRelativistic (Zα)² < 0.01, Relativistic 0.01–0.1,
+        HeavyAtom > 0.1.
+    - id: AX-AT3
+      statement: Selection rules encode symmetry conservation
+      description: |
+        E1 dipole selection rules (Δl=±1, Δm=0/±1, parity change) are
+        necessary conditions for allowed transitions. Rule violations
+        map to ω_eff = 1 (forbidden) → F_eff = 0.
+    - id: AX-AT4
+      statement: External fields perturb but do not destroy structure
+      description: |
+        Zeeman and Stark effects lift degeneracy but preserve quantum
+        numbers. The Landé g-factor determines anomalous Zeeman splitting.
+        Field effects are Weak/Moderate/Strong depending on
+        ΔE_field / ΔE_fine.
+  regime_classification:
+    energy:
+      low:
+        threshold: 0.01
+        condition: "E < 0.01"
+      medium:
+        threshold: 0.05
+        condition: "0.01 ≤ E < 0.05"
+      high:
+        threshold: null
+        condition: "E ≥ 0.05"
+    ionization:
+      Precise:
+        threshold: 0.05
+        condition: "|IE_pred − IE_meas| / IE_meas < 5%"
+      Approximate:
+        threshold: 0.20
+        condition: "5% ≤ deviation < 20%"
+      Screened:
+        threshold: 0.50
+        condition: "20% ≤ deviation < 50%"
+      Anomalous:
+        threshold: null
+        condition: "deviation ≥ 50%"
+    relativistic:
+      NonRelativistic:
+        threshold: 0.01
+        condition: "(Zα)² < 0.01"
+      Relativistic:
+        threshold: 0.10
+        condition: "0.01 ≤ (Zα)² < 0.10"
+      HeavyAtom:
+        threshold: null
+        condition: "(Zα)² ≥ 0.10"
+    field_strength:
+      Weak:
+        threshold: 0.01
+        condition: "ΔE_field / ΔE_fine < 0.01"
+      Moderate:
+        threshold: 0.10
+        condition: "0.01 ≤ ratio < 0.10"
+      Strong:
+        threshold: null
+        condition: "ratio ≥ 0.10"
+  mathematical_identities:
+    - name: Fidelity-drift duality
+      formula: "F = 1 - ω"
+      tolerance: 1.0e-09
+    - name: Integrity-collapse relation
+      formula: "IC ≈ exp(κ)"
+      tolerance: 1.0e-06
+    - name: Rydberg formula
+      formula: "1/λ = R∞ Z² (1/n₁² − 1/n₂²)"
+      tolerance: 1.0e-06
+      source: "NIST ASD"
+    - name: Hydrogen ionization energy
+      formula: "IE₁ = 13.6 eV · Z_eff² / n_eff²"
+      tolerance: 0.10
+      source: "CODATA 2022"
+    - name: Dirac fine structure
+      formula: "ΔE/E = (Zα)²/n · [1/(j+½) − 3/(4n)]"
+      tolerance: 0.05
+      source: "Berestetskii, Lifshitz, Pitaevskii"
+    - name: Zeeman splitting
+      formula: "ΔE = m_j · g_J · μ_B · B"
+      tolerance: 1.0e-06
+      source: "CODATA 2022"
+  typed_censoring:
+    tau_R_special_values: [INF_REC, UNIDENTIFIABLE]
+    run_status_enum: [CONFORMANT, NONCONFORMANT, NON_EVALUABLE]
+    no_return_no_credit: true
+    atom_regime_enums:
+      ionization: [Precise, Approximate, Screened, Anomalous]
+      relativistic: [NonRelativistic, Relativistic, HeavyAtom]
+      field_strength: [Weak, Moderate, Strong]
+      selection: [Allowed, ForbiddenWeak, ForbiddenStrong]
+      config: [ClosedShell, NearClosed, HalfFilled, OpenShell]
+  closures:
+    ionization_energy:
+      path: closures/atomic_physics/ionization_energy.py
+      inputs: [Z]
+      outputs: [IE_predicted_eV, IE_measured_eV, Z_eff, n_eff, omega_eff, F_eff, Psi_IE, regime]
+    spectral_lines:
+      path: closures/atomic_physics/spectral_lines.py
+      inputs: [Z, n_lower, n_upper]
+      outputs: [lambda_predicted_nm, energy_eV, series_name, omega_eff, F_eff, regime]
+    electron_config:
+      path: closures/atomic_physics/electron_config.py
+      inputs: [Z]
+      outputs: [configuration, shell_completeness, group_block, valence_electrons, omega_eff, F_eff, regime]
+    fine_structure:
+      path: closures/atomic_physics/fine_structure.py
+      inputs: [Z, n, l, j]
+      outputs: [E_n_eV, E_fine_eV, E_lamb_eV, Z_alpha_squared, splitting_eV, omega_eff, regime]
+    selection_rules:
+      path: closures/atomic_physics/selection_rules.py
+      inputs: [n_i, l_i, ml_i, s_i, j_i, n_f, l_f, ml_f, s_f, j_f]
+      outputs: [transition_type, rules_satisfied, rules_total, omega_eff, regime]
+    zeeman_stark:
+      path: closures/atomic_physics/zeeman_stark.py
+      inputs: [Z, n, l, s, j, mj, B_tesla, E_field_Vm]
+      outputs: [delta_E_zeeman_eV, delta_E_stark_eV, g_lande, n_zeeman_levels, omega_eff, regime]
+  notes: |
+    ATOM.INTSTACK.v1 — Atomic Physics contract for UMCP validation.
+
+    This Tier-2 contract inherits GCD.INTSTACK.v1 and extends it with
+    6 atomic physics closures covering ionization energy (Slater screening),
+    spectral lines (Rydberg formula), electron configuration (Aufbau),
+    fine structure (Dirac correction), selection rules (E1 dipole),
+    and external field effects (Zeeman/Stark).
+
+    Reference data: NIST Atomic Spectra Database, CODATA 2022 fundamental
+    constants. All closures map observables into UMCP coordinates
+    (c₁, c₂, c₃) ∈ [0,1]³ with regime classification.
+
+    GCD mapping: ω_eff = deviation from reference, F_eff = 1 − ω_eff.
+    Shell completeness drives F_eff in the electron configuration closure.
+  provenance:
+    created: '2025-06-28'
+    author: UMCP Working Group
+    canonical_anchor: canon/atom_anchors.yaml
+    parent_version: GCD.INTSTACK.v1.0.0
+    references:
+      - "NIST Atomic Spectra Database (ver. 5.11)"
+      - "CODATA 2022 Recommended Values of Fundamental Physical Constants"
+      - "Berestetskii, Lifshitz, Pitaevskii — Quantum Electrodynamics"
+  extensions: {}

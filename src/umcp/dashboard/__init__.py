@@ -131,11 +131,13 @@ from umcp.dashboard.pages_physics import (
 )
 from umcp.dashboard.pages_science import (
     render_astronomy_page,
+    render_atomic_physics_page,
     render_cosmology_page,
     render_finance_page,
     render_nuclear_page,
     render_quantum_page,
     render_rcft_page,
+    render_standard_model_page,
 )
 
 # ── Public API surface (backward-compatible) ─────────────────────────────────
@@ -171,6 +173,7 @@ __all__ = [
     "normalize_to_bounded",
     "render_api_integration_page",
     "render_astronomy_page",
+    "render_atomic_physics_page",
     "render_batch_validation_page",
     "render_bookmarks_page",
     "render_canon_explorer_page",
@@ -207,6 +210,7 @@ __all__ = [
     "render_quantum_page",
     "render_rcft_page",
     "render_regime_page",
+    "render_standard_model_page",
     # Interactive pages
     "render_test_templates_page",
     "render_time_series_page",
@@ -312,7 +316,9 @@ def main() -> None:
         "Quantum": ("🔮", render_quantum_page),
         "Finance": ("💰", render_finance_page),
         "RCFT": ("🌀", render_rcft_page),
-        "Physics": ("⚛️", render_physics_interface_page),
+        "Atomic Physics": ("⚛️", render_atomic_physics_page),
+        "Standard Model": ("🔬", render_standard_model_page),
+        "Physics": ("⚗️", render_physics_interface_page),
         "Kinematics": ("🎯", render_kinematics_interface_page),
         "Cosmology": ("🌌", render_cosmology_page),
         # Analysis Pages
