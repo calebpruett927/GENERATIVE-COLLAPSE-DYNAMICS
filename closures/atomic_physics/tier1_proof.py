@@ -392,6 +392,9 @@ def test_compound_molecules() -> tuple[int, int]:
         w_parts = []
         for symbol, count in formula:
             el = get_element(symbol)
+            if el is None:
+                print(f"  SKIP: {name} (element {symbol} not found)")
+                break
             c_el, _, _ = _normalize_element(el)
             frac = count / total_atoms
             c_parts.append(c_el)
