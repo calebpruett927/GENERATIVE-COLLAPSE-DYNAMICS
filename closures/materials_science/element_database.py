@@ -53,6 +53,12 @@ class Element:
     boiling_point_K: float | None  # K
     density_g_cm3: float | None  # g/cm³ at STP
 
+    # ── Traditional periodic table labels ────────────────────────
+    period: int = 0  # Row 1-7
+    group: int | None = None  # Column 1-18 (None for lanthanides/actinides)
+    block: str = ""  # "s", "p", "d", "f"
+    category: str = ""  # Traditional classification (see CATEGORIES below)
+
     def to_dict(self) -> dict[str, Any]:
         """Serialize to dict for JSON output."""
         return {
@@ -70,6 +76,10 @@ class Element:
             "melting_point_K": self.melting_point_K,
             "boiling_point_K": self.boiling_point_K,
             "density_g_cm3": self.density_g_cm3,
+            "period": self.period,
+            "group": self.group,
+            "block": self.block,
+            "category": self.category,
         }
 
 
@@ -98,6 +108,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=13.99,
         boiling_point_K=20.271,
         density_g_cm3=0.00008988,
+        period=1,
+        group=1,
+        block="s",
+        category="Reactive nonmetal",
     ),
     Element(
         Z=2,
@@ -114,6 +128,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=0.95,
         boiling_point_K=4.222,
         density_g_cm3=0.0001785,
+        period=1,
+        group=18,
+        block="s",
+        category="Noble gas",
     ),
     # ── Period 2 ─────────────────────────────────────────────────
     Element(
@@ -131,6 +149,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=453.65,
         boiling_point_K=1603.0,
         density_g_cm3=0.534,
+        period=2,
+        group=1,
+        block="s",
+        category="Alkali metal",
     ),
     Element(
         Z=4,
@@ -147,6 +169,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1560.0,
         boiling_point_K=2742.0,
         density_g_cm3=1.85,
+        period=2,
+        group=2,
+        block="s",
+        category="Alkaline earth metal",
     ),
     Element(
         Z=5,
@@ -163,6 +189,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=2349.0,
         boiling_point_K=4200.0,
         density_g_cm3=2.34,
+        period=2,
+        group=13,
+        block="p",
+        category="Metalloid",
     ),
     Element(
         Z=6,
@@ -179,6 +209,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=3823.0,
         boiling_point_K=4098.0,
         density_g_cm3=2.267,
+        period=2,
+        group=14,
+        block="p",
+        category="Reactive nonmetal",
     ),
     Element(
         Z=7,
@@ -195,6 +229,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=63.15,
         boiling_point_K=77.355,
         density_g_cm3=0.0012506,
+        period=2,
+        group=15,
+        block="p",
+        category="Reactive nonmetal",
     ),
     Element(
         Z=8,
@@ -211,6 +249,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=54.36,
         boiling_point_K=90.188,
         density_g_cm3=0.001429,
+        period=2,
+        group=16,
+        block="p",
+        category="Reactive nonmetal",
     ),
     Element(
         Z=9,
@@ -227,6 +269,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=53.48,
         boiling_point_K=85.03,
         density_g_cm3=0.001696,
+        period=2,
+        group=17,
+        block="p",
+        category="Halogen",
     ),
     Element(
         Z=10,
@@ -243,6 +289,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=24.56,
         boiling_point_K=27.104,
         density_g_cm3=0.0008999,
+        period=2,
+        group=18,
+        block="p",
+        category="Noble gas",
     ),
     # ── Period 3 ─────────────────────────────────────────────────
     Element(
@@ -260,6 +310,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=370.95,
         boiling_point_K=1156.0,
         density_g_cm3=0.971,
+        period=3,
+        group=1,
+        block="s",
+        category="Alkali metal",
     ),
     Element(
         Z=12,
@@ -276,6 +330,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=923.0,
         boiling_point_K=1363.0,
         density_g_cm3=1.738,
+        period=3,
+        group=2,
+        block="s",
+        category="Alkaline earth metal",
     ),
     Element(
         Z=13,
@@ -292,6 +350,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=933.47,
         boiling_point_K=2792.0,
         density_g_cm3=2.70,
+        period=3,
+        group=13,
+        block="p",
+        category="Post-transition metal",
     ),
     Element(
         Z=14,
@@ -308,6 +370,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1687.0,
         boiling_point_K=3538.0,
         density_g_cm3=2.3296,
+        period=3,
+        group=14,
+        block="p",
+        category="Metalloid",
     ),
     Element(
         Z=15,
@@ -324,6 +390,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=317.3,
         boiling_point_K=553.7,
         density_g_cm3=1.82,
+        period=3,
+        group=15,
+        block="p",
+        category="Reactive nonmetal",
     ),
     Element(
         Z=16,
@@ -340,6 +410,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=388.36,
         boiling_point_K=717.8,
         density_g_cm3=2.067,
+        period=3,
+        group=16,
+        block="p",
+        category="Reactive nonmetal",
     ),
     Element(
         Z=17,
@@ -356,6 +430,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=171.6,
         boiling_point_K=239.11,
         density_g_cm3=0.003214,
+        period=3,
+        group=17,
+        block="p",
+        category="Halogen",
     ),
     Element(
         Z=18,
@@ -372,6 +450,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=83.81,
         boiling_point_K=87.302,
         density_g_cm3=0.001784,
+        period=3,
+        group=18,
+        block="p",
+        category="Noble gas",
     ),
     # ── Period 4 ─────────────────────────────────────────────────
     Element(
@@ -389,6 +471,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=336.7,
         boiling_point_K=1032.0,
         density_g_cm3=0.862,
+        period=4,
+        group=1,
+        block="s",
+        category="Alkali metal",
     ),
     Element(
         Z=20,
@@ -405,6 +491,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1115.0,
         boiling_point_K=1757.0,
         density_g_cm3=1.55,
+        period=4,
+        group=2,
+        block="s",
+        category="Alkaline earth metal",
     ),
     Element(
         Z=21,
@@ -421,6 +511,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1814.0,
         boiling_point_K=3109.0,
         density_g_cm3=2.989,
+        period=4,
+        group=3,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=22,
@@ -437,6 +531,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1941.0,
         boiling_point_K=3560.0,
         density_g_cm3=4.506,
+        period=4,
+        group=4,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=23,
@@ -453,6 +551,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=2183.0,
         boiling_point_K=3680.0,
         density_g_cm3=6.11,
+        period=4,
+        group=5,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=24,
@@ -469,6 +571,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=2180.0,
         boiling_point_K=2944.0,
         density_g_cm3=7.15,
+        period=4,
+        group=6,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=25,
@@ -485,6 +591,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1519.0,
         boiling_point_K=2334.0,
         density_g_cm3=7.44,
+        period=4,
+        group=7,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=26,
@@ -501,6 +611,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1811.0,
         boiling_point_K=3134.0,
         density_g_cm3=7.874,
+        period=4,
+        group=8,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=27,
@@ -517,6 +631,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1768.0,
         boiling_point_K=3200.0,
         density_g_cm3=8.90,
+        period=4,
+        group=9,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=28,
@@ -533,6 +651,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1728.0,
         boiling_point_K=3186.0,
         density_g_cm3=8.912,
+        period=4,
+        group=10,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=29,
@@ -549,6 +671,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1357.77,
         boiling_point_K=2835.0,
         density_g_cm3=8.96,
+        period=4,
+        group=11,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=30,
@@ -565,6 +691,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=692.68,
         boiling_point_K=1180.0,
         density_g_cm3=7.134,
+        period=4,
+        group=12,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=31,
@@ -581,6 +711,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=302.91,
         boiling_point_K=2477.0,
         density_g_cm3=5.907,
+        period=4,
+        group=13,
+        block="p",
+        category="Post-transition metal",
     ),
     Element(
         Z=32,
@@ -597,6 +731,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1211.4,
         boiling_point_K=3106.0,
         density_g_cm3=5.323,
+        period=4,
+        group=14,
+        block="p",
+        category="Metalloid",
     ),
     Element(
         Z=33,
@@ -613,6 +751,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1090.0,
         boiling_point_K=887.0,
         density_g_cm3=5.776,
+        period=4,
+        group=15,
+        block="p",
+        category="Metalloid",
     ),
     Element(
         Z=34,
@@ -629,6 +771,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=494.0,
         boiling_point_K=958.0,
         density_g_cm3=4.809,
+        period=4,
+        group=16,
+        block="p",
+        category="Reactive nonmetal",
     ),
     Element(
         Z=35,
@@ -645,6 +791,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=265.8,
         boiling_point_K=332.0,
         density_g_cm3=3.122,
+        period=4,
+        group=17,
+        block="p",
+        category="Halogen",
     ),
     Element(
         Z=36,
@@ -661,6 +811,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=115.78,
         boiling_point_K=119.93,
         density_g_cm3=0.003749,
+        period=4,
+        group=18,
+        block="p",
+        category="Noble gas",
     ),
     # ── Period 5 ─────────────────────────────────────────────────
     Element(
@@ -678,6 +832,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=312.46,
         boiling_point_K=961.0,
         density_g_cm3=1.532,
+        period=5,
+        group=1,
+        block="s",
+        category="Alkali metal",
     ),
     Element(
         Z=38,
@@ -694,6 +852,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1050.0,
         boiling_point_K=1650.0,
         density_g_cm3=2.64,
+        period=5,
+        group=2,
+        block="s",
+        category="Alkaline earth metal",
     ),
     Element(
         Z=39,
@@ -710,6 +872,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1799.0,
         boiling_point_K=3203.0,
         density_g_cm3=4.469,
+        period=5,
+        group=3,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=40,
@@ -726,6 +892,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=2128.0,
         boiling_point_K=4682.0,
         density_g_cm3=6.506,
+        period=5,
+        group=4,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=41,
@@ -742,6 +912,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=2750.0,
         boiling_point_K=5017.0,
         density_g_cm3=8.57,
+        period=5,
+        group=5,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=42,
@@ -758,6 +932,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=2896.0,
         boiling_point_K=4912.0,
         density_g_cm3=10.22,
+        period=5,
+        group=6,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=43,
@@ -774,6 +952,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=2430.0,
         boiling_point_K=4538.0,
         density_g_cm3=11.5,
+        period=5,
+        group=7,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=44,
@@ -790,6 +972,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=2607.0,
         boiling_point_K=4423.0,
         density_g_cm3=12.37,
+        period=5,
+        group=8,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=45,
@@ -806,6 +992,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=2237.0,
         boiling_point_K=3968.0,
         density_g_cm3=12.41,
+        period=5,
+        group=9,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=46,
@@ -822,6 +1012,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1828.1,
         boiling_point_K=3236.0,
         density_g_cm3=12.02,
+        period=5,
+        group=10,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=47,
@@ -838,6 +1032,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1234.93,
         boiling_point_K=2435.0,
         density_g_cm3=10.501,
+        period=5,
+        group=11,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=48,
@@ -854,6 +1052,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=594.22,
         boiling_point_K=1040.0,
         density_g_cm3=8.69,
+        period=5,
+        group=12,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=49,
@@ -870,6 +1072,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=429.75,
         boiling_point_K=2345.0,
         density_g_cm3=7.31,
+        period=5,
+        group=13,
+        block="p",
+        category="Post-transition metal",
     ),
     Element(
         Z=50,
@@ -886,6 +1092,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=505.08,
         boiling_point_K=2875.0,
         density_g_cm3=7.287,
+        period=5,
+        group=14,
+        block="p",
+        category="Post-transition metal",
     ),
     Element(
         Z=51,
@@ -902,6 +1112,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=903.78,
         boiling_point_K=1860.0,
         density_g_cm3=6.685,
+        period=5,
+        group=15,
+        block="p",
+        category="Metalloid",
     ),
     Element(
         Z=52,
@@ -918,6 +1132,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=722.66,
         boiling_point_K=1261.0,
         density_g_cm3=6.232,
+        period=5,
+        group=16,
+        block="p",
+        category="Metalloid",
     ),
     Element(
         Z=53,
@@ -934,6 +1152,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=386.85,
         boiling_point_K=457.4,
         density_g_cm3=4.93,
+        period=5,
+        group=17,
+        block="p",
+        category="Halogen",
     ),
     Element(
         Z=54,
@@ -950,6 +1172,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=161.4,
         boiling_point_K=165.051,
         density_g_cm3=0.005887,
+        period=5,
+        group=18,
+        block="p",
+        category="Noble gas",
     ),
     # ── Period 6 ─────────────────────────────────────────────────
     Element(
@@ -967,6 +1193,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=301.59,
         boiling_point_K=944.0,
         density_g_cm3=1.873,
+        period=6,
+        group=1,
+        block="s",
+        category="Alkali metal",
     ),
     Element(
         Z=56,
@@ -983,6 +1213,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1000.0,
         boiling_point_K=2118.0,
         density_g_cm3=3.594,
+        period=6,
+        group=2,
+        block="s",
+        category="Alkaline earth metal",
     ),
     # ── Lanthanides ──────────────────────────────────────────────
     Element(
@@ -1000,6 +1234,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1193.0,
         boiling_point_K=3737.0,
         density_g_cm3=6.145,
+        period=6,
+        group=None,
+        block="f",
+        category="Lanthanide",
     ),
     Element(
         Z=58,
@@ -1016,6 +1254,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1068.0,
         boiling_point_K=3716.0,
         density_g_cm3=6.770,
+        period=6,
+        group=None,
+        block="f",
+        category="Lanthanide",
     ),
     Element(
         Z=59,
@@ -1032,6 +1274,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1208.0,
         boiling_point_K=3793.0,
         density_g_cm3=6.773,
+        period=6,
+        group=None,
+        block="f",
+        category="Lanthanide",
     ),
     Element(
         Z=60,
@@ -1048,6 +1294,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1297.0,
         boiling_point_K=3347.0,
         density_g_cm3=7.008,
+        period=6,
+        group=None,
+        block="f",
+        category="Lanthanide",
     ),
     Element(
         Z=61,
@@ -1064,6 +1314,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1315.0,
         boiling_point_K=3273.0,
         density_g_cm3=7.26,
+        period=6,
+        group=None,
+        block="f",
+        category="Lanthanide",
     ),
     Element(
         Z=62,
@@ -1080,6 +1334,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1345.0,
         boiling_point_K=2067.0,
         density_g_cm3=7.52,
+        period=6,
+        group=None,
+        block="f",
+        category="Lanthanide",
     ),
     Element(
         Z=63,
@@ -1096,6 +1354,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1099.0,
         boiling_point_K=1802.0,
         density_g_cm3=5.244,
+        period=6,
+        group=None,
+        block="f",
+        category="Lanthanide",
     ),
     Element(
         Z=64,
@@ -1112,6 +1374,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1585.0,
         boiling_point_K=3546.0,
         density_g_cm3=7.901,
+        period=6,
+        group=None,
+        block="f",
+        category="Lanthanide",
     ),
     Element(
         Z=65,
@@ -1128,6 +1394,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1629.0,
         boiling_point_K=3503.0,
         density_g_cm3=8.230,
+        period=6,
+        group=None,
+        block="f",
+        category="Lanthanide",
     ),
     Element(
         Z=66,
@@ -1144,6 +1414,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1680.0,
         boiling_point_K=2840.0,
         density_g_cm3=8.550,
+        period=6,
+        group=None,
+        block="f",
+        category="Lanthanide",
     ),
     Element(
         Z=67,
@@ -1160,6 +1434,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1734.0,
         boiling_point_K=2993.0,
         density_g_cm3=8.795,
+        period=6,
+        group=None,
+        block="f",
+        category="Lanthanide",
     ),
     Element(
         Z=68,
@@ -1176,6 +1454,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1802.0,
         boiling_point_K=3141.0,
         density_g_cm3=9.066,
+        period=6,
+        group=None,
+        block="f",
+        category="Lanthanide",
     ),
     Element(
         Z=69,
@@ -1192,6 +1474,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1818.0,
         boiling_point_K=2223.0,
         density_g_cm3=9.321,
+        period=6,
+        group=None,
+        block="f",
+        category="Lanthanide",
     ),
     Element(
         Z=70,
@@ -1208,6 +1494,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1097.0,
         boiling_point_K=1469.0,
         density_g_cm3=6.965,
+        period=6,
+        group=None,
+        block="f",
+        category="Lanthanide",
     ),
     Element(
         Z=71,
@@ -1224,6 +1514,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1925.0,
         boiling_point_K=3675.0,
         density_g_cm3=9.841,
+        period=6,
+        group=None,
+        block="f",
+        category="Lanthanide",
     ),
     # ── 6d transition metals ─────────────────────────────────────
     Element(
@@ -1241,6 +1535,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=2506.0,
         boiling_point_K=4876.0,
         density_g_cm3=13.31,
+        period=6,
+        group=4,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=73,
@@ -1257,6 +1555,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=3290.0,
         boiling_point_K=5731.0,
         density_g_cm3=16.654,
+        period=6,
+        group=5,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=74,
@@ -1273,6 +1575,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=3695.0,
         boiling_point_K=5828.0,
         density_g_cm3=19.25,
+        period=6,
+        group=6,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=75,
@@ -1289,6 +1595,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=3459.0,
         boiling_point_K=5869.0,
         density_g_cm3=21.02,
+        period=6,
+        group=7,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=76,
@@ -1305,6 +1615,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=3306.0,
         boiling_point_K=5285.0,
         density_g_cm3=22.59,
+        period=6,
+        group=8,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=77,
@@ -1321,6 +1635,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=2719.0,
         boiling_point_K=4701.0,
         density_g_cm3=22.56,
+        period=6,
+        group=9,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=78,
@@ -1337,6 +1655,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=2041.4,
         boiling_point_K=4098.0,
         density_g_cm3=21.46,
+        period=6,
+        group=10,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=79,
@@ -1353,6 +1675,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1337.33,
         boiling_point_K=3129.0,
         density_g_cm3=19.282,
+        period=6,
+        group=11,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=80,
@@ -1369,6 +1695,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=234.32,
         boiling_point_K=629.88,
         density_g_cm3=13.534,
+        period=6,
+        group=12,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=81,
@@ -1385,6 +1715,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=577.0,
         boiling_point_K=1746.0,
         density_g_cm3=11.85,
+        period=6,
+        group=13,
+        block="p",
+        category="Post-transition metal",
     ),
     Element(
         Z=82,
@@ -1401,6 +1735,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=600.61,
         boiling_point_K=2022.0,
         density_g_cm3=11.342,
+        period=6,
+        group=14,
+        block="p",
+        category="Post-transition metal",
     ),
     Element(
         Z=83,
@@ -1417,6 +1755,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=544.7,
         boiling_point_K=1837.0,
         density_g_cm3=9.807,
+        period=6,
+        group=15,
+        block="p",
+        category="Post-transition metal",
     ),
     Element(
         Z=84,
@@ -1433,6 +1775,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=527.0,
         boiling_point_K=1235.0,
         density_g_cm3=9.32,
+        period=6,
+        group=16,
+        block="p",
+        category="Post-transition metal",
     ),
     Element(
         Z=85,
@@ -1449,6 +1795,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=575.0,
         boiling_point_K=610.0,
         density_g_cm3=None,
+        period=6,
+        group=17,
+        block="p",
+        category="Halogen",
     ),
     Element(
         Z=86,
@@ -1465,6 +1815,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=202.0,
         boiling_point_K=211.5,
         density_g_cm3=0.00973,
+        period=6,
+        group=18,
+        block="p",
+        category="Noble gas",
     ),
     # ── Period 7 ─────────────────────────────────────────────────
     Element(
@@ -1482,6 +1836,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=300.0,
         boiling_point_K=950.0,
         density_g_cm3=None,
+        period=7,
+        group=1,
+        block="s",
+        category="Alkali metal",
     ),
     Element(
         Z=88,
@@ -1498,6 +1856,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=973.0,
         boiling_point_K=2010.0,
         density_g_cm3=5.5,
+        period=7,
+        group=2,
+        block="s",
+        category="Alkaline earth metal",
     ),
     # ── Actinides ────────────────────────────────────────────────
     Element(
@@ -1515,6 +1877,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1323.0,
         boiling_point_K=3471.0,
         density_g_cm3=10.07,
+        period=7,
+        group=None,
+        block="f",
+        category="Actinide",
     ),
     Element(
         Z=90,
@@ -1531,6 +1897,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=2023.0,
         boiling_point_K=5061.0,
         density_g_cm3=11.72,
+        period=7,
+        group=None,
+        block="f",
+        category="Actinide",
     ),
     Element(
         Z=91,
@@ -1547,6 +1917,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1841.0,
         boiling_point_K=4300.0,
         density_g_cm3=15.37,
+        period=7,
+        group=None,
+        block="f",
+        category="Actinide",
     ),
     Element(
         Z=92,
@@ -1563,6 +1937,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1405.3,
         boiling_point_K=4404.0,
         density_g_cm3=19.05,
+        period=7,
+        group=None,
+        block="f",
+        category="Actinide",
     ),
     Element(
         Z=93,
@@ -1579,6 +1957,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=917.0,
         boiling_point_K=4175.0,
         density_g_cm3=20.45,
+        period=7,
+        group=None,
+        block="f",
+        category="Actinide",
     ),
     Element(
         Z=94,
@@ -1595,6 +1977,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=912.5,
         boiling_point_K=3501.0,
         density_g_cm3=19.84,
+        period=7,
+        group=None,
+        block="f",
+        category="Actinide",
     ),
     Element(
         Z=95,
@@ -1611,6 +1997,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1449.0,
         boiling_point_K=2880.0,
         density_g_cm3=13.69,
+        period=7,
+        group=None,
+        block="f",
+        category="Actinide",
     ),
     Element(
         Z=96,
@@ -1627,6 +2017,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1613.0,
         boiling_point_K=3383.0,
         density_g_cm3=13.51,
+        period=7,
+        group=None,
+        block="f",
+        category="Actinide",
     ),
     Element(
         Z=97,
@@ -1643,6 +2037,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1259.0,
         boiling_point_K=2900.0,
         density_g_cm3=14.79,
+        period=7,
+        group=None,
+        block="f",
+        category="Actinide",
     ),
     Element(
         Z=98,
@@ -1659,6 +2057,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1173.0,
         boiling_point_K=1743.0,
         density_g_cm3=15.1,
+        period=7,
+        group=None,
+        block="f",
+        category="Actinide",
     ),
     Element(
         Z=99,
@@ -1675,6 +2077,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1133.0,
         boiling_point_K=1269.0,
         density_g_cm3=8.84,
+        period=7,
+        group=None,
+        block="f",
+        category="Actinide",
     ),
     Element(
         Z=100,
@@ -1691,6 +2097,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1800.0,
         boiling_point_K=None,
         density_g_cm3=None,
+        period=7,
+        group=None,
+        block="f",
+        category="Actinide",
     ),
     Element(
         Z=101,
@@ -1707,6 +2117,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1100.0,
         boiling_point_K=None,
         density_g_cm3=None,
+        period=7,
+        group=None,
+        block="f",
+        category="Actinide",
     ),
     Element(
         Z=102,
@@ -1723,6 +2137,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1100.0,
         boiling_point_K=None,
         density_g_cm3=None,
+        period=7,
+        group=None,
+        block="f",
+        category="Actinide",
     ),
     Element(
         Z=103,
@@ -1739,6 +2157,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=1900.0,
         boiling_point_K=None,
         density_g_cm3=None,
+        period=7,
+        group=None,
+        block="f",
+        category="Actinide",
     ),
     # ── Period 7 transition metals (superheavy) ──────────────────
     Element(
@@ -1756,6 +2178,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=2400.0,
         boiling_point_K=5800.0,
         density_g_cm3=23.2,
+        period=7,
+        group=4,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=105,
@@ -1772,6 +2198,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=None,
         boiling_point_K=None,
         density_g_cm3=29.3,
+        period=7,
+        group=5,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=106,
@@ -1788,6 +2218,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=None,
         boiling_point_K=None,
         density_g_cm3=35.0,
+        period=7,
+        group=6,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=107,
@@ -1804,6 +2238,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=None,
         boiling_point_K=None,
         density_g_cm3=37.1,
+        period=7,
+        group=7,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=108,
@@ -1820,6 +2258,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=None,
         boiling_point_K=None,
         density_g_cm3=40.7,
+        period=7,
+        group=8,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=109,
@@ -1836,6 +2278,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=None,
         boiling_point_K=None,
         density_g_cm3=37.4,
+        period=7,
+        group=9,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=110,
@@ -1852,6 +2298,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=None,
         boiling_point_K=None,
         density_g_cm3=34.8,
+        period=7,
+        group=10,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=111,
@@ -1868,6 +2318,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=None,
         boiling_point_K=None,
         density_g_cm3=28.7,
+        period=7,
+        group=11,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=112,
@@ -1884,6 +2338,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=283.0,
         boiling_point_K=340.0,
         density_g_cm3=23.7,
+        period=7,
+        group=12,
+        block="d",
+        category="Transition metal",
     ),
     Element(
         Z=113,
@@ -1900,6 +2358,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=700.0,
         boiling_point_K=1430.0,
         density_g_cm3=16.0,
+        period=7,
+        group=13,
+        block="p",
+        category="Post-transition metal",
     ),
     Element(
         Z=114,
@@ -1916,6 +2378,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=200.0,
         boiling_point_K=380.0,
         density_g_cm3=14.0,
+        period=7,
+        group=14,
+        block="p",
+        category="Post-transition metal",
     ),
     Element(
         Z=115,
@@ -1932,6 +2398,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=670.0,
         boiling_point_K=1400.0,
         density_g_cm3=13.5,
+        period=7,
+        group=15,
+        block="p",
+        category="Post-transition metal",
     ),
     Element(
         Z=116,
@@ -1948,6 +2418,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=709.0,
         boiling_point_K=1085.0,
         density_g_cm3=12.9,
+        period=7,
+        group=16,
+        block="p",
+        category="Post-transition metal",
     ),
     Element(
         Z=117,
@@ -1964,6 +2438,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=723.0,
         boiling_point_K=883.0,
         density_g_cm3=7.2,
+        period=7,
+        group=17,
+        block="p",
+        category="Halogen",
     ),
     Element(
         Z=118,
@@ -1980,6 +2458,10 @@ ELEMENTS: tuple[Element, ...] = (
         melting_point_K=325.0,
         boiling_point_K=450.0,
         density_g_cm3=5.0,
+        period=7,
+        group=18,
+        block="p",
+        category="Noble gas",
     ),
 )
 
