@@ -195,6 +195,7 @@ markers = [
   "tier3: T3 — schema/contract/file structure (default tier)",
   "tier4: T4 — CLI/integration/e2e (subprocess-heavy)",
   "tier5: T5 — benchmark (runs last, informational)",
+  "integration: integration tests (full repo validation)",
 ]
 
 # Parallel execution hint: run with `pytest -n auto` for multi-core speedup

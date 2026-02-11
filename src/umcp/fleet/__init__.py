@@ -45,7 +45,7 @@ from umcp.fleet.models import (
 from umcp.fleet.queue import PriorityQueue
 from umcp.fleet.scheduler import Scheduler
 from umcp.fleet.tenant import Tenant, TenantManager
-from umcp.fleet.worker import Worker, WorkerPool
+from umcp.fleet.worker import Worker, WorkerConfig, WorkerPool
 
 __all__ = [
     "ArtifactCache",
@@ -60,6 +60,7 @@ __all__ = [
     "TenantManager",
     "TenantQuota",
     "Worker",
+    "WorkerConfig",
     "WorkerInfo",
     "WorkerPool",
     "WorkerStatus",

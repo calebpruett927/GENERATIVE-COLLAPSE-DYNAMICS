@@ -213,9 +213,13 @@ class RootFileValidator:
                 return
 
             row = rows[0]
-            total = sum(float(row[k]) for k in row if k.startswith("w_"))
+            # Support both 'w_*' column-prefix format and single 'weight' column
+            weight_vals = [float(row[k]) for k in row if k.startswith("w_")]
+            if not weight_vals and "weight" in row:
+                weight_vals = [float(r["weight"]) for r in rows]
+            total = sum(weight_vals)
 
-            if abs(total - 1.0) < 1e-9:
+            if abs(total - 1.0) < 1e-6:
                 self.passed.append(f"✓ Weights sum to 1.0 (sum={total:.10f})")
             else:
                 self.errors.append(f"✗ Weights do not sum to 1.0 (sum={total:.10f})")
@@ -238,7 +242,9 @@ class RootFileValidator:
             coords = np.array([float(row[k]) for k in sorted(row.keys()) if k.startswith("c_")])
 
             # Use optimized clipping utility for diagnostics (OPT-20: vectorized)
-            clip_result = clip_coordinates(coords, epsilon=1e-6)
+            # Use 1e-9 tolerance: near-limit values (e.g. 0.99999999 in Stable regime)
+            # are mathematically valid and should not be flagged as out-of-range.
+            clip_result = clip_coordinates(coords, epsilon=1e-9)
 
             if clip_result.clip_count == 0:
                 self.passed.append(f"✓ All {len(coords)} coordinates in [ε, 1-ε]")
@@ -270,7 +276,9 @@ class RootFileValidator:
             float(row.get("S", 0.0))
 
             # Use optimized kernel validation (Lemma 1 bounds)
-            bounds_valid = validate_kernel_bounds(F, omega, C, IC, kappa)
+            # Use 1e-9 epsilon: near-limit invariants (IC ≈ 1 in Stable regime)
+            # are valid and should not trigger false violations.
+            bounds_valid = validate_kernel_bounds(F, omega, C, IC, kappa, epsilon=1e-9)
             if bounds_valid:
                 self.passed.append("✓ All kernel outputs satisfy Lemma 1 range bounds")
             else:

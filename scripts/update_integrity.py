@@ -110,8 +110,8 @@ def main() -> int:
     for filepath in sorted(get_tracked_files(root)):
         try:
             checksum = sha256sum(filepath)
-            rel_path = filepath.relative_to(root)
-            checksums.append((str(rel_path), checksum))
+            rel_path_str = str(filepath.relative_to(root))
+            checksums.append((rel_path_str, checksum))
         except Exception as e:
             print(f"Warning: Could not checksum {filepath}: {e}", file=sys.stderr)
             continue
