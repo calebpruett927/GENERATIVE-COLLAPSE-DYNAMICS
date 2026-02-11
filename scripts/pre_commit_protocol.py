@@ -421,8 +421,54 @@ def step_stage_files(ctx: RepoContext) -> StepResult:
     )
 
 
+def step_update_test_count(ctx: RepoContext) -> StepResult:
+    """Step 5: update test count in documentation."""
+    t0 = time.monotonic()
+    test_count_script = ctx.root / "scripts" / "update_test_count.py"
+
+    if not test_count_script.exists():
+        return StepResult(
+            name="update test count",
+            status=StepStatus.WARN,
+            duration_s=time.monotonic() - t0,
+            message="Script not found (non-blocking)",
+            blocking=False,
+        )
+
+    result = _run(
+        [ctx.python_exe, str(test_count_script)],
+        cwd=ctx.root,
+    )
+
+    test_count = 0
+    for ln in result.stdout.split("\n"):
+        m = re.search(r"Found\s+(\d+)\s+tests", ln)
+        if m:
+            test_count = int(m.group(1))
+            break
+
+    # Re-stage documentation files
+    readme = ctx.root / "README.md"
+    copilot_inst = ctx.root / ".github" / "copilot-instructions.md"
+    if readme.exists():
+        _run(["git", "add", str(readme)], cwd=ctx.root)
+    if copilot_inst.exists():
+        _run(["git", "add", str(copilot_inst)], cwd=ctx.root)
+
+    passed = result.returncode == 0
+    msg = f"{test_count} tests counted" if passed and test_count > 0 else "Test count updated"
+
+    return StepResult(
+        name="update test count",
+        status=StepStatus.PASS if passed else StepStatus.WARN,
+        duration_s=time.monotonic() - t0,
+        message=msg,
+        blocking=False,
+    )
+
+
 def step_update_integrity(ctx: RepoContext) -> StepResult:
-    """Step 5: regenerate SHA256 checksums."""
+    """Step 6: regenerate SHA256 checksums."""
     t0 = time.monotonic()
     result = _run(
         [ctx.python_exe, str(ctx.integrity_script)],
@@ -596,6 +642,7 @@ _STEP_REGISTRY: list[tuple[str, str]] = [
     ("Ruff Lint", "ruff_lint"),
     ("Mypy Type Check", "mypy"),
     ("Stage Files", "stage"),
+    ("Update Test Count", "test_count"),
     ("Update Integrity", "integrity"),
     ("Pytest Bounds", "pytest"),
     ("UMCP Validate", "validate"),
@@ -620,6 +667,7 @@ def run_protocol(ctx: RepoContext, mode: str = "fix") -> ProtocolReport:
         "ruff_lint": lambda: step_ruff_lint(ctx, mode),
         "mypy": lambda: step_mypy(ctx),
         "stage": lambda: step_stage_files(ctx),
+        "test_count": lambda: step_update_test_count(ctx),
         "integrity": lambda: step_update_integrity(ctx),
         "pytest": lambda: step_pytest(ctx),
         "validate": lambda: step_umcp_validate(ctx),

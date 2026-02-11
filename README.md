@@ -12,7 +12,7 @@
   <a href="https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/actions/workflows/validate.yml"><img src="https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/actions/workflows/validate.yml/badge.svg" alt="CI"></a>
   <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.11+-3776AB?logo=python&logoColor=white" alt="Python 3.11+"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License: MIT"></a>
-  <a href="tests/"><img src="https://img.shields.io/badge/tests-1900%2B%20passing-brightgreen?logo=pytest" alt="Tests: 1900+ passing"></a>
+  <a href="tests/"><img src="https://img.shields.io/badge/tests-2416%20passing-brightgreen?logo=pytest" alt="Tests: 2416 passing"></a>
   <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-2.0.0-blue" alt="Version: 2.0.0"></a>
   <a href="src/umcp/api_umcp.py"><img src="https://img.shields.io/badge/API-57%20endpoints-orange?logo=fastapi" alt="API: 57 endpoints"></a>
 </p>
@@ -81,7 +81,7 @@ pip install -e ".[all]"
 # Verify
 umcp health                  # System health check
 umcp validate .              # Validate entire repository (must be CONFORMANT)
-pytest                       # Run 1,934 tests
+pytest                       # Run 1,2416 tests
 ```
 
 One-liner:
@@ -353,7 +353,7 @@ Runs all checks that CI will run: lint, type-check, test, validate.
 ### `umcp test` -- Run Tests
 
 ```bash
-umcp test                     # Run all 1,817 tests
+umcp test                     # Run all 1,2416 tests
 umcp test --coverage          # With coverage report
 umcp test -k "gcd"            # Pattern matching
 umcp test -m "not slow"       # Skip slow markers
@@ -1071,7 +1071,7 @@ expected_outputs:
 ### Run Tests
 
 ```bash
-# All 1,391 tests
+# All 1,2416 tests
 pytest
 
 # Verbose
@@ -1097,7 +1097,7 @@ umcp test
 umcp test --coverage
 ```
 
-### Test Distribution (71 files, 1,817 tests)
+### Test Distribution (71 files, 1,2416 tests)
 
 | Category | Tests | Description |
 |----------|------:|-------------|
@@ -1312,7 +1312,7 @@ UMCP-Metadata-Runnable-Code/
 |   |-- dashboard.py              # Streamlit dashboard (31 pages)
 |   '-- umcp_extensions.py        # Extension registry (5 extensions)
 |
-|-- tests/                        # Test suite (71 files, 1,817 tests)
+|-- tests/                        # Test suite (71 files, 1,2416 tests)
 |   |-- conftest.py               # Fixtures: RepoPaths, caching helpers
 |   |-- test_00_* .. test_145_*   # Numbered test groups
 |   '-- closures/                 # Closure-specific tests
@@ -1410,7 +1410,7 @@ Copyright (c) 2026 Clement Paulus
 
 <div align="center">
 
-**UMCP v2.0.0** &bull; 1,817 tests &bull; 57 API endpoints &bull; 31 dashboard pages &bull; 11 CLI commands &bull; 13 casepacks &bull; 9 domains &bull; 46 lemmas &bull; CONFORMANT
+**UMCP v2.0.0** &bull; 1,2416 tests &bull; 57 API endpoints &bull; 31 dashboard pages &bull; 11 CLI commands &bull; 13 casepacks &bull; 9 domains &bull; 46 lemmas &bull; CONFORMANT
 
 *"What Returns Through Collapse Is Real"*
 
