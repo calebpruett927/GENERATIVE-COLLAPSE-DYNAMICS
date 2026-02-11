@@ -19,7 +19,7 @@ class TestBenchmark:
 
     def test_benchmark_file_exists(self):
         """Benchmark script should exist."""
-        benchmark_path = REPO_ROOT / "benchmark_umcp_vs_standard.py"
+        benchmark_path = REPO_ROOT / "scripts" / "benchmark_umcp_vs_standard.py"
 
         if not benchmark_path.exists():
             pytest.skip("Benchmark script not found")
@@ -28,7 +28,7 @@ class TestBenchmark:
 
     def test_benchmark_is_valid_python(self):
         """Benchmark script should be valid Python."""
-        benchmark_path = REPO_ROOT / "benchmark_umcp_vs_standard.py"
+        benchmark_path = REPO_ROOT / "scripts" / "benchmark_umcp_vs_standard.py"
 
         if not benchmark_path.exists():
             pytest.skip("Benchmark script not found")
@@ -44,7 +44,7 @@ class TestBenchmark:
 
     def test_benchmark_imports_work(self):
         """Benchmark script imports should work."""
-        benchmark_path = REPO_ROOT / "benchmark_umcp_vs_standard.py"
+        benchmark_path = REPO_ROOT / "scripts" / "benchmark_umcp_vs_standard.py"
 
         if not benchmark_path.exists():
             pytest.skip("Benchmark script not found")
@@ -71,7 +71,7 @@ class TestBenchmark:
     @pytest.mark.slow
     def test_benchmark_runs(self):
         """Benchmark script should run without errors."""
-        benchmark_path = REPO_ROOT / "benchmark_umcp_vs_standard.py"
+        benchmark_path = REPO_ROOT / "scripts" / "benchmark_umcp_vs_standard.py"
 
         if not benchmark_path.exists():
             pytest.skip("Benchmark script not found")
@@ -93,7 +93,7 @@ class TestBenchmark:
 
     def test_standard_validator_class_exists(self):
         """StandardValidator class should be importable from benchmark."""
-        benchmark_path = REPO_ROOT / "benchmark_umcp_vs_standard.py"
+        benchmark_path = REPO_ROOT / "scripts" / "benchmark_umcp_vs_standard.py"
 
         if not benchmark_path.exists():
             pytest.skip("Benchmark script not found")

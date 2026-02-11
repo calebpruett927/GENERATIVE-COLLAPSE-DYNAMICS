@@ -1,0 +1,262 @@
+schema: schemas/contract.schema.json
+contract:
+  id: MATL.INTSTACK.v1
+  version: 1.0.0
+  timezone: America/Chicago
+  domain: Materials Science
+  description: >
+    Materials science integration stack derived from atomic physics observables
+    (ionization energy, electron configuration, fine structure) through the RCFT
+    universality framework (c_eff=1/p, scaling exponents, partition functions)
+    to predict emergent material properties: cohesive energy, phase transitions,
+    elastic moduli, band structure, and thermal behavior.
+
+    Derivation chain:
+      Atomic IE  →  Cohesive binding per atom (Madelung / Friedel)
+      Electron config  →  Band gap character (metal / semiconductor / insulator)
+      RCFT universality  →  Phase transition exponents (ν, γ, α, β)
+      RCFT partition function  →  Debye phonon thermodynamics
+      Interatomic curvature  →  Elastic moduli (K, G, E)
+
+    Core axiom:  What Returns Through Collapse Is Real — material properties
+    emerge as the macroscopic return of microscopic atomic collapses.
+
+  embedding:
+    interval: [0.0, 1.0]
+    face: pre_clip
+    oor_policy: clip_and_flag
+    epsilon: 1.0e-08
+
+  tier_1_kernel:
+    reserved_symbols: [ω, F, S, C, τ_R, κ, IC, omega, tau_R, kappa]
+    weights_policy: nonnegative_sum_to_one
+    frozen_parameters:
+      p: 3
+      alpha: 1.0
+      lambda: 0.2
+      eta: 0.001
+    tolerances:
+      tol_seam: 0.005
+      tol_id: 1.0e-09
+
+  tier_2_extensions:
+    reserved_symbols:
+      # Cohesive energy
+      - symbol: E_coh
+        latex: E_{\text{coh}}
+        description: "Cohesive energy per atom (eV)"
+        domain: "[0, ∞)"
+        tier: 2
+      - symbol: Psi_coh
+        latex: \Psi_{\text{coh}}
+        description: "Normalized cohesion channel E_coh / E_coh_ref"
+        domain: "[0, 1]"
+        tier: 2
+      # Phase transition
+      - symbol: Phi_order
+        latex: \Phi
+        description: "Order parameter (magnetization, strain, etc.)"
+        domain: "[0, 1]"
+        tier: 2
+      - symbol: chi_susc
+        latex: \chi
+        description: "Susceptibility (diverges at T_c)"
+        domain: "[0, ∞)"
+        tier: 2
+      - symbol: xi_corr
+        latex: \xi / \xi_0
+        description: "Correlation length ratio"
+        domain: "[0, ∞)"
+        tier: 2
+      # Elastic
+      - symbol: K_bulk
+        latex: K
+        description: "Bulk modulus (GPa)"
+        domain: "[0, ∞)"
+        tier: 2
+      - symbol: G_shear
+        latex: G
+        description: "Shear modulus (GPa)"
+        domain: "[0, ∞)"
+        tier: 2
+      - symbol: E_young
+        latex: E
+        description: "Young's modulus (GPa)"
+        domain: "[0, ∞)"
+        tier: 2
+      # Band structure
+      - symbol: E_g
+        latex: E_g
+        description: "Band gap (eV)"
+        domain: "[0, ∞)"
+        tier: 2
+      - symbol: Psi_band
+        latex: \Psi_{\text{band}}
+        description: "Normalized band channel 1 − E_g/E_g_max"
+        domain: "[0, 1]"
+        tier: 2
+      - symbol: d_F_band
+        latex: d_F
+        description: "Fisher geodesic distance for band gap"
+        domain: "[0, π/2]"
+        tier: 2
+      # Debye thermal
+      - symbol: Theta_D
+        latex: \Theta_D
+        description: "Debye temperature (K)"
+        domain: "[0, ∞)"
+        tier: 2
+      - symbol: C_V_norm
+        latex: C_V / 3R
+        description: "Normalized heat capacity (Dulong-Petit fraction)"
+        domain: "[0, 1]"
+        tier: 2
+      # Magnetic properties
+      - symbol: M_sat
+        latex: M_{\text{sat}}
+        description: "Saturation magnetization (μ_B per atom)"
+        domain: "[0, ∞)"
+        tier: 2
+      - symbol: chi_mag
+        latex: \chi_m
+        description: "Magnetic susceptibility (SI)"
+        domain: "(-∞, ∞)"
+        tier: 2
+      # BCS superconductivity
+      - symbol: Delta_BCS
+        latex: \Delta_{\text{BCS}}
+        description: "BCS energy gap (meV)"
+        domain: "[0, ∞)"
+        tier: 2
+      - symbol: lambda_ep
+        latex: \lambda_{ep}
+        description: "Electron-phonon coupling constant"
+        domain: "[0, ∞)"
+        tier: 2
+      # Surface/catalysis
+      - symbol: gamma_surf
+        latex: \gamma_s
+        description: "Surface energy (J/m²)"
+        domain: "[0, ∞)"
+        tier: 2
+      - symbol: E_ads
+        latex: E_{\text{ads}}
+        description: "Adsorption energy (eV)"
+        domain: "(-∞, 0]"
+        tier: 2
+
+    closures:
+      - name: cohesive_energy
+        path: closures/materials_science/cohesive_energy.py
+        inputs: [Z, symbol, IE1_eV, Z_eff, n_eff, n_valence, electronegativity_diff, r0_angstrom]
+        outputs: [E_coh_eV, bond_type, omega_eff, F_eff, Psi_coh, regime]
+        frozen_params:
+          E_coh_ref: 8.94
+          KE2_EV_A: 14.3996
+        cross_references:
+          - closures/atomic_physics/ionization_energy.py
+          - closures/rcft/universality_class.py
+
+      - name: phase_transition
+        path: closures/materials_science/phase_transition.py
+        inputs: [T_K, T_c_K, transition_type, p]
+        outputs: [order_parameter, susceptibility, correlation_length_ratio, nu, gamma, alpha, beta_exp, c_eff, omega_eff, F_eff, regime]
+        frozen_params:
+          p: 3
+          nu_GCD: 0.333333
+          gamma_GCD: 0.333333
+          alpha_GCD: 0.0
+          beta_exp_GCD: 0.833333
+        cross_references:
+          - closures/rcft/universality_class.py
+
+      - name: elastic_moduli
+        path: closures/materials_science/elastic_moduli.py
+        inputs: [E_coh_eV, r0_A, V0_A3, n_neighbors, nu_poisson]
+        outputs: [K_GPa, G_GPa, E_GPa, omega_eff, F_eff, regime]
+        frozen_params:
+          eV_A3_to_GPa: 160.2176634
+        cross_references:
+          - closures/materials_science/cohesive_energy.py
+          - closures/rcft/universality_class.py
+
+      - name: band_structure
+        path: closures/materials_science/band_structure.py
+        inputs: [Z, symbol, IE1_eV, Z_eff, n_eff, n_neighbors]
+        outputs: [E_g_eV, band_character, rcft_basin_type, rcft_fisher_distance, omega_eff, F_eff, Psi_band, regime]
+        frozen_params:
+          ALPHA_FINE: 0.00729735
+          E_G_MAX_REF: 14.0
+        cross_references:
+          - closures/atomic_physics/electron_config.py
+          - closures/rcft/attractor_basin.py
+          - closures/rcft/information_geometry.py
+
+      - name: debye_thermal
+        path: closures/materials_science/debye_thermal.py
+        inputs: [T_K, symbol, Theta_D_K, K_GPa, G_GPa, rho_kg_m3]
+        outputs: [C_V_J_mol_K, C_V_normalized, Theta_D_K, rcft_c_eff, omega_eff, F_eff, regime]
+        frozen_params:
+          R_GAS: 8.31446
+          DULONG_PETIT: 24.94338
+        cross_references:
+          - closures/materials_science/elastic_moduli.py
+          - closures/rcft/universality_class.py
+
+      - name: magnetic_properties
+        path: closures/materials_science/magnetic_properties.py
+        inputs: [Z, symbol, T_K, B_tesla, n_unpaired, mu_eff_B]
+        outputs: [M_total_B, chi_SI, T_ordering_K, magnetic_class, omega_eff, F_eff, regime]
+        frozen_params:
+          MU_B: 5.7883818060e-05
+          K_B_EV: 8.617333262e-05
+        cross_references:
+          - closures/atomic_physics/zeeman_stark.py
+          - closures/materials_science/phase_transition.py
+
+      - name: bcs_superconductivity
+        path: closures/materials_science/bcs_superconductivity.py
+        inputs: [Theta_D_K, lambda_ep, T_K, mu_star]
+        outputs: [T_c_K, Delta_0_meV, C_jump_ratio, xi_0_nm, lambda_L_nm, kappa_GL, sc_type, omega_eff, F_eff, regime]
+        frozen_params:
+          BCS_RATIO: 3.528
+          GAMMA_EULER: 0.5772156649
+        cross_references:
+          - closures/materials_science/debye_thermal.py
+          - closures/rcft/universality_class.py
+
+      - name: surface_catalysis
+        path: closures/materials_science/surface_catalysis.py
+        inputs: [E_coh_eV, Z, symbol, coord_number_bulk, coord_number_surface]
+        outputs: [gamma_J_m2, W_adhesion_J_m2, E_vacancy_eV, d_band_center_eV, E_ads_eV, BEP_barrier_eV, omega_eff, F_eff, regime]
+        frozen_params:
+          EV_PER_J_M2: 16.0218
+        cross_references:
+          - closures/materials_science/cohesive_energy.py
+          - closures/materials_science/band_structure.py
+
+  typed_censoring:
+    tau_R_special_values: [INF_REC, UNIDENTIFIABLE]
+    run_status_enum: [CONFORMANT, NONCONFORMANT, NON_EVALUABLE]
+    no_return_no_credit: true
+
+  notes: >
+    Materials science contract bridging atomic physics (Tier-2 ATOM)
+    through RCFT universality (Tier-2 RCFT) to bulk material properties.
+    Five original closures (cohesive, phase, elastic, band, Debye) plus
+    three extensions (magnetic, BCS superconductivity, surface/catalysis).
+    Each closure maps domain observables to ω_eff / F_eff invariants,
+    classifying into domain-specific regimes.  The ω_eff values honestly
+    expose where first-principles models break down — this is the UMCP
+    value proposition: drift measures model quality.
+
+  extensions:
+    magnetic_properties:
+      description: "Zeeman/Stark → bulk magnetic behavior via RCFT"
+      status: active
+    bcs_superconductivity:
+      description: "RCFT partition function → BCS pairing"
+      status: active
+    surface_catalysis:
+      description: "Broken-bond model + d-band theory → surface energetics"
+      status: active

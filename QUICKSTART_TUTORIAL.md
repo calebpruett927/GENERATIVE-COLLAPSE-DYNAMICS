@@ -242,7 +242,7 @@ A: Key docs:
 - [README.md](README.md) - Overview and quick start
 - [KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md) - Formal math
 - [TIER_SYSTEM.md](TIER_SYSTEM.md) - Architecture
-- [CASEPACK_REFERENCE.md](CASEPACK_REFERENCE.md) - Casepack format
+- [CASEPACK_REFERENCE.md](docs/CASEPACK_REFERENCE.md) - Casepack format
 
 ---
 

@@ -85,7 +85,7 @@ References:
     KERNEL_SPECIFICATION.md §3 (Def 11, Budget Model)
     KERNEL_SPECIFICATION.md §5 (Empirical Verification)
     AXIOM.md (Core axiom, constants, rederived principles)
-    MATHEMATICAL_ARCHITECTURE.md (interconnection map)
+    docs/MATHEMATICAL_ARCHITECTURE.md (interconnection map)
     TIER_SYSTEM.md (Tier-0/1/2 architecture)
 
 Interconnections:

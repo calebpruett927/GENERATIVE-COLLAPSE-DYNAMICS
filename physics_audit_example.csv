@@ -1,6 +1,0 @@
-event_id,face,tau_R,D_C,omega,R
-PHYS-04,postselected-transmit,-0.82,-0.82,0,1.0
-PHYS-05,absorptive,1.5,0.3,0.02,0.95
-PHYS-06,partial-transmit,0.5,0.1,0.05,0.8
-PHYS-07,delayed-choice,-0.3,-0.35,0.01,1.0
-PHYS-08,weak-measurement,-0.1,-0.1,0,1.0

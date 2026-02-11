@@ -139,7 +139,7 @@ def pytest_terminal_summary(
 
 
 # =============================================================================
-# Lemma-based Test Optimizations (from COMPUTATIONAL_OPTIMIZATIONS.md)
+# Lemma-based Test Optimizations (from docs/COMPUTATIONAL_OPTIMIZATIONS.md)
 # =============================================================================
 
 # OPT-CACHE: Session-scoped file content caching

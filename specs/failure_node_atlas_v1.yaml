@@ -5,7 +5,7 @@
 #   - docs/FAILURE_NODE_ATLAS.md (human-readable documentation)
 #   - schemas/failure_node_atlas.schema.json (schema validation)
 #   - src/umcp/preflight.py (mechanical enforcement)
-#   - KERNEL_SPECIFICATION.md, TIER_SYSTEM.md, INFRASTRUCTURE_GEOMETRY.md
+#   - KERNEL_SPECIFICATION.md, TIER_SYSTEM.md, docs/INFRASTRUCTURE_GEOMETRY.md
 #
 # Severity taxonomy:
 #   ERROR  = Nonconformance. Outputs are inadmissible. Do not interpret.
@@ -433,7 +433,7 @@ atlas:
         manifest present; hashes match; weights sum to 1; timestamps monotone;
         required flags present.
       nodes: ["FN-003", "FN-005", "FN-007", "FN-010", "FN-011", "FN-014"]
-      
+
     B:
       name: "Drift conformance"
       description: |
@@ -441,7 +441,7 @@ atlas:
         settings/closures hashes to the frozen snapshot for this Run_ID.
       nodes: ["FN-001", "FN-002", "FN-008", "FN-009"]
       requires_freeze: true
-      
+
     C:
       name: "Statistical sentinels"
       description: |

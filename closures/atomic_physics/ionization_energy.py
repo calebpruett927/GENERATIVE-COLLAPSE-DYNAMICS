@@ -57,20 +57,6 @@ class IonizationResult(NamedTuple):
 # ── Frozen constants ─────────────────────────────────────────────
 RYDBERG_EV = 13.5984  # Hydrogen ground-state IE (eV)
 
-# Slater screening constants (approximate, by shell)
-SLATER_RULES: dict[str, float] = {
-    "1s": 0.30,
-    "2s": 0.85,
-    "2p": 0.85,
-    "3s": 1.70,
-    "3p": 1.70,
-    "3d": 1.00,
-    "4s": 2.00,
-    "4p": 2.00,
-    "4d": 1.00,
-    "4f": 1.00,
-}
-
 # NIST reference first ionization energies (eV) for Z=1..36
 NIST_IE1: dict[int, float] = {
     1: 13.598,
@@ -111,6 +97,29 @@ NIST_IE1: dict[int, float] = {
     36: 14.000,
 }
 
+# ── Aufbau filling order (n, l, capacity) ────────────────────────
+_AUFBAU_FILL: list[tuple[int, int, int]] = [
+    (1, 0, 2),  # 1s
+    (2, 0, 2),  # 2s
+    (2, 1, 6),  # 2p
+    (3, 0, 2),  # 3s
+    (3, 1, 6),  # 3p
+    (4, 0, 2),  # 4s
+    (3, 2, 10),  # 3d
+    (4, 1, 6),  # 4p
+    (5, 0, 2),  # 5s
+    (4, 2, 10),  # 4d
+    (5, 1, 6),  # 5p
+    (6, 0, 2),  # 6s
+    (4, 3, 14),  # 4f
+    (5, 2, 10),  # 5d
+    (6, 1, 6),  # 6p
+    (7, 0, 2),  # 7s
+    (5, 3, 14),  # 5f
+    (6, 2, 10),  # 6d
+    (7, 1, 6),  # 7p
+]
+
 # Regime thresholds
 THRESH_PRECISE = 0.01
 THRESH_APPROXIMATE = 0.05
@@ -128,20 +137,80 @@ def _classify_regime(omega_eff: float) -> IonizationRegime:
     return IonizationRegime.ANOMALOUS
 
 
-def _slater_screening(Z: int, n: int) -> float:
-    """Approximate Slater screening constant σ for outermost electron."""
-    # Simplified: σ ≈ 0.30 per 1s electron + 0.85 per inner shell electron
-    if n == 1:
-        return 0.30 * max(0, min(Z - 1, 1))
-    elif n == 2:
-        return 2 * 0.85 + max(0, Z - 3) * 0.35
-    elif n == 3:
-        return 2 * 1.00 + 8 * 0.85 + max(0, Z - 11) * 0.35
-    elif n == 4:
-        return 2 * 1.00 + 8 * 1.00 + 8 * 0.85 + max(0, Z - 19) * 0.35
-    else:
-        # General approximation
-        return Z * 0.65
+def _slater_group_key(n: int, l_val: int) -> tuple[int, str]:
+    """Map (n, l) to Slater group key.
+
+    Slater groups: (1s)(2s,2p)(3s,3p)(3d)(4s,4p)(4d)(4f)…
+    """
+    if l_val <= 1:  # s or p
+        return (n, "sp")
+    if l_val == 2:  # d
+        return (n, "d")
+    return (n, "f")
+
+
+def _slater_screening(Z: int, n: int, l_val: int = 0) -> float:
+    """Compute Slater screening using proper Slater grouping rules (1930).
+
+    Groups: (1s)(2s,2p)(3s,3p)(3d)(4s,4p)(4d)(4f)(5s,5p)…
+
+    Rules for the electron being screened:
+      1. Electrons in groups to the RIGHT contribute 0.
+      2. Same group: 0.35 each (0.30 for 1s).
+      3. For ns/np valence electron:
+         - Electrons in (n-1) principal shell: 0.85 each
+         - Electrons in ≤(n-2) shells: 1.00 each
+      4. For nd/nf valence electron:
+         - ALL electrons in inner groups: 1.00 each
+    """
+    # Fill electrons by Aufbau to determine group populations
+    remaining = Z
+    group_pops: dict[tuple[int, str], int] = {}
+    last_n = 1
+    for orb_n, orb_l, cap in _AUFBAU_FILL:
+        if remaining <= 0:
+            break
+        pop = min(remaining, cap)
+        gk = _slater_group_key(orb_n, orb_l)
+        group_pops[gk] = group_pops.get(gk, 0) + pop
+        remaining -= pop
+        last_n = orb_n
+
+    # Use the supplied (n, l) if given, else auto-detected last-filled
+    val_n = n if n > 0 else last_n
+    val_l = l_val
+    val_gk = _slater_group_key(val_n, val_l)
+    is_sp = val_l <= 1
+
+    sigma = 0.0
+
+    # Same-group screening (exclude the electron itself)
+    same = group_pops.get(val_gk, 0) - 1
+    if same > 0:
+        sigma += same * (0.30 if val_gk == (1, "sp") else 0.35)
+
+    # Inner-group screening
+    for gk, pop in group_pops.items():
+        if gk == val_gk:
+            continue
+        g_n, _g_type = gk
+
+        if is_sp:
+            # For s,p valence: n-1 shell → 0.85, ≤ n-2 → 1.00
+            if g_n == val_n - 1:
+                sigma += pop * 0.85
+            elif g_n < val_n - 1:
+                sigma += pop * 1.00
+            # No contribution from groups with higher principal QN
+        else:
+            # For d,f valence: all inner groups → 1.00
+            if g_n < val_n:
+                sigma += pop * 1.00
+            elif g_n == val_n and gk != val_gk:
+                # Same-shell s,p group (e.g. 3s3p for 3d electron)
+                sigma += pop * 1.00
+
+    return sigma
 
 
 def compute_ionization(
@@ -173,28 +242,34 @@ def compute_ionization(
         msg = f"Atomic number Z must be ≥ 1, got {Z}"
         raise ValueError(msg)
 
-    # Auto-assign principal quantum number from period
-    if n <= 0:
-        if Z <= 2:
-            n = 1
-        elif Z <= 10:
-            n = 2
-        elif Z <= 18:
-            n = 3
-        elif Z <= 36:
-            n = 4
-        elif Z <= 54:
-            n = 5
-        elif Z <= 86:
-            n = 6
-        else:
-            n = 7
+    # Auto-detect valence (n, l) for ionization.
+    # The ionized electron comes from the orbital with highest n
+    # (and if tied, lowest l) — NOT the last Aufbau-filled orbital.
+    # For transition metals: 4s ionizes before 3d despite 3d filling later.
+    remaining = Z
+    occupied: list[tuple[int, int, int]] = []  # (n, l, pop)
+    for orb_n, orb_l, cap in _AUFBAU_FILL:
+        if remaining <= 0:
+            break
+        pop = min(remaining, cap)
+        occupied.append((orb_n, orb_l, pop))
+        remaining -= pop
+
+    # Find ionization orbital: highest n, then lowest l (most loosely bound)
+    val_n, val_l = 1, 0
+    if occupied:
+        best = max(occupied, key=lambda x: (x[0], -x[1]))
+        val_n, val_l = best[0], best[1]
+
+    # Override n if explicitly provided
+    if n > 0:
+        val_n = n
 
     # Effective quantum number
-    n_eff = n - quantum_defect
+    n_eff = val_n - quantum_defect
 
-    # Slater screening
-    sigma = _slater_screening(Z, n)
+    # Proper Slater screening with l-awareness
+    sigma = _slater_screening(Z, val_n, val_l)
     z_eff = max(1.0, Z - sigma)
 
     # Hydrogen-like prediction

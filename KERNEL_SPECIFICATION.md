@@ -1098,10 +1098,10 @@ This specification document is referenced by and depends on:
 
 - **[TIER_SYSTEM.md](TIER_SYSTEM.md)**: Tier-1 (immutable invariants), Tier-0 (protocol), Tier-2 (expansion space)
 - **[AXIOM.md](AXIOM.md)**: Operational definitions for Return, Drift, Integrity, Entropy, Collapse
-- **[SYMBOL_INDEX.md](SYMBOL_INDEX.md)**: One-page symbol table preventing namespace collisions
+- **[SYMBOL_INDEX.md](docs/SYMBOL_INDEX.md)**: One-page symbol table preventing namespace collisions
 - **[FACE_POLICY.md](FACE_POLICY.md)**: Boundary governance and admissible clipping rules
-- **[UHMP.md](UHMP.md)**: Identity governance for manifest roots and ledger registration
-- **[PUBLICATION_INFRASTRUCTURE.md](PUBLICATION_INFRASTRUCTURE.md)**: Publication row format and weld accounting
+- **[UHMP.md](docs/UHMP.md)**: Identity governance for manifest roots and ledger registration
+- **[PUBLICATION_INFRASTRUCTURE.md](docs/PUBLICATION_INFRASTRUCTURE.md)**: Publication row format and weld accounting
 
 ---
 
@@ -1276,8 +1276,8 @@ If a computed run violates the bounds in Lemmas 1-34, the implementation is almo
 - **UMCP Manuscript v1.0.0**: §8 (Formal Definitions and Lemmas)
 - **TIER_SYSTEM.md**: Tier separation and freeze gates
 - **AXIOM.md**: Operational term definitions
-- **SYMBOL_INDEX.md**: Canonical symbol table
-- **PUBLICATION_INFRASTRUCTURE.md**: Weld accounting and publication rows
+- **docs/SYMBOL_INDEX.md**: Canonical symbol table
+- **docs/PUBLICATION_INFRASTRUCTURE.md**: Weld accounting and publication rows
 
 ---
 

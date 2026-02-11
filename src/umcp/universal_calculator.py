@@ -24,7 +24,7 @@ CLI Usage:
 
 Cross-references:
     - KERNEL_SPECIFICATION.md (34 formal lemmas)
-    - INFRASTRUCTURE_GEOMETRY.md (three-layer architecture)
+    - docs/INFRASTRUCTURE_GEOMETRY.md (three-layer architecture)
     - TIER_SYSTEM.md (tier boundaries)
     - closures/gcd/*.py (GCD closures)
     - closures/rcft/*.py (RCFT closures)

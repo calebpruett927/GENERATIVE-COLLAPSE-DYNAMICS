@@ -9,7 +9,7 @@ Validates:
 
 Interconnections:
 - Tests: kernel_optimized.py, seam_optimized.py
-- Validates: COMPUTATIONAL_OPTIMIZATIONS.md strategies
+- Validates: docs/COMPUTATIONAL_OPTIMIZATIONS.md strategies
 - Ensures: Numerical equivalence to formal specification
 """
 

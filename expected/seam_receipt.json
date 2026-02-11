@@ -1,9 +1,0 @@
-{
-  "schema": "schemas/seam_receipt.schema.json",
-  "receipt_type": "seam_audit",
-  "event_id": "PLACEHOLDER",
-  "title": "Seam Receipt Placeholder",
-  "created_utc": "2026-02-08T00:00:00Z",
-  "status": "placeholder",
-  "note": "Template seam receipt — replace with actual audit data for continuity claims."
-}

@@ -644,7 +644,7 @@ pytest tests/test_120_kinematics_closures.py::TestPhaseSpaceReturn -v
 
 1. **UMCP Core**: [KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md)
 2. **Tier System**: [TIER_SYSTEM.md](TIER_SYSTEM.md)
-3. **Infrastructure Geometry**: [INFRASTRUCTURE_GEOMETRY.md](INFRASTRUCTURE_GEOMETRY.md)
+3. **Infrastructure Geometry**: [INFRASTRUCTURE_GEOMETRY.md](docs/INFRASTRUCTURE_GEOMETRY.md)
 4. **Return Axiom**: [AXIOM.md](AXIOM.md)
 5. **Contract Format**: [contracts/KIN.INTSTACK.v1.yaml](contracts/KIN.INTSTACK.v1.yaml)
 

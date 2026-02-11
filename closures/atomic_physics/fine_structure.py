@@ -106,8 +106,15 @@ def compute_fine_structure(
     # ΔE_fine = E_n · (Zα)²/n · [1/(j + 1/2) − 3/(4n)]
     delta_fine = e_n * z_alpha_sq / n * (1.0 / (j + 0.5) - 3.0 / (4.0 * n))
 
-    # Lamb shift estimate (s-states only, leading order)
-    lamb_shift = ALPHA_FINE**5 * M_E_C2_EV * Z**4 / (4.0 * math.pi * n**3) if l_val == 0 else 0.0
+    # Lamb shift estimate (s-states only, leading order with Bethe logarithm)
+    # ΔE_Lamb ≈ (4α⁵ m_e c²) / (3π n³) × ln(1/(Zα)²) × δ_{l,0}
+    # The Bethe logarithm ln(1/(Zα)²) ≈ 9.8 for hydrogen.
+    # Previous formula omitted this factor, underestimating by ~42×.
+    if l_val == 0 and z_alpha > 0:
+        bethe_log = math.log(1.0 / z_alpha_sq)
+        lamb_shift = 4.0 * ALPHA_FINE**5 * M_E_C2_EV * Z**4 / (3.0 * math.pi * n**3) * bethe_log
+    else:
+        lamb_shift = 0.0
 
     e_total = e_n + delta_fine + lamb_shift
 

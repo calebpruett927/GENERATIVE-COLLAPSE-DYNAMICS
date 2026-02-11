@@ -22,7 +22,7 @@ Features:
   - Live validation runner, batch validation, test templates
 
 Cross-references:
-  - EXTENSION_INTEGRATION.md (extension architecture)
+  - docs/EXTENSION_INTEGRATION.md (extension architecture)
   - src/umcp/api_umcp.py (REST API extension)
   - src/umcp/validator.py (validation engine)
   - ledger/return_log.csv (validation ledger)

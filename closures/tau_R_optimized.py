@@ -12,7 +12,7 @@ Interconnections:
 - Implements: KERNEL_SPECIFICATION.md Definitions 9-10
 - Uses: kernel_optimized.py for state comparisons
 - Validates: AXIOM-0 return principle
-- Documentation: COMPUTATIONAL_OPTIMIZATIONS.md
+- Documentation: docs/COMPUTATIONAL_OPTIMIZATIONS.md
 """
 
 from __future__ import annotations

@@ -34,7 +34,7 @@ def render_precision_page() -> None:
     # ========== Core Axiom Display ==========
     st.markdown(
         """
-    <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); 
+    <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
                 padding: 20px; border-radius: 10px; margin-bottom: 20px;
                 border-left: 4px solid #00ff88;">
         <h3 style="color: #00ff88; margin: 0;">AXIOM-0: The Return Axiom</h3>
@@ -388,7 +388,7 @@ def render_geometry_page() -> None:
     Render the Three-Layer Geometry page - Interactive visualization of
     State Space → Invariant Coordinates → Seam Graph architecture.
 
-    Reference: INFRASTRUCTURE_GEOMETRY.md
+    Reference: docs/INFRASTRUCTURE_GEOMETRY.md
     """
     if st is None or go is None or np is None or pd is None:
         return
@@ -420,7 +420,7 @@ def render_geometry_page() -> None:
         **Key Insight**: Each layer performs a specific geometric operation.
         Together they make continuity **auditable rather than asserted**.
 
-        See [INFRASTRUCTURE_GEOMETRY.md](INFRASTRUCTURE_GEOMETRY.md) for full specification.
+        See [docs/INFRASTRUCTURE_GEOMETRY.md](docs/INFRASTRUCTURE_GEOMETRY.md) for full specification.
         """)
 
     st.divider()

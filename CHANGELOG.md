@@ -74,9 +74,9 @@ This release consolidates all version references throughout the repository to v1
 
 #### Documentation
 
-- COMPUTATIONAL_OPTIMIZATIONS.md: 21 optimizations with complexity analysis
-- OPTIMIZATION_CROSS_REFERENCE.md: Integration roadmap
-- OPTIMIZATION_INTEGRATION_GUIDE.md: Step-by-step integration guide
+- docs/COMPUTATIONAL_OPTIMIZATIONS.md: 21 optimizations with complexity analysis
+- docs/OPTIMIZATION_CROSS_REFERENCE.md: Integration roadmap
+- docs/OPTIMIZATION_INTEGRATION_GUIDE.md: Step-by-step integration guide
 
 ### Changed
 
@@ -146,7 +146,7 @@ This release consolidates all version references throughout the repository to v1
 
 #### Core Documentation
 
-- **RETURN_BASED_CANONIZATION.md**: Complete specification of canonization process
+- **docs/RETURN_BASED_CANONIZATION.md**: Complete specification of canonization process
   - Step 1: Threshold validation (range, stability, determinism checks)
   - Step 2: Seam weld computation (Δκ, IC ratio, tolerance validation)
   - Step 3: Canon declaration (new contract version with provenance)
@@ -171,7 +171,7 @@ This release consolidates all version references throughout the repository to v1
 
 #### Navigation
 
-- **README.md**: Added RETURN_BASED_CANONIZATION.md to Core Protocol documentation
+- **README.md**: Added docs/RETURN_BASED_CANONIZATION.md to Core Protocol documentation
 
 ### Changed
 

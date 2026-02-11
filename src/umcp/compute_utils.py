@@ -12,7 +12,7 @@ Key features:
 Interconnections:
 - Used by: kernel_optimized.py, validator.py, seam_optimized.py
 - Implements: KERNEL_SPECIFICATION.md input preprocessing
-- Documentation: COMPUTATIONAL_OPTIMIZATIONS.md
+- Documentation: docs/COMPUTATIONAL_OPTIMIZATIONS.md
 """
 
 from __future__ import annotations

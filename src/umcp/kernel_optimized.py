@@ -1,7 +1,7 @@
 """
 Optimized Kernel Computation Module
 
-Implements computational optimizations from COMPUTATIONAL_OPTIMIZATIONS.md
+Implements computational optimizations from docs/COMPUTATIONAL_OPTIMIZATIONS.md
 based on formal lemmas in KERNEL_SPECIFICATION.md.
 
 Key optimizations:
@@ -15,7 +15,7 @@ Interconnections:
 - Used by: validator.py, scripts/update_integrity.py
 - Implements: KERNEL_SPECIFICATION.md formal definitions
 - Validates: AXIOM-0 return principle via range checks
-- Documentation: COMPUTATIONAL_OPTIMIZATIONS.md
+- Documentation: docs/COMPUTATIONAL_OPTIMIZATIONS.md
 """
 
 from __future__ import annotations

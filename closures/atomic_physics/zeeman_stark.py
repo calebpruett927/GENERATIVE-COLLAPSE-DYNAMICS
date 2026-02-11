@@ -56,6 +56,8 @@ class ZeemanStarkResult(NamedTuple):
 MU_B_EV_PER_T = 5.7883818060e-5  # Bohr magneton (eV/T)
 A_BOHR_M = 5.29177210903e-11  # Bohr radius (m)
 E_CHARGE = 1.602176634e-19  # elementary charge (C)
+EPSILON_0 = 8.8541878128e-12  # vacuum permittivity (F/m)
+FOUR_PI_EPS0 = 4.0 * 3.141592653589793 * EPSILON_0  # 4πε₀
 RYDBERG_EV = 13.5984
 
 
@@ -115,11 +117,21 @@ def compute_zeeman_stark(
     # Number of Zeeman sub-levels
     n_levels = int(2 * j + 1)
 
-    # Stark shift (quadratic, lowest order)
-    # α_D ≈ (9/2) a₀³ n⁷ (n² − 1) / Z⁴  (SI, for hydrogen-like)
-    if Z > 0:
-        alpha_d_si = 4.5 * A_BOHR_M**3 * n**7 * max(0, n**2 - 1) / Z**4
-        delta_stark_j = -0.5 * alpha_d_si * E_field_Vm**2
+    # Stark shift (quadratic, with l-dependent polarizability)
+    # Polarizability volume: α_vol = (a₀³/2) · n⁴(5n² + 1 − 3l(l+1)) / Z⁴
+    #   (Dalgarno 1962; Sobel'man 1972)
+    # SI polarizability: α_SI = 4πε₀ · α_vol  (conversion from CGS volume)
+    # Energy shift: ΔE = −½ · α_SI · E²
+    #
+    # This replaces the old n⁷(n²−1)/Z⁴ formula which:
+    #   - Gave zero for n=1 (ground state)
+    #   - Was missing 4πε₀ conversion (wrong by ~10¹⁰)
+    #   - Ignored l-dependence entirely
+    if Z > 0 and E_field_Vm != 0.0:
+        alpha_factor = n**4 * (5 * n**2 + 1 - 3 * ell * (ell + 1))
+        alpha_vol = 0.5 * A_BOHR_M**3 * alpha_factor / Z**4
+        alpha_si = FOUR_PI_EPS0 * alpha_vol
+        delta_stark_j = -0.5 * alpha_si * E_field_Vm**2
         delta_stark_ev = delta_stark_j / E_CHARGE  # J → eV
     else:
         delta_stark_ev = 0.0

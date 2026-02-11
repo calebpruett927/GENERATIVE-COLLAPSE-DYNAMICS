@@ -57,17 +57,47 @@ class SpectralResult(NamedTuple):
 
 
 # ── Frozen constants ─────────────────────────────────────────────
-R_INF = 1.0973731568539e7  # Rydberg constant (m⁻¹)
+R_INF = 1.0973731568539e7  # Rydberg constant R∞ (m⁻¹, infinite nuclear mass)
 HC_EV_NM = 1239.8419843  # hc in eV·nm
+M_E_KG = 9.1093837015e-31  # Electron mass (kg)
+M_P_KG = 1.67262192369e-27  # Proton mass (kg)
+M_U_KG = 1.66053906660e-27  # Atomic mass unit (kg)
 SERIES_NAMES = {1: "Lyman", 2: "Balmer", 3: "Paschen", 4: "Brackett", 5: "Pfund"}
 
-# Hydrogen Balmer series reference wavelengths (nm) — NIST
+# Nuclear masses in atomic mass units for reduced-mass correction
+# Format: A (most abundant isotope mass number)
+_NUCLEAR_MASS_AMU: dict[int, float] = {
+    1: 1.007276,  # H (proton)
+    2: 4.002602,  # He
+    3: 6.941,  # Li
+    4: 9.012,  # Be
+    5: 10.811,  # B
+    6: 12.011,  # C
+    7: 14.007,  # N
+    8: 15.999,  # O
+}
+
+# Hydrogen Balmer series reference wavelengths (nm) — NIST (in air)
 H_BALMER_REF: dict[int, float] = {
     3: 656.281,
     4: 486.135,
     5: 434.047,
     6: 410.174,
     7: 397.007,
+}
+
+# Hydrogen Lyman series reference wavelengths (nm) — NIST (vacuum)
+H_LYMAN_REF: dict[int, float] = {
+    2: 121.567,
+    3: 102.573,
+    4: 97.254,
+}
+
+# Hydrogen Paschen series reference wavelengths (nm) — NIST (vacuum)
+H_PASCHEN_REF: dict[int, float] = {
+    4: 1875.10,
+    5: 1281.81,
+    6: 1093.81,
 }
 
 THRESH_RESOLVED = 0.001
@@ -83,6 +113,35 @@ def _classify_regime(omega_eff: float) -> SpectralRegime:
     if omega_eff < THRESH_BLENDED:
         return SpectralRegime.BLENDED
     return SpectralRegime.UNRESOLVED
+
+
+def _rydberg_for_z(Z: int) -> float:
+    """Reduced-mass Rydberg constant R_Z for element Z.
+
+    R_Z = R∞ × (1 − m_e / M_nuc) ≈ R∞ × M_nuc / (m_e + M_nuc)
+
+    For hydrogen: R_H ≈ R∞ × 0.999456 → shifts H-α from 656.112 → 656.469 nm.
+    """
+    # Approximate nuclear mass as ~2×Z AMU for heavier elements without data
+    m_nuc = _NUCLEAR_MASS_AMU[Z] * M_U_KG if Z in _NUCLEAR_MASS_AMU else 2.0 * Z * M_U_KG
+    return R_INF * m_nuc / (M_E_KG + m_nuc)
+
+
+def _vacuum_to_air(lambda_vac_nm: float) -> float:
+    """Convert vacuum wavelength to standard air wavelength.
+
+    Uses the IAU/Edlén formula (simplified) for n_air at standard
+    conditions (15°C, 101325 Pa, dry air).  Applied only for λ > 200 nm
+    where NIST reports air wavelengths.
+
+    Reference: Morton (2000), ApJS 130, 403.
+    """
+    if lambda_vac_nm <= 200.0:
+        return lambda_vac_nm  # UV — NIST uses vacuum wavelengths
+    # σ² in μm⁻²
+    s2 = (1000.0 / lambda_vac_nm) ** 2  # σ = 1/λ(μm)
+    n_air = 1.0 + 8.34254e-5 + 2.406147e-2 / (130.0 - s2) + 1.5998e-4 / (38.9 - s2)
+    return lambda_vac_nm / n_air
 
 
 def compute_spectral_lines(
@@ -114,23 +173,30 @@ def compute_spectral_lines(
         msg = f"Z must be ≥ 1, got {Z}"
         raise ValueError(msg)
 
-    # Rydberg formula
-    inv_lambda = R_INF * Z**2 * (1.0 / n_lower**2 - 1.0 / n_upper**2)
+    # Rydberg formula with reduced-mass correction
+    r_z = _rydberg_for_z(Z)
+    inv_lambda = r_z * Z**2 * (1.0 / n_lower**2 - 1.0 / n_upper**2)
 
     if inv_lambda > 0:
         lambda_pred_m = 1.0 / inv_lambda
-        lambda_pred_nm = lambda_pred_m * 1e9
+        lambda_vac_nm = lambda_pred_m * 1e9
+        # Convert to air wavelength for visible lines (Balmer+)
+        lambda_pred_nm = _vacuum_to_air(lambda_vac_nm)
     else:
         lambda_pred_nm = 0.0
 
     energy_ev = HC_EV_NM / lambda_pred_nm if lambda_pred_nm > 0 else 0.0
     series_name = SERIES_NAMES.get(n_lower, f"n₁={n_lower}")
 
-    # Reference value
+    # Reference value — look up NIST data for hydrogen
     if lambda_measured_nm is not None:
         lam_meas = lambda_measured_nm
     elif Z == 1 and n_lower == 2 and n_upper in H_BALMER_REF:
         lam_meas = H_BALMER_REF[n_upper]
+    elif Z == 1 and n_lower == 1 and n_upper in H_LYMAN_REF:
+        lam_meas = H_LYMAN_REF[n_upper]
+    elif Z == 1 and n_lower == 3 and n_upper in H_PASCHEN_REF:
+        lam_meas = H_PASCHEN_REF[n_upper]
     else:
         lam_meas = lambda_pred_nm
 

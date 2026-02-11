@@ -82,6 +82,135 @@ NOBLE_GASES: dict[int, str] = {
     118: "[Og]",
 }
 
+# ── Aufbau exceptions ────────────────────────────────────────────
+# Elements whose ground-state config differs from strict Aufbau filling.
+# Cause: half-filled or fully-filled d/f subshell stability.
+# Format: Z → list[ (label, population) ] giving the FULL configuration.
+# Source: NIST Atomic Spectra Database (Kramida et al. 2023)
+AUFBAU_EXCEPTIONS: dict[int, list[tuple[str, int]]] = {
+    24: [  # Cr: [Ar] 3d⁵ 4s¹ (half-filled d)
+        ("1s", 2),
+        ("2s", 2),
+        ("2p", 6),
+        ("3s", 2),
+        ("3p", 6),
+        ("4s", 1),
+        ("3d", 5),
+    ],
+    29: [  # Cu: [Ar] 3d¹⁰ 4s¹ (fully-filled d)
+        ("1s", 2),
+        ("2s", 2),
+        ("2p", 6),
+        ("3s", 2),
+        ("3p", 6),
+        ("4s", 1),
+        ("3d", 10),
+    ],
+    41: [  # Nb: [Kr] 4d⁴ 5s¹
+        ("1s", 2),
+        ("2s", 2),
+        ("2p", 6),
+        ("3s", 2),
+        ("3p", 6),
+        ("4s", 2),
+        ("3d", 10),
+        ("4p", 6),
+        ("5s", 1),
+        ("4d", 4),
+    ],
+    42: [  # Mo: [Kr] 4d⁵ 5s¹ (half-filled d)
+        ("1s", 2),
+        ("2s", 2),
+        ("2p", 6),
+        ("3s", 2),
+        ("3p", 6),
+        ("4s", 2),
+        ("3d", 10),
+        ("4p", 6),
+        ("5s", 1),
+        ("4d", 5),
+    ],
+    44: [  # Ru: [Kr] 4d⁷ 5s¹
+        ("1s", 2),
+        ("2s", 2),
+        ("2p", 6),
+        ("3s", 2),
+        ("3p", 6),
+        ("4s", 2),
+        ("3d", 10),
+        ("4p", 6),
+        ("5s", 1),
+        ("4d", 7),
+    ],
+    45: [  # Rh: [Kr] 4d⁸ 5s¹
+        ("1s", 2),
+        ("2s", 2),
+        ("2p", 6),
+        ("3s", 2),
+        ("3p", 6),
+        ("4s", 2),
+        ("3d", 10),
+        ("4p", 6),
+        ("5s", 1),
+        ("4d", 8),
+    ],
+    46: [  # Pd: [Kr] 4d¹⁰ (no 5s!)
+        ("1s", 2),
+        ("2s", 2),
+        ("2p", 6),
+        ("3s", 2),
+        ("3p", 6),
+        ("4s", 2),
+        ("3d", 10),
+        ("4p", 6),
+        ("4d", 10),
+    ],
+    47: [  # Ag: [Kr] 4d¹⁰ 5s¹ (fully-filled d)
+        ("1s", 2),
+        ("2s", 2),
+        ("2p", 6),
+        ("3s", 2),
+        ("3p", 6),
+        ("4s", 2),
+        ("3d", 10),
+        ("4p", 6),
+        ("5s", 1),
+        ("4d", 10),
+    ],
+    78: [  # Pt: [Xe] 4f¹⁴ 5d⁹ 6s¹
+        ("1s", 2),
+        ("2s", 2),
+        ("2p", 6),
+        ("3s", 2),
+        ("3p", 6),
+        ("4s", 2),
+        ("3d", 10),
+        ("4p", 6),
+        ("5s", 2),
+        ("4d", 10),
+        ("5p", 6),
+        ("6s", 1),
+        ("4f", 14),
+        ("5d", 9),
+    ],
+    79: [  # Au: [Xe] 4f¹⁴ 5d¹⁰ 6s¹ (fully-filled d)
+        ("1s", 2),
+        ("2s", 2),
+        ("2p", 6),
+        ("3s", 2),
+        ("3p", 6),
+        ("4s", 2),
+        ("3d", 10),
+        ("4p", 6),
+        ("5s", 2),
+        ("4d", 10),
+        ("5p", 6),
+        ("6s", 1),
+        ("4f", 14),
+        ("5d", 10),
+    ],
+}
+
 # Superscript digits
 _SUP = str.maketrans("0123456789", "⁰¹²³⁴⁵⁶⁷⁸⁹")
 
@@ -94,6 +223,12 @@ def _classify_regime(shell_completeness: float) -> ConfigRegime:
     if 0.45 <= shell_completeness <= 0.55:
         return ConfigRegime.HALF_FILLED
     return ConfigRegime.OPEN_SHELL
+
+
+def _subshell_cap(label: str) -> int:
+    """Return the maximum capacity of a subshell from its label (e.g. '3d' → 10)."""
+    l_char = label[-1]
+    return {"s": 2, "p": 6, "d": 10, "f": 14}.get(l_char, 2)
 
 
 def compute_electron_config(Z: int) -> ElectronConfigResult:
@@ -112,15 +247,18 @@ def compute_electron_config(Z: int) -> ElectronConfigResult:
         msg = f"Z must be in [1, 118], got {Z}"
         raise ValueError(msg)
 
-    electrons_left = Z
-    filled: list[tuple[str, int, int]] = []  # (label, count, capacity)
-
-    for _, _l, cap, label in AUFBAU_ORDER:
-        if electrons_left <= 0:
-            break
-        count = min(electrons_left, cap)
-        filled.append((label, count, cap))
-        electrons_left -= count
+    # Use Aufbau exception table if this element has a known exception
+    if Z in AUFBAU_EXCEPTIONS:
+        filled = [(label, count, _subshell_cap(label)) for label, count in AUFBAU_EXCEPTIONS[Z]]
+    else:
+        electrons_left = Z
+        filled = []
+        for _, _l, cap, label in AUFBAU_ORDER:
+            if electrons_left <= 0:
+                break
+            count = min(electrons_left, cap)
+            filled.append((label, count, cap))
+            electrons_left -= count
 
     # Build configuration string
     config_parts = [f"{label}{str(count).translate(_SUP)}" for label, count, _ in filled]

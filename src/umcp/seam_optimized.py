@@ -13,7 +13,7 @@ Interconnections:
 - Used by: weld computation, publication infrastructure
 - Implements: TIER_SYSTEM.md Tier-0 seam accounting (protocol)
 - Validates: AXIOM-0 bounded residual accumulation principle
-- Documentation: COMPUTATIONAL_OPTIMIZATIONS.md
+- Documentation: docs/COMPUTATIONAL_OPTIMIZATIONS.md
 """
 
 from __future__ import annotations

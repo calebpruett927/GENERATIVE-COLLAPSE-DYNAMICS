@@ -111,3 +111,154 @@ closures:
   - fine_structure
   - selection_rules
   - zeeman_stark
+
+# ── Lessons Learned ──────────────────────────────────────────────
+# Each lesson captures a precision gap, why it exists, and how it was resolved.
+# Convention: LL-AT-### (Lessons Learned — ATomic)
+lessons_learned:
+
+  - id: "LL-AT-001"
+    title: "Slater screening requires proper grouping"
+    severity: "CRITICAL"
+    closure: "ionization_energy"
+    symptom: >
+      Fe, Cu, and all transition metals showed ω=1.0 (catastrophic prediction).
+      Naive per-shell screening with wrong coefficients caused Z_eff to be far
+      too high (Fe: Z_eff=6.75 → IE_pred=38.7 vs measured 7.9 eV).
+    root_cause: >
+      Original _slater_screening used simple per-n formulas that mixed up
+      screening coefficients and didn't respect Slater's 1930 grouping rules:
+      (1s)(2s,2p)(3s,3p)(3d)(4s,4p)... with 0.35/0.85/1.00 by group distance.
+    fix: >
+      Reimplemented using proper Slater group keys, Aufbau-based population
+      counting, and correct screening coefficients per Slater (1930). Also
+      fixed valence orbital detection: highest-n orbital ionizes first, not
+      last-filled Aufbau orbital (4s ionizes before 3d in transition metals).
+    physics_lesson: >
+      Screening is a GROUP property, not a shell property. The same principal
+      quantum number n can contain groups with different screening behaviors
+      (3s,3p vs 3d). Ionization order differs from filling order — a universal
+      UMCP insight: return (ionization) doesn't follow collapse (filling).
+    improvement: "Fe: ω=1.0 → ω=0.51; still Anomalous, honestly measured"
+
+  - id: "LL-AT-002"
+    title: "Reduced mass shifts spectral lines"
+    severity: "HIGH"
+    closure: "spectral_lines"
+    symptom: >
+      All hydrogen Balmer lines showed systematic 0.026% blue shift —
+      H-α predicted at 656.112 nm vs NIST 656.281 nm.
+    root_cause: >
+      Code used R∞ (infinite nuclear mass) instead of R_H (finite proton mass).
+      R_H = R∞ × M_p/(m_e + M_p) ≈ R∞ × 0.999456.
+    fix: >
+      Added _rydberg_for_z(Z) that computes element-specific reduced-mass
+      Rydberg constant using tabulated nuclear masses. Also added vacuum-to-air
+      wavelength conversion (Edlén formula) since NIST Balmer values are in air.
+    physics_lesson: >
+      The electron doesn't orbit a fixed nucleus — both orbit their common
+      center of mass. This 0.054% correction was how the deuteron was
+      discovered (Urey 1931: deuterium Balmer lines shifted by ~1.8 Å).
+    improvement: "H-α: 656.112 → 656.288 nm (error 0.026% → 0.001%); all Balmer Resolved"
+
+  - id: "LL-AT-003"
+    title: "Aufbau has ~20 known exceptions"
+    severity: "CRITICAL"
+    closure: "electron_config"
+    symptom: >
+      Cu reported as [Ar] 3d⁹ 4s² instead of correct [Ar] 3d¹⁰ 4s¹.
+      Cr reported as [Ar] 3d⁴ 4s² instead of [Ar] 3d⁵ 4s¹.
+      ~20 elements with wrong ground-state configurations.
+    root_cause: >
+      Strict Aufbau filling (Madelung rule) doesn't account for half-filled
+      or fully-filled d/f subshell stability. The energy cost of promoting
+      a 4s electron to 3d is recovered by exchange energy in a complete
+      or half-complete d shell.
+    fix: >
+      Added AUFBAU_EXCEPTIONS dictionary with experimentally known ground-state
+      configurations for Cr, Cu, Nb, Mo, Ru, Rh, Pd, Ag, Pt, Au. Applied
+      before Aufbau filling when Z matches.
+    physics_lesson: >
+      The Madelung rule (n+l ordering) is a useful approximation but exchange
+      interaction (Hund's rules) can override it. This is a first-principles
+      derivation failure — the Aufbau is a heuristic, not a theorem. In GCD
+      language: the collapse pathway has local attractors (half/full d-shell)
+      that redirect the filling sequence.
+    improvement: "Cu: 3d⁹4s² → 3d¹⁰4s¹ (completeness 0.90 → 1.00, ClosedShell)"
+
+  - id: "LL-AT-004"
+    title: "Lamb shift requires Bethe logarithm"
+    severity: "CRITICAL"
+    closure: "fine_structure"
+    symptom: >
+      H 2S₁/₂ Lamb shift predicted as 1.05×10⁻⁷ eV, experimental value
+      is 4.37×10⁻⁶ eV — underestimated by factor of 42×.
+    root_cause: >
+      Original formula α⁵mc²/(4πn³) omitted the Bethe logarithm factor
+      ln(1/(Zα)²) ≈ 9.8 for hydrogen. The correct leading-order formula is
+      ΔE_Lamb = (4α⁵mc²)/(3πn³) × ln(1/(Zα)²) × δ_{l,0}.
+    fix: >
+      Replaced Lamb shift formula with Bethe (1947) leading-order expression
+      including the logarithmic factor. Now gives 5.52×10⁻⁶ eV for H 2S₁/₂.
+    physics_lesson: >
+      The Lamb shift is a QED vacuum fluctuation effect — the electron
+      interacts with virtual photons. The logarithm arises from integrating
+      over virtual photon energies up to mc². This was the first experimental
+      confirmation of quantum electrodynamics (Lamb & Retherford 1947).
+      The remaining 26% discrepancy from experiment requires higher-order
+      QED (vertex and box diagrams) — beyond our scope.
+    improvement: "H 2S Lamb: 1.05e-7 → 5.52e-6 eV (42× too small → 26% too large)"
+
+  - id: "LL-AT-005"
+    title: "Stark polarizability needs 4πε₀ and l-dependence"
+    severity: "CRITICAL"
+    closure: "zeeman_stark"
+    symptom: >
+      Ground state (n=1) Stark shift was exactly zero due to n²-1 factor.
+      All states had only n-dependence, ignoring orbital angular momentum.
+      SI unit conversion was missing a factor of 4πε₀ ≈ 1.11×10⁻¹⁰,
+      making all Stark shifts ~10¹⁰× too large when corrected for other issues.
+    root_cause: >
+      Old formula α_D ∝ n⁷(n²-1)/Z⁴ uses the wrong polarizability expression
+      (it's for high-n parabolic states, not general |n,l⟩). The n²-1 factor
+      vanishes for n=1. The code also treated polarizability volume (m³) as
+      SI polarizability (F·m²) without the 4πε₀ conversion.
+    fix: >
+      Replaced with l-dependent formula: α_vol = (a₀³/2)·n⁴(5n²+1-3l(l+1))/Z⁴
+      which gives non-zero ground state (6·a₀³/2 = 3a₀³ for n=1,l=0). Added
+      α_SI = 4πε₀·α_vol conversion before computing ΔE = -½·α_SI·E².
+    physics_lesson: >
+      Polarizability is orbital-dependent: s-orbitals are more polarizable
+      than p-orbitals at the same n because they have more radial flexibility.
+      The 4πε₀ factor reflects the deep difference between CGS (where α has
+      units of volume) and SI (where α has units of F·m²). Getting the
+      unit conversion wrong gives unphysical results by 10 orders of magnitude.
+    improvement: "H 1s: Stark 0 → -1.54e-8 eV (at 10 MV/m); unit-correct results"
+
+  - id: "LL-AT-006"
+    title: "Hydrogenic model's fundamental limits"
+    severity: "INFORMATIONAL"
+    closure: "ionization_energy"
+    symptom: >
+      Even with proper Slater screening, many elements show ω > 0.3
+      (Carbon: 1.0, Na: 0.42, Fe: 0.51). The hydrogen-like formula
+      IE = R·Z_eff²/n² fundamentally overestimates for multi-electron atoms.
+    root_cause: >
+      The hydrogenic model assumes a 1/r potential with a single Z_eff.
+      Real atoms have electron-electron repulsion, shell penetration effects,
+      and exchange interactions that create a much more complex effective
+      potential. Slater Z_eff captures only the mean-field screening.
+    fix: >
+      No fix applied — this is a model boundary, not a bug. The ω values
+      honestly measure where the hydrogenic model breaks down. Elements
+      in the Anomalous regime require many-body methods (Hartree-Fock, DFT)
+      which are beyond analytical closure scope.
+    physics_lesson: >
+      The hydrogenic model works perfectly for one-electron systems and
+      approximately for alkali metals (one electron outside a closed core).
+      For partially-filled shells (p-block, d-block), electron correlation
+      effects dominate and ω honestly measures this gap. This is a
+      recurring UMCP theme: every model has a regime boundary where ω
+      transitions from small (model works) to large (model fails). The
+      boundary itself is physically meaningful.
+    improvement: "No numerical change — the ω honestly reports model limitations"

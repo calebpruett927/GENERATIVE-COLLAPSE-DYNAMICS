@@ -523,3 +523,96 @@ registry:
           A_pdg: 0.790
           rho_bar_pdg: 0.141
           eta_bar_pdg: 0.357
+
+    materials_science:
+      - name: "cohesive_energy"
+        path: "closures/materials_science/cohesive_energy.py"
+        description: "Cohesive energy from atomic IE + Madelung/Born-Mayer/Friedel models, normalized to W peak"
+        contract: "MATL.INTSTACK.v1"
+        inputs: ["Z", "symbol", "IE1_eV", "Z_eff", "n_eff", "n_valence", "electronegativity_diff", "r0_angstrom"]
+        outputs: ["E_coh_eV", "bond_type", "madelung_constant", "r0_A", "omega_eff", "F_eff", "Psi_coh", "regime"]
+        frozen_params:
+          E_coh_ref: 8.94
+        cross_references:
+          - "closures/atomic_physics/ionization_energy.py"
+          - "closures/nuclear_physics/nuclide_binding.py"
+      - name: "phase_transition"
+        path: "closures/materials_science/phase_transition.py"
+        description: "RCFT universality class → material phase transitions (structural, magnetic, superconducting)"
+        contract: "MATL.INTSTACK.v1"
+        inputs: ["T_K", "T_c_K", "material_key", "transition_type", "p"]
+        outputs: ["reduced_t", "order_parameter", "susceptibility", "correlation_length_ratio", "specific_heat_singular", "nu", "gamma", "alpha", "beta_exp", "c_eff", "d_eff", "omega_eff", "regime"]
+        frozen_params:
+          p_default: 3
+        cross_references:
+          - "closures/rcft/universality_class.py"
+          - "closures/rcft/attractor_basin.py"
+          - "closures/standard_model/symmetry_breaking.py"
+      - name: "elastic_moduli"
+        path: "closures/materials_science/elastic_moduli.py"
+        description: "Elastic moduli from interatomic potential curvature + RCFT softening scaling near T_c"
+        contract: "MATL.INTSTACK.v1"
+        inputs: ["E_coh_eV", "r0_A", "symbol", "V0_A3", "n_neighbors", "nu_poisson"]
+        outputs: ["K_GPa", "G_GPa", "E_GPa", "nu_poisson", "rcft_K_exponent", "rcft_G_exponent", "omega_eff", "regime"]
+        frozen_params:
+          eV_A3_to_GPa: 160.2176634
+        cross_references:
+          - "closures/materials_science/cohesive_energy.py"
+          - "closures/rcft/universality_class.py"
+      - name: "band_structure"
+        path: "closures/materials_science/band_structure.py"
+        description: "Band gap + conductor class from atomic config, RCFT attractor basins + Fisher geodesic distance"
+        contract: "MATL.INTSTACK.v1"
+        inputs: ["Z", "symbol", "IE1_eV", "Z_eff", "n_eff", "n_neighbors"]
+        outputs: ["E_g_eV", "band_character", "bandwidth_eV", "spin_orbit_eV", "rcft_basin_type", "rcft_fisher_distance", "omega_eff", "Psi_band", "regime"]
+        cross_references:
+          - "closures/atomic_physics/electron_config.py"
+          - "closures/atomic_physics/ionization_energy.py"
+          - "closures/rcft/attractor_basin.py"
+          - "closures/rcft/information_geometry.py"
+      - name: "debye_thermal"
+        path: "closures/materials_science/debye_thermal.py"
+        description: "Debye model thermodynamics via RCFT partition function bridge (c_eff = 1/p acoustic modes)"
+        contract: "MATL.INTSTACK.v1"
+        inputs: ["T_K", "symbol", "Theta_D_K", "K_GPa", "G_GPa", "rho_kg_m3"]
+        outputs: ["Theta_D_K", "C_V_J_mol_K", "C_V_normalized", "U_J_mol", "S_J_mol_K", "kappa_thermal_W_mK", "rcft_c_eff", "omega_eff", "regime"]
+        cross_references:
+          - "closures/materials_science/elastic_moduli.py"
+          - "closures/rcft/universality_class.py"
+          - "closures/rcft/information_geometry.py"
+      - name: "magnetic_properties"
+        path: "closures/materials_science/magnetic_properties.py"
+        description: "Magnetic properties: Weiss molecular field + RCFT β=5/6 → M(T), χ(T), Curie/Néel transitions"
+        contract: "MATL.INTSTACK.v1"
+        inputs: ["Z", "symbol", "T_K", "B_tesla", "n_unpaired", "T_ordering_K"]
+        outputs: ["mu_eff_B", "M_total_B", "M_sat_B", "chi_SI", "T_ordering_K", "magnetic_class", "exchange_J_meV", "Curie_const", "n_unpaired", "rcft_beta", "rcft_gamma", "omega_eff", "F_eff", "regime"]
+        frozen_params:
+          rcft_beta: 0.833333
+          rcft_gamma: 0.333333
+        cross_references:
+          - "closures/atomic_physics/zeeman_stark.py"
+          - "closures/rcft/universality_class.py"
+          - "closures/materials_science/phase_transition.py"
+      - name: "bcs_superconductivity"
+        path: "closures/materials_science/bcs_superconductivity.py"
+        description: "BCS superconductivity: McMillan T_c, BCS gap, coherence/penetration lengths, GL parameter κ"
+        contract: "MATL.INTSTACK.v1"
+        inputs: ["Theta_D_K", "lambda_ep", "T_K", "mu_star", "symbol"]
+        outputs: ["T_c_K", "Delta_0_meV", "xi_0_nm", "lambda_L_nm", "kappa_GL", "sc_type", "BCS_ratio", "gap_ratio_T", "rcft_attractor_depth", "omega_eff", "F_eff", "regime"]
+        frozen_params:
+          mu_star_default: 0.13
+          bcs_ratio_weak: 3.528
+        cross_references:
+          - "closures/materials_science/debye_thermal.py"
+          - "closures/rcft/universality_class.py"
+          - "closures/materials_science/phase_transition.py"
+      - name: "surface_catalysis"
+        path: "closures/materials_science/surface_catalysis.py"
+        description: "Surface energy + catalytic activity via broken-bond model, d-band center theory, BEP relation"
+        contract: "MATL.INTSTACK.v1"
+        inputs: ["E_coh_eV", "Z", "symbol", "r0_A", "z_bulk", "z_surface", "d_band_center_eV"]
+        outputs: ["gamma_J_m2", "gamma_eV_A2", "E_ads_eV", "E_act_eV", "E_vacancy_eV", "broken_bond_fraction", "catalytic_class", "rcft_return_deficit", "omega_eff", "F_eff", "regime"]
+        cross_references:
+          - "closures/materials_science/cohesive_energy.py"
+          - "closures/rcft/universality_class.py"
+          - "closures/materials_science/elastic_moduli.py"

@@ -29,7 +29,7 @@ Usage:
   uvicorn umcp.api_umcp:app --reload --host 0.0.0.0 --port 8000
 
 Cross-references:
-  - EXTENSION_INTEGRATION.md (extension architecture)
+  - docs/EXTENSION_INTEGRATION.md (extension architecture)
   - src/umcp/cli.py (CLI commands this mirrors)
   - src/umcp/validator.py (validation engine)
   - src/umcp/preflight.py (preflight validation)

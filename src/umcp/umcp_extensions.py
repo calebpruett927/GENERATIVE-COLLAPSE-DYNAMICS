@@ -10,7 +10,7 @@ Built-in Extensions:
   4. formatter    - Contract auto-formatter
 
 Cross-references:
-  - EXTENSION_INTEGRATION.md (architecture documentation)
+  - docs/EXTENSION_INTEGRATION.md (architecture documentation)
   - src/umcp/api_umcp.py (REST API extension)
   - src/umcp/dashboard.py (Streamlit dashboard extension)
   - pyproject.toml (optional dependencies)

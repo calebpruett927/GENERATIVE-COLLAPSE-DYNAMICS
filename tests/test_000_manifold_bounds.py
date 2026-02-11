@@ -50,7 +50,7 @@ Bound compression:
 
 Cross-references:
   KERNEL_SPECIFICATION.md  — formal definitions
-  COMPUTATIONAL_OPTIMIZATIONS.md  — OPT-* lemma tags
+  docs/COMPUTATIONAL_OPTIMIZATIONS.md  — OPT-* lemma tags
   tests/conftest.py  — shared fixtures
 """
 

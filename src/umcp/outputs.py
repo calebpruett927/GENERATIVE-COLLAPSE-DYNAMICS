@@ -18,7 +18,7 @@ Available Generators:
 Cross-references:
   - src/umcp/validator.py (validation engine)
   - src/umcp/api_umcp.py (REST endpoints)
-  - PUBLICATION_INFRASTRUCTURE.md (publication formats)
+  - docs/PUBLICATION_INFRASTRUCTURE.md (publication formats)
 """
 
 from __future__ import annotations

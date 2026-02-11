@@ -1144,11 +1144,11 @@ class ExtensionProtocol(Protocol):
 |----------|-------------|
 | [AXIOM.md](AXIOM.md) | Core axiom: "What Returns Through Collapse Is Real" |
 | [KERNEL\_SPECIFICATION.md](KERNEL_SPECIFICATION.md) | 46 formal lemmas, prediction scorecard, constants |
-| [MATHEMATICAL\_ARCHITECTURE.md](MATHEMATICAL_ARCHITECTURE.md) | Complete mathematical framework |
+| [MATHEMATICAL\_ARCHITECTURE.md](docs/MATHEMATICAL_ARCHITECTURE.md) | Complete mathematical framework |
 | [TIER\_SYSTEM.md](TIER_SYSTEM.md) | Tier-0/1/2 architecture (v3.0.0) |
-| [INFRASTRUCTURE\_GEOMETRY.md](INFRASTRUCTURE_GEOMETRY.md) | Three-layer geometric architecture |
+| [INFRASTRUCTURE\_GEOMETRY.md](docs/INFRASTRUCTURE_GEOMETRY.md) | Three-layer geometric architecture |
 | [GLOSSARY.md](GLOSSARY.md) | Authoritative term definitions |
-| [SYMBOL\_INDEX.md](SYMBOL_INDEX.md) | Symbol reference table |
+| [SYMBOL\_INDEX.md](docs/SYMBOL_INDEX.md) | Symbol reference table |
 
 ### Epistemic & Foundational
 
@@ -1180,14 +1180,14 @@ class ExtensionProtocol(Protocol):
 | [canon/nuc\_anchors.yaml](canon/nuc_anchors.yaml) | Nuclear physics anchors |
 | [canon/qm\_anchors.yaml](canon/qm_anchors.yaml) | Quantum mechanics anchors |
 | [KINEMATICS\_SPECIFICATION.md](KINEMATICS_SPECIFICATION.md) | Kinematics layer specification |
-| [CASEPACK\_REFERENCE.md](CASEPACK_REFERENCE.md) | CasePack structure reference |
+| [CASEPACK\_REFERENCE.md](docs/CASEPACK_REFERENCE.md) | CasePack structure reference |
 
 ### Reference
 
 | Document | Description |
 |----------|-------------|
-| [EXTENSION\_INTEGRATION.md](EXTENSION_INTEGRATION.md) | Extension system |
-| [COMPUTATIONAL\_OPTIMIZATIONS.md](COMPUTATIONAL_OPTIMIZATIONS.md) | Optimization cross-references |
+| [EXTENSION\_INTEGRATION.md](docs/EXTENSION_INTEGRATION.md) | Extension system |
+| [COMPUTATIONAL\_OPTIMIZATIONS.md](docs/COMPUTATIONAL_OPTIMIZATIONS.md) | Optimization cross-references |
 | [validator\_rules.yaml](validator_rules.yaml) | Semantic validation rules (E/W codes) |
 | [CHANGELOG.md](CHANGELOG.md) | Version history |
 | [IMMUTABLE\_RELEASE.md](IMMUTABLE_RELEASE.md) | Release information |

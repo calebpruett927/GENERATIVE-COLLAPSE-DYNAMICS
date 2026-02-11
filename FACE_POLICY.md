@@ -257,5 +257,5 @@ Face policy governs **boundary behavior** in the bounded trace cube. Admissible 
 **See Also**:
 - [AXIOM.md](AXIOM.md) - Core axiom: "What returns through collapse is real"
 - [contracts/UMA.INTSTACK.v1.yaml](contracts/UMA.INTSTACK.v1.yaml) - Face policy contract specification
-- [UHMP.md](UHMP.md) - Universal Hash Manifest Protocol
-- [SYMBOL_INDEX.md](SYMBOL_INDEX.md) - Authoritative symbol table
+- [UHMP.md](docs/UHMP.md) - Universal Hash Manifest Protocol
+- [SYMBOL_INDEX.md](docs/SYMBOL_INDEX.md) - Authoritative symbol table

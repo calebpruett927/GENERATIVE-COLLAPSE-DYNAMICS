@@ -52,8 +52,7 @@ def get_tracked_files(root: Path) -> Iterator[Path]:
     - Contract YAML files in contracts/
     - Closure Python files in closures/
     - Schema JSON files in schemas/
-    - Key root-level Python files (benchmark_umcp_vs_standard.py, etc.)
-    - Script files in scripts/
+    - Script files in scripts/ (including benchmark)
     """
     try:
         # Get all git-tracked files
@@ -67,7 +66,6 @@ def get_tracked_files(root: Path) -> Iterator[Path]:
             "closures/**/*.py",
             "schemas/**/*.json",
             "scripts/**/*.py",
-            "benchmark_umcp_vs_standard.py",
         ]
 
         for filepath_str in tracked:
@@ -94,11 +92,7 @@ def get_tracked_files(root: Path) -> Iterator[Path]:
         ]:
             yield from root.glob(pattern)
 
-        # Add specific root files
-        for name in ["benchmark_umcp_vs_standard.py"]:
-            fpath = root / name
-            if fpath.exists():
-                yield fpath
+        # scripts/ already covered by pattern above
 
 
 def main() -> int:
@@ -111,7 +105,7 @@ def main() -> int:
     integrity_dir.mkdir(exist_ok=True)
 
     # Compute checksums for all tracked files
-    checksums: list[tuple[str, str]] = []  # (relative_path, checksum)
+    checksums: list[tuple[str, str]] = []  # (relative_path_str, checksum)
 
     for filepath in sorted(get_tracked_files(root)):
         try:

@@ -328,8 +328,8 @@ The field is required by `schemas/contract.schema.json` and `schemas/canon.ancho
 **See Also**:
 - [AXIOM.md](AXIOM.md) - Core axiom and operational definitions
 - [KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md) - Formal mathematical specification of Tier-1 invariants
-- [UHMP.md](UHMP.md) - Universal Hash Manifest Protocol (identity governance)
+- [UHMP.md](docs/UHMP.md) - Universal Hash Manifest Protocol (identity governance)
 - [FACE_POLICY.md](FACE_POLICY.md) - Boundary governance (Tier-0 admissibility)
-- [SYMBOL_INDEX.md](SYMBOL_INDEX.md) - Authoritative symbol table (prevents Tier-2 capture)
+- [SYMBOL_INDEX.md](docs/SYMBOL_INDEX.md) - Authoritative symbol table (prevents Tier-2 capture)
 - [contracts/](contracts/) - Frozen contract specifications
 - [closures/](closures/) - Domain expansion closures (Tier-2) and seam closures (Tier-0)

@@ -1,0 +1,182 @@
+version: '1.0'
+description: UMCP Materials-Science Lessons-Learned Database
+insight_count: 11
+insights:
+- id: LL-MT-01
+  domain: Cohesive Energy
+  pattern: Friedel d-band model underestimates Fe by ~77%
+  lesson: "Simple band-filling models (n_d(10\u2212n_d)/20) capture trends across transition metals but\
+    \ systematically underestimate elements with strong magnetic exchange (Fe, Mn).  The missing energy\
+    \ is the magnetic cohesive contribution \u2014 spin alignment adds ~1.5 eV to the binding. Lesson:\
+    \ magnetic order is not separate from structural bonding; it IS part of the cohesive collapse.\n"
+  implication: Need EAM + magnetic exchange corrections for ferromagnets
+  severity: Fundamental
+  pattern_type: PhysicalInsight
+  source: canon
+  elements: []
+  omega_range:
+  - 0.0
+  - 1.0
+- id: LL-MT-02
+  domain: Band Structure
+  pattern: "Fisher geodesic distance correlates with gap \xD7 dielectric response"
+  lesson: "The RCFT Fisher distance d_F = (\u03C0/2)\u221A(E_g/E_g_max) isn't just a mathematical curiosity\
+    \ \u2014 it measures how much information is lost when crossing the valence-conduction basin boundary.\
+    \  Wider gaps = more information cost = stronger insulator.  This connects band theory to information\
+    \ geometry naturally.\n"
+  implication: Fisher distance could predict dielectric constant
+  severity: Fundamental
+  pattern_type: PhysicalInsight
+  source: canon
+  elements: []
+  omega_range:
+  - 0.0
+  - 1.0
+- id: LL-MT-03
+  domain: Phase Transitions
+  pattern: "\u03B1=0 (logarithmic specific heat) matches exactly for p=3"
+  lesson: "The observation that \u03B1=0 in the GCD universality class (p=3) means specific heat has a\
+    \ logarithmic divergence at T_c, not a power law. This is exactly what's observed in many ferromagnetic\
+    \ transitions (the 'lambda anomaly').  The fact that this emerges from \u0393(\u03C9) rather than\
+    \ being assumed is a non-trivial validation of the kernel.\n"
+  implication: GCD p=3 naturally selects lambda-transition universality
+  severity: Fundamental
+  pattern_type: PhysicalInsight
+  source: canon
+  elements: []
+  omega_range:
+  - 0.0
+  - 1.0
+- id: LL-MT-04
+  domain: Debye Thermal
+  pattern: "c_eff = 1/3 \u2194 3 acoustic phonon branches is structural"
+  lesson: "The RCFT effective central charge c_eff = 1/p = 1/3 for p=3.  In 3D crystals there are exactly\
+    \ 3 acoustic phonon branches (1 longitudinal + 2 transverse).  The ratio 3/3N \u2192 1/N approaches\
+    \ c_eff for large N. This isn't a coincidence \u2014 both arise from dimensionality constraints on\
+    \ the collapse geometry.\n"
+  implication: Central charge counts independent collapse channels
+  severity: Fundamental
+  pattern_type: PhysicalInsight
+  source: canon
+  elements: []
+  omega_range:
+  - 0.0
+  - 1.0
+- id: LL-MT-05
+  domain: Cross-Domain
+  pattern: "Elements with Z > 70 show systematic \u03C9_eff increases"
+  lesson: "Relativistic effects (6s contraction, 5d expansion) break the predictability of simple atomic\
+    \ models for heavy elements.  Gold's color, mercury's liquid state, and lead's low Debye temperature\
+    \ all trace to the same cause: relativistic orbital contraction changes the effective binding landscape.\
+    \  The \u03C9_eff increase for Z > 70 is not a model failure \u2014 it's a signal that new physics\
+    \ (QED corrections) must be incorporated.\n"
+  implication: Relativistic regime requires separate calibration anchors
+  severity: Fundamental
+  pattern_type: PhysicalInsight
+  source: canon
+  elements: []
+  omega_range:
+  - 0.0
+  - 1.0
+- id: LL-MT-06
+  domain: Superconductivity
+  pattern: "Low \u0398_D correlates with higher T_c among elemental superconductors"
+  lesson: "Soft phonon modes (low Debye temperature) enhance electron-phonon coupling \u03BB_ep because\
+    \ the phonon energy denominator is smaller. Pb (\u0398_D=105K, T_c=7.19K) vs Cu (\u0398_D=343K, normal\
+    \ metal) illustrates this: soft lattices favor Cooper pairing.  The RCFT partition function Z(\u03B2\
+    ) shows this directly \u2014 lower \u0393(\u03C9) barrier = easier condensation.\n"
+  implication: "Surface of \u0398_D vs \u03BB_ep predicts superconducting tendency"
+  severity: Fundamental
+  pattern_type: PhysicalInsight
+  source: canon
+  elements: []
+  omega_range:
+  - 0.0
+  - 1.0
+- id: LL-MT-07
+  domain: Surface Science
+  pattern: "Surface energy \u221D cohesive energy \xD7 broken-bond fraction"
+  lesson: "The broken-bond model \u03B3_s \u2248 E_coh\xB7(1\u2212z_s/z_b)\xB7n_s/A_s is remarkably accurate\
+    \ for close-packed metal surfaces (within 20%).  It fails for reconstructed surfaces where the surface\
+    \ creates NEW bonds not present in the bulk \u2014 reconstruction is a surface-level return that partially\
+    \ heals the collapse.\n"
+  implication: "Surface reconstruction = partial return \u2192 reduced \u03B3_s"
+  severity: Fundamental
+  pattern_type: PhysicalInsight
+  source: canon
+  elements: []
+  omega_range:
+  - 0.0
+  - 1.0
+- id: LL-MT-08
+  domain: Elastic Moduli
+  pattern: RCFT predicts K ~ |t|^{1/3} softening near T_c
+  lesson: "Elastic softening near structural phase transitions follows the RCFT correlation length exponent\
+    \ \u03BD=1/3.  The bulk modulus K drops as K(T) = K_0\xB7|1\u2212T/T_c|^{\u03BD} because long-range\
+    \ correlations reduce the effective restoring force.  This is observed in BaTiO3 near 393K and in\
+    \ Fe near its BCC\u2192FCC transition at 1185K.\n"
+  implication: Elastic anomalies locate hidden phase transitions
+  severity: Fundamental
+  pattern_type: PhysicalInsight
+  source: canon
+  elements: []
+  omega_range:
+  - 0.0
+  - 1.0
+- id: DIS-PT-3D-f991c3a1
+  domain: Cohesive Energy
+  pattern: "3d series: 2 elements Precise (\u03C9<0.10), 3 Anomalous (\u03C9>0.40)"
+  lesson: "Elements Mn, Fe, Zn resist the Friedel-EAM model while Ni, Cu are well-captured. The boundary\
+    \ between success and failure lies at the magnetic exchange threshold \u2014 strong spin alignment\
+    \ adds a cohesive channel the band model cannot see."
+  implication: Magnetic metals need explicit exchange treatment
+  severity: Structural
+  pattern_type: RegimeBoundary
+  source: discovered
+  elements:
+  - Ti
+  - V
+  - Cr
+  - Mn
+  - Fe
+  - Co
+  - Ni
+  - Cu
+  - Zn
+  omega_range:
+  - 0.037722
+  - 1.0
+- id: DIS-RB-FE-CURIE
+  domain: Magnetic Properties
+  pattern: "Fe: ferromagnetic \u2192 paramagnetic boundary at T \u2248 1000 K (reference: 1043 K)"
+  lesson: "The RCFT critical exponent \u03B2 = 5/6 predicts M(T) = M_sat\xB7|1\u2212T/T_c|^(5/6). The\
+    \ magnetic-to-paramagnetic regime boundary IS the Curie temperature \u2014 the engine discovers T_c\
+    \ by computing where M vanishes."
+  implication: "RCFT \u03B2 exponent generates verifiable phase boundaries"
+  severity: Fundamental
+  pattern_type: RegimeBoundary
+  source: discovered
+  elements:
+  - Fe
+  omega_range:
+  - 0.0
+  - 1.0
+- id: DIS-UNI-OMEGA-SPREAD-232e2a96
+  domain: Cross-Domain
+  pattern: "Elements with divergent \u03C9 across closures: Fe, Ni, Al, Au, W"
+  lesson: "When \u03C9_eff is high for one property but low for another in the same element, the model\
+    \ captures one collapse channel but not another. This is NOT a failure \u2014 it maps which physics\
+    \ (band, exchange, surface) each model includes. The divergence IS the lesson."
+  implication: "Closure-specific \u03C9 divergence maps model completeness"
+  severity: Fundamental
+  pattern_type: Universality
+  source: discovered
+  elements:
+  - Fe
+  - Ni
+  - Al
+  - Au
+  - W
+  omega_range:
+  - 0.0
+  - 1.0

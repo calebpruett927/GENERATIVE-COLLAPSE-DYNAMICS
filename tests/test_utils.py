@@ -2,7 +2,7 @@
 Test Utilities Module
 
 Provides optimized test fixtures and helpers using lemma-based shortcuts
-from KERNEL_SPECIFICATION.md and COMPUTATIONAL_OPTIMIZATIONS.md.
+from KERNEL_SPECIFICATION.md and docs/COMPUTATIONAL_OPTIMIZATIONS.md.
 
 Key optimizations:
 - OPT-1 (Lemma 10): Homogeneity detection for fast test data generation

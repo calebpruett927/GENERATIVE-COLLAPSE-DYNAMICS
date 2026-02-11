@@ -17,8 +17,8 @@ This reference guide provides fast pathways to all protocol infrastructure, ensu
 | Resource | Purpose | Link |
 |----------|---------|------|
 | **Glossary** | Structured definitions for all terms | [GLOSSARY.md](GLOSSARY.md) |
-| **Symbol Index** | Unicode/ASCII symbol lookup table | [SYMBOL_INDEX.md](SYMBOL_INDEX.md) |
-| **Term Index** | Alphabetical term cross-reference | [TERM_INDEX.md](TERM_INDEX.md) |
+| **Symbol Index** | Unicode/ASCII symbol lookup table | [SYMBOL_INDEX.md](docs/SYMBOL_INDEX.md) |
+| **Term Index** | Alphabetical term cross-reference | [TERM_INDEX.md](docs/TERM_INDEX.md) |
 | **Glossary Schema** | JSON Schema validation | [schemas/glossary.schema.json](schemas/glossary.schema.json) |
 
 **Prevents:** Symbol capture, reader imports, ambiguous definitions  
@@ -99,8 +99,8 @@ This reference guide provides fast pathways to all protocol infrastructure, ensu
 
 | Task | Primary Resources |
 |------|------------------|
-| **Term lookup** | [GLOSSARY.md](GLOSSARY.md), [TERM_INDEX.md](TERM_INDEX.md) |
-| **Symbol lookup** | [SYMBOL_INDEX.md](SYMBOL_INDEX.md) |
+| **Term lookup** | [GLOSSARY.md](GLOSSARY.md), [TERM_INDEX.md](docs/TERM_INDEX.md) |
+| **Symbol lookup** | [SYMBOL_INDEX.md](docs/SYMBOL_INDEX.md) |
 | **Regime classification** | [contracts/GCD.INTSTACK.v1.yaml](contracts/GCD.INTSTACK.v1.yaml) → regime_gates |
 | **Weld evaluation** | [contracts/GCD.INTSTACK.v1.yaml](contracts/GCD.INTSTACK.v1.yaml) → weld_gate |
 | **RCFT overlay** | [docs/rcft_theory.md](docs/rcft_theory.md), [canon/rcft_anchors.yaml](canon/rcft_anchors.yaml) |
@@ -122,7 +122,7 @@ This reference guide provides fast pathways to all protocol infrastructure, ensu
 | **IC** (integrity) | I (information) | Use **I_info** for information content |
 | **Ψ(t)** (trace) | Ψ_r (recursive) | Different subscripts; check tier |
 
-**See:** [SYMBOL_INDEX.md#symbol-collision-prevention](SYMBOL_INDEX.md#symbol-collision-prevention)
+**See:** [docs/SYMBOL_INDEX.md#symbol-collision-prevention](SYMBOL_INDEX.md#symbol-collision-prevention)
 
 ---
 
@@ -169,7 +169,7 @@ This reference guide provides fast pathways to all protocol infrastructure, ensu
 - [canon/rcft_anchors.yaml](canon/rcft_anchors.yaml) → header links to [GLOSSARY.md](GLOSSARY.md#tier-2-rcft-overlay-extensions)
 
 **Contracts:**
-- [contracts/README.md](contracts/README.md) → links to [GLOSSARY.md](GLOSSARY.md), [SYMBOL_INDEX.md](SYMBOL_INDEX.md)
+- [contracts/README.md](contracts/README.md) → links to [GLOSSARY.md](GLOSSARY.md), [SYMBOL_INDEX.md](docs/SYMBOL_INDEX.md)
 - Individual contracts → terms link to glossary entries
 
 **Closures:**
@@ -199,7 +199,7 @@ Each glossary entry contains:
 
 Example pathway:
 1. Reader encounters term "curvature proxy"
-2. Looks up in [TERM_INDEX.md#c](TERM_INDEX.md#c)
+2. Looks up in [docs/TERM_INDEX.md#c](TERM_INDEX.md#c)
 3. Finds [GLOSSARY.md#curvature-proxy-ct](GLOSSARY.md#curvature-proxy-ct)
 4. Follows "Where defined" to [canon/gcd_anchors.yaml](canon/gcd_anchors.yaml)
 5. Follows "Where used" to [casepacks/hello_world/](casepacks/hello_world/)
@@ -253,7 +253,7 @@ Example pathway:
 
 **System Architecture:**
 - [docs/interconnected_architecture.md](docs/interconnected_architecture.md)
-- [SYSTEM_ARCHITECTURE.md](SYSTEM_ARCHITECTURE.md)
+- [SYSTEM_ARCHITECTURE.md](docs/SYSTEM_ARCHITECTURE.md)
 
 **Theory and Implementation:**
 - [docs/rcft_theory.md](docs/rcft_theory.md) - RCFT mathematical foundations
@@ -261,7 +261,7 @@ Example pathway:
 
 **Deployment:**
 - [docs/production_deployment.md](docs/production_deployment.md)
-- [QUICKSTART_EXTENSIONS.md](QUICKSTART_EXTENSIONS.md)
+- [QUICKSTART_EXTENSIONS.md](docs/QUICKSTART_EXTENSIONS.md)
 
 **Change Tracking:**
 - [CHANGELOG.md](CHANGELOG.md) - Version history and deprecations
