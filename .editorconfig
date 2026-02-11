@@ -1,0 +1,58 @@
+# EditorConfig — universal formatting rules for any editor.
+# Ensures consistent whitespace regardless of IDE or contributor setup.
+# https://editorconfig.org
+
+root = true
+
+# ── Defaults ─────────────────────────────────────────────────────
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+# ── Python (matches ruff line-length = 120) ──────────────────────
+[*.py]
+indent_size = 4
+max_line_length = 120
+
+# ── YAML (contracts, closures, canon, registry) ─────────────────
+[*.{yaml,yml}]
+indent_size = 2
+
+# ── JSON (schemas, manifests, invariants) ────────────────────────
+[*.json]
+indent_size = 2
+
+# ── JSONC (VS Code config files) ────────────────────────────────
+[*.jsonc]
+indent_size = 4
+
+# ── Markdown (README, specs, protocols, axiom) ──────────────────
+[*.md]
+trim_trailing_whitespace = false
+indent_size = 2
+
+# ── LaTeX (paper/) ──────────────────────────────────────────────
+[*.{tex,bib}]
+indent_size = 2
+max_line_length = off
+
+# ── Shell scripts ───────────────────────────────────────────────
+[*.sh]
+indent_size = 2
+
+# ── CSV (weights.csv, ledger) ───────────────────────────────────
+[*.csv]
+insert_final_newline = false
+trim_trailing_whitespace = false
+
+# ── TOML (pyproject.toml) ───────────────────────────────────────
+[*.toml]
+indent_size = 4
+
+# ── Makefile ────────────────────────────────────────────────────
+[Makefile]
+indent_style = tab

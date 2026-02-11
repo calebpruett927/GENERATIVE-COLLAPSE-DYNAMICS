@@ -1,0 +1,196 @@
+// UMCP Development Container
+// Fully configured Python 3.12 environment matching CI (validate.yml).
+// Includes all tooling: ruff, mypy, pytest, LaTeX, and project deps.
+{
+	"name": "UMCP Development",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"context": ".."
+	},
+
+	// Dev container features — git, GitHub CLI, common utilities
+	"features": {
+		"ghcr.io/devcontainers/features/github-cli:1": {},
+		"ghcr.io/devcontainers/features/common-utils:2": {
+			"installZsh": true,
+			"configureZshAsDefaultShell": true,
+			"installOhMyZsh": true,
+			"upgradePackages": true
+		}
+	},
+
+	// Bootstrap the project after container creation
+	"postCreateCommand": "bash .devcontainer/post-create.sh",
+
+	// Ports: FastAPI (8000), Streamlit dashboard (8501)
+	"forwardPorts": [8000, 8501],
+	"portsAttributes": {
+		"8000": { "label": "UMCP API", "onAutoForward": "notify" },
+		"8501": { "label": "UMCP Dashboard", "onAutoForward": "notify" }
+	},
+
+	// Container environment variables
+	"containerEnv": {
+		"PYTHONDONTWRITEBYTECODE": "1",
+		"PYTHONUNBUFFERED": "1",
+		"PIP_DISABLE_PIP_VERSION_CHECK": "1",
+		"PIP_NO_CACHE_DIR": "1",
+		"UMCP_DEV": "1"
+	},
+
+	"customizations": {
+		"vscode": {
+			// ── Extensions ──────────────────────────────────────
+			"extensions": [
+				// Python core
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"ms-python.debugpy",
+
+				// Linting & formatting (matches CI: ruff)
+				"charliermarsh.ruff",
+
+				// Type checking (matches CI: mypy)
+				"ms-python.mypy-type-checker",
+
+				// Testing (matches CI: pytest)
+				"ms-python.pytest-adapter",
+				"littlefoxteam.vscode-python-test-adapter",
+
+				// YAML (contracts, closures, canon anchors, registry)
+				"redhat.vscode-yaml",
+
+				// JSON Schema (schemas/, casepacks/*/manifest.json)
+				"zainchen.json",
+
+				// LaTeX (paper/ — RevTeX4-2)
+				"james-yu.latex-workshop",
+
+				// Markdown (README, AXIOM, specs, protocols)
+				"yzhang.markdown-all-in-one",
+				"davidanson.vscode-markdownlint",
+
+				// CSV (weights.csv, ledger/return_log.csv)
+				"mechatroner.rainbow-csv",
+
+				// Git
+				"eamodio.gitlens",
+				"mhutchie.git-graph",
+
+				// General productivity
+				"editorconfig.editorconfig",
+				"streetsidesoftware.code-spell-checker",
+				"gruntfuggly.todo-tree",
+				"github.copilot",
+				"github.copilot-chat"
+			],
+
+			// ── VS Code Settings ────────────────────────────────
+			"settings": {
+				// ── Python ──
+				"python.defaultInterpreterPath": "/usr/local/bin/python",
+				"python.terminal.activateEnvironment": false,
+
+				// ── Ruff (single tool for format + lint, matching CI) ──
+				"[python]": {
+					"editor.formatOnSave": true,
+					"editor.codeActionsOnSave": {
+						"source.fixAll.ruff": "explicit",
+						"source.organizeImports.ruff": "explicit"
+					}
+				},
+				"ruff.lineLength": 120,
+				"ruff.configuration": "pyproject.toml",
+
+				// ── mypy ──
+				"mypy-type-checker.args": ["--config-file=pyproject.toml"],
+				"mypy-type-checker.reportingScope": "file",
+
+				// ── pytest ──
+				"python.testing.pytestEnabled": true,
+				"python.testing.unittestEnabled": false,
+				"python.testing.pytestArgs": ["-q", "--tb=short"],
+
+				// ── YAML (contracts, closures, canon) ──
+				"yaml.schemas": {
+					"schemas/contract.schema.json": "contracts/*.yaml",
+					"schemas/manifest.schema.json": "casepacks/*/manifest.json",
+					"schemas/canon.schema.json": "canon/*.yaml",
+					"schemas/closure.schema.json": "closures/**/*.yaml"
+				},
+				"yaml.format.enable": true,
+
+				// ── LaTeX (paper/) ──
+				"latex-workshop.latex.recipe.default": "latexmk (pdflatex)",
+				"latex-workshop.latex.outDir": "paper/out",
+				"latex-workshop.latex.rootFile.useSubFile": true,
+
+				// ── Editor defaults ──
+				"editor.rulers": [120],
+				"editor.tabSize": 4,
+				"editor.insertSpaces": true,
+				"editor.trimAutoWhitespace": true,
+				"files.trimTrailingWhitespace": true,
+				"files.insertFinalNewline": true,
+				"files.trimFinalNewlines": true,
+
+				// ── File associations ──
+				"files.associations": {
+					"*.yaml": "yaml",
+					"*.yml": "yaml",
+					"*.schema.json": "json"
+				},
+
+				// ── Search exclusions (keep sidebar clean) ──
+				"search.exclude": {
+					"**/__pycache__": true,
+					"**/.pytest_cache": true,
+					"**/*.egg-info": true,
+					"**/node_modules": true,
+					".ruff_cache": true,
+					".mypy_cache": true,
+					"integrity/": true
+				},
+				"files.exclude": {
+					"**/__pycache__": true,
+					"**/.pytest_cache": true,
+					"**/*.egg-info": true
+				},
+
+				// ── Terminal ──
+				"terminal.integrated.defaultProfile.linux": "zsh",
+				"terminal.integrated.scrollback": 10000,
+
+				// ── cSpell (hints only — never in Problems panel) ──
+				"cSpell.diagnosticLevel": "Hint",
+				"cSpell.showStatus": true,
+				"cSpell.spellCheckOnlyWorkspaceFiles": true,
+
+				// ── Spell checker (domain terms) ──
+				"cSpell.words": [
+					"UMCP", "RCFT", "casepack", "casepacks",
+					"dataclass", "dataclasses",
+					"invariants", "conformant", "nonconformant",
+					"ruff", "mypy", "pylance", "pytest",
+					"checksums", "checksum",
+					"kinematics", "thermodynamic",
+					"Weizsäcker", "Jarlskog", "Wolfenstein",
+					"Yukawa", "Higgs", "boson", "fermion",
+					"nucleon", "hadron", "lepton", "quark",
+					"isospin", "baryon",
+					"RevTeX", "pdflatex", "bibtex"
+				],
+
+				// ── Todo Tree (OPT-* tags + standard) ──
+				"todo-tree.general.tags": [
+					"TODO", "FIXME", "HACK", "BUG",
+					"OPT", "IMPORTANT", "NOTE"
+				],
+				"todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*(-|\\d+.))\\s*($TAGS)"
+			}
+		}
+	},
+
+	// Run as non-root for security
+	"remoteUser": "vscode"
+}
