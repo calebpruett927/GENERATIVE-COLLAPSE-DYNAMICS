@@ -497,16 +497,22 @@ class TestEdgeCases:
 
 
 # ============================================================================
-# Real-world: repo's raw_measurements.csv
+# End-to-end CSV processing (synthetic 5-timestep, 3-dim data)
 # ============================================================================
 class TestRepoRawMeasurements:
-    """Test engine against the actual repo raw_measurements.csv."""
+    """Test engine against a synthetic raw_measurements CSV."""
 
-    def test_repo_raw_csv(self) -> None:
-        """Process the repo's own raw_measurements.csv end-to-end."""
-        csv_path = Path(__file__).parent.parent / "raw_measurements.csv"
-        if not csv_path.exists():
-            pytest.skip("raw_measurements.csv not found at repo root")
+    @staticmethod
+    def _write_csv(path: Path) -> Path:
+        """Write a 5-timestep, 3-dimension CSV matching original repo format."""
+        path.write_text(
+            "t,x1,x2,x3\n0,0.10,0.20,0.30\n1,0.15,0.25,0.35\n2,0.80,0.75,0.70\n3,0.50,0.55,0.45\n4,0.90,0.85,0.95\n"
+        )
+        return path
+
+    def test_repo_raw_csv(self, tmp_path: Path) -> None:
+        """Process a 5-row raw_measurements CSV end-to-end."""
+        csv_path = self._write_csv(tmp_path / "raw_measurements.csv")
 
         engine = MeasurementEngine(eta=0.10, H_rec=50)
         result = engine.from_csv(csv_path)
@@ -521,10 +527,8 @@ class TestRepoRawMeasurements:
             assert inv.F >= inv.IC - 1e-15, "AM-GM violated"
 
     def test_repo_raw_csv_casepack(self, tmp_path: Path) -> None:
-        """Generate a casepack from the repo's raw_measurements.csv."""
-        csv_path = Path(__file__).parent.parent / "raw_measurements.csv"
-        if not csv_path.exists():
-            pytest.skip("raw_measurements.csv not found at repo root")
+        """Generate a casepack from a synthetic raw_measurements CSV."""
+        csv_path = self._write_csv(tmp_path / "raw_measurements.csv")
 
         engine = MeasurementEngine(eta=0.10, H_rec=50)
         result = engine.from_csv(csv_path)

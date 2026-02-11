@@ -463,11 +463,11 @@ class InsightEngine:
             normal: list[str] = []
             for sym in ["Nb", "Pb", "Al", "Sn", "V", "Ta", "In"]:
                 try:
-                    r = compute_bcs_superconductivity(0, 0, symbol=sym)
-                    if hasattr(r, "sc_type"):
-                        if r.sc_type == "TypeI":
+                    r_bcs = compute_bcs_superconductivity(0, 0, symbol=sym)
+                    if hasattr(r_bcs, "sc_type"):
+                        if r_bcs.sc_type == "TypeI":
                             type1.append(sym)
-                        elif r.sc_type == "TypeII":
+                        elif r_bcs.sc_type == "TypeII":
                             type2.append(sym)
                         else:
                             normal.append(sym)
