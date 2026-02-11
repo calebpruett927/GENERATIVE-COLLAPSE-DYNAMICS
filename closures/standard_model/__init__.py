@@ -22,14 +22,14 @@ from closures.standard_model.coupling_constants import compute_running_coupling
 from closures.standard_model.cross_sections import compute_cross_section
 from closures.standard_model.particle_catalog import get_particle, list_particles
 from closures.standard_model.subatomic_kernel import (
-    compute_all_composites,
-    compute_all_fundamentals,
+    compute_all_composite,
+    compute_all_fundamental,
 )
 from closures.standard_model.symmetry_breaking import compute_higgs_mechanism
 
 __all__ = [
-    "compute_all_composites",
-    "compute_all_fundamentals",
+    "compute_all_composite",
+    "compute_all_fundamental",
     "compute_ckm_mixing",
     "compute_cross_section",
     "compute_higgs_mechanism",
