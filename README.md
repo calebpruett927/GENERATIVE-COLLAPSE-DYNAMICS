@@ -12,7 +12,7 @@
   <a href="https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/actions/workflows/validate.yml"><img src="https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/actions/workflows/validate.yml/badge.svg" alt="CI"></a>
   <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.11+-3776AB?logo=python&logoColor=white" alt="Python 3.11+"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License: MIT"></a>
-  <a href="tests/"><img src="https://img.shields.io/badge/tests-1817%20passing-brightgreen?logo=pytest" alt="Tests: 1817 passing"></a>
+  <a href="tests/"><img src="https://img.shields.io/badge/tests-1900%2B%20passing-brightgreen?logo=pytest" alt="Tests: 1900+ passing"></a>
   <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-2.0.0-blue" alt="Version: 2.0.0"></a>
   <a href="src/umcp/api_umcp.py"><img src="https://img.shields.io/badge/API-57%20endpoints-orange?logo=fastapi" alt="API: 57 endpoints"></a>
 </p>
@@ -129,18 +129,18 @@ Every validation produces one of three outcomes -- never a boolean:
 
 | Metric | Value |
 |--------|-------|
-| **Tests** | 1,817 passing (71 files) |
+| **Tests** | 1,900+ passing (80 files) |
 | **API Endpoints** | 57 (25 GET, 32 POST) |
-| **Dashboard Pages** | 31 |
+| **Dashboard Pages** | 31 (refactored into modular package) |
 | **CLI Commands** | 11 subcommands, 6 entry points |
 | **Casepacks** | 13 validated |
-| **Closures** | 69 Python files, 57 registered |
-| **Contracts** | 12 domain contracts |
+| **Closures** | 97 Python files, 57 registered |
+| **Contracts** | 15 domain contracts |
 | **Schemas** | 12 JSON Schema Draft 2020-12 |
-| **Domains** | 9 (GCD, KIN, RCFT, WEYL, Security, Astronomy, Nuclear, QM, Finance) |
+| **Domains** | 11 (GCD, KIN, RCFT, WEYL, Security, Astronomy, Nuclear, QM, Finance, Atomic, Materials) |
 | **Lemmas** | 46 formal proofs |
-| **Canonical Anchors** | 8 domain anchor files |
-| **Source Modules** | 25 Python files |
+| **Canonical Anchors** | 11 domain anchor files |
+| **Source Modules** | 43 Python files (includes fleet/, dashboard/ packages) |
 | **Extensions** | 5 built-in |
 | **Integrity** | SHA256 verified |
 | **Status** | CONFORMANT |
@@ -659,6 +659,91 @@ umcp-dashboard                 # Starts on http://localhost:8501
 | | Bookmarks | Save and recall views |
 | | Notifications | Alert configuration |
 | | API Integration | REST API control panel |
+
+---
+
+## Fleet -- Distributed Validation
+
+UMCP Fleet provides **distributed, parallel validation** at scale via:
+- **Scheduler**: Job submission, routing, and tracking
+- **Worker**: Register workers, heartbeat, execute validations
+- **Queue**: Priority queue with DLQ, retry logic, backpressure
+- **Cache**: Content-addressable artifact cache (SHA256)
+- **Tenant**: Multi-tenant isolation, quotas, namespaces
+
+### Quick Start
+
+```python
+from umcp.fleet import Scheduler, Worker, WorkerPool, Tenant
+
+# Create tenant and scheduler
+tenant = Tenant(tenant_id="acme")
+scheduler = Scheduler()
+
+# Start worker pool (4 workers by default)
+pool = WorkerPool(pool_size=4)
+pool.start()
+
+# Submit validation job
+job = scheduler.submit("casepacks/hello_world", tenant=tenant)
+
+# Wait for result
+result = scheduler.wait(job.job_id, timeout=60.0)
+print(f"Verdict: {result.verdict}")
+
+# Clean up
+pool.stop()
+```
+
+### Architecture
+
+| Component | Purpose | Key Features |
+|-----------|---------|--------------|
+| **Scheduler** | Job orchestration | Priority routing, status tracking, result aggregation |
+| **Worker** | Task execution | Subprocess isolation, heartbeat, drain/stop lifecycle |
+| **WorkerPool** | Fleet management | Scale up/down, graceful drain, health monitoring |
+| **Queue** | Job buffering | Priority lanes, DLQ for failures, retry with backoff |
+| **Cache** | Artifact storage | SHA256 identity, multi-node sharing, LRU eviction |
+| **Tenant** | Isolation | Per-tenant quotas, namespaces, resource limits |
+
+### Scaling Example
+
+```python
+# Start with 2 workers
+pool = WorkerPool(pool_size=2)
+pool.start()
+
+# Scale up to handle load
+new_workers = pool.scale_up(3)  # Now 5 total
+print(f"Active workers: {pool.active}")
+
+# Drain for maintenance (stop accepting new work)
+pool.drain()
+
+# Wait for in-flight jobs to complete
+time.sleep(10)
+
+# Scale down by 2 workers
+removed = pool.scale_down(2)  # Now 3 workers
+```
+
+### Configuration
+
+```python
+from umcp.fleet.worker import WorkerConfig
+
+config = WorkerConfig(
+    poll_interval_s=1.0,        # Job polling frequency
+    heartbeat_interval_s=5.0,   # Heartbeat to scheduler
+    validate_timeout_s=300.0,   # Max validation time
+    capacity=1,                 # Concurrent jobs per worker
+    tags={"env": "prod"}        # Worker metadata
+)
+
+worker = Worker("worker-1", config=config)
+```
+
+**Fleet is production-ready** with graceful shutdown, backpressure, and telemetry hooks for monitoring.
 
 ---
 

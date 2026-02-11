@@ -10,29 +10,56 @@ UMCP (Universal Measurement Contract Protocol) validates reproducible computatio
 
 ```
 src/umcp/
-├── cli.py              # 2500-line argparse CLI — validation engine, all subcommands
-├── validator.py        # Root-file validator (16 files, checksums, math identities)
-├── kernel_optimized.py # Lemma-based kernel computation (F, ω, S, C, κ, IC)
-├── constants.py        # Regime enum, frozen threshold dataclass, all math constants
-├── api_umcp.py         # [Optional] FastAPI REST extension (Pydantic models)
-├── dashboard.py        # [Optional] Streamlit dashboard (23 pages)
-├── umcp_extensions.py  # Protocol-based plugin system
-└── __init__.py         # Public API: validate() convenience function, __version__
+├── cli.py                    # 2500-line argparse CLI — validation engine, all subcommands
+├── validator.py              # Root-file validator (16 files, checksums, math identities)
+├── kernel_optimized.py       # Lemma-based kernel computation (F, ω, S, C, κ, IC)
+├── seam_optimized.py         # Optimized seam budget computation (Γ, D_C, Δκ)
+├── tau_r_star.py             # τ_R* thermodynamic diagnostic (phase diagram)
+├── tau_r_star_dynamics.py    # Dynamic τ_R* evolution and trajectories
+├── compute_utils.py          # Vectorized utilities (OPT-17,20: coordinate clipping, bounds)
+├── epistemic_weld.py         # Epistemic cost tracking (Theorem T9: observation cost)
+├── insights.py               # Lessons-learned database (pattern discovery)
+├── uncertainty.py            # Uncertainty propagation and error analysis
+├── frozen_contract.py        # Frozen contract constants dataclass
+├── api_umcp.py               # [Optional] FastAPI REST extension (Pydantic models)
+├── finance_cli.py            # Finance domain CLI
+├── finance_dashboard.py      # Finance Streamlit dashboard
+├── universal_calculator.py   # Universal kernel calculator CLI
+├── umcp_extensions.py        # Protocol-based plugin system
+├── dashboard/                # [Optional] Modular Streamlit dashboard package
+│   ├── __init__.py           # Main dashboard entry point (31 pages)
+│   ├── pages_core.py         # Core validation pages
+│   ├── pages_analysis.py     # Analysis & diagnostics pages
+│   ├── pages_science.py      # Scientific domain pages
+│   ├── pages_physics.py      # Physics-specific pages
+│   ├── pages_interactive.py  # Interactive exploration pages
+│   ├── pages_management.py   # Project management pages
+│   └── pages_advanced.py     # Advanced tools & settings
+├── fleet/                    # Distributed fleet-scale validation
+│   ├── __init__.py           # Fleet public API
+│   ├── scheduler.py          # Job scheduler (submit, route, track)
+│   ├── worker.py             # Worker + WorkerPool (register, heartbeat, execute)
+│   ├── queue.py              # Priority queue (DLQ, retry, backpressure)
+│   ├── cache.py              # Content-addressable artifact cache
+│   ├── tenant.py             # Multi-tenant isolation, quotas, namespaces
+│   └── models.py             # Shared dataclass models (Job, WorkerInfo, etc.)
+└── __init__.py               # Public API: validate() convenience function, __version__
 ```
 
 **Data artifacts** (not Python — never import these):
-- `contracts/*.yaml` — versioned mathematical contracts (JSON Schema Draft 2020-12)
-- `closures/` — Python/YAML closures organized by domain subdirs (gcd/, rcft/, kinematics/, weyl/, security/)
+- `contracts/*.yaml` — 15 versioned mathematical contracts (JSON Schema Draft 2020-12)
+- `closures/` — 97 Python/YAML closures organized by domain subdirs (gcd/, rcft/, kinematics/, weyl/, security/, astronomy/, nuclear_physics/, quantum_mechanics/, atomic_physics/, materials_science/, standard_model/, finance/)
 - `closures/registry.yaml` — central registry; must list every closure used in a run
-- `casepacks/*/manifest.json` — casepack manifest referencing contract, closures, expected outputs
-- `schemas/*.schema.json` — 13 JSON Schema Draft 2020-12 files validating all artifacts
+- `casepacks/*/manifest.json` — 13 casepack manifests referencing contract, closures, expected outputs
+- `schemas/*.schema.json` — 12 JSON Schema Draft 2020-12 files validating all artifacts
+- `canon/*.yaml` — 11 canonical anchor files (domain-specific reference points)
 - `ledger/return_log.csv` — append-only validation log
 
 ## Critical Workflows
 
 ```bash
 pip install -e ".[all]"                     # Dev install (core + api + viz + dev tools)
-pytest                                       # 1002+ tests (growing), ~30s
+pytest                                       # 1900+ tests (growing), ~70s
 python scripts/update_integrity.py          # MUST run after changing any tracked file
 umcp validate .                             # Validate entire repo
 umcp validate casepacks/hello_world --strict # Validate casepack (strict = fail on warnings)
@@ -93,10 +120,11 @@ umcp validate <target>
 
 ## Test Patterns
 
-**56 test files** in `tests/`, numbered by group (`test_00_*` through `test_140_*`). Single `tests/conftest.py` provides:
+**80 test files** in `tests/`, numbered by tier and domain (`test_00_*` through `test_140_*`). Single `tests/conftest.py` provides:
 - Frozen `RepoPaths` dataclass (session-scoped) with all critical paths
 - `@lru_cache` helpers: `_read_file()`, `_parse_json()`, `_parse_yaml()`, `_compile_schema()`
 - Convention: `test_<subject>_<behavior>()` for functions; `TestCLI*` classes with `subprocess.run` for CLI integration
+- New test coverage: `test_fleet_worker.py` (Worker, WorkerPool, WorkerConfig), `test_insights.py` (PatternDatabase, InsightEngine)
 
 ## Extension System
 
@@ -109,10 +137,14 @@ Extensions use `typing.Protocol` (`ExtensionProtocol` requiring `name`, `version
 | Validation logic | `src/umcp/cli.py` (top + `_cmd_validate`) |
 | Math identities | `src/umcp/validator.py` (`_validate_invariant_identities`) |
 | Kernel computation | `src/umcp/kernel_optimized.py` |
-| Constants & regimes | `src/umcp/constants.py` |
-| Budget thermodynamics | `src/umcp/tau_r_star.py` (τ_R*, phase diagram, arrow of time) |
-| Prediction scorecard & nuances | `KERNEL_SPECIFICATION.md` §5 (measured accuracy, outliers as limits, rederived principles, seam-derived constants) |
+| Seam budget closure | `src/umcp/seam_optimized.py` (Γ, D_C, Δκ) |
+| Thermodynamic diagnostic | `src/umcp/tau_r_star.py` (τ_R*, phase diagram, arrow of time) |
+| Epistemic cost tracking | `src/umcp/epistemic_weld.py` (Theorem T9: observation cost) |
+| Lessons-learned system | `src/umcp/insights.py` (PatternDatabase, InsightEngine) |
+| Fleet architecture | `src/umcp/fleet/` (Scheduler, Worker, Queue, Cache, Tenant) |
+| Dashboard pages | `src/umcp/dashboard/` (31 modular pages) |
 | Test fixtures | `tests/conftest.py` (first 100 lines) |
 | Casepack structure | `casepacks/hello_world/` |
 | Contract format | `contracts/UMA.INTSTACK.v1.yaml` |
 | Semantic rules | `validator_rules.yaml` |
+| Canonical anchors | `canon/` (11 domain anchor files) |
