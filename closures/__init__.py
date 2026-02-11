@@ -11,6 +11,13 @@ Available Subpackages:
     - kinematics: Kinematics domain closures
     - security: Security validation closures
     - weyl: WEYL cosmology closures (modified gravity)
+    - astronomy: Stellar classification, HR diagram
+    - nuclear_physics: Binding energy, decay chains
+    - quantum_mechanics: Wavefunction, entanglement
+    - finance: Portfolio continuity, market coherence
+    - atomic_physics: Periodic kernel, cross-scale, Tier-1 proof (118 elements)
+    - materials_science: Element database (118 elements, 18 fields)
+    - standard_model: Subatomic kernel (31 particles), 10 proven theorems
 
 See closures/registry.yaml for the complete closure registry.
 """
@@ -20,7 +27,20 @@ from pathlib import Path
 # Closure package root
 CLOSURES_ROOT = Path(__file__).parent
 
-# Available closure domains
-CLOSURE_DOMAINS = ["gcd", "rcft", "kinematics", "security", "weyl"]
+# Available closure domains (12 total)
+CLOSURE_DOMAINS = [
+    "gcd",
+    "rcft",
+    "kinematics",
+    "security",
+    "weyl",
+    "astronomy",
+    "nuclear_physics",
+    "quantum_mechanics",
+    "finance",
+    "atomic_physics",
+    "materials_science",
+    "standard_model",
+]
 
 __all__ = ["CLOSURES_ROOT", "CLOSURE_DOMAINS"]

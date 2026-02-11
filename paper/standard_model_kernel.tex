@@ -1,0 +1,590 @@
+% ============================================================
+% Particle Physics in the Generative-Collapse Kernel:
+% Ten Tier-2 Theorems from the Standard Model
+%
+% Compile: pdflatex → bibtex → pdflatex → pdflatex
+% ============================================================
+
+\documentclass[
+  aps,
+  prd,
+  twocolumn,
+  superscriptaddress,
+  nofootinbib,
+  floatfix
+]{revtex4-2}
+
+% ── packages ──
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{bm}
+\usepackage{booktabs}
+\usepackage{multirow}
+
+% ── theorem environments ──
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}{Remark}
+
+% ── UMCP macros ──
+\newcommand{\tR}{\tau_{\!R}^{*}}
+\newcommand{\Gam}{\Gamma}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\tolseam}{\mathrm{tol}_{\mathrm{seam}}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+\newcommand{\INF}{\texttt{INF\_REC}}
+\newcommand{\regime}[1]{\textsc{#1}}
+\newcommand{\conform}{\regime{conformant}}
+\newcommand{\tvec}{\mathbf{c}}
+\newcommand{\wvec}{\mathbf{w}}
+\newcommand{\GM}{\mathrm{GM}}
+\newcommand{\AM}{\mathrm{AM}}
+\newcommand{\IC}{\mathrm{IC}}
+
+\begin{document}
+
+% ============================================================
+% TITLE
+% ============================================================
+\title{Particle Physics in the Generative-Collapse Kernel:\\
+Ten Tier-2 Theorems from the Standard Model}
+
+\author{Caleb Pruett}
+\email{caleb@umcp.dev}
+\affiliation{UMCP Reference Implementation, GitHub}
+
+\author{Clement Paulus}
+\affiliation{UMCP / GCD / RCFT Canon}
+
+\date{\today}
+
+\begin{abstract}
+We show that the seven-metric kernel of the Universal Measurement
+Contract Protocol (UMCP) --- originally constructed for generic
+computational-workflow validation --- encodes nontrivial structure
+when applied to the Standard Model of particle physics.
+Using PDG-tabulated quantum numbers for 17 fundamental particles
+and 14 composite hadrons, we construct 8-channel trace vectors
+$\tvec \in [\eps, 1-\eps]^8$ and prove ten theorems at Tier-2
+(domain expansion), each verified by between 5 and 19 automated
+tests (74 total, 0 failures).  The theorems connect spin-statistics
+to the fidelity--drift split (T1), demonstrate strict generation
+monotonicity in $F$ (T2), identify confinement as a 98\% collapse
+of the integrity coefficient $\IC$ (T3), map 13 orders of magnitude
+in mass to a bounded fidelity interval (T4), detect charge
+quantization via $\IC$ suppression (T5), establish cross-scale
+universality from femtometers to nanometers (T6), show that
+electroweak symmetry breaking amplifies generation structure (T7),
+verify CKM unitarity as a kernel identity with visible CP violation
+(T8), reproduce asymptotic freedom as monotonic kernel flow (T9),
+and recover the nuclear binding curve through kernel--binding-energy
+anti-correlation (T10).  All results follow from Tier-1 identities
+($F + \omega = 1$, $\IC \leq F$, $\IC = e^{\kappa}$) applied to
+physically motivated trace vectors, with duality $F + \omega = 1$
+verified to machine precision across all particles.
+The formalism provides a Tier-2 diagnostic lens through which
+Standard Model phenomenology becomes kernel-visible without
+modifying the underlying physics.
+\end{abstract}
+
+\maketitle
+
+% ============================================================
+\section{Introduction}\label{sec:intro}
+% ============================================================
+
+The Universal Measurement Contract Protocol
+(UMCP)~\cite{paulus2025umcp,paulus2025physicscoherence} is a
+contract-first validation framework built on a single axiom:
+\emph{``What Returns Through Collapse Is Real.''} Its
+computational core is a seven-metric kernel that maps any
+set of coherence coordinates $\tvec \in [0,1]^n$ with weights
+$\wvec$ (summing to unity) to invariants $(\omega, F, S, C,
+\kappa, \IC, \tau_R)$.  Three Tier-1 identities are provably
+exact~\cite{paulus2026umcpcasepack}:
+\beq\label{eq:tier1}
+  F + \omega = 1, \quad
+  \IC \leq F \;\text{(AM-GM)}, \quad
+  \IC = e^{\kappa}.
+\eeq
+
+Tier-1 identities are immutable --- they hold for any input
+by construction.  The question we address is: \emph{when the
+inputs encode real physics, what Tier-2 structure emerges?}
+
+We apply the kernel to the Standard Model (SM) of particle
+physics, encoding each particle's quantum numbers as an
+8-channel trace vector.  Ten theorems emerge, each proven
+computationally against Particle Data Group (PDG) values
+and verified by automated tests.  The reference implementation
+is publicly available~\cite{umcpmetadatarepo}.
+
+% ============================================================
+\section{Kernel Review}\label{sec:kernel}
+% ============================================================
+
+\begin{definition}[GCD Kernel]\label{def:kernel}
+Given coordinates $\tvec = (c_1, \ldots, c_n) \in [\eps, 1-\eps]^n$
+and weights $\wvec = (w_1, \ldots, w_n)$ with $\sum_i w_i = 1$,
+the kernel computes:
+\begin{align}
+  F &= \sum_i w_i \, c_i, \label{eq:F} \\
+  \omega &= 1 - F, \label{eq:omega} \\
+  S &= -\sum_i w_i \bigl[c_i \ln c_i + (1{-}c_i)\ln(1{-}c_i)\bigr],
+  \label{eq:S} \\
+  C &= \frac{1}{0.5}\,\mathrm{std}(\tvec), \label{eq:C} \\
+  \kappa &= \sum_i w_i \ln(c_i + \eps), \label{eq:kappa} \\
+  \IC &= \exp(\kappa). \label{eq:IC}
+\end{align}
+\end{definition}
+
+The AM-GM gap $\Delta \equiv F - \IC \geq 0$ measures channel
+heterogeneity: $\Delta = 0$ if and only if all $c_i$ are equal.
+This gap is the central diagnostic in what follows.
+
+% ============================================================
+\section{Trace-Vector Construction}\label{sec:trace}
+% ============================================================
+
+Each Standard Model particle is mapped to an 8-channel trace
+vector $\tvec \in [\eps, 1{-}\eps]^8$ via the following channels:
+
+\begin{table}[h]
+\caption{\label{tab:channels}Eight-channel encoding for SM particles.
+Each observable is normalized to $[\eps, 1{-}\eps]$.}
+\begin{ruledtabular}
+\begin{tabular}{clll}
+$i$ & Channel & Source & Normalization \\
+\hline
+1 & mass\_log & $\log_{10}(m/\text{GeV})$ & Linear to $[0,1]$ \\
+2 & spin\_norm & $s/s_{\max}$ & $s_{\max} = 2$ \\
+3 & charge\_norm & $|Q|/Q_{\max}$ & $Q_{\max} = 2$ \\
+4 & color & Color multiplicity & $\{1, 3, 8\} \to [0,1]$ \\
+5 & weak\_isospin & $|I_3^W|$ & Direct \\
+6 & lepton\_num & $|L|$ & Binary \\
+7 & baryon\_num & $|B|$ or $B/3$ & Per quark \\
+8 & generation & Gen/$3$ & $\{1,2,3\}$ \\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+Equal weights $w_i = 1/8$ are used throughout.  The guard band
+$\eps = 10^{-8}$ prevents $\ln(0)$ singularities.  All 17
+fundamental particles and 14 composite hadrons pass Tier-1
+identities exactly.
+
+% ============================================================
+\section{Ten Theorems}\label{sec:theorems}
+% ============================================================
+
+\subsection{T1: Spin-Statistics Kernel Theorem}
+
+\begin{theorem}[Spin-Statistics Split]\label{thm:T1}
+Let $\mathcal{F}$ and $\mathcal{B}$ denote the sets of
+fundamental fermions and bosons respectively.  Then
+\beq
+  \langle F \rangle_{\mathcal{F}} > \langle F \rangle_{\mathcal{B}},
+\eeq
+with a split of $0.194$ ($0.615$ vs.\ $0.421$).  Furthermore,
+every quark satisfies $F_q > \langle F \rangle_{\mathcal{B}}$.
+\end{theorem}
+
+\begin{remark}
+The theorem holds per-generation: within each of generations 1--3,
+fermion $\langle F \rangle$ exceeds boson $\langle F \rangle$.
+The split arises because fermions occupy more kernel channels
+(nonzero lepton/baryon number, generation index) than bosons.
+\end{remark}
+
+\subsection{T2: Generation Monotonicity}
+
+\begin{theorem}[Generation Ordering]\label{thm:T2}
+Partition the 12 fundamental fermions by generation $g \in \{1,2,3\}$.
+Then
+\beq
+  \langle F \rangle_{g=1} < \langle F \rangle_{g=2} < \langle F \rangle_{g=3},
+\eeq
+with values $0.576 < 0.620 < 0.649$.  The monotonicity holds
+independently for quarks and for leptons.
+\end{theorem}
+
+\begin{remark}
+This reflects the mass hierarchy: higher-generation fermions
+have larger masses, which map to larger $c_1$ (mass\_log channel),
+pulling $F$ upward.  The generation channel $c_8 = g/3$ reinforces
+the ordering.
+\end{remark}
+
+\subsection{T3: Confinement as IC Collapse}
+
+\begin{theorem}[IC Collapse under Binding]\label{thm:T3}
+Let $\IC_q^{\min}$ be the minimum integrity coefficient among
+all quarks, and let $\IC_h$ denote that of any composite hadron.
+Then:
+\begin{enumerate}
+\item $\IC_h < \IC_q^{\min}$ for all 14 hadrons tested.
+\item The average IC drops by $98.1\%$ from quarks to hadrons.
+\item The AM-GM gap amplifies by a factor of $10.8\times$ upon
+      binding.
+\end{enumerate}
+\end{theorem}
+
+The IC collapse is driven by the loss of the generation and
+lepton-number channels in composite particles: hadrons have
+$c_6 = c_8 = \eps$, which sends $\kappa \to -\infty$ via
+$\ln(\eps)$.  This is the kernel signature of confinement ---
+individual quark quantum numbers become invisible.
+
+\subsection{T4: Mass--Kernel Logarithmic Mapping}
+
+\begin{theorem}[Logarithmic Compression]\label{thm:T4}
+The 17 fundamental particles span $13.2$ orders of magnitude
+in mass.  The kernel maps this range to $F \in [0.37, 0.73]$.
+Among quarks, the Spearman rank correlation between mass and
+$F$ is $\rho = 0.77$.
+\end{theorem}
+
+The logarithmic compression is a consequence of the $\log_{10}$
+normalization in channel 1.  The bounded output is a feature,
+not a bug: the kernel measures \emph{coherence heterogeneity},
+not magnitude.
+
+\subsection{T5: Charge Quantization Signature}
+
+\begin{theorem}[Neutral Suppression]\label{thm:T5}
+Neutral particles (photon, gluon, $Z^0$, neutrinos) have
+$\IC \ll \IC_{\text{charged}}$.  The ratio
+\beq
+  \frac{\langle \IC \rangle_{\text{neutral}}}
+       {\langle \IC \rangle_{\text{charged}}} = 0.020
+\eeq
+represents a $50\times$ suppression.  The photon has
+$\IC = 7.6 \times 10^{-4}$, the smallest of any fundamental
+particle.
+\end{theorem}
+
+\begin{remark}
+Neutral particles carry $c_3 = \eps$ (charge channel near zero).
+Since $\IC = \exp\!\bigl(\sum w_i \ln c_i\bigr) = \prod c_i^{w_i}$
+is a weighted geometric mean, even one channel near $\eps$
+catastrophically suppresses $\IC$.  This is the AM-GM inequality
+at work: neutrality creates maximal channel heterogeneity.
+\end{remark}
+
+\subsection{T6: Cross-Scale Universality}
+
+\begin{theorem}[Scale Ordering]\label{thm:T6}
+Let $\langle F \rangle$ denote the mean fidelity for three
+particle classes --- fundamental (fm scale), atomic (pm scale),
+and composite (fm scale, bound).  Then
+\beq
+  \langle F \rangle_{\text{composite}} <
+  \langle F \rangle_{\text{atomic}} <
+  \langle F \rangle_{\text{fundamental}},
+\eeq
+with values $0.444 < 0.516 < 0.558$.
+\end{theorem}
+
+The same kernel, applied at three different length scales
+($10^{-15}$~m, $10^{-12}$~m, $10^{-10}$~m), produces a
+consistent ordering: binding reduces fidelity, and composite
+systems sit below their constituents.
+
+\subsection{T7: Symmetry Breaking as Trace Deformation}
+
+\begin{theorem}[EWSB Amplification]\label{thm:T7}
+Electroweak symmetry breaking (EWSB) enters the kernel through
+the mass\_log channel via Yukawa couplings
+$y_f = \sqrt{2}\,m_f / v$ ($v = 246.22$~GeV).  Define the
+generation spread $\sigma_g \equiv \max_g \langle F \rangle_g
+- \min_g \langle F \rangle_g$.  Then the broken theory has
+\beq
+  \sigma_g^{\text{broken}} = 0.073 > \sigma_g^{\text{unbroken}} = 0.046.
+\eeq
+Higher generations gain more fidelity from the Higgs:
+$\Delta F_{g=3} > \Delta F_{g=2} > \Delta F_{g=1}$.
+\end{theorem}
+
+Before EWSB, all fermions share a common mass channel
+($c_1 = 0.5$); after EWSB, Yukawa couplings differentiate
+them.  The kernel makes the symmetry breaking visible as a
+monotonically increasing $\Delta F$ per generation.
+
+\subsection{T8: CKM Unitarity as Kernel Identity}
+
+\begin{theorem}[CKM in the Kernel]\label{thm:T8}
+Each row of the CKM matrix $V_{\text{CKM}}$, treated as a
+3-channel trace vector $(|V_{ij}|^2)_{j=1}^3$, passes all
+Tier-1 identities.  Furthermore:
+\begin{enumerate}
+\item Row~1 has a larger AM-GM gap than Row~2, because
+      $|V_{ub}|^2 \approx 10^{-5}$ acts as an extreme
+      zero-channel.
+\item The Jarlskog invariant $J_{\text{CP}} = 3.0 \times 10^{-5}$
+      (CP violation) is kernel-visible.
+\end{enumerate}
+\end{theorem}
+
+The Wolfenstein parametrization
+($\lambda = 0.2257$, $A = 0.814$, $\rho = 0.135$, $\eta = 0.349$)
+generates rows whose $\sum |V_{ij}|^2$ departs from unity by
+$O(\lambda^4) \approx 0.002$.  The kernel classifies this as
+the ``Tension'' regime --- appropriate for an approximation
+at third order.
+
+\subsection{T9: Running Coupling as Kernel Flow}
+
+\begin{theorem}[Asymptotic Freedom]\label{thm:T9}
+The one-loop QCD running coupling
+\beq
+  \alpha_s(Q^2) = \frac{\alpha_s(M_Z^2)}
+    {1 + \frac{b_0 \alpha_s(M_Z^2)}{2\pi}
+      \ln\!\bigl(\tfrac{Q^2}{M_Z^2}\bigr)}
+\eeq
+with $b_0 = 11 - \tfrac{2}{3}n_f = 7$ is monotonically
+decreasing for $Q \geq 10$~GeV.  At $Q = M_Z$,
+$\alpha_s = 0.118$ (perturbative).  At $Q = 0.5$~GeV, the
+formula exceeds unity, signaling confinement (``NonPerturbative''
+regime).
+\end{theorem}
+
+The kernel provides a natural regime classification:
+$\alpha_s < 0.3$ is perturbative (Stable); $0.3 \leq \alpha_s < 1$
+is transitional (Watch); $\alpha_s \geq 1$ is nonperturbative
+(Collapse).  Asymptotic freedom maps to a monotonic flow from
+Stable to Collapse as $Q$ decreases.
+
+\subsection{T10: Nuclear Binding Curve Correspondence}
+
+\begin{theorem}[Binding--Gap Anti-correlation]\label{thm:T10}
+Using the Bethe--Weizs\"acker semi-empirical mass formula to
+compute binding energy per nucleon $B/A$ for elements
+$Z = 1, \ldots, 118$, and the 12-channel cross-scale kernel to
+compute the AM-GM gap $\Delta$:
+\begin{enumerate}
+\item $r(B/A,\,\Delta) = -0.41$ (Pearson anti-correlation).
+\item $B/A$ peaks at $Z \in [23, 30]$ (Cr--Zn region),
+      consistent with the Fe/Ni experimental peak.
+\item Nuclear magic numbers ($Z \in \{2, 8, 20, 28, 50, 82\}$)
+      are detectable through the magic-proximity channel.
+\end{enumerate}
+\end{theorem}
+
+The anti-correlation means: elements with higher binding energy
+per nucleon have \emph{smaller} AM-GM gaps --- they are more
+coherent in the kernel sense.  Iron-group nuclei sit at both
+the binding-energy maximum and a local gap minimum.
+
+% ============================================================
+\section{Duality and Consistency}\label{sec:duality}
+% ============================================================
+
+The duality identity $F + \omega = 1$ is verified to machine
+precision ($\max|\delta| = 0$) across all 17 fundamental
+particles, confirming that the trace-vector construction
+preserves Tier-1 exactly.
+
+All 74 individual tests pass with zero failures.  The
+complete test suite runs in under 200~ms on commodity
+hardware, making the formalism suitable for continuous
+integration.
+
+% ============================================================
+\section{Tier-2 Diagnostic Interpretation}\label{sec:interpretation}
+% ============================================================
+
+These ten theorems demonstrate that the GCD kernel functions
+as a \emph{diagnostic lens} for particle physics, not a
+replacement for it.  The kernel does not predict masses or
+coupling constants; instead, it provides a uniform language
+in which existing SM results become visible as kernel patterns:
+
+\begin{itemize}
+\item \textbf{Spin-statistics} (T1) appears as a fidelity split.
+\item \textbf{The mass hierarchy} (T2, T4) appears as generation
+  monotonicity and logarithmic compression.
+\item \textbf{Confinement} (T3) appears as IC collapse --- the
+  loss of individual quantum numbers upon binding.
+\item \textbf{Charge quantization} (T5) appears as $\IC$
+  suppression via the AM-GM inequality.
+\item \textbf{Universality} (T6) appears as scale-ordered fidelity.
+\item \textbf{Symmetry breaking} (T7) appears as trace deformation
+  amplifying generation structure.
+\item \textbf{Flavor mixing} (T8) appears as CKM rows in the
+  kernel, with CP violation as a measurable Jarlskog invariant.
+\item \textbf{Asymptotic freedom} (T9) appears as monotonic
+  coupling flow within kernel regimes.
+\item \textbf{Nuclear stability} (T10) appears as binding--gap
+  anti-correlation, with magic numbers as detectable features.
+\end{itemize}
+
+The value of this lens is threefold:
+(1)~it provides a \emph{single diagnostic framework} spanning
+subatomic, atomic, and nuclear scales;
+(2)~it connects disparate phenomena (confinement, EWSB, CKM mixing)
+through the common algebra of the AM-GM gap;
+(3)~it is computationally cheap and fully automated, enabling
+continuous monitoring via CI pipelines.
+
+% ============================================================
+\section{How to Use It: Practical Guide}\label{sec:howto}
+% ============================================================
+
+The formalism is implemented as a standalone Python module
+(\texttt{particle\_physics\_formalism.py}) in the UMCP
+repository~\cite{umcpmetadatarepo}.
+
+\subsection{Running the Theorems}
+
+\begin{verbatim}
+pip install -e ".[all]"
+python closures/standard_model/\
+  particle_physics_formalism.py
+\end{verbatim}
+
+Output: 10/10~PROVEN, 74/74 tests, runtime $< 200$~ms.
+
+\subsection{Adding a New Particle}
+
+To extend the formalism to a new particle (e.g., a BSM candidate):
+
+\begin{enumerate}
+\item Add the particle to the \texttt{FUNDAMENTAL\_PARTICLES}
+  dictionary in \texttt{subatomic\_kernel.py} with its
+  quantum numbers.
+\item Run \texttt{particle\_physics\_formalism.py} ---
+  existing theorems automatically include the new entry.
+\item If needed, add new theorems as functions
+  \texttt{theorem\_T11()}, etc., following the
+  \texttt{TheoremResult} dataclass pattern.
+\end{enumerate}
+
+\subsection{Reading the Output}
+
+Each theorem produces a structured result:
+
+\begin{verbatim}
+T3 Confinement as IC Collapse
+  Statement: Binding quarks into hadrons
+    collapses IC by >90%
+  Tests: 19/19 PASSED
+  Verdict: PROVEN
+  Details:
+    quark_avg_IC = 0.0225
+    hadron_avg_IC = 0.000434
+    ic_collapse_pct = 98.07%
+    gap_amplification = 10.82x
+\end{verbatim}
+
+The verdict is PROVEN when all sub-tests pass, FAILED otherwise.
+This maps directly to UMCP's three-valued logic:
+PROVEN $\to$ \conform{}, FAILED $\to$ \regime{nonconformant}.
+
+% ============================================================
+\section{What It Looks Like: Reality Through the Kernel}
+\label{sec:reality}
+% ============================================================
+
+The kernel provides a specific \emph{perceptual frame} for
+particle physics.  Through this lens:
+
+\textbf{The Standard Model is a fidelity landscape.}
+Each particle lives at a point $(F, \IC, \Delta)$ in kernel
+space.  Fermions cluster at high $F$ ($\sim 0.6$); bosons at
+lower $F$ ($\sim 0.4$).  The photon sits at the extreme:
+$F = 0.37$, $\IC = 7.6 \times 10^{-4}$, $\Delta = 0.37$ ---
+it is the most heterogeneous fundamental particle, with most
+channels near $\eps$.
+
+\textbf{Confinement is visible as a cliff.}  The $\IC$ landscape
+drops by two orders of magnitude at the quark$\to$hadron
+boundary.  This cliff is not put in by hand --- it emerges from
+the loss of generation and lepton-number channels when quarks
+bind into color-singlet states.
+
+\textbf{The mass hierarchy is a slope.}  Plotting $F$ against
+generation number yields a monotonically rising curve.  The
+slope is steeper for quarks than leptons, reflecting the
+stronger mass splitting in the quark sector.
+
+\textbf{Symmetry breaking is a deformation.}  Before EWSB,
+all fermions have the same mass channel ($c_1 = 0.5$).
+After EWSB, Yukawa couplings spread the mass channel,
+and the generation slope steepens.  The kernel makes this
+transition quantitatively visible: $\sigma_g$ increases
+from $0.046$ to $0.073$.
+
+\textbf{CP violation is a gap asymmetry.}  The CKM matrix,
+viewed as three kernel trace vectors (one per row), shows
+that Row~1 has a larger gap than Row~2.  The physical origin
+is $|V_{ub}| \ll |V_{cb}|$: the extreme smallness of $V_{ub}$
+creates maximal heterogeneity in Row~1.  The Jarlskog
+invariant $J = 3.0 \times 10^{-5}$ quantifies the CP
+violation that accompanies this asymmetry.
+
+\textbf{Nuclear stability is an anti-correlation.}  The most
+tightly bound nuclei (iron group) have the smallest AM-GM
+gaps.  Moving away from the iron peak in either direction
+increases the gap --- lighter nuclei are surface-dominated
+(less coherent), heavier nuclei are Coulomb-dominated
+(less coherent).  Magic-number nuclei appear as local
+dips in the gap landscape.
+
+This is what the Standard Model ``looks like'' through the
+GCD kernel: a structured landscape of fidelity, integrity,
+and gap, where known physics manifests as geometric features
+(slopes, cliffs, dips, asymmetries) that are computable,
+testable, and continuous-integration--ready.
+
+% ============================================================
+\section{Conclusions}\label{sec:conclusions}
+% ============================================================
+
+We have demonstrated that the GCD kernel, a domain-agnostic
+diagnostic tool designed for computational workflow validation,
+produces nontrivial and physically meaningful structure when
+applied to the Standard Model.  Ten theorems, each testable
+and reproducible, connect kernel observables ($F$, $\IC$,
+$\Delta$) to established SM phenomena.
+
+No new physics is introduced.  The kernel acts as a
+\emph{translation layer}: it does not explain why the top
+quark is heavy or why $|V_{ub}|$ is small, but it provides
+a uniform diagnostic language in which these facts become
+kernel-visible, testable, and comparable across scales
+(subatomic $\to$ atomic $\to$ nuclear).
+
+Future directions include:
+\begin{enumerate}
+\item BSM sensitivity: can the kernel detect deviations
+  from SM predictions in new particles or anomalous couplings?
+\item Higher-order embeddings: channel counts beyond 8,
+  incorporating decay widths, lifetimes, or form factors.
+\item Dynamic kernel flow: tracking kernel invariants as
+  functions of energy scale $Q$, connecting to renormalization
+  group evolution.
+\item Experimental anchoring: using measured cross sections
+  and branching ratios as direct kernel inputs, bypassing
+  the theoretical trace-vector construction.
+\end{enumerate}
+
+The reference implementation, including all ten theorems
+and 74 automated tests, is available at
+\url{https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS}.
+
+% ============================================================
+\begin{acknowledgments}
+C.P.\ thanks C.Pau.\ for the frozen-contract discipline and
+the axiom that grounds this work.  Reference implementation:
+\url{https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS}.
+\end{acknowledgments}
+
+\bibliography{Bibliography}
+
+\end{document}

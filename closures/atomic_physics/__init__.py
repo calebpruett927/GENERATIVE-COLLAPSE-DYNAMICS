@@ -1,7 +1,13 @@
 """Atomic Physics Closures — ATOM.INTSTACK.v1
 
 Provides closures for atomic structure, ionization energies, spectral lines,
-electron configuration, and fine structure analysis — mapping to UMCP Tier-1 invariants.
+electron configuration, fine structure, periodic-table kernel analysis,
+cross-scale nuclear-informed analysis, and exhaustive Tier-1 proof.
+
+Key modules:
+  - periodic_kernel      — 118-element periodic table through GCD kernel
+  - cross_scale_kernel   — 12-channel nuclear-informed atomic analysis
+  - tier1_proof          — 10,162 tests proving F+ω=1, IC≤F, IC=exp(κ)
 
 Cross-references:
   Contract:  contracts/ATOM.INTSTACK.v1.yaml

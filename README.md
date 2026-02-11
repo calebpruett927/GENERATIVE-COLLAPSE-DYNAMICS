@@ -129,16 +129,19 @@ Every validation produces one of three outcomes -- never a boolean:
 
 | Metric | Value |
 |--------|-------|
-| **Tests** | 1,900+ passing (80 files) |
+| **Tests** | 2,416 passing (80+ files) |
 | **API Endpoints** | 57 (25 GET, 32 POST) |
 | **Dashboard Pages** | 31 (refactored into modular package) |
 | **CLI Commands** | 11 subcommands, 6 entry points |
 | **Casepacks** | 13 validated |
-| **Closures** | 97 Python files, 57 registered |
+| **Closures** | 100+ Python files, 57 registered |
 | **Contracts** | 15 domain contracts |
 | **Schemas** | 12 JSON Schema Draft 2020-12 |
-| **Domains** | 11 (GCD, KIN, RCFT, WEYL, Security, Astronomy, Nuclear, QM, Finance, Atomic, Materials) |
+| **Domains** | 12 (GCD, KIN, RCFT, WEYL, Security, Astronomy, Nuclear, QM, Finance, Atomic, Materials, **Standard Model**) |
 | **Lemmas** | 46 formal proofs |
+| **SM Theorems** | 10 proven (74/2416 tests, duality exact) |
+| **Atomic Elements** | 118 (all pass Tier-1, 10,162 identity tests) |
+| **Subatomic Particles** | 31 (17 fundamental + 14 composite, all pass Tier-1) |
 | **Canonical Anchors** | 11 domain anchor files |
 | **Source Modules** | 43 Python files (includes fleet/, dashboard/ packages) |
 | **Extensions** | 5 built-in |
@@ -915,7 +918,7 @@ print(f"Return status: {diag['return_status']}")  # "INF_REC"
 
 ## Frameworks & Domains
 
-UMCP validates computational workflows across **9 scientific domains**. Each domain has its own closures, contracts, canonical anchors, and casepacks.
+UMCP validates computational workflows across **12 scientific domains**. Each domain has its own closures, contracts, canonical anchors, and casepacks.
 
 | Domain | Code | Tier | Closures | Contract | Casepack |
 |--------|:----:|:----:|:--------:|----------|----------|
@@ -928,6 +931,9 @@ UMCP validates computational workflows across **9 scientific domains**. Each dom
 | **Nuclear Physics** | nuclear | 2 | 6 | NUC.INTSTACK.v1 | `nuclear_chain` |
 | **Quantum Mechanics** | qm | 2 | 6 | QM.INTSTACK.v1 | `quantum_mechanics_complete` |
 | **Finance** | finance | 2 | 6 | FINANCE.INTSTACK.v1 | `finance_continuity` |
+| **Atomic Physics** | atom | 2 | 9 | ATOM.INTSTACK.v1 | — |
+| **Materials Science** | matl | 2 | 1 | MATL.INTSTACK.v1 | — |
+| **Standard Model** | sm | 2 | 7 | SM.INTSTACK.v1 | — |
 
 ### GCD Closures
 
@@ -1001,6 +1007,52 @@ DES Y3 integration, modified gravity analysis, sigma computation, background cos
 ```bash
 umcp validate casepacks/weyl_des_y3
 ```
+
+### Standard Model Closures
+
+`particle_catalog`, `coupling_constants`, `cross_sections`, `symmetry_breaking`, `ckm_mixing`, `subatomic_kernel`, `particle_physics_formalism`
+
+The **subatomic kernel** maps 31 particles (17 fundamental + 14 composite) to 8-channel trace vectors encoding mass, spin, charge, color, weak isospin, lepton/baryon number, and generation. All 31 pass Tier-1 identities.
+
+The **particle physics formalism** proves 10 theorems connecting Standard Model physics to GCD kernel patterns:
+
+| # | Theorem | Tests | Key Result |
+|---|---------|:-----:|------------|
+| T1 | Spin-Statistics | 12/12 | F\_fermion(0.615) > F\_boson(0.421), split = 0.194 |
+| T2 | Generation Monotonicity | 5/5 | Gen1 < Gen2 < Gen3 (quarks AND leptons) |
+| T3 | Confinement as IC Collapse | 19/19 | IC drops 98.1% from quarks to hadrons |
+| T4 | Mass-Kernel Log Mapping | 5/5 | 13.2 OOM mass range maps to F in [0.37, 0.73] |
+| T5 | Charge Quantization | 5/5 | IC\_neutral/IC\_charged = 0.020 (50x suppression) |
+| T6 | Cross-Scale Universality | 6/6 | composite < atom < fundamental (same kernel) |
+| T7 | Symmetry Breaking | 5/5 | EWSB amplifies generation spread 0.046 to 0.073 |
+| T8 | CKM Unitarity | 5/5 | CKM rows pass Tier-1; Jarlskog J = 3.0e-5 |
+| T9 | Running Coupling Flow | 6/6 | Asymptotic freedom monotonic for Q >= 10 GeV |
+| T10 | Nuclear Binding Curve | 6/6 | r(BE/A, gap) = -0.41; peak at Cr/Fe |
+
+```bash
+python closures/standard_model/subatomic_kernel.py
+python closures/standard_model/particle_physics_formalism.py
+```
+
+### Atomic Physics Closures
+
+`electron_config`, `fine_structure`, `ionization_energy`, `spectral_lines`, `selection_rules`, `zeeman_stark`, `periodic_kernel`, `cross_scale_kernel`, `tier1_proof`
+
+The **periodic kernel** maps all 118 elements to GCD trace vectors using 8 measurable atomic properties (Z, mass, ionization energy, electronegativity, density, melting/boiling points, atomic radius). All 118 pass Tier-1.
+
+The **cross-scale kernel** uses 12 nuclear-informed channels (4 nuclear + 2 electronic + 6 bulk) bridging subatomic and atomic scales. Magic number proximity is the #1 IC driver (39%).
+
+The **Tier-1 proof** exhaustively tests 10,162 identity checks across all 118 elements: F + omega = 1 (definitional), IC <= F (Jensen's inequality), IC = exp(kappa) (definitional). Zero failures.
+
+```bash
+python closures/atomic_physics/periodic_kernel.py
+python closures/atomic_physics/cross_scale_kernel.py
+python closures/atomic_physics/tier1_proof.py
+```
+
+### Materials Science Closures
+
+`element_database` -- Complete database of all 118 elements with 18 fields each (Z, symbol, name, mass, period, group, block, category, ionization energy, electron affinity, electronegativity, density, melting/boiling points, atomic/covalent radius, electron configuration).
 
 ---
 

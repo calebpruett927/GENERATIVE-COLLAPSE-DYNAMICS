@@ -1113,7 +1113,7 @@ def analyze_quark_lepton_duality(fund_results: list[ParticleKernelResult]) -> No
         rlc = by_name.get(lc)
         rln = by_name.get(ln)
 
-        if not all([rqu, rqd, rlc, rln]):
+        if rqu is None or rqd is None or rlc is None or rln is None:
             continue
 
         quark_avg_F = (rqu.F + rqd.F) / 2
