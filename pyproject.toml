@@ -234,7 +234,7 @@ exclude_lines = [
 [tool.ruff]
 line-length = 120
 target-version = "py311"
-exclude = ["UMCP-Metadata-Runnable-Code"]
+exclude = ["archive"]
 
 [tool.ruff.lint]
 select = [

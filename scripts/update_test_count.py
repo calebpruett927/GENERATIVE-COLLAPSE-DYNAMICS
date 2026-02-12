@@ -25,10 +25,7 @@ def get_test_count() -> int:
         )
 
         # Primary: count lines matching test item format (path::class::test)
-        test_lines = [
-            line for line in result.stdout.splitlines()
-            if line.strip().startswith("tests/") and "::" in line
-        ]
+        test_lines = [line for line in result.stdout.splitlines() if line.strip().startswith("tests/") and "::" in line]
         if test_lines:
             return len(test_lines)
 

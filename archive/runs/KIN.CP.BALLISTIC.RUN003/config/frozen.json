@@ -1,0 +1,54 @@
+{
+  "casepack_id": "KIN.CP.BALLISTIC",
+  "run_id": "KIN.CP.BALLISTIC.RUN003",
+  "contract": "UMA.INTSTACK.v1",
+  "timezone": "America/Chicago",
+  "git_commit": "abc123def456",
+  "package_version": "1.0.0",
+  "pipeline": "ballistic_with_bounce",
+  "adapter": {
+    "name": "BALLISTIC.ADAPTER",
+    "dt": 0.005,
+    "g": 9.81,
+    "v0": 20.0,
+    "theta_deg": 59.99999999999999,
+    "restitution": 0.7
+  },
+  "return": {
+    "format": "csv",
+    "columns": [
+      "t",
+      "omega",
+      "F",
+      "S",
+      "C",
+      "tau_R",
+      "IC",
+      "kappa",
+      "kappa_cum"
+    ]
+  },
+  "tier1_identities": {
+    "omega_definition": "||\u03a8(t) - \u03a8(t-\u0394t)|| (trace jitter)",
+    "F_identity": "F = clip(1 - \u03c9/scale, 0, 1)",
+    "kappa_identity": "\u03ba = ln(IC + \u03b5) [instantaneous]",
+    "C_normalization": "C = C_raw / (C_raw + C_0), C_0 = median(C_raw)",
+    "tau_R_closure": "always_censored (non-recurrent by design)",
+    "IC_method": "smooth_contribution_geometric_aggregation"
+  },
+  "frozen_scales": {
+    "omega_scale": 0.0844580249951718,
+    "C_0": 642.9316085273387
+  },
+  "weights": {
+    "omega": 1.0,
+    "F": 1.0,
+    "S": 1.0,
+    "C": 1.0,
+    "tau_R": 1.0
+  },
+  "closures": [
+    "gamma.default.v1",
+    "norms.l2_eta1e-3.v1"
+  ]
+}

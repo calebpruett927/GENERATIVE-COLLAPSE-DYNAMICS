@@ -1,0 +1,43 @@
+{
+  "casepack_id": "KIN.CP.GAIT",
+  "run_id": "KIN.CP.GAIT.RUN001",
+  "created_utc": "2026-01-27T03:48:13.355317+00:00",
+  "artifacts": [
+    {
+      "path": "kernel/kernel.csv",
+      "sha256": "1156a44a6f89e92951465ed6d9e69a1cc961dbd65100789df9c9f8fa4649c01e",
+      "role": "kernel",
+      "bytes": 350359
+    },
+    {
+      "path": "derived/psi.csv",
+      "sha256": "68ac781d135df3a68c76204b9033298af45313fb254817b12a612bf3ab5519ec",
+      "role": "derived",
+      "bytes": 454833
+    },
+    {
+      "path": "tables/tauR_series.csv",
+      "sha256": "40e2e05a9d1ed00c6da7c51c00b46a55c4bf15962bd62c112ea8cc2388107523",
+      "role": "table",
+      "bytes": 53450
+    },
+    {
+      "path": "logs/oor.csv",
+      "sha256": "60800bd2e58e451fe88de28280959a685d074c7f0cb490f68a971c4e11a9bad0",
+      "role": "log",
+      "bytes": 63057
+    },
+    {
+      "path": "logs/censor.csv",
+      "sha256": "44063b7525f6d47de50f521fe45dbe45807a186f117ac9eef77df3ab039ad0a0",
+      "role": "log",
+      "bytes": 72062
+    },
+    {
+      "path": "config/frozen.json",
+      "sha256": "70fa143fa6c456bd518117afb7b6080f1988cede0a28f6c5e191a23e33f4fa50",
+      "role": "config",
+      "bytes": 591
+    }
+  ]
+}
