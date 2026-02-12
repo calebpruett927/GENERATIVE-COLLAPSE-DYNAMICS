@@ -129,7 +129,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Version Consistency**: Finalized repository version numbering to v1.5.0 across all files.
 
 - Updated pyproject.toml to version 1.5.0
-- Updated __version__ in src/umcp/__init__.py to 1.5.0
+- Updated `__version__` in src/umcp/\_\_init\_\_.py to 1.5.0
 - Synchronized all documentation references to v1.5.0
 - Updated integrity/code_version.txt to v1.5.0
 
@@ -198,7 +198,7 @@ This release consolidates all version references throughout the repository to v1
 ### Changed
 
 - closures/registry.yaml: Added optimizations section under extensions
-- src/umcp/__init__.py: Exported optimization modules
+- src/umcp/\_\_init\_\_.py: Exported optimization modules
 - validator.py: Integrated clip_coordinates and validate_kernel_bounds
 - cli.py: Added kernel validation in regime classification
 
@@ -359,6 +359,7 @@ This release consolidates all version references throughout the repository to v1
 #### Cache Statistics
 
 **Validation Output Includes**:
+
 ```json
 "cache_stats": {
   "schema_validators_cached": 8,
@@ -676,6 +677,7 @@ None - fully backward compatible with GCD.INTSTACK.v1.
 ## [0.1.0] - 2026-01-18
 
 ### Added
+
 - Initial production release of UMCP validator
 - Complete CLI interface with `validate`, `run`, and `diff` commands
 - Comprehensive schema validation for all UMCP artifacts:
@@ -701,6 +703,7 @@ None - fully backward compatible with GCD.INTSTACK.v1.
 - Production-quality code with type hints and comprehensive error handling
 
 ### Features
+
 - **Validator CLI**: Production-grade command-line interface
   - Schema and structural validation
   - Semantic rule enforcement
@@ -716,6 +719,7 @@ None - fully backward compatible with GCD.INTSTACK.v1.
 - **Extensible Architecture**: YAML-based rule configuration for easy customization
 
 ### Dependencies
+
 - Python >= 3.11
 - pyyaml >= 6.0.1
 - jsonschema >= 4.23.0
@@ -723,11 +727,13 @@ None - fully backward compatible with GCD.INTSTACK.v1.
 - ruff >= 0.5.0 (dev)
 
 ### Known Limitations
+
 - CasePack generation from raw measurements not yet implemented
 - Numerical engine for Ψ(t) trace generation is future work
 - Seam receipt validation implemented but requires contract continuity claims
 
 ### Notes
+
 - This release focuses on validation and metadata conformance
 - Runnable numerical computation will be added in future releases
 - All 47 tests passing with 100% validation conformance
