@@ -42,47 +42,27 @@
 		"vscode": {
 			// ── Extensions ──────────────────────────────────────
 			"extensions": [
-				// Python core
 				"ms-python.python",
 				"ms-python.vscode-pylance",
 				"ms-python.debugpy",
-
-				// Linting & formatting (matches CI: ruff)
 				"charliermarsh.ruff",
-
-				// Type checking (matches CI: mypy)
 				"ms-python.mypy-type-checker",
-
-				// Testing (matches CI: pytest)
 				"ms-python.pytest-adapter",
 				"littlefoxteam.vscode-python-test-adapter",
-
-				// YAML (contracts, closures, canon anchors, registry)
 				"redhat.vscode-yaml",
-
-				// JSON Schema (schemas/, casepacks/*/manifest.json)
 				"zainchen.json",
-
-				// LaTeX (paper/ — RevTeX4-2)
 				"james-yu.latex-workshop",
-
-				// Markdown (README, AXIOM, specs, protocols)
 				"yzhang.markdown-all-in-one",
 				"davidanson.vscode-markdownlint",
-
-				// CSV (weights.csv, ledger/return_log.csv)
 				"mechatroner.rainbow-csv",
-
-				// Git
 				"eamodio.gitlens",
 				"mhutchie.git-graph",
-
-				// General productivity
 				"editorconfig.editorconfig",
 				"streetsidesoftware.code-spell-checker",
 				"gruntfuggly.todo-tree",
 				"github.copilot",
-				"github.copilot-chat"
+				"github.copilot-chat",
+				"GitHub.copilot"
 			],
 
 			// ── VS Code Settings ────────────────────────────────

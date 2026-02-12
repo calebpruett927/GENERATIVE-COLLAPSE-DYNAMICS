@@ -74,7 +74,7 @@ closures/
 | `symmetry_breaking.py` | Higgs mechanism, VEV=246.22 GeV, Yukawa | EWSB mass generation |
 | `ckm_mixing.py` | CKM matrix, Wolfenstein parametrization, J_CP | λ=0.2257, A=0.814, ρ=0.135, η=0.349 |
 | `subatomic_kernel.py` | 31 particles → 8-channel trace → kernel | 17 fundamental + 14 composite |
-| `particle_physics_formalism.py` | 10 proven theorems (74/74 tests) | Duality exact to 0.0e+00 |
+| `particle_physics_formalism.py` | 10 proven theorems (74/2476 tests) | Duality exact to 0.0e+00 |
 
 **Atomic Physics closures** (`closures/atomic_physics/`):
 
@@ -159,7 +159,7 @@ All papers use RevTeX4-2 (`revtex4-2` document class) and share `Bibliography.bi
 
 ```bash
 pip install -e ".[all]"                     # Dev install (core + api + viz + dev tools)
-pytest                                       # 2416 tests (growing), ~70s
+pytest                                       # 2,476 tests (growing), ~70s
 python scripts/update_integrity.py          # MUST run after changing any tracked file
 umcp validate .                             # Validate entire repo
 umcp validate casepacks/hello_world --strict # Validate casepack (strict = fail on warnings)
@@ -220,7 +220,7 @@ umcp validate <target>
 
 ## Test Patterns
 
-**2416 tests files** in `tests/`, numbered by tier and domain (`test_00_*` through `test_140_*`). Single `tests/conftest.py` provides:
+**2,476 test cases** in `tests/`, numbered by tier and domain (`test_00_*` through `test_140_*`). Single `tests/conftest.py` provides:
 - Frozen `RepoPaths` dataclass (session-scoped) with all critical paths
 - `@lru_cache` helpers: `_read_file()`, `_parse_json()`, `_parse_yaml()`, `_compile_schema()`
 - Convention: `test_<subject>_<behavior>()` for functions; `TestCLI*` classes with `subprocess.run` for CLI integration
@@ -244,7 +244,7 @@ Extensions use `typing.Protocol` (`ExtensionProtocol` requiring `name`, `version
 | Fleet architecture | `src/umcp/fleet/` (Scheduler, Worker, Queue, Cache, Tenant) |
 | Dashboard pages | `src/umcp/dashboard/` (31 modular pages) |
 | Subatomic particles | `closures/standard_model/subatomic_kernel.py` (31 particles, 8-channel trace) |
-| SM 10 theorems | `closures/standard_model/particle_physics_formalism.py` (74/74 tests) |
+| SM 10 theorems | `closures/standard_model/particle_physics_formalism.py` (74/2476 tests) |
 | CKM mixing | `closures/standard_model/ckm_mixing.py` (Wolfenstein, Jarlskog) |
 | Running couplings | `closures/standard_model/coupling_constants.py` (α_s, α_em RGE) |
 | EWSB / Higgs | `closures/standard_model/symmetry_breaking.py` (VEV, Yukawa) |

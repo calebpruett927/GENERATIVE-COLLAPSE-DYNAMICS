@@ -45,7 +45,11 @@ def count_test_files() -> int:
 
 
 def update_file(filepath: Path, test_count: int, test_files: int) -> bool:
-    """Update test count in a documentation file."""
+    """Update test count in a documentation file.
+
+    Uses targeted patterns to avoid corrupting comma-formatted numbers
+    or unrelated numeric references (e.g., "74/2476 tests", "10,162 tests").
+    """
     if not filepath.exists():
         print(f"Warning: {filepath} not found", file=sys.stderr)
         return False
@@ -53,20 +57,94 @@ def update_file(filepath: Path, test_count: int, test_files: int) -> bool:
     content = filepath.read_text(encoding="utf-8")
     original = content
 
-    # Update badge (README.md)
+    # Badge URL: tests-NNNN%20passing
     content = re.sub(r"tests-\d+%2B?%20passing", f"tests-{test_count}%20passing", content)
+    # Badge alt text: Tests: NNNN passing
     content = re.sub(r"Tests: \d+\+? passing", f"Tests: {test_count} passing", content)
 
-    # Update table entries (both README and copilot instructions)
-    # Format: | **Tests** | 1900+ passing (80 files) |
+    # Table: | **Tests** | NNNN passing (NN files) |
     content = re.sub(
-        r"\| \*\*Tests\*\* \| \d+\+? passing \(\d+ files\) \|",
-        f"| **Tests** | {test_count} passing ({test_files} files) |",
+        r"\| \*\*Tests\*\* \| [\d,]+\+? passing \(\d+\+? files\) \|",
+        f"| **Tests** | {test_count:,} passing ({test_files} files) |",
         content,
     )
 
-    # Update references in text like "1900+ tests"
-    content = re.sub(r"\b\d+\+? tests?\b", f"{test_count} tests", content)
+    # "Run NNNN tests" or "Run all NNNN tests" (with possible comma formatting)
+    content = re.sub(
+        r"(Run(?:\s+all)?\s+)[\d,]+(\s+tests?\b)",
+        rf"\g<1>{test_count:,}\2",
+        content,
+    )
+
+    # "# All NNNN tests" (comment headers)
+    content = re.sub(
+        r"(#\s+All\s+)[\d,]+(\s+tests?\b)",
+        rf"\g<1>{test_count:,}\2",
+        content,
+    )
+
+    # "All NNNN pass" (quality table)
+    content = re.sub(
+        r"(All\s+)[\d,]+(\s+pass\b)",
+        rf"\g<1>{test_count:,}\2",
+        content,
+    )
+
+    # "Test Distribution (NN files, NNNN tests)"
+    content = re.sub(
+        r"(Test Distribution\s*\()[\d,]+ files,\s*[\d,]+ tests(\))",
+        rf"\g<1>{test_files} files, {test_count:,} tests\2",
+        content,
+    )
+
+    # "Test suite (NN files, NNNN tests)" in tree/structure diagrams
+    content = re.sub(
+        r"(Test suite\s*\()[\d,]+ files,\s*[\d,]+ tests(\))",
+        rf"\g<1>{test_files} files, {test_count:,} tests\2",
+        content,
+    )
+
+    # "tests/ for NNNN examples" (QUICKSTART)
+    content = re.sub(
+        r"(tests/['\"` ]+for\s+)[\d,]+(\s+examples?\b)",
+        rf"\g<1>{test_count:,}\2",
+        content,
+    )
+
+    # Footer: "NNNN tests •" (with bullet)
+    content = re.sub(
+        r"[\d,]+ tests(\s*&bull;|\s*•)",
+        f"{test_count:,} tests\\1",
+        content,
+    )
+
+    # "Should show NNNN tests" (CONTRIBUTING)
+    content = re.sub(
+        r"(Should show\s+)[\d,]+(\s+tests?\b)",
+        rf"\g<1>{test_count:,}\2",
+        content,
+    )
+
+    # "Suite (NNNN+ tests)" or "suite (NNNN tests)"
+    content = re.sub(
+        r"(suite\s*\()[\d,]+\+?(\s+tests?\))",
+        rf"\g<1>{test_count:,}\2",
+        content,
+    )
+
+    # "update test count to NNNN" (example commit messages)
+    content = re.sub(
+        r"(update test count to\s+)[\d,]+",
+        rf"\g<1>{test_count:,}",
+        content,
+    )
+
+    # "tests/ for NNNN examples" (looser match for QUICKSTART)
+    content = re.sub(
+        r"(tests/[`'\"]?\s+for\s+)[\d,]+(\s+examples?\b)",
+        rf"\g<1>{test_count:,}\2",
+        content,
+    )
 
     if content != original:
         filepath.write_text(content, encoding="utf-8")
@@ -96,6 +174,9 @@ def main() -> int:
     files_to_update = [
         repo_root / "README.md",
         repo_root / ".github" / "copilot-instructions.md",
+        repo_root / "CONTRIBUTING.md",
+        repo_root / "COMMIT_PROTOCOL.md",
+        repo_root / "QUICKSTART_TUTORIAL.md",
     ]
 
     updated = False

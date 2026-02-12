@@ -12,7 +12,7 @@
   <a href="https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/actions/workflows/validate.yml"><img src="https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/actions/workflows/validate.yml/badge.svg" alt="CI"></a>
   <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.11+-3776AB?logo=python&logoColor=white" alt="Python 3.11+"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License: MIT"></a>
-  <a href="tests/"><img src="https://img.shields.io/badge/tests-2416%20passing-brightgreen?logo=pytest" alt="Tests: 2416 passing"></a>
+  <a href="tests/"><img src="https://img.shields.io/badge/tests-2476%20passing-brightgreen?logo=pytest" alt="Tests: 2476 passing"></a>
   <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-2.0.0-blue" alt="Version: 2.0.0"></a>
   <a href="src/umcp/api_umcp.py"><img src="https://img.shields.io/badge/API-57%20endpoints-orange?logo=fastapi" alt="API: 57 endpoints"></a>
 </p>
@@ -81,7 +81,7 @@ pip install -e ".[all]"
 # Verify
 umcp health                  # System health check
 umcp validate .              # Validate entire repository (must be CONFORMANT)
-pytest                       # Run 1,2416 tests
+pytest                       # Run 2,476 tests
 ```
 
 One-liner:
@@ -129,7 +129,7 @@ Every validation produces one of three outcomes -- never a boolean:
 
 | Metric | Value |
 |--------|-------|
-| **Tests** | 2,416 passing (80+ files) |
+| **Tests** | 2,476 passing (80 files) |
 | **API Endpoints** | 57 (25 GET, 32 POST) |
 | **Dashboard Pages** | 31 (refactored into modular package) |
 | **CLI Commands** | 11 subcommands, 6 entry points |
@@ -139,7 +139,7 @@ Every validation produces one of three outcomes -- never a boolean:
 | **Schemas** | 12 JSON Schema Draft 2020-12 |
 | **Domains** | 12 (GCD, KIN, RCFT, WEYL, Security, Astronomy, Nuclear, QM, Finance, Atomic, Materials, **Standard Model**) |
 | **Lemmas** | 46 formal proofs |
-| **SM Theorems** | 10 proven (74/2416 tests, duality exact) |
+| **SM Theorems** | 10 proven (74/2476 tests, duality exact) |
 | **Atomic Elements** | 118 (all pass Tier-1, 10,162 identity tests) |
 | **Subatomic Particles** | 31 (17 fundamental + 14 composite, all pass Tier-1) |
 | **Canonical Anchors** | 11 domain anchor files |
@@ -356,7 +356,7 @@ Runs all checks that CI will run: lint, type-check, test, validate.
 ### `umcp test` -- Run Tests
 
 ```bash
-umcp test                     # Run all 1,2416 tests
+umcp test                     # Run all 2,476 tests
 umcp test --coverage          # With coverage report
 umcp test -k "gcd"            # Pattern matching
 umcp test -m "not slow"       # Skip slow markers
@@ -1123,7 +1123,7 @@ expected_outputs:
 ### Run Tests
 
 ```bash
-# All 1,2416 tests
+# All 2,476 tests
 pytest
 
 # Verbose
@@ -1149,7 +1149,7 @@ umcp test
 umcp test --coverage
 ```
 
-### Test Distribution (71 files, 1,2416 tests)
+### Test Distribution (80 files, 2,476 tests)
 
 | Category | Tests | Description |
 |----------|------:|-------------|
@@ -1364,7 +1364,7 @@ UMCP-Metadata-Runnable-Code/
 |   |-- dashboard.py              # Streamlit dashboard (31 pages)
 |   '-- umcp_extensions.py        # Extension registry (5 extensions)
 |
-|-- tests/                        # Test suite (71 files, 1,2416 tests)
+|-- tests/                        # Test suite (80 files, 2,476 tests)
 |   |-- conftest.py               # Fixtures: RepoPaths, caching helpers
 |   |-- test_00_* .. test_145_*   # Numbered test groups
 |   '-- closures/                 # Closure-specific tests
@@ -1443,7 +1443,7 @@ git push origin feat/your-feature
 
 | Check | Command | Requirement |
 |-------|---------|-------------|
-| Tests | `pytest` | All 1,817 pass |
+| Tests | `pytest` | All 2,476 pass |
 | Lint | `ruff check src/umcp tests` | Zero errors |
 | Format | `ruff format src/umcp tests` | Formatted |
 | Types | `mypy src/umcp` | Clean |
@@ -1462,7 +1462,7 @@ Copyright (c) 2026 Clement Paulus
 
 <div align="center">
 
-**UMCP v2.0.0** &bull; 1,2416 tests &bull; 57 API endpoints &bull; 31 dashboard pages &bull; 11 CLI commands &bull; 13 casepacks &bull; 9 domains &bull; 46 lemmas &bull; CONFORMANT
+**UMCP v2.0.0** &bull; 2,476 tests &bull; 57 API endpoints &bull; 31 dashboard pages &bull; 11 CLI commands &bull; 13 casepacks &bull; 9 domains &bull; 46 lemmas &bull; CONFORMANT
 
 *"What Returns Through Collapse Is Real"*
 

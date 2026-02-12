@@ -76,12 +76,12 @@ pre-commit install
 
 # 7. Verify installation
 umcp health
-pytest --co -q  # Should show 932 tests
+pytest --co -q  # Should show 2,476 tests
 ```
 
 ---
 
-## 🛠️ Development Environment
+## 🛠 Development Environment
 
 ### Project Structure Overview
 
@@ -93,7 +93,7 @@ GENERATIVE-COLLAPSE-DYNAMICS/
 │   ├── cli.py             # Command-line interface
 │   ├── api_umcp.py        # REST API
 │   └── dashboard.py       # Streamlit dashboard
-├── tests/                 # Test suite (932 tests)
+├── tests/                 # Test suite (2,476 tests)
 ├── casepacks/             # Reproducible examples
 ├── closures/              # Computational functions
 ├── contracts/             # Mathematical contracts
@@ -113,6 +113,7 @@ Install these extensions:
 - **Ruff** (charliermarsh.ruff)
 
 Create `.vscode/settings.json`:
+
 ```json
 {
     "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
@@ -162,7 +163,7 @@ Create `.vscode/settings.json`:
 | 🔬 Closures | New computational functions | Implement new metric |
 | 📐 Frameworks | New framework tier | Add domain-specific layer |
 | 🧮 Lemmas | Mathematical proofs | Derive new theorem |
-| 🏗️ Architecture | Core system changes | Modify validation engine |
+| 🏗 Architecture | Core system changes | Modify validation engine |
 
 ---
 
@@ -213,12 +214,13 @@ We use [Conventional Commits](https://www.conventionalcommits.org/):
 | `ci` | CI/CD changes |
 
 Examples:
+
 ```bash
 feat(api): add ledger analysis endpoint
 
 fix(validator): correct seam tolerance check for edge case
 
-docs(readme): update test count to 932
+docs(readme): update test count to 2,476
 
 test(closures): add coverage for kinematic stability
 ```
@@ -269,26 +271,26 @@ def compute_kernel(
     epsilon: float = 1e-8,
 ) -> KernelResult:
     """Compute kernel invariants from coordinates.
-    
+
     Args:
         coordinates: Coherence values in [0, 1].
         weights: Weights summing to 1.
         tau_R: Return time.
         epsilon: Guard band for numerical stability.
-        
+
     Returns:
         KernelResult with omega, F, S, C, kappa, IC.
-        
+
     Raises:
         ValueError: If coordinates are out of range.
     """
     if not np.all((0 <= coordinates) & (coordinates <= 1)):
         raise ValueError("Coordinates must be in [0, 1]")
-    
+
     # Compute fidelity
     F = np.dot(weights, coordinates)
     omega = 1 - F
-    
+
     return KernelResult(omega=omega, F=F, ...)
 
 
@@ -376,49 +378,49 @@ from umcp.frozen_contract import compute_kernel, classify_regime
 
 class TestComputeKernel:
     """Tests for compute_kernel function."""
-    
+
     def test_basic_computation(self) -> None:
         """Verify basic kernel computation."""
         c = np.array([0.9, 0.85, 0.92])
         w = np.array([0.5, 0.3, 0.2])
-        
+
         result = compute_kernel(c, w, tau_R=5.0)
-        
+
         assert 0 <= result.omega <= 1
         assert 0 <= result.F <= 1
         assert result.omega == pytest.approx(1 - result.F)
-    
+
     def test_boundary_coordinates(self) -> None:
         """Test with boundary values."""
         c = np.array([0.0, 0.5, 1.0])
         w = np.array([0.33, 0.34, 0.33])
-        
+
         result = compute_kernel(c, w)
-        
+
         assert result.F == pytest.approx(0.5, rel=0.01)
-    
+
     def test_invalid_coordinates_raises(self) -> None:
         """Verify error on invalid input."""
         c = np.array([1.5, 0.5, 0.5])  # Out of range
         w = np.array([0.33, 0.34, 0.33])
-        
+
         with pytest.raises(ValueError, match="Coordinates must be in"):
             compute_kernel(c, w)
-    
+
     @pytest.mark.parametrize("coords,expected_regime", [
         (np.array([0.99, 0.98, 0.97]), "STABLE"),
         (np.array([0.80, 0.75, 0.70]), "WATCH"),
         (np.array([0.50, 0.40, 0.30]), "COLLAPSE"),
     ])
     def test_regime_classification(
-        self, 
-        coords: np.ndarray, 
+        self,
+        coords: np.ndarray,
         expected_regime: str,
     ) -> None:
         """Test regime classification for various inputs."""
         w = np.array([0.33, 0.34, 0.33])
         result = compute_kernel(coords, w)
-        
+
         regime = classify_regime(
             omega=result.omega,
             F=result.F,
@@ -426,7 +428,7 @@ class TestComputeKernel:
             C=result.C,
             integrity=result.IC,
         )
-        
+
         assert regime.name == expected_regime
 ```
 
@@ -490,39 +492,39 @@ def validate_casepack(
     timeout: float | None = None,
 ) -> ValidationResult:
     """Validate a CasePack against UMCP contracts.
-    
+
     Performs comprehensive validation including schema checks,
     closure verification, and seam testing.
-    
+
     Args:
         path: Path to the casepack directory.
         strict: If True, treat warnings as errors.
         timeout: Maximum validation time in seconds.
             None means no timeout.
-    
+
     Returns:
         ValidationResult containing:
             - status: CONFORMANT or NONCONFORMANT
             - errors: List of error messages
             - warnings: List of warning messages
             - metrics: Computed kernel invariants
-    
+
     Raises:
         FileNotFoundError: If casepack path doesn't exist.
         ValidationError: If manifest is malformed.
         TimeoutError: If validation exceeds timeout.
-    
+
     Example:
         >>> result = validate_casepack("casepacks/hello_world")
         >>> print(result.status)
         CONFORMANT
         >>> print(result.metrics.omega)
         0.0
-    
+
     Note:
         CasePacks must contain a valid manifest.yaml file
         at the root level.
-    
+
     See Also:
         - `validate_repository`: Validate entire repo
         - `ValidationResult`: Result dataclass
@@ -659,17 +661,17 @@ def my_closure(
     params: dict[str, Any],
 ) -> dict[str, float]:
     """Compute custom metric from data.
-    
+
     Args:
         data: Input array of measurements.
         params: Configuration parameters.
-        
+
     Returns:
         Dictionary with computed values.
     """
     # Implementation
     result = np.mean(data) * params.get("scale", 1.0)
-    
+
     return {
         "metric": float(result),
         "count": len(data),
@@ -715,22 +717,22 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      
+
       - name: Install dependencies
         run: pip install -e ".[dev]"
-      
+
       - name: Ruff format check
         run: ruff format --check .
-      
+
       - name: Ruff lint
         run: ruff check .
-      
+
       - name: Type check
         run: mypy src/umcp
-      
+
       - name: Run tests
         run: pytest --cov=umcp --cov-fail-under=80
-      
+
       - name: UMCP validation
         run: umcp validate .
 ```
@@ -747,7 +749,7 @@ jobs:
 
 ---
 
-## 🏗️ Architecture Guide
+## 🏗 Architecture Guide
 
 ### Core Components
 
@@ -833,7 +835,7 @@ Open an issue on [GitHub Issues](https://github.com/calebpruett927/GENERATIVE-CO
 
 ---
 
-## 🙏 Thank You!
+## 🙏 Thank You
 
 Your contributions make UMCP better for everyone. Every improvement, no matter how small, helps advance reproducible science.
 

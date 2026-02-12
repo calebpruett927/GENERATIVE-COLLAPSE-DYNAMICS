@@ -274,7 +274,7 @@ def step_manifold_bounds(ctx: RepoContext) -> StepResult:
     """Step 0: Manifold Bound Surface — fast identity gate (~3 s).
 
     Runs test_000_manifold_bounds.py (Layer 0-2) before the full suite.
-    If the algebraic bound surface fails, there is no point running 1900+
+    If the algebraic bound surface fails, there is no point running 2,476+
     tests that depend on the same kernel identities.
     """
     t0 = time.monotonic()
@@ -510,7 +510,7 @@ def step_update_integrity(ctx: RepoContext) -> StepResult:
 #
 # CI still runs the full suite; pre-commit only needs the fast gate.
 
-_MIN_EXPECTED_TESTS = 1000  # floor — repo has ~1900+ and growing
+_MIN_EXPECTED_TESTS = 1000  # floor — repo has ~2,476+ and growing
 _MAX_EXPECTED_TESTS = 5000  # ceiling — sanity upper bound
 
 

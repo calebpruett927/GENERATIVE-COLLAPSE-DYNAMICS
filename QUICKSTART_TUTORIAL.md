@@ -1,6 +1,6 @@
 # UMCP Quick Tutorial: From Zero to First Validation
 
-**Estimated time**: 10 minutes  
+**Estimated time**: 10 minutes
 **Prerequisites**: Python 3.11+, pip installed
 
 This tutorial walks you through your first UMCP validation from installation to running a custom casepack.
@@ -23,6 +23,7 @@ pip install -e ".[all]"
 ```
 
 **Verify installation**:
+
 ```bash
 umcp health
 # Should show: Status: HEALTHY
@@ -109,6 +110,7 @@ print(f"  Integrity (IC): {kernel.IC:.4f}")
 ```
 
 Run it:
+
 ```bash
 python my_first_validation.py
 ```
@@ -129,6 +131,7 @@ umcp-api
 Open browser to `http://localhost:8000/docs` to see interactive API documentation.
 
 **Try it**:
+
 ```bash
 curl http://localhost:8000/health
 curl http://localhost:8000/casepacks
@@ -167,6 +170,7 @@ my_casepack/
 ```
 
 **manifest.json** (minimal):
+
 ```json
 {
   "schema": "schemas/manifest.schema.json",
@@ -195,6 +199,7 @@ my_casepack/
 ```
 
 **raw_measurements.csv** (example):
+
 ```csv
 t,c_1,c_2,c_3,w_1,w_2,w_3
 0,0.95,0.90,0.92,0.5,0.3,0.2
@@ -203,6 +208,7 @@ t,c_1,c_2,c_3,w_1,w_2,w_3
 ```
 
 **Validate your casepack**:
+
 ```bash
 umcp validate my_casepack/
 ```
@@ -225,19 +231,19 @@ umcp validate my_casepack/
 
 ## Troubleshooting
 
-**Q: `umcp: command not found`**  
+**Q: `umcp: command not found`**
 A: Activate your virtual environment: `source .venv/bin/activate`
 
-**Q: `umcp-ext: command not found`**  
+**Q: `umcp-ext: command not found`**
 A: Reinstall in editable mode: `pip install -e .`
 
-**Q: API returns 401 Unauthorized**  
+**Q: API returns 401 Unauthorized**
 A: Set `export UMCP_DEV_MODE=1` for local testing (no auth required)
 
-**Q: Tests fail**  
+**Q: Tests fail**
 A: Check Python version (≥3.11 required): `python --version`
 
-**Q: Where are the docs?**  
+**Q: Where are the docs?**
 A: Key docs:
 - [README.md](README.md) - Overview and quick start
 - [KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md) - Formal math
@@ -248,12 +254,12 @@ A: Key docs:
 
 ## What You've Learned
 
-✓ Installed UMCP and verified system health  
-✓ Ran your first validation  
-✓ Explored casepacks and outputs  
-✓ Used the Python API  
-✓ (Optional) Started API server and dashboard  
-✓ Created a minimal casepack structure  
+✓ Installed UMCP and verified system health
+✓ Ran your first validation
+✓ Explored casepacks and outputs
+✓ Used the Python API
+✓ (Optional) Started API server and dashboard
+✓ Created a minimal casepack structure
 
 **Next**: Dive into [KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md) to understand the mathematical foundations, or explore [casepacks/gcd_complete/](casepacks/gcd_complete/) for a comprehensive example.
 
@@ -263,7 +269,7 @@ A: Key docs:
 
 - **GitHub Issues**: [Report bugs or request features](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/issues)
 - **Documentation**: Browse the 164 `.md` files in the repository
-- **Tests**: See `tests/` for 777 examples of API usage
+- **Tests**: See `tests/` for 2,476 examples of API usage
 - **Examples**: All casepacks in `casepacks/` are fully documented
 
 **Happy validating! 🎯**

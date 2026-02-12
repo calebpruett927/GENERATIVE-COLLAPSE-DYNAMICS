@@ -29,7 +29,7 @@ import math
 import random
 import textwrap
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import StrEnum
 from pathlib import Path
 from typing import Any
 
@@ -53,7 +53,7 @@ _CANON_MATL = _REPO_ROOT / "canon" / "matl_anchors.yaml"
 # ---------------------------------------------------------------------------
 
 
-class InsightSeverity(str, Enum):
+class InsightSeverity(StrEnum):
     """How significant the pattern is."""
 
     FUNDAMENTAL = "Fundamental"  # Core physics principle revealed
@@ -62,7 +62,7 @@ class InsightSeverity(str, Enum):
     CURIOUS = "Curious"  # Interesting but not yet actionable
 
 
-class PatternType(str, Enum):
+class PatternType(StrEnum):
     """Category of discovered pattern."""
 
     PERIODIC_TREND = "PeriodicTrend"

@@ -881,4 +881,23 @@ if __name__ == "__main__":
     print("    4. N/Z stability band has a kernel signature — nuclear stability ↔ F")
     print("    5. Generation structure (SM) ↔ Period structure (atoms): same pattern")
     print("    6. The fermion/boson split at subatomic scale echoes in block structure")
+
+    # ─── Recursive Instantiation bridge ───
+    print(f"\n{'━' * 80}")
+    print("  RECURSIVE INSTANTIATION OVERLAY")
+    print(f"{'━' * 80}")
+    try:
+        from closures.atomic_physics.recursive_instantiation import (
+            compute_recursive_analysis,
+            display_census,
+            display_summary,
+            run_all_theorems,
+        )
+
+        analysis = compute_recursive_analysis(results)
+        theorem_results = run_all_theorems(analysis)
+        display_summary(theorem_results)
+        display_census(analysis)
+    except ImportError:
+        print("  (recursive_instantiation not available)")
     print()

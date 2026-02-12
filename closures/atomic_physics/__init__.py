@@ -2,12 +2,14 @@
 
 Provides closures for atomic structure, ionization energies, spectral lines,
 electron configuration, fine structure, periodic-table kernel analysis,
-cross-scale nuclear-informed analysis, and exhaustive Tier-1 proof.
+cross-scale nuclear-informed analysis, exhaustive Tier-1 proof, and
+recursive instantiation theory.
 
 Key modules:
-  - periodic_kernel      — 118-element periodic table through GCD kernel
-  - cross_scale_kernel   — 12-channel nuclear-informed atomic analysis
-  - tier1_proof          — 10,162 tests proving F+ω=1, IC≤F, IC=exp(κ)
+  - periodic_kernel            — 118-element periodic table through GCD kernel
+  - cross_scale_kernel         — 12-channel nuclear-informed atomic analysis
+  - tier1_proof                — 10,162 tests proving F+ω=1, IC≤F, IC=exp(κ)
+  - recursive_instantiation    — 6 theorems (T11–T16): elements as collapse returns
 
 Cross-references:
   Contract:  contracts/ATOM.INTSTACK.v1.yaml

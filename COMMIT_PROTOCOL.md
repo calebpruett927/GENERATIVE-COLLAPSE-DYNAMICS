@@ -20,13 +20,15 @@ Exit code 0 = safe to commit. Exit code 1 = failures remain.
 
 | Step | What it does | Blocking? | Auto-fixable? |
 |------|-------------|-----------|---------------|
-| 1. `ruff format` | Format all Python files | Yes | Yes |
-| 2. `ruff check --fix` | Lint + auto-fix | Yes | Partially |
-| 3. `mypy src/umcp` | Type-check core library | No* | No |
-| 4. `git add -A` | Stage all changes | Yes | N/A |
-| 5. `update_integrity.py` | Regenerate SHA256 checksums | Yes | Yes |
-| 6. `pytest` | Full test suite (1060+ tests) | Yes | No |
-| 7. `umcp validate .` | CONFORMANT required | Yes | No |
+| 1. Manifold bounds | Layer 0+1 identity probe (~4 s) | Yes | No |
+| 2. `ruff format` | Format all Python files | Yes | Yes |
+| 3. `ruff check --fix` | Lint + auto-fix | Yes | Partially |
+| 4. `mypy src/umcp` | Type-check core library | No* | No |
+| 5. `git add -A` | Stage all changes | Yes | N/A |
+| 6. Update test count | Sync docs to actual pytest count | No | Yes |
+| 7. `update_integrity.py` | Regenerate SHA256 checksums | Yes | Yes |
+| 8. Pytest bounds | Collect tests, verify count 1000–5000 | Yes | No |
+| 9. `umcp validate .` | CONFORMANT required | Yes | No |
 
 *\*mypy is non-blocking because CI runs it with `continue-on-error: true`.*
 

@@ -1,19 +1,35 @@
-"""UMCP Extensions - Production Plugin System
+"""UMCP Extensions — Default + On-Demand Plugin System
 
-This module provides the complete extension/plugin system for UMCP.
-Extensions enable optional communication and visualization features:
+Extensions are split into two tiers:
 
-Built-in Extensions:
-  1. api          - REST API server (FastAPI)
-  2. visualization- Streamlit dashboard
-  3. ledger       - Continuous ledger logging
-  4. formatter    - Contract auto-formatter
+  **Default** (loaded eagerly at startup, no optional deps):
+    1. ledger          — Append-only validation logging
+    2. formatter       — Contract auto-formatter
+    3. thermodynamics  — τ_R* thermodynamic diagnostic
+
+  **On-demand** (lazy-loaded on first use, may need optional deps):
+    4. api             — REST API server (FastAPI / uvicorn)
+    5. visualization   — Streamlit dashboard
+
+Usage::
+
+    from umcp.umcp_extensions import manager
+
+    # Default extensions are already loaded
+    manager.status()                   # Show what's loaded
+
+    # On-demand: auto-loads on first access
+    api_mod = manager.get("api")       # Lazy-loads if deps present
+
+    # Or via CLI:
+    #   umcp-ext list                  # List all (shows Default / On-demand)
+    #   umcp-ext info api              # Details for one extension
+    #   umcp-ext run visualization     # Launch dashboard
 
 Cross-references:
-  - docs/EXTENSION_INTEGRATION.md (architecture documentation)
-  - src/umcp/api_umcp.py (REST API extension)
-  - src/umcp/dashboard.py (Streamlit dashboard extension)
-  - pyproject.toml (optional dependencies)
+  - src/umcp/api_umcp.py       (REST API extension)
+  - src/umcp/dashboard/        (Streamlit dashboard extension)
+  - pyproject.toml             (optional dependencies: api, viz extras)
 """
 
 from __future__ import annotations
@@ -53,12 +69,13 @@ class Extension(Protocol):
 
 @dataclass
 class ExtensionInfo:
-    """Information about an extension."""
+    """Information about a registered extension."""
 
     name: str
     description: str
-    type: str  # 'api', 'dashboard', 'logging', 'tool', 'closure', 'validator'
+    type: str  # 'api', 'dashboard', 'logging', 'tool', 'validator'
     module: str
+    default: bool = False  # True → loaded at startup; False → lazy / on-demand
     class_name: str | None = None
     requires: list[str] = field(default_factory=list)
     command: str | None = None
@@ -73,6 +90,7 @@ class ExtensionInfo:
             "description": self.description,
             "type": self.type,
             "module": self.module,
+            "default": self.default,
             "class": self.class_name,
             "requires": self.requires,
             "command": self.command,
@@ -82,13 +100,63 @@ class ExtensionInfo:
         }
 
 
-# Built-in extension registry
+# ---------------------------------------------------------------------------
+#  Built-in extension registry
+# ---------------------------------------------------------------------------
 EXTENSIONS: dict[str, ExtensionInfo] = {
+    # ── Default extensions (eager, no optional deps) ──────────────────────
+    "ledger": ExtensionInfo(
+        name="ledger",
+        description="Continuous validation logging to ledger/return_log.csv",
+        type="logging",
+        module="umcp.validator",
+        default=True,
+        requires=[],
+        features=[
+            "Append-only ledger",
+            "Validation receipts",
+            "Audit trail",
+        ],
+    ),
+    "formatter": ExtensionInfo(
+        name="formatter",
+        description="Contract auto-formatter and validator",
+        type="tool",
+        module="umcp.validator",
+        default=True,
+        requires=["pyyaml"],
+        features=[
+            "YAML formatting",
+            "Schema validation",
+            "Contract linting",
+        ],
+    ),
+    "thermodynamics": ExtensionInfo(
+        name="thermodynamics",
+        description="τ_R* thermodynamic diagnostic — Tier-2 budget analysis with Tier-0 checks",
+        type="validator",
+        module="umcp.tau_r_star",
+        default=True,
+        class_name="ThermodynamicDiagnostic",
+        requires=[],
+        features=[
+            "τ_R* critical return delay computation",
+            "R_critical / R_min estimation",
+            "Thermodynamic phase classification (surplus/deficit/trapped/pole)",
+            "Budget dominance analysis (drift/curvature/memory)",
+            "Trapping threshold computation",
+            "Tier-1 identity verification (F=1−ω, IC≈exp(κ), IC≤F)",
+            "Batch invariant diagnostics",
+            "Prediction verification (§6 testable predictions)",
+        ],
+    ),
+    # ── On-demand extensions (lazy, optional deps) ────────────────────────
     "api": ExtensionInfo(
         name="api",
         description="REST API server for remote validation and ledger access",
         type="api",
         module="umcp.api_umcp",
+        default=False,
         class_name="app",
         requires=["fastapi", "uvicorn"],
         command="uvicorn umcp.api_umcp:app --reload --host 0.0.0.0 --port 8000",
@@ -116,6 +184,7 @@ EXTENSIONS: dict[str, ExtensionInfo] = {
         description="Interactive Streamlit dashboard for exploring UMCP data",
         type="dashboard",
         module="umcp.dashboard",
+        default=False,
         class_name="main",
         requires=["streamlit", "pandas", "plotly"],
         command="streamlit run src/umcp/dashboard.py",
@@ -129,55 +198,148 @@ EXTENSIONS: dict[str, ExtensionInfo] = {
             "Contract explorer",
         ],
     ),
-    "ledger": ExtensionInfo(
-        name="ledger",
-        description="Continuous validation logging to ledger/return_log.csv",
-        type="logging",
-        module="umcp.validator",
-        class_name=None,
-        requires=[],
-        features=[
-            "Append-only ledger",
-            "Validation receipts",
-            "Audit trail",
-        ],
-    ),
-    "formatter": ExtensionInfo(
-        name="formatter",
-        description="Contract auto-formatter and validator",
-        type="tool",
-        module="umcp.validator",
-        class_name=None,
-        requires=["pyyaml"],
-        features=[
-            "YAML formatting",
-            "Schema validation",
-            "Contract linting",
-        ],
-    ),
-    "thermodynamics": ExtensionInfo(
-        name="thermodynamics",
-        description="τ_R* thermodynamic diagnostic — Tier-2 budget analysis with Tier-0 checks",
-        type="validator",
-        module="umcp.tau_r_star",
-        class_name="ThermodynamicDiagnostic",
-        requires=[],
-        features=[
-            "τ_R* critical return delay computation",
-            "R_critical / R_min estimation",
-            "Thermodynamic phase classification (surplus/deficit/trapped/pole)",
-            "Budget dominance analysis (drift/curvature/memory)",
-            "Trapping threshold computation",
-            "Tier-1 identity verification (F=1−ω, IC≈exp(κ), IC≤F)",
-            "Batch invariant diagnostics",
-            "Prediction verification (§6 testable predictions)",
-        ],
-    ),
+}
+
+
+# Mapping from package names to import names (for packages where they differ)
+_IMPORT_NAMES: dict[str, str] = {
+    "pyyaml": "yaml",
+    "uvicorn": "uvicorn",
+    "fastapi": "fastapi",
+    "streamlit": "streamlit",
+    "pandas": "pandas",
+    "plotly": "plotly",
 }
 
 
 # ============================================================================
-# Extension Discovery Functions
+# Extension Manager — singleton orchestrator
+# ============================================================================
+
+
+class ExtensionManager:
+    """Manages default and on-demand extensions.
+
+    * Default extensions are loaded eagerly when ``startup()`` is called.
+    * On-demand extensions are lazy-loaded via ``get()`` on first access.
+    * Once loaded, modules are cached — subsequent calls return the same object.
+
+    Usage::
+
+        from umcp.umcp_extensions import manager
+
+        manager.startup()              # Called once (e.g. from __init__)
+        mod = manager.get("api")       # Lazy-loads on first call
+        manager.status()               # Print what's loaded
+    """
+
+    def __init__(self) -> None:
+        self._loaded: dict[str, Any] = {}  # name → module (or None if load failed)
+        self._started: bool = False
+
+    # ── Startup (eager defaults) ──────────────────────────────────────────
+
+    def startup(self) -> list[str]:
+        """Load all default extensions eagerly.
+
+        Returns:
+            Names of extensions successfully loaded.
+        """
+        loaded: list[str] = []
+        for name, info in EXTENSIONS.items():
+            if info.default:
+                mod = self._do_load(name)
+                if mod is not None:
+                    loaded.append(name)
+        self._started = True
+        return loaded
+
+    # ── On-demand access ──────────────────────────────────────────────────
+
+    def get(self, name: str) -> Any | None:
+        """Get an extension module, lazy-loading on first access.
+
+        Args:
+            name: Registered extension name.
+
+        Returns:
+            The extension module, or ``None`` if unavailable.
+        """
+        if name in self._loaded:
+            return self._loaded[name]  # cached (may be None if previously failed)
+        return self._do_load(name)
+
+    # ── Query helpers ─────────────────────────────────────────────────────
+
+    def is_loaded(self, name: str) -> bool:
+        """True if *name* is already loaded (not just registered)."""
+        return name in self._loaded and self._loaded[name] is not None
+
+    @property
+    def loaded_names(self) -> list[str]:
+        """Names of currently-loaded extensions."""
+        return [n for n, m in self._loaded.items() if m is not None]
+
+    @property
+    def available_names(self) -> list[str]:
+        """Names of all registered extensions (loaded or not)."""
+        return list(EXTENSIONS.keys())
+
+    @property
+    def default_names(self) -> list[str]:
+        """Names of extensions marked as default."""
+        return [n for n, info in EXTENSIONS.items() if info.default]
+
+    @property
+    def on_demand_names(self) -> list[str]:
+        """Names of extensions NOT marked as default (lazy / on-demand)."""
+        return [n for n, info in EXTENSIONS.items() if not info.default]
+
+    def status(self) -> dict[str, Any]:
+        """Return a status summary dict (also printable).
+
+        Returns:
+            Dictionary with 'default', 'on_demand', 'loaded' keys.
+        """
+        return {
+            "started": self._started,
+            "default": {n: {"loaded": self.is_loaded(n), "deps_ok": check_extension(n)} for n in self.default_names},
+            "on_demand": {
+                n: {"loaded": self.is_loaded(n), "deps_ok": check_extension(n)} for n in self.on_demand_names
+            },
+            "loaded": self.loaded_names,
+        }
+
+    # ── Internal ──────────────────────────────────────────────────────────
+
+    def _do_load(self, name: str) -> Any | None:
+        """Attempt to import and cache an extension module."""
+        if name not in EXTENSIONS:
+            return None
+        if not check_extension(name):
+            self._loaded[name] = None
+            return None
+        info = EXTENSIONS[name]
+        try:
+            mod = importlib.import_module(info.module)
+            self._loaded[name] = mod
+            return mod
+        except ImportError:
+            self._loaded[name] = None
+            return None
+
+    def reset(self) -> None:
+        """Clear all cached state (mainly for testing)."""
+        self._loaded.clear()
+        self._started = False
+
+
+# Module-level singleton
+manager = ExtensionManager()
+
+
+# ============================================================================
+# Backward-compatible module-level functions
 # ============================================================================
 
 
@@ -216,17 +378,6 @@ def get_extension_info(name: str) -> dict[str, Any]:
     }
 
 
-# Mapping from package names to import names (for packages where they differ)
-_IMPORT_NAMES: dict[str, str] = {
-    "pyyaml": "yaml",
-    "uvicorn": "uvicorn",
-    "fastapi": "fastapi",
-    "streamlit": "streamlit",
-    "pandas": "pandas",
-    "plotly": "plotly",
-}
-
-
 def check_extension(name: str) -> bool:
     """Check if an extension's dependencies are installed.
 
@@ -241,7 +392,6 @@ def check_extension(name: str) -> bool:
 
     info = EXTENSIONS[name]
     for req in info.requires:
-        # Map package name to import name if different
         import_name = _IMPORT_NAMES.get(req, req)
         try:
             importlib.import_module(import_name)
@@ -267,17 +417,16 @@ def install_extension(name: str) -> bool:
     if not info.requires:
         return True
 
-    # Map extension name to pip extras
     extras_map = {
         "api": "api",
         "visualization": "viz",
-        "ledger": "",  # No extra dependencies
-        "formatter": "",  # Included in core
+        "ledger": "",
+        "formatter": "",
     }
 
     extra = extras_map.get(name, "")
     if not extra:
-        return True  # No installation needed
+        return True
 
     try:
         result = subprocess.run(
@@ -292,7 +441,7 @@ def install_extension(name: str) -> bool:
 
 
 def load_extension(name: str) -> Any | None:
-    """Load an extension module.
+    """Load an extension module (delegates to manager for caching).
 
     Args:
         name: Extension name
@@ -300,18 +449,7 @@ def load_extension(name: str) -> Any | None:
     Returns:
         Extension module or None if failed
     """
-    if name not in EXTENSIONS:
-        return None
-
-    if not check_extension(name):
-        return None
-
-    info = EXTENSIONS[name]
-    try:
-        module = importlib.import_module(info.module)
-        return module
-    except ImportError:
-        return None
+    return manager.get(name)
 
 
 def run_extension(name: str) -> int:
@@ -352,8 +490,31 @@ def run_extension(name: str) -> int:
 
 
 # ============================================================================
-# Extension Manager CLI Entry Point
+# CLI Entry Point
 # ============================================================================
+
+
+def _print_status_table() -> None:
+    """Print a human-readable extension status table."""
+    st = manager.status()
+    print("\n" + "=" * 70)
+    print(" " * 20 + "UMCP EXTENSION STATUS")
+    print("=" * 70)
+
+    def _row(name: str, info: dict[str, Any], tier: str) -> None:
+        loaded = "LOADED" if info["loaded"] else "—"
+        deps = "deps OK" if info["deps_ok"] else "deps MISSING"
+        print(f"  {name:<20s} {tier:<12s} {loaded:<10s} {deps}")
+
+    print(f"\n  {'NAME':<20s} {'TIER':<12s} {'STATE':<10s} DEPS")
+    print("  " + "-" * 56)
+    for n, d in st["default"].items():
+        _row(n, d, "default")
+    for n, d in st["on_demand"].items():
+        _row(n, d, "on-demand")
+
+    print(f"\n  Currently loaded: {', '.join(st['loaded']) or '(none)'}")
+    print("=" * 70 + "\n")
 
 
 def main() -> int:
@@ -367,6 +528,7 @@ def main() -> int:
 Examples:
   umcp-ext list                    # List all extensions
   umcp-ext list --type dashboard   # List dashboard extensions only
+  umcp-ext status                  # Show loaded / on-demand status
   umcp-ext info api                # Show API extension details
   umcp-ext install api             # Install API dependencies
   umcp-ext run visualization       # Run visualization dashboard
@@ -376,30 +538,40 @@ Examples:
 
     subparsers = parser.add_subparsers(dest="command", help="Command to run")
 
-    # list command
+    # list
     list_parser = subparsers.add_parser("list", help="List all extensions")
     list_parser.add_argument("--type", "-t", help="Filter by extension type")
 
-    # info command
+    # status
+    subparsers.add_parser("status", help="Show loaded / on-demand status")
+
+    # info
     info_parser = subparsers.add_parser("info", help="Show extension details")
     info_parser.add_argument("name", help="Extension name")
 
-    # install command
+    # install
     install_parser = subparsers.add_parser("install", help="Install extension")
     install_parser.add_argument("name", help="Extension name")
 
-    # check command
+    # check
     check_parser = subparsers.add_parser("check", help="Check if extension is installed")
     check_parser.add_argument("name", help="Extension name")
 
-    # run command
+    # run
     run_parser = subparsers.add_parser("run", help="Run an extension")
     run_parser.add_argument("name", help="Extension name")
+
+    # Suppress unused-variable warnings for sub-parsers used only for argparse registration
+    _ = (list_parser, info_parser, install_parser, check_parser, run_parser)
 
     args = parser.parse_args()
 
     if not args.command:
         parser.print_help()
+        return 0
+
+    if args.command == "status":
+        _print_status_table()
         return 0
 
     if args.command == "list":
@@ -415,8 +587,9 @@ Examples:
         for ext in extensions:
             installed = check_extension(ext["name"])
             status = "✅ INSTALLED" if installed else "❌ NOT INSTALLED"
+            tier = "default" if ext.get("default") else "on-demand"
 
-            print(f"\n📦 {ext['name']}")
+            print(f"\n📦 {ext['name']}  ({tier})")
             print(f"   Status:      {status}")
             print(f"   Type:        {ext['type']}")
             print(f"   Description: {ext['description']}")
@@ -436,8 +609,9 @@ Examples:
             return 1
 
         installed = check_extension(args.name)
+        tier = "default" if info.get("default") else "on-demand"
         print("\n" + "=" * 70)
-        print(f"Extension: {info['name']}")
+        print(f"Extension: {info['name']}  ({tier})")
         print("=" * 70)
         print(f"\nStatus:      {'✅ INSTALLED' if installed else '❌ NOT INSTALLED'}")
         print(f"Type:        {info['type']}")
