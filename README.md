@@ -43,38 +43,38 @@
 
 ## Table of Contents
 
- - [Quick Start](#quick-start)
- - [Core Axiom](#core-axiom)
- - [Principles to Translation](#principles-to-translation)
- - [Getting the Most Out of UMCP](#getting-the-most-out-of-umcp)
- - [Translation Workflow](#translation-workflow)
- - [System Overview](#system-overview)
- - [Architecture](#architecture)
- - [Installation](#installation)
- - [CLI Reference](#cli-reference)
- - [REST API](#rest-api)
- - [Dashboard](#dashboard)
- - [Python API](#python-api)
- - [Frameworks & Domains](#frameworks--domains)
- - [Casepacks](#casepacks)
- - [Testing](#testing)
- - [Pre-Commit Protocol](#pre-commit-protocol)
- - [Extension System](#extension-system)
- - [Documentation Map](#documentation-map)
- - [Repository Structure](#repository-structure)
- - [Contributing](#contributing)
- - [License](#license)
+* [Quick Start](#quick-start)
+* [Core Axiom](#core-axiom)
+* [Principles to Translation](#principles-to-translation)
+* [Getting the Most Out of UMCP](#getting-the-most-out-of-umcp)
+* [Translation Workflow](#translation-workflow)
+* [System Overview](#system-overview)
+* [Architecture](#architecture)
+* [Installation](#installation)
+* [CLI Reference](#cli-reference)
+* [REST API](#rest-api)
+* [Dashboard](#dashboard)
+* [Python API](#python-api)
+* [Frameworks & Domains](#frameworks--domains)
+* [Casepacks](#casepacks)
+* [Testing](#testing)
+* [Pre-Commit Protocol](#pre-commit-protocol)
+* [Extension System](#extension-system)
+* [Documentation Map](#documentation-map)
+* [Repository Structure](#repository-structure)
+* [Contributing](#contributing)
+* [License](#license)
 ---
 
 ## Principles to Translation
 
 UMCP is built on the principle that **mathematical contracts and epistemic validation** are the foundation for reproducible science. The core axiom, "What Returns Through Collapse Is Real," governs every workflow:
 
-- **Collapse**: Every claim, measurement, or computation must be validated against a contract, with frozen parameters and no retroactive tuning.
-- **Return**: Only what survives the seam test (return-weld) is declared real. Continuity is earned, not assumed.
-- **Translation**: To translate principles into new domains, map the contract identities, kernel invariants, and epistemic verdicts to the domain's semantics.
-- **Epistemic Credit**: Reality is not a boolean; it is earned by closing the seam and passing all identity checks.
-- **Deep Implications**: Use the insights engine to discover patterns, regime boundaries, and cross-domain correlations, then translate these into actionable domain knowledge.
+* **Collapse**: Every claim, measurement, or computation must be validated against a contract, with frozen parameters and no retroactive tuning.
+* **Return**: Only what survives the seam test (return-weld) is declared real. Continuity is earned, not assumed.
+* **Translation**: To translate principles into new domains, map the contract identities, kernel invariants, and epistemic verdicts to the domain's semantics.
+* **Epistemic Credit**: Reality is not a boolean; it is earned by closing the seam and passing all identity checks.
+* **Deep Implications**: Use the insights engine to discover patterns, regime boundaries, and cross-domain correlations, then translate these into actionable domain knowledge.
 
 ---
 
@@ -82,14 +82,14 @@ UMCP is built on the principle that **mathematical contracts and epistemic valid
 
 UMCP is designed for both newcomers and advanced users. To maximize its value:
 
-1. **Start with the Core Axiom**: Understand that validation is contract-first, and epistemic credit is earned by return.
-2. **Explore Casepacks**: Run `umcp validate casepacks/hello_world` to see a zero-entropy baseline. Use other casepacks for domain-specific workflows.
-3. **Study Kernel Invariants**: Learn the meaning of omega, F, S, C, tau_R, kappa, IC. These are universal metrics for collapse and return.
-4. **Use the Insights Engine**: Run deep pattern discovery (`src/umcp/insights.py`) to extract lessons-learned, regime boundaries, and universality signatures. See [tests/test_insights_deep.py](tests/test_insights_deep.py) for advanced coverage.
-5. **Translate Principles**: When approaching a new domain, map the kernel identities and epistemic verdicts to the domain's language. Use canonical anchors and contracts as your reference points.
-6. **Leverage Extensions**: Use the API, dashboard, and extension system to integrate UMCP into your workflow. See [docs/EXTENSION_INTEGRATION.md](docs/EXTENSION_INTEGRATION.md).
-7. **Validate Everything**: Always run `umcp validate .` and the pre-commit protocol before pushing changes. Integrity and reproducibility are paramount.
-8. **Contribute and Expand**: Add new closures, contracts, and casepacks by following the extension and contribution guides. Every new domain expands the reach of UMCP.
+* **Start with the Core Axiom**: Understand that validation is contract-first, and epistemic credit is earned by return.
+* **Explore Casepacks**: Run `umcp validate casepacks/hello_world` to see a zero-entropy baseline. Use other casepacks for domain-specific workflows.
+* **Study Kernel Invariants**: Learn the meaning of omega, F, S, C, tau_R, kappa, IC. These are universal metrics for collapse and return.
+* **Use the Insights Engine**: Run deep pattern discovery (`src/umcp/insights.py`) to extract lessons-learned, regime boundaries, and universality signatures. See [tests/test_insights_deep.py](tests/test_insights_deep.py) for advanced coverage.
+* **Translate Principles**: When approaching a new domain, map the kernel identities and epistemic verdicts to the domain's language. Use canonical anchors and contracts as your reference points.
+* **Leverage Extensions**: Use the API, dashboard, and extension system to integrate UMCP into your workflow. See [docs/EXTENSION_INTEGRATION.md](docs/EXTENSION_INTEGRATION.md).
+* **Validate Everything**: Always run `umcp validate .` and the pre-commit protocol before pushing changes. Integrity and reproducibility are paramount.
+* **Contribute and Expand**: Add new closures, contracts, and casepacks by following the extension and contribution guides. Every new domain expands the reach of UMCP.
 
 ---
 
@@ -97,23 +97,23 @@ UMCP is designed for both newcomers and advanced users. To maximize its value:
 
 To translate UMCP principles into any domain or workflow:
 
-1. **Identify the Contract**: Choose or create a mathematical contract (YAML in `contracts/`) that defines the invariants and rules for your domain.
-2. **Design Closures**: Implement closure functions in `closures/<domain>/` that compute domain-specific metrics, always referencing kernel invariants.
-3. **Map Canonical Anchors**: Use `canon/<domain>_anchors.yaml` to define reference values and anchor points for your domain.
-4. **Validate with Casepacks**: Create a casepack (`casepacks/<your_casepack>/`) with manifest, raw data, and expected outputs. Run `umcp validate <casepack>`.
-5. **Epistemic Validation**: Use the seam test and epistemic weld to ensure your results earn credit. Only what returns through collapse is real.
-6. **Discover Deep Insights**: Use the insights engine to find periodic trends, regime boundaries, cross-correlations, and universality signatures. Translate these into domain knowledge and actionable lessons.
-7. **Document and Share**: Add your findings to the lessons-learned database, update canonical anchors, and contribute new contracts or closures.
+* **Identify the Contract**: Choose or create a mathematical contract (YAML in `contracts/`) that defines the invariants and rules for your domain.
+* **Design Closures**: Implement closure functions in `closures/<domain>/` that compute domain-specific metrics, always referencing kernel invariants.
+* **Map Canonical Anchors**: Use `canon/<domain>_anchors.yaml` to define reference values and anchor points for your domain.
+* **Validate with Casepacks**: Create a casepack (`casepacks/<your_casepack>/`) with manifest, raw data, and expected outputs. Run `umcp validate <casepack>`.
+* **Epistemic Validation**: Use the seam test and epistemic weld to ensure your results earn credit. Only what returns through collapse is real.
+* **Discover Deep Insights**: Use the insights engine to find periodic trends, regime boundaries, cross-correlations, and universality signatures. Translate these into domain knowledge and actionable lessons.
+* **Document and Share**: Add your findings to the lessons-learned database, update canonical anchors, and contribute new contracts or closures.
 
 **Key Files for Translation:**
-- [src/umcp/validator.py](src/umcp/validator.py): Identity checks, regime classification
-- [src/umcp/insights.py](src/umcp/insights.py): Pattern discovery, deep implications
-- [tests/test_insights_deep.py](tests/test_insights_deep.py): Advanced coverage and translation examples
-- [contracts/](contracts/): Mathematical contracts
-- [canon/](canon/): Domain anchors
-- [closures/](closures/): Domain-specific computation
-- [casepacks/](casepacks/): Reproducible experiments
-- [docs/EXTENSION_INTEGRATION.md](docs/EXTENSION_INTEGRATION.md): Extension and translation guide
+* [src/umcp/validator.py](src/umcp/validator.py): Identity checks, regime classification
+* [src/umcp/insights.py](src/umcp/insights.py): Pattern discovery, deep implications
+* [tests/test_insights_deep.py](tests/test_insights_deep.py): Advanced coverage and translation examples
+* [contracts/](contracts/): Mathematical contracts
+* [canon/](canon/): Domain anchors
+* [closures/](closures/): Domain-specific computation
+* [casepacks/](casepacks/): Reproducible experiments
+* [docs/EXTENSION_INTEGRATION.md](docs/EXTENSION_INTEGRATION.md): Extension and translation guide
 
 ---
 
