@@ -1012,7 +1012,7 @@ umcp validate casepacks/weyl_des_y3
 
 `particle_catalog`, `coupling_constants`, `cross_sections`, `symmetry_breaking`, `ckm_mixing`, `subatomic_kernel`, `particle_physics_formalism`
 
-The **subatomic kernel** maps 31 particles (17 fundamental + 14 composite) to 8-channel trace vectors encoding mass, spin, charge, color, weak isospin, lepton/baryon number, and generation. All 31 pass Tier-1 identities.
+The **subatomic kernel** maps 31 particles (17 fundamental + 14 composite) to 8-channel trace vectors encoding mass, spin, charge, color, weak isospin, lepton/baryon number, and generation. All 2,476 pass Tier-1 identities.
 
 The **particle physics formalism** proves 10 theorems connecting Standard Model physics to GCD kernel patterns:
 
@@ -1038,7 +1038,7 @@ python closures/standard_model/particle_physics_formalism.py
 
 `electron_config`, `fine_structure`, `ionization_energy`, `spectral_lines`, `selection_rules`, `zeeman_stark`, `periodic_kernel`, `cross_scale_kernel`, `tier1_proof`
 
-The **periodic kernel** maps all 118 elements to GCD trace vectors using 8 measurable atomic properties (Z, mass, ionization energy, electronegativity, density, melting/boiling points, atomic radius). All 118 pass Tier-1.
+The **periodic kernel** maps all 118 elements to GCD trace vectors using 8 measurable atomic properties (Z, mass, ionization energy, electronegativity, density, melting/boiling points, atomic radius). All 2,476 pass Tier-1.
 
 The **cross-scale kernel** uses 12 nuclear-informed channels (4 nuclear + 2 electronic + 6 bulk) bridging subatomic and atomic scales. Magic number proximity is the #1 IC driver (39%).
 

@@ -24,10 +24,19 @@ def get_test_count() -> int:
             timeout=30,
         )
 
-        # Look for "N tests collected" in output
-        match = re.search(r"(\d+) tests? collected", result.stdout)
-        if match:
-            return int(match.group(1))
+        # Primary: count lines matching test item format (path::class::test)
+        test_lines = [
+            line for line in result.stdout.splitlines()
+            if line.strip().startswith("tests/") and "::" in line
+        ]
+        if test_lines:
+            return len(test_lines)
+
+        # Fallback: look for "N tests collected" or "N passed"
+        for pattern in [r"(\d+) tests? collected", r"(\d+) passed"]:
+            match = re.search(pattern, result.stdout)
+            if match:
+                return int(match.group(1))
 
         print("Warning: Could not parse test count from pytest output", file=sys.stderr)
         return 0
