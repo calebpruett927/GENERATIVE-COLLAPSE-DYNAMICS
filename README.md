@@ -723,11 +723,11 @@ umcp-dashboard                 # Starts on http://localhost:8501
 ## Fleet -- Distributed Validation
 
 UMCP Fleet provides **distributed, parallel validation** at scale via:
-- **Scheduler**: Job submission, routing, and tracking
-- **Worker**: Register workers, heartbeat, execute validations
-- **Queue**: Priority queue with DLQ, retry logic, backpressure
-- **Cache**: Content-addressable artifact cache (SHA256)
-- **Tenant**: Multi-tenant isolation, quotas, namespaces
+* **Scheduler**: Job submission, routing, and tracking
+* **Worker**: Register workers, heartbeat, execute validations
+* **Queue**: Priority queue with DLQ, retry logic, backpressure
+* **Cache**: Content-addressable artifact cache (SHA256)
+* **Tenant**: Multi-tenant isolation, quotas, namespaces
 
 ### Quick Start
 
