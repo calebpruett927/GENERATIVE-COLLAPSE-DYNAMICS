@@ -352,6 +352,27 @@ registry:
         outputs: ["heisenberg_product", "heisenberg_ratio", "min_uncertainty", "regime"]
         frozen_params:
           hbar_over_2: 5.272859085e-35
+      - name: "ters_near_field"
+        path: "closures/quantum_mechanics/ters_near_field.py"
+        description: >
+          TERS near-field rederivation: 7 theorems mapping Brezina, Litman
+          & Rossi (ACS Nano 2026) conclusions to GCD/RCFT kernel invariants.
+          8-channel trace (polarizability, field gradient, screening, mode
+          projection, self-fraction, periodicity, binding sensitivity).
+          Fisher geodesic distance bridge to RCFT information geometry.
+        contract: "QM.INTSTACK.v1"
+        inputs: ["alpha_zz_norm", "field_grad_norm", "displacement_norm",
+                 "screening_factor", "mode_projection", "self_fraction",
+                 "periodicity_fidelity", "binding_sensitivity"]
+        outputs: ["F", "omega", "IC", "kappa", "regime",
+                  "delta_amgm", "fisher_distance", "theorem_verdicts"]
+        frozen_params:
+          epsilon: 1.0e-8
+          tip_height_AA: 4.0
+          E_field_VA: 0.1
+          d_PBE_TS_AA: 2.86
+          d_PBE_MBD_AA: 3.07
+        reference: "DOI:10.1021/acsnano.5c16052"
 
     nuclear_physics:
       - name: "nuclide_binding"
