@@ -12,7 +12,6 @@ history and can be restored with `git checkout <commit> -- <path>`.
 | `scripts/` | Old run generators (v1-v4), shell wrappers | Superseded by v5, tasks.json, pre_commit_protocol |
 | `runs/` | KIN.CP.*.RUN001-003 | Superseded by RUN004 (latest, frozen) |
 | `artifacts/` | Validator baselines, test landscape, regenerable outputs | Stale snapshots, no code references |
-| `derived/` | trace.csv, trace_meta.yaml | Stale single-row example |
 | `images/` | Root-level PNGs (architecture, workflow, benchmark) | Unreferenced by any doc or code |
 | `docs/` | umcp_geometric_structure.png | Unreferenced |
 | `examples/` | Dashboard screenshots (10 PNGs) | Unreferenced by any doc |
