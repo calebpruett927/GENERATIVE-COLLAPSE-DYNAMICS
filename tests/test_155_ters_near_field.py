@@ -1,8 +1,7 @@
 """Tests for closures/quantum_mechanics/ters_near_field.py.
 
-TERS Near-Field Rederivation — 7 theorems + 2 validation checks.
-Verifies the GCD/RCFT kernel rederivation of Brezina, Litman & Rossi
-(ACS Nano, 2026) conclusions.
+TERS Near-Field Rederivation — 7 theorems + 2 validation checks
++ data-driven analysis (pixel kernel maps, MC uncertainty, second-system).
 
 Test coverage:
     - All 7 core theorems (T-TERS-1 through T-TERS-7)
@@ -12,6 +11,11 @@ Test coverage:
     - Channel value bounds
     - Fisher distance ordering
     - Kernel identity preservation
+    - Data ingestion from Zenodo .npz files
+    - Pixel-level kernel maps (MgP, TCNE, MoS₂)
+    - Full Monte Carlo uncertainty (10 000 Gaussian samples)
+    - Data-driven parameterisation (replaces estimates)
+    - Second-system validation (MoS₂, TCNE full-rigour)
 """
 
 from __future__ import annotations
@@ -28,8 +32,15 @@ from closures.quantum_mechanics.ters_near_field import (
     build_ters_trace,
     compute_all_fisher_distances,
     compute_fisher_distance_gas_to_surface,
+    compute_pixel_kernel_map,
+    mgp_data_driven,
+    monte_carlo_uncertainty,
+    mos2_data_driven,
+    mos2_data_driven_analysis,
     run_all_ters_theorems,
     run_all_with_validation,
+    tcne_data_driven,
+    tcne_data_driven_analysis,
     theorem_T_TERS_1_amgm_decomposition,
     theorem_T_TERS_2_screening_sign_reversal,
     theorem_T_TERS_3_linear_regime,
@@ -280,3 +291,186 @@ class TestTheoremResult:
     def test_pass_rate_zero_tests(self) -> None:
         tr = TheoremResult("test", "stmt", 0, 0, 0, {}, "PROVEN")
         assert tr.pass_rate == 0.0
+
+
+# ─── Pixel Kernel Map Tests ───
+
+
+class TestPixelKernelMap:
+    """Data-driven pixel-level kernel maps from Zenodo data."""
+
+    def test_mgp_grid_shape(self) -> None:
+        pmap = compute_pixel_kernel_map("mgp")
+        assert pmap.grid_shape == (12, 12)
+        assert pmap.F.shape == (12, 12)
+
+    def test_tcne_grid_shape(self) -> None:
+        pmap = compute_pixel_kernel_map("tcne")
+        assert pmap.grid_shape == (10, 10)
+
+    def test_mos2_grid_shape(self) -> None:
+        pmap = compute_pixel_kernel_map("mos2")
+        assert pmap.grid_shape == (11, 11)
+
+    def test_amgm_holds_everywhere_mgp(self) -> None:
+        """IC ≤ F at every pixel (AM-GM inequality)."""
+        pmap = compute_pixel_kernel_map("mgp")
+        assert np.all(pmap.IC <= pmap.F + 1e-12)
+
+    def test_amgm_holds_everywhere_mos2(self) -> None:
+        pmap = compute_pixel_kernel_map("mos2")
+        assert np.all(pmap.IC <= pmap.F + 1e-12)
+
+    def test_amgm_holds_everywhere_tcne(self) -> None:
+        pmap = compute_pixel_kernel_map("tcne")
+        assert np.all(pmap.IC <= pmap.F + 1e-12)
+
+    def test_budget_identity_mgp(self) -> None:
+        """F + ω = 1 at every pixel."""
+        pmap = compute_pixel_kernel_map("mgp")
+        assert np.allclose(pmap.F + pmap.omega, 1.0, atol=1e-10)
+
+    def test_delta_nonnegative(self) -> None:
+        """AM-GM gap Δ ≥ 0 everywhere."""
+        pmap = compute_pixel_kernel_map("mgp")
+        assert np.all(pmap.delta >= -1e-12)
+
+    def test_channels_shape(self) -> None:
+        pmap = compute_pixel_kernel_map("mgp")
+        assert pmap.channels.shape == (12, 12, 8)
+
+    def test_channels_in_bounds(self) -> None:
+        pmap = compute_pixel_kernel_map("mgp")
+        assert float(np.min(pmap.channels)) >= EPSILON - 1e-15
+        assert float(np.max(pmap.channels)) <= 1.0 - EPSILON + 1e-15
+
+    def test_summary_keys(self) -> None:
+        pmap = compute_pixel_kernel_map("mgp")
+        s = pmap.summary()
+        assert "F_mean" in s
+        assert "regime_counts" in s
+
+    def test_invalid_system_raises(self) -> None:
+        with pytest.raises(ValueError, match="Unknown system"):
+            compute_pixel_kernel_map("nonexistent")
+
+
+# ─── Data-Driven Parameterisation Tests ───
+
+
+class TestDataDrivenTraces:
+    """Data-driven trace vectors from Zenodo .npz files."""
+
+    def test_mgp_shape(self) -> None:
+        c, w = mgp_data_driven()
+        assert c.shape == (8,)
+        assert w.shape == (8,)
+
+    def test_tcne_shape(self) -> None:
+        c, _w = tcne_data_driven()
+        assert c.shape == (8,)
+
+    def test_mos2_shape(self) -> None:
+        c, _w = mos2_data_driven()
+        assert c.shape == (8,)
+
+    def test_weights_sum_to_one(self) -> None:
+        _, w = mgp_data_driven()
+        assert abs(float(np.sum(w)) - 1.0) < 1e-12
+
+    def test_channels_in_bounds(self) -> None:
+        for fn in (mgp_data_driven, tcne_data_driven, mos2_data_driven):
+            c, _ = fn()
+            assert float(np.min(c)) >= EPSILON - 1e-15
+            assert float(np.max(c)) <= 1.0 - EPSILON + 1e-15
+
+    def test_mos2_near_uniform(self) -> None:
+        """MoS₂ pristine should have near-uniform channels."""
+        c, _ = mos2_data_driven()
+        # polarizability_zz and field_gradient should be close to 1.0
+        assert c[0] > 0.95  # α_zz / α_max ≈ 1
+
+
+# ─── Monte Carlo Uncertainty Tests ───
+
+
+class TestMonteCarlo:
+    """Full Gaussian Monte Carlo uncertainty (10 000 samples)."""
+
+    def test_mgp_no_amgm_violations(self) -> None:
+        mc = monte_carlo_uncertainty("mgp", n_samples=10_000, seed=42)
+        assert mc.amgm_violation_rate == 0.0
+
+    def test_mgp_no_budget_violations(self) -> None:
+        mc = monte_carlo_uncertainty("mgp", n_samples=10_000, seed=42)
+        assert mc.budget_identity_violation_rate == 0.0
+
+    def test_tcne_no_amgm_violations(self) -> None:
+        mc = monte_carlo_uncertainty("tcne", n_samples=10_000, seed=42)
+        assert mc.amgm_violation_rate == 0.0
+
+    def test_mos2_no_amgm_violations(self) -> None:
+        mc = monte_carlo_uncertainty("mos2", n_samples=10_000, seed=42)
+        assert mc.amgm_violation_rate == 0.0
+
+    def test_ci95_contains_mean(self) -> None:
+        mc = monte_carlo_uncertainty("mgp", n_samples=10_000, seed=42)
+        assert mc.F_ci95[0] <= mc.F_mean <= mc.F_ci95[1]
+        assert mc.IC_ci95[0] <= mc.IC_mean <= mc.IC_ci95[1]
+
+    def test_n_samples_recorded(self) -> None:
+        mc = monte_carlo_uncertainty("mgp", n_samples=5_000, seed=0)
+        assert mc.n_samples == 5_000
+
+    def test_positive_std(self) -> None:
+        mc = monte_carlo_uncertainty("mgp", n_samples=10_000, seed=42)
+        assert mc.F_std > 0
+        assert mc.IC_std > 0
+
+    def test_delta_positive(self) -> None:
+        """AM-GM gap should be positive on average."""
+        mc = monte_carlo_uncertainty("mgp", n_samples=10_000, seed=42)
+        assert mc.delta_mean > 0
+
+
+# ─── Second-System Validation Tests ───
+
+
+class TestMoS2Analysis:
+    """MoS₂ A'₁ pristine full-rigour analysis."""
+
+    def test_all_dadq_positive(self) -> None:
+        result = mos2_data_driven_analysis()
+        assert result["all_dadq_positive"] is True
+
+    def test_intensity_cv_low(self) -> None:
+        """Pristine MoS₂ has near-uniform intensity."""
+        result = mos2_data_driven_analysis()
+        assert result["intensity_cv"] < 0.01
+
+    def test_mc_no_amgm_violations(self) -> None:
+        result = mos2_data_driven_analysis()
+        assert result["mc_amgm_violation_rate"] == 0.0
+
+
+class TestTCNEAnalysis:
+    """TCNE B₁ isolated full-rigour analysis."""
+
+    def test_mixed_sign_dadq(self) -> None:
+        result = tcne_data_driven_analysis()
+        assert result["n_positive_dadq"] > 0
+        assert result["n_negative_dadq"] > 0
+
+    def test_high_intensity_cv(self) -> None:
+        """TCNE should have high spatial variation (localised hot spots)."""
+        result = tcne_data_driven_analysis()
+        assert result["intensity_cv"] > 1.0
+
+    def test_periodic_ic_higher(self) -> None:
+        """Periodic MgP should have higher IC than non-periodic TCNE."""
+        result = tcne_data_driven_analysis()
+        assert result["periodicity_test"] is True
+
+    def test_mc_no_amgm_violations(self) -> None:
+        result = tcne_data_driven_analysis()
+        assert result["mc_amgm_violation_rate"] == 0.0
