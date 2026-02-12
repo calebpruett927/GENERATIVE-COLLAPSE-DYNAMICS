@@ -27,6 +27,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import subprocess
 import sys
@@ -35,6 +36,11 @@ from dataclasses import dataclass, field
 from enum import StrEnum
 from pathlib import Path
 from typing import NamedTuple
+
+# Ensure venv bin/ is on PATH so subprocess calls find ruff, mypy, pytest, umcp
+_venv_bin = str(Path(sys.executable).parent)
+if _venv_bin not in os.environ.get("PATH", ""):
+    os.environ["PATH"] = _venv_bin + os.pathsep + os.environ.get("PATH", "")
 
 # ── Repo Context ─────────────────────────────────────────────────
 # Frozen dataclass that discovers and validates the repo structure once,

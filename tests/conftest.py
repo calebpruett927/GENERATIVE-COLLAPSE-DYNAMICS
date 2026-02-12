@@ -3,13 +3,22 @@ from __future__ import annotations
 import csv
 import json
 import math
+import os
 import re
+import sys
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
 import pytest
+
+# =============================================================================
+# Ensure venv bin/ is on PATH so subprocess calls find the `umcp` CLI
+# =============================================================================
+_venv_bin = str(Path(sys.executable).parent)
+if _venv_bin not in os.environ.get("PATH", ""):
+    os.environ["PATH"] = _venv_bin + os.pathsep + os.environ.get("PATH", "")
 
 try:
     import yaml  # type: ignore

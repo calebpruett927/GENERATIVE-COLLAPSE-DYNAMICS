@@ -5,6 +5,123 @@ All notable changes to the UMCP validator and repository will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2026-02-12
+
+### Fixed - Environment Portability
+
+**CLI subprocess resolution**: All subprocess-based invocations of `umcp`, `ruff`, `mypy`, and `pytest` now resolve the virtualenv `bin/` directory automatically. This eliminates 14 test failures in environments where the venv is not activated (e.g., dev containers, CI runners).
+
+- `tests/conftest.py`: Prepend venv `bin/` to `PATH` at module load time
+- `scripts/pre_commit_protocol.py`: Prepend venv `bin/` to `PATH` at script startup
+- Zero changes to any test file — fix is centralized in conftest.py
+
+### Changed
+
+- Bumped version to 2.1.0 across `pyproject.toml`, `src/umcp/__init__.py`, `integrity/code_version.txt`
+- Updated CHANGELOG with complete v2.0.0 and v2.1.0 entries
+
+### Stats
+
+- **Tests**: 2,552 passing, 0 failures
+- **Lint**: ruff clean, mypy clean (43 source files)
+- **Validation**: CONFORMANT (14 targets, 0 errors)
+
+---
+
+## [2.0.0] - 2026-02-08
+
+### Added - Major Architecture Expansion
+
+**Standard Model Particle Physics** — Complete SM formalism with 10 proven theorems:
+
+- `closures/standard_model/`: 7 modules — `particle_catalog.py`, `coupling_constants.py`, `cross_sections.py`, `symmetry_breaking.py`, `ckm_mixing.py`, `subatomic_kernel.py`, `particle_physics_formalism.py`
+- 31 particles mapped through 8-channel trace vectors (mass, spin, charge, color, weak isospin, lepton/baryon number, generation)
+- 10/10 Tier-2 theorems PROVEN: spin-statistics, generation monotonicity, confinement as IC collapse, mass-kernel log mapping, charge quantization, cross-scale universality, symmetry breaking, CKM unitarity, running coupling flow, nuclear binding curve
+- 74 individual tests covering all theorems
+- `paper/standard_model_kernel.tex`: RevTeX4-2 publication with 30+ bibliography entries
+
+**Atomic Physics** — 118-element periodic table through GCD kernel:
+
+- `closures/atomic_physics/`: 9 modules — `periodic_kernel.py`, `cross_scale_kernel.py`, `tier1_proof.py`, `electron_config.py`, `fine_structure.py`, `ionization_energy.py`, `spectral_lines.py`, `selection_rules.py`, `zeeman_stark.py`
+- 12-channel cross-scale kernel bridging subatomic → atomic (4 nuclear + 2 electronic + 6 bulk)
+- Exhaustive Tier-1 proof: 10,162 tests, 0 failures (F+ω=1, IC≤F, IC=exp(κ))
+
+**Materials Science** — Comprehensive element database:
+
+- `closures/materials_science/element_database.py`: 118 elements × 18 physical properties
+
+**Fleet-Scale Validation** — Distributed infrastructure:
+
+- `src/umcp/fleet/`: Scheduler, Worker, WorkerPool, Queue (DLQ, retry, backpressure), Cache (content-addressable), Tenant (multi-tenant isolation)
+- Job routing, heartbeat monitoring, priority scheduling
+
+**Epistemic Weld** — Observation cost tracking:
+
+- `src/umcp/epistemic_weld.py`: Gesture/return/dissolution trichotomy (Theorem T9)
+
+**Insights Engine** — Pattern discovery system:
+
+- `src/umcp/insights.py`: PatternDatabase, InsightEngine for lessons-learned tracking
+
+**Dashboard** — Modular Streamlit package:
+
+- `src/umcp/dashboard/`: 31 pages across 8 modules (core, analysis, science, physics, interactive, management, advanced)
+- Domain pages with presets, Plotly visualizations, theory sections
+
+**τ_R\* Dynamics** — Extended thermodynamic diagnostic:
+
+- `src/umcp/tau_r_star_dynamics.py`: Dynamic τ_R\* evolution, phase diagram, arrow of time
+- Theorems T10-T16, LaTeX paper
+
+**RCFT Extensions** — Information geometry and universality:
+
+- Tier-2 information geometry, universality, grammar (T17-T23)
+- Active matter frictional cooling closure (Antonov et al. 2025)
+
+**Developer Experience**:
+
+- Dev container configuration (Alpine Linux, Python 3.12)
+- VS Code editor config, tasks.json (22 tasks), cSpell dictionary
+- Dependabot for dependency updates
+- Issue templates and Code of Conduct
+
+### Changed
+
+- Repo renamed: `UMCP-Metadata-Runnable-Code` → `GENERATIVE-COLLAPSE-DYNAMICS`
+- Pre-commit protocol optimized: replaced full pytest run with test-count bounds check
+- Dashboard refactored into modular package (11 files from monolith)
+- Consolidated repo structure: archived outdated files, removed stale artifacts
+- `copilot-instructions.md`: Comprehensive update with SM formalism, atomic physics, paper context
+
+### Fixed
+
+- Restored derived/trace files (active validator dependencies)
+- Standard model `__init__.py` import names (singular not plural)
+- 12+ type errors across codebase (mypy, Pylance)
+- Coverage config + dashboard tests (31.25% → 88.34%)
+- RCFT attractor basin connected pathway
+- Closure import failures on domain pages
+- YAML lint issues, JSON validation fixes
+- Ruff version alignment (v0.6.9 → v0.14.14)
+- Pandas-dependent test skip guards
+
+### Performance
+
+- Manifold-bound validation gate: Layer 0 identity probe skips redundant tests
+- 6-tier test ordering: math-only → IO → subprocess (fastest first)
+- Kernel cache for repeated computations
+- Residual envelope optimization
+
+### Stats
+
+- **Tests**: 2,552 (up from ~463 in v1.5.0)
+- **Closure domains**: 12 (up from 7)
+- **Contracts**: 14 YAML contracts
+- **Casepacks**: 13 validated
+- **Source**: ~34k lines across 43 source files + ~34k lines across 105 closure modules
+
+---
+
 ## [1.5.0] - 2026-01-24
 
 ### Changed - Version Finalization
