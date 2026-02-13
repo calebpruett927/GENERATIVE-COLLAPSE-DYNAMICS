@@ -797,7 +797,9 @@ def theorem_T_ADOT_2_conductance_fidelity() -> TheoremResult:
     # Test 1: Spearman rank correlation
     from scipy.stats import spearmanr
 
-    rho, pval = spearmanr(g_vals, F_vals)
+    _sr = spearmanr(g_vals, F_vals)
+    rho = float(_sr.statistic)  # type: ignore[union-attr]
+    pval = float(_sr.pvalue)  # type: ignore[union-attr]
     n_tests += 1
     if rho > 0.8:
         n_passed += 1
@@ -985,7 +987,8 @@ def theorem_T_ADOT_4_activation_kappa() -> TheoremResult:
 
     E_A_arr = np.array([DEVICES[d].E_activation_meV for d in DEVICE_ORDER])
     kappa_arr = np.array([abs(kappa_vals[d]) for d in DEVICE_ORDER])
-    rho, _pval = spearmanr(E_A_arr, kappa_arr)
+    _sr2 = spearmanr(E_A_arr, kappa_arr)
+    rho = float(_sr2.statistic)  # type: ignore[union-attr]
     n_tests += 1
     if rho > 0.7:
         n_passed += 1

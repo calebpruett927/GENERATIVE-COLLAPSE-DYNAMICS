@@ -12,7 +12,7 @@
   <a href="https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/actions/workflows/validate.yml"><img src="https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/actions/workflows/validate.yml/badge.svg" alt="CI"></a>
   <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.11+-3776AB?logo=python&logoColor=white" alt="Python 3.11+"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License: MIT"></a>
-  <a href="tests/"><img src="https://img.shields.io/badge/tests-2552%20passing-brightgreen?logo=pytest" alt="Tests: 2552 passing"></a>
+  <a href="tests/"><img src="https://img.shields.io/badge/tests-2552%20passing-brightgreen?logo=pytest" alt="Tests: 2775 passing"></a>
   <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-2.1.1-blue" alt="Version: 2.1.1"></a>
   <a href="src/umcp/api_umcp.py"><img src="https://img.shields.io/badge/API-57%20endpoints-orange?logo=fastapi" alt="API: 57 endpoints"></a>
 </p>
@@ -136,7 +136,7 @@ pip install -e ".[all]"
 # Verify
 umcp health                  # System health check
 umcp validate .              # Validate entire repository (must be CONFORMANT)
-pytest                       # Run 2,552 tests
+pytest                       # Run 2,775 tests
 ```
 
 One-liner:
@@ -184,7 +184,7 @@ Every validation produces one of three outcomes -- never a boolean:
 
 | Metric | Value |
 |--------|-------|
-| **Tests** | 2,552 passing (81 files) |
+| **Tests** | 2,775 passing (83 files) |
 | **API Endpoints** | 57 (25 GET, 32 POST) |
 | **Dashboard Pages** | 31 (refactored into modular package) |
 | **CLI Commands** | 11 subcommands, 6 entry points |
@@ -411,7 +411,7 @@ Runs all checks that CI will run: lint, type-check, test, validate.
 ### `umcp test` -- Run Tests
 
 ```bash
-umcp test                     # Run all 2,552 tests
+umcp test                     # Run all 2,775 tests
 umcp test --coverage          # With coverage report
 umcp test -k "gcd"            # Pattern matching
 umcp test -m "not slow"       # Skip slow markers
@@ -1067,7 +1067,7 @@ umcp validate casepacks/weyl_des_y3
 
 `particle_catalog`, `coupling_constants`, `cross_sections`, `symmetry_breaking`, `ckm_mixing`, `subatomic_kernel`, `particle_physics_formalism`
 
-The **subatomic kernel** maps 31 particles (17 fundamental + 14 composite) to 8-channel trace vectors encoding mass, spin, charge, color, weak isospin, lepton/baryon number, and generation. All 2,552 pass Tier-1 identities.
+The **subatomic kernel** maps 31 particles (17 fundamental + 14 composite) to 8-channel trace vectors encoding mass, spin, charge, color, weak isospin, lepton/baryon number, and generation. All 2,775 pass Tier-1 identities.
 
 The **particle physics formalism** proves 10 theorems connecting Standard Model physics to GCD kernel patterns:
 
@@ -1093,7 +1093,7 @@ python closures/standard_model/particle_physics_formalism.py
 
 `electron_config`, `fine_structure`, `ionization_energy`, `spectral_lines`, `selection_rules`, `zeeman_stark`, `periodic_kernel`, `cross_scale_kernel`, `tier1_proof`
 
-The **periodic kernel** maps all 118 elements to GCD trace vectors using 8 measurable atomic properties (Z, mass, ionization energy, electronegativity, density, melting/boiling points, atomic radius). All 2,552 pass Tier-1.
+The **periodic kernel** maps all 118 elements to GCD trace vectors using 8 measurable atomic properties (Z, mass, ionization energy, electronegativity, density, melting/boiling points, atomic radius). All 2,775 pass Tier-1.
 
 The **cross-scale kernel** uses 12 nuclear-informed channels (4 nuclear + 2 electronic + 6 bulk) bridging subatomic and atomic scales. Magic number proximity is the #1 IC driver (39%).
 
@@ -1178,7 +1178,7 @@ expected_outputs:
 ### Run Tests
 
 ```bash
-# All 2,552 tests
+# All 2,775 tests
 pytest
 
 # Verbose
@@ -1204,7 +1204,7 @@ umcp test
 umcp test --coverage
 ```
 
-### Test Distribution (81 files, 2,552 tests)
+### Test Distribution (83 files, 2,775 tests)
 
 | Category | Tests | Description |
 |----------|------:|-------------|
@@ -1419,7 +1419,7 @@ UMCP-Metadata-Runnable-Code/
 |   |-- dashboard.py              # Streamlit dashboard (31 pages)
 |   '-- umcp_extensions.py        # Extension registry (5 extensions)
 |
-|-- tests/                        # Test suite (81 files, 2,552 tests)
+|-- tests/                        # Test suite (83 files, 2,775 tests)
 |   |-- conftest.py               # Fixtures: RepoPaths, caching helpers
 |   |-- test_00_* .. test_145_*   # Numbered test groups
 |   '-- closures/                 # Closure-specific tests
@@ -1498,7 +1498,7 @@ git push origin feat/your-feature
 
 | Check | Command | Requirement |
 |-------|---------|-------------|
-| Tests | `pytest` | All 2,552 pass |
+| Tests | `pytest` | All 2,775 pass |
 | Lint | `ruff check src/umcp tests` | Zero errors |
 | Format | `ruff format src/umcp tests` | Formatted |
 | Types | `mypy src/umcp` | Clean |
@@ -1517,7 +1517,7 @@ Copyright (c) 2026 Clement Paulus
 
 <div align="center">
 
-**UMCP v2.0.0** &bull; 2,552 tests &bull; 57 API endpoints &bull; 31 dashboard pages &bull; 11 CLI commands &bull; 13 casepacks &bull; 9 domains &bull; 46 lemmas &bull; CONFORMANT
+**UMCP v2.0.0** &bull; 2,775 tests &bull; 57 API endpoints &bull; 31 dashboard pages &bull; 11 CLI commands &bull; 13 casepacks &bull; 9 domains &bull; 46 lemmas &bull; CONFORMANT
 
 *"What Returns Through Collapse Is Real"*
 
