@@ -269,7 +269,7 @@ A: Key docs:
 
 - **GitHub Issues**: [Report bugs or request features](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/issues)
 - **Documentation**: Browse the 164 `.md` files in the repository
-- **Tests**: See `tests/` for 3,018 examples of API usage
+- **Tests**: See `tests/` for 3,270 examples of API usage
 - **Examples**: All casepacks in `casepacks/` are fully documented
 
 **Happy validating! 🎯**

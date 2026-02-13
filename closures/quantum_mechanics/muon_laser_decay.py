@@ -139,13 +139,14 @@ def R_Omega_numerical(Omega: float) -> float:
             arg = Omega * (1.0 - 1.0 / (Z * (1.0 - X)))
             return Z**2 * (3.0 - 4.0 * Z) * math.cos(arg)
 
-        val, _err = dblquad(
+        result = dblquad(
             integrand,
             1e-12,
             0.5,
             -1.0,
             lambda _Z: 1.0 - 1e-10,
         )
+        val = result[0]
     return 0.5 + 4.0 * val
 
 
