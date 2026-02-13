@@ -25,6 +25,7 @@ This is not a simulation. It is a **metrological enforcement engine**: schema co
 - [CLI Reference](#cli-reference)
 - [Validation Pipeline](#validation-pipeline)
 - [Test Suite](#test-suite)
+- [Diagrams & Proofs](#diagrams--proofs)
 - [Papers & Publications](#papers--publications)
 - [Repository Structure](#repository-structure)
 - [Contributing](#contributing)
@@ -487,6 +488,54 @@ The framework is anchored by peer-reviewed Zenodo publications covering the core
 | [GLOSSARY.md](GLOSSARY.md) | Term definitions |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Contribution guidelines |
 | [CHANGELOG.md](CHANGELOG.md) | Version history |
+
+---
+
+## Diagrams & Proofs
+
+All diagrams are generated from **real computed kernel data** — every point comes from actual closure outputs, not illustrations. Regenerate with `python scripts/generate_diagrams.py`.
+
+### Kernel Geometry: F vs IC for 31 Standard Model Particles
+
+The fundamental relationship: IC ≤ F (AM-GM inequality). Quarks cluster near the diagonal (channels alive), while composites and bosons collapse toward IC ≈ 0.
+
+![Kernel Geometry](images/01_kernel_geometry_f_vs_ic.png)
+
+### Theorem T3: Confinement as IC Collapse
+
+14/14 hadrons fall below the minimum quark IC. The geometric mean collapses 98.1% at the quark→hadron boundary — confinement is a measurable cliff in the kernel.
+
+![Confinement Cliff](images/02_confinement_cliff.png)
+
+### Complementarity Cliff: Double-Slit Interference
+
+Wave and particle are *both channel-deficient extremes*. The kernel-optimal state (S4: weak measurement) has the highest IC because all 8 channels are alive. 7/7 theorems PROVEN, 67/67 subtests.
+
+![Complementarity Cliff](images/03_complementarity_cliff.png)
+
+### Theorems T1 & T2: Spin-Statistics and Generation Monotonicity
+
+Fermions carry more fidelity than bosons (split = 0.194). Heavier generations carry more kernel fidelity: Gen1 < Gen2 < Gen3 in both quarks and leptons.
+
+![Generation and Spin Statistics](images/04_generation_spin_statistics.png)
+
+### Periodic Table of Kernel Fidelity: 118 Elements
+
+Every element in the periodic table mapped through the GCD kernel. Tier-1 proof: 10,162 tests, 0 failures — F + ω = 1, IC ≤ F, IC = exp(κ) verified exhaustively.
+
+![Periodic Table Fidelity](images/05_periodic_table_fidelity.png)
+
+### Regime Phase Diagram
+
+The four-regime classification with real Standard Model particles mapped to their drift values. Most particles live in COLLAPSE (ω ≥ 0.30) because the 8-channel trace exposes channel death.
+
+![Regime Phase Diagram](images/06_regime_phase_diagram.png)
+
+### Cross-Scale Universality and AM-GM Gap Distribution
+
+Kernel fidelity increases with scale resolution: composite(0.444) < atomic(0.516) < fundamental(0.558). The AM-GM gap distribution across 118 elements reveals the landscape of channel heterogeneity.
+
+![Cross-Scale Universality](images/07_cross_scale_amgm_gap.png)
 
 ---
 
