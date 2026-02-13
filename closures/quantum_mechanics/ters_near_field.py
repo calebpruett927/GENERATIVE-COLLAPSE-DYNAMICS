@@ -2178,47 +2178,213 @@ def _load_npz(filename: str) -> dict[str, np.ndarray]:
         return {k: f[k] for k in f.files}
 
 
-# ─── Channel derivation from raw DFT arrays ───
+# ─── Channel derivation from raw DFT arrays (v2, post-collapse) ───
+#
+# COLLAPSE AUDIT (Tier 0 enforcement):
+#   The original _derive_channels_from_pixel() had 3 algebraic
+#   degeneracies proven to machine precision:
+#
+#     Degeneracy 1: c[0] ≡ c[3]
+#       polarizability_zz = α_mean/α_max
+#       screening_factor  = 1 − (α_max − α_mean)/α_max = α_mean/α_max
+#       → Identical.  max|c[0]−c[3]| = 1.1e-16.
+#
+#     Degeneracy 2: c[1] ≡ c[2]
+#       field_gradient   = √(I/I_max)
+#       displacement_norm = |dα/dQ|/|dα/dQ|_max
+#       Since I = (dα/dQ)² exactly (finite-field method), these are
+#       the same quantity.  max|c[1]−c[2]| = 1.1e-16.
+#
+#     Degeneracy 3: c[1] + c[7] = 1
+#       binding_sensitivity = 1 − √(I/I_max) = 1 − field_gradient.
+#       Perfectly anti-correlated by construction.
+#
+#   Additionally, c[4] (mode_projection), c[5] (self_fraction as
+#   n_pos/n_total), and c[6] (periodicity_fidelity as 0.95/0.30) were
+#   global constants — identical for all pixels.
+#
+#   Result: 8 declared channels → 2 spatially varying DoF.
+#
+#   The v2 derivation below replaces each degenerate formula with a
+#   genuinely independent spatial observable.  Channel NAMES and
+#   physical MEANINGS are preserved (the estimated systems and theorems
+#   are unaffected).  Only the DATA-DERIVED formulas are collapsed.
+#
+# ─────────────────────────────────────────────────────────────────
 
 
-def _derive_channels_from_pixel(
-    alpha_neg: float,
-    alpha_pos: float,
-    dadq: float,
-    intensity: float,
+def _derive_channels_from_grid(
+    alpha_neg: np.ndarray,
+    alpha_pos: np.ndarray,
+    dadq: np.ndarray,
+    intensity: np.ndarray,
     *,
-    alpha_max: float,
-    intensity_max: float,
-    dadq_absmax: float,
     is_periodic: bool,
     mode_proj: float,
-    n_pos: int,
-    n_total: int,
 ) -> np.ndarray:
-    """Derive 8-channel trace from raw DFT quantities at one pixel.
+    """Derive 8-channel traces from raw DFT arrays (grid-aware, v2).
 
-    Channel construction (explicit formulas):
-      1. polarizability_zz :  ½(α⁺ + α⁻) / α_max
-      2. field_gradient     :  sqrt(I / I_max)   (∝ |dα/dQ| ∝ |∂Φ̃/∂E|)
-      3. displacement_norm  :  |dα/dQ| / |dα/dQ|_max
-      4. screening_factor   :  1 − (α_max − ½(α⁺+α⁻)) / α_max
-      5. mode_projection    :  fixed from symmetry (A₂u: 0.95, B₁: 0.80, A'₁: 0.92)
-      6. self_fraction       :  n_pos / n_total  (fraction of positive dα/dQ pixels)
-      7. periodicity_fidelity: 1.0 if periodic else 0.30
-      8. binding_sensitivity :  1 − sqrt(I / I_max)  (high I → low stability)
+    Post-collapse channel derivation: every channel is algebraically
+    independent.  Spatial structure extracted from the scan grid enables
+    field_gradient, screening_factor, self_fraction, periodicity_fidelity,
+    and binding_sensitivity to carry genuinely distinct information.
+
+    Channels (v2 — all independent):
+      0. polarizability_zz    α_mean / α_max
+         Equilibrium polarizability response to the tip field.
+         UNCHANGED from v1.
+
+      1. field_gradient        |∇I| / |∇I|_max
+         Spatial confinement of Raman enhancement (near-field decay).
+         WAS: √(I/I_max) ≡ displacement_norm (degenerate).
+         NOW: actual spatial gradient of the intensity field.  High
+         values mark boundaries where the enhancement changes sharply
+         — the defining signature of a confined near field.
+
+      2. displacement_norm     |dα/dQ| / |dα/dQ|_max
+         Vibrational Raman tensor magnitude (unsigned).
+         UNCHANGED from v1 — now truly unique since c[1] is different.
+
+      3. screening_factor      1 − |α − ⟨α⟩_local| / max_dev
+         Local polarizability uniformity.
+         WAS: α_mean/α_max ≡ polarizability_zz (degenerate).
+         NOW: measures spatial uniformity of the screening response.
+         High value = uniform α (consistent screening across the scan).
+         Low value = α varies strongly from neighbors (screening gradients).
+
+      4. mode_projection       fixed from vibrational symmetry
+         UNCHANGED — |e_k · ẑ|²/|e_k|², intrinsic to the mode.
+
+      5. self_fraction          (dα/dQ / |dα/dQ|_max + 1) / 2
+         Signed Raman coupling mapped to [0, 1].
+         WAS: n_pos/n_total (global constant, same for all pixels).
+         NOW: per-pixel self/cross balance.  0.5 means dα/dQ = 0
+         (neutral), >0.5 = positive (self-dominant), <0.5 = negative
+         (cross-dominant).  Encodes the DIRECTION of the derivative
+         that the old formula discarded.
+
+      6. periodicity_fidelity  fraction of same-sign neighbors
+         Spatial phase ordering at each pixel.
+         WAS: 0.95 if periodic else 0.30 (global constant).
+         NOW: computed from the local neighborhood sign pattern.
+         For periodic systems with wrap-around neighbors, regular
+         sign patterns give high coherence.  Cluster artifacts
+         produce irregular patterns → low coherence.
+
+      7. binding_sensitivity   1 − |I − ⟨I⟩_local| / max_Idev
+         Image stability under perturbation.
+         WAS: 1 − √(I/I_max) = 1 − field_gradient (degenerate).
+         NOW: intensity uniformity.  Pixels where I matches the
+         local average are stable (robust to geometric shifts).
+         Hot spots / cold spots (large |I − ⟨I⟩|) are sensitive.
+
+    Parameters
+    ----------
+    alpha_neg, alpha_pos, dadq, intensity : ndarray, shape (ny, nx)
+        Raw DFT scan arrays from the finite-field TERS calculation.
+    is_periodic : bool
+        If True, periodic boundary conditions are used (wrap-around
+        neighbors for edge pixels in phase coherence calculation).
+    mode_proj : float
+        Out-of-plane projection for the vibrational mode ∈ [0, 1].
+
+    Returns
+    -------
+    channels : ndarray, shape (ny, nx, 8)
+        Channel traces for every pixel, clipped to [ε, 1−ε].
     """
+    ny, nx = intensity.shape
     alpha_mean = 0.5 * (alpha_neg + alpha_pos)
-    c = np.empty(N_CHANNELS, dtype=float)
-    c[0] = alpha_mean / alpha_max if alpha_max > 0 else EPSILON
-    c[1] = np.sqrt(intensity / intensity_max) if intensity_max > 0 else EPSILON
-    c[2] = abs(dadq) / dadq_absmax if dadq_absmax > 0 else EPSILON
-    c[3] = 1.0 - (alpha_max - alpha_mean) / alpha_max if alpha_max > 0 else EPSILON
-    c[4] = mode_proj
-    c[5] = n_pos / n_total if n_total > 0 else 0.5
-    c[6] = 0.95 if is_periodic else 0.30
-    c[7] = 1.0 - np.sqrt(intensity / intensity_max) if intensity_max > 0 else EPSILON
-    # Clip to [ε, 1−ε]
-    return np.clip(c, EPSILON, 1.0 - EPSILON)
+
+    # Global normalisation constants
+    alpha_max = max(float(np.max(alpha_neg)), float(np.max(alpha_pos)))
+    dadq_absmax = float(np.max(np.abs(dadq)))
+
+    channels = np.empty((ny, nx, N_CHANNELS), dtype=float)
+
+    # ── Channel 0: polarizability_zz ── (unchanged)
+    channels[:, :, 0] = alpha_mean / alpha_max if alpha_max > EPSILON else EPSILON
+
+    # ── Channel 1: field_gradient ── (COLLAPSED: was √(I/I_max))
+    # Spatial gradient of Raman intensity = field confinement.
+    # np.gradient handles boundary pixels with one-sided differences.
+    grad_Iy, grad_Ix = np.gradient(intensity)
+    grad_I_mag = np.sqrt(grad_Iy**2 + grad_Ix**2)
+    grad_I_max = float(np.max(grad_I_mag))
+    channels[:, :, 1] = grad_I_mag / grad_I_max if grad_I_max > EPSILON else EPSILON
+
+    # ── Channel 2: displacement_norm ── (unchanged, now unique)
+    channels[:, :, 2] = np.abs(dadq) / dadq_absmax if dadq_absmax > EPSILON else EPSILON
+
+    # ── Channel 3: screening_factor ── (COLLAPSED: was α_mean/α_max)
+    # Local polarizability uniformity via 3×3 box filter.
+    # Avoid scipy dependency: manual convolution for 3×3 mean.
+    alpha_padded = np.pad(alpha_mean, 1, mode="reflect")
+    alpha_smooth = np.zeros_like(alpha_mean)
+    for dy in range(-1, 2):
+        for dx in range(-1, 2):
+            alpha_smooth += alpha_padded[1 + dy : ny + 1 + dy, 1 + dx : nx + 1 + dx]
+    alpha_smooth /= 9.0
+    alpha_dev = np.abs(alpha_mean - alpha_smooth)
+    alpha_dev_max = float(np.max(alpha_dev))
+    channels[:, :, 3] = 1.0 - alpha_dev / alpha_dev_max if alpha_dev_max > EPSILON else (1.0 - EPSILON)
+
+    # ── Channel 4: mode_projection ── (unchanged, global)
+    channels[:, :, 4] = mode_proj
+
+    # ── Channel 5: self_fraction ── (COLLAPSED: was n_pos/n_total)
+    # Per-pixel signed Raman coupling → [0, 1].
+    channels[:, :, 5] = (dadq / dadq_absmax + 1.0) / 2.0 if dadq_absmax > EPSILON else 0.5
+
+    # ── Channel 6: periodicity_fidelity ── (COLLAPSED: was constant)
+    # Sign-coherence with neighbors (periodic wraps edges).
+    sign_map = np.sign(dadq)
+    coherence = np.zeros((ny, nx), dtype=float)
+    if is_periodic:
+        # Wrap-around: all pixels have exactly 4 neighbours
+        for iy in range(ny):
+            for ix in range(nx):
+                nbrs = [
+                    sign_map[(iy - 1) % ny, ix],
+                    sign_map[(iy + 1) % ny, ix],
+                    sign_map[iy, (ix - 1) % nx],
+                    sign_map[iy, (ix + 1) % nx],
+                ]
+                coherence[iy, ix] = sum(1.0 for n in nbrs if n == sign_map[iy, ix]) / 4.0
+    else:
+        # Open boundaries: edge/corner pixels have fewer neighbours
+        for iy in range(ny):
+            for ix in range(nx):
+                nbrs: list[float] = []
+                if iy > 0:
+                    nbrs.append(float(sign_map[iy - 1, ix]))
+                if iy < ny - 1:
+                    nbrs.append(float(sign_map[iy + 1, ix]))
+                if ix > 0:
+                    nbrs.append(float(sign_map[iy, ix - 1]))
+                if ix < nx - 1:
+                    nbrs.append(float(sign_map[iy, ix + 1]))
+                if nbrs:
+                    coherence[iy, ix] = sum(1.0 for n in nbrs if n == sign_map[iy, ix]) / len(nbrs)
+                else:
+                    coherence[iy, ix] = 0.5
+    channels[:, :, 6] = coherence
+
+    # ── Channel 7: binding_sensitivity ── (COLLAPSED: was 1−√(I/I_max))
+    # Intensity uniformity via 3×3 box filter (same approach as c[3]).
+    I_padded = np.pad(intensity, 1, mode="reflect")
+    I_smooth = np.zeros_like(intensity)
+    for dy in range(-1, 2):
+        for dx in range(-1, 2):
+            I_smooth += I_padded[1 + dy : ny + 1 + dy, 1 + dx : nx + 1 + dx]
+    I_smooth /= 9.0
+    I_dev = np.abs(intensity - I_smooth)
+    I_dev_max = float(np.max(I_dev))
+    channels[:, :, 7] = 1.0 - I_dev / I_dev_max if I_dev_max > EPSILON else (1.0 - EPSILON)
+
+    # Clip all channels to [ε, 1−ε]
+    np.clip(channels, EPSILON, 1.0 - EPSILON, out=channels)
+    return channels
 
 
 @dataclass
@@ -2304,13 +2470,18 @@ def compute_pixel_kernel_map(
     alpha_pos = data["alpha_pos"]
 
     ny, nx = intensity.shape
-    n_total = ny * nx
-    n_pos = int(np.sum(dadq > 0))
 
-    alpha_max = float(np.max([np.max(alpha_neg), np.max(alpha_pos)]))
-    intensity_max = float(np.max(intensity))
-    dadq_absmax = float(np.max(np.abs(dadq)))
+    # ── v2: grid-aware channel derivation (post-collapse) ──
+    channels_map = _derive_channels_from_grid(
+        alpha_neg=alpha_neg,
+        alpha_pos=alpha_pos,
+        dadq=dadq,
+        intensity=intensity,
+        is_periodic=cfg["periodic"],
+        mode_proj=cfg["mode_proj"],
+    )
 
+    # Compute kernel outputs at every pixel
     w = np.ones(N_CHANNELS, dtype=float) / N_CHANNELS
 
     F_map = np.empty((ny, nx), dtype=float)
@@ -2319,24 +2490,10 @@ def compute_pixel_kernel_map(
     IC_map = np.empty((ny, nx), dtype=float)
     delta_map = np.empty((ny, nx), dtype=float)
     regime_map = np.empty((ny, nx), dtype=object)
-    channels_map = np.empty((ny, nx, N_CHANNELS), dtype=float)
 
     for iy in range(ny):
         for ix in range(nx):
-            c = _derive_channels_from_pixel(
-                alpha_neg=float(alpha_neg[iy, ix]),
-                alpha_pos=float(alpha_pos[iy, ix]),
-                dadq=float(dadq[iy, ix]),
-                intensity=float(intensity[iy, ix]),
-                alpha_max=alpha_max,
-                intensity_max=intensity_max,
-                dadq_absmax=dadq_absmax,
-                is_periodic=cfg["periodic"],
-                mode_proj=cfg["mode_proj"],
-                n_pos=n_pos,
-                n_total=n_total,
-            )
-            channels_map[iy, ix, :] = c
+            c = channels_map[iy, ix, :]
             k = compute_kernel_outputs(c, w, EPSILON)
             F_map[iy, ix] = k["F"]
             omega_map[iy, ix] = k["omega"]
