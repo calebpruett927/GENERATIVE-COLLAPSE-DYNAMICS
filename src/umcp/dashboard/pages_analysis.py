@@ -9,7 +9,10 @@ Analysis dashboard pages: Exports, Comparison, Time Series, Formula Builder.
 
 from __future__ import annotations
 
+import ast
 import json
+import math
+import operator
 from datetime import datetime, timedelta
 
 from umcp.dashboard._deps import go, make_subplots, np, pd, px, st
@@ -28,6 +31,110 @@ try:
     from umcp import __version__
 except ImportError:
     __version__ = "2.0.0"
+
+# ── Safe expression evaluator (replaces eval) ─────────────────────────────────
+
+_SAFE_OPS: dict[type, object] = {
+    ast.Add: operator.add,
+    ast.Sub: operator.sub,
+    ast.Mult: operator.mul,
+    ast.Div: operator.truediv,
+    ast.Pow: operator.pow,
+    ast.USub: operator.neg,
+    ast.UAdd: operator.pos,
+    ast.Mod: operator.mod,
+    ast.FloorDiv: operator.floordiv,
+}
+
+_SAFE_FUNCS: dict[str, object] = {
+    "sin": math.sin,
+    "cos": math.cos,
+    "tan": math.tan,
+    "sqrt": math.sqrt,
+    "exp": math.exp,
+    "log": math.log,
+    "log10": math.log10,
+    "abs": abs,
+    "pow": pow,
+    "pi": math.pi,
+    "e": math.e,
+}
+if np is not None:
+    _SAFE_FUNCS.update(
+        {
+            "sin": np.sin,
+            "cos": np.cos,
+            "tan": np.tan,
+            "sqrt": np.sqrt,
+            "exp": np.exp,
+            "log": np.log,
+            "log10": np.log10,
+            "pi": np.pi,
+            "e": np.e,
+        }
+    )
+
+
+def _safe_eval_expr(expression: str, variables: dict[str, float]) -> float:
+    """Evaluate a mathematical expression safely using AST parsing.
+
+    Only arithmetic operations and whitelisted math functions are allowed.
+    No attribute access, subscripts, comprehensions, or arbitrary calls.
+
+    Raises ValueError on disallowed constructs.
+    """
+    tree = ast.parse(expression, mode="eval")
+
+    def _eval_node(node: ast.expr) -> float:
+        if isinstance(node, ast.Expression):
+            return _eval_node(node.body)
+        if isinstance(node, ast.Constant) and isinstance(node.value, (int, float)):
+            return float(node.value)
+        if isinstance(node, ast.Name):
+            name = node.id
+            if name in variables:
+                return float(variables[name])
+            if name in _SAFE_FUNCS:
+                val = _SAFE_FUNCS[name]
+                if isinstance(val, (int, float)):
+                    return float(val)
+            msg = f"Unknown variable: {name}"
+            raise ValueError(msg)
+        if isinstance(node, ast.BinOp):
+            op_type = type(node.op)
+            if op_type not in _SAFE_OPS:
+                msg = f"Unsupported operator: {op_type.__name__}"
+                raise ValueError(msg)
+            left = _eval_node(node.left)
+            right = _eval_node(node.right)
+            fn = _SAFE_OPS[op_type]
+            return float(fn(left, right))  # type: ignore[operator]
+        if isinstance(node, ast.UnaryOp):
+            op_type = type(node.op)
+            if op_type not in _SAFE_OPS:
+                msg = f"Unsupported unary op: {op_type.__name__}"
+                raise ValueError(msg)
+            operand = _eval_node(node.operand)
+            fn = _SAFE_OPS[op_type]
+            return float(fn(operand))  # type: ignore[operator]
+        if isinstance(node, ast.Call):
+            if not isinstance(node.func, ast.Name):
+                msg = "Only simple function calls allowed (e.g., sin(x))"
+                raise ValueError(msg)
+            fname = node.func.id
+            if fname not in _SAFE_FUNCS:
+                msg = f"Unknown function: {fname}"
+                raise ValueError(msg)
+            func = _SAFE_FUNCS[fname]
+            if not callable(func):
+                msg = f"{fname} is not callable"
+                raise ValueError(msg)
+            args = [_eval_node(arg) for arg in node.args]
+            return float(func(*args))
+        msg = f"Unsupported expression type: {type(node).__name__}"
+        raise ValueError(msg)
+
+    return _eval_node(tree.body)  # type: ignore[arg-type]
 
 
 def render_exports_page() -> None:
@@ -714,20 +821,7 @@ def render_formula_builder_page() -> None:
             # Test the formula
             try:
                 test_vars = dict.fromkeys(params, 1.0)
-                test_result = eval(
-                    formula_expr,
-                    {"__builtins__": {}},
-                    {
-                        **test_vars,
-                        "np": np,
-                        "sin": np.sin,
-                        "cos": np.cos,
-                        "sqrt": np.sqrt,
-                        "pi": np.pi,
-                        "exp": np.exp,
-                        "log": np.log,
-                    },
-                )
+                test_result = _safe_eval_expr(formula_expr, test_vars)
                 new_formula["test_result"] = test_result
                 st.session_state.custom_formulas.append(new_formula)
                 st.success(f"✅ Formula '{formula_name}' added! Test result with all params=1: {test_result}")
@@ -770,23 +864,7 @@ def render_formula_builder_page() -> None:
             # Calculate
             if st.button("🔢 Calculate", width="stretch"):
                 try:
-                    # Safe evaluation with numpy functions
-                    safe_dict = {
-                        "np": np,
-                        "sin": np.sin,
-                        "cos": np.cos,
-                        "tan": np.tan,
-                        "sqrt": np.sqrt,
-                        "pi": np.pi,
-                        "e": np.e,
-                        "exp": np.exp,
-                        "log": np.log,
-                        "log10": np.log10,
-                        "abs": abs,
-                        "pow": pow,
-                        **param_values,
-                    }
-                    result = eval(selected_formula["expression"], {"__builtins__": {}}, safe_dict)
+                    result = _safe_eval_expr(selected_formula["expression"], param_values)
 
                     st.success(f"**Result:** {result:.6g} {selected_formula.get('units', '')}")
 

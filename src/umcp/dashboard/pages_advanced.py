@@ -1175,7 +1175,6 @@ def render_unified_geometry_view() -> None:
     fig.add_hline(y=0.30, line_dash="dash", line_color="red", row=2, col=1, annotation_text="ω_collapse")
 
     # ========== Layer 3: Regime & Continuity ==========
-    [0 if r == "STABLE" else 1 if r == "WATCH" else 2 for r in regimes]
     regime_colors = [REGIME_COLORS.get(r, "gray") for r in regimes]
 
     # Regime as colored segments

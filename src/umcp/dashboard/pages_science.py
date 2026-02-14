@@ -2119,15 +2119,17 @@ def render_finance_page() -> None:
                     flag = "⚠️ OOR" if embedded.oor_flags[i] else "✅ In-range"
                     st.metric(name, f"{val:.4f}", delta=flag)
 
-            # Compute UMCP invariants from coordinates
-            import math
+            # Compute UMCP invariants from coordinates using kernel_optimized
+            from umcp.kernel_optimized import compute_kernel_outputs
 
-            weights = [0.30, 0.25, 0.25, 0.20]
-            epsilon = 1e-8
-            kappa = sum(w * math.log(max(c, epsilon)) for w, c in zip(weights, embedded.c, strict=False))
-            ic = math.exp(kappa)
-            omega = 1.0 - sum(w * c for w, c in zip(weights, embedded.c, strict=False))
-            f_val = 1.0 - omega
+            c_arr = np.array(embedded.c, dtype=float)
+            w_arr = np.array([0.30, 0.25, 0.25, 0.20], dtype=float)
+            kernel = compute_kernel_outputs(c_arr, w_arr, epsilon=1e-8)
+            f_val = kernel["F"]
+            omega = kernel["omega"]
+            kappa = kernel["kappa"]
+            ic = kernel["IC"]
+            regime = kernel["regime"]
 
             st.divider()
             st.subheader("🧮 UMCP Invariants")
@@ -2141,11 +2143,12 @@ def render_finance_page() -> None:
             with inv_cols[3]:
                 st.metric("IC = exp(κ)", f"{ic:.4f}")
             with inv_cols[4]:
-                regime = "STABLE" if 0.3 <= omega <= 0.7 else "WATCH" if 0.1 <= omega <= 0.9 else "COLLAPSE"
                 color = "🟢" if regime == "STABLE" else "🟡" if regime == "WATCH" else "🔴"
                 st.metric("Regime", f"{color} {regime}")
 
             # Identity checks
+            import math
+
             st.divider()
             ic_le_f = ic <= f_val + 1e-9
             f_plus_omega = f_val + omega
@@ -2156,7 +2159,7 @@ def render_finance_page() -> None:
                 st.caption("Must equal 1.0 (budget identity)")
             with id_cols[1]:
                 st.markdown(f"**IC ≤ F** → {ic:.4f} ≤ {f_val:.4f} {'✅' if ic_le_f else '❌'}")
-                st.caption("Integrity bound (IC ≤ F; AM-GM inequality is the degenerate limit)")
+                st.caption("Integrity bound (IC ≤ F; the classical inequality is a degenerate limit)")
             with id_cols[2]:
                 ic_target = math.exp(kappa)
                 st.markdown(
@@ -5345,23 +5348,22 @@ def render_materials_science_page() -> None:
     ]
     matl_tabs = st.tabs(tab_names)
 
-    # ── Common element presets ──
-    _ELEMENT_PRESETS: dict[str, str] = {
-        "Custom": "",
-        "Al – Aluminium": "Al",
-        "Fe – Iron": "Fe",
-        "Cu – Copper": "Cu",
-        "Si – Silicon": "Si",
-        "Au – Gold": "Au",
-        "Ni – Nickel": "Ni",
-        "Ti – Titanium": "Ti",
-        "W – Tungsten": "W",
-        "Ag – Silver": "Ag",
-        "Nb – Niobium": "Nb",
-        "Pb – Lead": "Pb",
-        "C – Carbon": "C",
-        "Cr – Chromium": "Cr",
-        "Co – Cobalt": "Co",
+    # ── Common element presets (symbol → Z) ──
+    _ELEMENT_PRESETS: dict[str, tuple[str, int]] = {
+        "Al – Aluminium": ("Al", 13),
+        "Fe – Iron": ("Fe", 26),
+        "Cu – Copper": ("Cu", 29),
+        "Si – Silicon": ("Si", 14),
+        "Au – Gold": ("Au", 79),
+        "Ni – Nickel": ("Ni", 28),
+        "Ti – Titanium": ("Ti", 22),
+        "W – Tungsten": ("W", 74),
+        "Ag – Silver": ("Ag", 47),
+        "Nb – Niobium": ("Nb", 41),
+        "Pb – Lead": ("Pb", 82),
+        "C – Carbon": ("C", 6),
+        "Cr – Chromium": ("Cr", 24),
+        "Co – Cobalt": ("Co", 27),
     }
 
     # ── Tab 1: Cohesive Energy ─────────────────────────────────────
@@ -5375,7 +5377,7 @@ def render_materials_science_page() -> None:
         c1, _c2 = st.columns([1, 2])
         with c1:
             coh_preset = st.selectbox("Element", list(_ELEMENT_PRESETS.keys()), key="matl_coh_preset")
-        coh_sym = _ELEMENT_PRESETS.get(coh_preset, "")
+        coh_sym, coh_Z = _ELEMENT_PRESETS.get(coh_preset, ("Fe", 26))
 
         if st.button("Compute Cohesive Energy", key="matl_coh_btn", type="primary"):
             try:
@@ -5383,7 +5385,7 @@ def render_materials_science_page() -> None:
                     compute_cohesive_energy,
                 )
 
-                result = compute_cohesive_energy(symbol=coh_sym if coh_sym else "Fe")
+                result = compute_cohesive_energy(coh_Z, symbol=coh_sym)
                 r = result._asdict()
                 regime = r["regime"]
                 regime_icon = {"Strong_Bond": "🟢", "Moderate_Bond": "🟡", "Weak_Bond": "🟠"}.get(regime, "🔴")
@@ -5410,12 +5412,16 @@ def render_materials_science_page() -> None:
 
                 # Batch scan for comparison
                 from closures.materials_science.cohesive_energy import REFERENCE_COHESIVE
+                from closures.materials_science.element_database import ELEMENTS_BY_SYMBOL
 
                 if REFERENCE_COHESIVE:
                     batch_data = []
                     for sym in list(REFERENCE_COHESIVE.keys())[:20]:
                         try:
-                            br = compute_cohesive_energy(symbol=sym)._asdict()
+                            el = ELEMENTS_BY_SYMBOL.get(sym)
+                            if el is None:
+                                continue
+                            br = compute_cohesive_energy(el.Z, symbol=sym)._asdict()
                             batch_data.append(
                                 {
                                     "Element": sym,
@@ -5463,7 +5469,7 @@ def render_materials_science_page() -> None:
         c1, _c2 = st.columns([1, 2])
         with c1:
             band_preset = st.selectbox("Element", list(_ELEMENT_PRESETS.keys()), key="matl_band_preset")
-        band_sym = _ELEMENT_PRESETS.get(band_preset, "")
+        band_sym, band_Z = _ELEMENT_PRESETS.get(band_preset, ("Si", 14))
 
         if st.button("Compute Band Structure", key="matl_band_btn", type="primary"):
             try:
@@ -5471,7 +5477,7 @@ def render_materials_science_page() -> None:
                     compute_band_structure,
                 )
 
-                result = compute_band_structure(symbol=band_sym if band_sym else "Si")
+                result = compute_band_structure(band_Z, symbol=band_sym)
                 r = result._asdict()
                 regime = r["regime"]
                 regime_icon = {"Precise": "🟢", "Moderate": "🟡", "Approximate": "🟠"}.get(regime, "🔴")
@@ -5492,16 +5498,20 @@ def render_materials_science_page() -> None:
                 with mc[1]:
                     st.metric("F_eff", f"{r['F_eff']:.4f}")
                 with mc[2]:
-                    st.metric("RCFT Fisher gap", f"{r.get('rcft_fisher_gap', 0):.4f}")
+                    st.metric("RCFT Fisher distance", f"{r.get('rcft_fisher_distance', 0):.4f}")
 
                 # Batch comparison
-                from closures.materials_science.band_structure import REFERENCE_BAND
+                from closures.materials_science.band_structure import REFERENCE_GAPS
+                from closures.materials_science.element_database import ELEMENTS_BY_SYMBOL
 
-                if REFERENCE_BAND:
+                if REFERENCE_GAPS:
                     batch_data = []
-                    for sym in list(REFERENCE_BAND.keys())[:20]:
+                    for sym in list(REFERENCE_GAPS.keys())[:20]:
                         try:
-                            br = compute_band_structure(symbol=sym)._asdict()
+                            el = ELEMENTS_BY_SYMBOL.get(sym)
+                            if el is None:
+                                continue
+                            br = compute_band_structure(el.Z, symbol=sym)._asdict()
                             batch_data.append(
                                 {
                                     "Element": sym,
@@ -5659,7 +5669,7 @@ def render_materials_science_page() -> None:
         c1, _c2 = st.columns([1, 2])
         with c1:
             el_preset = st.selectbox("Element", list(_ELEMENT_PRESETS.keys()), key="matl_el_preset")
-        el_sym = _ELEMENT_PRESETS.get(el_preset, "")
+        el_sym, el_Z = _ELEMENT_PRESETS.get(el_preset, ("Fe", 26))
 
         if st.button("Compute Elastic Moduli", key="matl_el_btn", type="primary"):
             try:
@@ -5673,7 +5683,7 @@ def render_materials_science_page() -> None:
                 )
 
                 sym = el_sym if el_sym else "Fe"
-                coh = compute_cohesive_energy(symbol=sym)
+                coh = compute_cohesive_energy(el_Z, symbol=sym)
                 result = compute_elastic_moduli(coh.E_coh_eV, coh.r0_A, symbol=sym)
                 r = result._asdict()
                 regime = r["regime"]
@@ -5701,10 +5711,17 @@ def render_materials_science_page() -> None:
 
                 # Batch
                 if REFERENCE_K:
+                    from closures.materials_science.element_database import (
+                        ELEMENTS_BY_SYMBOL as _EL_BY_SYM_EL,
+                    )
+
                     batch_data = []
                     for sym_b in list(REFERENCE_K.keys())[:20]:
                         try:
-                            coh_b = compute_cohesive_energy(symbol=sym_b)
+                            el_db = _EL_BY_SYM_EL.get(sym_b)
+                            if el_db is None:
+                                continue
+                            coh_b = compute_cohesive_energy(el_db.Z, symbol=sym_b)
                             el_b = compute_elastic_moduli(coh_b.E_coh_eV, coh_b.r0_A, symbol=sym_b)._asdict()
                             batch_data.append(
                                 {
@@ -5974,7 +5991,7 @@ def render_materials_science_page() -> None:
         c1, _c2 = st.columns([1, 2])
         with c1:
             surf_preset = st.selectbox("Element", list(_ELEMENT_PRESETS.keys()), key="matl_surf_preset")
-        surf_sym = _ELEMENT_PRESETS.get(surf_preset, "")
+        surf_sym, surf_Z = _ELEMENT_PRESETS.get(surf_preset, ("Fe", 26))
 
         if st.button("Compute Surface Catalysis", key="matl_surf_btn", type="primary"):
             try:
@@ -5987,7 +6004,7 @@ def render_materials_science_page() -> None:
                 )
 
                 sym = surf_sym if surf_sym else "Fe"
-                coh = compute_cohesive_energy(symbol=sym)
+                coh = compute_cohesive_energy(surf_Z, symbol=sym)
                 result = compute_surface_catalysis(coh.E_coh_eV, symbol=sym, r0_A=coh.r0_A)
                 r = result._asdict()
                 regime = r["regime"]
@@ -6015,10 +6032,17 @@ def render_materials_science_page() -> None:
 
                 # Volcano plot from reference data
                 if REFERENCE_SURFACE:
+                    from closures.materials_science.element_database import (
+                        ELEMENTS_BY_SYMBOL as _EL_BY_SYM_SURF,
+                    )
+
                     vol_data = []
                     for sym_v, _ref_v in list(REFERENCE_SURFACE.items())[:20]:
                         try:
-                            coh_v = compute_cohesive_energy(symbol=sym_v)
+                            el_v = _EL_BY_SYM_SURF.get(sym_v)
+                            if el_v is None:
+                                continue
+                            coh_v = compute_cohesive_energy(el_v.Z, symbol=sym_v)
                             sr = compute_surface_catalysis(coh_v.E_coh_eV, symbol=sym_v, r0_A=coh_v.r0_A)._asdict()
                             vol_data.append(
                                 {
@@ -6422,48 +6446,56 @@ def render_security_page() -> None:
         if st.button("Simulate Anomaly Return", key="sec_ar_btn", type="primary"):
             try:
                 from closures.security.anomaly_return import (
+                    compute_anomaly_return_series,
                     detect_anomaly_events,
                 )
 
-                # Generate synthetic signal with a dip
-                t_series = np.ones(ar_n) * ar_base
-                # Inject anomaly
+                # Generate synthetic multi-signal history with a dip
+                n_signals = 5
+                t_series_2d = np.ones((ar_n, n_signals)) * ar_base
+                # Inject anomaly dip into all signals
                 dip_start = min(ar_anomaly_at, ar_n - 5)
                 dip_width = min(8, ar_n - dip_start)
-                t_series[dip_start : dip_start + dip_width] = np.clip(
-                    ar_base * 0.3 + np.linspace(0, ar_base * 0.7, dip_width), 0, 1
-                )
+                for si in range(n_signals):
+                    t_series_2d[dip_start : dip_start + dip_width, si] = np.clip(
+                        ar_base * 0.3 + np.linspace(0, ar_base * 0.7, dip_width), 0, 1
+                    )
 
-                events = detect_anomaly_events(t_series.tolist(), threshold=ar_base * 0.7)
+                # Compute τ_A for each timestep, then detect events
+                tau_series = compute_anomaly_return_series(t_series_2d)
+                events = detect_anomaly_events(tau_series)
 
+                # Plot trust fidelity (mean across signals per timestep)
+                t_mean = np.mean(t_series_2d, axis=1)
                 fig = go.Figure()
-                fig.add_trace(go.Scatter(y=t_series, mode="lines", name="T(t)", line={"color": "#1f77b4", "width": 2}))
+                fig.add_trace(
+                    go.Scatter(y=t_mean.tolist(), mode="lines", name="T̄(t)", line={"color": "#1f77b4", "width": 2})
+                )
                 fig.add_hline(y=ar_base * 0.7, line_dash="dash", line_color="red", annotation_text="Anomaly threshold")
 
                 for ev in events:
-                    if hasattr(ev, "start_idx"):
-                        fig.add_vrect(
-                            x0=ev.start_idx,
-                            x1=ev.start_idx + (ev.duration if hasattr(ev, "duration") else 1),
-                            fillcolor="red",
-                            opacity=0.15,
-                            line_width=0,
-                        )
+                    ev_start = ev.get("start", 0)
+                    ev_end = ev.get("end", ev_start + ev.get("duration", 1))
+                    if ev_end is None:
+                        ev_end = ar_n
+                    fig.add_vrect(
+                        x0=ev_start,
+                        x1=ev_end,
+                        fillcolor="red",
+                        opacity=0.15,
+                        line_width=0,
+                    )
 
                 fig.update_layout(
                     title="Trust Series with Anomaly Detection",
                     xaxis_title="Time Step",
-                    yaxis_title="T",
+                    yaxis_title="T̄",
                     height=400,
                 )
                 st.plotly_chart(fig, use_container_width=True)
 
                 if events:
-                    ev_data = []
-                    for ev in events:
-                        ev_dict = ev._asdict() if hasattr(ev, "_asdict") else {"event": str(ev)}
-                        ev_data.append(ev_dict)
-                    st.dataframe(pd.DataFrame(ev_data), use_container_width=True, hide_index=True)
+                    st.dataframe(pd.DataFrame(events), use_container_width=True, hide_index=True)
                 else:
                     st.info("No anomaly events detected in this simulation.")
             except Exception as e:
@@ -6474,7 +6506,7 @@ def render_security_page() -> None:
         st.subheader("👤 Behavior Profiler")
         st.markdown(
             "Establishes baseline behavior profile and detects deviations. "
-            "Trend analysis: STABLE, DEGRADING, IMPROVING, VOLATILE."
+            "Trend analysis: STABLE, DECLINING, IMPROVING, VOLATILE."
         )
 
         bp_cols = st.columns(3)
@@ -6493,60 +6525,71 @@ def render_security_page() -> None:
                     compute_deviation,
                 )
 
-                # Simulate behavioral signal
+                # Simulate multi-signal behavioral data: shape (T, n_signals)
+                n_sig = 5
                 baseline_data = np.clip(
-                    np.array([bp_base + bp_drift * i + np.random.normal(0, 0.03) for i in range(bp_n)]), 0, 1
+                    np.array(
+                        [
+                            [bp_base + bp_drift * i + np.random.normal(0, 0.03) for _ in range(n_sig)]
+                            for i in range(bp_n)
+                        ]
+                    ),
+                    0,
+                    1,
                 )
 
-                profile = compute_baseline_profile(baseline_data.tolist())
-                trend = analyze_trend(baseline_data.tolist())
+                # compute_baseline_profile takes ndarray shape (T, n)
+                profile = compute_baseline_profile(baseline_data)
 
+                # analyze_trend takes 1D ndarray, returns (BehaviorTrend, stats_dict)
+                trust_series = np.mean(baseline_data, axis=1)
+                trend, _trend_stats = analyze_trend(trust_series)
+
+                trend_name = trend.value if hasattr(trend, "value") else str(trend)
                 trend_icon = {
                     "STABLE": "🟢",
-                    "DEGRADING": "🔴",
+                    "DECLINING": "🔴",
                     "IMPROVING": "🟢",
                     "VOLATILE": "🟡",
-                }.get(str(trend) if isinstance(trend, str) else trend.name if hasattr(trend, "name") else "", "⚪")
+                    "UNKNOWN": "⚪",
+                }.get(trend_name, "⚪")
 
                 rc = st.columns(4)
                 with rc[0]:
-                    st.metric("Baseline Mean", f"{profile.get('mean', 0):.4f}" if isinstance(profile, dict) else "N/A")
+                    mean_val = float(np.mean(profile.mean))
+                    st.metric("Baseline Mean", f"{mean_val:.4f}")
                 with rc[1]:
-                    st.metric("Baseline Std", f"{profile.get('std', 0):.4f}" if isinstance(profile, dict) else "N/A")
+                    std_val = float(np.mean(profile.std))
+                    st.metric("Baseline Std", f"{std_val:.4f}")
                 with rc[2]:
-                    trend_str = (
-                        str(trend) if isinstance(trend, str) else trend.name if hasattr(trend, "name") else str(trend)
-                    )
-                    st.metric("Trend", f"{trend_icon} {trend_str}")
+                    st.metric("Trend", f"{trend_icon} {trend_name}")
                 with rc[3]:
-                    latest_dev = compute_deviation(float(baseline_data[-1]), profile)
-                    st.metric(
-                        "Current Deviation", f"{latest_dev:.4f}" if isinstance(latest_dev, float) else str(latest_dev)
-                    )
+                    # compute_deviation takes (ndarray shape (n,), BehaviorProfile)
+                    latest_dev = compute_deviation(baseline_data[-1], profile)
+                    st.metric("Current Deviation", f"{latest_dev.deviation_score:.4f}")
 
                 fig = go.Figure()
                 fig.add_trace(
                     go.Scatter(
-                        y=baseline_data.tolist(), mode="lines+markers", name="Behavior Signal", line={"width": 2}
+                        y=trust_series.tolist(),
+                        mode="lines+markers",
+                        name="Mean Trust Signal",
+                        line={"width": 2},
                     )
                 )
-                if isinstance(profile, dict) and "mean" in profile:
-                    fig.add_hline(
-                        y=profile["mean"], line_dash="dash", line_color="green", annotation_text="Baseline Mean"
-                    )
-                    if "std" in profile:
-                        fig.add_hline(
-                            y=profile["mean"] - 2 * profile["std"],
-                            line_dash="dot",
-                            line_color="orange",
-                            annotation_text="−2σ",
-                        )
-                        fig.add_hline(
-                            y=profile["mean"] + 2 * profile["std"],
-                            line_dash="dot",
-                            line_color="orange",
-                            annotation_text="+2σ",
-                        )
+                fig.add_hline(y=mean_val, line_dash="dash", line_color="green", annotation_text="Baseline Mean")
+                fig.add_hline(
+                    y=mean_val - 2 * std_val,
+                    line_dash="dot",
+                    line_color="orange",
+                    annotation_text="−2σ",
+                )
+                fig.add_hline(
+                    y=mean_val + 2 * std_val,
+                    line_dash="dot",
+                    line_color="orange",
+                    annotation_text="+2σ",
+                )
                 fig.update_layout(
                     title="Behavior Profile Over Time",
                     xaxis_title="Time Step",
@@ -6585,10 +6628,17 @@ def render_security_page() -> None:
                     sev_counts: dict[str, int] = {}
                     pii_data = []
                     for finding in pii_findings:
-                        f_dict = finding._asdict() if hasattr(finding, "_asdict") else {"finding": str(finding)}
+                        # PIIMatch is a dataclass — use vars() for dict conversion
+                        f_dict = {
+                            "pii_type": finding.pii_type,
+                            "value_masked": finding.value_masked,
+                            "location": finding.location,
+                            "severity": finding.severity.value
+                            if hasattr(finding.severity, "value")
+                            else str(finding.severity),
+                        }
                         pii_data.append(f_dict)
-                        sev = f_dict.get("severity", "UNKNOWN")
-                        sev_str = sev.name if hasattr(sev, "name") else str(sev)
+                        sev_str = f_dict["severity"]
                         sev_counts[sev_str] = sev_counts.get(sev_str, 0) + 1
 
                     st.warning(f"⚠️ Found {len(pii_findings)} PII instance(s)")
@@ -6602,7 +6652,12 @@ def render_security_page() -> None:
 
                     # Severity distribution pie chart
                     if sev_counts:
-                        sev_colors = {"LOW": "#2ca02c", "MEDIUM": "#ff7f0e", "HIGH": "#d62728", "CRITICAL": "#7b2d8e"}
+                        sev_colors = {
+                            "LOW": "#2ca02c",
+                            "MODERATE": "#ff7f0e",
+                            "HIGH": "#d62728",
+                            "CRITICAL": "#7b2d8e",
+                        }
                         fig = go.Figure(
                             go.Pie(
                                 labels=list(sev_counts.keys()),

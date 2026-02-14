@@ -712,9 +712,7 @@ def render_batch_validation_page() -> None:
                         return "background-color: #f8d7da"
                     return "background-color: #fff3cd"
 
-                st.dataframe(
-                    results_df.style.applymap(color_status, subset=["Status"]), width="stretch", hide_index=True
-                )
+                st.dataframe(results_df.style.map(color_status, subset=["Status"]), width="stretch", hide_index=True)
 
     st.divider()
 
