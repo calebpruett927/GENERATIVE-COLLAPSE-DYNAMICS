@@ -17,6 +17,8 @@ import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.colors import LinearSegmentedColormap, Normalize
+from matplotlib.figure import Figure
+from matplotlib.lines import Line2D
 
 # ── Ensure closures importable ──────────────────────────────────────────────
 ROOT = Path(__file__).resolve().parent.parent
@@ -58,7 +60,7 @@ ACCENT_PINK = "#e377c2"
 DARK_BG = "#1a1a2e"
 
 
-def _save(fig: plt.Figure, name: str) -> None:
+def _save(fig: Figure, name: str) -> None:
     path = OUT_DIR / name
     fig.savefig(path, facecolor=fig.get_facecolor(), edgecolor="none")
     plt.close(fig)
@@ -122,7 +124,7 @@ def fig01_regime_phase_diagram() -> None:
     handles = []
     for cat, (marker, color, _) in cat_markers.items():
         handles.append(
-            plt.Line2D(
+            Line2D(
                 [0],
                 [0],
                 marker=marker,
@@ -274,6 +276,7 @@ def fig02_confinement_cliff() -> None:
 def fig03_periodic_table_heatmap() -> None:
     """Fidelity heatmap for all 118 elements in periodic table layout."""
     from closures.atomic_physics.periodic_kernel import compute_element_kernel
+    from closures.materials_science.element_database import ELEMENTS_BY_Z
 
     # Periodic table layout: (row, col) for each element Z
     # Standard 18-column layout
@@ -314,7 +317,7 @@ def fig03_periodic_table_heatmap() -> None:
     elements = {}
     for Z in range(1, 119):
         try:
-            r = compute_element_kernel(Z)
+            r = compute_element_kernel(ELEMENTS_BY_Z[Z].symbol)
             elements[Z] = r
         except Exception:
             pass
@@ -331,7 +334,9 @@ def fig03_periodic_table_heatmap() -> None:
             continue
         el = elements[Z]
         color = cmap(norm(el.F))
-        rect = plt.Rectangle((col - 0.45, -row - 0.45), 0.9, 0.9, facecolor=color, edgecolor="black", linewidth=0.4)
+        rect = mpatches.Rectangle(
+            (col - 0.45, -row - 0.45), 0.9, 0.9, facecolor=color, edgecolor="black", linewidth=0.4
+        )
         ax.add_patch(rect)
         ax.text(
             col,
@@ -382,6 +387,7 @@ def fig03_periodic_table_heatmap() -> None:
 def fig04_heterogeneity_gap() -> None:
     """F vs IC showing the integrity bound and heterogeneity gap Δ = F − IC."""
     from closures.atomic_physics.periodic_kernel import compute_element_kernel
+    from closures.materials_science.element_database import ELEMENTS_BY_Z
     from closures.standard_model.subatomic_kernel import compute_all
 
     particles = compute_all()
@@ -390,7 +396,7 @@ def fig04_heterogeneity_gap() -> None:
     elem_F, elem_IC = [], []
     for Z in range(1, 119):
         try:
-            r = compute_element_kernel(Z)
+            r = compute_element_kernel(ELEMENTS_BY_Z[Z].symbol)
             elem_F.append(float(r.F))
             elem_IC.append(float(r.IC))
         except Exception:
@@ -444,8 +450,8 @@ def fig04_heterogeneity_gap() -> None:
     ax.annotate("proton", (proton.F, proton.IC), textcoords="offset points", xytext=(8, -5), fontsize=7.5)
 
     # Annotate quarks cluster
-    quark_center_f = np.mean([p.F for p in particles if p.category == "Quark"])
-    quark_center_ic = np.mean([p.IC for p in particles if p.category == "Quark"])
+    quark_center_f = float(np.mean([p.F for p in particles if p.category == "Quark"]))
+    quark_center_ic = float(np.mean([p.IC for p in particles if p.category == "Quark"]))
     ax.annotate(
         "quarks",
         (quark_center_f, quark_center_ic),
@@ -565,6 +571,7 @@ def fig05_tier_architecture() -> None:
 def fig06_budget_identity() -> None:
     """F + ω = 1 verification across particles and elements."""
     from closures.atomic_physics.periodic_kernel import compute_element_kernel
+    from closures.materials_science.element_database import ELEMENTS_BY_Z
     from closures.standard_model.subatomic_kernel import compute_all
 
     particles = compute_all()
@@ -577,7 +584,7 @@ def fig06_budget_identity() -> None:
     elem_Z = []
     for Z in range(1, 119):
         try:
-            r = compute_element_kernel(Z)
+            r = compute_element_kernel(ELEMENTS_BY_Z[Z].symbol)
             elem_residuals.append(abs(float(r.F) + float(r.omega) - 1.0))
             elem_Z.append(Z)
         except Exception:
@@ -719,7 +726,7 @@ def fig07_cross_scale_bridge() -> None:
         start = gslice.start
         stop = gslice.stop - 1
         ax2.add_patch(
-            plt.Rectangle(
+            mpatches.Rectangle(
                 (-1.8, start - 0.5), 1.2, stop - start + 1, facecolor=group_colors[i], alpha=0.15, clip_on=False
             )
         )
@@ -804,7 +811,7 @@ def fig08_tau_r_phase_diagram() -> None:
     ax2 = axes[1]
     omega_line = np.linspace(0.005, 0.5, 300)
     S_values = [0.05, 0.15, 0.30, 0.50, 0.65]
-    colors = plt.cm.viridis(np.linspace(0.1, 0.9, len(S_values)))
+    colors = matplotlib.colormaps["viridis"](np.linspace(0.1, 0.9, len(S_values)))
 
     for S_val, color in zip(S_values, colors, strict=False):
         tau = np.exp(np.clip(S_val / (omega_line + 0.01), 0, 8))
