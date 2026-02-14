@@ -1,6 +1,6 @@
 """
 Science domain dashboard pages: Cosmology, Astronomy, Nuclear, Quantum, Finance, RCFT,
-Atomic Physics, Standard Model.
+Atomic Physics, Standard Model, Materials Science, Security.
 """
 # pyright: reportUnknownMemberType=false
 # pyright: reportUnknownVariableType=false
@@ -5292,3 +5292,1328 @@ def render_standard_model_page() -> None:
 
             except Exception as e:
                 st.error(f"Computation error: {e}")
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Materials Science Domain Page
+# ═══════════════════════════════════════════════════════════════════════════════
+
+
+def render_materials_science_page() -> None:
+    """Render interactive Materials Science domain page with 8 closures + element database."""
+    if st is None or go is None or pd is None or np is None:
+        return
+
+    _ensure_closures_path()
+
+    st.title("🧱 Materials Science Domain")
+    st.caption(
+        "MATL.INTSTACK.v1 — Cohesive energy, band structure, phase transitions, "
+        "elastic moduli, Debye thermal, magnetism, superconductivity, surface catalysis"
+    )
+
+    with st.expander("📖 Domain Overview", expanded=False):
+        st.markdown(
+            """
+        The **Materials Science** domain bridges atomic-scale observables into bulk
+        material properties through the RCFT universality framework. Each closure
+        derives independently from Axiom-0: collective material phases emerge as
+        collapse of individual atomic observables into bulk structure.
+
+        | Closure | Physics | Key Observable |
+        |---------|---------|---------------|
+        | Cohesive Energy | Madelung-Born-Mayer binding | E_coh (eV/atom) |
+        | Band Structure | Bloch periodicity + RCFT gap | Band gap E_g (eV) |
+        | Phase Transition | RCFT critical exponents | Order parameter φ(T) |
+        | Elastic Moduli | Interatomic potential curvature | K, G, E (GPa) |
+        | Debye Thermal | RCFT partition → Debye model | C_V, Θ_D (K) |
+        | Magnetic Properties | Weiss field + RCFT β,γ | μ_eff, T_ordering |
+        | BCS Superconductivity | RCFT partition condensation | T_c (K), Δ₀ (meV) |
+        | Surface Catalysis | Broken-bond + d-band theory | γ (J/m²), E_ads |
+        """
+        )
+
+    tab_names = [
+        "⚡ Cohesive Energy",
+        "📊 Band Structure",
+        "🔥 Phase Transitions",
+        "🔩 Elastic Moduli",
+        "🌡️ Debye Thermal",
+        "🧲 Magnetism",
+        "❄️ Superconductivity",
+        "🧪 Surface Catalysis",
+    ]
+    matl_tabs = st.tabs(tab_names)
+
+    # ── Common element presets ──
+    _ELEMENT_PRESETS: dict[str, str] = {
+        "Custom": "",
+        "Al – Aluminium": "Al",
+        "Fe – Iron": "Fe",
+        "Cu – Copper": "Cu",
+        "Si – Silicon": "Si",
+        "Au – Gold": "Au",
+        "Ni – Nickel": "Ni",
+        "Ti – Titanium": "Ti",
+        "W – Tungsten": "W",
+        "Ag – Silver": "Ag",
+        "Nb – Niobium": "Nb",
+        "Pb – Lead": "Pb",
+        "C – Carbon": "C",
+        "Cr – Chromium": "Cr",
+        "Co – Cobalt": "Co",
+    }
+
+    # ── Tab 1: Cohesive Energy ─────────────────────────────────────
+    with matl_tabs[0]:
+        st.subheader("⚡ Cohesive Energy")
+        st.markdown(
+            "**Model**: Madelung-Born-Mayer (ionic), Wigner-Seitz (metallic), "
+            "overlap integrals (covalent). Derives bulk binding from atomic potentials."
+        )
+
+        c1, _c2 = st.columns([1, 2])
+        with c1:
+            coh_preset = st.selectbox("Element", list(_ELEMENT_PRESETS.keys()), key="matl_coh_preset")
+        coh_sym = _ELEMENT_PRESETS.get(coh_preset, "")
+
+        if st.button("Compute Cohesive Energy", key="matl_coh_btn", type="primary"):
+            try:
+                from closures.materials_science.cohesive_energy import (
+                    compute_cohesive_energy,
+                )
+
+                result = compute_cohesive_energy(symbol=coh_sym if coh_sym else "Fe")
+                r = result._asdict()
+                regime = r["regime"]
+                regime_icon = {"Strong_Bond": "🟢", "Moderate_Bond": "🟡", "Weak_Bond": "🟠"}.get(regime, "🔴")
+
+                rc = st.columns(4)
+                with rc[0]:
+                    st.metric("E_coh predicted (eV)", f"{r['E_coh_eV']:.3f}")
+                with rc[1]:
+                    st.metric("E_coh measured (eV)", f"{r['E_coh_measured_eV']:.3f}")
+                with rc[2]:
+                    st.metric("ω_eff", f"{r['omega_eff']:.4f}")
+                with rc[3]:
+                    st.metric("Regime", f"{regime_icon} {regime}")
+
+                mc = st.columns(4)
+                with mc[0]:
+                    st.metric("Bond Type", r["bond_type"])
+                with mc[1]:
+                    st.metric("Madelung α", f"{r['madelung_constant']:.4f}")
+                with mc[2]:
+                    st.metric("r₀ (Å)", f"{r['r0_A']:.3f}")
+                with mc[3]:
+                    st.metric("F_eff", f"{r['F_eff']:.4f}")
+
+                # Batch scan for comparison
+                from closures.materials_science.cohesive_energy import REFERENCE_COHESIVE
+
+                if REFERENCE_COHESIVE:
+                    batch_data = []
+                    for sym in list(REFERENCE_COHESIVE.keys())[:20]:
+                        try:
+                            br = compute_cohesive_energy(symbol=sym)._asdict()
+                            batch_data.append(
+                                {
+                                    "Element": sym,
+                                    "E_coh_pred": br["E_coh_eV"],
+                                    "E_coh_meas": br["E_coh_measured_eV"],
+                                    "ω_eff": br["omega_eff"],
+                                    "Bond": br["bond_type"],
+                                    "Regime": br["regime"],
+                                }
+                            )
+                        except Exception:
+                            pass
+                    if batch_data:
+                        df_coh = pd.DataFrame(batch_data)
+                        st.dataframe(df_coh, use_container_width=True, hide_index=True)
+
+                        fig = go.Figure()
+                        fig.add_trace(
+                            go.Bar(
+                                x=df_coh["Element"], y=df_coh["E_coh_pred"], name="Predicted", marker_color="#1f77b4"
+                            )
+                        )
+                        fig.add_trace(
+                            go.Bar(x=df_coh["Element"], y=df_coh["E_coh_meas"], name="Measured", marker_color="#ff7f0e")
+                        )
+                        fig.update_layout(
+                            title="Cohesive Energy: Predicted vs Measured",
+                            xaxis_title="Element",
+                            yaxis_title="E_coh (eV/atom)",
+                            barmode="group",
+                            height=400,
+                        )
+                        st.plotly_chart(fig, use_container_width=True)
+            except Exception as e:
+                st.error(f"Cohesive energy error: {e}")
+
+    # ── Tab 2: Band Structure ──────────────────────────────────────
+    with matl_tabs[1]:
+        st.subheader("📊 Band Structure")
+        st.markdown(
+            "**Model**: Electron config + Bloch periodicity → band gap. "
+            "RCFT interpretation: gap = Fisher geodesic distance × energy scale."
+        )
+
+        c1, _c2 = st.columns([1, 2])
+        with c1:
+            band_preset = st.selectbox("Element", list(_ELEMENT_PRESETS.keys()), key="matl_band_preset")
+        band_sym = _ELEMENT_PRESETS.get(band_preset, "")
+
+        if st.button("Compute Band Structure", key="matl_band_btn", type="primary"):
+            try:
+                from closures.materials_science.band_structure import (
+                    compute_band_structure,
+                )
+
+                result = compute_band_structure(symbol=band_sym if band_sym else "Si")
+                r = result._asdict()
+                regime = r["regime"]
+                regime_icon = {"Precise": "🟢", "Moderate": "🟡", "Approximate": "🟠"}.get(regime, "🔴")
+
+                rc = st.columns(4)
+                with rc[0]:
+                    st.metric("E_g predicted (eV)", f"{r['E_g_eV']:.3f}")
+                with rc[1]:
+                    st.metric("E_g measured (eV)", f"{r['E_g_measured_eV']:.3f}")
+                with rc[2]:
+                    st.metric("Band Character", r["band_character"])
+                with rc[3]:
+                    st.metric("Regime", f"{regime_icon} {regime}")
+
+                mc = st.columns(3)
+                with mc[0]:
+                    st.metric("ω_eff", f"{r['omega_eff']:.4f}")
+                with mc[1]:
+                    st.metric("F_eff", f"{r['F_eff']:.4f}")
+                with mc[2]:
+                    st.metric("RCFT Fisher gap", f"{r.get('rcft_fisher_gap', 0):.4f}")
+
+                # Batch comparison
+                from closures.materials_science.band_structure import REFERENCE_BAND
+
+                if REFERENCE_BAND:
+                    batch_data = []
+                    for sym in list(REFERENCE_BAND.keys())[:20]:
+                        try:
+                            br = compute_band_structure(symbol=sym)._asdict()
+                            batch_data.append(
+                                {
+                                    "Element": sym,
+                                    "E_g (eV)": br["E_g_eV"],
+                                    "E_g meas (eV)": br["E_g_measured_eV"],
+                                    "Character": br["band_character"],
+                                    "ω_eff": br["omega_eff"],
+                                    "Regime": br["regime"],
+                                }
+                            )
+                        except Exception:
+                            pass
+                    if batch_data:
+                        df_band = pd.DataFrame(batch_data)
+                        st.dataframe(df_band, use_container_width=True, hide_index=True)
+
+                        # Color by band character
+                        char_colors = {
+                            "Metal": "#1f77b4",
+                            "Semimetal": "#2ca02c",
+                            "Semiconductor": "#ff7f0e",
+                            "Insulator": "#d62728",
+                        }
+                        fig = go.Figure()
+                        for char, color in char_colors.items():
+                            sub = df_band[df_band["Character"] == char]
+                            if not sub.empty:
+                                fig.add_trace(
+                                    go.Bar(x=sub["Element"], y=sub["E_g (eV)"], name=char, marker_color=color)
+                                )
+                        fig.update_layout(
+                            title="Band Gap by Element",
+                            xaxis_title="Element",
+                            yaxis_title="E_g (eV)",
+                            height=400,
+                        )
+                        st.plotly_chart(fig, use_container_width=True)
+            except Exception as e:
+                st.error(f"Band structure error: {e}")
+
+    # ── Tab 3: Phase Transitions ───────────────────────────────────
+    with matl_tabs[2]:
+        st.subheader("🔥 Phase Transitions")
+        st.markdown(
+            "**Model**: RCFT critical exponents (ν, γ, α, β) govern order parameter, "
+            "susceptibility, and correlation length near T_c."
+        )
+
+        pt_presets = {
+            "Custom": ("", 1043.0),
+            "Fe (Curie)": ("Fe", 1043.0),
+            "Ni (Curie)": ("Ni", 631.0),
+            "Co (Curie)": ("Co", 1388.0),
+            "Gd (Curie)": ("Gd", 292.5),
+            "Cr (Néel)": ("Cr", 311.0),
+            "MnO (Néel)": ("MnO", 116.0),
+        }
+        pt_sel = st.selectbox("Material preset", list(pt_presets.keys()), key="matl_pt_preset")
+        pt_sym, pt_tc = pt_presets.get(pt_sel, ("", 1043.0))
+
+        pt_cols = st.columns(3)
+        with pt_cols[0]:
+            pt_T = st.slider("Temperature T (K)", 1.0, 2000.0, pt_tc * 0.8, 1.0, key="matl_pt_T")
+        with pt_cols[1]:
+            pt_Tc = st.number_input("T_c (K)", 1.0, 5000.0, pt_tc, key="matl_pt_Tc")
+        with pt_cols[2]:
+            pt_type = st.selectbox(
+                "Transition type", ["Magnetic", "Structural", "Superconducting", "Displacive"], key="matl_pt_type"
+            )
+
+        if st.button("Compute Phase Transition", key="matl_pt_btn", type="primary"):
+            try:
+                from closures.materials_science.phase_transition import (
+                    compute_phase_transition,
+                    scan_phase_diagram,
+                )
+
+                result = compute_phase_transition(pt_T, pt_Tc, material_key=pt_sym, transition_type=pt_type)
+                r = result._asdict()
+                regime = r["regime"]
+                regime_icon = {"Ordered": "🟢", "Critical": "🟡", "Fluctuation": "🟠", "Disordered": "🔴"}.get(
+                    regime, "⚪"
+                )
+
+                rc = st.columns(4)
+                with rc[0]:
+                    st.metric("Order Parameter φ", f"{r['order_parameter']:.4f}")
+                with rc[1]:
+                    st.metric("Susceptibility χ", f"{r['susceptibility']:.4f}")
+                with rc[2]:
+                    st.metric("ω_eff", f"{r['omega_eff']:.4f}")
+                with rc[3]:
+                    st.metric("Regime", f"{regime_icon} {regime}")
+
+                mc = st.columns(4)
+                with mc[0]:
+                    st.metric("ν (corr. length)", f"{r['nu']:.4f}")
+                with mc[1]:
+                    st.metric("γ (suscept.)", f"{r['gamma']:.4f}")
+                with mc[2]:
+                    st.metric("β (order param.)", f"{r['beta_exp']:.4f}")
+                with mc[3]:
+                    st.metric("c_eff (RCFT)", f"{r['c_eff']:.4f}")
+
+                # Phase diagram scan
+                scan = scan_phase_diagram(pt_Tc, n_points=80, transition_type=pt_type)
+                T_arr = [s.T_K for s in scan]
+                phi_arr = [s.order_parameter for s in scan]
+                chi_arr = [s.susceptibility for s in scan]
+                omega_arr = [s.omega_eff for s in scan]
+
+                fig = go.Figure()
+                fig.add_trace(go.Scatter(x=T_arr, y=phi_arr, mode="lines", name="φ(T)", line={"width": 2}))
+                fig.add_trace(
+                    go.Scatter(
+                        x=T_arr, y=chi_arr, mode="lines", name="χ(T)", yaxis="y2", line={"width": 2, "dash": "dash"}
+                    )
+                )
+                fig.add_vline(x=pt_Tc, line_dash="dash", line_color="red", annotation_text="T_c")
+                fig.update_layout(
+                    title=f"Phase Diagram — T_c = {pt_Tc:.0f} K | {pt_type}",
+                    xaxis_title="T (K)",
+                    yaxis_title="Order Parameter φ",
+                    yaxis2={"title": "Susceptibility χ", "overlaying": "y", "side": "right"},
+                    height=400,
+                )
+                st.plotly_chart(fig, use_container_width=True)
+
+                # ω trajectory
+                fig2 = go.Figure()
+                fig2.add_trace(
+                    go.Scatter(
+                        x=T_arr, y=omega_arr, mode="lines", name="ω_eff(T)", line={"color": "#d62728", "width": 2}
+                    )
+                )
+                fig2.add_vline(x=pt_Tc, line_dash="dash", line_color="gray", annotation_text="T_c")
+                fig2.update_layout(
+                    title="Drift ω_eff vs Temperature",
+                    xaxis_title="T (K)",
+                    yaxis_title="ω_eff",
+                    height=300,
+                )
+                st.plotly_chart(fig2, use_container_width=True)
+            except Exception as e:
+                st.error(f"Phase transition error: {e}")
+
+    # ── Tab 4: Elastic Moduli ──────────────────────────────────────
+    with matl_tabs[3]:
+        st.subheader("🔩 Elastic Moduli")
+        st.markdown(
+            "**Model**: Interatomic potential curvature → bulk modulus K, shear modulus G, "
+            "Young's modulus E. Voigt-Reuss-Hill averaging."
+        )
+
+        c1, _c2 = st.columns([1, 2])
+        with c1:
+            el_preset = st.selectbox("Element", list(_ELEMENT_PRESETS.keys()), key="matl_el_preset")
+        el_sym = _ELEMENT_PRESETS.get(el_preset, "")
+
+        if st.button("Compute Elastic Moduli", key="matl_el_btn", type="primary"):
+            try:
+                # Need cohesive energy first
+                from closures.materials_science.cohesive_energy import (
+                    compute_cohesive_energy,
+                )
+                from closures.materials_science.elastic_moduli import (
+                    REFERENCE_K,
+                    compute_elastic_moduli,
+                )
+
+                sym = el_sym if el_sym else "Fe"
+                coh = compute_cohesive_energy(symbol=sym)
+                result = compute_elastic_moduli(coh.E_coh_eV, coh.r0_A, symbol=sym)
+                r = result._asdict()
+                regime = r["regime"]
+                regime_icon = {"Stiff": "🟢", "Moderate": "🟡", "Compliant": "🟠"}.get(regime, "🔴")
+
+                rc = st.columns(4)
+                with rc[0]:
+                    st.metric("K (GPa)", f"{r['K_GPa']:.1f}")
+                with rc[1]:
+                    st.metric("G (GPa)", f"{r['G_GPa']:.1f}")
+                with rc[2]:
+                    st.metric("E (GPa)", f"{r['E_GPa']:.1f}")
+                with rc[3]:
+                    st.metric("Regime", f"{regime_icon} {regime}")
+
+                mc = st.columns(4)
+                with mc[0]:
+                    st.metric("ν (Poisson)", f"{r['nu_poisson']:.3f}")
+                with mc[1]:
+                    st.metric("K_meas (GPa)", f"{r['K_measured_GPa']:.1f}" if r["K_measured_GPa"] else "N/A")
+                with mc[2]:
+                    st.metric("ω_eff", f"{r['omega_eff']:.4f}")
+                with mc[3]:
+                    st.metric("F_eff", f"{r['F_eff']:.4f}")
+
+                # Batch
+                if REFERENCE_K:
+                    batch_data = []
+                    for sym_b in list(REFERENCE_K.keys())[:20]:
+                        try:
+                            coh_b = compute_cohesive_energy(symbol=sym_b)
+                            el_b = compute_elastic_moduli(coh_b.E_coh_eV, coh_b.r0_A, symbol=sym_b)._asdict()
+                            batch_data.append(
+                                {
+                                    "Element": sym_b,
+                                    "K_pred (GPa)": el_b["K_GPa"],
+                                    "K_meas (GPa)": el_b["K_measured_GPa"] or 0,
+                                    "G (GPa)": el_b["G_GPa"],
+                                    "E (GPa)": el_b["E_GPa"],
+                                    "ω_eff": el_b["omega_eff"],
+                                    "Regime": el_b["regime"],
+                                }
+                            )
+                        except Exception:
+                            pass
+                    if batch_data:
+                        df_el = pd.DataFrame(batch_data)
+                        st.dataframe(df_el, use_container_width=True, hide_index=True)
+
+                        fig = go.Figure()
+                        fig.add_trace(
+                            go.Bar(
+                                x=df_el["Element"], y=df_el["K_pred (GPa)"], name="K predicted", marker_color="#1f77b4"
+                            )
+                        )
+                        fig.add_trace(
+                            go.Bar(
+                                x=df_el["Element"], y=df_el["K_meas (GPa)"], name="K measured", marker_color="#ff7f0e"
+                            )
+                        )
+                        fig.update_layout(
+                            title="Bulk Modulus: Predicted vs Measured",
+                            xaxis_title="Element",
+                            yaxis_title="K (GPa)",
+                            barmode="group",
+                            height=400,
+                        )
+                        st.plotly_chart(fig, use_container_width=True)
+            except Exception as e:
+                st.error(f"Elastic moduli error: {e}")
+
+    # ── Tab 5: Debye Thermal ───────────────────────────────────────
+    with matl_tabs[4]:
+        st.subheader("🌡️ Debye Thermal Properties")
+        st.markdown(
+            "**Model**: RCFT partition function → Debye model. "
+            "Heat capacity C_V, thermal energy U, entropy S at temperature T."
+        )
+
+        deb_presets = {
+            "Custom": ("", 300.0, 428.0),
+            "Al": ("Al", 300.0, 428.0),
+            "Fe": ("Fe", 300.0, 470.0),
+            "Cu": ("Cu", 300.0, 343.0),
+            "Au": ("Au", 300.0, 165.0),
+            "Si": ("Si", 300.0, 645.0),
+            "Nb": ("Nb", 300.0, 275.0),
+            "W": ("W", 300.0, 400.0),
+        }
+        deb_sel = st.selectbox("Element preset", list(deb_presets.keys()), key="matl_deb_preset")
+        deb_sym, deb_T, deb_Theta = deb_presets.get(deb_sel, ("", 300.0, 428.0))
+
+        deb_cols = st.columns(2)
+        with deb_cols[0]:
+            deb_T_val = st.slider("Temperature T (K)", 1.0, 2000.0, deb_T, 1.0, key="matl_deb_T")
+        with deb_cols[1]:
+            deb_Theta_val = st.number_input("Θ_D (K)", 10.0, 3000.0, deb_Theta, key="matl_deb_Theta")
+
+        if st.button("Compute Debye Thermal", key="matl_deb_btn", type="primary"):
+            try:
+                from closures.materials_science.debye_thermal import compute_debye_thermal
+
+                result = compute_debye_thermal(deb_T_val, symbol=deb_sym if deb_sym else "", Theta_D_K=deb_Theta_val)
+                r = result._asdict()
+                regime = r["regime"]
+                regime_icon = {"Quantum": "🔵", "Intermediate": "🟡", "Classical": "🟢"}.get(regime, "⚪")
+
+                rc = st.columns(4)
+                with rc[0]:
+                    st.metric("C_V (J/mol·K)", f"{r['C_V_J_mol_K']:.3f}")
+                with rc[1]:
+                    st.metric("T/Θ_D", f"{r['T_over_Theta']:.3f}")
+                with rc[2]:
+                    st.metric("ω_eff", f"{r['omega_eff']:.4f}")
+                with rc[3]:
+                    st.metric("Regime", f"{regime_icon} {regime}")
+
+                mc = st.columns(3)
+                with mc[0]:
+                    st.metric("U (J/mol)", f"{r['U_J_mol']:.1f}")
+                with mc[1]:
+                    st.metric("S (J/mol·K)", f"{r['S_J_mol_K']:.3f}")
+                with mc[2]:
+                    st.metric("v_sound (m/s)", f"{r['v_sound_ms']:.0f}")
+
+                # Temperature scan
+                T_scan = np.linspace(1.0, 2.0 * deb_Theta_val, 80)
+                cv_data = []
+                for T_i in T_scan:
+                    try:
+                        ri = compute_debye_thermal(float(T_i), Theta_D_K=deb_Theta_val)
+                        cv_data.append(
+                            {"T": float(T_i), "C_V": ri.C_V_J_mol_K, "ω_eff": ri.omega_eff, "Regime": ri.regime}
+                        )
+                    except Exception:
+                        pass
+                if cv_data:
+                    df_cv = pd.DataFrame(cv_data)
+                    fig = go.Figure()
+                    fig.add_trace(
+                        go.Scatter(
+                            x=df_cv["T"],
+                            y=df_cv["C_V"],
+                            mode="lines",
+                            name="C_V(T)",
+                            line={"color": "#1f77b4", "width": 2},
+                        )
+                    )
+                    fig.add_hline(y=24.94, line_dash="dash", line_color="gray", annotation_text="3R (Dulong-Petit)")
+                    fig.add_vline(x=deb_Theta_val, line_dash="dash", line_color="red", annotation_text="Θ_D")
+                    fig.update_layout(
+                        title=f"Heat Capacity vs Temperature — Θ_D = {deb_Theta_val:.0f} K",
+                        xaxis_title="T (K)",
+                        yaxis_title="C_V (J/mol·K)",
+                        height=400,
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+            except Exception as e:
+                st.error(f"Debye thermal error: {e}")
+
+    # ── Tab 6: Magnetic Properties ─────────────────────────────────
+    with matl_tabs[5]:
+        st.subheader("🧲 Magnetic Properties")
+        st.markdown("**Model**: Zeeman/Stark → bulk magnetism via Weiss molecular field + RCFT β,γ exponents.")
+
+        mag_presets = {
+            "Custom": (26, "Fe", 300.0),
+            "Fe": (26, "Fe", 300.0),
+            "Co": (27, "Co", 300.0),
+            "Ni": (28, "Ni", 300.0),
+            "Gd": (64, "Gd", 300.0),
+            "Cr": (24, "Cr", 300.0),
+            "Mn": (25, "Mn", 300.0),
+        }
+        mag_sel = st.selectbox("Element preset", list(mag_presets.keys()), key="matl_mag_preset")
+        mag_Z, mag_sym, mag_T = mag_presets.get(mag_sel, (26, "Fe", 300.0))
+
+        mag_cols = st.columns(3)
+        with mag_cols[0]:
+            mag_Z_val = st.number_input("Z", 1, 118, mag_Z, key="matl_mag_Z")
+        with mag_cols[1]:
+            mag_T_val = st.slider("Temperature (K)", 1.0, 2000.0, mag_T, 1.0, key="matl_mag_T")
+        with mag_cols[2]:
+            mag_B = st.slider("B field (T)", 0.0, 10.0, 0.0, 0.1, key="matl_mag_B")
+
+        if st.button("Compute Magnetic Properties", key="matl_mag_btn", type="primary"):
+            try:
+                from closures.materials_science.magnetic_properties import (
+                    compute_magnetic_properties,
+                )
+
+                result = compute_magnetic_properties(mag_Z_val, symbol=mag_sym, T_K=mag_T_val, B_tesla=mag_B)
+                r = result._asdict()
+                regime = r["regime"]
+                regime_icon = {"Ordered": "🟢", "Moderate": "🟡", "Disordered": "🟠"}.get(regime, "🔴")
+
+                rc = st.columns(4)
+                with rc[0]:
+                    st.metric("μ_eff (μ_B)", f"{r['mu_eff_B']:.3f}")
+                with rc[1]:
+                    st.metric("Magnetic Class", r["magnetic_class"])
+                with rc[2]:
+                    st.metric("T_ordering (K)", f"{r['T_ordering_K']:.1f}" if r["T_ordering_K"] else "N/A")
+                with rc[3]:
+                    st.metric("Regime", f"{regime_icon} {regime}")
+
+                mc = st.columns(4)
+                with mc[0]:
+                    st.metric("M (μ_B)", f"{r['M_total_B']:.4f}")
+                with mc[1]:
+                    st.metric("χ_SI", f"{r['chi_SI']:.4e}")
+                with mc[2]:
+                    st.metric("ω_eff", f"{r['omega_eff']:.4f}")
+                with mc[3]:
+                    st.metric("F_eff", f"{r['F_eff']:.4f}")
+            except Exception as e:
+                st.error(f"Magnetic properties error: {e}")
+
+    # ── Tab 7: Superconductivity ───────────────────────────────────
+    with matl_tabs[6]:
+        st.subheader("❄️ BCS Superconductivity")
+        st.markdown(
+            "**Model**: McMillan T_c from Debye temperature Θ_D and electron-phonon coupling λ_ep. "
+            "BCS gap Δ₀, coherence length ξ₀, penetration depth λ_L."
+        )
+
+        sc_presets: dict[str, tuple[str, float, float]] = {
+            "Custom": ("", 275.0, 0.82),
+            "Nb": ("Nb", 275.0, 0.82),
+            "Pb": ("Pb", 105.0, 1.55),
+            "Al": ("Al", 428.0, 0.43),
+            "Sn": ("Sn", 200.0, 0.72),
+            "V": ("V", 380.0, 0.60),
+            "MgB₂": ("MgB2", 700.0, 1.00),
+        }
+        sc_sel = st.selectbox("Material", list(sc_presets.keys()), key="matl_sc_preset")
+        sc_sym, sc_Theta, sc_lambda = sc_presets.get(sc_sel, ("", 275.0, 0.82))
+
+        sc_cols = st.columns(3)
+        with sc_cols[0]:
+            sc_Theta_val = st.number_input("Θ_D (K)", 10.0, 3000.0, sc_Theta, key="matl_sc_Theta")
+        with sc_cols[1]:
+            sc_lambda_val = st.slider("λ_ep", 0.1, 3.0, sc_lambda, 0.01, key="matl_sc_lambda")
+        with sc_cols[2]:
+            sc_mustar = st.slider("μ*", 0.05, 0.25, 0.13, 0.01, key="matl_sc_mustar")
+
+        if st.button("Compute BCS", key="matl_sc_btn", type="primary"):
+            try:
+                from closures.materials_science.bcs_superconductivity import (
+                    compute_bcs_superconductivity,
+                )
+
+                result = compute_bcs_superconductivity(
+                    sc_Theta_val, sc_lambda_val, mu_star=sc_mustar, symbol=sc_sym if sc_sym else ""
+                )
+                r = result._asdict()
+                regime = r["regime"]
+                regime_icon = {"Precise": "🟢", "Moderate": "🟡", "Approximate": "🟠"}.get(regime, "🔴")
+
+                rc = st.columns(4)
+                with rc[0]:
+                    st.metric("T_c predicted (K)", f"{r['T_c_K']:.3f}")
+                with rc[1]:
+                    st.metric("T_c measured (K)", f"{r['T_c_measured_K']:.3f}" if r["T_c_measured_K"] else "N/A")
+                with rc[2]:
+                    st.metric("SC Type", r["sc_type"])
+                with rc[3]:
+                    st.metric("Regime", f"{regime_icon} {regime}")
+
+                mc = st.columns(4)
+                with mc[0]:
+                    st.metric("Δ₀ (meV)", f"{r['Delta_0_meV']:.3f}")
+                with mc[1]:
+                    st.metric("ξ₀ (nm)", f"{r['xi_0_nm']:.2f}")
+                with mc[2]:
+                    st.metric("λ_L (nm)", f"{r['lambda_L_nm']:.2f}")
+                with mc[3]:
+                    st.metric("κ_GL", f"{r['kappa_GL']:.3f}")
+
+                ec = st.columns(3)
+                with ec[0]:
+                    st.metric("BCS ratio 2Δ₀/kT_c", f"{r['BCS_ratio']:.3f}")
+                with ec[1]:
+                    st.metric("ω_eff", f"{r['omega_eff']:.4f}")
+                with ec[2]:
+                    st.metric("F_eff", f"{r['F_eff']:.4f}")
+            except Exception as e:
+                st.error(f"BCS superconductivity error: {e}")
+
+    # ── Tab 8: Surface Catalysis ───────────────────────────────────
+    with matl_tabs[7]:
+        st.subheader("🧪 Surface Catalysis")
+        st.markdown(
+            "**Model**: Broken-bond model for surface energy γ, d-band theory for adsorption, "
+            "BEP (Brønsted-Evans-Polanyi) relation for barrier estimation."
+        )
+
+        c1, _c2 = st.columns([1, 2])
+        with c1:
+            surf_preset = st.selectbox("Element", list(_ELEMENT_PRESETS.keys()), key="matl_surf_preset")
+        surf_sym = _ELEMENT_PRESETS.get(surf_preset, "")
+
+        if st.button("Compute Surface Catalysis", key="matl_surf_btn", type="primary"):
+            try:
+                from closures.materials_science.cohesive_energy import (
+                    compute_cohesive_energy,
+                )
+                from closures.materials_science.surface_catalysis import (
+                    REFERENCE_SURFACE,
+                    compute_surface_catalysis,
+                )
+
+                sym = surf_sym if surf_sym else "Fe"
+                coh = compute_cohesive_energy(symbol=sym)
+                result = compute_surface_catalysis(coh.E_coh_eV, symbol=sym, r0_A=coh.r0_A)
+                r = result._asdict()
+                regime = r["regime"]
+                regime_icon = {"Noble": "🟢", "Active": "🟡", "Reactive": "🟠"}.get(regime, "🔴")
+
+                rc = st.columns(4)
+                with rc[0]:
+                    st.metric("γ (J/m²)", f"{r['gamma_J_m2']:.4f}")
+                with rc[1]:
+                    st.metric("Catalytic Class", r["catalytic_class"])
+                with rc[2]:
+                    st.metric("ω_eff", f"{r['omega_eff']:.4f}")
+                with rc[3]:
+                    st.metric("Regime", f"{regime_icon} {regime}")
+
+                mc = st.columns(4)
+                with mc[0]:
+                    st.metric("E_ads (eV)", f"{r['E_ads_eV']:.3f}")
+                with mc[1]:
+                    st.metric("BEP barrier (eV)", f"{r['BEP_barrier_eV']:.3f}")
+                with mc[2]:
+                    st.metric("E_vacancy (eV)", f"{r['E_vacancy_eV']:.3f}")
+                with mc[3]:
+                    st.metric("d-band center (eV)", f"{r['d_band_center_eV']:.3f}" if r["d_band_center_eV"] else "N/A")
+
+                # Volcano plot from reference data
+                if REFERENCE_SURFACE:
+                    vol_data = []
+                    for sym_v, _ref_v in list(REFERENCE_SURFACE.items())[:20]:
+                        try:
+                            coh_v = compute_cohesive_energy(symbol=sym_v)
+                            sr = compute_surface_catalysis(coh_v.E_coh_eV, symbol=sym_v, r0_A=coh_v.r0_A)._asdict()
+                            vol_data.append(
+                                {
+                                    "Element": sym_v,
+                                    "E_ads": sr["E_ads_eV"],
+                                    "BEP_barrier": sr["BEP_barrier_eV"],
+                                    "γ": sr["gamma_J_m2"],
+                                    "Catalytic": sr["catalytic_class"],
+                                }
+                            )
+                        except Exception:
+                            pass
+                    if vol_data:
+                        df_vol = pd.DataFrame(vol_data)
+                        fig = go.Figure()
+                        fig.add_trace(
+                            go.Scatter(
+                                x=df_vol["E_ads"],
+                                y=df_vol["BEP_barrier"],
+                                mode="markers+text",
+                                text=df_vol["Element"],
+                                textposition="top center",
+                                marker={
+                                    "size": 10,
+                                    "color": df_vol["γ"],
+                                    "colorscale": "Viridis",
+                                    "colorbar": {"title": "γ (J/m²)"},
+                                },
+                            )
+                        )
+                        fig.update_layout(
+                            title="Volcano Plot: BEP Barrier vs Adsorption Energy",
+                            xaxis_title="E_ads (eV)",
+                            yaxis_title="BEP Barrier (eV)",
+                            height=450,
+                        )
+                        st.plotly_chart(fig, use_container_width=True)
+            except Exception as e:
+                st.error(f"Surface catalysis error: {e}")
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Security Domain Page
+# ═══════════════════════════════════════════════════════════════════════════════
+
+
+def render_security_page() -> None:
+    """Render interactive Security domain page with trust fidelity, threat classification, and more."""
+    if st is None or go is None or pd is None or np is None:
+        return
+
+    _ensure_closures_path()
+
+    st.title("🛡️ Security Domain")
+    st.caption(
+        "SECURITY.INTSTACK.v1 — Trust fidelity, threat classification, anomaly return, "
+        "behavior profiling, privacy audit, reputation analysis"
+    )
+
+    with st.expander("📖 Domain Overview", expanded=False):
+        st.markdown(
+            """
+        The **Security** domain applies UMCP architecture to security validation.
+        Axiom-0 translation: *"What survives validation is trusted."*
+
+        | Tier | Component | Role |
+        |------|-----------|------|
+        | Tier-0 | Frozen security policy | Contracts, closures, frozen thresholds |
+        | Tier-1 | Trust kernel | T, θ, H, D, σ, TIC, τ_A — deterministic |
+        | Tier-2 | Diagnostics | Threat classification, reputation, privacy audit |
+
+        **Tier-1 Invariants**:
+        - **T** = Trust Fidelity (analog of F) — weighted security signals
+        - **θ** = Threat Drift (analog of ω) — θ = 1 − T
+        - **T + θ = 1** — duality identity holds exactly
+        - **TIC** = Trust Integrity Composite (analog of IC)
+        - **τ_A** = Anomaly Return Time (analog of τ_R)
+        """
+        )
+
+    tab_names = [
+        "🔒 Trust Fidelity",
+        "⚠️ Threat Classifier",
+        "📊 Security Validator",
+        "📈 Anomaly Return",
+        "👤 Behavior Profiler",
+        "🔐 Privacy Auditor",
+    ]
+    sec_tabs = st.tabs(tab_names)
+
+    # ── Tab 1: Trust Fidelity ──────────────────────────────────────
+    with sec_tabs[0]:
+        st.subheader("🔒 Trust Fidelity (Tier-1 Kernel)")
+        st.markdown(
+            "**T = Σ wᵢ · sᵢ** — weighted sum of security signals. "
+            "θ = 1 − T (threat drift). Duality: T + θ = 1 exactly."
+        )
+
+        st.markdown("#### Configure Security Signals")
+        sig_names = ["Authentication", "Encryption", "Access Control", "Network Integrity", "Behavior Score"]
+
+        sig_cols = st.columns(len(sig_names))
+        signals = []
+        for i, name in enumerate(sig_names):
+            with sig_cols[i]:
+                s = st.slider(name, 0.0, 1.0, 0.9 - i * 0.05, 0.01, key=f"sec_sig_{i}")
+                signals.append(s)
+
+        st.markdown("#### Signal Weights")
+        w_cols = st.columns(len(sig_names))
+        weights_raw = []
+        for i, name in enumerate(sig_names):
+            with w_cols[i]:
+                w = st.number_input(f"w_{name[:4]}", 0.0, 1.0, 1.0 / len(sig_names), 0.01, key=f"sec_w_{i}")
+                weights_raw.append(w)
+
+        if st.button("Compute Trust Fidelity", key="sec_tf_btn", type="primary"):
+            try:
+                from closures.security.trust_fidelity import (
+                    classify_trust_status,
+                    compute_trust_fidelity,
+                )
+
+                sig_arr = np.array(signals)
+                w_arr = np.array(weights_raw)
+                w_sum = w_arr.sum()
+                if w_sum > 0:
+                    w_arr = w_arr / w_sum  # Normalize
+
+                result = compute_trust_fidelity(sig_arr, w_arr)
+                T_val = result["T"]
+                theta_val = result["theta"]
+                status = classify_trust_status(T_val, 1)
+
+                status_icons = {"TRUSTED": "🟢", "SUSPICIOUS": "🟡", "BLOCKED": "🔴", "NON_EVALUABLE": "⚪"}
+
+                rc = st.columns(4)
+                with rc[0]:
+                    st.metric("T (Trust Fidelity)", f"{T_val:.4f}")
+                with rc[1]:
+                    st.metric("θ (Threat Drift)", f"{theta_val:.4f}")
+                with rc[2]:
+                    st.metric("T + θ", f"{T_val + theta_val:.6f}")
+                with rc[3]:
+                    st.metric("Status", f"{status_icons.get(status, '⚪')} {status}")
+
+                # Per-signal contribution chart
+                contribs = result["signal_contributions"]
+                fig = go.Figure()
+                fig.add_trace(
+                    go.Bar(
+                        x=sig_names,
+                        y=contribs,
+                        marker_color=["#2ca02c" if s > 0.7 else "#ff7f0e" if s > 0.4 else "#d62728" for s in signals],
+                        text=[f"{c:.3f}" for c in contribs],
+                        textposition="auto",
+                    )
+                )
+                fig.update_layout(
+                    title="Per-Signal Contribution to Trust Fidelity",
+                    xaxis_title="Signal",
+                    yaxis_title="w_i · s_i",
+                    height=350,
+                )
+                st.plotly_chart(fig, use_container_width=True)
+
+                # Gauge chart for T
+                fig_gauge = go.Figure(
+                    go.Indicator(
+                        mode="gauge+number+delta",
+                        value=T_val,
+                        title={"text": "Trust Fidelity T"},
+                        delta={"reference": 0.8, "increasing": {"color": "green"}, "decreasing": {"color": "red"}},
+                        gauge={
+                            "axis": {"range": [0, 1]},
+                            "bar": {"color": "#1f77b4"},
+                            "steps": [
+                                {"range": [0, 0.4], "color": "#ffcccc"},
+                                {"range": [0.4, 0.8], "color": "#ffffcc"},
+                                {"range": [0.8, 1.0], "color": "#ccffcc"},
+                            ],
+                            "threshold": {"line": {"color": "red", "width": 4}, "thickness": 0.75, "value": 0.8},
+                        },
+                    )
+                )
+                fig_gauge.update_layout(height=300)
+                st.plotly_chart(fig_gauge, use_container_width=True)
+            except Exception as e:
+                st.error(f"Trust fidelity error: {e}")
+
+    # ── Tab 2: Threat Classifier ───────────────────────────────────
+    with sec_tabs[1]:
+        st.subheader("⚠️ Threat Classification (Tier-2 Diagnostic)")
+        st.markdown(
+            "Classifies security state using Tier-1 invariants (T, θ, H, D, σ, TIC, τ_A). "
+            "Diagnostics inform but cannot override gates."
+        )
+
+        tc_cols = st.columns(4)
+        with tc_cols[0]:
+            tc_T = st.slider("T (Trust)", 0.0, 1.0, 0.85, 0.01, key="sec_tc_T")
+        with tc_cols[1]:
+            tc_H = st.slider("H (Entropy)", 0.0, 1.0, 0.3, 0.01, key="sec_tc_H")
+        with tc_cols[2]:
+            tc_D = st.slider("D (Deviation)", 0.0, 1.0, 0.1, 0.01, key="sec_tc_D")
+        with tc_cols[3]:
+            tc_sigma = st.slider("σ (Dispersion)", 0.0, 1.0, 0.15, 0.01, key="sec_tc_sigma")
+
+        tc_cols2 = st.columns(3)
+        with tc_cols2[0]:
+            tc_TIC = st.slider("TIC", 0.0, 1.0, 0.75, 0.01, key="sec_tc_TIC")
+        with tc_cols2[1]:
+            tc_tau_A = st.number_input("τ_A", 0, 100, 2, key="sec_tc_tauA")
+        with tc_cols2[2]:
+            tc_hist_len = st.slider("T history length", 3, 20, 5, key="sec_tc_hist")
+
+        if st.button("Classify Threat", key="sec_tc_btn", type="primary"):
+            try:
+                from closures.security.threat_classifier import classify_threat
+
+                theta_val = 1.0 - tc_T
+                T_history = [tc_T + np.random.normal(0, 0.02) for _ in range(tc_hist_len)]
+
+                result = classify_threat(
+                    T=tc_T,
+                    theta=theta_val,
+                    H=tc_H,
+                    D=tc_D,
+                    sigma=tc_sigma,
+                    TIC=tc_TIC,
+                    tau_A=tc_tau_A,
+                    T_history=T_history,
+                )
+
+                threat_icons = {
+                    "BENIGN": "🟢",
+                    "TRANSIENT_ANOMALY": "🟡",
+                    "PERSISTENT_THREAT": "🟠",
+                    "ATTACK_IN_PROGRESS": "🔴",
+                    "RECOVERY": "🔵",
+                    "UNKNOWN": "⚪",
+                }
+                sev_icons = {"LOW": "🟢", "MEDIUM": "🟡", "HIGH": "🟠", "CRITICAL": "🔴"}
+
+                rc = st.columns(4)
+                with rc[0]:
+                    tt = result.threat_type.name if hasattr(result.threat_type, "name") else str(result.threat_type)
+                    st.metric("Threat Type", f"{threat_icons.get(tt, '⚪')} {tt}")
+                with rc[1]:
+                    st.metric("Confidence", f"{result.confidence:.3f}")
+                with rc[2]:
+                    sev = result.severity if isinstance(result.severity, str) else str(result.severity)
+                    st.metric("Severity", f"{sev_icons.get(sev, '⚪')} {sev}")
+                with rc[3]:
+                    st.metric("Invariants Used", str(len(result.invariants_used)))
+
+                if result.recommendations:
+                    st.markdown("**Recommendations:**")
+                    for rec in result.recommendations:
+                        st.markdown(f"- {rec}")
+
+                # Radar chart of invariants
+                inv_names = ["T", "1−θ", "1−H", "1−D", "1−σ", "TIC"]
+                inv_values = [tc_T, tc_T, 1 - tc_H, 1 - tc_D, 1 - tc_sigma, tc_TIC]
+                inv_values.append(inv_values[0])  # Close polygon
+                inv_names_closed = [*inv_names, inv_names[0]]
+
+                fig = go.Figure()
+                fig.add_trace(
+                    go.Scatterpolar(
+                        r=inv_values,
+                        theta=inv_names_closed,
+                        fill="toself",
+                        fillcolor="rgba(31,119,180,0.2)",
+                        line={"color": "#1f77b4", "width": 2},
+                        name="Security State",
+                    )
+                )
+                fig.update_layout(
+                    polar={"radialaxis": {"visible": True, "range": [0, 1]}},
+                    title="Security Invariants Radar",
+                    height=400,
+                )
+                st.plotly_chart(fig, use_container_width=True)
+            except Exception as e:
+                st.error(f"Threat classification error: {e}")
+
+    # ── Tab 3: Security Validator ──────────────────────────────────
+    with sec_tabs[2]:
+        st.subheader("📊 Full Security Validation")
+        st.markdown("Orchestrates Tier-0 → Tier-1 → Tier-2 pipeline: frozen policy → trust kernel → threat diagnostic.")
+
+        sv_cols = st.columns(5)
+        with sv_cols[0]:
+            sv_n = st.number_input("Number of signals", 3, 10, 5, key="sec_sv_n")
+        with sv_cols[1]:
+            sv_base = st.slider("Base signal value", 0.0, 1.0, 0.85, 0.01, key="sec_sv_base")
+        with sv_cols[2]:
+            sv_noise = st.slider("Signal noise σ", 0.0, 0.3, 0.05, 0.01, key="sec_sv_noise")
+        with sv_cols[3]:
+            sv_tau = st.number_input("τ_A", 0, 100, 3, key="sec_sv_tau")
+        with sv_cols[4]:
+            sv_hist = st.number_input("History length", 3, 50, 10, key="sec_sv_hist")
+
+        if st.button("Run Full Validation", key="sec_sv_btn", type="primary"):
+            try:
+                from closures.security.trust_fidelity import (
+                    classify_trust_status,
+                    compute_trust_fidelity,
+                )
+
+                signals_arr = np.clip(np.random.normal(sv_base, sv_noise, sv_n), 0, 1)
+                weights_arr = np.ones(sv_n) / sv_n
+
+                result = compute_trust_fidelity(signals_arr, weights_arr)
+                T_val = result["T"]
+                status = classify_trust_status(T_val, sv_tau)
+
+                st.markdown(f"### Result: **{status}**")
+
+                rc = st.columns(3)
+                with rc[0]:
+                    st.metric("T", f"{T_val:.4f}")
+                with rc[1]:
+                    st.metric("θ", f"{result['theta']:.4f}")
+                with rc[2]:
+                    st.metric("Status", status)
+
+                # Time-series simulation
+                from closures.security.trust_fidelity import (
+                    compute_trust_fidelity_series,
+                )
+
+                series = np.clip(np.random.normal(sv_base, sv_noise, (sv_hist, sv_n)), 0, 1)
+                ts_results = compute_trust_fidelity_series(series, weights_arr)
+
+                T_series = [r["T"] for r in ts_results]
+                theta_series = [r["theta"] for r in ts_results]
+                t_axis = list(range(1, sv_hist + 1))
+
+                fig = go.Figure()
+                fig.add_trace(
+                    go.Scatter(
+                        x=t_axis, y=T_series, mode="lines+markers", name="T(t)", line={"color": "#2ca02c", "width": 2}
+                    )
+                )
+                fig.add_trace(
+                    go.Scatter(
+                        x=t_axis,
+                        y=theta_series,
+                        mode="lines+markers",
+                        name="θ(t)",
+                        line={"color": "#d62728", "width": 2},
+                    )
+                )
+                fig.add_hline(y=0.8, line_dash="dash", line_color="green", annotation_text="Trusted threshold")
+                fig.add_hline(y=0.4, line_dash="dash", line_color="orange", annotation_text="Suspicious threshold")
+                fig.update_layout(
+                    title="Trust/Threat Evolution Over Time",
+                    xaxis_title="Time Step",
+                    yaxis_title="Value",
+                    height=400,
+                )
+                st.plotly_chart(fig, use_container_width=True)
+
+                # Signal heatmap
+                fig2 = go.Figure(
+                    go.Heatmap(
+                        z=series.T,
+                        x=[f"t={t}" for t in t_axis],
+                        y=[f"Signal {i + 1}" for i in range(sv_n)],
+                        colorscale="RdYlGn",
+                        zmin=0,
+                        zmax=1,
+                        colorbar={"title": "Signal Value"},
+                    )
+                )
+                fig2.update_layout(
+                    title="Signal Heatmap Over Time",
+                    height=300,
+                )
+                st.plotly_chart(fig2, use_container_width=True)
+            except Exception as e:
+                st.error(f"Security validation error: {e}")
+
+    # ── Tab 4: Anomaly Return ──────────────────────────────────────
+    with sec_tabs[3]:
+        st.subheader("📈 Anomaly Return (τ_A)")
+        st.markdown(
+            "Measures re-entry delay after anomaly detection. If τ_A = INF_ANOMALY, no trust credit is granted."
+        )
+
+        ar_cols = st.columns(3)
+        with ar_cols[0]:
+            ar_n = st.number_input("Series length", 10, 200, 50, key="sec_ar_n")
+        with ar_cols[1]:
+            ar_base = st.slider("Baseline T", 0.0, 1.0, 0.85, 0.01, key="sec_ar_base")
+        with ar_cols[2]:
+            ar_anomaly_at = st.slider("Anomaly at step", 5, 45, 20, key="sec_ar_anom")
+
+        if st.button("Simulate Anomaly Return", key="sec_ar_btn", type="primary"):
+            try:
+                from closures.security.anomaly_return import (
+                    detect_anomaly_events,
+                )
+
+                # Generate synthetic signal with a dip
+                t_series = np.ones(ar_n) * ar_base
+                # Inject anomaly
+                dip_start = min(ar_anomaly_at, ar_n - 5)
+                dip_width = min(8, ar_n - dip_start)
+                t_series[dip_start : dip_start + dip_width] = np.clip(
+                    ar_base * 0.3 + np.linspace(0, ar_base * 0.7, dip_width), 0, 1
+                )
+
+                events = detect_anomaly_events(t_series.tolist(), threshold=ar_base * 0.7)
+
+                fig = go.Figure()
+                fig.add_trace(go.Scatter(y=t_series, mode="lines", name="T(t)", line={"color": "#1f77b4", "width": 2}))
+                fig.add_hline(y=ar_base * 0.7, line_dash="dash", line_color="red", annotation_text="Anomaly threshold")
+
+                for ev in events:
+                    if hasattr(ev, "start_idx"):
+                        fig.add_vrect(
+                            x0=ev.start_idx,
+                            x1=ev.start_idx + (ev.duration if hasattr(ev, "duration") else 1),
+                            fillcolor="red",
+                            opacity=0.15,
+                            line_width=0,
+                        )
+
+                fig.update_layout(
+                    title="Trust Series with Anomaly Detection",
+                    xaxis_title="Time Step",
+                    yaxis_title="T",
+                    height=400,
+                )
+                st.plotly_chart(fig, use_container_width=True)
+
+                if events:
+                    ev_data = []
+                    for ev in events:
+                        ev_dict = ev._asdict() if hasattr(ev, "_asdict") else {"event": str(ev)}
+                        ev_data.append(ev_dict)
+                    st.dataframe(pd.DataFrame(ev_data), use_container_width=True, hide_index=True)
+                else:
+                    st.info("No anomaly events detected in this simulation.")
+            except Exception as e:
+                st.error(f"Anomaly return error: {e}")
+
+    # ── Tab 5: Behavior Profiler ───────────────────────────────────
+    with sec_tabs[4]:
+        st.subheader("👤 Behavior Profiler")
+        st.markdown(
+            "Establishes baseline behavior profile and detects deviations. "
+            "Trend analysis: STABLE, DEGRADING, IMPROVING, VOLATILE."
+        )
+
+        bp_cols = st.columns(3)
+        with bp_cols[0]:
+            bp_n = st.number_input("Profile length", 10, 100, 30, key="sec_bp_n")
+        with bp_cols[1]:
+            bp_base = st.slider("Baseline", 0.0, 1.0, 0.85, 0.01, key="sec_bp_base")
+        with bp_cols[2]:
+            bp_drift = st.slider("Drift rate", -0.02, 0.02, 0.0, 0.001, key="sec_bp_drift")
+
+        if st.button("Profile Behavior", key="sec_bp_btn", type="primary"):
+            try:
+                from closures.security.behavior_profiler import (
+                    analyze_trend,
+                    compute_baseline_profile,
+                    compute_deviation,
+                )
+
+                # Simulate behavioral signal
+                baseline_data = np.clip(
+                    np.array([bp_base + bp_drift * i + np.random.normal(0, 0.03) for i in range(bp_n)]), 0, 1
+                )
+
+                profile = compute_baseline_profile(baseline_data.tolist())
+                trend = analyze_trend(baseline_data.tolist())
+
+                trend_icon = {
+                    "STABLE": "🟢",
+                    "DEGRADING": "🔴",
+                    "IMPROVING": "🟢",
+                    "VOLATILE": "🟡",
+                }.get(str(trend) if isinstance(trend, str) else trend.name if hasattr(trend, "name") else "", "⚪")
+
+                rc = st.columns(4)
+                with rc[0]:
+                    st.metric("Baseline Mean", f"{profile.get('mean', 0):.4f}" if isinstance(profile, dict) else "N/A")
+                with rc[1]:
+                    st.metric("Baseline Std", f"{profile.get('std', 0):.4f}" if isinstance(profile, dict) else "N/A")
+                with rc[2]:
+                    trend_str = (
+                        str(trend) if isinstance(trend, str) else trend.name if hasattr(trend, "name") else str(trend)
+                    )
+                    st.metric("Trend", f"{trend_icon} {trend_str}")
+                with rc[3]:
+                    latest_dev = compute_deviation(float(baseline_data[-1]), profile)
+                    st.metric(
+                        "Current Deviation", f"{latest_dev:.4f}" if isinstance(latest_dev, float) else str(latest_dev)
+                    )
+
+                fig = go.Figure()
+                fig.add_trace(
+                    go.Scatter(
+                        y=baseline_data.tolist(), mode="lines+markers", name="Behavior Signal", line={"width": 2}
+                    )
+                )
+                if isinstance(profile, dict) and "mean" in profile:
+                    fig.add_hline(
+                        y=profile["mean"], line_dash="dash", line_color="green", annotation_text="Baseline Mean"
+                    )
+                    if "std" in profile:
+                        fig.add_hline(
+                            y=profile["mean"] - 2 * profile["std"],
+                            line_dash="dot",
+                            line_color="orange",
+                            annotation_text="−2σ",
+                        )
+                        fig.add_hline(
+                            y=profile["mean"] + 2 * profile["std"],
+                            line_dash="dot",
+                            line_color="orange",
+                            annotation_text="+2σ",
+                        )
+                fig.update_layout(
+                    title="Behavior Profile Over Time",
+                    xaxis_title="Time Step",
+                    yaxis_title="Behavior Score",
+                    height=400,
+                )
+                st.plotly_chart(fig, use_container_width=True)
+            except Exception as e:
+                st.error(f"Behavior profiler error: {e}")
+
+    # ── Tab 6: Privacy Auditor ─────────────────────────────────────
+    with sec_tabs[5]:
+        st.subheader("🔐 Privacy Auditor")
+        st.markdown(
+            "Detects PII (Personally Identifiable Information) and privacy violations. "
+            "Severity levels: LOW, MEDIUM, HIGH, CRITICAL."
+        )
+
+        sample_texts = {
+            "Clean text": "The weather forecast for tomorrow shows partly cloudy skies with temperatures around 72°F.",
+            "Email + Phone": "Contact John Doe at john.doe@email.com or call 555-123-4567 for details.",
+            "SSN + Address": "SSN: 123-45-6789. Address: 123 Main St, Springfield, IL 62704.",
+            "Credit Card": "Payment: Visa 4111-1111-1111-1111, exp 12/25, CVV 123.",
+            "Mixed PII": "Patient Jane Smith (DOB: 03/15/1990, SSN: 987-65-4321) visited on 2024-01-15.",
+        }
+        pa_sel = st.selectbox("Sample text", list(sample_texts.keys()), key="sec_pa_sample")
+        pa_text = st.text_area("Text to audit", sample_texts.get(pa_sel, ""), height=100, key="sec_pa_text")
+
+        if st.button("Audit Privacy", key="sec_pa_btn", type="primary"):
+            try:
+                from closures.security.privacy_auditor import detect_pii
+
+                pii_findings = detect_pii(pa_text)
+
+                if pii_findings:
+                    sev_counts: dict[str, int] = {}
+                    pii_data = []
+                    for finding in pii_findings:
+                        f_dict = finding._asdict() if hasattr(finding, "_asdict") else {"finding": str(finding)}
+                        pii_data.append(f_dict)
+                        sev = f_dict.get("severity", "UNKNOWN")
+                        sev_str = sev.name if hasattr(sev, "name") else str(sev)
+                        sev_counts[sev_str] = sev_counts.get(sev_str, 0) + 1
+
+                    st.warning(f"⚠️ Found {len(pii_findings)} PII instance(s)")
+
+                    rc = st.columns(4)
+                    for i, (sev, cnt) in enumerate(sev_counts.items()):
+                        with rc[i % 4]:
+                            st.metric(sev, cnt)
+
+                    st.dataframe(pd.DataFrame(pii_data), use_container_width=True, hide_index=True)
+
+                    # Severity distribution pie chart
+                    if sev_counts:
+                        sev_colors = {"LOW": "#2ca02c", "MEDIUM": "#ff7f0e", "HIGH": "#d62728", "CRITICAL": "#7b2d8e"}
+                        fig = go.Figure(
+                            go.Pie(
+                                labels=list(sev_counts.keys()),
+                                values=list(sev_counts.values()),
+                                marker={"colors": [sev_colors.get(s, "#999") for s in sev_counts]},
+                                hole=0.4,
+                            )
+                        )
+                        fig.update_layout(title="PII Severity Distribution", height=350)
+                        st.plotly_chart(fig, use_container_width=True)
+                else:
+                    st.success("✅ No PII detected — text is clean.")
+            except Exception as e:
+                st.error(f"Privacy audit error: {e}")

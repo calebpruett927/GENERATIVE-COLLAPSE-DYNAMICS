@@ -11,7 +11,7 @@ Usage:
   streamlit run src/umcp/dashboard/__init__.py
 
 Features:
-  - Real-time system health monitoring (31 pages)
+  - Real-time system health monitoring (33 pages)
   - Interactive ledger exploration with anomaly detection
   - Casepack browser with validation status
   - Regime phase space visualization with trajectories
@@ -36,7 +36,7 @@ Package structure:
   - pages_interactive.py: Test Templates, Batch Validation, Live Runner
   - pages_analysis.py: Exports, Comparison, Time Series, Formula Builder
   - pages_management.py: Notifications, Bookmarks, API Integration
-  - pages_science.py: Cosmology, Astronomy, Nuclear, Quantum, Finance, RCFT
+  - pages_science.py: Cosmology, Astronomy, Nuclear, Quantum, Finance, RCFT, Materials Science, Security
   - pages_advanced.py: Precision, Geometry, Canon Explorer, Domain Overview
 """
 # pyright: reportUnknownMemberType=false
@@ -77,7 +77,7 @@ from umcp.dashboard._utils import (
 try:
     from umcp import __version__
 except ImportError:
-    __version__ = "2.0.0"
+    __version__ = "2.1.2"
 
 # ── Page render functions (lazy-imported from submodules) ────────────────────
 from umcp.dashboard.pages_advanced import (
@@ -134,9 +134,11 @@ from umcp.dashboard.pages_science import (
     render_atomic_physics_page,
     render_cosmology_page,
     render_finance_page,
+    render_materials_science_page,
     render_nuclear_page,
     render_quantum_page,
     render_rcft_page,
+    render_security_page,
     render_standard_model_page,
 )
 
@@ -197,6 +199,7 @@ __all__ = [
     "render_layer3_seam_graph",
     "render_ledger_page",
     "render_live_runner_page",
+    "render_materials_science_page",
     "render_metrics_page",
     # Management pages
     "render_notifications_page",
@@ -210,6 +213,7 @@ __all__ = [
     "render_quantum_page",
     "render_rcft_page",
     "render_regime_page",
+    "render_security_page",
     "render_standard_model_page",
     # Interactive pages
     "render_test_templates_page",
@@ -318,6 +322,8 @@ def main() -> None:
         "RCFT": ("🌀", render_rcft_page),
         "Atomic Physics": ("⚛️", render_atomic_physics_page),
         "Standard Model": ("🔬", render_standard_model_page),
+        "Materials Science": ("🧱", render_materials_science_page),
+        "Security": ("🛡️", render_security_page),
         "Physics": ("⚗️", render_physics_interface_page),
         "Kinematics": ("🎯", render_kinematics_interface_page),
         "Cosmology": ("🌌", render_cosmology_page),
@@ -438,13 +444,13 @@ def main() -> None:
 
     # ========== Core Axiom ==========
     st.sidebar.markdown("### 📜 Core Axiom")
-    st.sidebar.info('**"What Returns Through Collapse Is Real"**')
-    st.sidebar.caption("Collapse is generative; only what returns is real.")
+    st.sidebar.info('**"Collapse is generative; only what returns is real."**')
+    st.sidebar.caption("— Axiom-0")
 
     st.sidebar.divider()
 
     # ========== Protocol Tiers ==========
-    st.sidebar.markdown("### 🏛️ Protocol Tiers (v3.0.0)")
+    st.sidebar.markdown(f"### 🏛️ Protocol Tiers (v{__version__})")
     st.sidebar.markdown("""
     - **Tier-0**: Protocol — validation, regime gates, SHA256, seam calculus
     - **Tier-1**: Immutable Invariants — F+ω=1, IC≤F, IC≈exp(κ)
