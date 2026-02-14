@@ -4,7 +4,7 @@
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![UMCP v2.1.2](https://img.shields.io/badge/UMCP-v2.1.2-orange.svg)](pyproject.toml)
-[![Tests: 3515](https://img.shields.io/badge/tests-3515-brightgreen.svg)](tests/)
+[![Tests: 3516](https://img.shields.io/badge/tests-3516-brightgreen.svg)](tests/)
 [![Domains: 12](https://img.shields.io/badge/domains-12-blueviolet.svg)](closures/)
 [![Closures: 110+](https://img.shields.io/badge/closures-110%2B-informational.svg)](closures/)
 
@@ -105,7 +105,7 @@ src/umcp/
 │   ├── queue.py              # Priority queue (DLQ, retry, backpressure)
 │   ├── cache.py              # Content-addressable artifact cache
 │   └── tenant.py             # Multi-tenant isolation, quotas, namespaces
-├── dashboard/                # Modular Streamlit dashboard (31 pages)
+├── dashboard/                # Modular Streamlit dashboard (33 pages)
 └── api_umcp.py               # FastAPI REST extension (Pydantic models)
 ```
 
@@ -330,7 +330,7 @@ umcp validate casepacks/hello_world --strict
 ### Run the test suite
 
 ```bash
-pytest                          # All 3515 tests
+pytest                          # All 3516 tests
 pytest -v --tb=short            # Verbose with short tracebacks
 pytest -n auto                  # Parallel execution
 ```
@@ -340,6 +340,24 @@ pytest -n auto                  # Parallel execution
 ```bash
 umcp integrity                  # Verify SHA-256 checksums
 ```
+
+### Launch the dashboard
+
+```bash
+pip install -e ".[all]"                    # Ensure viz dependencies are installed
+umcp-dashboard                             # Start Streamlit dashboard on :8501
+```
+
+Or start manually:
+
+```bash
+streamlit run src/umcp/dashboard/__init__.py --server.port 8501 --server.headless true
+```
+
+The dashboard provides **33 interactive pages** across all 12 domains:
+Kernel Explorer, Regime Map, Seam Budget, τ_R* Phase Diagram,
+Astronomy, Nuclear Physics, Quantum Mechanics, Finance, RCFT,
+Atomic Physics, Standard Model, Materials Science, Security, and more.
 
 ### Use the kernel in Python
 
@@ -392,7 +410,7 @@ umcp validate <target>
 The GitHub Actions workflow (`.github/workflows/validate.yml`) enforces:
 
 1. **Lint** — `ruff format --check` + `ruff check` + `mypy`
-2. **Test** — Full pytest suite (3515 tests)
+2. **Test** — Full pytest suite (3516 tests)
 3. **Validate** — Baseline + strict validation (both must return CONFORMANT)
 
 ### Pre-Commit Protocol
@@ -410,7 +428,7 @@ This mirrors CI exactly: format → lint → type-check → integrity → test �
 
 ## Test Suite
 
-**3,515 tests** across **86 test files**, organized by tier and domain:
+**3,516 tests** across **86 test files**, organized by tier and domain:
 
 | Test Range | Domain | Tests |
 |------------|--------|------:|
@@ -470,7 +488,7 @@ The framework is anchored by peer-reviewed Zenodo publications covering the core
 │   ├── tau_r_star.py          # Thermodynamic diagnostic
 │   ├── epistemic_weld.py      # Epistemic cost tracking
 │   ├── fleet/                 # Distributed validation
-│   └── dashboard/             # Streamlit dashboard (31 pages)
+│   └── dashboard/             # Streamlit dashboard (33 pages)
 ├── closures/                  # 12 physics domains, 110+ modules
 │   ├── standard_model/        # 31 particles, 10 theorems
 │   ├── atomic_physics/        # 118 elements, Tier-1 proof
@@ -487,7 +505,7 @@ The framework is anchored by peer-reviewed Zenodo publications covering the core
 ├── schemas/                   # 12 JSON Schema files
 ├── canon/                     # 11 canonical anchor files
 ├── casepacks/                 # 13 reproducible validation bundles
-├── tests/                     # 86 test files, 3515 tests
+├── tests/                     # 86 test files, 3516 tests
 ├── paper/                     # 3 LaTeX papers + Bibliography.bib
 ├── integrity/                 # SHA-256 checksums
 ├── ledger/                    # Append-only validation log
