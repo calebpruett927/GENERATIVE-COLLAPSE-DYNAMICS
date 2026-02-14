@@ -342,7 +342,7 @@ def _append_to_ledger(repo_root: Path, run_status: str, invariants_data: dict[st
     - kappa: Log-integrity (Σwᵢ ln cᵢ)
     - IC: Integrity Composite (exp κ)
     - C: Curvature proxy
-    - S: Shannon entropy
+    - S: Bernoulli field entropy
     - tau_R: Return time (∞ if no return)
     - delta_kappa: Seam accounting Δκ
     """

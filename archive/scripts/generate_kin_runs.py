@@ -17,6 +17,9 @@ CORRECTED VERSION v2:
 # pyright: reportUnknownMemberType=false
 # pyright: reportUnknownVariableType=false
 # pyright: reportUnknownArgumentType=false
+# pyright: reportOperatorIssue=false
+# pyright: reportReturnType=false
+# pyright: reportCallIssue=false
 
 from __future__ import annotations
 
@@ -33,7 +36,7 @@ REPO_ROOT = Path(__file__).parent.parent.resolve()
 RUNS_DIR = REPO_ROOT / "runs"
 
 # Contract parameters (UMA.INTSTACK.v1)
-CONTRACT = {
+CONTRACT: dict[str, Any] = {
     "name": "UMA.INTSTACK.v1",
     "epsilon": 1e-8,
     "eta": 1e-3,
@@ -83,7 +86,7 @@ def compute_recurrence_times(
 
 
 def compute_local_entropy(psi: np.ndarray, window: int = 50) -> np.ndarray:
-    """Compute local Shannon entropy in sliding window."""
+    """Compute local Bernoulli field entropy in sliding window."""
     N = len(psi)
     S = np.zeros(N)
     epsilon = CONTRACT["epsilon"]

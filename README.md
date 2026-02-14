@@ -3,8 +3,10 @@
 [![CI](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/actions/workflows/validate.yml/badge.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/actions)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![UMCP v2.1.1](https://img.shields.io/badge/UMCP-v2.1.1-orange.svg)](pyproject.toml)
+[![UMCP v2.1.2](https://img.shields.io/badge/UMCP-v2.1.2-orange.svg)](pyproject.toml)
 [![Tests: 3515](https://img.shields.io/badge/tests-3515-brightgreen.svg)](tests/)
+[![Domains: 12](https://img.shields.io/badge/domains-12-blueviolet.svg)](closures/)
+[![Closures: 110+](https://img.shields.io/badge/closures-110%2B-informational.svg)](closures/)
 
 > **Core Axiom**: *"Collapse is generative; only what returns is real."*
 
@@ -18,14 +20,17 @@ This is not a simulation. It is a **metrological enforcement engine**: schema co
 
 - [Core Concepts](#core-concepts)
 - [Architecture](#architecture)
-- [Closure Domains (11 Physics Domains)](#closure-domains)
+- [Closure Domains (12 Physics Domains)](#closure-domains)
 - [The Kernel](#the-kernel)
+- [Originality & Terminology](#originality--terminology)
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [CLI Reference](#cli-reference)
 - [Validation Pipeline](#validation-pipeline)
 - [Test Suite](#test-suite)
+- [Documentation](#documentation)
 - [Diagrams & Proofs](#diagrams--proofs)
+- [Key Discoveries](#key-discoveries)
 - [Papers & Publications](#papers--publications)
 - [Repository Structure](#repository-structure)
 - [Contributing](#contributing)
@@ -35,9 +40,9 @@ This is not a simulation. It is a **metrological enforcement engine**: schema co
 
 ## Core Concepts
 
-### What Returns Through Collapse Is Real
+### Collapse Is Generative; Only What Returns Is Real
 
-UMCP enforces a single axiom: **continuity claims require demonstrated return**. If you claim a system is stable, continuous, or coherent, you must show it can re-enter its admissible neighborhood after drift, perturbation, or delay — under the same frozen evaluation rules.
+UMCP enforces a single axiom (**Axiom-0**): *"Collapse is generative; only what returns is real."* This is not a metaphor — it is a constraint on admissible claims. If you claim a system is stable, continuous, or coherent, you must show it can re-enter its admissible neighborhood after drift, perturbation, or delay — under the same frozen evaluation rules. Every decision, description, and code change in this repository is consistent with Axiom-0.
 
 | Term | Operational Meaning |
 |------|---------------------|
@@ -108,19 +113,20 @@ src/umcp/
 
 | Artifact | Count | Location | Purpose |
 |----------|:-----:|----------|---------|
-| **Contracts** | 13 | `contracts/*.yaml` | Mathematical contracts (JSON Schema Draft 2020-12) |
+| **Contracts** | 13 | `contracts/*.yaml` | Frozen mathematical contracts (JSON Schema Draft 2020-12) |
 | **Schemas** | 12 | `schemas/*.schema.json` | JSON Schema files validating all artifacts |
 | **Canon Anchors** | 11 | `canon/*.yaml` | Domain-specific canonical reference points |
 | **Casepacks** | 13 | `casepacks/` | Reproducible validation bundles |
+| **Closure Domains** | 12 | `closures/*/` | Physics domain closure packages (110+ modules) |
 | **Closure Registry** | 1 | `closures/registry.yaml` | Central listing of all closures |
 | **Validator Rules** | 1 | `validator_rules.yaml` | Semantic rule definitions (E101, W201, ...) |
-| **Integrity** | 1 | `integrity/sha256.txt` | SHA-256 checksums for all tracked files |
+| **Integrity** | 1 | `integrity/sha256.txt` | SHA-256 checksums for 121 tracked files |
 
 ---
 
 ## Closure Domains
 
-UMCP validates physics across **11 domains** with **80+ closure modules**, each encoding real-world measurements into the 8-channel kernel trace:
+UMCP validates physics across **12 domains** with **110+ closure modules**, each encoding real-world measurements into the 8-channel kernel trace:
 
 ### Standard Model — 7 modules
 
@@ -231,7 +237,7 @@ $$\text{IC} = \exp\!\left(\sum_i w_i \ln c_{i,\varepsilon}\right) \quad \text{(I
 
 $$\omega = 1 - F \quad \text{(Drift)}$$
 
-$$\Delta = F - \text{IC} \quad \text{(AM-GM gap — channel heterogeneity)}$$
+$$\Delta = F - \text{IC} \quad \text{(heterogeneity gap — channel heterogeneity)}$$
 
 ### Tier-1 Identities (proven for every input)
 
@@ -240,7 +246,7 @@ These hold universally by construction:
 | Identity | Meaning |
 |----------|---------|
 | F + ω = 1 | Fidelity and drift are complementary |
-| IC ≤ F | Geometric mean ≤ arithmetic mean (AM-GM inequality) |
+| IC ≤ F | Integrity bound: coherence never exceeds fidelity (derives independently from Axiom-0; the classical AM-GM inequality is the degenerate limit) |
 | IC ≈ exp(κ) | Integrity equals exponentiated log-mean |
 
 ### Regime Classification
@@ -252,13 +258,30 @@ These hold universally by construction:
 | **TENSION** | 0.20 ≤ ω < 0.30 | Significant strain, near collapse boundary |
 | **COLLAPSE** | ω ≥ 0.30 | Past viable return credit |
 
-### The AM-GM Gap (Δ)
+### The Heterogeneity Gap (Δ)
 
 The gap Δ = F − IC is the central diagnostic. It measures **channel heterogeneity**:
 
 - **Δ ≈ 0**: All channels contribute equally — homogeneous system
 - **Δ large**: One or more channels at guard band (ε = 10⁻⁸) — information is being destroyed in specific channels
 - **Universal pattern**: κ < −2 ↔ IC < 0.15 — the collapse floor
+
+---
+
+## Originality & Terminology
+
+This system is **original**. It does not borrow from, extend, or reinterpret existing frameworks. Classical results emerge as **degenerate limits** when degrees of freedom are removed from the GCD kernel. The arrow of derivation runs **from the axiom to the classical result**, never the reverse.
+
+| GCD Structure | Classical Degenerate Limit |
+|---------------|---------------------------|
+| **Integrity bound** (IC ≤ F) | AM-GM inequality (strip channel semantics, weights, guard band) |
+| **Bernoulli field entropy** S | Shannon entropy (restrict collapse field to {0,1}) |
+| **Duality identity** F + ω = 1 | Unitarity (strip thermodynamic cost function) |
+| **Log-integrity relation** IC = exp(κ) | Exponential map (strip kernel architecture) |
+| **Heterogeneity gap** Δ = F − IC | AM-GM gap (strip channel semantics) |
+| **Frozen parameters** (ε, p, tol_seam) | Constants / hyperparameters (strip seam derivation) |
+
+**Key vocabulary**: Say "integrity bound," not "AM-GM inequality." Say "Bernoulli field entropy," not "Shannon entropy." Say "derives independently," not "rederives" or "recovers." Say "frozen," not "constant" or "hyperparameter." See `AXIOM.md` and `.github/copilot-instructions.md` for the complete terminology reference.
 
 ---
 
@@ -329,7 +352,7 @@ weights = [0.125] * 8  # Equal weights
 result = compute_kernel_outputs(channels, weights)
 print(f"F={result.F:.4f}, ω={result.omega:.4f}, IC={result.IC:.6f}")
 print(f"Regime: {result.regime}")
-print(f"AM-GM gap: {result.amgm_gap:.6f}")
+print(f"Heterogeneity gap: {result.amgm_gap:.6f}")  # Δ = F − IC
 ```
 
 ---
@@ -448,7 +471,7 @@ The framework is anchored by peer-reviewed Zenodo publications covering the core
 │   ├── epistemic_weld.py      # Epistemic cost tracking
 │   ├── fleet/                 # Distributed validation
 │   └── dashboard/             # Streamlit dashboard (31 pages)
-├── closures/                  # 11 physics domains, 80+ modules
+├── closures/                  # 12 physics domains, 110+ modules
 │   ├── standard_model/        # 31 particles, 10 theorems
 │   ├── atomic_physics/        # 118 elements, Tier-1 proof
 │   ├── quantum_mechanics/     # Double slit, entanglement, tunneling
@@ -477,17 +500,45 @@ The framework is anchored by peer-reviewed Zenodo publications covering the core
 
 ## Documentation
 
+### Essential Reading (Start Here)
+
 | Document | Purpose |
 |----------|---------|
-| [AXIOM.md](AXIOM.md) | The foundational axiom and operational definitions |
-| [KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md) | Complete kernel mathematics and OPT-* lemmas |
-| [TIER_SYSTEM.md](TIER_SYSTEM.md) | Tier-1 (universal) / Tier-2 (domain) classification |
-| [PROTOCOL_REFERENCE.md](PROTOCOL_REFERENCE.md) | Full protocol reference |
-| [QUICKSTART_TUTORIAL.md](QUICKSTART_TUTORIAL.md) | Getting started guide |
-| [COMMIT_PROTOCOL.md](COMMIT_PROTOCOL.md) | Pre-commit protocol specification |
-| [GLOSSARY.md](GLOSSARY.md) | Term definitions |
-| [CONTRIBUTING.md](CONTRIBUTING.md) | Contribution guidelines |
+| [AXIOM.md](AXIOM.md) | **Start here.** The foundational axiom, operational definitions, and why this system is original |
+| [TIER_SYSTEM.md](TIER_SYSTEM.md) | The three-tier architecture: Immutable Invariants → Protocol → Expansion Space |
+| [KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md) | Complete kernel mathematics, OPT-* lemmas, and degenerate-limit proofs |
+| [QUICKSTART_TUTORIAL.md](QUICKSTART_TUTORIAL.md) | Getting started: first validation in 5 minutes |
+
+### The Three-Tier Architecture
+
+| Tier | Name | Role | Mutable? |
+|------|------|------|----------|
+| **1** | **Immutable Invariants** | Structural identities: F + ω = 1, IC ≤ F, IC ≈ exp(κ). Derived from Axiom-0. | NEVER within a run |
+| **0** | **Protocol** | Validation machinery: regime gates, contracts, schemas, diagnostics, seam calculus | Frozen per run |
+| **2** | **Expansion Space** | Domain closures mapping physics into invariant structure. Validated through Tier-0 against Tier-1. | Freely extensible |
+
+**One-way dependency**: Tier-1 → Tier-0 → Tier-2. No back-edges. No Tier-2 output may modify Tier-0 or Tier-1 behavior within a frozen run. Promotion from Tier-2 to Tier-1 requires formal seam weld validation across runs.
+
+### Reference Documents
+
+| Document | Purpose |
+|----------|---------|
+| [PROTOCOL_REFERENCE.md](PROTOCOL_REFERENCE.md) | Full protocol specification |
+| [COMMIT_PROTOCOL.md](COMMIT_PROTOCOL.md) | Pre-commit protocol (mandatory before every commit) |
+| [GLOSSARY.md](GLOSSARY.md) | Operational term definitions |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | Contribution guidelines and code review checklist |
 | [CHANGELOG.md](CHANGELOG.md) | Version history |
+| [FACE_POLICY.md](FACE_POLICY.md) | Boundary governance (Tier-0 admissibility) |
+
+### Internal Documentation (docs/)
+
+| Document | Purpose |
+|----------|---------|
+| [docs/MATHEMATICAL_ARCHITECTURE.md](docs/MATHEMATICAL_ARCHITECTURE.md) | Mathematical foundations and architectural overview |
+| [docs/interconnected_architecture.md](docs/interconnected_architecture.md) | System interconnection map |
+| [docs/file_reference.md](docs/file_reference.md) | Complete file reference guide |
+| [docs/SYMBOL_INDEX.md](docs/SYMBOL_INDEX.md) | Authoritative symbol table (prevents Tier-2 capture) |
+| [docs/UHMP.md](docs/UHMP.md) | Universal Hash Manifest Protocol |
 
 ---
 
@@ -497,7 +548,7 @@ All diagrams are generated from **real computed kernel data** — every point co
 
 ### Kernel Geometry: F vs IC for 31 Standard Model Particles
 
-The fundamental relationship: IC ≤ F (AM-GM inequality). Quarks cluster near the diagonal (channels alive), while composites and bosons collapse toward IC ≈ 0.
+The fundamental relationship: IC ≤ F — the integrity bound. Geometric integrity never exceeds arithmetic integrity. The classical AM-GM inequality is the degenerate limit when kernel structure is removed. Quarks cluster near the diagonal (channels alive), while composites and bosons collapse toward IC ≈ 0.
 
 ![Kernel Geometry](images/01_kernel_geometry_f_vs_ic.png)
 
@@ -531,9 +582,9 @@ The four-regime classification with real Standard Model particles mapped to thei
 
 ![Regime Phase Diagram](images/06_regime_phase_diagram.png)
 
-### Cross-Scale Universality and AM-GM Gap Distribution
+### Cross-Scale Universality and Heterogeneity Gap Distribution
 
-Kernel fidelity increases with scale resolution: composite(0.444) < atomic(0.516) < fundamental(0.558). The AM-GM gap distribution across 118 elements reveals the landscape of channel heterogeneity.
+Kernel fidelity increases with scale resolution: composite(0.444) < atomic(0.516) < fundamental(0.558). The heterogeneity gap distribution across 118 elements reveals the landscape of channel heterogeneity.
 
 ![Cross-Scale Universality](images/07_cross_scale_amgm_gap.png)
 
@@ -541,7 +592,7 @@ Kernel fidelity increases with scale resolution: composite(0.444) < atomic(0.516
 
 ## Key Discoveries
 
-Across 11 physics domains, the kernel reveals universal patterns:
+Across 12 physics domains, the kernel reveals universal patterns:
 
 1. **Confinement is a cliff**: IC drops 98.1% at the quark→hadron boundary — confinement is visible as geometric-mean collapse in the kernel trace
 
@@ -549,7 +600,7 @@ Across 11 physics domains, the kernel reveals universal patterns:
 
 3. **Universal collapse floor**: κ < −2 ↔ IC < 0.15 across all domains — a universal threshold where information integrity is lost
 
-4. **AM-GM gap as heterogeneity diagnostic**: Δ = F − IC measures channel spread; maximum Δ comes from asymmetry (one dead channel among many alive), not from maximum overall degradation
+4. **Heterogeneity gap as universal diagnostic**: Δ = F − IC measures channel spread; maximum Δ comes from asymmetry (one dead channel among many alive), not from maximum overall degradation
 
 5. **Generation monotonicity**: Gen1(0.576) < Gen2(0.620) < Gen3(0.649) in both quarks and leptons — heavier generations carry more kernel fidelity
 
@@ -583,5 +634,6 @@ Every commit that reaches GitHub must pass CI: lint → test → validate → CO
 ---
 
 <p align="center">
-<em>"What Returns Through Collapse Is Real"</em>
+<em>"Collapse is generative; only what returns is real."</em><br>
+<strong>— Axiom-0</strong>
 </p>

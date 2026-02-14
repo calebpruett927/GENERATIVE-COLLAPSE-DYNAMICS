@@ -7,12 +7,14 @@ The UMCP Security Daemon is a **background antivirus system** that continuously 
 ## Core Innovation
 
 ### Traditional Antivirus
+
 - **How it works**: Compares files/URLs against signature databases
 - **Detection**: "Does this match a known threat?"
 - **Response**: Binary (ALLOW or BLOCK)
 - **Problem**: Misses zero-days, requires constant signature updates
 
 ### UMCP Security Daemon
+
 - **How it works**: Validates entities through collapse-return cycles
 - **Detection**: "Does this entity survive validation and return to baseline?"
 - **Response**: Graduated (4 levels based on trust metrics)
@@ -20,7 +22,7 @@ The UMCP Security Daemon is a **background antivirus system** that continuously 
 
 ## Core Principle
 
-> **"What Returns Through Collapse Is Real"**  
+> **"What Returns Through Collapse Is Real"**
 > → **"What Survives Validation Is Trusted"**
 
 An entity (file, URL, process) is only trusted if:
@@ -34,6 +36,7 @@ An entity (file, URL, process) is only trusted if:
 ## How It Works
 
 ### 1. Continuous Monitoring
+
 The daemon runs in the background, monitoring:
 - File system access (reads, writes, executions)
 - Network connections (URLs, IPs, domains)
@@ -41,6 +44,7 @@ The daemon runs in the background, monitoring:
 - Identity claims (authentication attempts)
 
 ### 2. Signal Collection
+
 For each entity, collects 4 security signals in [0,1]:
 - **integrity_score**: Hash verification, file signatures
 - **reputation_score**: External threat intelligence
@@ -48,6 +52,7 @@ For each entity, collects 4 security signals in [0,1]:
 - **identity_score**: Authentication strength, permissions
 
 ### 3. UMCP Validation
+
 Computes Tier-1 security invariants:
 - **T** (Trust Fidelity): Weighted sum of signals
 - **θ** (Threat Drift): 1 - T
@@ -58,6 +63,7 @@ Computes Tier-1 security invariants:
 - **τ_A** (Anomaly Return): Time to return to baseline
 
 ### 4. Automated Response
+
 Based on invariants, not signatures:
 
 | Condition | Action | Why |
@@ -112,6 +118,7 @@ Based on invariants, not signatures:
 ## Usage
 
 ### Quick Demo
+
 ```bash
 # See how it works (simulated)
 python closures/security/demo_daemon.py
@@ -121,6 +128,7 @@ python closures/security/how_it_sees.py
 ```
 
 ### Run as Service
+
 ```bash
 # Start daemon
 python closures/security/security_daemon.py start \
@@ -136,6 +144,7 @@ python closures/security/security_daemon.py status
 ```
 
 ### Response Engine Example
+
 ```python
 from closures.security.response_engine import ResponseEngine
 
@@ -161,26 +170,32 @@ engine.execute_decision(decision)
 ## Key Differences from Traditional AV
 
 ### Detection
+
 - **Traditional**: Signature matching, known threat databases
 - **UMCP**: Validation through collapse-return, mathematical invariants
 
 ### Response
+
 - **Traditional**: Binary (allow/block)
 - **UMCP**: Graduated (4 levels: allow/monitor/quarantine/block)
 
 ### Zero-Day Threats
+
 - **Traditional**: Missed (no signature available)
 - **UMCP**: Detected (validation-based, not signature-based)
 
 ### Trust Model
+
 - **Traditional**: Static (whitelist/blacklist)
 - **UMCP**: Dynamic (trust earned through validation, τ_A measures return)
 
 ### Recovery
+
 - **Traditional**: Manual whitelist addition
 - **UMCP**: Automatic (if entity returns to baseline, trust is earned)
 
 ### Mathematical Foundation
+
 - **Traditional**: Heuristics, ML classifiers
 - **UMCP**: Axiom-based (collapse-return, seam accounting)
 
@@ -214,7 +229,8 @@ engine.execute_decision(decision)
 - **Action**: ALLOW
 - **Reason**: Trust earned through validated return
 
-### Traditional AV Would See:
+### Traditional AV Would See
+
 - t=0: Not in database → ALLOW (misses threat)
 - t=5: Still no signature → ALLOW (still misses)
 - User manually adds to whitelist after inspection
@@ -222,12 +238,14 @@ engine.execute_decision(decision)
 ## Components
 
 ### Core Files
+
 - **`security_daemon.py`** (783 lines): Main daemon process
 - **`response_engine.py`** (382 lines): Automated response system
 - **`demo_daemon.py`** (183 lines): Interactive demo
 - **`how_it_sees.py`** (330 lines): Visualization of UMCP perspective
 
 ### Integration with UMCP Stack
+
 - Uses `security_validator.py` for validation
 - Uses Tier-1 kernels (trust_fidelity, security_entropy, etc.)
 - Uses Tier-2 overlays (threat_classifier, reputation_analyzer, etc.)

@@ -110,7 +110,7 @@ $\wvec$ (summing to unity) to invariants $(\omega, F, S, C,
 exact~\cite{paulus2026umcpcasepack}:
 \beq\label{eq:tier1}
   F + \omega = 1, \quad
-  \IC \leq F \;\text{(AM-GM)}, \quad
+  \IC \leq F \;\text{(integrity bound)}, \quad
   \IC = e^{\kappa}.
 \eeq
 
@@ -144,7 +144,7 @@ the kernel computes:
 \end{align}
 \end{definition}
 
-The AM-GM gap $\Delta \equiv F - \IC \geq 0$ measures channel
+The heterogeneity gap $\Delta \equiv F - \IC \geq 0$ measures channel
 heterogeneity: $\Delta = 0$ if and only if all $c_i$ are equal.
 This gap is the central diagnostic in what follows.
 
@@ -230,7 +230,7 @@ Then:
 \begin{enumerate}
 \item $\IC_h < \IC_q^{\min}$ for all 14 hadrons tested.
 \item The average IC drops by $98.1\%$ from quarks to hadrons.
-\item The AM-GM gap amplifies by a factor of $10.8\times$ upon
+\item The heterogeneity gap amplifies by a factor of $10.8\times$ upon
       binding.
 \end{enumerate}
 \end{theorem}
@@ -273,8 +273,10 @@ particle.
 Neutral particles carry $c_3 = \eps$ (charge channel near zero).
 Since $\IC = \exp\!\bigl(\sum w_i \ln c_i\bigr) = \prod c_i^{w_i}$
 is a weighted geometric mean, even one channel near $\eps$
-catastrophically suppresses $\IC$.  This is the AM-GM inequality
+catastrophically suppresses $\IC$.  This is the integrity bound
 at work: neutrality creates maximal channel heterogeneity.
+(The classical AM-GM inequality is the degenerate limit when
+the collapse field is removed.)
 \end{remark}
 
 \subsection{T6: Cross-Scale Universality}
@@ -323,7 +325,7 @@ Each row of the CKM matrix $V_{\text{CKM}}$, treated as a
 3-channel trace vector $(|V_{ij}|^2)_{j=1}^3$, passes all
 Tier-1 identities.  Furthermore:
 \begin{enumerate}
-\item Row~1 has a larger AM-GM gap than Row~2, because
+\item Row~1 has a larger heterogeneity gap than Row~2, because
       $|V_{ub}|^2 \approx 10^{-5}$ acts as an extreme
       zero-channel.
 \item The Jarlskog invariant $J_{\text{CP}} = 3.0 \times 10^{-5}$
@@ -366,7 +368,7 @@ Stable to Collapse as $Q$ decreases.
 Using the Bethe--Weizs\"acker semi-empirical mass formula to
 compute binding energy per nucleon $B/A$ for elements
 $Z = 1, \ldots, 118$, and the 12-channel cross-scale kernel to
-compute the AM-GM gap $\Delta$:
+compute the heterogeneity gap $\Delta$:
 \begin{enumerate}
 \item $r(B/A,\,\Delta) = -0.41$ (Pearson anti-correlation).
 \item $B/A$ peaks at $Z \in [23, 30]$ (Cr--Zn region),
@@ -377,7 +379,7 @@ compute the AM-GM gap $\Delta$:
 \end{theorem}
 
 The anti-correlation means: elements with higher binding energy
-per nucleon have \emph{smaller} AM-GM gaps --- they are more
+per nucleon have \emph{smaller} heterogeneity gaps --- they are more
 coherent in the kernel sense.  Iron-group nuclei sit at both
 the binding-energy maximum and a local gap minimum.
 
@@ -412,7 +414,7 @@ in which existing SM results become visible as kernel patterns:
 \item \textbf{Confinement} (T3) appears as IC collapse --- the
   loss of individual quantum numbers upon binding.
 \item \textbf{Charge quantization} (T5) appears as $\IC$
-  suppression via the AM-GM inequality.
+  suppression via the integrity bound ($\IC \leq F$).
 \item \textbf{Universality} (T6) appears as scale-ordered fidelity.
 \item \textbf{Symmetry breaking} (T7) appears as trace deformation
   amplifying generation structure.
@@ -428,7 +430,7 @@ The value of this lens is threefold:
 (1)~it provides a \emph{single diagnostic framework} spanning
 subatomic, atomic, and nuclear scales;
 (2)~it connects disparate phenomena (confinement, EWSB, CKM mixing)
-through the common algebra of the AM-GM gap;
+through the common algebra of the heterogeneity gap;
 (3)~it is computationally cheap and fully automated, enabling
 continuous monitoring via CI pipelines.
 
@@ -529,7 +531,7 @@ invariant $J = 3.0 \times 10^{-5}$ quantifies the CP
 violation that accompanies this asymmetry.
 
 \textbf{Nuclear stability is an anti-correlation.}  The most
-tightly bound nuclei (iron group) have the smallest AM-GM
+tightly bound nuclei (iron group) have the smallest heterogeneity
 gaps.  Moving away from the iron peak in either direction
 increases the gap --- lighter nuclei are surface-dominated
 (less coherent), heavier nuclei are Coulomb-dominated

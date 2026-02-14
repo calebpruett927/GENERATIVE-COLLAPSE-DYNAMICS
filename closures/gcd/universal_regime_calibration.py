@@ -47,7 +47,7 @@ T-URC-6  Curvature–Regime Entailment
 T-URC-7  Entropy–Regime Correlation
          Stable scenarios have S < 0.15 (low uncertainty).
          Collapse scenarios have S > 0.40 (high uncertainty).
-         Shannon entropy tracks regime across domains.
+         Bernoulli field entropy tracks regime across domains.
 
 Cross-references:
     Kernel:          src/umcp/kernel_optimized.py
@@ -592,7 +592,7 @@ def theorem_T_URC_1_tier1() -> TheoremResult:
         else:
             sd["IC_eq_exp_kappa_pass"] = False
 
-        # Test: IC ≤ F (AM-GM inequality)
+        # Test: IC ≤ F (integrity bound; AM-GM is the degenerate limit)
         n_tests += 1
         sd["IC_le_F"] = k["IC"] <= k["F"] + 1e-10
         if sd["IC_le_F"]:
@@ -948,7 +948,7 @@ def theorem_T_URC_7_entropy_correlation() -> TheoremResult:
 
     Stable scenarios have S < 0.15 (low uncertainty).
     Collapse scenarios have S > 0.40 (high uncertainty).
-    Shannon entropy tracks regime across domains.
+    Bernoulli field entropy tracks regime across domains.
     """
     kernels = all_scenario_kernels()
     n_tests = 0

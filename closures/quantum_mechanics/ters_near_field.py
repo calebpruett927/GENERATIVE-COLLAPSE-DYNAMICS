@@ -1,13 +1,13 @@
-"""TERS Near-Field Rederivation — QM.INTSTACK.v1
+"""TERS Near-Field Derivation — QM.INTSTACK.v1
 
-Rederives the principal conclusions of Brezina, Litman & Rossi (2026),
+Derives independently the principal conclusions of Brezina, Litman & Rossi (2026),
 "Tip-Enhanced Raman Images of Realistic Systems Through Ab Initio
 Modeling" (ACS Nano, DOI: 10.1021/acsnano.5c16052), within the
 Generative Collapse Dynamics (GCD) and Recursive Collapse Field Theory
 (RCFT) kernel framework.
 
 The TERS paper presents seven structurally significant results. Each is
-rederived here as a theorem in the GCD kernel, showing that the physics
+derived here as a theorem in the GCD kernel, showing that the physics
 they discover maps onto kernel invariants and that the GCD framework
 predicts the qualitative conclusions independently.
 
@@ -2028,7 +2028,7 @@ def compute_all_fisher_distances() -> dict[str, dict[str, Any]]:
 
 
 def run_all_ters_theorems() -> list[TheoremResult]:
-    """Run all seven TERS rederivation theorems.
+    """Run all seven TERS derivation theorems.
 
     Returns
     -------
@@ -2082,7 +2082,7 @@ def print_ters_summary(results: list[TheoremResult] | None = None) -> None:
     total_proven = sum(1 for r in results if r.verdict == "PROVEN")
 
     print("=" * 72)
-    print("TERS REDERIVATION IN GCD/RCFT KERNEL")
+    print("TERS INDEPENDENT DERIVATION IN GCD/RCFT KERNEL")
     print("Brezina, Litman & Rossi (ACS Nano, 2026)")
     print("DOI: 10.1021/acsnano.5c16052")
     print("=" * 72)

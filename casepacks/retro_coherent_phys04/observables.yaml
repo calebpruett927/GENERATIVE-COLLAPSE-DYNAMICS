@@ -29,19 +29,19 @@ invariants:
   tau_R:
     value: -0.82
     description: "Return delay - negative indicates retro-coherent return"
-    
+
   D_C:
     value: -0.82
     description: "Curvature change - negative indicates phase inversion"
-    
+
   omega:
     value: 0.0
     description: "Drift - zero indicates no entropy generation"
-    
+
   D_omega:
     value: 0.0
     description: "Entropy drift term"
-    
+
   R:
     value: 1.0
     description: "Return credit - full epistemic weight"
@@ -51,7 +51,7 @@ budget:
   equation: "Δκ = R·τR - (Dω + DC)"
   computation: "(1.0)(-0.82) - (0 + (-0.82)) = -0.82 + 0.82 = 0"
   delta_kappa: 0.0
-  
+
 # Residual Closure
 residual:
   equation: "s = R·τR - (Δκ + Dω + DC)"
@@ -77,7 +77,7 @@ classification:
 umcp_mapping:
   F: 1.0  # Fidelity = 1 - ω = 1 - 0 = 1.0
   omega: 0.0  # Drift = 0 (no entropy)
-  S: 0.0  # Shannon entropy (deterministic state)
+  S: 0.0  # Bernoulli field entropy (deterministic state)
   C: 0.0  # Curvature (uniform coordinate)
   IC: 1.0  # Integrity coefficient = exp(κ) = 1.0
   kappa: 0.0  # Log-integrity
@@ -85,14 +85,14 @@ umcp_mapping:
 # Physical Interpretation
 interpretation:
   paradox_resolution: |
-    The negative excitation time is not a causality violation but a 
+    The negative excitation time is not a causality violation but a
     lawful retro-coherent return seam. Under postselection, the ensemble
     exhibits phase-preserving excitation that precedes the pulse peak.
-    This is the signature of AX-0: collapse is generative, and the 
+    This is the signature of AX-0: collapse is generative, and the
     curvature-reversed return completes the epistemic ledger.
-    
+
   key_insight: |
-    What appears as "atoms un-exciting before being excited" is 
-    reinterpreted as: the return delay τR < 0 exactly balances 
+    What appears as "atoms un-exciting before being excited" is
+    reinterpreted as: the return delay τR < 0 exactly balances
     the curvature change DC < 0, yielding Δκ = 0 and s = 0.
     The system satisfies all Type I seam criteria.

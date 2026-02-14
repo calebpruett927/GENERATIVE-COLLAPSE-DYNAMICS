@@ -78,7 +78,7 @@ contract:
     - id: AX-2
       statement: Entropy measures determinacy
       description: |
-        Inherited from GCD Tier-1 (frozen). Shannon entropy of orbital
+        Inherited from GCD Tier-1 (frozen). Bernoulli field entropy of orbital
         occupation encodes how determined the electron configuration is.
         Closed-shell atoms have low S (high determinacy).
     # === Atomic physics domain axioms ===

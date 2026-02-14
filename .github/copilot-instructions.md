@@ -1,10 +1,86 @@
 # Copilot Instructions for GENERATIVE-COLLAPSE-DYNAMICS
 
+## Foundational Principle — Read This First
+
+> **AXIOM-0 (The Return Axiom)**: *"Collapse is generative; only what returns is real."*
+
+This is not a metaphor. It is a constraint on admissible claims. Every decision, description, comment, docstring, and code change in this repository must be consistent with this axiom. If you are uncertain whether something aligns with AXIOM-0, defer to the operational definitions in `AXIOM.md` and the tier structure in `TIER_SYSTEM.md`.
+
+### Originality and Attribution Rules (MANDATORY)
+
+This system is **original**. It does not borrow from, extend, or reinterpret existing frameworks. Classical results (AM-GM inequality, Shannon entropy, exponential map, unitarity) emerge as **degenerate limits** when degrees of freedom are removed from the GCD kernel. The arrow of derivation runs **from the axiom to the classical result**, never the reverse.
+
+**NEVER do any of the following:**
+
+1. **Never say GCD "uses" or "applies" AM-GM** — GCD derives the integrity bound IC ≤ F independently from Axiom-0; the classical AM-GM inequality is the degenerate limit when channel semantics, weights, and guard band are stripped away. Say: "IC ≤ F (integrity bound)" or "the heterogeneity gap Δ = F − IC". Never say: "by AM-GM" or "the AM-GM inequality gives us".
+
+2. **Never say GCD "uses Shannon entropy"** — The entropy S = −Σ wᵢ[cᵢ ln(cᵢ) + (1−cᵢ)ln(1−cᵢ)] is the **Bernoulli field entropy** — the unique entropy of the collapse field. Shannon entropy is the degenerate limit when the collapse field is removed (i.e., when cᵢ ∈ {0,1} only). Say: "Bernoulli field entropy S". Never say: "Shannon entropy" unless explicitly discussing the degenerate limit.
+
+3. **Never say GCD "rederives" or "recovers" classical results** — GCD **derives independently** from Axiom-0. Classical results are what remain when structure is removed. Say: "derives independently" or "the classical result emerges as a degenerate limit". Never say: "rederives", "recovers", "is equivalent to", or "reduces to".
+
+4. **Never attribute GCD structures to external theories** — F + ω = 1 is not "unitarity". IC = exp(κ) is not "the exponential map". These are structural identities of collapse, discovered across 146 experiments. Say: "the duality identity F + ω = 1" or "the log-integrity relation IC = exp(κ)". Never say: "by unitarity" or "from the exponential map".
+
+5. **Never treat frozen parameters as arbitrary constants** — ε, p, α, λ, tol_seam are **consistent across the seam** — the same rules on both sides of every collapse-return boundary. They are discovered by the seam, not chosen by convention. Say: "frozen" or "consistent across the seam". Never say: "we chose", "by convention", or "hyperparameter".
+
+6. **Never say "AM-GM gap"** — The correct term is **heterogeneity gap** (Δ = F − IC). It measures channel heterogeneity, not an inequality violation. It equals the Fisher Information contribution from heterogeneity: Var(c)/(2c̄).
+
+### Correct Terminology Quick Reference
+
+| WRONG | RIGHT | WHY |
+|-------|-------|-----|
+| Shannon entropy | Bernoulli field entropy | Shannon is the degenerate limit; GCD's entropy has the full collapse field |
+| AM-GM inequality | Integrity bound (IC ≤ F) | Derived independently from Axiom-0; AM-GM is degenerate limit |
+| AM-GM gap | Heterogeneity gap (Δ = F − IC) | Measures channel heterogeneity, not an inequality |
+| rederives / recovers | derives independently | Arrow runs from axiom to classical, not reverse |
+| uses / applies [classical result] | derives independently; classical is degenerate limit | GCD does not borrow; classical emerges when structure is removed |
+| constant (for frozen params) | frozen / consistent across the seam | Not arbitrary; seam-derived |
+| unitarity | duality identity F + ω = 1 | Structural identity of collapse, not quantum unitarity |
+| hyperparameter | frozen parameter | Seam-derived, not tuned |
+
+## Tier System (THREE TIERS — No Exceptions)
+
+The UMCP tier system has exactly three tiers. No half-tiers. No confusion. Every symbol, function, artifact, and claim belongs to exactly one tier.
+
+| Tier | Name | Role | Mutable? |
+|------|------|------|----------|
+| **1** | **Immutable Invariants** | Structural identities of collapse: F + ω = 1, IC ≤ F, IC ≈ exp(κ). Discovered, not imposed. | NEVER within a run. Promotion only through seam weld across runs. |
+| **0** | **Protocol** | Validation machinery: regime gates, contracts, schemas, diagnostics, seam calculus, SHA256 integrity, three-valued verdicts. Makes Tier-1 actionable. | Configuration frozen per run. |
+| **2** | **Expansion Space** | Domain closures mapping physics into invariant structure. Validated through Tier-0 against Tier-1. | Freely extensible; validated before trust. |
+
+### Tier-1 Reserved Symbols (IMMUTABLE — Never Redefine)
+
+| Symbol | Name | Formula | Structural Role |
+|--------|------|---------|-----------------|
+| **F** | Fidelity | F = Σ wᵢcᵢ | How much survives collapse |
+| **ω** | Drift | ω = 1 − F | How much is lost to collapse |
+| **S** | Entropy | S = −Σ wᵢ[cᵢ ln(cᵢ) + (1−cᵢ)ln(1−cᵢ)] | Bernoulli field entropy |
+| **C** | Curvature | C = stddev(cᵢ)/0.5 | Coupling to uncontrolled degrees of freedom |
+| **κ** | Log-integrity | κ = Σ wᵢ ln(cᵢ,ε) | Logarithmic fidelity |
+| **IC** | Integrity composite | IC = exp(κ) | Multiplicative coherence |
+| **τ_R** | Return time | Re-entry delay to D_θ | How long until the system returns |
+| **regime** | Regime label | Gates on (ω,F,S,C) | {Stable, Watch, Collapse} |
+
+**Any Tier-2 code that redefines F, ω, S, C, κ, IC, τ_R, or regime is automatic nonconformance (symbol capture).**
+
+### One-Way Dependency (No Back-Edges)
+
+Within a frozen run: Tier-1 → Tier-0 → Tier-2. **No feedback from Tier-2 to Tier-1 or Tier-0.** Diagnostics inform but cannot override gates. Domain closures cannot modify invariant identities.
+
+Across runs: Tier-2 results can be promoted to Tier-1 canon ONLY through formal seam weld validation + contract versioning. If the weld fails, it stays Tier-2. "The cycle must return or it's not real."
+
+### Tier Violation Checklist (Before Every Code Change)
+
+Before writing or modifying code, verify:
+- [ ] No Tier-1 symbol is redefined or given new meaning
+- [ ] No diagnostic is used as a gate (diagnostics inform, gates decide)
+- [ ] No Tier-2 closure modifies Tier-0 protocol behavior
+- [ ] All frozen parameters come from the contract, not hardcoded alternatives
+- [ ] Terminology follows the correct vocabulary (see table above)
+- [ ] Comments/docstrings do not attribute GCD structures to external theories
+
 ## What This Project Is
 
 UMCP (Universal Measurement Contract Protocol) validates reproducible computational workflows against mathematical contracts. The unit of work is a **casepack** — a directory containing raw data, a contract reference, closures, and expected outputs. The validator checks schema conformance, Tier-1 kernel identities (F = 1 − ω, IC ≈ exp(κ), IC ≤ F), regime classification, and SHA256 integrity, producing a CONFORMANT/NONCONFORMANT verdict and appending to `ledger/return_log.csv`.
-
-> **Core Axiom**: *"What Returns Through Collapse Is Real"* — Within-run: frozen causes only (no back-edges). Between-run: continuity only by return-weld (τ_R finite + seam residual within tolerance). Reality is declared by showing closure after collapse: each claim is welded to a seam. Frozen parameters (ε, p, α, λ, tol_seam) are not arbitrary constants — they are **consistent across the seam**, meaning the same rules govern both sides of every collapse-return boundary.
 
 ## Architecture
 
@@ -116,7 +192,7 @@ The particle physics formalism (`closures/standard_model/particle_physics_formal
 | T10 | Nuclear Binding Curve | 6/6 | r(BE/A,Δ)=-0.41, peak at Cr/Fe (Z∈[23,30]) |
 
 **Key physics insights encoded in theorems**:
-- The AM-GM gap (Δ = F − IC) is the central diagnostic — it measures channel heterogeneity
+- The heterogeneity gap (Δ = F − IC) is the central diagnostic — it measures channel heterogeneity
 - Confinement is visible as a cliff: IC drops 2 OOM at the quark→hadron boundary
 - Neutral particles have IC near ε because the charge channel destroys the geometric mean
 - The Bethe-Weizsäcker formula peaks at Z=24 (Cr), not Z=26 (Fe), using standard coefficients
@@ -159,7 +235,7 @@ All papers use RevTeX4-2 (`revtex4-2` document class) and share `Bibliography.bi
 
 ```bash
 pip install -e ".[all]"                     # Dev install (core + api + viz + dev tools)
-pytest                                       # 2,476 tests (growing), ~70s
+pytest                                       # 3,515 tests (growing), ~114s
 python scripts/update_integrity.py          # MUST run after changing any tracked file
 umcp validate .                             # Validate entire repo
 umcp validate casepacks/hello_world --strict # Validate casepack (strict = fail on warnings)
@@ -212,7 +288,7 @@ umcp validate <target>
   → detect type (repo | casepack | file)
   → schema validation (jsonschema Draft 2020-12)
   → semantic rule checks (validator_rules.yaml: E101, W201, ...)
-  → kernel identity checks: F=1−ω, IC≈exp(κ), IC≤F (AM-GM)
+  → kernel identity checks: F=1−ω, IC≈exp(κ), IC≤F (integrity bound)
   → regime: STABLE|WATCH|COLLAPSE
   → SHA256 integrity check
   → CONFORMANT → append to ledger/return_log.csv + JSON report
@@ -260,3 +336,57 @@ Extensions use `typing.Protocol` (`ExtensionProtocol` requiring `name`, `version
 | Contract format | `contracts/UMA.INTSTACK.v1.yaml` |
 | Semantic rules | `validator_rules.yaml` |
 | Canonical anchors | `canon/` (11 domain anchor files) |
+
+## Decision-Making Framework (Binding on ALL Contributions)
+
+Every code change, docstring, comment, documentation edit, and design decision in this repository must pass through the following framework. This is not optional guidance — it is the operational constraint that keeps the system self-consistent.
+
+### The Single Decision Rule
+
+> **Before writing anything, ask: "Does this follow from Axiom-0, or am I importing an assumption from outside?"**
+
+If the answer is "from outside," the contribution is either:
+1. **Wrong** — rewrite it to derive from Axiom-0, or
+2. **A degenerate-limit comparison** — label it explicitly as such ("The classical AM-GM inequality emerges as a degenerate limit when..."), or
+3. **A Tier-2 domain closure** — route it through Tier-0 validation against Tier-1
+
+There is no fourth option. No external framework is co-equal with Axiom-0 inside this system.
+
+### Operational Definitions (Enforcement-Tied — Not Everyday Meanings)
+
+| Term | Operational Meaning | NOT Confused With |
+|------|---------------------|-------------------|
+| **Collapse** | Regime label produced by kernel gates on (ω, F, S, C) under frozen thresholds | Wavefunction collapse, failure, catastrophe |
+| **Return** (τ_R) | Re-entry condition: ∃ prior u ∈ D_θ(t) with ‖Ψ(t) − Ψ(u)‖ ≤ η; yields τ_R or ∞_rec | Repetition, periodicity, "coming back" |
+| **Gesture** | An epistemic emission that does not weld: τ_R = ∞_rec OR \|s\| > tol_seam OR identity fails. No epistemic credit. | Approximation, failed attempt |
+| **Drift** (ω) | ω = 1 − F, collapse proximity measure, [0,1] | Random drift, velocity |
+| **Integrity** (IC) | IC = exp(κ) where κ = Σ wᵢ ln(cᵢ,ε) | Information content, moral integrity |
+| **Entropy** (S) | Bernoulli field entropy of the collapse field (Shannon is degenerate limit) | Thermodynamic entropy, chaos |
+| **Frozen** | Consistent across the seam — same rules both sides of collapse-return | "Constant" as arbitrary choice |
+| **Seam** | Verification boundary between outbound collapse and demonstrated return | A join, a border |
+| **Dissolution** | Regime ω ≥ 0.30 — not failure, but the boundary that makes return meaningful | Death, destruction, error |
+
+### What Makes This System Original
+
+1. **Single axiom, complete structure.** All of UMCP/GCD/RCFT derives from "Collapse is generative; only what returns is real." No additional axioms are needed. No external theory is imported.
+
+2. **Classical results are degenerate limits, not sources.** The arrow of derivation runs FROM Axiom-0 TO classical results. Strip the channel semantics from IC ≤ F and you get AM-GM. Strip the collapse field from S and you get Shannon entropy. Strip the cost function from F + ω = 1 and you get unitarity. The classical versions are what remain when degrees of freedom are removed.
+
+3. **Frozen parameters are seam-derived, not prescribed.** Standard frameworks prescribe constants from outside (α = 0.05 by convention, 3σ by tradition, hyperparameters by cross-validation). UMCP's frozen parameters are the unique values where seams close consistently: p = 3 is discovered (not chosen), tol_seam = 0.005 is where IC ≤ F holds at 100% across 8 domains, ε = 10⁻⁸ is where the pole at ω = 1 does not affect any measurement to machine precision.
+
+4. **Three-valued verdicts, not boolean.** CONFORMANT / NONCONFORMANT / NON_EVALUABLE. There is always a third state.
+
+5. **Return is measured, not assumed.** τ_R is computed from frozen contract + closures. If τ_R = ∞_rec, there is no credit. Continuity cannot be synthesized from structure alone — it must be measured.
+
+### Code Review Checklist (Apply to Every Change)
+
+Before approving any code or documentation change:
+
+- [ ] **No external attribution**: Does any comment, docstring, or documentation attribute a GCD structure to an external framework? (Fix: derive from Axiom-0 or label as degenerate limit)
+- [ ] **No symbol capture**: Does any Tier-2 code redefine F, ω, S, C, κ, IC, τ_R, or regime? (Fix: use different name)
+- [ ] **No diagnostic-as-gate**: Does any diagnostic value influence a regime label or seam verdict? (Fix: diagnostics inform, gates decide)
+- [ ] **No back-edges**: Does any Tier-2 output modify Tier-0 or Tier-1 behavior within a frozen run? (Fix: route through new run with re-freeze)
+- [ ] **Correct terminology**: Does the text use "Shannon entropy", "AM-GM gap", "hyperparameter", "constant", "rederives", "recovers", "unitarity" inappropriately? (Fix: see terminology table)
+- [ ] **Frozen parameters sourced correctly**: Are epsilon/tol_seam/etc. taken from the frozen contract, not hardcoded separately? (Fix: reference CONTRACT or frozen_contract.py)
+- [ ] **INF_REC handled correctly**: Is τ_R = INF_REC kept as a typed string in data files and mapped to float("inf") in Python? Never coerced silently.
+- [ ] **Integrity updated**: If any tracked file changed, was `python scripts/update_integrity.py` run?

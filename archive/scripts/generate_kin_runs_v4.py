@@ -18,6 +18,9 @@ Creates:
 # pyright: reportUnknownMemberType=false
 # pyright: reportUnknownVariableType=false
 # pyright: reportUnknownArgumentType=false
+# pyright: reportOperatorIssue=false
+# pyright: reportReturnType=false
+# pyright: reportCallIssue=false
 
 from __future__ import annotations
 
@@ -34,7 +37,7 @@ REPO_ROOT = Path(__file__).parent.parent.resolve()
 RUNS_DIR = REPO_ROOT / "runs"
 
 # Contract parameters (UMA.INTSTACK.v1)
-CONTRACT = {
+CONTRACT: dict[str, Any] = {
     "name": "UMA.INTSTACK.v1",
     "epsilon": 1e-8,
     "eta": 1e-3,
@@ -44,6 +47,10 @@ CONTRACT = {
     "tol_seam": 0.005,
     "rho_min": 0.50,
 }
+
+_EPS: float = float(CONTRACT["epsilon"])
+_TOL_SEAM: float = float(CONTRACT["tol_seam"])
+_RHO_MIN: float = float(CONTRACT["rho_min"])
 
 
 def sha256_of_bytes(data: bytes) -> str:
@@ -102,8 +109,9 @@ def compute_kappa_instantaneous(IC: np.ndarray) -> np.ndarray:
     TIER-1 IDENTITY: κ(t) = ln(IC(t) + ε)
     Instantaneous log-integrity (not cumulative).
     """
-    epsilon = CONTRACT["epsilon"]
-    return np.log(IC + epsilon)
+    epsilon: float = _EPS
+    result: np.ndarray = np.log(IC + epsilon)
+    return result
 
 
 def compute_kappa_cumulative(IC: np.ndarray, dt: float) -> np.ndarray:
@@ -111,7 +119,7 @@ def compute_kappa_cumulative(IC: np.ndarray, dt: float) -> np.ndarray:
     DERIVED: κ_cum(T) = ∫₀ᵀ ln(IC(t) + ε) dt
     Cumulative log-integrity for seam accounting.
     """
-    epsilon = CONTRACT["epsilon"]
+    epsilon: float = _EPS
     log_IC = np.log(IC + epsilon)
     return np.cumsum(log_IC) * dt
 
@@ -123,7 +131,7 @@ def normalize_curvature_adaptive(C_raw: np.ndarray) -> tuple[np.ndarray, float]:
 
     This ensures baseline median C ≈ 0.5, not saturating near 1.
     """
-    C_0 = float(np.median(C_raw)) + CONTRACT["epsilon"]
+    C_0 = float(np.median(C_raw)) + _EPS
     C_normalized = C_raw / (C_raw + C_0)
     return C_normalized, C_0
 
@@ -250,7 +258,7 @@ def compute_event_anchor_return(
 
 
 def compute_local_entropy(psi: np.ndarray, window: int = 50) -> np.ndarray:
-    """Compute local Shannon entropy in sliding window."""
+    """Compute local Bernoulli field entropy in sliding window."""
     N = len(psi)
     S = np.zeros(N)
     epsilon = CONTRACT["epsilon"]
@@ -285,7 +293,7 @@ def compute_IC_smooth_contribution(
 
     Aggregate: IC(t) = Π_i c_i(t)^w_i  (weighted geometric mean)
     """
-    epsilon = CONTRACT["epsilon"]
+    epsilon: float = _EPS
 
     # Compute contribution for each channel
     contributions: list[np.ndarray] = []
@@ -348,7 +356,7 @@ def generate_shm_run() -> None:
 
     # ω = trace jitter (not derivative noise)
     omega = compute_omega_trace_jitter(psi, smooth_window=5)
-    omega_scale = float(np.quantile(omega, 0.95)) + CONTRACT["epsilon"]  # Freeze scale
+    omega_scale = float(np.quantile(omega, 0.95)) + _EPS  # Freeze scale
 
     # F = 1 - ω/scale (Tier-1 identity)
     fidelity_arr = compute_fidelity_from_omega(omega, omega_scale)
@@ -564,7 +572,7 @@ def generate_ballistic_run() -> None:
 
     # ω = trace jitter
     omega = compute_omega_trace_jitter(psi, smooth_window=5)
-    omega_scale = float(np.quantile(omega, 0.95)) + CONTRACT["epsilon"]
+    omega_scale = float(np.quantile(omega, 0.95)) + _EPS
 
     # F = 1 - ω/scale
     fidelity_arr = compute_fidelity_from_omega(omega, omega_scale)
@@ -643,7 +651,7 @@ def generate_ballistic_run() -> None:
         tau_R_finite_post = 0.0  # Always 0 since τ_R is censored by design
         seam_residual = abs(y_arr[seam_idx])
 
-        _budget_ok = delta_kappa < CONTRACT["tol_seam"]  # Recorded for audit
+        _budget_ok = delta_kappa < _TOL_SEAM  # Recorded for audit
         _integrity_ok = IC_post > 0.7  # Recorded for audit
 
         weld_result = "INTEGRITY_ONLY"
@@ -833,7 +841,7 @@ def generate_gait_run() -> None:
 
     # ω = trace jitter
     omega = compute_omega_trace_jitter(psi, smooth_window=5)
-    omega_scale = float(np.quantile(omega, 0.95)) + CONTRACT["epsilon"]
+    omega_scale = float(np.quantile(omega, 0.95)) + _EPS
 
     # F = 1 - ω/scale
     fidelity_arr = compute_fidelity_from_omega(omega, omega_scale)

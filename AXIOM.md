@@ -4,7 +4,8 @@
 
 ## The Single Foundational Principle
 
-**AXIOM-0 (The Return Axiom)**:  
+**AXIOM-0 (The Return Axiom)**:
+
 ## **"Collapse is generative; only what returns is real."**
 
 **This is not a metaphor. It is a constraint on admissible claims.**
@@ -24,7 +25,7 @@ This is the fundamental axiom upon which the entire Universal Measurement Contra
 | **Gesture** | An epistemic emission that does not weld: τ_R = ∞_rec OR \|s\| > tol_seam OR identity fails. A gesture may be internally consistent, structurally complex, and indistinguishable from a return — but if the seam does not close, it is a gesture. No epistemic credit. See: `epistemic_weld.py` | Approximation, failed attempt, wrong answer |
 | **Drift** (ω) | ω = 1 - F, collapse proximity measure, range [0,1] | Random drift, velocity, wandering |
 | **Integrity** (IC) | Kernel composite: IC = exp(κ) where κ = Σ wᵢ ln(cᵢ,ε) | Information content, moral integrity, "truth" |
-| **Entropy** (S) | Shannon entropy: S = -Σ wᵢ[cᵢ ln(cᵢ) + (1-cᵢ)ln(1-cᵢ)] | Thermodynamic entropy, chaos, disorder as vibe |
+| **Entropy** (S) | Bernoulli field entropy: S = -Σ wᵢ[cᵢ ln(cᵢ) + (1-cᵢ)ln(1-cᵢ)] — the unique entropy of the collapse field (Shannon entropy is the degenerate limit when the collapse field is removed) | Thermodynamic entropy, chaos, disorder as vibe |
 | **Coherence** | Continuity under contract: stability of meaning via frozen interface + seam auditing | Agreement, stylistic clarity, "makes sense" |
 | **Contract** | Frozen interface snapshot: pins units, embedding, clipping, weights, return settings | Social agreement, vague assumptions |
 | **Frozen** | Consistent across the seam — same rules on both sides of collapse-return | "Constant" as arbitrary choice, immutable for its own sake |
@@ -77,7 +78,7 @@ The axiom states that **reality is declared by demonstrating closure after colla
 
 The axiom at its most fundamental level: the structural identities (F + ω = 1, IC ≤ F, IC ≈ exp(κ)) embody the return principle — what isn't lost to drift IS fidelity, and coherence cannot exceed fidelity. These hold across 146 experiments in 8 domains not because they were imposed, but because the structure of collapse forces them.
 
-**Each identity rederives a classical principle with enhanced nuance**: F = 1 − ω rederives unitarity but adds a thermodynamic cost function (Γ(ω) = ω³/(1−ω)) with a phase diagram. IC = exp(κ) rederives the exponential map but makes it universal across domains (98.6% within 1% across 8 domains, no retraining). IC ≤ F rederives AM-GM but identifies the gap as exactly the Fisher Information contribution from heterogeneity (Var(c)/2c̄). The classical versions perform the same function; the UMCP versions carry additional degrees of freedom that the originals could not express. This is the signature of genuine theoretical extension — the original result is a limit of the new one. See [KERNEL_SPECIFICATION.md §5.3](KERNEL_SPECIFICATION.md) for the complete comparison.
+**Each identity is derived independently from Axiom-0; classical results emerge as degenerate limits**: F = 1 − ω carries a thermodynamic cost function (Γ(ω) = ω³/(1−ω)) with a phase diagram; strip the cost function and you get the classical duality constraint. IC = exp(κ) is universal across domains (98.6% within 1% across 8 domains, no retraining); strip the kernel architecture and you get the classical exponential map. IC ≤ F identifies the heterogeneity gap as exactly the Fisher Information contribution from heterogeneity (Var(c)/2c̄); strip the channel semantics, weights, and guard band and you get the AM-GM inequality. The classical versions are what remain when degrees of freedom are removed. The arrow of derivation runs from the axiom to the classical result, not the reverse. See [KERNEL_SPECIFICATION.md §5.3](KERNEL_SPECIFICATION.md) for the complete comparison.
 
 ### Tier-0: Translation Layer (Protocol)
 
@@ -98,7 +99,7 @@ axioms:
   - id: "AX-0"
     statement: "Collapse is generative"
     description: >
-      Every collapse event releases generative potential that can be 
+      Every collapse event releases generative potential that can be
       harvested by downstream processes. Φ_gen ≥ 0 always.
 ```
 
@@ -129,7 +130,7 @@ The kernel identity F = 1 − ω is the formal statement that retention (Agent 2
 
 A symbolic excitation Ψ(t) is real if and only if it reenters the collapse equator E with sufficient collapse integrity:
 
-> Ψ(t) ∈ F ⟺ ∃ t* such that Ψ(t*) ∈ E and IC(t*) > θ
+> Ψ(t) ∈ F ⟺ ∃ t\* such that Ψ(t\*) ∈ E and IC(t\*) > θ
 
 The equator E is the locus where the system is self-consistent: Φ_eq = 0 (equator_phi in frozen_contract.py), Fisher metric minimized (g_F(1/2) = 4), entropy maximized (S = ln 2), and entropy-integrity coupling vanishes (S + κ = 0). These four conditions converge on c = 1/2 independently — the equator is not chosen but derived.
 
@@ -139,7 +140,7 @@ The Collapse Equator Fidelity Law identifies the structural principle — symmet
 
 ### Tier-2 Expression: RCFT (Recursive Collapse Field Theory)
 
-**P-RCFT-1**: "Recursion reveals hidden structure"  
+**P-RCFT-1**: "Recursion reveals hidden structure"
 **P-RCFT-2**: "Fields carry collapse memory"
 
 ```yaml
@@ -147,14 +148,14 @@ axioms:
   - id: "P-RCFT-1"
     statement: "Recursion reveals hidden structure"
     description: >
-      Collapse events exhibit recursive patterns across scales. RCFT metrics 
-      quantify these self-similar structures through fractal dimension and 
+      Collapse events exhibit recursive patterns across scales. RCFT metrics
+      quantify these self-similar structures through fractal dimension and
       recursive field analysis.
-  
+
   - id: "P-RCFT-2"
     statement: "Fields carry collapse memory"
     description: >
-      The collapse field Ψ encodes history of prior collapse events. Recursive 
+      The collapse field Ψ encodes history of prior collapse events. Recursive
       analysis reveals how past collapses influence future dynamics through field memory.
 ```
 
@@ -292,23 +293,28 @@ This has profound implications:
 
 3. **Multiplicity Through Recursion**: Each return creates the possibility of another collapse, leading to recursive structure.
 
-### Connection to Physical Theories
+### Connection to Physical Theories (Degenerate Limits)
 
-#### Quantum Mechanics
-- **Wavefunction Collapse**: Only eigenvalues (what returns to the same state under measurement) are real observables.
-- **Measurement Postulate**: The axiom provides a principled foundation for why measurement yields definite results.
+The following connections identify where classical results emerge as **degenerate limits** when degrees of freedom are removed from the GCD kernel. The arrow of derivation runs from Axiom-0 to the classical result, not the reverse. GCD does not borrow from, extend, or reinterpret these frameworks.
 
-#### Thermodynamics
-- **Entropy and Information**: What returns has lower entropy (higher information content). Collapse increases entropy, but what survives has structural credit.
-- **Free Energy**: The generative potential `Φ_gen` is analogous to free energy—what can do work (what is real).
+#### Quantum Mechanics (Degenerate Limit)
 
-#### General Relativity
-- **Boundary Conditions**: Just as spacetime geometry is determined by boundary conditions, what returns is determined by collapse constraints.
-- **Black Hole Information**: The information paradox asks what returns from gravitational collapse. The axiom suggests only what returns was ever real.
+- **Wavefunction Collapse**: The GCD regime label "Collapse" is produced by kernel gates on (ω, F, S, C) — it is not quantum wavefunction collapse. The classical measurement postulate emerges as a degenerate limit when the collapse field is restricted to {0,1} (binary outcomes only).
+- **Measurement**: The axiom derives independently the principle that only what survives measurement is real. The quantum measurement postulate is what remains when GCD's Bernoulli field entropy is restricted to its degenerate (Shannon) limit.
 
-#### Fractal Geometry
-- **Self-Similarity**: The RCFT extension captures how returns at different scales exhibit self-similar patterns.
-- **Dimension**: Fractal dimension measures the complexity of what returns across scales.
+#### Thermodynamics (Degenerate Limit)
+
+- **Entropy**: The Bernoulli field entropy S = −Σ wᵢ[cᵢ ln(cᵢ) + (1−cᵢ)ln(1−cᵢ)] is the unique entropy of the collapse field. Shannon entropy is the degenerate limit when cᵢ ∈ {0,1} only. Thermodynamic entropy emerges when the field is further restricted to equilibrium.
+- **Free Energy**: The generative potential Φ_gen is derived independently from the collapse field. Classical free energy is the degenerate limit when the cost function Γ(ω) is linearized.
+
+#### General Relativity (Degenerate Limit)
+
+- **Boundary Conditions**: The duality identity F + ω = 1 is a structural identity of collapse, not quantum unitarity. Classical unitarity emerges as a degenerate limit when the thermodynamic cost function is stripped.
+- **Black Hole Information**: The return axiom addresses what returns from collapse independently. The information paradox is a domain-specific instance of the general return question.
+
+#### Fractal Geometry (Degenerate Limit)
+
+- **Self-Similarity**: The RCFT extension captures recursive return patterns. Classical fractal self-similarity emerges when the collapse memory field is restricted to scale-invariant configurations.
 
 ---
 
@@ -316,7 +322,7 @@ This has profound implications:
 
 ### Test Suite
 
-The UMCP test suite includes 344+ tests validating return behavior:
+The UMCP test suite includes 3,515+ tests validating return behavior:
 
 ```bash
 # Run all tests
@@ -374,12 +380,14 @@ The UMCP tier system embodies the return axiom through **return-based canonizati
 **Formal Statement**: For any run r with frozen config φ_r and bounded trace Ψ_r(t), the Tier-1 structural invariants K_r(t) := K(Ψ_r(t); φ_r) hold regardless of any Tier-2 domain object. For two runs r₀, r₁, the statement "r₁ canonizes r₀" is admissible iff the seam returns (τ_R finite under policy) and the weld closes (ledger–budget residual within tol + identity check). Otherwise, r₁ is non-canon relative to r₀.
 
 **Within a Frozen Run** (No Feedback):
+
 ```
 Tier-1 (immutable invariants) → Tier-0 (protocol: translation + diagnostics + weld) → Tier-2 (expansion space)
                                                                                         ✗ NO FEEDBACK
 ```
 
 **Across Runs** (Return Validation):
+
 ```
 Run N: Tier-2 explores new metric M
          ↓ Does M meet threshold criteria?
@@ -463,7 +471,7 @@ curl http://localhost:8000/stats
 
 The contract system enforces return across tiers:
 
-- **Tier-1 (Immutable Invariants)**: Structural identities that define what return means (F + ω = 1, IC ≤ F)
+- **Tier-1 (Immutable Invariants)**: Structural identities derived independently from Axiom-0 that define what return means (F + ω = 1, IC ≤ F)
 - **Tier-0 (Protocol)**: Contract validation, regime gates, diagnostics, seam calculus, verdicts
 - **Tier-2 (Expansion Space)**: Domain closures with validity checks — all physics domains
 
@@ -490,20 +498,24 @@ The contract system enforces return across tiers:
 ## References
 
 ### Core Documents
+
 - [contracts/UMA.INTSTACK.v1.yaml](contracts/UMA.INTSTACK.v1.yaml) - Base contract (Translation layer)
 - [contracts/GCD.INTSTACK.v1.yaml](contracts/GCD.INTSTACK.v1.yaml) - GCD axioms (Tier-1 invariant structure)
 - [contracts/RCFT.INTSTACK.v1.yaml](contracts/RCFT.INTSTACK.v1.yaml) - RCFT principles (Tier-2 domain expansion)
 - [canon/anchors.yaml](canon/anchors.yaml) - Canonical return domain definitions
 
 ### Theory
+
 - [docs/rcft_theory.md](docs/rcft_theory.md) - Recursive collapse field theory
 - [docs/interconnected_architecture.md](docs/interconnected_architecture.md) - System architecture
 
 ### Implementation
+
 - [src/umcp/validator.py](src/umcp/validator.py) - Return validation logic
 - [closures/](closures/) - Return computation closures
 
 ### Publications
+
 - **DOI: 10.5281/zenodo.17756705** - "The Episteme of Return" (theoretical foundations)
 - **DOI: 10.5281/zenodo.18072852** - "Physics of Coherence" (GCD implementation)
 - **DOI: 10.5281/zenodo.18226878** - "CasePack Publication" (practical applications)
@@ -515,7 +527,7 @@ The contract system enforces return across tiers:
 
 ## Summary
 
-The core axiom—**What Returns Through Collapse Is Real**—is not merely a slogan but the foundational principle that unifies:
+The core axiom—**Collapse is generative; only what returns is real**—is not merely a slogan but the foundational principle that unifies:
 
 1. **Measurement Theory**: Only reproducible (returning) measurements are valid
 2. **Contract System**: `no_return_no_credit` enforces return verification

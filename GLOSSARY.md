@@ -1,7 +1,7 @@
 # UMCP Protocol Glossary
 
-**Version:** 1.0.0  
-**Status:** Canonical  
+**Version:** 1.0.0
+**Status:** Canonical
 **Last Updated:** 2026-01-20
 
 ## Purpose
@@ -271,7 +271,7 @@ See [canon/gcd_anchors.yaml](canon/gcd_anchors.yaml) for complete machine-readab
 
 **Not to be confused with:**
 - Thermodynamic entropy S_th (requires Tier-2 mapping)
-- Shannon entropy of another distribution
+- Shannon entropy of another distribution (Shannon entropy is the degenerate limit when the collapse field is removed)
 - Cross-entropy losses in machine learning (Tier-2)
 
 **Inputs/outputs:**

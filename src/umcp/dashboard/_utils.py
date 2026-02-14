@@ -92,7 +92,7 @@ KERNEL_SYMBOLS = {
     # Core Tier-1 Invariants
     "omega": "ω (Drift = 1-F)",
     "F": "F (Fidelity)",
-    "S": "S (Shannon Entropy)",
+    "S": "S (Bernoulli Field Entropy)",
     "C": "C (Curvature Proxy)",
     "tau_R": "τ_R (Return Time)",
     "IC": "IC (Integrity Composite = exp(κ))",

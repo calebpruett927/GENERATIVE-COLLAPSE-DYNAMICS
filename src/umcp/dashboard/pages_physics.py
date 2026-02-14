@@ -52,7 +52,7 @@ GCD_SYMBOLS = {
     "S": {
         "latex": "S",
         "name": "Entropy",
-        "description": "Shannon entropy (system uncertainty/determinacy)",
+        "description": "Bernoulli field entropy (system uncertainty/determinacy; Shannon entropy is the degenerate limit)",
         "formula": "S = -Σ wᵢ[cᵢln(cᵢ) + (1-cᵢ)ln(1-cᵢ)]",
         "domain": "[0, ln(2)]",
         "optimal": 0.0,
@@ -314,7 +314,7 @@ def render_gcd_panel(gcd_data: dict[str, Any], compact: bool = False) -> None:
 
     # Regime header
     st.markdown(
-        f"""<div style="padding: 15px; border-left: 6px solid {regime_info["color"]}; 
+        f"""<div style="padding: 15px; border-left: 6px solid {regime_info["color"]};
             background: {regime_info["color"]}22; border-radius: 8px; margin-bottom: 15px;">
             <h3 style="margin: 0; color: {regime_info["color"]};">
                 {regime_info["icon"]} GCD Regime: {regime}
@@ -845,7 +845,7 @@ def render_physics_interface_page() -> None:
         - Temperature: kelvin (K)
         - Amount of substance: mole (mol)
         - Luminous intensity: candela (cd)
-        
+
         **Common Prefixes:**
         | Prefix | Symbol | Factor |
         |--------|--------|--------|
@@ -1281,7 +1281,7 @@ def render_physics_interface_page() -> None:
         regime_color = get_regime_color(regime)
 
         st.markdown(
-            f"""<div style="padding: 20px; border-left: 6px solid {regime_color}; 
+            f"""<div style="padding: 20px; border-left: 6px solid {regime_color};
                 background: {regime_color}22; border-radius: 8px; margin-bottom: 20px;">
                 <h2 style="margin: 0; color: {regime_color};">⚛️ Result: {regime}</h2>
                 <p style="margin: 5px 0 0 0;">Stability Score: {stability_score}/100</p>
@@ -1843,7 +1843,7 @@ def render_kinematics_interface_page() -> None:
         if x_clip or v_clip or a_clip:
             recommendations.append("⚠️ OOR clipping applied: check reference scales")
         if amgm_gap > 0.1:
-            recommendations.append("📊 Large AM-GM gap: heterogeneous phase space")
+            recommendations.append("📊 Large heterogeneity gap: heterogeneous phase space")
 
         # Conservation checks
         if abs(e_kin - 0.5 * m_base * v_base**2) < 1e-9:
@@ -1875,7 +1875,7 @@ def render_kinematics_interface_page() -> None:
         regime_color = get_regime_color(regime)
 
         st.markdown(
-            f"""<div style="padding: 20px; border-left: 6px solid {regime_color}; 
+            f"""<div style="padding: 20px; border-left: 6px solid {regime_color};
                 background: {regime_color}22; border-radius: 8px; margin-bottom: 20px;">
                 <h2 style="margin: 0; color: {regime_color};">🎯 UMCP Regime: {regime} | KIN Regime: {kin_regime}</h2>
                 <p style="margin: 5px 0 0 0;">Stability Score: {stability_score}/100 • Kinematic Credit: {kin_credit:.2f}</p>

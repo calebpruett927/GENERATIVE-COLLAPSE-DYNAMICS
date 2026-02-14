@@ -63,7 +63,7 @@ def render_test_templates_page() -> None:
         - Embedding: Map x(t) → Ψ(t) ∈ [0,1]ⁿ
         - Weights: w_i ≥ 0, Σw_i = 1
         - OOR Policy: Out-of-range handling
-        
+
         **Key Rule:** Tier 0 is frozen before Tier 1 computes.
         """)
 
@@ -230,7 +230,7 @@ def render_test_templates_page() -> None:
             # Curvature proxy
             curvature = float(np.std(c_clipped, ddof=0) / 0.5)
 
-            # AM-GM gap
+            # Heterogeneity gap
             amgm_gap = fidelity - integrity_composite
 
             # Check homogeneity
@@ -309,7 +309,7 @@ def render_test_templates_page() -> None:
             if curvature > 0.3:
                 recommendations.append("High curvature - coordinates are dispersed")
             if amgm_gap > 0.1:
-                recommendations.append("Large AM-GM gap - significant heterogeneity")
+                recommendations.append("Large heterogeneity gap - significant heterogeneity")
             if not bounds_valid:
                 recommendations.append("⚠️ Lemma 1 bounds violated - check inputs")
             if not recommendations:
@@ -349,7 +349,7 @@ def render_test_templates_page() -> None:
             regime = audit_entry["tier2"]["regime"]
             regime_color = get_regime_color(regime)
             st.markdown(
-                f"""<div style="padding: 20px; border-left: 6px solid {regime_color}; 
+                f"""<div style="padding: 20px; border-left: 6px solid {regime_color};
                     background: {regime_color}22; border-radius: 8px; margin-bottom: 20px;">
                     <h2 style="margin: 0; color: {regime_color};">🎯 Result: {regime}</h2>
                     <p style="margin: 5px 0 0 0;">Stability Score: {audit_entry["tier2"]["stability_score"]}/100 • Risk: {audit_entry["tier2"]["risk_level"]}</p>
@@ -394,7 +394,7 @@ def render_test_templates_page() -> None:
                     st.metric("κ (Log-IC)", f"{t1['kappa']:.4f}")
                     st.metric("IC", f"{t1['IC']:.4f}")
 
-                st.markdown(f"**AM-GM Gap:** {t1['amgm_gap']:.4f}")
+                st.markdown(f"**Heterogeneity Gap:** {t1['amgm_gap']:.4f}")
                 st.markdown(f"**Heterogeneity:** {t1['heterogeneity_regime']}")
 
                 # Identity checks
@@ -446,7 +446,7 @@ def render_test_templates_page() -> None:
             if gcd_regime == "STABLE":
                 interpretation = f"""
                 Your data shows **high coherence** with minimal drift (ω = {omega_val:.4f}).
-                The system is in a **stable generative state** where collapse events produce 
+                The system is in a **stable generative state** where collapse events produce
                 meaningful structure. Fidelity remains high at F = {fidelity_val:.4f}, indicating
                 strong alignment with the reference trace.
                 """
@@ -459,7 +459,7 @@ def render_test_templates_page() -> None:
             else:
                 interpretation = f"""
                 Your data indicates **significant drift** (ω = {omega_val:.4f}), placing the
-                system in a **collapse regime**. The generative capacity is compromised, and 
+                system in a **collapse regime**. The generative capacity is compromised, and
                 the integrity composite has degraded to IC = {ic_val:.4f}. Recovery may require
                 substantial intervention.
                 """

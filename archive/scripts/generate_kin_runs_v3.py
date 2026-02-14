@@ -18,6 +18,9 @@ Creates:
 # pyright: reportUnknownMemberType=false
 # pyright: reportUnknownVariableType=false
 # pyright: reportUnknownArgumentType=false
+# pyright: reportOperatorIssue=false
+# pyright: reportReturnType=false
+# pyright: reportCallIssue=false
 
 from __future__ import annotations
 
@@ -25,7 +28,7 @@ import hashlib
 import json
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import numpy as np
 import pandas as pd
@@ -34,7 +37,7 @@ REPO_ROOT = Path(__file__).parent.parent.resolve()
 RUNS_DIR = REPO_ROOT / "runs"
 
 # Contract parameters (UMA.INTSTACK.v1)
-CONTRACT = {
+CONTRACT: dict[str, Any] = {
     "name": "UMA.INTSTACK.v1",
     "epsilon": 1e-8,
     "eta": 1e-3,
@@ -45,6 +48,11 @@ CONTRACT = {
     "C_0": 1.0,  # Curvature normalization scale
     "rho_min": 0.50,  # Minimum return coverage for continuity PASS
 }
+
+_EPS: float = float(CONTRACT["epsilon"])
+_TOL_SEAM: float = float(CONTRACT["tol_seam"])
+_RHO_MIN: float = float(CONTRACT["rho_min"])
+_C_0: float = float(CONTRACT["C_0"])
 
 
 def sha256_of_bytes(data: bytes) -> str:
@@ -112,8 +120,7 @@ def normalize_curvature(C_raw: np.ndarray) -> np.ndarray:
     """
     Normalize curvature to [0,1]: C := C_raw / (C_raw + C_0)
     """
-    C_0 = CONTRACT["C_0"]
-    return C_raw / (C_raw + C_0)
+    return cast(np.ndarray, C_raw / (C_raw + _C_0))
 
 
 # ============================================================
@@ -188,7 +195,7 @@ def compute_recurrence_times_with_min_lag(
 
 
 def compute_local_entropy(psi: np.ndarray, window: int = 50) -> np.ndarray:
-    """Compute local Shannon entropy in sliding window."""
+    """Compute local Bernoulli field entropy in sliding window."""
     N = len(psi)
     S = np.zeros(N)
     epsilon = CONTRACT["epsilon"]
@@ -545,9 +552,9 @@ def generate_ballistic_run() -> None:
         seam_residual = abs(y_arr[seam_idx])
 
         # CRITICAL: Weld PASS requires BOTH integrity AND return coverage
-        budget_ok = delta_kappa < CONTRACT["tol_seam"]
+        budget_ok = delta_kappa < _TOL_SEAM
         integrity_ok = IC_post > 0.7
-        return_coverage_ok = tau_R_finite_post >= CONTRACT["rho_min"]
+        return_coverage_ok = tau_R_finite_post >= _RHO_MIN
 
         if budget_ok and integrity_ok and return_coverage_ok:
             weld_result = "PASS"
@@ -574,7 +581,7 @@ def generate_ballistic_run() -> None:
         "kappa_post": kappa_post,
         "delta_kappa": delta_kappa,
         "tau_R_finite_percent_post": float(tau_R_finite_post * 100),
-        "rho_min_required": CONTRACT["rho_min"] * 100,
+        "rho_min_required": _RHO_MIN * 100,
         "seam_residual": seam_residual,
         "tol_seam": CONTRACT["tol_seam"],
         "result": weld_result,
@@ -690,7 +697,7 @@ def generate_ballistic_run() -> None:
     print(f"  N={N}, T={t_arr[-1]:.2f}s, bounces={bounce_count}")
     print(f"  Seam: t_s={t_seam:.4f}s")
     print(
-        f"  τ_R finite coverage: {100 * len(tau_R_finite) / N:.1f}% (rho_min={100 * CONTRACT['rho_min']:.0f}% for PASS)"
+        f"  τ_R finite coverage: {100 * len(tau_R_finite) / N:.1f}% (rho_min={100 * _RHO_MIN:.0f}% for PASS)"
     )
     print(f"  ω: mean={np.mean(omega):.4f}")
     print(f"  F: mean={np.mean(fidelity_arr):.4f}")

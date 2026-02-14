@@ -92,7 +92,7 @@ class GrammarEntropyResult(NamedTuple):
     """Entropy rate of the collapse grammar."""
 
     entropy_rate: float
-    """Shannon entropy rate  h  in bits/step."""
+    """Collapse grammar entropy rate  h  in bits/step (Shannon entropy rate is the degenerate limit)."""
     max_entropy: float
     """Maximum entropy  log₂(N_regimes)."""
     normalized_entropy: float
@@ -238,7 +238,7 @@ def compute_grammar_entropy(
     T: np.ndarray,
     stationary: np.ndarray,
 ) -> GrammarEntropyResult:
-    """Shannon entropy rate of a Markov chain.
+    """Entropy rate of a Markov chain (collapse grammar).
 
     h = −Σ_{i,j}  π_j  T_{ij}  log₂(T_{ij})
 

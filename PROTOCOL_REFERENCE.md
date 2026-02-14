@@ -21,7 +21,7 @@ This reference guide provides fast pathways to all protocol infrastructure, ensu
 | **Term Index** | Alphabetical term cross-reference | [TERM_INDEX.md](docs/TERM_INDEX.md) |
 | **Glossary Schema** | JSON Schema validation | [schemas/glossary.schema.json](schemas/glossary.schema.json) |
 
-**Prevents:** Symbol capture, reader imports, ambiguous definitions  
+**Prevents:** Symbol capture, reader imports, ambiguous definitions
 **Enables:** Self-service lookup, reproducibility, dispute resolution
 
 ---
@@ -46,13 +46,13 @@ This reference guide provides fast pathways to all protocol infrastructure, ensu
 |--------|-------|---------|------------|
 | **ω** | omega | ω = 1 - F | Collapse: ω ≥ 0.30 |
 | **F** | F | F = Σ w_i c_i | Collapse: F < 0.75 |
-| **S** | S | Shannon entropy | Collapse: S > 0.15 |
+| **S** | S | Bernoulli field entropy | Collapse: S > 0.15 |
 | **C** | C | Dispersion proxy | Collapse: C > 0.14 |
 | **τ_R** | tau_R | Return time | Typed: ℕ∪{∞_rec} |
 | **κ** | kappa | κ = ln(IC) | Seam ledger |
 | **IC** | IC | IC = exp(κ) | Critical threshold |
 
-**Canonical Definitions:** [canon/gcd_anchors.yaml](canon/gcd_anchors.yaml)  
+**Canonical Definitions:** [canon/gcd_anchors.yaml](canon/gcd_anchors.yaml)
 **Glossary Section:** [GLOSSARY.md#tier-1-reserved-symbols-gcd-framework](GLOSSARY.md#tier-1-reserved-symbols-gcd-framework)
 
 ### Tier-0: Seam and Weld
@@ -64,7 +64,7 @@ This reference guide provides fast pathways to all protocol infrastructure, ensu
 | Residual | s | Δκ_budget - Δκ_ledger | PASS/FAIL check |
 | Weld Gate | PASS/FAIL | Finite τ_R + tolerances | Binding decision |
 
-**Canonical Definitions:** [contracts/GCD.INTSTACK.v1.yaml](contracts/GCD.INTSTACK.v1.yaml)  
+**Canonical Definitions:** [contracts/GCD.INTSTACK.v1.yaml](contracts/GCD.INTSTACK.v1.yaml)
 **Glossary Section:** [GLOSSARY.md#tier-0-seam-and-weld-calculus](GLOSSARY.md#tier-0-seam-and-weld-calculus)
 
 ### Tier-2: RCFT Extensions
@@ -76,7 +76,7 @@ This reference guide provides fast pathways to all protocol infrastructure, ensu
 | **λ_p** | lambda_pattern | (0, ∞] | Wavelength (FFT) |
 | **Θ** | Theta_phase | [0, 2π) | Phase coherence |
 
-**Canonical Definitions:** [canon/rcft_anchors.yaml](canon/rcft_anchors.yaml)  
+**Canonical Definitions:** [canon/rcft_anchors.yaml](canon/rcft_anchors.yaml)
 **Glossary Section:** [GLOSSARY.md#tier-2-rcft-overlay-extensions](GLOSSARY.md#tier-2-rcft-overlay-extensions)
 
 ---
@@ -131,12 +131,14 @@ This reference guide provides fast pathways to all protocol infrastructure, ensu
 **Critical Distinction:** Gates decide, diagnostics inform.
 
 ### Gates (Binding Authority)
+
 - **Regime Gates:** Stable / Watch / Collapse
 - **Weld Gate:** PASS / FAIL
 - **Source:** Tier-1 invariants + frozen thresholds
 - **Output:** Categorical labels used downstream
 
 ### Diagnostics (Insight Only)
+
 - **Purpose:** Explain behavior, assess sensitivity
 - **Authority:** Cannot override gates or assign labels
 - **Tier:** Tier-2 (subordinate to kernel)
@@ -220,6 +222,7 @@ Example pathway:
 ## Failure Modes and Diagnostics
 
 ### Protocol Violations (NONCONFORMANT)
+
 - Missing freeze
 - Symbol capture without disambiguation
 - Post-hoc artifact edits
@@ -229,6 +232,7 @@ Example pathway:
 **Reference:** [GLOSSARY.md#nonconformance](GLOSSARY.md#nonconformance)
 
 ### Valid Negative Outcomes
+
 - Weld FAIL (no continuity established)
 - Collapse regime (ω ≥ 0.30)
 - Critical severity tag (min IC below threshold)

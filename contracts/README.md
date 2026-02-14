@@ -16,19 +16,19 @@ Contracts are validated against the pinned schema:
 
 ## Non-negotiable rules
 
-1) No in-place edits after release  
-Once a contract is published or referenced by any CasePack/receipt, do not modify it.  
+1) No in-place edits after release
+Once a contract is published or referenced by any CasePack/receipt, do not modify it.
 Changes require a new versioned contract file.
 
-2) Manifest pinning is mandatory  
+2) Manifest pinning is mandatory
 CasePack manifests must pin:
 - `contract_id`
 - `contract_version`
 
-3) Kernel symbols are reserved  
+1) Kernel symbols are reserved
 Contracts define the Tier-1 invariant structure boundary. Domain expansion closures (Tier-2) must not redefine Tier-1 symbols (F, ω, S, C, κ, IC, τ_R, regime). See [TIER_SYSTEM.md](../TIER_SYSTEM.md).
 
-4) Typed semantics are part of correctness  
+2) Typed semantics are part of correctness
 Typed boundary values (e.g. `tau_R = INF_REC`) must remain typed; implementations must not silently coerce them into floats.
 
 ## When to create a new contract version

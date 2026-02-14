@@ -1,10 +1,10 @@
 # Mathematical Architecture
 
-**Version**: 1.0.0  
-**Status**: Reference Documentation  
-**Prerequisites**: [KERNEL_SPECIFICATION.md](../KERNEL_SPECIFICATION.md), [INFRASTRUCTURE_GEOMETRY.md](INFRASTRUCTURE_GEOMETRY.md)  
-**See Also**: [src/umcp/tau_r_star.py](src/umcp/tau_r_star.py) for the τ_R* thermodynamic diagnostic — phase classification, Fisher Information geometry, budget surplus/deficit, trapping analysis, and testable predictions derived from the budget identity  
-**See Also**: [KERNEL_SPECIFICATION.md §5](../KERNEL_SPECIFICATION.md) for measured prediction scorecard, outlier analysis, rederived principle comparisons, and seam-derived constants
+**Version**: 1.0.0
+**Status**: Reference Documentation
+**Prerequisites**: [KERNEL_SPECIFICATION.md](../KERNEL_SPECIFICATION.md), [INFRASTRUCTURE_GEOMETRY.md](INFRASTRUCTURE_GEOMETRY.md)
+**See Also**: [src/umcp/tau_r_star.py](src/umcp/tau_r_star.py) for the τ_R* thermodynamic diagnostic — phase classification, Fisher Information geometry, budget surplus/deficit, trapping analysis, and testable predictions derived from the budget identity
+**See Also**: [KERNEL_SPECIFICATION.md §5](../KERNEL_SPECIFICATION.md) for measured prediction scorecard, outlier analysis, independently derived identity comparisons, and seam-derived constants
 
 ---
 
@@ -68,11 +68,13 @@ Var(T(c)) ≈ ∇Tᵀ V ∇T
 ```
 
 **Diagonal Case** (independent channels):
+
 ```
 V = diag(σ₁², σ₂², ..., σₙ²)
 ```
 
 **Full Case** (correlated channels):
+
 ```
 V = | Cov(c₁,c₁)  Cov(c₁,c₂)  ⋯  Cov(c₁,cₙ) |
     | Cov(c₂,c₁)  Cov(c₂,c₂)  ⋯  Cov(c₂,cₙ) |
@@ -97,6 +99,7 @@ H = | ∂²Δκ/∂θ₁²      ∂²Δκ/∂θ₁∂θ₂  ⋯ |
 **Key Property**: For affine budgets (UMA.INTSTACK), H = 0.
 
 **Robustness Expansion**:
+
 ```
 ΔT ≈ ∇Tᵀδθ + ½δθᵀHδθ + O(‖δθ‖³)
 ```
@@ -135,6 +138,7 @@ Acting on (Q, U) Stokes parameters. The factor of 2 reflects polarization's head
 **Usage**: SS1m edition triads (C₁, C₂, C₃)
 
 **Formulas**:
+
 ```
 C₁ = (P + F) mod 97
 C₂ = (P + 2F + 3T + 5E + 7R) mod 97
@@ -214,6 +218,7 @@ PASS ⟺ |s| ≤ tol_seam
 ```
 
 **Matrix Form**:
+
 ```
 | R  |   | τ_R |
 |-1  | · |  1  | = Δκ_budget

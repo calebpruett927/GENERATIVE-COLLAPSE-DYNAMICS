@@ -5,6 +5,44 @@ All notable changes to the UMCP validator and repository will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.2] - 2026-02-14
+
+### Changed — Documentation Overhaul & Terminology Finalization
+
+**README.md**: Comprehensive rewrite with complete, accurate content:
+- Updated to 12 physics domains, 110+ closure modules, 13 casepacks
+- Added Originality & Terminology section with degenerate-limit table
+- Added Three-Tier Architecture overview in Documentation section
+- Expanded Documentation section with Essential Reading, Reference Documents, and Internal Documentation
+- Updated all domain counts, artifact counts, and badge versions
+- Corrected all terminology per arrow-of-derivation standard
+- Updated footer to canonical axiom form
+
+**AXIOM.md**: Terminology finalization:
+- "Connection to Physical Theories" → "Connection to Physical Theories (Degenerate Limits)" with arrow-of-derivation framing
+- Removed all instances of "recover" for classical results → "emerges as a degenerate limit"
+- Updated test count from 344+ to 3,515+
+- Updated summary axiom to canonical form: "Collapse is generative; only what returns is real"
+- Added "derived independently from Axiom-0" to Tier-1 description
+
+**TIER_SYSTEM.md**: Terminology finalization:
+- "IC ≤ F is AM-GM" → "IC ≤ F is the integrity bound"
+- "(AM-GM bound)" → "(integrity bound)" in structural identities table
+- Updated from 7 domains / 146 experiments to 12 domains / 3,515+ tests
+- Entropy structural role updated to "Bernoulli field entropy"
+- Domain expansions table expanded from 6 to all 12 domains
+
+**Frozen parameters**: Updated version in `pyproject.toml`, `src/umcp/__init__.py`, `integrity/code_version.txt`
+
+### Stats
+
+- **Tests**: 3,515 passing, 0 failures
+- **Lint**: ruff clean, mypy clean
+- **Validation**: CONFORMANT (16 targets, 0 errors)
+- **Integrity**: 121 files checksummed
+
+---
+
 ## [2.1.0] - 2026-02-12
 
 ### Fixed - Environment Portability

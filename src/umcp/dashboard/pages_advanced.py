@@ -119,14 +119,14 @@ def render_precision_page() -> None:
     # Curvature proxy
     C = float(np.std(c_arr) / 0.5)  # Population std / 0.5
 
-    # Shannon Entropy
+    # Bernoulli field entropy (Shannon entropy is the degenerate limit)
     S_terms = []
     for c in c_clipped:
         s = -c * np.log(c) - (1 - c) * np.log(1 - c) if 0 < c < 1 else 0
         S_terms.append(s)
     S = float(np.sum(w_arr * np.array(S_terms)))
 
-    # AM-GM Gap
+    # Heterogeneity gap
     gap = F - IC
 
     # ========== Display Results with Full Precision ==========
@@ -134,15 +134,15 @@ def render_precision_page() -> None:
 
     # Main invariants table
     invariants_data = {
-        "Symbol": ["F", "ω", "κ", "IC", "C", "S", "Δ (AM-GM Gap)"],
+        "Symbol": ["F", "ω", "κ", "IC", "C", "S", "Δ (Heterogeneity Gap)"],
         "Name": [
             "Fidelity (Arithmetic Mean)",
             "Drift (1 - F)",
             "Log-Integrity (Σwᵢ ln cᵢ)",
             "Integrity Composite (exp κ)",
             "Curvature Proxy (std/0.5)",
-            "Shannon Entropy",
-            "AM-GM Gap (F - IC)",
+            "Bernoulli Field Entropy",
+            "Heterogeneity Gap (F - IC)",
         ],
         "Value": [f"{F:.15f}", f"{omega:.15f}", f"{kappa:.15f}", f"{IC:.15f}", f"{C:.15f}", f"{S:.15f}", f"{gap:.15f}"],
         "Bound Check": [
@@ -152,7 +152,7 @@ def render_precision_page() -> None:
             "✅" if 0 < IC <= 1 else "❌",
             "✅" if 0 <= C <= 1 else "⚠️",  # Soft bound
             "✅" if S >= 0 else "❌",
-            "✅" if gap >= 0 else "❌",  # AM-GM: F >= IC always
+            "✅" if gap >= 0 else "❌",  # Integrity bound: F >= IC always
         ],
     }
 
@@ -196,11 +196,11 @@ def render_precision_page() -> None:
         }
     )
 
-    # Lemma 4: AM-GM inequality F >= IC
+    # Lemma 4: Integrity bound F >= IC (AM-GM is the degenerate limit)
     checks.append(
         {
             "Lemma": "Lemma 4",
-            "Statement": "F ≥ IC (AM-GM inequality)",
+            "Statement": "F ≥ IC (integrity bound)",
             "Computed": f"F - IC = {gap:.10f}",
             "Status": "PASS ✅" if gap >= -1e-15 else "FAIL ❌",
         }
@@ -824,8 +824,8 @@ def render_layer2_projections() -> None:
         )
         st.plotly_chart(fig_sc, width="stretch")
 
-    # ========== AM-GM Gap Visualization ==========
-    st.markdown("#### AM-GM Gap Analysis")
+    # ========== Heterogeneity Gap Visualization ==========
+    st.markdown("#### Heterogeneity Gap Analysis")
 
     df["gap"] = df["F"] - df["IC"]
 
@@ -847,7 +847,7 @@ def render_layer2_projections() -> None:
         height=300,
         xaxis_title="Time t",
         yaxis_title="Value",
-        title="AM-GM Gap: F ≥ IC (with equality iff homogeneous)",
+        title="Heterogeneity Gap: F ≥ IC (with equality iff homogeneous)",
         legend={"orientation": "h", "yanchor": "bottom", "y": 1.02},
     )
     st.plotly_chart(fig_gap, width="stretch")
@@ -1889,7 +1889,7 @@ def render_domain_overview_page() -> None:
         <h4>Tier-1: Immutable Invariants</h4>
         <ul style="margin:4px 0; padding-left:18px;">
         <li>F + ω = 1 (budget)</li>
-        <li>IC ≤ F (AM-GM)</li>
+        <li>IC ≤ F (integrity bound)</li>
         <li>IC ≈ exp(κ)</li>
         <li>Regime classification</li>
         </ul>

@@ -405,7 +405,7 @@ class TestLemma41EntropyIntegrity:
         eps = 1e-8
         c_safe = max(eps, min(1 - eps, c))
 
-        # Shannon entropy for binary channel
+        # Bernoulli field entropy for binary channel
         S = -c_safe * math.log(c_safe) - (1 - c_safe) * math.log(1 - c_safe)
 
         # Log-integrity

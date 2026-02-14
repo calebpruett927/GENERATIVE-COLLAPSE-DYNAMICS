@@ -89,7 +89,7 @@ The UMCP (Universal Measurement Contract Protocol) system is designed with full 
 - Tier-1 invariants from trace + weights
 - `ω = Σ wᵢ(1-cᵢ)` - drift measure
 - `F = 1 - ω` - fidelity (Tier-1 identity)
-- `S = -Σ wᵢ[cᵢln(cᵢ) + (1-cᵢ)ln(1-cᵢ)]` - Shannon entropy
+- `S = -Σ wᵢ[cᵢln(cᵢ) + (1-cᵢ)ln(1-cᵢ)]` - Bernoulli field entropy
 - `C = std(c)/0.5` - curvature measure
 - `κ = Σ wᵢ ln(cᵢ + ε)` - kappa
 - `IC = exp(κ)` - integrity check (Tier-1 identity)
@@ -213,6 +213,7 @@ omega >= 0.30
 ### Omega Formula
 
 **Correct formula** (matches hello_world example):
+
 ```
 ω = Σ wᵢ(1 - cᵢ)
 ```
@@ -263,16 +264,19 @@ python examples/interconnected_demo.py
 ## Best Practices
 
 1. **Always validate after changes**
+
    ```bash
    python -m umcp.validator
    ```
 
 2. **Regenerate checksums after updates**
+
    ```bash
    sha256sum manifest.yaml contract.yaml ... > integrity/sha256.txt
    ```
 
 3. **Use programmatic access for consistency**
+
    ```python
    from umcp import get_umcp_files
    files = get_umcp_files()
@@ -280,6 +284,7 @@ python examples/interconnected_demo.py
    ```
 
 4. **Test closure execution before deployment**
+
    ```python
    from umcp import get_closure_loader
    loader = get_closure_loader()
@@ -294,19 +299,23 @@ python examples/interconnected_demo.py
 ## Troubleshooting
 
 ### Issue: "Regime mismatch"
-**Cause**: Invariants don't match thresholds  
+
+**Cause**: Invariants don't match thresholds
 **Fix**: Recalculate invariants from trace using correct omega formula
 
 ### Issue: "Checksum mismatch"
-**Cause**: File modified without updating checksums  
+
+**Cause**: File modified without updating checksums
 **Fix**: Regenerate `integrity/sha256.txt`
 
 ### Issue: "Weights don't sum to 1.0"
-**Cause**: Floating-point precision error  
+
+**Cause**: Floating-point precision error
 **Fix**: Adjust last weight: `w_3 = 1.0 - w_1 - w_2`
 
 ### Issue: "Coordinates out of bounds"
-**Cause**: Trace values outside [0,1]  
+
+**Cause**: Trace values outside [0,1]
 **Fix**: Check embedding parameters and censoring rules
 
 ## References

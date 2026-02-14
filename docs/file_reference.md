@@ -85,6 +85,7 @@ with open(umcp.observables_yaml) as f:
 ### Configuration Files (YAML)
 
 #### manifest.yaml
+
 CasePack manifest following `schemas/manifest.schema.json`. Contains:
 - CasePack metadata (id, version, title, authors)
 - References to canon anchors, contract, and closure registry
@@ -92,24 +93,28 @@ CasePack manifest following `schemas/manifest.schema.json`. Contains:
 - Run intent and notes
 
 #### contract.yaml
+
 Contract specification following `schemas/contract.schema.json`. Defines:
 - Embedding parameters (interval, face, oor_policy, epsilon)
 - Tier-1 kernel parameters (reserved symbols, weights policy, frozen parameters)
 - Typed censoring rules (special values, run status enum)
 
 #### observables.yaml
+
 Observable variable definitions including:
 - Primary observables from raw measurements
 - Derived observables (computed from primary)
 - Measurement metadata and quality flags
 
 #### embedding.yaml
+
 Embedding transformation configuration specifying:
 - Coordinate transformations from raw to bounded
 - OOR (out-of-range) handling policies
 - Log-safety parameters
 
 #### return.yaml
+
 Return domain specifications including:
 - Return domain generator type and parameters
 - Neighborhood tolerance for return evaluation
@@ -117,6 +122,7 @@ Return domain specifications including:
 - Censoring policy
 
 #### closures.yaml
+
 Closure registry references specifying:
 - Gamma form (drift dissipation closure)
 - Return domain generator
@@ -127,12 +133,14 @@ Closure registry references specifying:
 ### Data Files
 
 #### weights.csv
+
 Weight coefficients (w_1, w_2, w_3, ...) satisfying:
 - Non-negative values
 - Sum to 1.0
 - Used in Tier-1 invariant computations
 
 #### derived/trace.csv
+
 Bounded trace Ψ_ε(t) containing:
 - Time column (t)
 - Coordinate columns (c_1, c_2, c_3, ...)
@@ -140,6 +148,7 @@ Bounded trace Ψ_ε(t) containing:
 - All coordinates in [0, 1]
 
 #### derived/trace_meta.yaml
+
 Trace metadata including:
 - Format specification (wide_psi)
 - Source information
@@ -150,11 +159,12 @@ Trace metadata including:
 ### Output Files
 
 #### outputs/invariants.csv
+
 Tier-1 invariants per time point:
 - t: Time
 - omega (ω): Drift magnitude
 - F: Tier-1 invariant (F ≈ 1 - ω)
-- S: Shannon entropy
+- S: Bernoulli field entropy
 - C: Curvature proxy
 - tau_R (τ_R): Return time
 - kappa (κ): Log-geometric mean
@@ -164,6 +174,7 @@ Tier-1 invariants per time point:
 - IC_min: Minimum coordinate value
 
 #### outputs/regimes.csv
+
 Regime classifications including:
 - Time points
 - Regime labels with threshold checks
@@ -172,6 +183,7 @@ Regime classifications including:
 - Notes
 
 #### outputs/welds.csv
+
 Continuity verification at seam boundaries:
 - Weld IDs
 - Pre/post time points
@@ -181,6 +193,7 @@ Continuity verification at seam boundaries:
 - Notes
 
 #### outputs/report.txt
+
 Human-readable validation report containing:
 - Summary (status, test counts)
 - Schema validation results
@@ -195,7 +208,9 @@ Human-readable validation report containing:
 ### Integrity Files
 
 #### integrity/sha256.txt
+
 SHA256 checksums for all tracked files. Format:
+
 ```
 <hash>  <filepath>
 <hash>  <filepath>
@@ -203,12 +218,14 @@ SHA256 checksums for all tracked files. Format:
 ```
 
 #### integrity/env.txt
+
 Python environment documentation including:
 - Python version
 - Installed packages with versions
 - Used for reproducibility verification
 
 #### integrity/code_version.txt
+
 Git provenance information:
 - Commit hash
 - Git describe output
@@ -239,7 +256,7 @@ invariants = umcp.load_invariants()
 for inv_row in invariants:
     omega = float(inv_row['omega'])
     F = float(inv_row['F'])
-    
+
     # Check Tier-1 identity: F ≈ 1 - ω
     assert abs(F - (1 - omega)) < 1e-9
 ```

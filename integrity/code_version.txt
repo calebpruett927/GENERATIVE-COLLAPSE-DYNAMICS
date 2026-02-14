@@ -1,6 +1,6 @@
-v2.1.1
+v2.1.2
 commit: latest
 author: Clement Paulus <calebpruett003@gmail.com>
-date: 2026-02-12 00:00:00 +0000
+date: 2026-02-14 00:00:00 +0000
 branch: HEAD -> main
-message: release: Version 1.5.0 - Finalize repository version consistency
+message: release: v2.1.2 — README overhaul, terminology finalization, AXIOM.md and TIER_SYSTEM.md updates

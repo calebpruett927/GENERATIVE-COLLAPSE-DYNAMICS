@@ -1477,7 +1477,7 @@ class KernelComputeResponse(BaseModel):
 
     F: float = Field(..., description="Fidelity (arithmetic mean)")
     omega: float = Field(..., description="Drift = 1 - F")
-    S: float = Field(..., description="Shannon entropy")
+    S: float = Field(..., description="Bernoulli field entropy (Shannon entropy is the degenerate limit)")
     C: float = Field(..., description="Curvature (normalized std)")
     kappa: float = Field(..., description="Log-integrity")
     IC: float = Field(..., description="Integrity composite (geometric mean)")

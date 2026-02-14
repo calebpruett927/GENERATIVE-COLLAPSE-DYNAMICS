@@ -1,6 +1,6 @@
 """Atom Dot Metal-Insulator Transition — QM.INTSTACK.v1
 
-Rederives the principal conclusions of Donnelly, Chung, Garreis et al.
+Derives independently the principal conclusions of Donnelly, Chung, Garreis et al.
 (2026), "Large-scale analogue quantum simulation using atom dot arrays"
 (Nature, DOI: 10.1038/s41586-025-10053-7), within the Generative
 Collapse Dynamics (GCD) kernel framework.
@@ -1407,14 +1407,14 @@ def channel_autopsy() -> dict[str, Any]:
 #
 # The central discovery: κ < −2 is a UNIVERSAL collapse classifier
 # across all four domains with 100% precision and 100% recall (N=54).
-# This threshold was not designed — it emerges from the AM-GM inequality.
+# This threshold was not designed — it emerges from the integrity bound (IC ≤ F).
 # ═══════════════════════════════════════════════════════════════════
 
 
 def crossover_entropy() -> dict[str, float]:
     """Compute channel entropy for each device.
 
-    Shannon entropy of the normalized trace vector measures channel
+    Bernoulli field entropy of the normalized trace vector measures channel
     balance. The crossover device (C) should be closest to maximum
     entropy (= ln 8 ≈ 2.079), since its channels are most uniform.
 

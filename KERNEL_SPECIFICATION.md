@@ -1,7 +1,7 @@
 # UMCP Kernel Specification
 
-**Manuscript Reference**: UMCP Manuscript v1.0.0, §8  
-**Status**: Canonical specification (freeze-controlled)  
+**Manuscript Reference**: UMCP Manuscript v1.0.0, §8
+**Status**: Canonical specification (freeze-controlled)
 **Purpose**: Formal mathematical definitions and lemmas for kernel invariants, return machinery, seam accounting, and implementation bounds
 
 ---
@@ -21,7 +21,7 @@ This document provides the **complete formal specification** of the UMCP kernel.
 
 **Frozen Means Consistent, Not Constant**: The parameters frozen in a contract (ε, p, α, λ, tol_seam) are not arbitrary design choices locked for convenience. They are frozen because **the seam demands it**. A seam is a verification boundary: you run forward, things collapse, and something returns. To verify that what returned is the same thing that collapsed, the rules of measurement must be identical on both sides. If ε changes between the outbound run and the return, closures cannot be compared. If tol_seam shifts, the PASS/FAIL boundary moves, and "CONFORMANT" on one side of collapse means something different than "CONFORMANT" on the other. The values are consistent across the seam — from front to end, through collapse and back. That is what frozen means in this protocol.
 
-**See Also**: [TIER_SYSTEM.md](TIER_SYSTEM.md) for the complete tier architecture and constitutional clauses.  
+**See Also**: [TIER_SYSTEM.md](TIER_SYSTEM.md) for the complete tier architecture and constitutional clauses.
 **See Also**: [src/umcp/tau_r_star.py](src/umcp/tau_r_star.py) for the complete τ_R* diagnostic implementation — phase diagram, trapping threshold, arrow of time, critical exponents, and testable predictions derived from the budget identity (Def 11).
 
 ---
@@ -441,7 +441,7 @@ where F_Ψ denotes F computed on Ψ(t) and F_y denotes the same affine functiona
 Let (t_0, t_1) be fixed. Assume c_i(t), c̃_i(t) ∈ [ε, 1-ε] for all i and t ∈ {t_0, t_1}. Let κ(t) and κ̃(t) be computed from c_i(t) and c̃_i(t), respectively. Then:
 
 ```
-|Δκ_ledger - Δκ̃_ledger| = |(κ(t_1) - κ(t_0)) - (κ̃(t_1) - κ̃(t_0))| 
+|Δκ_ledger - Δκ̃_ledger| = |(κ(t_1) - κ(t_0)) - (κ̃(t_1) - κ̃(t_0))|
                            ≤ (1/ε) Σ_{t∈{t_0,t_1}} Σ_{i=1}^n w_i |c_i(t) - c̃_i(t)|
 ```
 
@@ -459,8 +459,8 @@ s = Δκ_budget - Δκ_ledger
 For any perturbed evaluation (denoted by tildes) computed under the same frozen closures and contract-equivalent settings, the residual difference satisfies the bound:
 
 ```
-|s - s̃| ≤ |τ_R(t_1)| |R - R̃| + |R̃| |τ_R(t_1) - τ̃_R(t_1)| 
-         + |D_ω(t_1) - D̃_ω(t_1)| + |D_C(t_1) - D̃_C(t_1)| 
+|s - s̃| ≤ |τ_R(t_1)| |R - R̃| + |R̃| |τ_R(t_1) - τ̃_R(t_1)|
+         + |D_ω(t_1) - D̃_ω(t_1)| + |D_C(t_1) - D̃_C(t_1)|
          + |Δκ_ledger - Δκ̃_ledger|
 ```
 
@@ -796,10 +796,13 @@ where D_C is the curvature dissipation term.
 - Banerjee 2022: τ_R = D_C for both anomalous and normal drag (8 observations)
 
 **Proof**: For Type I seams with Δκ = 0, the budget equation requires:
+
 ```
 Δκ = R·τ_R - (D_ω + D_C) = 0
 ```
+
 Since ω = 0 implies D_ω = 0, and R = 1 for unitary systems:
+
 ```
 τ_R = D_C  ∎
 ```
@@ -807,9 +810,11 @@ Since ω = 0 implies D_ω = 0, and R = 1 for unitary systems:
 **Corollary 35.1**: In unitary systems, return time and curvature change are **dual observables**—measuring one determines the other uniquely.
 
 **Corollary 35.2 (OD Scaling Law)**: For narrow-band on-resonance transmission:
+
 ```
 τ_R = -OD  (optical depth)
 ```
+
 This is empirically verified with R² = 1.000 across Thompson 2025 theory predictions.
 
 ---
@@ -827,10 +832,13 @@ This is empirically verified with R² = 1.000 across Thompson 2025 theory predic
 2. √IC ≤ √(1-ε) by Lemma 1 (IC ∈ [ε, 1-ε])
 3. (1 + C²) ≤ 2 since C ∈ [0,1] by Lemma 10
 4. Integration over [t₀, t₁] with duration T yields:
+
    ```
    ∫ Φ_gen dt ≤ |κ_max| · √(1-ε) · 2 · T
    ```
+
 5. Since |Δκ_ledger| = |κ(t₁) - κ(t₀)| ≥ 0, and the worst case is κ changing monotonically:
+
    ```
    ∫ Φ_gen dt ≤ |Δκ_ledger| · √(1-ε) · 2  ∎
    ```
@@ -848,12 +856,13 @@ This is empirically verified with R² = 1.000 across Thompson 2025 theory predic
 ```
 
 **Classification**:
+
 | Type | Δκ Range | IC Deficit | Examples |
 |------|----------|------------|----------|
-| I (Unitary) | |Δκ| < 0.10 | 0% | Atomic physics (23 obs) |
-| I* (Near-Stable) | 0.10 ≤ |Δκ| < 0.20 | 5-10% | The Cliff LRD (3 obs) |
-| II (Transitional) | 0.20 ≤ |Δκ| < 0.50 | 10-25% | Cliff-like twins |
-| III (Horizon) | |Δκ| ≥ 0.50 | >25% | Black holes (5 obs) |
+| I (Unitary) | \|Δκ\| < 0.10 | 0% | Atomic physics (23 obs) |
+| I* (Near-Stable) | 0.10 ≤ \|Δκ\| < 0.20 | 5-10% | The Cliff LRD (3 obs) |
+| II (Transitional) | 0.20 ≤ \|Δκ\| < 0.50 | 10-25% | Cliff-like twins |
+| III (Horizon) | \|Δκ\| ≥ 0.50 | >25% | Black holes (5 obs) |
 
 **Empirical Evidence**:
 - All 23 atomic physics observations: Δκ = 0 exactly
@@ -892,6 +901,7 @@ IC_horizon = 0.947 ± 0.01  (equivalently: 5.3% loss)
 ```
 
 The convergence rate is characterized by:
+
 ```
 τ_convergence(ε) = ⌈log_p(log(ε)/log(ω_0))⌉
 ```
@@ -903,6 +913,7 @@ The convergence rate is characterized by:
 For ω_n < ε, solve p^n > log(ε)/log(ω_0), yielding n > log_p(log(ε)/log(ω_0)). ∎
 
 **Empirical Validation (Ising Anyons, Iulianelli et al. 2025)**:
+
 | n | ω_n (predicted p=5) | ω_n (observed) | Match |
 |---|---------------------|----------------|-------|
 | 0 | 0.286 | 0.286 | ✓ |
@@ -910,6 +921,7 @@ For ω_n < ε, solve p^n > log(ε)/log(ω_0), yielding n > log_p(log(ε)/log(ω_
 | 2 | (1.91×10⁻³)^5 = 2.57×10⁻¹⁴ | 2.565×10⁻¹⁴ | ✓ |
 
 **Corollary 39.1**: Convergence to machine precision (ε = 10⁻¹⁵) requires only:
+
 ```
 τ = ⌈log_5(log(10⁻¹⁵)/log(0.286))⌉ = 2 iterations
 ```
@@ -921,9 +933,11 @@ For ω_n < ε, solve p^n > log(ε)/log(ω_0), yielding n > log_p(log(ε)/log(ω_
 **Statement**: If ω_0 < 1 and dynamics follow ω_{n+1} = ω_n^p with p ≥ 2, then:
 1. lim_{n→∞} ω_n = 0 (stable fixed point)
 2. Regime_n → Stable for all n ≥ N_crit where:
+
 ```
 N_crit = ⌈log_p(log(ω_stable)/log(ω_0))⌉
 ```
+
 and ω_stable = 0.038 (Stable regime threshold).
 
 **Proof**:
@@ -949,6 +963,7 @@ Equivalently: High entropy requires low (negative) log-integrity.
 
 **Proof**:
 Define f(c) = h(c) + ln(c) where h(c) = -c ln c - (1-c) ln(1-c).
+
 ```
 f(c) = -c ln c - (1-c) ln(1-c) + ln c
      = (1-c) ln c - (1-c) ln(1-c) - c ln c + ln c
@@ -957,9 +972,11 @@ f(c) = -c ln c - (1-c) ln(1-c) + ln c
 
 Taking derivative: f'(c) = -ln(c/(1-c)) + 1/c - 1
 Setting f'(c) = 0 yields c = 1/2 (maximum).
+
 ```
-f(1/2) = ln(2) + ln(1/2) = ln(2) - ln(2) = 0... 
+f(1/2) = ln(2) + ln(1/2) = ln(2) - ln(2) = 0...
 ```
+
 Wait, let me recalculate. At c = 1/2: h(1/2) = ln(2), κ = ln(1/2) = -ln(2).
 So S + κ = ln(2) - ln(2) = 0 at the symmetric point.
 
@@ -991,6 +1008,7 @@ This convergence is the collapse-field analogue of Re(s) = 1/2 in the Riemann ze
 ```
 
 Then for all Ψ_ε(t) ∈ [ε, 1-ε]^n:
+
 ```
 Π(t) ∈ [ε, 2(1-ε)]
 ```
@@ -1015,6 +1033,7 @@ Then for all Ψ_ε(t) ∈ [ε, 1-ε]^n:
 where Ψ_N = Σ_{n=1}^N α^n Ψ_n is the N-term truncation.
 
 **Proof**: Standard geometric series remainder:
+
 ```
 ‖Ψ_rec - Ψ_N‖ = ‖Σ_{n=N+1}^∞ α^n Ψ_n‖
               ≤ Σ_{n=N+1}^∞ |α|^n M
@@ -1070,6 +1089,7 @@ under consistent return domain policy.
 **Proof**: By Lemma 45, s_{0→2} = s₁ + s₂. Triangle inequality gives |s₁ + s₂| ≤ |s₁| + |s₂|. ∎
 
 **Corollary 46.1 (Telescoping)**: For K consecutive PASS seams with |s_k| ≤ tol:
+
 ```
 |s_{0→K}| ≤ K · tol
 ```
@@ -1107,7 +1127,7 @@ This specification document is referenced by and depends on:
 
 ## 5. Empirical Verification and Structural Nuances
 
-This section records the measured prediction accuracy of the kernel identities across the full dataset (146 rows, 12 casepacks, 8 domains, all three regimes), characterizes the structural meaning of outliers, explains why frozen constants are seam-derived rather than prescribed, and documents how each rederived identity exceeds its classical ancestor in predictive power.
+This section records the measured prediction accuracy of the kernel identities across the full dataset (146 rows, 12 casepacks, 8 domains, all three regimes), characterizes the structural meaning of outliers, explains why frozen constants are seam-derived rather than prescribed, and documents how each identity, derived independently from Axiom-0, contains its classical counterpart as a degenerate limit.
 
 ---
 
@@ -1162,39 +1182,39 @@ The Spearman correlation between $\omega$ and $S$ is 0.23 — positive as predic
 
 ---
 
-### 5.3 Rederived Principles and Their Enhanced Nuance
+### 5.3 Independently Derived Identities and Their Classical Limits
 
-Each kernel identity performs the same function as a classical mathematical principle but lives in a richer structure that makes it say more. The original result is a limit of the new one; the new version carries degrees of freedom the original could not express.
+Each kernel identity is derived from Axiom-0 through the Bernoulli embedding. The classical result emerges as a degenerate limit when kernel structure is stripped away. The arrow of derivation runs from the axiom to the classical result — the resemblance to classical results is evidence of correctness, not evidence of derivativeness.
 
-#### F = 1 − ω rederives probability conservation (unitarity)
+#### F = 1 − ω contains probability conservation (unitarity) as a degenerate limit
 
 **Classical principle**: Probabilities sum to 1. $P + (1-P) = 1$.
 
 **UMCP version**: The departure from conservation has a cubic cost $\Gamma(\omega) = \omega^3/(1-\omega)$. That cost has a simple pole at $\omega = 1$, the pole defines a phase boundary, and the phase boundary classifies three regimes (Stable/Watch/Collapse). Conservation becomes a **thermodynamic potential**. The classical version says "you can't lose probability." The UMCP version says "losing probability costs $\omega^3/(1-\omega)$, and here is the exact phase diagram of that cost." 100.0% exact across 8 domains.
 
-#### IC = exp(κ) rederives the exponential map
+#### IC = exp(κ) contains the exponential map as a degenerate limit
 
 **Classical principle**: The exponential map in differential geometry sends tangent vectors to manifold points — a local coordinate tool, specific to a particular manifold and chart.
 
-**UMCP version**: Information content is the exponential of curvature **globally across domains**. This means $\kappa$ is a renormalization invariant: you can read the geometry from the information or the information from the geometry, and they agree to 98.6% across 8 domains without retraining. The classical exponential map is domain-specific and local. The UMCP version is **universal** — the same identity holds in finance, quantum mechanics, and nuclear physics.
+**UMCP version**: Information content is the exponential of curvature **globally across domains**. This means κ is a renormalization invariant: you can read the geometry from the information or the information from the geometry, and they agree to 98.6% across 8 domains without retraining. Strip the kernel architecture and you recover the classical exponential map — domain-specific and local. The kernel version is **universal** — the same identity holds in finance, quantum mechanics, and nuclear physics.
 
-#### IC ≤ F rederives the AM-GM inequality
+#### IC ≤ F contains the AM-GM inequality as a degenerate limit
 
 **Classical principle** (Euclid, circa 300 BC): The arithmetic mean dominates the geometric mean. The gap exists but has no interpretation.
 
-**UMCP version**: The gap $F - \text{IC} = \text{Var}(c)/(2\bar{c})$ is **exactly** the Fisher Information contribution from heterogeneity (Result F1). The classical version says a gap exists. The UMCP version says the gap **measures statistical distinguishability** — and that measurement determines regime placement, seam residual size, and the system's distance from the homogeneous (optimal) configuration. 100.0% satisfied within tol_seam across 146 rows.
+**UMCP version**: The gap $F - \text{IC} = \text{Var}(c)/(2\bar{c})$ is **exactly** the Fisher Information contribution from heterogeneity (Result F1). The classical AM-GM inequality says a gap exists but gives it no interpretation. The kernel version says the gap **measures statistical distinguishability** — and that measurement determines regime placement, seam residual size, and the system's distance from the homogeneous (optimal) configuration. Strip the channel semantics, weights, and guard band and you recover the classical AM-GM inequality. Calling IC ≤ F "the AM-GM inequality" reverses the arrow of derivation. 100.0% satisfied within tol_seam across 146 rows.
 
-#### Γ(ω) = ω³/(1−ω) rederives critical slowing
+#### Γ(ω) = ω³/(1−ω) contains critical slowing as a degenerate limit
 
 **Classical principle** (dynamical systems): Relaxation time diverges near a fixed point. Qualitative — "things slow down near transitions."
 
-**UMCP version**: The exponent is $p = 3$ (not fitted — discovered as the unique value where three regimes separate cleanly). The universality class is $z\nu = 1$ (same as directed percolation). The cost is computable from a single frozen parameter. The regime separation is 6,094,823:1 (measured). The classical version says divergence occurs. The UMCP version says **exactly how fast, in which universality class, at what threshold, and with what measurable cost ratio.**
+**UMCP version**: The exponent is $p = 3$ (not fitted — discovered as the unique value where three regimes separate cleanly). The universality class is $z\nu = 1$ (same as directed percolation). The cost is computable from a single frozen parameter. The regime separation is 6,094,823:1 (measured). Strip the phase diagram and the frozen parameter and you recover the classical qualitative statement — "things slow down near transitions." The kernel version says **exactly how fast, in which universality class, at what threshold, and with what measurable cost ratio.**
 
-#### S ≤ h(F) rederives Fano's inequality
+#### S ≤ h(F) contains Fano's inequality as a degenerate limit
 
 **Classical principle**: Error probability is bounded by entropy. One-directional constraint.
 
-**UMCP version**: The ceiling $h(F) = h(1-\omega)$ is tight (0 violations in 50,000 samples). Departure from equality measures how much structural order the system retains beyond what fidelity alone guarantees. Near collapse ($\omega \to 1$), $h(F) \to 0$ and entropy is forcibly suppressed — the system's internal disorder is constrained by its proximity to the pole. The classical version bounds from one side. The UMCP version creates a **tight ceiling whose departure is itself a measurement**.
+**UMCP version**: The ceiling $h(F) = h(1-\omega)$ is tight (0 violations in 50,000 samples). Departure from equality measures how much structural order the system retains beyond what fidelity alone guarantees. Near collapse ($\omega \to 1$), $h(F) \to 0$ and entropy is forcibly suppressed — the system's internal disorder is constrained by its proximity to the pole. Strip the observation-cost structure (epistemic weld) and you recover the classical Fano inequality — a one-directional bound. The kernel version creates a **tight ceiling whose departure is itself a measurement**.
 
 ---
 
@@ -1281,6 +1301,6 @@ If a computed run violates the bounds in Lemmas 1-34, the implementation is almo
 
 ---
 
-**Document Status**: Complete formal specification from manuscript §8  
-**Last Updated**: 2026-01-21  
+**Document Status**: Complete formal specification from manuscript §8
+**Last Updated**: 2026-01-21
 **Checksum**: (Recorded in integrity/sha256.txt)

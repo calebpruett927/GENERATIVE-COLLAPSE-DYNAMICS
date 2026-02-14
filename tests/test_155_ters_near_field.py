@@ -1,6 +1,6 @@
 """Tests for closures/quantum_mechanics/ters_near_field.py.
 
-TERS Near-Field Rederivation — 7 theorems + 2 validation checks
+TERS Near-Field Independent Derivation — 7 theorems + 2 validation checks
 + data-driven analysis (pixel kernel maps, MC uncertainty, second-system).
 
 Test coverage:

@@ -66,7 +66,7 @@ Physical Analogs & Universality (§5):
       crossover happens at ω≈0.30–0.40 (Watch-to-Collapse boundary).
 
 Foundational Results (from kernel analysis):
-    F1: AM-GM gap = Fisher Information = Var(c)/(2·c̄) — exact.
+    F1: Heterogeneity gap Δ = F − IC = Var(c)/(2·c̄) — exact (Fisher Information is the degenerate limit).
     F2: S ≤ h(F) tight bound — entropy controlled by drift proxy.
     F3: IC and κ are renormalization group invariants (scale-free).
     F4: Fisher metric volume diverges near collapse (det G → ∞ as c_i → 0).
@@ -84,7 +84,7 @@ Capabilities enabled:
 References:
     KERNEL_SPECIFICATION.md §3 (Def 11, Budget Model)
     KERNEL_SPECIFICATION.md §5 (Empirical Verification)
-    AXIOM.md (Core axiom, constants, rederived principles)
+    AXIOM.md (Core axiom, constants, independently derived identities)
     docs/MATHEMATICAL_ARCHITECTURE.md (interconnection map)
     TIER_SYSTEM.md (Tier-0/1/2 architecture)
 

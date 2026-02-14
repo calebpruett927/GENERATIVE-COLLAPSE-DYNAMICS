@@ -38,7 +38,7 @@ def compute_energy_potential(
     omega : float
         Drift/collapse metric (ω)
     S : float
-        Shannon entropy
+        Bernoulli field entropy (Shannon entropy is the degenerate limit)
     C : float
         Curvature
     alpha : float, optional

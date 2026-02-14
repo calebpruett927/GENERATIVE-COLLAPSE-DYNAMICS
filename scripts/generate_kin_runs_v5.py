@@ -27,6 +27,9 @@ Creates:
 # pyright: reportUnknownMemberType=false
 # pyright: reportUnknownVariableType=false
 # pyright: reportUnknownArgumentType=false
+# pyright: reportOperatorIssue=false
+# pyright: reportReturnType=false
+# pyright: reportCallIssue=false
 
 from __future__ import annotations
 
@@ -43,7 +46,7 @@ REPO_ROOT = Path(__file__).parent.parent.resolve()
 RUNS_DIR = REPO_ROOT / "runs"
 
 # Contract parameters (UMA.INTSTACK.v1)
-CONTRACT = {
+CONTRACT: dict[str, Any] = {
     "name": "UMA.INTSTACK.v1",
     "epsilon": 1e-8,
     "eta": 1e-3,
@@ -55,6 +58,11 @@ CONTRACT = {
     "IC_min": 0.70,  # Frozen threshold for IC pass rate
     "tol_id": 1e-6,  # Tolerance for identity validation
 }
+
+# Typed constants extracted from CONTRACT for use in arithmetic
+_EPS: float = float(CONTRACT["epsilon"])
+_TOL_SEAM: float = float(CONTRACT["tol_seam"])
+_TOL_ID: float = float(CONTRACT["tol_id"])
 
 
 def sha256_of_bytes(data: bytes) -> str:
@@ -100,7 +108,7 @@ def compute_omega_trace_jitter(psi: np.ndarray, smooth_window: int = 5) -> tuple
         omega_raw = omega_smooth
 
     # Normalize to [0, 1] so F = 1 - ω makes sense
-    omega_max = float(np.max(omega_raw)) + CONTRACT["epsilon"]
+    omega_max = float(np.max(omega_raw)) + _EPS
     omega = omega_raw / omega_max
 
     return omega, omega_max
@@ -125,7 +133,7 @@ def compute_kappa_instantaneous(IC: np.ndarray) -> np.ndarray:
     Instantaneous log-integrity.
     Validator: max|κ(t) - ln(clip(IC(t), ε, 1-ε))| ≤ tol_id
     """
-    epsilon = CONTRACT["epsilon"]
+    epsilon: float = _EPS
     return np.log(IC + epsilon)
 
 
@@ -134,7 +142,7 @@ def compute_kappa_cumulative(IC: np.ndarray, dt: float) -> np.ndarray:
     DERIVED (not Tier-1):
     κ_cum(T) = ∫₀ᵀ ln(IC(t) + ε) dt
     """
-    epsilon = CONTRACT["epsilon"]
+    epsilon: float = _EPS
     log_IC = np.log(IC + epsilon)
     return np.cumsum(log_IC) * dt
 
@@ -145,7 +153,7 @@ def normalize_curvature_adaptive(C_raw: np.ndarray) -> tuple[np.ndarray, float]:
     Forces median(C) ≈ 0.5 by construction.
     Report tails (C_95, C_max, IQR) for eventfulness signal.
     """
-    C_0 = float(np.median(C_raw)) + CONTRACT["epsilon"]
+    C_0 = float(np.median(C_raw)) + _EPS
     C_normalized = C_raw / (C_raw + C_0)
     return C_normalized, C_0
 
@@ -158,7 +166,7 @@ def normalize_entropy_adaptive(S_raw: np.ndarray) -> tuple[np.ndarray, float, fl
     """
     S_min = float(np.min(S_raw))
     S_max = float(np.max(S_raw))
-    S_range = S_max - S_min + CONTRACT["epsilon"]
+    S_range = S_max - S_min + _EPS
     S_norm = (S_raw - S_min) / S_range
     return S_norm, S_min, S_max
 
@@ -262,7 +270,7 @@ def compute_event_anchor_return(
 
 
 def compute_local_entropy(psi: np.ndarray, window: int = 50) -> np.ndarray:
-    """Compute local Shannon entropy in sliding window."""
+    """Compute local Bernoulli field entropy in sliding window."""
     N = len(psi)
     S = np.zeros(N)
     epsilon = CONTRACT["epsilon"]
@@ -300,7 +308,7 @@ def compute_IC_smooth_contribution(
 
     Aggregate: IC(t) = Π_i c_i(t)^w_i  (weighted geometric mean)
     """
-    epsilon = CONTRACT["epsilon"]
+    epsilon: float = _EPS
 
     contributions: list[np.ndarray] = []
     channel_weights: list[float] = []
@@ -330,8 +338,8 @@ def validate_tier1_identities(omega: np.ndarray, F: np.ndarray, IC: np.ndarray, 
     1. F = clip(1 - ω, 0, 1)
     2. κ = ln(IC + ε)
     """
-    epsilon = CONTRACT["epsilon"]
-    tol_id = CONTRACT["tol_id"]
+    epsilon: float = _EPS
+    tol_id: float = _TOL_ID
 
     # Check F = 1 - ω
     F_expected = np.clip(1.0 - omega, 0.0, 1.0)
@@ -704,7 +712,7 @@ def generate_ballistic_run() -> None:
         IC_post = float(np.mean(IC[post_slice]))
 
         # Integrity ratio: ir = IC_post / IC_pre
-        integrity_ratio = IC_post / (IC_pre + CONTRACT["epsilon"])
+        integrity_ratio = IC_post / (IC_pre + _EPS)
 
         # Ledger log-change: Δκ_ledger = ln(ir)
         delta_kappa_ledger = float(np.log(integrity_ratio))

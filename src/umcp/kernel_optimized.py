@@ -8,7 +8,7 @@ Key optimizations:
 - OPT-1: Homogeneity detection (Lemmas 4, 10, 15)
 - OPT-4: Log-space κ computation (Lemma 2)
 - OPT-2: Range validation (Lemma 1)
-- OPT-3: AM-GM gap analysis (Lemmas 4, 34)
+- OPT-3: Heterogeneity gap analysis (Lemmas 4, 34)
 - OPT-12: Lipschitz error propagation (Lemmas 23, 30)
 
 Interconnections:
@@ -32,7 +32,7 @@ class KernelOutputs:
 
     F: float  # Fidelity (arithmetic mean)
     omega: float  # Drift = 1 - F
-    S: float  # Shannon entropy
+    S: float  # Bernoulli field entropy (Shannon entropy is the degenerate limit)
     C: float  # Curvature proxy (normalized std)
     kappa: float  # Log-integrity
     IC: float  # Integrity composite (geometric mean)
@@ -60,7 +60,7 @@ class OptimizedKernelComputer:
     - OPT-1: Homogeneity detection (40% speedup)
     - OPT-4: Log-space κ computation (stability + 10% speedup)
     - OPT-2: Range validation (instant bug detection)
-    - OPT-3: AM-GM gap (multi-purpose diagnostic)
+    - OPT-3: Heterogeneity gap (multi-purpose diagnostic)
     - OPT-12: Lipschitz error propagation
     """
 
@@ -189,8 +189,8 @@ class OptimizedKernelComputer:
         # Curvature proxy (Definition 7)
         C = self._compute_curvature(c)
 
-        # OPT-3: AM-GM gap for heterogeneity quantification (Lemma 4, Lemma 34)
-        amgm_gap = F - IC  # Always >= 0 by AM-GM inequality
+        # OPT-3: Heterogeneity gap for quantification (Lemma 4, Lemma 34)
+        amgm_gap = F - IC  # Always >= 0 by kernel integrity bound (IC ≤ F)
 
         # Classify heterogeneity regime
         regime = self._classify_heterogeneity(amgm_gap)
@@ -220,9 +220,10 @@ class OptimizedKernelComputer:
 
     def _compute_entropy(self, c: np.ndarray, w: np.ndarray) -> float:
         """
-        Compute Shannon entropy S = Σ w_i h(c_i).
+        Compute Bernoulli field entropy S = Σ w_i h(c_i).
 
         Definition 6 from KERNEL_SPECIFICATION.md.
+        Shannon entropy is the degenerate limit when the collapse field is removed.
         """
         entropy = 0.0
         for ci, wi in zip(c, w, strict=False):
@@ -242,7 +243,7 @@ class OptimizedKernelComputer:
 
     def _classify_heterogeneity(self, amgm_gap: float) -> str:
         """
-        OPT-3: Classify heterogeneity regime based on AM-GM gap.
+        OPT-3: Classify heterogeneity regime based on heterogeneity gap.
 
         Lemma 34: Δ_gap quantifies coordinate dispersion.
         """
@@ -344,7 +345,7 @@ class CoherenceAnalyzer:
 
 class ThresholdCalibrator:
     """
-    OPT-15: Adaptive threshold calibration via AM-GM gap (Lemma 34).
+    OPT-15: Adaptive threshold calibration via heterogeneity gap (Lemma 34).
 
     Δ_gap = F - IC provides principled threshold adjustment.
     """

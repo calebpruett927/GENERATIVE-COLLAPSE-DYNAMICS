@@ -2156,7 +2156,7 @@ def render_finance_page() -> None:
                 st.caption("Must equal 1.0 (budget identity)")
             with id_cols[1]:
                 st.markdown(f"**IC ≤ F** → {ic:.4f} ≤ {f_val:.4f} {'✅' if ic_le_f else '❌'}")
-                st.caption("AM-GM inequality (information ≤ fidelity)")
+                st.caption("Integrity bound (IC ≤ F; AM-GM inequality is the degenerate limit)")
             with id_cols[2]:
                 ic_target = math.exp(kappa)
                 st.markdown(

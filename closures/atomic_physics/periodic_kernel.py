@@ -1,10 +1,10 @@
-"""Periodic Table Kernel Analysis — Tier-1 Rederivation from Atomic Properties.
+"""Periodic Table Kernel Analysis — Tier-1 Derivation from Atomic Properties.
 
 Takes each element's fundamental measurable properties, normalizes them into
 a GCD kernel trace vector c ∈ [ε, 1−ε]^n, and derives Tier-1 invariants:
 
     F + ω = 1            (Definition 4)
-    IC ≤ F               (AM-GM inequality, Lemma 4)
+    IC ≤ F               (integrity bound, Lemma 4; AM-GM inequality is the degenerate limit)
     IC = exp(κ)          (Log-space identity, Lemma 2)
     amgm_gap = F − IC    (Heterogeneity diagnostic, Lemma 34)
     S = h_w(c)           (Weighted entropy, Definition 6)
@@ -12,7 +12,7 @@ a GCD kernel trace vector c ∈ [ε, 1−ε]^n, and derives Tier-1 invariants:
 
 The traditional periodic table classifies elements by electron configuration
 (block), position (period/group), and chemical behavior (category). The
-kernel rederivation asks: *what structure does the GCD kernel find in the
+kernel derivation asks: *what structure does the GCD kernel find in the
 raw measurements alone, without knowing the labels?*
 
 Normalization channels (8 measurable properties → trace vector):
@@ -453,7 +453,7 @@ if __name__ == "__main__":
     import sys
 
     print("╔══════════════════════════════════════════════════════════════╗")
-    print("║  PERIODIC TABLE KERNEL ANALYSIS — Tier-1 Rederivation      ║")
+    print("║  PERIODIC TABLE KERNEL ANALYSIS — Tier-1 Derivation         ║")
     print("║  118 elements × 8 property channels → GCD kernel           ║")
     print("╚══════════════════════════════════════════════════════════════╝")
     print()

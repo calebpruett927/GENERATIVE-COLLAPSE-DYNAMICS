@@ -355,7 +355,7 @@ registry:
       - name: "ters_near_field"
         path: "closures/quantum_mechanics/ters_near_field.py"
         description: >
-          TERS near-field rederivation: 7 theorems mapping Brezina, Litman
+          TERS near-field independent derivation: 7 theorems mapping Brezina, Litman
           & Rossi (ACS Nano 2026) conclusions to GCD/RCFT kernel invariants.
           8-channel trace (polarizability, field gradient, screening, mode
           projection, self-fraction, periodicity, binding sensitivity).

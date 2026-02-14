@@ -397,7 +397,7 @@ class ResidualEnvelope:
     F_min: float = 0.000519
     F_max: float = 0.999422
     S_min: float = 0.004443
-    S_max: float = 0.693147  # ln(2) — Shannon entropy bound for binary
+    S_max: float = 0.693147  # ln(2) — Bernoulli field entropy bound for binary
     C_min: float = 0.0
     C_max: float = 0.991907
     IC_min: float = 0.000519

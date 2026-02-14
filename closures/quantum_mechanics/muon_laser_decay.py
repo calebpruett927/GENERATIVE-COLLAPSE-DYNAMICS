@@ -1,6 +1,6 @@
 """Vacuum muon decay and laser pulse interference — GCD kernel closure.
 
-Rederives the principal conclusions of King & Liu (2025), 'Vacuum muon
+Derives independently the principal conclusions of King & Liu (2025), 'Vacuum muon
 decay and interaction with laser pulses', Phys. Rev. Lett. 135, 251802
 (arXiv:2507.16891), within the Generative Collapse Dynamics (GCD)
 kernel framework.

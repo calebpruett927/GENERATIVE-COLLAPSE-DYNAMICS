@@ -539,13 +539,13 @@ class DeviceValidator:
         return max(score, 0.0)
 
     def _compute_entropy(self, scores: list[float]) -> float:
-        """Compute Shannon entropy of score distribution"""
+        """Compute Bernoulli field entropy of score distribution."""
 
         # Normalize to probabilities
         total = sum(scores) + 0.001
         probs = [s / total for s in scores]
 
-        # Shannon entropy
+        # Bernoulli field entropy (Shannon entropy is the degenerate limit)
         H = 0.0
         for p in probs:
             if p > 0:
@@ -1145,14 +1145,14 @@ def demo():
     - MAC address filtering (easily spoofed)
     - IP-based ACLs (static, manual)
     - Port-based 802.1X (one-time auth)
-    
+
     UMCP device security:
     - CONTINUOUS validation (not one-time)
     - Multi-signal trust (identity + software + config + behavior)
     - Dynamic access (trust earned, not asserted)
     - Self-healing (devices can recover from quarantine)
     - No return = no trust (τ_A = ∞ means blocked)
-    
+
     Example: IoT camera
     - Traditional: Whitelisted MAC, allowed forever
     - UMCP: Low T (0.35) due to no firewall, vulnerabilities

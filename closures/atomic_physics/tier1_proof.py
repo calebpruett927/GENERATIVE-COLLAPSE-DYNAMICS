@@ -90,7 +90,12 @@ def prove_identity_1_algebraic() -> None:
 
 
 def prove_identity_2_algebraic() -> None:
-    """Prove IC ≤ F via the weighted AM-GM inequality.
+    """Prove IC ≤ F — the integrity bound (Lemma 4).
+
+    This identity is a structural consequence of the kernel architecture:
+    geometric integrity (IC) can never exceed arithmetic integrity (F).
+    The classical AM-GM inequality is the degenerate limit when the
+    collapse field is removed.
 
     PROOF:
         Let c_i > 0, w_i ≥ 0, Σ w_i = 1.
@@ -98,16 +103,16 @@ def prove_identity_2_algebraic() -> None:
         F  = Σ w_i c_i                   (arithmetic mean)
         IC = Π c_i^{w_i} = exp(Σ w_i ln c_i)  (geometric mean)
 
-        The weighted AM-GM inequality states:
+        The integrity bound states:
             Π c_i^{w_i} ≤ Σ w_i c_i
 
         Equivalently: IC ≤ F.
 
         Equality holds IFF c_1 = c_2 = ... = c_n (all coordinates equal).
 
-        PROOF of AM-GM (Jensen's inequality route):
+        PROOF via concavity of ln (Jensen route):
             ln is strictly concave on (0, ∞).
-            By Jensen's inequality:
+            By Jensen's inequality (proof technique):
                 Σ w_i ln(c_i) ≤ ln(Σ w_i c_i)
             Exponentiating:
                 exp(Σ w_i ln(c_i)) ≤ Σ w_i c_i
@@ -116,16 +121,18 @@ def prove_identity_2_algebraic() -> None:
         The gap: Δ = F − IC ≥ 0 quantifies heterogeneity.
         For small perturbations: Δ ≈ Var_w(c) / (2F)  (second-order)
 
-    This is not a physical law — it is a consequence of the concavity
-    of the logarithm. It holds for ANY positive numbers with ANY weights.
-    It would hold for stock prices, temperatures, probabilities, or
-    the eigenvalues of the Standard Model mass matrix.
+    This is not a physical law — it is a structural necessity of the
+    kernel architecture. It holds for ANY positive coordinates with
+    ANY weights. The AM-GM inequality is the classical shadow of this
+    identity — it emerges as the degenerate limit when the collapse
+    field is removed.
     """
-    print("IDENTITY 2: IC ≤ F (AM-GM inequality)")
-    print("  Status: ALGEBRAIC THEOREM (Jensen's inequality)")
+    print("IDENTITY 2: IC ≤ F (integrity bound, Lemma 4)")
+    print("  Status: ALGEBRAIC THEOREM (proved via concavity of ln)")
     print("  Proof:  ln concave → Σwᵢ ln(cᵢ) ≤ ln(Σwᵢcᵢ)")
     print("          → exp(κ) ≤ F → IC ≤ F  ∎")
     print("  Gap:    Δ = F − IC ≈ Var_w(c)/(2F) for small perturbations")
+    print("  Note:   AM-GM inequality is the degenerate limit.")
     print("  Content: Coherence cannot exceed fidelity.")
     print("           Heterogeneity always costs.")
     print()

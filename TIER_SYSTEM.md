@@ -17,7 +17,7 @@ The **UMCP tier system** has exactly three tiers. No half-tiers. No confusion.
 | **1** | **Immutable Invariants** | The structural identities of collapse: F + ω = 1, IC ≤ F, IC ≈ exp(κ). Discovered, not imposed. |
 | **2** | **Expansion Space** | Domain closures that map physics into the invariant structure. Validated through Tier-0 against Tier-1. |
 
-**Tier-1** is immutable because it describes the **structure of collapse itself** — not because someone chose convenient equations. F + ω = 1 is the structural fact that fidelity and drift are complements. IC ≤ F is AM-GM. These hold across 146 experiments in 7 domains because the structure forces them.
+**Tier-1** is immutable because it describes the **structure of collapse itself** — not because someone chose convenient equations. F + ω = 1 is the structural fact that fidelity and drift are complements. IC ≤ F is the integrity bound — derived independently from Axiom-0 (the classical AM-GM inequality emerges as a degenerate limit when channel semantics, weights, and guard band are stripped). These hold across all experiments in 12 domains because the structure forces them.
 
 **Tier-0** is the protocol that makes Tier-1 actionable — regime gates, validator, diagnostics (kinematics, PHYS-04), seam calculus, contract enforcement, integrity verification. Everything that tests, confirms, and enforces. The seam is where consistency is verified: the same frozen rules must govern both sides of collapse-return.
 
@@ -54,14 +54,14 @@ Tier-2   EXPANSION SPACE
 
 ## Tier-1: Immutable Invariants
 
-**What it is**: The structural identities of collapse. These are constraints discovered by computing F and ω independently from raw data across 146 experiments and finding they hold universally. They are not definitions we chose. They are what the structure forces.
+**What it is**: The structural identities of collapse. These are constraints derived independently from Axiom-0 and verified across all experiments in 12 domains, finding they hold universally. They are not definitions we chose. They are what the structure forces.
 
-### Structural Identities (0 violations across 146 experiments)
+### Structural Identities (0 violations across 3,515+ tests in 12 domains)
 
 | Identity | Structural Meaning |
 |----------|-------------------|
 | **F = 1 − ω** | Fidelity and drift are complements — what isn't lost to drift IS fidelity. No third option. |
-| **IC ≤ F** | Coherence cannot exceed fidelity (AM-GM bound). A system cannot be more coherent than it is faithful. |
+| **IC ≤ F** | Coherence cannot exceed fidelity (integrity bound). A system cannot be more coherent than it is faithful. |
 | **IC ≈ exp(κ)** | Coherence tracks log-integrity exponentially. |
 
 ### Reserved Symbols (Immutable Meanings)
@@ -70,7 +70,7 @@ Tier-2   EXPANSION SPACE
 |--------|------|---------|-------|-----------------|
 | **F** | Fidelity | F = Σ wᵢcᵢ | [0,1] | How much of the signal survives collapse |
 | **ω** | Drift | ω = 1 − F | [0,1] | How much is lost to collapse |
-| **S** | Entropy | S = −Σ wᵢ[cᵢ ln(cᵢ) + (1−cᵢ)ln(1−cᵢ)] | ≥0 | Internal configurational complexity |
+| **S** | Entropy | S = −Σ wᵢ[cᵢ ln(cᵢ) + (1−cᵢ)ln(1−cᵢ)] | ≥0 | Bernoulli field entropy (Shannon entropy is the degenerate limit) |
 | **C** | Curvature | C = stddev(cᵢ)/0.5 | [0,1] | Coupling to uncontrolled external degrees of freedom |
 | **κ** | Log-integrity | κ = Σ wᵢ ln(cᵢ,ε) | ≤0 | Logarithmic fidelity (sensitivity-aware) |
 | **IC** | Integrity composite | IC = exp(κ) | (0,1] | Multiplicative coherence |
@@ -183,14 +183,20 @@ Tier-2 answers: **What fraction of each domain's configuration space has reached
 
 ### Current Domain Expansions
 
-| Domain | Contract | N | % Stable | Selector |
-|--------|----------|---|----------|----------|
-| Financial markets | FINANCE.INTSTACK.v1 | 12 | 58% | Bounded drift despite high coupling |
-| Security / adversarial | SECURITY.INTSTACK.v1 | 25 | 40% | Engineered decoupling vs adversarial ω |
-| Stellar & cosmological | ASTRO.INTSTACK.v1 | 28 | 25% | Gravitational equilibrium |
-| Nuclear physics | NUC.INTSTACK.v1 | 30 | 23% | Proximity to iron peak |
-| Quantum mechanics | QM.INTSTACK.v1 | 30 | 23% | Lightest in charge/spin class |
-| Cosmology / dark energy | WEYL.INTSTACK.v1 | 4 | 0% | Irreducible cosmological drift |
+| Domain | Contract | Selector |
+|--------|----------|----------|
+| Generative Collapse Dynamics | GCD.INTSTACK.v1 | Base kernel computation |
+| Recursive Collapse Field Theory | RCFT.INTSTACK.v1 | Multi-scale recursive return |
+| Kinematics | KIN.INTSTACK.v1 | Phase-space trajectory analysis |
+| Financial markets | FINANCE.INTSTACK.v1 | Bounded drift despite high coupling |
+| Security / adversarial | SECURITY.INTSTACK.v1 | Engineered decoupling vs adversarial ω |
+| Stellar & cosmological | ASTRO.INTSTACK.v1 | Gravitational equilibrium |
+| Nuclear physics | NUC.INTSTACK.v1 | Proximity to iron peak |
+| Quantum mechanics | QM.INTSTACK.v1 | Lightest in charge/spin class |
+| Cosmology / dark energy | WEYL.INTSTACK.v1 | Irreducible cosmological drift |
+| Atomic physics | ATOM.INTSTACK.v1 | 118 elements, periodic kernel |
+| Materials science | MATL.INTSTACK.v1 | Element database (118 × 18 fields) |
+| Standard Model | SM.INTSTACK.v1 | 31 particles, 10 proven theorems |
 
 ### The Validation Path
 
@@ -308,7 +314,7 @@ The field is required by `schemas/contract.schema.json` and `schemas/canon.ancho
 ## Implementation Status (v2.0.0)
 
 - ✅ **Tier-1**: Immutable invariants defined and verified
-  - Structural identities: F+ω=1, IC≤F — 146/146 hold
+  - Structural identities: F+ω=1, IC≤F — verified across all tests in 12 domains
   - Reserved symbols: F, ω, S, C, κ, IC, τ_R
 
 - ✅ **Tier-0**: Full protocol support
@@ -319,9 +325,9 @@ The field is required by `schemas/contract.schema.json` and `schemas/canon.ancho
   - Seam structure defined; closures implemented
   - ⚠️ Automated weld PASS/FAIL computation not yet integrated into CLI
 
-- ✅ **Tier-2**: 6 domain expansions active (129 domain experiments + 17 calibration = 146 total)
-  - Finance (12, 58%), Security (25, 40%), Astronomy (28, 25%)
-  - Nuclear (30, 23%), Quantum (30, 23%), Weyl (4, 0%)
+- ✅ **Tier-2**: 12 domain expansions active
+  - GCD, RCFT, Kinematics, Finance, Security, Astronomy
+  - Nuclear, Quantum, Weyl, Atomic Physics, Materials Science, Standard Model
 
 ---
 

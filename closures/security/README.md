@@ -149,6 +149,7 @@ Trust is NOT claimed by assertion. Trust is EARNED through validated return:
 5. ELSE entity remains SUSPICIOUS or BLOCKED
 
 **"No return, no credit"** - Entities that never return to baseline (τ_A = INF_ANOMALY) do not earn trust, regardless of any other claims.
+
 ---
 
 ## Background Daemon (Real-Time Protection)
