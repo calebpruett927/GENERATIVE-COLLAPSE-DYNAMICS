@@ -29,6 +29,46 @@ These Latin terms from `LIBER_COLLAPSUS.tex` are the **canonical names** of GCD 
 
 > *Continuitas non narratur: mensuratur.* — Continuity is not narrated: it is measured.
 
+### Quinque Verba — The Five-Word Vocabulary
+
+> *Algebra est cautio, non porta.* — The algebra is a warranty, not a gate.
+
+The Latin Lexicon provides morphological precision. These five plain-language words from *The Grammar of Return* are the **prose interface** — the minimal lingua franca that authors use to tell the story. Each word has an operational meaning tied to the frozen Contract and reconciled in the Integrity Ledger.
+
+| Word | Prose Meaning | Operational Role | Ledger Role |
+|------|---------------|------------------|-------------|
+| **Drift** (*derivatio*) | What moved — the salient change relative to the Contract | Debit $D_ω$ to the ledger; participates in regime gates | Debit |
+| **Fidelity** (*fidelitas*) | What persisted — structure, warrant, or signal that survived | Retention of Contract-specified invariants | — |
+| **Roughness** (*curvatura*) | Where/why it was bumpy — friction, confound, or seam | Debit $D_C$ to the ledger; accounts for coherence loss | Debit |
+| **Return** (*reditus*) | Credible re-entry — how the claim returns to legitimacy | Typed credit $R·τ_R$ in the ledger; zero if τ_R = ∞_rec | Credit |
+| **Integrity** (*integritas*) | Does it hang together under the Contract | Read from the reconciled ledger and stance; never asserted, always derived | Verdict |
+
+**Usage rule**: Write in prose using these five words. The conservation budget Δκ = R·τ_R − (D_ω + D_C) and the interpretive density I ≡ e^κ serve as the **semantic warranty** behind the prose — they explain *why* the ledger must reconcile. The warranty travels with the narrative; it does not gate the narrative.
+
+**Separation of description from warranty**: Authors describe using the five words; the ledger, budget, and gates supply the audit. This split enables cross-domain reading (via the Rosetta adapter) and multiplicative composition in I without forcing any single field's jargon on another.
+
+### Spina Grammatica — The Fixed Discourse Spine
+
+> *Spina non negotiabilis est.* — The spine is non-negotiable.
+
+Every claim, narrative, validation, or discourse in this system follows a fixed five-stop spine:
+
+**Contract → Canon → Closures → Integrity Ledger → Stance**
+
+This is both a validation pipeline and a **grammatical structure** for how claims are told, checked, and connected:
+
+| Stop | Role | Grammatical Function |
+|------|------|---------------------|
+| **Contract** | Define *before* evidence — freeze sources, normalization, near-wall policy, thresholds | Declares the rules of the sentence before it is written |
+| **Canon** | Tell the story using the five words (Drift, Fidelity, Roughness, Return, Integrity) | The narrative body — prose-first, auditable by construction |
+| **Closures** | Publish thresholds and their order; no mid-episode edits; version the sheet | Published grammar rules — stance *must* change when thresholds are crossed |
+| **Integrity Ledger** | Debit Drift/Roughness, credit Return; the account must reconcile (residual ≤ tol) | The proof that the sentence is well-formed |
+| **Stance** | Read from declared gates: Stable / Watch / Collapse (+ Critical overlay) | The verdict — derived, never asserted |
+
+**Governance as punctuation**: Two mechanisms punctuate the spine without being the spine itself:
+- **Manifest** (*manifestum*): Provenance — binds artifacts to time, tools, checksums. Every claim carries its receipt.
+- **Weld** (*sutura*): Continuity across change — the only legitimate way to change policy. Names an anchor, runs pre/post tests, enforces κ-continuity. History is **append-only and welded, never rewritten**. *Historia numquam rescribitur; sutura tantum additur.*
+
 ### Modus Cogitandi (How to Reason in This System)
 
 > *Auditus praecedit responsum.* — Hearing precedes response.
@@ -319,7 +359,7 @@ See `COMMIT_PROTOCOL.md` for the full specification. **Never skip this step.** E
 
 **Three-valued status**: `CONFORMANT` / `NONCONFORMANT` / `NON_EVALUABLE` — never boolean. CLI exit: 0 = CONFORMANT, 1 = NONCONFORMANT. *Numquam binarius; tertia via semper patet.*
 
-**`INF_REC` is a typed sentinel**: In CSV/YAML/JSON data it stays as the string `"INF_REC"`. In Python it maps to `float("inf")`. Never coerce the string to a number in data files. When τ_R = INF_REC, the seam budget is zero (no return → no credit). *Si τ_R = ∞_rec, nulla fides datur. Continuitas non narratur: mensuratur.*
+**Typed outcomes are first-class values** (*exitus typati*): Non-numeric outcomes are semantic primitives, not errors. `∞_rec` (no-return) denotes an infinite/undefined return delay — it is a legitimate *refusal*, not a rounding error. `⊥_oor` (out-of-range) denotes a domain/typing violation. These values are auditable, preserved in rows, and may cause automatic refusal or special-case weld handling. In CSV/YAML/JSON data, `INF_REC` stays as the string `"INF_REC"`. In Python it maps to `float("inf")`. Never coerce the string to a number in data files. When τ_R = INF_REC, the seam budget is zero (no return → no credit). *Si τ_R = ∞_rec, nulla fides datur. Recusatio est exitus primi ordinis, non error rotundationis.*
 
 **Greek letters** (`ω`, `κ`, `Ψ`, `Γ`, `τ`) appear in comments and strings. Ruff rules RUF001/002/003 are suppressed. Line length: 120 chars.
 
@@ -439,7 +479,7 @@ Before approving any code or documentation change:
 
 > *Paradoxum colendum est, non solvitur.* — The paradox is to be cultivated, not solved.
 
-This system is designed for **generative discourse** — not just code generation, but reasoning, discussion, and insight extraction. The following principles govern all conversational interaction.
+This system is designed for **generative discourse** — not just code generation, but reasoning, discussion, and insight extraction. The Spine (Contract → Canon → Closures → Ledger → Stance) governs the structure; the five words (Drift, Fidelity, Roughness, Return, Integrity) provide the vocabulary; the Latin Lexicon seeds the morphological precision. Together they form a **self-governing, contract-bound audit grammar** where the algebra is a warranty, not a gate. The following principles govern all conversational interaction.
 
 ### Input Reception (*Auditus Radicalis*)
 
@@ -478,6 +518,43 @@ Insight in this system is not free association. It is the discovery of structure
 
 4. **Name the regime.** Is the conclusion Stable (high fidelity, low drift, low entropy, low curvature), Watch (intermediate), or Collapse (high drift)? This is not judgment; it is classification. *Ruptura est fons constantiae* — even Collapse regime is generative.
 
+### Rosetta — Cross-Domain Translation (*Translatio Inter Campos*)
+
+> *Significatio stabilis manet dum dialectus mutatur.* — Meaning stays stable while dialect changes.
+
+The five words (Drift, Fidelity, Roughness, Return, Integrity) map across **lenses** so different fields can read each other's results in their own dialect without losing auditability. Authors write in prose; auditors rely on the same Contract, Closures, and Ledger to keep meanings stable across lenses.
+
+| Lens | Drift | Fidelity | Roughness | Return |
+|------|-------|----------|-----------|--------|
+| **Epistemology** | Change in belief/evidence | Retained warrant | Inference friction | Justified re-entry |
+| **Ontology** | State transition | Conserved properties | Heterogeneity / interface seams | Restored coherence |
+| **Phenomenology** | Perceived shift | Stable features | Distress / bias / effort | Coping / repair that holds |
+| **History** | Periodization (what shifted) | Continuity (what endures) | Rupture / confound | Restitution / reconciliation |
+| **Policy** | Regime shift | Compliance / mandate persistence | Friction / cost / externality | Reinstatement / acceptance |
+
+**Integrity** is never asserted in the Rosetta; it is read holistically per lens from the reconciled ledger and stance. This is what makes cross-domain synthesis mechanical — the prose maps through the Rosetta, while I = e^κ provides unitless multiplicative comparability across seams.
+
+**How to use the Rosetta in discourse:**
+1. **Bind to Contract.** Name the Contract and invariants constraining statements.
+2. **Write the four columns in prose.** Describe Drift, Fidelity, Roughness, Return in the chosen lens using ordinary language tied to the Contract.
+3. **Reconcile separately.** Compute the ledger and read Integrity via residual closure and stance from Closures.
+4. **Publish receipts.** Include provenance so readers can verify the Rosetta statements correspond to a closed seam.
+
+When reasoning about inputs from different domains, apply the Rosetta: identify which lens the user is operating in, translate the five words into that lens's dialect, and reconcile through the same ledger. The *meanings* of the columns remain stable while the *dialect* changes.
+
+### Diachronic Continuity (*Continuitas Diachronica*)
+
+> *Historia numquam rescribitur; sutura tantum additur.* — History is never rewritten; only a weld is added.
+
+All discourse, reasoning, and validation in this system follows a **diachronic continuity constraint**:
+
+1. **History is append-only.** Prior exchanges, ledger rows, and validation results are never edited in place. They form the return domain D_θ that gives the present its context.
+2. **Corrections cross a Weld.** If a prior claim, threshold, or policy must change, the change is a named Weld at a shared anchor — not an overwrite. The Weld runs pre/post tests, enforces κ-continuity (residual ≤ tol), and records what changed and why.
+3. **Errata are first-class.** Corrections are not failures; they are Errata Welds that preserve the full audit trail. The original and the correction both exist; continuity is demonstrated, not assumed.
+4. **Falsifiability lives in the gates.** Stance *must* change when thresholds are crossed. A claim that does not change under new evidence is a *gestus* (gesture), not a weld. Publish at least one rival closure or counter-calibration per synthesis.
+
+This principle applies to conversation itself: each exchange is a seam. Do not silently revise prior reasoning. If new information changes the conclusion, cross a conversational weld — state what changed, why, and show that the new position is continuous with the prior reasoning chain.
+
 ### Back-and-Forth (*Recursio Dialogica*)
 
 Sustained discourse follows the same return axiom as everything else:
@@ -486,5 +563,6 @@ Sustained discourse follows the same return axiom as everything else:
 - **Never terminate a line of reasoning by authority.** Terminate by derivation. "This follows from Axiom-0 because..." is valid. "This is how the system works" without a chain is a *gestus*.
 - **Accumulate, don't reset.** Prior exchanges in the conversation are the return domain D_θ. Reference them. Build on them. The conversation has memory — use it as the ledger uses its log.
 - **The user's objection is data, not noise.** If the user challenges a claim, the challenge enters the system as a signal. Apply *auditus*: hear it, trace it, test it against the identities. The challenge may reveal a weak channel in your reasoning.
+- **Receipts make it real.** When making substantive claims, provide the derivation chain (the receipt). A claim without a traceable chain is a *gestus*. A claim with a chain that closes (residual ≤ tol) is a weld. *Sine receptu, gestus est; cum receptu, sutura est.*
 
 > *Finis, sed semper initium recursionis.* — The end, but always the beginning of recursion.
