@@ -4,7 +4,7 @@
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![UMCP v2.1.2](https://img.shields.io/badge/UMCP-v2.1.2-orange.svg)](pyproject.toml)
-[![Tests: 3516](https://img.shields.io/badge/tests-3516-brightgreen.svg)](tests/)
+[![Tests: 3515](https://img.shields.io/badge/tests-3515-brightgreen.svg)](tests/)
 [![Domains: 12](https://img.shields.io/badge/domains-12-blueviolet.svg)](closures/)
 [![Closures: 110+](https://img.shields.io/badge/closures-110%2B-informational.svg)](closures/)
 
@@ -566,7 +566,7 @@ All diagrams are generated from **real computed kernel data** — every point co
 
 ### Kernel Geometry: F vs IC for 31 Standard Model Particles
 
-The fundamental relationship: IC ≤ F — the integrity bound. Geometric integrity never exceeds arithmetic integrity. The classical AM-GM inequality is the degenerate limit when kernel structure is removed. Quarks cluster near the diagonal (channels alive), while composites and bosons collapse toward IC ≈ 0.
+The fundamental relationship: IC ≤ F — the integrity bound. Geometric integrity never exceeds arithmetic integrity. Derived independently from Axiom-0; the classical AM-GM inequality emerges as the degenerate limit when kernel structure is removed. Quarks cluster near the diagonal (channels alive), while composites and bosons collapse toward IC ≈ 0.
 
 ![Kernel Geometry](images/01_kernel_geometry_f_vs_ic.png)
 
@@ -605,6 +605,24 @@ The four-regime classification with real Standard Model particles mapped to thei
 Kernel fidelity increases with scale resolution: composite(0.444) < atomic(0.516) < fundamental(0.558). The heterogeneity gap distribution across 118 elements reveals the landscape of channel heterogeneity.
 
 ![Cross-Scale Universality](images/07_cross_scale_amgm_gap.png)
+
+### Validation Timelapse: Living Ledger History
+
+The project's complete validation history — every `umcp validate` run recorded in the append-only ledger. Cumulative runs, kernel invariant evolution, and conformance rate over time. *"Nihil in memoria perit."*
+
+![Validation Timelapse](images/08_validation_timelapse.png)
+
+### Integrity Bound Proof: IC ≤ F Across All Data
+
+Zero violations across 31 Standard Model particles + 118 periodic table elements. The integrity bound holds universally — derived independently from Axiom-0.
+
+![Integrity Bound Proof](images/09_integrity_bound_proof.png)
+
+### Tier Architecture: The Three-Tier Stack
+
+The UMCP tier system: Tier-1 (immutable invariants) → Tier-0 (protocol) → Tier-2 (expansion space). One-way dependency. No back-edges within a frozen run. Every domain closure is validated *through* Tier-0 *against* Tier-1.
+
+![Tier Architecture](images/10_tier_architecture.png)
 
 ---
 
