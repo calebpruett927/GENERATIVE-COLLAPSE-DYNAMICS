@@ -204,7 +204,21 @@ src/umcp/
 │   ├── tenant.py             # Multi-tenant isolation, quotas, namespaces
 │   └── models.py             # Shared dataclass models (Job, WorkerInfo, etc.)
 └── __init__.py               # Public API: validate() convenience function, __version__
+
+src/umcp_cpp/                     # [Optional] C++ accelerator (Tier-0 Protocol)
+├── include/umcp/
+│   ├── kernel.hpp                # Kernel (F, ω, S, C, κ, IC) — ~50× speedup
+│   ├── seam.hpp                  # Seam chain accumulation — ~80× speedup
+│   └── integrity.hpp             # SHA-256 (portable + OpenSSL) — ~5× speedup
+├── bindings/py_umcp.cpp          # pybind11 zero-copy NumPy bridge → umcp_accel module
+├── tests/test_kernel.cpp         # Catch2 tests (10K Tier-1 identity sweep)
+└── CMakeLists.txt                # C++17, pybind11, optional OpenSSL
 ```
+
+**C++ Accelerator**: `src/umcp/accel.py` auto-detects the C++ extension (`umcp_accel`).
+If not built, all operations fall back to NumPy transparently. Same formulas, same frozen
+parameters — Tier-0 Protocol only (no Tier-1 symbols redefined). Build:
+`cd src/umcp_cpp && mkdir build && cd build && cmake .. && make`
 
 **Closure domains** (12 total, each in `closures/<domain>/`):
 
@@ -401,6 +415,9 @@ Extensions use `typing.Protocol` (`ExtensionProtocol` requiring `name`, `version
 | Thermodynamic diagnostic | `src/umcp/tau_r_star.py` (τ_R*, phase diagram, arrow of time) |
 | Epistemic cost tracking | `src/umcp/epistemic_weld.py` (Theorem T9: observation cost) |
 | Lessons-learned system | `src/umcp/insights.py` (PatternDatabase, InsightEngine) |
+| C++ accelerator wrapper | `src/umcp/accel.py` (auto-detects C++, falls back to NumPy) |
+| C++ kernel/seam/SHA-256 | `src/umcp_cpp/` (headers, pybind11 bindings, Catch2 tests) |
+| Accelerator benchmark | `scripts/benchmark_cpp.py` (correctness + performance) |
 | Fleet architecture | `src/umcp/fleet/` (Scheduler, Worker, Queue, Cache, Tenant) |
 | Dashboard pages | `src/umcp/dashboard/` (31 modular pages) |
 | Subatomic particles | `closures/standard_model/subatomic_kernel.py` (31 particles, 8-channel trace) |

@@ -54,10 +54,12 @@ Applied to tier promotion:
 - **Not real** = Remains experimental (stays Tier-2 diagnostic)
 
 **The cycle must complete**:
+
 ```
 Tier-2 exploration → Validation → Seam weld → Return confirmed → Canonical status
                                               ↓
                                          No return → Remains Tier-2
+
 ```
 
 ---
@@ -93,6 +95,7 @@ Tier-2 exploration → Validation → Seam weld → Return confirmed → Canonic
 **Question**: Is M continuous with existing Tier-1 canon?
 
 **Computation**:
+
 ```
 Run N (without M):
   κ₀ = Σ wᵢ ln(cᵢ)
@@ -106,6 +109,7 @@ Seam weld:
   Δκ = κ₁ - κ₀              (ledger term)
   ratio = IC₁/IC₀            (integrity ratio)
   residual = tol_budget - |Δκ|  (leftover tolerance)
+
 ```
 
 **Validation checks**:
@@ -139,16 +143,17 @@ Seam weld:
 ```
 Tier-0 (frozen + weld) → Tier-1 (compute) → Tier-2 (diagnostics)
                                                         ✗ NO FEEDBACK
+
 ```
 
 **Rule**: Tier-2 cannot alter Tier-0/1 outcomes within the same run
 
-**Rationale**: 
+**Rationale**:
 - Prevents narrative rescue ("let's adjust parameters to get better results")
 - Ensures determinism (same frozen inputs → same outputs)
 - Maintains auditability (no hidden feedback loops)
 
-**Enforcement**: 
+**Enforcement**:
 - Tier-2 reads from Tier-1, never writes back
 - Diagnostics are labeled "Tier-2", never used as gates
 - Any parameter change requires new run with new freeze
@@ -163,6 +168,7 @@ Run N: Tier-2 result M discovered
 Run N+1: M promoted to Tier-1 in new contract
          ✓ M is now kernel invariant
          ✗ IF weld FAIL: M remains Tier-2
+
 ```
 
 **Rule**: Tier-2 results can be promoted to Tier-1 via formal validation between runs
@@ -189,6 +195,7 @@ def compute_fractal_dimension(trace):
     """RCFT Tier-2 diagnostic: Trajectory complexity D_f ∈ [1,3]"""
     # Box-counting algorithm implementation
     return D_f
+
 ```
 
 **Question**: Should D_f be promoted to Tier-1 (GCD kernel) or remain Tier-2?
@@ -210,21 +217,26 @@ def compute_fractal_dimension(trace):
 **Scenario**: Add D_f to log-integrity computation
 
 **Without D_f** (Run N, GCD.INTSTACK.v1):
+
 ```
 κ₀ = Σ wᵢ ln(cᵢ) = -0.250000
 IC₀ = exp(-0.250000) = 0.778801
+
 ```
 
 **With D_f** (Run N+1, GCD.INTSTACK.v2):
+
 ```
 κ₁ = Σ wᵢ ln(cᵢ) + w_D ln(D_f/3)  # Normalize by max dimension
      = -0.250000 + 0.05 × ln(2.1/3)
      = -0.250000 + 0.05 × (-0.356675)
      = -0.267834
 IC₁ = exp(-0.267834) = 0.765145
+
 ```
 
 **Seam weld computation**:
+
 ```
 Δκ = κ₁ - κ₀ = -0.267834 - (-0.250000) = -0.017834
 ratio = IC₁/IC₀ = 0.765145 / 0.778801 = 0.982464
@@ -232,6 +244,7 @@ exp(Δκ) = exp(-0.017834) = 0.982334
 
 Dial check: |0.982464 - 0.982334| = 0.000130 < 10⁻⁶ ✓
 Tolerance: tol_seam = 0.005, |residual| = 0.002 < 0.005 ✓
+
 ```
 
 **Result**: ✓ PASS - Seam weld validates, D_f "returned"
@@ -241,6 +254,7 @@ Tolerance: tol_seam = 0.005, |residual| = 0.002 < 0.005 ✓
 **Action**: Create `contracts/GCD.INTSTACK.v2.yaml`
 
 **Changes**:
+
 ```yaml
 # contracts/GCD.INTSTACK.v2.yaml
 contract_id: GCD.INTSTACK.v2
@@ -266,9 +280,11 @@ closures:
     tier: Tier-1  # Upgraded from Tier-2
     inputs: [trace]
     outputs: {D_f: float}
+
 ```
 
 **Seam receipt** (`receipts/promotion_df_seam_weld.json`):
+
 ```json
 {
   "weld_id": "W-2026-01-23-GCD-DF-PROMOTION",
@@ -287,6 +303,7 @@ closures:
   "rationale": "D_f demonstrated stability across 127 traces with std=0.032 < threshold=0.05. Seam weld validates continuity.",
   "sha256": "9a2f83b8...c57e9"
 }
+
 ```
 
 **Result**: D_f is now Tier-1 canonical in GCD.INTSTACK.v2
@@ -298,6 +315,7 @@ closures:
 ### Example 1: Promotion Without Seam Weld
 
 **Violation**:
+
 ```yaml
 # contracts/GCD.INTSTACK.v2.yaml
 reserved_symbols:
@@ -308,6 +326,7 @@ reserved_symbols:
 # NO seam weld receipt
 # NO provenance documentation
 # NO tolerance validation
+
 ```
 
 **Consequence**: AUTOMATIC NONCONFORMANCE
@@ -317,11 +336,13 @@ reserved_symbols:
 ### Example 2: Failing Weld, Claimed Promotion
 
 **Scenario**: Seam weld computation:
+
 ```
 Δκ = -0.350000  (large drift)
 residual = -0.345  (outside tolerance)
 tol_seam = 0.005
 |residual| = 0.345 > 0.005  ✗ FAIL
+
 ```
 
 **Claim**: "We promoted D_f anyway because it's better"
@@ -338,6 +359,7 @@ No narrative rescue allowed.
 ### Example 3: Ad-Hoc Within-Run Feedback
 
 **Violation**:
+
 ```python
 # Inside Tier-1 kernel computation
 def compute_omega(trace):
@@ -351,17 +373,18 @@ def compute_omega(trace):
         omega *= 1.1  # "Increase drift for complex systems"
     
     return omega
+
 ```
 
 **Consequence**: AUTOMATIC NONCONFORMANCE
 
-**Rationale**: 
+**Rationale**:
 - Tier-2 (D_f) fed back into Tier-1 (ω) within frozen run
 - Breaks determinism (ω now depends on Tier-2 diagnostic)
 - Enables narrative rescue ("let's adjust based on complexity")
 - Violates tier separation
 
-**Correct approach**: 
+**Correct approach**:
 1. Run N: Compute ω without D_f adjustment
 2. Analyze: Does D_f correlation suggest ω adjustment needed?
 3. Propose: New formula ω' incorporating D_f
@@ -444,6 +467,7 @@ fractal_dimension:
   tier: Tier-1  # Promoted from Tier-2
   promotion_date: 2026-01-23
   promotion_receipt: receipts/promotion_df_seam_weld.json
+
 ```
 
 Registry tracks promotion history, enables audit trail.

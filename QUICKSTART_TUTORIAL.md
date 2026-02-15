@@ -261,6 +261,35 @@ A: Key docs:
 ✓ (Optional) Started API server and dashboard
 ✓ Created a minimal casepack structure
 
+---
+
+## Performance: C++ Accelerator (Optional)
+
+For compute-intensive workloads (batch trace analysis, large seam chains, bulk integrity checks),
+UMCP includes an optional C++ accelerator that provides 50–80× speedup with zero API changes.
+
+```bash
+# Build (requires CMake ≥ 3.16, C++17 compiler)
+cd src/umcp_cpp && mkdir build && cd build
+cmake .. && make -j$(nproc)
+
+# Verify
+python -c "from umcp.accel import backend; print(backend())"  # 'cpp' or 'numpy'
+```
+
+```python
+from umcp.accel import compute_kernel, compute_kernel_batch, backend
+
+# Same API, automatic backend selection
+result = compute_kernel(channels, weights)
+print(f"Backend: {backend()}")  # 'cpp' if built, 'numpy' otherwise
+```
+
+If the C++ extension is not built, everything falls back to NumPy transparently — no
+configuration needed. See [src/umcp_cpp/README.md](src/umcp_cpp/README.md) for details.
+
+---
+
 **Next**: Dive into [KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md) to understand the mathematical foundations, or explore [casepacks/gcd_complete/](casepacks/gcd_complete/) for a comprehensive example.
 
 ---

@@ -128,8 +128,18 @@ src/umcp/
 │   ├── queue.py              # Priority queue (DLQ, retry, backpressure)
 │   ├── cache.py              # Content-addressable artifact cache
 │   └── tenant.py             # Multi-tenant isolation, quotas, namespaces
+├── accel.py                  # C++ accelerator wrapper (auto-fallback to NumPy)
 ├── dashboard/                # Modular Streamlit dashboard (33 pages)
 └── api_umcp.py               # FastAPI REST extension (Pydantic models)
+
+src/umcp_cpp/                   # Optional C++ accelerator (Tier-0 Protocol)
+├── include/umcp/
+│   ├── kernel.hpp            # Kernel computation (F, ω, S, C, κ, IC) — ~50× speedup
+│   ├── seam.hpp              # Seam chain accumulation — ~80× speedup
+│   └── integrity.hpp         # SHA-256 (portable + OpenSSL) — ~5× speedup
+├── bindings/py_umcp.cpp      # pybind11 zero-copy NumPy bridge
+├── tests/test_kernel.cpp     # Catch2 tests (10K Tier-1 sweep)
+└── CMakeLists.txt            # C++17, pybind11, optional OpenSSL
 ```
 
 ### Contract Infrastructure
@@ -330,8 +340,39 @@ pip install -e ".[all]"
 | **Dev** | `pytest`, `ruff`, `mypy`, `pre-commit` |
 | **API** | `fastapi`, `uvicorn` (optional) |
 | **Viz** | `streamlit`, `plotly`, `pandas` (optional) |
+| **C++ Accel** | `pybind11`, CMake ≥ 3.16, C++17 compiler (optional) |
 
 **Requires**: Python ≥ 3.11
+
+### C++ Accelerator (Optional)
+
+The C++ accelerator provides 50–80× speedup for kernel computation, seam chains,
+and SHA-256 integrity checks. It is **fully optional** — all functionality falls
+back to NumPy transparently.
+
+```bash
+# Build the accelerator
+cd src/umcp_cpp && mkdir build && cd build
+cmake .. && make -j$(nproc)
+
+# Verify it works
+python -c "from umcp.accel import backend; print(backend())"  # 'cpp' or 'numpy'
+
+# Run benchmarks (works with either backend)
+python scripts/benchmark_cpp.py
+```
+
+**Architecture**: `accel.py` auto-detects whether the C++ extension is available.
+No existing code changes are needed — import from `umcp.accel` instead of
+calling kernel functions directly for accelerated paths.
+
+```python
+from umcp.accel import compute_kernel, compute_kernel_batch, SeamChain, hash_file
+
+# Identical API regardless of backend
+result = compute_kernel(channels, weights)
+batch  = compute_kernel_batch(trace_matrix, weights)  # 10K rows in ms
+```
 
 ---
 

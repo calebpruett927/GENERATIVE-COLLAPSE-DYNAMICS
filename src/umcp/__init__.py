@@ -49,6 +49,7 @@ __all__ = [
     "UniversalResult",
     "ValidationResult",
     "__version__",
+    "accel",
     "check_seam_pass",
     "classify_regime",
     "compute_full",
@@ -87,6 +88,7 @@ DEFAULT_TZ = "America/Chicago"
 
 # Import utilities
 from . import (
+    accel,
     compute_utils,
     frozen_contract,
     measurement_engine,
