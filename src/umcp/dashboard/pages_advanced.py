@@ -330,10 +330,14 @@ def render_precision_page() -> None:
         IC_1 = st.number_input("IC(t₁)", value=0.82, step=0.01, format="%.6f", key="IC1")
         tol_seam = st.number_input("Tolerance", value=0.005, step=0.001, format="%.4f", key="tol_sim")
 
-    # Seam parameters
-    R = 0.05  # Return credit rate
-    D_omega = 0.02  # Drift decay
-    D_C = 0.01  # Curvature decay
+    # Seam parameters (user-adjustable)
+    seam_param_cols = st.columns(3)
+    with seam_param_cols[0]:
+        R = st.number_input("R (return credit rate)", value=0.05, step=0.01, format="%.3f", key="seam_R")
+    with seam_param_cols[1]:
+        D_omega = st.number_input("D_ω (drift decay)", value=0.02, step=0.01, format="%.3f", key="seam_Dw")
+    with seam_param_cols[2]:
+        D_C = st.number_input("D_C (curvature decay)", value=0.01, step=0.01, format="%.3f", key="seam_DC")
 
     # Compute seam
     kappa_0 = np.log(IC_0)

@@ -111,7 +111,7 @@ def render_cosmology_page() -> None:
             yaxis_title="H(z) [km/s/Mpc]",
             showlegend=True,
         )
-        st.plotly_chart(fig_H, width="stretch")
+        st.plotly_chart(fig_H, use_container_width=True)
 
     with bg_tabs[1]:
         fig_chi = go.Figure()
@@ -124,7 +124,7 @@ def render_cosmology_page() -> None:
             yaxis_title="χ(z) [Mpc/h]",
             showlegend=True,
         )
-        st.plotly_chart(fig_chi, width="stretch")
+        st.plotly_chart(fig_chi, use_container_width=True)
 
     with bg_tabs[2]:
         fig_growth = go.Figure()
@@ -141,7 +141,7 @@ def render_cosmology_page() -> None:
             yaxis_title="Value",
             showlegend=True,
         )
-        st.plotly_chart(fig_growth, width="stretch")
+        st.plotly_chart(fig_growth, use_container_width=True)
 
     st.divider()
 
@@ -227,7 +227,7 @@ def render_cosmology_page() -> None:
         yaxis={"range": [0.5, 1.6]},
         showlegend=True,
     )
-    st.plotly_chart(fig_sigma, width="stretch")
+    st.plotly_chart(fig_sigma, use_container_width=True)
 
     # Regime summary
     regime_counts = {}
@@ -274,7 +274,7 @@ def render_cosmology_page() -> None:
             "ĥJ (σ)": DES_Y3_DATA["hJ_cmb"]["sigma"],
         }
     )
-    st.dataframe(des_df, hide_index=True, width="stretch")
+    st.dataframe(des_df, hide_index=True, use_container_width=True)
 
     # Plot ĥJ measurements
     fig_hJ = go.Figure()
@@ -294,7 +294,7 @@ def render_cosmology_page() -> None:
         yaxis_title="ĥJ",
         showlegend=True,
     )
-    st.plotly_chart(fig_hJ, width="stretch")
+    st.plotly_chart(fig_hJ, use_container_width=True)
 
     st.divider()
 

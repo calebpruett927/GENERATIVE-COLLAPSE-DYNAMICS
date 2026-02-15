@@ -261,7 +261,7 @@ def render_tau_r_star_page() -> None:
     """)
 
     # Compute phase surface
-    omega_range = np.linspace(0.001, 0.95, 80)
+    omega_range = np.linspace(0.001, 0.999, 80)
     C_range = np.linspace(0.0, 0.8, 60)
     tau_grid = np.zeros((len(C_range), len(omega_range)))
 
@@ -339,7 +339,7 @@ def render_tau_r_star_page() -> None:
 
     with arrow_col1:
         # Γ(ω) curve — the drift cost function
-        om_sweep = np.linspace(0.001, 0.95, 200)
+        om_sweep = np.linspace(0.001, 0.999, 200)
         gamma_vals = [gamma_omega(om) for om in om_sweep]
 
         fig_gamma = go.Figure()
@@ -391,14 +391,14 @@ def render_tau_r_star_page() -> None:
             # Improvement: c → c + dc (ω decreases)
             if c_val + dc < 1.0:
                 g_before = gamma_omega(omega_val)
-                improvement_cost.append(g_before + ALPHA * 0.1)
+                improvement_cost.append(g_before + ALPHA * C_input)
             else:
                 improvement_cost.append(float("nan"))
 
             # Degradation: c → c - dc (ω increases)
             if c_val - dc > 0.0:
                 g_degrade = gamma_omega(1 - (c_val - dc))
-                degradation_cost.append(g_degrade + ALPHA * 0.1)
+                degradation_cost.append(g_degrade + ALPHA * C_input)
             else:
                 degradation_cost.append(float("nan"))
 
@@ -468,7 +468,7 @@ def render_tau_r_star_page() -> None:
         om_for_rmin = np.linspace(0.01, 0.9, 100)
         rmin_vals = []
         for om_val in om_for_rmin:
-            rm = compute_R_min(om_val, 0.1, tau_R_target=1.0)
+            rm = compute_R_min(om_val, C_input, tau_R_target=1.0)
             rmin_vals.append(min(rm, 1000))  # Cap for display
 
         fig_rmin = go.Figure()
@@ -486,7 +486,7 @@ def render_tau_r_star_page() -> None:
             height=300,
             xaxis_title="ω (Drift)",
             yaxis_title="R_min",
-            title="R_min Divergence (Theorem T5)",
+            title=f"R_min Divergence (C={C_input:.2f}, Theorem T5)",
             yaxis_type="log",
         )
         st.plotly_chart(fig_rmin, use_container_width=True)
@@ -712,18 +712,24 @@ def render_epistemic_page() -> None:
     alone. At severity ≥ 1.0, the observer cannot even verify return.
     """)
 
+    ill_input_cols = st.columns([1, 1])
+    with ill_input_cols[0]:
+        omega_pi = st.slider("ω for illusion", 0.001, 0.99, 0.15, 0.001, key="pi_omega")
+    with ill_input_cols[1]:
+        n_pi = st.slider("N observations", 1, 50, 5, key="pi_n")
+
     ill_col1, ill_col2 = st.columns([2, 1])
 
     with ill_col1:
         # Severity heatmap over (ω, N)
-        om_range = np.linspace(0.001, 0.5, 80)
+        om_range = np.linspace(0.001, 0.99, 80)
         n_range = np.arange(1, 51)
         severity_grid = np.zeros((len(n_range), len(om_range)))
 
         for i, n_val in enumerate(n_range):
             for j, om_val in enumerate(om_range):
-                pi = quantify_positional_illusion(om_val, n_observations=int(n_val))
-                severity_grid[i, j] = min(pi.illusion_severity, 5.0)
+                pi_grid = quantify_positional_illusion(om_val, n_observations=int(n_val))
+                severity_grid[i, j] = min(pi_grid.illusion_severity, 5.0)
 
         fig_illusion = go.Figure(
             data=go.Heatmap(
@@ -751,6 +757,18 @@ def render_epistemic_page() -> None:
             )
         )
 
+        # Add current-state marker
+        fig_illusion.add_trace(
+            go.Scatter(
+                x=[omega_pi],
+                y=[n_pi],
+                mode="markers",
+                marker={"size": 14, "color": "cyan", "symbol": "x", "line": {"width": 2, "color": "white"}},
+                name="Current State",
+                showlegend=True,
+            )
+        )
+
         fig_illusion.update_layout(
             height=400,
             xaxis_title="ω (Drift)",
@@ -761,9 +779,6 @@ def render_epistemic_page() -> None:
 
     with ill_col2:
         # Current state assessment
-        omega_pi = st.slider("ω for illusion", 0.001, 0.5, 0.15, 0.001, key="pi_omega")
-        n_pi = st.slider("N observations", 1, 50, 5, key="pi_n")
-
         pi = quantify_positional_illusion(omega_pi, n_observations=n_pi)
 
         st.metric("Γ(ω)", f"{pi.gamma:.2e}")
@@ -798,7 +813,7 @@ def render_epistemic_page() -> None:
     verdicts dominates when the seam residual is within tolerance.
     """)
 
-    om_land = np.linspace(0.001, 0.5, 100)
+    om_land = np.linspace(0.001, 0.60, 100)
     tau_land = np.linspace(0.1, 20.0, 80)
     verdict_grid = np.zeros((len(tau_land), len(om_land)))
 
@@ -844,6 +859,21 @@ def render_epistemic_page() -> None:
     )
     fig_land.add_vline(
         x=0.30, line_dash="dash", line_color="white", annotation_text="WATCH|COLLAPSE", annotation_font_color="white"
+    )
+
+    # Map current regime to representative ω for marker placement
+    _regime_omega_map = {"STABLE": 0.02, "WATCH": 0.10, "COLLAPSE": 0.35}
+    _marker_omega = _regime_omega_map.get(regime_str, 0.10)
+
+    fig_land.add_trace(
+        go.Scatter(
+            x=[_marker_omega],
+            y=[tau_R_val],
+            mode="markers",
+            marker={"size": 14, "color": "cyan", "symbol": "x", "line": {"width": 2, "color": "white"}},
+            name="Current State",
+            showlegend=True,
+        )
     )
 
     fig_land.update_layout(
