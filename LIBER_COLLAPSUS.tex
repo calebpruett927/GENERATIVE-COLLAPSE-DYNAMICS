@@ -2,30 +2,38 @@
 
 % ============================================
 % Liber Universalis de Collapsus Mathematica
-% Version: Canon 1.0.3 — refined 2025-10-11
-% SHA256: 1bde50335fc604f7d84e705b5f66c646e3c9b7384827036f2a08587321ba52dd
-% Archive reference: Episteme/CollapseMath/Canonical/Liber-v1.0.3
+% Version: Canon 2.0.0 --- Tier-1 conformant 2026-02-15
+% Lineage: v1.0.3 (2025-10-11) to v2.0.0 (Tier-1 kernel)
+% Archive reference: Episteme/CollapseMath/Canonical/Liber-v2.0.0
 % ============================================
 
-% XeLaTeX: Unicode + modern font control
-\usepackage{fontspec}
-\setmainfont{Libertinus Serif}
+% Encoding and fonts (pdfLaTeX / Overleaf compatible)
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{libertinus}          % Libertinus Serif + Math for pdfLaTeX
 
-% Unicode-compatible math
-\usepackage{unicode-math}
-\setmathfont{Libertinus Math}
+% Mathematics
+\usepackage{amsmath}
+\usepackage{amssymb}
 
-% Layout and spacing
+% Layout and spacing (right margin widened for marginalia)
 \usepackage{geometry}
-\geometry{margin=1in}
+\geometry{
+  left=1in,
+  right=2.2in,
+  top=1in,
+  bottom=1in,
+  marginparwidth=1.6in,
+  marginparsep=0.15in
+}
 \usepackage{microtype}
-\microtypesetup{protrusion=true, tracking=true}
+\microtypesetup{protrusion=true}
 
 % Section styling
 \usepackage{titlesec}
 \titleformat{\section}{\Large\scshape\raggedright}{}{0pt}{}
 
-% Marginalia hooks (optional)
+% Marginalia hooks
 \usepackage{marginnote}
 \newcommand{\mathnote}[1]{\marginnote{\scriptsize \textit{Math}: #1}}
 \newcommand{\theonote}[1]{\marginnote{\scriptsize \textit{Theo}: #1}}
@@ -33,7 +41,6 @@
 
 % Symbols
 \usepackage{textcomp}
-\tracinglostchars=2
 
 \title{\textsc{Liber Universalis de Collapsus Mathematica}}
 \author{Clement Paulus}
@@ -49,43 +56,53 @@ Nihil stabile est nisi quod per casum iteratur atque regeneratur in formam propr
 \section*{Caput I: De Axiomate Paradoxali}
 In ipso fundamento, paradoxum ponimus: collapsus generativus est; solum quod per casum transiit et iterum redit, reale est. Hac lege universali, non tantum materia, sed etiam ratio, memoria, historia comprehenduntur. Ordo ex ruina oritur, structura ex resolutione, identitas ex oblivione et restitutione.
 
-\section*{Caput II: De Regiminibus et Operatoribus Universalibus}
-Quicumque numerus, ordo, aut notio ad rem pertinere vult, probationem collapsus subire debet. Sequentes invariantes adhibentur:
+\section*{Caput II: De Invariantibus et Nucleo Universali}
+Quicumque numerus, ordo, aut notio ad rem pertinere vult, probationem collapsus subire debet. Sit tractus delimitatus $\Psi(t) = (c_1, c_2, \ldots, c_n)$, ubi $c_i \in [\varepsilon, 1 - \varepsilon]$ coordinatae collapsus sunt, et $w_i$ pondera normata, id est $\sum_i w_i = 1$. Munus praecipuum $\varepsilon$ est: fines custodire, ne singularitas logarithmica oriatur. Hic $\varepsilon$ non arbitrium est, sed trans suturam congelatum~--- idem utrimque limitis collapsus-reditus.
 
-\textbf{Normalizatio (ad unitatem)}:
+Sequentes invariantes immutabiles adhibentur:
+
+\textbf{Fidelitas (quid supersit post collapsum)}:
 \[
-x_{\text{norm}, t} = \frac{x_t - x_{\min}}{x_{\max} - x_{\min}}
+F = \sum_i w_i \, c_i
 \]
 
-\textbf{Derivatio (Drift)}:
+\textbf{Derivatio (quantum collapsu deperdatur)}:
 \[
-\omega_t = \left|x_{\text{norm}, t} - x_{\text{norm}, t-1}\right|
+\omega = 1 - F
 \]
 
-\textbf{Fidelitas (momentaneae constantiae)}:
+\mathnote{Identitas: $F + \omega = 1$~--- complementum perfectum, tertia via nulla.}
+
+\textbf{Log-Integritas (sensibilitas logarithmica)}:
 \[
-F_t = 1 - \omega_t
+\kappa = \sum_i w_i \ln(c_{i,\varepsilon})
 \]
 
-\textbf{Entropia (incertitudo collapsus)}:
+\textbf{Integritas Composita (cohaerentia multiplicativa)}:
 \[
-S_t = -\ln(1 - \omega_t + \varepsilon)
+\mathrm{IC} = \exp(\kappa)
 \]
 
-\textbf{Curvatura (deviationis memoria)}:
+\mathnote{Limbus integritatis: $\mathrm{IC} \leq F$~--- cohaerentia fidelitatem numquam excedit. Hic non est AM-GM inaequalitas, sed limbus ab Axiomate-0 independenter derivatus; classica inaequalitas est limes degener, cum structura canalis removetur.}
+
+\textbf{Entropia (incertitudo campi collapsus)}:
 \[
-C_t = \frac{1}{K} \sum_{k=1}^{K} (x_{\text{norm}, t} - x_{\text{norm}, t-k})^2
+S = -\sum_i w_i \bigl[ c_i \ln(c_i) + (1 - c_i) \ln(1 - c_i) \bigr]
 \]
 
-\textbf{Moratio (Reentry Delay)}:
+\theonote{Haec est entropia campi Bernoulliani~--- entropia propria campi collapsus. Entropia Shannon est limes degener, cum campus collapsus removetur (i.e.,\ $c_i \in \{0, 1\}$ tantum).}
+
+\textbf{Curvatura (coniunctio cum gradibus libertatis)}:
 \[
-R_t = \min\{ \Delta t > 0 : |x_{\text{norm}, t} - x_{\text{norm}, t-\Delta t}| < \eta \}
+C = \frac{\mathrm{stddev}(c_i)}{0.5}
 \]
 
-\textbf{Integritas (structura vitalis)}:
+\textbf{Moratio Reditus (tempus reentrandi)}:
 \[
-I_t = F_t \cdot e^{-S_t} \cdot (1 - \omega_t) \cdot \exp\left(-\alpha \frac{C_t}{1 + R_t}\right)
+\tau_R = \min\{ \Delta t > 0 : \lVert \Psi(t) - \Psi(t - \Delta t) \rVert \leq \eta \}
 \]
+
+\semionote{Si $\tau_R = \infty_{\mathrm{rec}}$, nulla fides datur. Continuitas ex sola structura synthesi fieri non potest~--- mensurari debet.}
 
 \section*{Caput III: De Memoria Viva et Auditu Perpetuo}
 Memoria non est simplex recordatio, sed structura perpetua regiminis, auditus vivus et operativus. In archivis memoriae non tantum res gestae, sed etiam silentia, defectus, omissiones, hiatus diligenter conservari debent. Nihil in memoria perit; omnia prompta ad recursionem, reparationem et innovationem manent. Auditus est radix veritatis; memoria viva est thesaurus realitatis.
@@ -94,13 +111,14 @@ Memoria non est simplex recordatio, sed structura perpetua regiminis, auditus vi
 Paradoxum colendum est, non solvitur. In lapsu incipit regeneratio; in defectu, occasio reparationis; in silentio, vocatio ad auditum emergit. Ruptura est fons constantiae. Per defectum integritas roboratur; omnis lapsus novum iter ad claritatem et praesentiam parit. Qui collapsum intueri et iterare audet, novam vitam et ordinem reperiet.
 
 \section*{Caput V: De Regiminibus Collapsus et Limine}
-Regimina collapsus sunt quattuor:
+Regimina collapsus sunt tria, per quattuor portas coniunctivas determinata:
 \begin{itemize}
-  \item \textbf{Stabile}: Si omnes invariantes intra fines manent.
-  \item \textbf{Observandum}: Si aliqua ad limen appropinquant.
-  \item \textbf{Collapsus}: Si limina transgrediuntur—hic recursio et reparationis opus incipit.
-  \item \textbf{Perdita Critica}: Si integritas infra salutem cadit.
+  \item \textbf{Stabile}: Si $\omega < 0.038$ ET $F > 0.90$ ET $S < 0.15$ ET $C < 0.14$~--- omnes quattuor portae simul clausae.
+  \item \textbf{Observandum}: Si nec Stabile nec Collapsus~--- status intermedius, vigilantiae locus.
+  \item \textbf{Collapsus}: Si $\omega \geq 0.30$~--- hic recursio et reparationis opus incipit.
 \end{itemize}
+Status tripartitus est: \textsc{conformans}, \textsc{non conformans}, \textsc{non evaluabilis}~--- numquam binarius; tertia via semper patet.
+
 Omnis transitus, omnis mutatio, in memoria recursiva inscribitur. Nihil perditur; omne ad auditum redit.
 
 \section*{Caput VI: De Ethica Operativa et Praesenti Recursivo}
@@ -113,7 +131,7 @@ Ethica collapsiva est inclusio, reparatio, et auditus radicalis:
 Praesentia vera non in immobilitate consistit, sed in processu reditus, in apertura memoriae, in cultu paradoxorum inveniunda est.
 
 \section*{Caput VII: Exempla et Applicationes Universales}
-Quidquid est—experimentum physicum, scriptum mathematicum, historia biologica, vel memoria personalis—sub eadem lege collapsus et reditus auditum subit:
+Quidquid est---experimentum physicum, scriptum mathematicum, historia biologica, vel memoria personalis---sub eadem lege collapsus et reditus auditum subit:
 \begin{itemize}
   \item In physicis, collapsus quanticus est processus memoriae, auditus et regiminis.
   \item In nanomedicina, variatio stereoisomerica regimen collapsus et integritatis demonstrat.
@@ -122,7 +140,7 @@ Quidquid est—experimentum physicum, scriptum mathematicum, historia biologica,
 \end{itemize}
 
 \section*{Caput VIII: De Innovatione Continua et Futuro Recursivo}
-Systema perpetuō apertum est. Omnis novitas, omne silentium, omne dubium, locus novae recursionis est. Quod hodie anomalia videtur, cras novum regimen fiet. Quod nunc hiatus est, mox fiet memoria integra. Nullus terminus auditum, collapsum, aut regenerationem claudit.
+Systema perpetu\=o apertum est. Omnis novitas, omne silentium, omne dubium, locus novae recursionis est. Quod hodie anomalia videtur, cras novum regimen fiet. Quod nunc hiatus est, mox fiet memoria integra. Nullus terminus auditum, collapsum, aut regenerationem claudit.
 
 \section*{Conclusio}
 Hic est Liber Collapsus: non ad finem, sed ad infinitam recursionem, reparationem, auditum, innovationem et vivam memoriam totius realitatis. Veritas, praesentia, integritas non in statu reperiuntur, sed in processu, collapsu et reditu.
