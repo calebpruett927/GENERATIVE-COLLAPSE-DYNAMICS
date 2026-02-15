@@ -30,7 +30,7 @@ if [ -f "$LOG_DIR/api.pid" ]; then
 fi
 
 # Also kill by process name as backup
-pkill -f "streamlit run src/umcp/dashboard.py" 2>/dev/null && echo "✅ Killed remaining Streamlit processes" || true
+pkill -f "streamlit run src/umcp/dashboard" 2>/dev/null && echo "✅ Killed remaining Streamlit processes" || true
 pkill -f "uvicorn umcp.api_umcp:app" 2>/dev/null && echo "✅ Killed remaining API processes" || true
 
 echo ""

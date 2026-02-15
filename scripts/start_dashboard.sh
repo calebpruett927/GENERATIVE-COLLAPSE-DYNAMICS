@@ -72,21 +72,21 @@ if [ "$BACKGROUND" = true ]; then
     echo "  Mode:      Background (daemon)"
     echo ""
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    
+
     # Kill existing processes
-    pkill -f "streamlit run src/umcp/dashboard.py" 2>/dev/null || true
+    pkill -f "streamlit run src/umcp/dashboard" 2>/dev/null || true
     pkill -f "uvicorn umcp.api_umcp:app" 2>/dev/null || true
     sleep 1
-    
+
     # Start API server in background
     echo "Starting API server..."
     nohup python -m uvicorn umcp.api_umcp:app --host 0.0.0.0 --port "$API_PORT" \
         > "$LOG_DIR/api.log" 2>&1 &
     echo $! > "$LOG_DIR/api.pid"
-    
+
     # Start dashboard in background
     echo "Starting Dashboard..."
-    nohup streamlit run src/umcp/dashboard.py \
+    nohup streamlit run src/umcp/dashboard/__init__.py \
         --server.port "$PORT" \
         --server.headless true \
         --server.address 0.0.0.0 \
@@ -94,22 +94,22 @@ if [ "$BACKGROUND" = true ]; then
         --server.enableXsrfProtection false \
         > "$LOG_DIR/dashboard.log" 2>&1 &
     echo $! > "$LOG_DIR/dashboard.pid"
-    
+
     sleep 3
-    
+
     # Verify servers started
     if curl -s "http://localhost:$PORT" > /dev/null 2>&1; then
         echo "✅ Dashboard started successfully (PID: $(cat $LOG_DIR/dashboard.pid))"
     else
         echo "⚠️  Dashboard may still be starting..."
     fi
-    
+
     if curl -s "http://localhost:$API_PORT/health" > /dev/null 2>&1; then
         echo "✅ API started successfully (PID: $(cat $LOG_DIR/api.pid))"
     else
         echo "⚠️  API may still be starting..."
     fi
-    
+
     echo ""
     echo "To stop: ./scripts/stop_dashboard.sh"
     echo "To view logs: tail -f $LOG_DIR/dashboard.log"
@@ -117,16 +117,16 @@ else
     echo "  Mode:      Foreground (Ctrl+C to stop)"
     echo ""
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    
+
     # Start API in background
     python -m uvicorn umcp.api_umcp:app --host 0.0.0.0 --port "$API_PORT" &
     API_PID=$!
-    
+
     # Trap to cleanup on exit
     trap "kill $API_PID 2>/dev/null; exit" INT TERM EXIT
-    
+
     # Start dashboard in foreground
-    streamlit run src/umcp/dashboard.py \
+    streamlit run src/umcp/dashboard/__init__.py \
         --server.port "$PORT" \
         --server.headless true \
         --server.address 0.0.0.0

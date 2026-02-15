@@ -565,7 +565,7 @@ umcp-ext list
 umcp-ext info api
 umcp-ext check api
 
-# Generate all diagrams from kernel data
+# Generate all diagrams from kernel data (requires: pip install matplotlib)
 python scripts/generate_diagrams.py
 
 # Periodic table report (118 elements)
@@ -574,7 +574,7 @@ python scripts/periodic_table_report.py
 # Profile the test landscape
 python scripts/profile_test_landscape.py
 
-# Build LaTeX papers (RevTeX4-2)
+# Build LaTeX papers (requires: texlive + revtex4-2)
 cd paper && pdflatex standard_model_kernel.tex && bibtex standard_model_kernel \
   && pdflatex standard_model_kernel.tex && pdflatex standard_model_kernel.tex
 ```

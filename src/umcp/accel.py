@@ -17,14 +17,21 @@ Tier Classification: Tier-0 (Protocol)
 from __future__ import annotations
 
 import hashlib
+import os
 from pathlib import Path
 from typing import Any
 
 import numpy as np
 
 # ─── Backend detection ───────────────────────────────────────────────
+# Set UMCP_NO_CPP=1 to force the NumPy fallback even when the C++
+# extension is installed (useful for debugging or benchmarking).
+
+_FORCE_NUMPY = os.environ.get("UMCP_NO_CPP", "") not in ("", "0")
 
 try:
+    if _FORCE_NUMPY:
+        raise ImportError("UMCP_NO_CPP is set")
     import umcp_accel as _accel  # type: ignore[import-not-found]
 
     _USE_CPP = True

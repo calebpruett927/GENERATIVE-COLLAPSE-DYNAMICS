@@ -1,0 +1,2507 @@
+{
+  "residual_envelope": {
+    "partition_residual": {
+      "max_abs": 0.0,
+      "samples": 14000
+    },
+    "amgm_excess": {
+      "max": 0.0,
+      "samples": 14000
+    },
+    "omega_range": {
+      "min": 0.00057810076425,
+      "max": 0.999481245844669
+    },
+    "F_range": {
+      "min": 0.000518754155331,
+      "max": 0.99942189923575
+    },
+    "S_range": {
+      "min": 0.004442517757393,
+      "max": 0.693147092654277
+    },
+    "C_range": {
+      "min": 0.0,
+      "max": 0.991907020569619
+    },
+    "IC_range": {
+      "min": 0.000518754155331,
+      "max": 0.99942189923575
+    },
+    "kappa_range": {
+      "min": -7.564080476175522,
+      "max": -0.000578267928926
+    },
+    "amgm_gap_range": {
+      "min": 0.0,
+      "max": 0.434547042842853
+    }
+  },
+  "regime_transitions": {
+    "homogeneous_transitions": [
+      {
+        "v": 0.3,
+        "omega": 0.7,
+        "F": 0.3,
+        "IC": 0.3,
+        "S": 0.610864,
+        "C": 0.0,
+        "from": "CRITICAL",
+        "to": "COLLAPSE"
+      },
+      {
+        "v": 0.701,
+        "omega": 0.299,
+        "F": 0.701,
+        "IC": 0.701,
+        "S": 0.610015,
+        "C": 0.0,
+        "from": "COLLAPSE",
+        "to": "WATCH"
+      },
+      {
+        "v": 0.966,
+        "omega": 0.034,
+        "F": 0.966,
+        "IC": 0.966,
+        "S": 0.148383,
+        "C": 0.0,
+        "from": "WATCH",
+        "to": "STABLE"
+      }
+    ]
+  },
+  "test_domains": {
+    "test_000_manifold_bounds": {
+      "file": "tests/test_000_manifold_bounds.py",
+      "domain": "kernel_identity",
+      "test_count": 25,
+      "has_kernel": true,
+      "has_classify": true,
+      "has_seam": true,
+      "has_tau_r": false,
+      "has_schema": true,
+      "has_cli": false,
+      "coord_literal_count": 3,
+      "uniform_range_count": 4
+    },
+    "test_001_invariant_separation": {
+      "file": "tests/test_001_invariant_separation.py",
+      "domain": "kernel_identity",
+      "test_count": 28,
+      "has_kernel": true,
+      "has_classify": false,
+      "has_seam": true,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_00_schemas_valid": {
+      "file": "tests/test_00_schemas_valid.py",
+      "domain": "schema_validation",
+      "test_count": 3,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": true,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_100_gcd_canon": {
+      "file": "tests/test_100_gcd_canon.py",
+      "domain": "schema_validation",
+      "test_count": 15,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": true,
+      "has_tau_r": false,
+      "has_schema": true,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_101_gcd_closures": {
+      "file": "tests/test_101_gcd_closures.py",
+      "domain": "file_structure",
+      "test_count": 21,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": true,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_102_gcd_contract": {
+      "file": "tests/test_102_gcd_contract.py",
+      "domain": "schema_validation",
+      "test_count": 16,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": true,
+      "has_tau_r": true,
+      "has_schema": true,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_10_canon_contract_closures_validate": {
+      "file": "tests/test_10_canon_contract_closures_validate.py",
+      "domain": "schema_validation",
+      "test_count": 3,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": true,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_110_rcft_canon": {
+      "file": "tests/test_110_rcft_canon.py",
+      "domain": "schema_validation",
+      "test_count": 14,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": true,
+      "has_schema": true,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_111_rcft_closures": {
+      "file": "tests/test_111_rcft_closures.py",
+      "domain": "other",
+      "test_count": 24,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 20,
+      "uniform_range_count": 0
+    },
+    "test_112_rcft_contract": {
+      "file": "tests/test_112_rcft_contract.py",
+      "domain": "schema_validation",
+      "test_count": 18,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": true,
+      "has_tau_r": true,
+      "has_schema": true,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_113_rcft_tier2_layering": {
+      "file": "tests/test_113_rcft_tier2_layering.py",
+      "domain": "file_structure",
+      "test_count": 23,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": true,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_115_new_closures": {
+      "file": "tests/test_115_new_closures.py",
+      "domain": "cli_integration",
+      "test_count": 18,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_120_kinematics_closures": {
+      "file": "tests/test_120_kinematics_closures.py",
+      "domain": "schema_validation",
+      "test_count": 55,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": true,
+      "has_cli": true,
+      "coord_literal_count": 11,
+      "uniform_range_count": 0
+    },
+    "test_130_kin_audit_spec": {
+      "file": "tests/test_130_kin_audit_spec.py",
+      "domain": "cli_integration",
+      "test_count": 35,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": true,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_135_nuclear_closures": {
+      "file": "tests/test_135_nuclear_closures.py",
+      "domain": "kernel_identity",
+      "test_count": 76,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_140_weyl_closures": {
+      "file": "tests/test_140_weyl_closures.py",
+      "domain": "other",
+      "test_count": 43,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": true,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 7,
+      "uniform_range_count": 0
+    },
+    "test_145_tau_r_star": {
+      "file": "tests/test_145_tau_r_star.py",
+      "domain": "tau_r_dynamics",
+      "test_count": 60,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": true,
+      "has_tau_r": true,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_146_dashboard_coverage": {
+      "file": "tests/test_146_dashboard_coverage.py",
+      "domain": "regime_classification",
+      "test_count": 112,
+      "has_kernel": false,
+      "has_classify": true,
+      "has_seam": true,
+      "has_tau_r": true,
+      "has_schema": true,
+      "has_cli": true,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_147_tau_r_star_dynamics": {
+      "file": "tests/test_147_tau_r_star_dynamics.py",
+      "domain": "kernel_identity",
+      "test_count": 57,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": true,
+      "has_tau_r": true,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_148_generate_latex": {
+      "file": "tests/test_148_generate_latex.py",
+      "domain": "cli_integration",
+      "test_count": 46,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_149_rcft_universality": {
+      "file": "tests/test_149_rcft_universality.py",
+      "domain": "regime_classification",
+      "test_count": 62,
+      "has_kernel": false,
+      "has_classify": true,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 6,
+      "uniform_range_count": 0
+    },
+    "test_150_measurement_engine": {
+      "file": "tests/test_150_measurement_engine.py",
+      "domain": "kernel_identity",
+      "test_count": 43,
+      "has_kernel": true,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": true,
+      "has_schema": true,
+      "has_cli": true,
+      "coord_literal_count": 1,
+      "uniform_range_count": 0
+    },
+    "test_151_active_matter": {
+      "file": "tests/test_151_active_matter.py",
+      "domain": "kernel_identity",
+      "test_count": 62,
+      "has_kernel": true,
+      "has_classify": true,
+      "has_seam": false,
+      "has_tau_r": true,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 2,
+      "uniform_range_count": 0
+    },
+    "test_152_epistemic_weld": {
+      "file": "tests/test_152_epistemic_weld.py",
+      "domain": "cli_integration",
+      "test_count": 55,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": true,
+      "has_tau_r": true,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_155_ters_near_field": {
+      "file": "tests/test_155_ters_near_field.py",
+      "domain": "cli_integration",
+      "test_count": 72,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": true,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_156_atom_dot_mi": {
+      "file": "tests/test_156_atom_dot_mi.py",
+      "domain": "cli_integration",
+      "test_count": 89,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_157_muon_laser_decay": {
+      "file": "tests/test_157_muon_laser_decay.py",
+      "domain": "other",
+      "test_count": 83,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_158_universal_regime_calibration": {
+      "file": "tests/test_158_universal_regime_calibration.py",
+      "domain": "other",
+      "test_count": 74,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_159_double_slit_interference": {
+      "file": "tests/test_159_double_slit_interference.py",
+      "domain": "cli_integration",
+      "test_count": 109,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_160_contract_claims": {
+      "file": "tests/test_160_contract_claims.py",
+      "domain": "kernel_identity",
+      "test_count": 65,
+      "has_kernel": true,
+      "has_classify": true,
+      "has_seam": true,
+      "has_tau_r": true,
+      "has_schema": true,
+      "has_cli": true,
+      "coord_literal_count": 15,
+      "uniform_range_count": 6
+    },
+    "test_170_cli_subcommands": {
+      "file": "tests/test_170_cli_subcommands.py",
+      "domain": "cli_integration",
+      "test_count": 11,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_171_batch_validate": {
+      "file": "tests/test_171_batch_validate.py",
+      "domain": "cli_integration",
+      "test_count": 17,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 12,
+      "uniform_range_count": 0
+    },
+    "test_172_tau_r_and_sentinel": {
+      "file": "tests/test_172_tau_r_and_sentinel.py",
+      "domain": "tau_r_dynamics",
+      "test_count": 28,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": true,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_173_schema_instances": {
+      "file": "tests/test_173_schema_instances.py",
+      "domain": "schema_validation",
+      "test_count": 12,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": true,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_174_lemmas_24_34": {
+      "file": "tests/test_174_lemmas_24_34.py",
+      "domain": "kernel_identity",
+      "test_count": 21,
+      "has_kernel": true,
+      "has_classify": false,
+      "has_seam": true,
+      "has_tau_r": true,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 26,
+      "uniform_range_count": 2
+    },
+    "test_175_validator_methods": {
+      "file": "tests/test_175_validator_methods.py",
+      "domain": "kernel_identity",
+      "test_count": 10,
+      "has_kernel": true,
+      "has_classify": true,
+      "has_seam": true,
+      "has_tau_r": true,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 6,
+      "uniform_range_count": 2
+    },
+    "test_176_finance_and_closures": {
+      "file": "tests/test_176_finance_and_closures.py",
+      "domain": "schema_validation",
+      "test_count": 18,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": true,
+      "has_tau_r": false,
+      "has_schema": true,
+      "has_cli": true,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_177_public_api": {
+      "file": "tests/test_177_public_api.py",
+      "domain": "other",
+      "test_count": 11,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_180_materials_closures": {
+      "file": "tests/test_180_materials_closures.py",
+      "domain": "kernel_identity",
+      "test_count": 114,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_190_atomic_closures": {
+      "file": "tests/test_190_atomic_closures.py",
+      "domain": "kernel_identity",
+      "test_count": 147,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_200_fleet": {
+      "file": "tests/test_200_fleet.py",
+      "domain": "cli_integration",
+      "test_count": 77,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_200_recursive_instantiation": {
+      "file": "tests/test_200_recursive_instantiation.py",
+      "domain": "tau_r_dynamics",
+      "test_count": 47,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": true,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_20_casepack_hello_world_validates": {
+      "file": "tests/test_20_casepack_hello_world_validates.py",
+      "domain": "schema_validation",
+      "test_count": 5,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": true,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_25_umcp_ref_e2e_0001": {
+      "file": "tests/test_25_umcp_ref_e2e_0001.py",
+      "domain": "cli_integration",
+      "test_count": 12,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": true,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_30_semantic_rules_hello_world": {
+      "file": "tests/test_30_semantic_rules_hello_world.py",
+      "domain": "schema_validation",
+      "test_count": 5,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": true,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_40_validator_result_schema_accepts_example": {
+      "file": "tests/test_40_validator_result_schema_accepts_example.py",
+      "domain": "schema_validation",
+      "test_count": 1,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": true,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_51_cli_diff": {
+      "file": "tests/test_51_cli_diff.py",
+      "domain": "cli_integration",
+      "test_count": 4,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_70_contract_closures": {
+      "file": "tests/test_70_contract_closures.py",
+      "domain": "file_structure",
+      "test_count": 12,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_80_benchmark": {
+      "file": "tests/test_80_benchmark.py",
+      "domain": "cli_integration",
+      "test_count": 5,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_90_edge_cases": {
+      "file": "tests/test_90_edge_cases.py",
+      "domain": "file_structure",
+      "test_count": 9,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": true,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_95_logging_monitoring": {
+      "file": "tests/test_95_logging_monitoring.py",
+      "domain": "schema_validation",
+      "test_count": 9,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": true,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_96_file_references": {
+      "file": "tests/test_96_file_references.py",
+      "domain": "file_structure",
+      "test_count": 16,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_97_root_integration": {
+      "file": "tests/test_97_root_integration.py",
+      "domain": "other",
+      "test_count": 1,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_api_umcp": {
+      "file": "tests/test_api_umcp.py",
+      "domain": "regime_classification",
+      "test_count": 32,
+      "has_kernel": false,
+      "has_classify": true,
+      "has_seam": true,
+      "has_tau_r": true,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_api_weyl": {
+      "file": "tests/test_api_weyl.py",
+      "domain": "cli_integration",
+      "test_count": 16,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_cli": {
+      "file": "tests/test_cli.py",
+      "domain": "cli_integration",
+      "test_count": 9,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_closures": {
+      "file": "tests/test_closures.py",
+      "domain": "other",
+      "test_count": 7,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_computational_optimizations": {
+      "file": "tests/test_computational_optimizations.py",
+      "domain": "kernel_identity",
+      "test_count": 27,
+      "has_kernel": true,
+      "has_classify": false,
+      "has_seam": true,
+      "has_tau_r": true,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 23,
+      "uniform_range_count": 0
+    },
+    "test_compute_utils": {
+      "file": "tests/test_compute_utils.py",
+      "domain": "cli_integration",
+      "test_count": 14,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 19,
+      "uniform_range_count": 0
+    },
+    "test_coverage_90": {
+      "file": "tests/test_coverage_90.py",
+      "domain": "regime_classification",
+      "test_count": 82,
+      "has_kernel": false,
+      "has_classify": true,
+      "has_seam": true,
+      "has_tau_r": false,
+      "has_schema": true,
+      "has_cli": true,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_coverage_boost": {
+      "file": "tests/test_coverage_boost.py",
+      "domain": "file_structure",
+      "test_count": 21,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_coverage_closures": {
+      "file": "tests/test_coverage_closures.py",
+      "domain": "file_structure",
+      "test_count": 12,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_coverage_file_refs": {
+      "file": "tests/test_coverage_file_refs.py",
+      "domain": "file_structure",
+      "test_count": 16,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_coverage_validator": {
+      "file": "tests/test_coverage_validator.py",
+      "domain": "schema_validation",
+      "test_count": 16,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": true,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_dashboard": {
+      "file": "tests/test_dashboard.py",
+      "domain": "regime_classification",
+      "test_count": 36,
+      "has_kernel": false,
+      "has_classify": true,
+      "has_seam": true,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_extended_lemmas": {
+      "file": "tests/test_extended_lemmas.py",
+      "domain": "file_structure",
+      "test_count": 34,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": true,
+      "has_tau_r": true,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_file_refs": {
+      "file": "tests/test_file_refs.py",
+      "domain": "other",
+      "test_count": 8,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_fleet_worker": {
+      "file": "tests/test_fleet_worker.py",
+      "domain": "other",
+      "test_count": 17,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_frozen_contract": {
+      "file": "tests/test_frozen_contract.py",
+      "domain": "kernel_identity",
+      "test_count": 36,
+      "has_kernel": true,
+      "has_classify": true,
+      "has_seam": true,
+      "has_tau_r": true,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 7,
+      "uniform_range_count": 0
+    },
+    "test_init_api": {
+      "file": "tests/test_init_api.py",
+      "domain": "other",
+      "test_count": 10,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_insights": {
+      "file": "tests/test_insights.py",
+      "domain": "file_structure",
+      "test_count": 40,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_insights_deep": {
+      "file": "tests/test_insights_deep.py",
+      "domain": "kernel_identity",
+      "test_count": 68,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_kernel_optimized": {
+      "file": "tests/test_kernel_optimized.py",
+      "domain": "kernel_identity",
+      "test_count": 17,
+      "has_kernel": true,
+      "has_classify": false,
+      "has_seam": true,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 18,
+      "uniform_range_count": 4
+    },
+    "test_logging_utils": {
+      "file": "tests/test_logging_utils.py",
+      "domain": "other",
+      "test_count": 5,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_main_entry": {
+      "file": "tests/test_main_entry.py",
+      "domain": "cli_integration",
+      "test_count": 4,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_minimal_cli": {
+      "file": "tests/test_minimal_cli.py",
+      "domain": "cli_integration",
+      "test_count": 1,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_outputs": {
+      "file": "tests/test_outputs.py",
+      "domain": "other",
+      "test_count": 20,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_package_init": {
+      "file": "tests/test_package_init.py",
+      "domain": "other",
+      "test_count": 9,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_preflight": {
+      "file": "tests/test_preflight.py",
+      "domain": "schema_validation",
+      "test_count": 16,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": true,
+      "has_cli": true,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_seam_optimized": {
+      "file": "tests/test_seam_optimized.py",
+      "domain": "tau_r_dynamics",
+      "test_count": 10,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": true,
+      "has_tau_r": true,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_ss1m_triad": {
+      "file": "tests/test_ss1m_triad.py",
+      "domain": "other",
+      "test_count": 35,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_umcp_extensions": {
+      "file": "tests/test_umcp_extensions.py",
+      "domain": "cli_integration",
+      "test_count": 47,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_uncertainty": {
+      "file": "tests/test_uncertainty.py",
+      "domain": "kernel_identity",
+      "test_count": 23,
+      "has_kernel": true,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 43,
+      "uniform_range_count": 1
+    },
+    "test_universal_calculator": {
+      "file": "tests/test_universal_calculator.py",
+      "domain": "kernel_identity",
+      "test_count": 37,
+      "has_kernel": true,
+      "has_classify": false,
+      "has_seam": true,
+      "has_tau_r": true,
+      "has_schema": false,
+      "has_cli": true,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_utils": {
+      "file": "tests/test_utils.py",
+      "domain": "regime_classification",
+      "test_count": 0,
+      "has_kernel": false,
+      "has_classify": true,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": true,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    },
+    "test_validator": {
+      "file": "tests/test_validator.py",
+      "domain": "other",
+      "test_count": 6,
+      "has_kernel": false,
+      "has_classify": false,
+      "has_seam": false,
+      "has_tau_r": false,
+      "has_schema": false,
+      "has_cli": false,
+      "coord_literal_count": 0,
+      "uniform_range_count": 0
+    }
+  },
+  "suggested_ordering": [
+    {
+      "file": "tests/test_175_validator_methods.py",
+      "name": "test_175_validator_methods",
+      "domain": "kernel_identity",
+      "tier": 1,
+      "test_count": 10,
+      "has_kernel": true,
+      "has_seam": true,
+      "has_tau_r": true
+    },
+    {
+      "file": "tests/test_kernel_optimized.py",
+      "name": "test_kernel_optimized",
+      "domain": "kernel_identity",
+      "tier": 1,
+      "test_count": 17,
+      "has_kernel": true,
+      "has_seam": true,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_174_lemmas_24_34.py",
+      "name": "test_174_lemmas_24_34",
+      "domain": "kernel_identity",
+      "tier": 1,
+      "test_count": 21,
+      "has_kernel": true,
+      "has_seam": true,
+      "has_tau_r": true
+    },
+    {
+      "file": "tests/test_uncertainty.py",
+      "name": "test_uncertainty",
+      "domain": "kernel_identity",
+      "tier": 1,
+      "test_count": 23,
+      "has_kernel": true,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_000_manifold_bounds.py",
+      "name": "test_000_manifold_bounds",
+      "domain": "kernel_identity",
+      "tier": 1,
+      "test_count": 25,
+      "has_kernel": true,
+      "has_seam": true,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_computational_optimizations.py",
+      "name": "test_computational_optimizations",
+      "domain": "kernel_identity",
+      "tier": 1,
+      "test_count": 27,
+      "has_kernel": true,
+      "has_seam": true,
+      "has_tau_r": true
+    },
+    {
+      "file": "tests/test_001_invariant_separation.py",
+      "name": "test_001_invariant_separation",
+      "domain": "kernel_identity",
+      "tier": 1,
+      "test_count": 28,
+      "has_kernel": true,
+      "has_seam": true,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_frozen_contract.py",
+      "name": "test_frozen_contract",
+      "domain": "kernel_identity",
+      "tier": 1,
+      "test_count": 36,
+      "has_kernel": true,
+      "has_seam": true,
+      "has_tau_r": true
+    },
+    {
+      "file": "tests/test_universal_calculator.py",
+      "name": "test_universal_calculator",
+      "domain": "kernel_identity",
+      "tier": 1,
+      "test_count": 37,
+      "has_kernel": true,
+      "has_seam": true,
+      "has_tau_r": true
+    },
+    {
+      "file": "tests/test_150_measurement_engine.py",
+      "name": "test_150_measurement_engine",
+      "domain": "kernel_identity",
+      "tier": 1,
+      "test_count": 43,
+      "has_kernel": true,
+      "has_seam": false,
+      "has_tau_r": true
+    },
+    {
+      "file": "tests/test_147_tau_r_star_dynamics.py",
+      "name": "test_147_tau_r_star_dynamics",
+      "domain": "kernel_identity",
+      "tier": 1,
+      "test_count": 57,
+      "has_kernel": false,
+      "has_seam": true,
+      "has_tau_r": true
+    },
+    {
+      "file": "tests/test_151_active_matter.py",
+      "name": "test_151_active_matter",
+      "domain": "kernel_identity",
+      "tier": 1,
+      "test_count": 62,
+      "has_kernel": true,
+      "has_seam": false,
+      "has_tau_r": true
+    },
+    {
+      "file": "tests/test_160_contract_claims.py",
+      "name": "test_160_contract_claims",
+      "domain": "kernel_identity",
+      "tier": 1,
+      "test_count": 65,
+      "has_kernel": true,
+      "has_seam": true,
+      "has_tau_r": true
+    },
+    {
+      "file": "tests/test_insights_deep.py",
+      "name": "test_insights_deep",
+      "domain": "kernel_identity",
+      "tier": 1,
+      "test_count": 68,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_135_nuclear_closures.py",
+      "name": "test_135_nuclear_closures",
+      "domain": "kernel_identity",
+      "tier": 1,
+      "test_count": 76,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_180_materials_closures.py",
+      "name": "test_180_materials_closures",
+      "domain": "kernel_identity",
+      "tier": 1,
+      "test_count": 114,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_190_atomic_closures.py",
+      "name": "test_190_atomic_closures",
+      "domain": "kernel_identity",
+      "tier": 1,
+      "test_count": 147,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_utils.py",
+      "name": "test_utils",
+      "domain": "regime_classification",
+      "tier": 2,
+      "test_count": 0,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_api_umcp.py",
+      "name": "test_api_umcp",
+      "domain": "regime_classification",
+      "tier": 2,
+      "test_count": 32,
+      "has_kernel": false,
+      "has_seam": true,
+      "has_tau_r": true
+    },
+    {
+      "file": "tests/test_dashboard.py",
+      "name": "test_dashboard",
+      "domain": "regime_classification",
+      "tier": 2,
+      "test_count": 36,
+      "has_kernel": false,
+      "has_seam": true,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_149_rcft_universality.py",
+      "name": "test_149_rcft_universality",
+      "domain": "regime_classification",
+      "tier": 2,
+      "test_count": 62,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_coverage_90.py",
+      "name": "test_coverage_90",
+      "domain": "regime_classification",
+      "tier": 2,
+      "test_count": 82,
+      "has_kernel": false,
+      "has_seam": true,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_146_dashboard_coverage.py",
+      "name": "test_146_dashboard_coverage",
+      "domain": "regime_classification",
+      "tier": 2,
+      "test_count": 112,
+      "has_kernel": false,
+      "has_seam": true,
+      "has_tau_r": true
+    },
+    {
+      "file": "tests/test_seam_optimized.py",
+      "name": "test_seam_optimized",
+      "domain": "tau_r_dynamics",
+      "tier": 3,
+      "test_count": 10,
+      "has_kernel": false,
+      "has_seam": true,
+      "has_tau_r": true
+    },
+    {
+      "file": "tests/test_172_tau_r_and_sentinel.py",
+      "name": "test_172_tau_r_and_sentinel",
+      "domain": "tau_r_dynamics",
+      "tier": 3,
+      "test_count": 28,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": true
+    },
+    {
+      "file": "tests/test_200_recursive_instantiation.py",
+      "name": "test_200_recursive_instantiation",
+      "domain": "tau_r_dynamics",
+      "tier": 3,
+      "test_count": 47,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": true
+    },
+    {
+      "file": "tests/test_145_tau_r_star.py",
+      "name": "test_145_tau_r_star",
+      "domain": "tau_r_dynamics",
+      "tier": 3,
+      "test_count": 60,
+      "has_kernel": false,
+      "has_seam": true,
+      "has_tau_r": true
+    },
+    {
+      "file": "tests/test_40_validator_result_schema_accepts_example.py",
+      "name": "test_40_validator_result_schema_accepts_example",
+      "domain": "schema_validation",
+      "tier": 4,
+      "test_count": 1,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_97_root_integration.py",
+      "name": "test_97_root_integration",
+      "domain": "other",
+      "tier": 4,
+      "test_count": 1,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_00_schemas_valid.py",
+      "name": "test_00_schemas_valid",
+      "domain": "schema_validation",
+      "tier": 4,
+      "test_count": 3,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_10_canon_contract_closures_validate.py",
+      "name": "test_10_canon_contract_closures_validate",
+      "domain": "schema_validation",
+      "tier": 4,
+      "test_count": 3,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_20_casepack_hello_world_validates.py",
+      "name": "test_20_casepack_hello_world_validates",
+      "domain": "schema_validation",
+      "tier": 4,
+      "test_count": 5,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_30_semantic_rules_hello_world.py",
+      "name": "test_30_semantic_rules_hello_world",
+      "domain": "schema_validation",
+      "tier": 4,
+      "test_count": 5,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_logging_utils.py",
+      "name": "test_logging_utils",
+      "domain": "other",
+      "tier": 4,
+      "test_count": 5,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_validator.py",
+      "name": "test_validator",
+      "domain": "other",
+      "tier": 4,
+      "test_count": 6,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_closures.py",
+      "name": "test_closures",
+      "domain": "other",
+      "tier": 4,
+      "test_count": 7,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_file_refs.py",
+      "name": "test_file_refs",
+      "domain": "other",
+      "tier": 4,
+      "test_count": 8,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_95_logging_monitoring.py",
+      "name": "test_95_logging_monitoring",
+      "domain": "schema_validation",
+      "tier": 4,
+      "test_count": 9,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_package_init.py",
+      "name": "test_package_init",
+      "domain": "other",
+      "tier": 4,
+      "test_count": 9,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_init_api.py",
+      "name": "test_init_api",
+      "domain": "other",
+      "tier": 4,
+      "test_count": 10,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_177_public_api.py",
+      "name": "test_177_public_api",
+      "domain": "other",
+      "tier": 4,
+      "test_count": 11,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_173_schema_instances.py",
+      "name": "test_173_schema_instances",
+      "domain": "schema_validation",
+      "tier": 4,
+      "test_count": 12,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_110_rcft_canon.py",
+      "name": "test_110_rcft_canon",
+      "domain": "schema_validation",
+      "tier": 4,
+      "test_count": 14,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": true
+    },
+    {
+      "file": "tests/test_100_gcd_canon.py",
+      "name": "test_100_gcd_canon",
+      "domain": "schema_validation",
+      "tier": 4,
+      "test_count": 15,
+      "has_kernel": false,
+      "has_seam": true,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_102_gcd_contract.py",
+      "name": "test_102_gcd_contract",
+      "domain": "schema_validation",
+      "tier": 4,
+      "test_count": 16,
+      "has_kernel": false,
+      "has_seam": true,
+      "has_tau_r": true
+    },
+    {
+      "file": "tests/test_coverage_validator.py",
+      "name": "test_coverage_validator",
+      "domain": "schema_validation",
+      "tier": 4,
+      "test_count": 16,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_preflight.py",
+      "name": "test_preflight",
+      "domain": "schema_validation",
+      "tier": 4,
+      "test_count": 16,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_fleet_worker.py",
+      "name": "test_fleet_worker",
+      "domain": "other",
+      "tier": 4,
+      "test_count": 17,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_112_rcft_contract.py",
+      "name": "test_112_rcft_contract",
+      "domain": "schema_validation",
+      "tier": 4,
+      "test_count": 18,
+      "has_kernel": false,
+      "has_seam": true,
+      "has_tau_r": true
+    },
+    {
+      "file": "tests/test_176_finance_and_closures.py",
+      "name": "test_176_finance_and_closures",
+      "domain": "schema_validation",
+      "tier": 4,
+      "test_count": 18,
+      "has_kernel": false,
+      "has_seam": true,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_outputs.py",
+      "name": "test_outputs",
+      "domain": "other",
+      "tier": 4,
+      "test_count": 20,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_111_rcft_closures.py",
+      "name": "test_111_rcft_closures",
+      "domain": "other",
+      "tier": 4,
+      "test_count": 24,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_ss1m_triad.py",
+      "name": "test_ss1m_triad",
+      "domain": "other",
+      "tier": 4,
+      "test_count": 35,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_140_weyl_closures.py",
+      "name": "test_140_weyl_closures",
+      "domain": "other",
+      "tier": 4,
+      "test_count": 43,
+      "has_kernel": false,
+      "has_seam": true,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_120_kinematics_closures.py",
+      "name": "test_120_kinematics_closures",
+      "domain": "schema_validation",
+      "tier": 4,
+      "test_count": 55,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_158_universal_regime_calibration.py",
+      "name": "test_158_universal_regime_calibration",
+      "domain": "other",
+      "tier": 4,
+      "test_count": 74,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_157_muon_laser_decay.py",
+      "name": "test_157_muon_laser_decay",
+      "domain": "other",
+      "tier": 4,
+      "test_count": 83,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_90_edge_cases.py",
+      "name": "test_90_edge_cases",
+      "domain": "file_structure",
+      "tier": 5,
+      "test_count": 9,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": true
+    },
+    {
+      "file": "tests/test_70_contract_closures.py",
+      "name": "test_70_contract_closures",
+      "domain": "file_structure",
+      "tier": 5,
+      "test_count": 12,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_coverage_closures.py",
+      "name": "test_coverage_closures",
+      "domain": "file_structure",
+      "tier": 5,
+      "test_count": 12,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_96_file_references.py",
+      "name": "test_96_file_references",
+      "domain": "file_structure",
+      "tier": 5,
+      "test_count": 16,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_coverage_file_refs.py",
+      "name": "test_coverage_file_refs",
+      "domain": "file_structure",
+      "tier": 5,
+      "test_count": 16,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_101_gcd_closures.py",
+      "name": "test_101_gcd_closures",
+      "domain": "file_structure",
+      "tier": 5,
+      "test_count": 21,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": true
+    },
+    {
+      "file": "tests/test_coverage_boost.py",
+      "name": "test_coverage_boost",
+      "domain": "file_structure",
+      "tier": 5,
+      "test_count": 21,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_113_rcft_tier2_layering.py",
+      "name": "test_113_rcft_tier2_layering",
+      "domain": "file_structure",
+      "tier": 5,
+      "test_count": 23,
+      "has_kernel": false,
+      "has_seam": true,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_extended_lemmas.py",
+      "name": "test_extended_lemmas",
+      "domain": "file_structure",
+      "tier": 5,
+      "test_count": 34,
+      "has_kernel": false,
+      "has_seam": true,
+      "has_tau_r": true
+    },
+    {
+      "file": "tests/test_insights.py",
+      "name": "test_insights",
+      "domain": "file_structure",
+      "tier": 5,
+      "test_count": 40,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_minimal_cli.py",
+      "name": "test_minimal_cli",
+      "domain": "cli_integration",
+      "tier": 6,
+      "test_count": 1,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_51_cli_diff.py",
+      "name": "test_51_cli_diff",
+      "domain": "cli_integration",
+      "tier": 6,
+      "test_count": 4,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_main_entry.py",
+      "name": "test_main_entry",
+      "domain": "cli_integration",
+      "tier": 6,
+      "test_count": 4,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_80_benchmark.py",
+      "name": "test_80_benchmark",
+      "domain": "cli_integration",
+      "tier": 6,
+      "test_count": 5,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_cli.py",
+      "name": "test_cli",
+      "domain": "cli_integration",
+      "tier": 6,
+      "test_count": 9,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_170_cli_subcommands.py",
+      "name": "test_170_cli_subcommands",
+      "domain": "cli_integration",
+      "tier": 6,
+      "test_count": 11,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_25_umcp_ref_e2e_0001.py",
+      "name": "test_25_umcp_ref_e2e_0001",
+      "domain": "cli_integration",
+      "tier": 6,
+      "test_count": 12,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": true
+    },
+    {
+      "file": "tests/test_compute_utils.py",
+      "name": "test_compute_utils",
+      "domain": "cli_integration",
+      "tier": 6,
+      "test_count": 14,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_api_weyl.py",
+      "name": "test_api_weyl",
+      "domain": "cli_integration",
+      "tier": 6,
+      "test_count": 16,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_171_batch_validate.py",
+      "name": "test_171_batch_validate",
+      "domain": "cli_integration",
+      "tier": 6,
+      "test_count": 17,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_115_new_closures.py",
+      "name": "test_115_new_closures",
+      "domain": "cli_integration",
+      "tier": 6,
+      "test_count": 18,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_130_kin_audit_spec.py",
+      "name": "test_130_kin_audit_spec",
+      "domain": "cli_integration",
+      "tier": 6,
+      "test_count": 35,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": true
+    },
+    {
+      "file": "tests/test_148_generate_latex.py",
+      "name": "test_148_generate_latex",
+      "domain": "cli_integration",
+      "tier": 6,
+      "test_count": 46,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_umcp_extensions.py",
+      "name": "test_umcp_extensions",
+      "domain": "cli_integration",
+      "tier": 6,
+      "test_count": 47,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_152_epistemic_weld.py",
+      "name": "test_152_epistemic_weld",
+      "domain": "cli_integration",
+      "tier": 6,
+      "test_count": 55,
+      "has_kernel": false,
+      "has_seam": true,
+      "has_tau_r": true
+    },
+    {
+      "file": "tests/test_155_ters_near_field.py",
+      "name": "test_155_ters_near_field",
+      "domain": "cli_integration",
+      "tier": 6,
+      "test_count": 72,
+      "has_kernel": false,
+      "has_seam": true,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_200_fleet.py",
+      "name": "test_200_fleet",
+      "domain": "cli_integration",
+      "tier": 6,
+      "test_count": 77,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_156_atom_dot_mi.py",
+      "name": "test_156_atom_dot_mi",
+      "domain": "cli_integration",
+      "tier": 6,
+      "test_count": 89,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    },
+    {
+      "file": "tests/test_159_double_slit_interference.py",
+      "name": "test_159_double_slit_interference",
+      "domain": "cli_integration",
+      "tier": 6,
+      "test_count": 109,
+      "has_kernel": false,
+      "has_seam": false,
+      "has_tau_r": false
+    }
+  ],
+  "coordinate_regions": {
+    "deep_stable": {
+      "description": "Near-perfect coherence",
+      "regimes": {
+        "total": 1500,
+        "distribution": {
+          "STABLE": 1409,
+          "WATCH": 91
+        },
+        "fractions": {
+          "STABLE": 0.9393,
+          "WATCH": 0.0607
+        }
+      },
+      "invariants": {
+        "\u03c9": {
+          "n": 1500,
+          "min": 0.00313753,
+          "max": 0.04598183,
+          "mean": 0.0247293,
+          "span": 0.0428443
+        },
+        "F": {
+          "n": 1500,
+          "min": 0.95401817,
+          "max": 0.99686247,
+          "mean": 0.9752707,
+          "span": 0.0428443
+        },
+        "S": {
+          "n": 1500,
+          "min": 0.0206678,
+          "max": 0.18648885,
+          "mean": 0.11095753,
+          "span": 0.16582105
+        },
+        "C": {
+          "n": 1500,
+          "min": 0.00156215,
+          "max": 0.04497228,
+          "mean": 0.024406,
+          "span": 0.04341013
+        },
+        "IC": {
+          "n": 1500,
+          "min": 0.95401613,
+          "max": 0.99686107,
+          "mean": 0.97518719,
+          "span": 0.04284494
+        },
+        "\u03ba": {
+          "n": 1500,
+          "min": -0.0470747,
+          "max": -0.00314387,
+          "mean": -0.02514905,
+          "span": 0.04393083
+        },
+        "amgm_gap": {
+          "n": 1500,
+          "min": 3.1e-07,
+          "max": 0.000259,
+          "mean": 8.352e-05,
+          "span": 0.00025869
+        }
+      }
+    },
+    "stable_boundary": {
+      "description": "Stable/Watch transition zone",
+      "regimes": {
+        "total": 1500,
+        "distribution": {
+          "WATCH": 1500
+        },
+        "fractions": {
+          "WATCH": 1.0
+        }
+      },
+      "invariants": {
+        "\u03c9": {
+          "n": 1500,
+          "min": 0.04599451,
+          "max": 0.11262103,
+          "mean": 0.07999168,
+          "span": 0.06662652
+        },
+        "F": {
+          "n": 1500,
+          "min": 0.88737897,
+          "max": 0.95400549,
+          "mean": 0.92000832,
+          "span": 0.06662652
+        },
+        "S": {
+          "n": 1500,
+          "min": 0.18648362,
+          "max": 0.35184384,
+          "mean": 0.27504872,
+          "span": 0.16536022
+        },
+        "C": {
+          "n": 1500,
+          "min": 0.00128157,
+          "max": 0.07173919,
+          "mean": 0.03889012,
+          "span": 0.07045762
+        },
+        "IC": {
+          "n": 1500,
+          "min": 0.88736595,
+          "max": 0.9540025,
+          "mean": 0.9197825,
+          "span": 0.06663655
+        },
+        "\u03ba": {
+          "n": 1500,
+          "min": -0.11949781,
+          "max": -0.04708899,
+          "mean": -0.08368603,
+          "span": 0.07240882
+        },
+        "amgm_gap": {
+          "n": 1500,
+          "min": 2.2e-07,
+          "max": 0.00070393,
+          "mean": 0.00022582,
+          "span": 0.00070371
+        }
+      }
+    },
+    "mid_watch": {
+      "description": "Moderate drift, mixed fidelity",
+      "regimes": {
+        "total": 1500,
+        "distribution": {
+          "COLLAPSE": 1079,
+          "WATCH": 421
+        },
+        "fractions": {
+          "COLLAPSE": 0.7193,
+          "WATCH": 0.2807
+        }
+      },
+      "invariants": {
+        "\u03c9": {
+          "n": 1500,
+          "min": 0.18035032,
+          "max": 0.49319331,
+          "mean": 0.3262913,
+          "span": 0.31284298
+        },
+        "F": {
+          "n": 1500,
+          "min": 0.50680669,
+          "max": 0.81964968,
+          "mean": 0.6737087,
+          "span": 0.31284298
+        },
+        "S": {
+          "n": 1500,
+          "min": 0.47024729,
+          "max": 0.69299859,
+          "mean": 0.60773581,
+          "span": 0.2227513
+        },
+        "C": {
+          "n": 1500,
+          "min": 0.00680051,
+          "max": 0.31728644,
+          "mean": 0.17173835,
+          "span": 0.31048593
+        },
+        "IC": {
+          "n": 1500,
+          "min": 0.50677911,
+          "max": 0.81935064,
+          "mean": 0.66761873,
+          "span": 0.31257153
+        },
+        "\u03ba": {
+          "n": 1500,
+          "min": -0.67968005,
+          "max": -0.19924316,
+          "mean": -0.40644105,
+          "span": 0.4804369
+        },
+        "amgm_gap": {
+          "n": 1500,
+          "min": 8.41e-06,
+          "max": 0.01856198,
+          "mean": 0.00608997,
+          "span": 0.01855357
+        }
+      }
+    },
+    "low_watch": {
+      "description": "Approaching collapse threshold",
+      "regimes": {
+        "total": 1500,
+        "distribution": {
+          "COLLAPSE": 1500
+        },
+        "fractions": {
+          "COLLAPSE": 1.0
+        }
+      },
+      "invariants": {
+        "\u03c9": {
+          "n": 1500,
+          "min": 0.46399358,
+          "max": 0.68702919,
+          "mean": 0.57556456,
+          "span": 0.22303561
+        },
+        "F": {
+          "n": 1500,
+          "min": 0.31297081,
+          "max": 0.53600642,
+          "mean": 0.42443544,
+          "span": 0.22303561
+        },
+        "S": {
+          "n": 1500,
+          "min": 0.62130727,
+          "max": 0.69274014,
+          "mean": 0.67092581,
+          "span": 0.07143286
+        },
+        "C": {
+          "n": 1500,
+          "min": 0.00209841,
+          "max": 0.22569542,
+          "mean": 0.12152913,
+          "span": 0.22359701
+        },
+        "IC": {
+          "n": 1500,
+          "min": 0.31286729,
+          "max": 0.53593659,
+          "mean": 0.41953724,
+          "span": 0.22306929
+        },
+        "\u03ba": {
+          "n": 1500,
+          "min": -1.16197616,
+          "max": -0.62373943,
+          "mean": -0.87185738,
+          "span": 0.53823672
+        },
+        "amgm_gap": {
+          "n": 1500,
+          "min": 1.21e-06,
+          "max": 0.01483706,
+          "mean": 0.0048982,
+          "span": 0.01483585
+        }
+      }
+    },
+    "collapse_zone": {
+      "description": "High drift, asymmetric",
+      "regimes": {
+        "total": 1500,
+        "distribution": {
+          "COLLAPSE": 11,
+          "CRITICAL": 1489
+        },
+        "fractions": {
+          "COLLAPSE": 0.0073,
+          "CRITICAL": 0.9927
+        }
+      },
+      "invariants": {
+        "\u03c9": {
+          "n": 1500,
+          "min": 0.6640118,
+          "max": 0.89295726,
+          "mean": 0.77709494,
+          "span": 0.22894546
+        },
+        "F": {
+          "n": 1500,
+          "min": 0.10704274,
+          "max": 0.3359882,
+          "mean": 0.22290506,
+          "span": 0.22894546
+        },
+        "S": {
+          "n": 1500,
+          "min": 0.34025804,
+          "max": 0.63830665,
+          "mean": 0.5152195,
+          "span": 0.29804861
+        },
+        "C": {
+          "n": 1500,
+          "min": 0.00198927,
+          "max": 0.22452282,
+          "mean": 0.12180527,
+          "span": 0.22253355
+        },
+        "IC": {
+          "n": 1500,
+          "min": 0.10701663,
+          "max": 0.33596706,
+          "mean": 0.21311388,
+          "span": 0.22895043
+        },
+        "\u03ba": {
+          "n": 1500,
+          "min": -2.23477102,
+          "max": -1.09074216,
+          "mean": -1.55871763,
+          "span": 1.14402886
+        },
+        "amgm_gap": {
+          "n": 1500,
+          "min": 2.05e-06,
+          "max": 0.02870008,
+          "mean": 0.00979118,
+          "span": 0.02869803
+        }
+      }
+    },
+    "critical_zone": {
+      "description": "Near-floor coordinates",
+      "regimes": {
+        "total": 1500,
+        "distribution": {
+          "CRITICAL": 1500
+        },
+        "fractions": {
+          "CRITICAL": 1.0
+        }
+      },
+      "invariants": {
+        "\u03c9": {
+          "n": 1500,
+          "min": 0.85653019,
+          "max": 0.99287444,
+          "mean": 0.92511764,
+          "span": 0.13634425
+        },
+        "F": {
+          "n": 1500,
+          "min": 0.00712556,
+          "max": 0.14346981,
+          "mean": 0.07488236,
+          "span": 0.13634425
+        },
+        "S": {
+          "n": 1500,
+          "min": 0.04146383,
+          "max": 0.41102525,
+          "mean": 0.25057597,
+          "span": 0.36956142
+        },
+        "C": {
+          "n": 1500,
+          "min": 0.00200806,
+          "max": 0.13650177,
+          "mean": 0.07323928,
+          "span": 0.13449372
+        },
+        "IC": {
+          "n": 1500,
+          "min": 0.00306505,
+          "max": 0.14330723,
+          "mean": 0.06054983,
+          "span": 0.14024218
+        },
+        "\u03ba": {
+          "n": 1500,
+          "min": -5.78769106,
+          "max": -1.94276446,
+          "mean": -2.89792466,
+          "span": 3.8449266
+        },
+        "amgm_gap": {
+          "n": 1500,
+          "min": 4.36e-06,
+          "max": 0.07136878,
+          "mean": 0.01433254,
+          "span": 0.07136441
+        }
+      }
+    },
+    "mixed_extremes": {
+      "description": "One high, others low \u2014 asymmetric",
+      "regimes": {
+        "total": 1500,
+        "distribution": {
+          "COLLAPSE": 15,
+          "CRITICAL": 1485
+        },
+        "fractions": {
+          "COLLAPSE": 0.01,
+          "CRITICAL": 0.99
+        }
+      },
+      "invariants": {
+        "\u03c9": {
+          "n": 1500,
+          "min": 0.55102732,
+          "max": 0.86717064,
+          "mean": 0.73203384,
+          "span": 0.31614332
+        },
+        "F": {
+          "n": 1500,
+          "min": 0.13282936,
+          "max": 0.44897268,
+          "mean": 0.26796616,
+          "span": 0.31614332
+        },
+        "S": {
+          "n": 1500,
+          "min": 0.06405587,
+          "max": 0.47728639,
+          "mean": 0.30267173,
+          "span": 0.41323052
+        },
+        "C": {
+          "n": 1500,
+          "min": 0.40437318,
+          "max": 0.9232423,
+          "mean": 0.6318958,
+          "span": 0.51886912
+        },
+        "IC": {
+          "n": 1500,
+          "min": 0.02064117,
+          "max": 0.32422002,
+          "mean": 0.13530623,
+          "span": 0.30357884
+        },
+        "\u03ba": {
+          "n": 1500,
+          "min": -3.88046759,
+          "max": -1.12633293,
+          "mean": -2.09847043,
+          "span": 2.75413465
+        },
+        "amgm_gap": {
+          "n": 1500,
+          "min": 0.04377026,
+          "max": 0.33643983,
+          "mean": 0.13265993,
+          "span": 0.29266957
+        }
+      }
+    }
+  }
+}
