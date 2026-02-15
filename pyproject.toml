@@ -320,7 +320,10 @@ reportMissingTypeStubs = false
 reportUnknownArgumentType = false
 reportUnnecessaryTypeIgnoreComment = false
 
+venvPath = "."
+venv = ".venv"
+
 extraPaths = ["src", "."]
 
-# Exclude dashboards from strict checking (UI-heavy, lambda-heavy)
-ignore = ["src/umcp/dashboard.py", "src/umcp/finance_dashboard.py"]
+# Exclude dashboards and casepack scripts from strict checking
+ignore = ["src/umcp/dashboard.py", "src/umcp/finance_dashboard.py", "casepacks"]

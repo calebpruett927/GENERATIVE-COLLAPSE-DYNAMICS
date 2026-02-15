@@ -38,11 +38,13 @@ from typing import Any
 _THIS = Path(__file__).resolve()
 _CASEPACK_DIR = _THIS.parent
 _WORKSPACE = _CASEPACK_DIR.parents[1]
-if str(_WORKSPACE) not in sys.path:
-    sys.path.insert(0, str(_WORKSPACE))
 _SRC = _WORKSPACE / "src"
+
+# Insert src first so umcp module is found
 if str(_SRC) not in sys.path:
     sys.path.insert(0, str(_SRC))
+if str(_WORKSPACE) not in sys.path:
+    sys.path.insert(0, str(_WORKSPACE))
 
 import numpy as np  # noqa: E402
 import yaml  # noqa: E402
