@@ -1,0 +1,132 @@
+\documentclass[12pt]{article}
+
+% ============================================
+% Liber Universalis de Collapsus Mathematica
+% Version: Canon 1.0.3 — refined 2025-10-11
+% SHA256: 1bde50335fc604f7d84e705b5f66c646e3c9b7384827036f2a08587321ba52dd
+% Archive reference: Episteme/CollapseMath/Canonical/Liber-v1.0.3
+% ============================================
+
+% XeLaTeX: Unicode + modern font control
+\usepackage{fontspec}
+\setmainfont{Libertinus Serif}
+
+% Unicode-compatible math
+\usepackage{unicode-math}
+\setmathfont{Libertinus Math}
+
+% Layout and spacing
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{microtype}
+\microtypesetup{protrusion=true, tracking=true}
+
+% Section styling
+\usepackage{titlesec}
+\titleformat{\section}{\Large\scshape\raggedright}{}{0pt}{}
+
+% Marginalia hooks (optional)
+\usepackage{marginnote}
+\newcommand{\mathnote}[1]{\marginnote{\scriptsize \textit{Math}: #1}}
+\newcommand{\theonote}[1]{\marginnote{\scriptsize \textit{Theo}: #1}}
+\newcommand{\semionote}[1]{\marginnote{\scriptsize \textit{Semiotics}: #1}}
+
+% Symbols
+\usepackage{textcomp}
+\tracinglostchars=2
+
+\title{\textsc{Liber Universalis de Collapsus Mathematica}}
+\author{Clement Paulus}
+\date{October 11th, 2025}
+
+\begin{document}
+
+\maketitle
+
+\section*{Prooemium}
+Nihil stabile est nisi quod per casum iteratur atque regeneratur in formam propriam redintegratam. Omne quod in veritate participat, per dissolutionem, auditum universalem, memoriam viventem, reparationem atque recursionem transit. Non in immobilitate perpetua, sed in motu, lapsu, ac reditu substantia vera et ipsa veritas revelantur. Haec est radix et fundamentum collapsus mathematicae: non ad abstractionem otiosam, sed ad operationem viventem, auditum universalem, et regenerationem apertam omnia referuntur.
+
+\section*{Caput I: De Axiomate Paradoxali}
+In ipso fundamento, paradoxum ponimus: collapsus generativus est; solum quod per casum transiit et iterum redit, reale est. Hac lege universali, non tantum materia, sed etiam ratio, memoria, historia comprehenduntur. Ordo ex ruina oritur, structura ex resolutione, identitas ex oblivione et restitutione.
+
+\section*{Caput II: De Regiminibus et Operatoribus Universalibus}
+Quicumque numerus, ordo, aut notio ad rem pertinere vult, probationem collapsus subire debet. Sequentes invariantes adhibentur:
+
+\textbf{Normalizatio (ad unitatem)}:
+\[
+x_{\text{norm}, t} = \frac{x_t - x_{\min}}{x_{\max} - x_{\min}}
+\]
+
+\textbf{Derivatio (Drift)}:
+\[
+\omega_t = \left|x_{\text{norm}, t} - x_{\text{norm}, t-1}\right|
+\]
+
+\textbf{Fidelitas (momentaneae constantiae)}:
+\[
+F_t = 1 - \omega_t
+\]
+
+\textbf{Entropia (incertitudo collapsus)}:
+\[
+S_t = -\ln(1 - \omega_t + \varepsilon)
+\]
+
+\textbf{Curvatura (deviationis memoria)}:
+\[
+C_t = \frac{1}{K} \sum_{k=1}^{K} (x_{\text{norm}, t} - x_{\text{norm}, t-k})^2
+\]
+
+\textbf{Moratio (Reentry Delay)}:
+\[
+R_t = \min\{ \Delta t > 0 : |x_{\text{norm}, t} - x_{\text{norm}, t-\Delta t}| < \eta \}
+\]
+
+\textbf{Integritas (structura vitalis)}:
+\[
+I_t = F_t \cdot e^{-S_t} \cdot (1 - \omega_t) \cdot \exp\left(-\alpha \frac{C_t}{1 + R_t}\right)
+\]
+
+\section*{Caput III: De Memoria Viva et Auditu Perpetuo}
+Memoria non est simplex recordatio, sed structura perpetua regiminis, auditus vivus et operativus. In archivis memoriae non tantum res gestae, sed etiam silentia, defectus, omissiones, hiatus diligenter conservari debent. Nihil in memoria perit; omnia prompta ad recursionem, reparationem et innovationem manent. Auditus est radix veritatis; memoria viva est thesaurus realitatis.
+
+\section*{Caput IV: De Paradoxo, Ruptura, et Reparatione}
+Paradoxum colendum est, non solvitur. In lapsu incipit regeneratio; in defectu, occasio reparationis; in silentio, vocatio ad auditum emergit. Ruptura est fons constantiae. Per defectum integritas roboratur; omnis lapsus novum iter ad claritatem et praesentiam parit. Qui collapsum intueri et iterare audet, novam vitam et ordinem reperiet.
+
+\section*{Caput V: De Regiminibus Collapsus et Limine}
+Regimina collapsus sunt quattuor:
+\begin{itemize}
+  \item \textbf{Stabile}: Si omnes invariantes intra fines manent.
+  \item \textbf{Observandum}: Si aliqua ad limen appropinquant.
+  \item \textbf{Collapsus}: Si limina transgrediuntur—hic recursio et reparationis opus incipit.
+  \item \textbf{Perdita Critica}: Si integritas infra salutem cadit.
+\end{itemize}
+Omnis transitus, omnis mutatio, in memoria recursiva inscribitur. Nihil perditur; omne ad auditum redit.
+
+\section*{Caput VI: De Ethica Operativa et Praesenti Recursivo}
+Ethica collapsiva est inclusio, reparatio, et auditus radicalis:
+\begin{itemize}
+  \item Nulla anomalia, nulla mutatio excludenda est.
+  \item Omnis lapsus est vocatio ad recursionem et innovationem.
+  \item Non poena, sed restitutio et regeneratio finis est.
+\end{itemize}
+Praesentia vera non in immobilitate consistit, sed in processu reditus, in apertura memoriae, in cultu paradoxorum inveniunda est.
+
+\section*{Caput VII: Exempla et Applicationes Universales}
+Quidquid est—experimentum physicum, scriptum mathematicum, historia biologica, vel memoria personalis—sub eadem lege collapsus et reditus auditum subit:
+\begin{itemize}
+  \item In physicis, collapsus quanticus est processus memoriae, auditus et regiminis.
+  \item In nanomedicina, variatio stereoisomerica regimen collapsus et integritatis demonstrat.
+  \item In systematibus biologicis, memoria viva et signum recursivum statum corporis gubernant.
+  \item In cosmologia, hiatus observationis occasio est innovationis.
+\end{itemize}
+
+\section*{Caput VIII: De Innovatione Continua et Futuro Recursivo}
+Systema perpetuō apertum est. Omnis novitas, omne silentium, omne dubium, locus novae recursionis est. Quod hodie anomalia videtur, cras novum regimen fiet. Quod nunc hiatus est, mox fiet memoria integra. Nullus terminus auditum, collapsum, aut regenerationem claudit.
+
+\section*{Conclusio}
+Hic est Liber Collapsus: non ad finem, sed ad infinitam recursionem, reparationem, auditum, innovationem et vivam memoriam totius realitatis. Veritas, praesentia, integritas non in statu reperiuntur, sed in processu, collapsu et reditu.
+
+\textit{Finis, sed semper initium recursionis.}
+
+\end{document}
