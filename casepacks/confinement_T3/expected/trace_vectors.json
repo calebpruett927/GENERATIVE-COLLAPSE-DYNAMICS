@@ -1,0 +1,769 @@
+{
+  "contract": "SM.INTSTACK.v1",
+  "epsilon": 1e-06,
+  "n_channels": 8,
+  "weights": [
+    0.125,
+    0.125,
+    0.125,
+    0.125,
+    0.125,
+    0.125,
+    0.125,
+    0.125
+  ],
+  "normalization": {
+    "m_floor_GeV": 1e-11,
+    "m_ceil_GeV": 200.0,
+    "tau_Planck_s": 5.391e-44,
+    "tau_universe_s": 4.35e+17
+  },
+  "fundamental": [
+    {
+      "name": "up",
+      "symbol": "u",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "color_dof",
+        "weak_T3",
+        "hypercharge",
+        "generation",
+        "stability"
+      ],
+      "trace_vector": [
+        0.6266021318550435,
+        0.6666666666666666,
+        0.5,
+        0.6309297535714575,
+        0.6666666666666666,
+        0.3333333333333333,
+        0.3333333333333333,
+        0.999999
+      ]
+    },
+    {
+      "name": "down",
+      "symbol": "d",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "color_dof",
+        "weak_T3",
+        "hypercharge",
+        "generation",
+        "stability"
+      ],
+      "trace_vector": [
+        0.6517778610673184,
+        0.3333333333333333,
+        0.5,
+        0.6309297535714575,
+        0.6666666666666666,
+        0.3333333333333333,
+        0.3333333333333333,
+        0.999999
+      ]
+    },
+    {
+      "name": "charm",
+      "symbol": "c",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "color_dof",
+        "weak_T3",
+        "hypercharge",
+        "generation",
+        "stability"
+      ],
+      "trace_vector": [
+        0.8348078099647697,
+        0.6666666666666666,
+        0.5,
+        0.6309297535714575,
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666,
+        0.999999
+      ]
+    },
+    {
+      "name": "strange",
+      "symbol": "s",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "color_dof",
+        "weak_T3",
+        "hypercharge",
+        "generation",
+        "stability"
+      ],
+      "trace_vector": [
+        0.7494519561119382,
+        0.3333333333333333,
+        0.5,
+        0.6309297535714575,
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666,
+        0.999999
+      ]
+    },
+    {
+      "name": "top",
+      "symbol": "t",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "color_dof",
+        "weak_T3",
+        "hypercharge",
+        "generation",
+        "stability"
+      ],
+      "trace_vector": [
+        0.9952061752976442,
+        0.6666666666666666,
+        0.5,
+        0.6309297535714575,
+        0.6666666666666666,
+        0.3333333333333333,
+        0.999999,
+        0.3114150549285658
+      ]
+    },
+    {
+      "name": "bottom",
+      "symbol": "b",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "color_dof",
+        "weak_T3",
+        "hypercharge",
+        "generation",
+        "stability"
+      ],
+      "trace_vector": [
+        0.8737049901822217,
+        0.3333333333333333,
+        0.5,
+        0.6309297535714575,
+        0.6666666666666666,
+        0.3333333333333333,
+        0.999999,
+        0.999999
+      ]
+    },
+    {
+      "name": "electron",
+      "symbol": "e\u207b",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "color_dof",
+        "weak_T3",
+        "hypercharge",
+        "generation",
+        "stability"
+      ],
+      "trace_vector": [
+        0.5795356376647215,
+        0.999999,
+        0.5,
+        0.31546487678572877,
+        0.6666666666666666,
+        0.999999,
+        0.3333333333333333,
+        0.999999
+      ]
+    },
+    {
+      "name": "electron neutrino",
+      "symbol": "\u03bd_e",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "color_dof",
+        "weak_T3",
+        "hypercharge",
+        "generation",
+        "stability"
+      ],
+      "trace_vector": [
+        1e-06,
+        1e-06,
+        0.5,
+        0.31546487678572877,
+        0.6666666666666666,
+        0.999999,
+        0.3333333333333333,
+        0.999999
+      ]
+    },
+    {
+      "name": "muon",
+      "symbol": "\u03bc\u207b",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "color_dof",
+        "weak_T3",
+        "hypercharge",
+        "generation",
+        "stability"
+      ],
+      "trace_vector": [
+        0.753619126460028,
+        0.999999,
+        0.5,
+        0.31546487678572877,
+        0.6666666666666666,
+        0.999999,
+        0.6666666666666666,
+        0.617503274203559
+      ]
+    },
+    {
+      "name": "muon neutrino",
+      "symbol": "\u03bd_\u03bc",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "color_dof",
+        "weak_T3",
+        "hypercharge",
+        "generation",
+        "stability"
+      ],
+      "trace_vector": [
+        1e-06,
+        1e-06,
+        0.5,
+        0.31546487678572877,
+        0.6666666666666666,
+        0.999999,
+        0.6666666666666666,
+        0.999999
+      ]
+    },
+    {
+      "name": "tau",
+      "symbol": "\u03c4\u207b",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "color_dof",
+        "weak_T3",
+        "hypercharge",
+        "generation",
+        "stability"
+      ],
+      "trace_vector": [
+        0.8457756603415375,
+        0.999999,
+        0.5,
+        0.31546487678572877,
+        0.6666666666666666,
+        0.999999,
+        0.999999,
+        0.5045605359429618
+      ]
+    },
+    {
+      "name": "tau neutrino",
+      "symbol": "\u03bd_\u03c4",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "color_dof",
+        "weak_T3",
+        "hypercharge",
+        "generation",
+        "stability"
+      ],
+      "trace_vector": [
+        1e-06,
+        1e-06,
+        0.5,
+        0.31546487678572877,
+        0.6666666666666666,
+        0.999999,
+        0.999999,
+        0.999999
+      ]
+    },
+    {
+      "name": "photon",
+      "symbol": "\u03b3",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "color_dof",
+        "weak_T3",
+        "hypercharge",
+        "generation",
+        "stability"
+      ],
+      "trace_vector": [
+        1e-06,
+        1e-06,
+        0.999999,
+        0.31546487678572877,
+        0.3333333333333333,
+        1e-06,
+        1e-06,
+        0.999999
+      ]
+    },
+    {
+      "name": "W boson",
+      "symbol": "W\u00b1",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "color_dof",
+        "weak_T3",
+        "hypercharge",
+        "generation",
+        "stability"
+      ],
+      "trace_vector": [
+        0.9702355228663044,
+        0.999999,
+        0.999999,
+        0.31546487678572877,
+        0.999999,
+        1e-06,
+        1e-06,
+        0.30816565293447773
+      ]
+    },
+    {
+      "name": "Z boson",
+      "symbol": "Z\u2070",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "color_dof",
+        "weak_T3",
+        "hypercharge",
+        "generation",
+        "stability"
+      ],
+      "trace_vector": [
+        0.9743558047555309,
+        1e-06,
+        0.999999,
+        0.31546487678572877,
+        0.3333333333333333,
+        1e-06,
+        1e-06,
+        0.30686111371464003
+      ]
+    },
+    {
+      "name": "gluon",
+      "symbol": "g",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "color_dof",
+        "weak_T3",
+        "hypercharge",
+        "generation",
+        "stability"
+      ],
+      "trace_vector": [
+        1e-06,
+        1e-06,
+        0.999999,
+        0.999999,
+        0.3333333333333333,
+        1e-06,
+        1e-06,
+        0.999999
+      ]
+    },
+    {
+      "name": "Higgs",
+      "symbol": "H\u2070",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "color_dof",
+        "weak_T3",
+        "hypercharge",
+        "generation",
+        "stability"
+      ],
+      "trace_vector": [
+        0.9847190585096827,
+        1e-06,
+        1e-06,
+        0.31546487678572877,
+        0.6666666666666666,
+        0.999999,
+        1e-06,
+        0.3523653885214961
+      ]
+    }
+  ],
+  "composite": [
+    {
+      "name": "proton",
+      "symbol": "p",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "valence",
+        "strangeness",
+        "heavy_flavor",
+        "stability",
+        "binding"
+      ],
+      "trace_vector": [
+        0.8249231701684944,
+        0.999999,
+        0.5,
+        0.999999,
+        1e-06,
+        1e-06,
+        0.999999,
+        0.0728557312252964
+      ]
+    },
+    {
+      "name": "neutron",
+      "symbol": "n",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "valence",
+        "strangeness",
+        "heavy_flavor",
+        "stability",
+        "binding"
+      ],
+      "trace_vector": [
+        0.8249683780202366,
+        1e-06,
+        0.5,
+        0.999999,
+        1e-06,
+        1e-06,
+        0.7587412573216766,
+        0.0752263779527559
+      ]
+    },
+    {
+      "name": "Lambda",
+      "symbol": "\u039b\u2070",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "valence",
+        "strangeness",
+        "heavy_flavor",
+        "stability",
+        "binding"
+      ],
+      "trace_vector": [
+        0.8305777561183039,
+        1e-06,
+        0.5,
+        0.999999,
+        0.3333333333333333,
+        1e-06,
+        0.5531173125526401,
+        0.039862306368330394
+      ]
+    },
+    {
+      "name": "Sigma+",
+      "symbol": "\u03a3\u207a",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "valence",
+        "strangeness",
+        "heavy_flavor",
+        "stability",
+        "binding"
+      ],
+      "trace_vector": [
+        0.8326661155949647,
+        0.999999,
+        0.5,
+        0.999999,
+        0.3333333333333333,
+        1e-06,
+        0.5446417455527208,
+        1e-06
+      ]
+    },
+    {
+      "name": "Xi0",
+      "symbol": "\u039e\u2070",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "valence",
+        "strangeness",
+        "heavy_flavor",
+        "stability",
+        "binding"
+      ],
+      "trace_vector": [
+        0.8359412404388316,
+        1e-06,
+        0.5,
+        0.999999,
+        0.6666666666666666,
+        1e-06,
+        0.5538087312313497,
+        1e-06
+      ]
+    },
+    {
+      "name": "Omega-",
+      "symbol": "\u03a9\u207b",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "valence",
+        "strangeness",
+        "heavy_flavor",
+        "stability",
+        "binding"
+      ],
+      "trace_vector": [
+        0.8437957922440531,
+        0.999999,
+        0.999999,
+        0.999999,
+        0.999999,
+        1e-06,
+        0.5448104804368862,
+        1e-06
+      ]
+    },
+    {
+      "name": "Lambda_c+",
+      "symbol": "\u039b_c\u207a",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "valence",
+        "strangeness",
+        "heavy_flavor",
+        "stability",
+        "binding"
+      ],
+      "trace_vector": [
+        0.8540063146847615,
+        0.999999,
+        0.5,
+        0.999999,
+        1e-06,
+        0.5,
+        0.5019887955720728,
+        1e-06
+      ]
+    },
+    {
+      "name": "pion+",
+      "symbol": "\u03c0\u207a",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "valence",
+        "strangeness",
+        "heavy_flavor",
+        "stability",
+        "binding"
+      ],
+      "trace_vector": [
+        0.762707255137747,
+        0.999999,
+        1e-06,
+        0.6666666666666666,
+        1e-06,
+        1e-06,
+        0.5858753564895923,
+        0.7935355029585799
+      ]
+    },
+    {
+      "name": "pion0",
+      "symbol": "\u03c0\u2070",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "valence",
+        "strangeness",
+        "heavy_flavor",
+        "stability",
+        "binding"
+      ],
+      "trace_vector": [
+        0.761615410769523,
+        1e-06,
+        1e-06,
+        0.6666666666666666,
+        1e-06,
+        1e-06,
+        0.44648790194967397,
+        0.7991369047619048
+      ]
+    },
+    {
+      "name": "kaon+",
+      "symbol": "K\u207a",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "valence",
+        "strangeness",
+        "heavy_flavor",
+        "stability",
+        "binding"
+      ],
+      "trace_vector": [
+        0.8039562001508378,
+        0.999999,
+        1e-06,
+        0.6666666666666666,
+        0.3333333333333333,
+        1e-06,
+        0.580576220468012,
+        0.3994160583941606
+      ]
+    },
+    {
+      "name": "kaon0",
+      "symbol": "K\u2070",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "valence",
+        "strangeness",
+        "heavy_flavor",
+        "stability",
+        "binding"
+      ],
+      "trace_vector": [
+        0.8042150948359001,
+        1e-06,
+        1e-06,
+        0.6666666666666666,
+        0.3333333333333333,
+        1e-06,
+        0.5906934764974688,
+        0.39756658595641653
+      ]
+    },
+    {
+      "name": "J/psi",
+      "symbol": "J/\u03c8",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "valence",
+        "strangeness",
+        "heavy_flavor",
+        "stability",
+        "binding"
+      ],
+      "trace_vector": [
+        0.8639125831462824,
+        1e-06,
+        0.999999,
+        0.6666666666666666,
+        1e-06,
+        1e-06,
+        0.3795794449911366,
+        0.0009999999999999614
+      ]
+    },
+    {
+      "name": "Upsilon",
+      "symbol": "\u03a5",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "valence",
+        "strangeness",
+        "heavy_flavor",
+        "stability",
+        "binding"
+      ],
+      "trace_vector": [
+        0.9003742501625616,
+        1e-06,
+        0.999999,
+        0.6666666666666666,
+        1e-06,
+        1e-06,
+        0.3834495139880314,
+        1e-06
+      ]
+    },
+    {
+      "name": "D0",
+      "symbol": "D\u2070",
+      "channels": [
+        "mass_log",
+        "charge_abs",
+        "spin_norm",
+        "valence",
+        "strangeness",
+        "heavy_flavor",
+        "stability",
+        "binding"
+      ],
+      "trace_vector": [
+        0.8473510382062662,
+        1e-06,
+        1e-06,
+        0.6666666666666666,
+        1e-06,
+        0.5,
+        0.5070222770266759,
+        0.011219512195121987
+      ]
+    }
+  ]
+}

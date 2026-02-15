@@ -5,7 +5,7 @@
 %
 %  Engine : XeLaTeX  (fontspec requires XeTeX or LuaTeX)
 %  Compile: xelatex → bibtex → xelatex → xelatex
-%  SS1m weld receipt v2 — self-documenting integrity HUD
+%  SS1m proof-battery receipt v2 — self-documenting integrity HUD
 % ============================================================
 
 \documentclass[11pt,a4paper]{article}
@@ -92,27 +92,33 @@
 \newunicodechar{Σ}{\ensuremath{\Sigma}}
 
 % ════════════════════════════════════════════════════════════
-%  SS1m WELD RECEIPT — v2 (self-documenting integrity)
+%  SS1m PROOF-BATTERY RECEIPT — v2 (self-documenting integrity)
 % ════════════════════════════════════════════════════════════
 %
-%  Every page footer carries a machine-readable weld receipt.
+%  Every page footer carries a machine-readable proof-battery receipt.
+%  NOTE: "proof battery closed" = all sub-tests in the theorem's
+%  test suite pass.  This is NOT a PRE→POST canon weld in the
+%  UMCP seam-closure sense (which requires two declared editions
+%  under a frozen contract).  The seam objects here are
+%  single-edition theorem verifications.
+%
 %  EID counters are honest declarations updated by the author.
 %
 \newcommand{\WeldID}{SS1m-CONFINE-T3-2025}
 \newcommand{\RevisionDate}{2025-07-11}
-\newcommand{\WeldStatus}{\textcolor{WeldGreen}{\textbf{WELD CLOSED}}}
+\newcommand{\WeldStatus}{\textcolor{WeldGreen}{\textbf{PROOF BATTERY CLOSED}}}
 
 % ── EID counters (author-frozen per revision) ────────────────
 \newcommand{\EIDpages}{\pageref{LastPage}}
-\newcommand{\EIDsections}{14}
+\newcommand{\EIDsections}{16}
 \newcommand{\EIDequations}{18}
-\newcommand{\EIDtables}{6}
+\newcommand{\EIDtables}{10}
 \newcommand{\EIDfigures}{4}
 \newcommand{\EIDtheorems}{1}
 \newcommand{\EIDclaims}{6}
 \newcommand{\EIDpredictions}{5}
 \newcommand{\EIDsubtests}{19}
-\newcommand{\EIDreferences}{10}
+\newcommand{\EIDreferences}{12}
 \newcommand{\EIDdomains}{1}
 
 % ── Header ────────────────────────────────────────────────────
@@ -411,6 +417,114 @@ The arithmetic mean $F$ is insensitive to the same magnitudes.
 This structural asymmetry is the mechanism behind the
 confinement signature.
 \end{remark}
+
+
+% ============================================================
+\section{Frozen Contract Snapshot}\label{sec:contract}
+% ============================================================
+
+All results in this paper are computed under a frozen contract.
+For canon continuity and one-command reproducibility, we state
+the full contract header and normalization constants verbatim.
+
+\subsection{Contract Identity}
+
+\begin{table}[H]
+\caption{Frozen contract header fields (verbatim from
+\texttt{SM.INTSTACK.v1.yaml}, inheriting
+\texttt{UMA.INTSTACK.v1}).}
+\label{tab:contract}
+\centering\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Field} & \textbf{Value} \\
+\midrule
+\texttt{contract.id}        & \texttt{SM.INTSTACK.v1} \\
+\texttt{parent\_contract}    & \texttt{GCD.INTSTACK.v1} \\
+\texttt{tier\_level}         & 1 \\
+\texttt{version}             & \texttt{1.0.0} \\
+\texttt{embedding.interval}  & $[0, 1]$ \\
+\texttt{embedding.face}      & \texttt{pre\_clip} \\
+\texttt{embedding.oor\_policy} & \texttt{clip\_and\_flag} \\
+\texttt{embedding.epsilon}   & $10^{-8}$ (canon; T3 uses $\eps = 10^{-6}$) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Frozen Parameters}
+
+\begin{table}[H]
+\caption{Frozen kernel parameters (seam-derived, not chosen).
+These are consistent across the seam; see \texttt{TIER\_SYSTEM.md}.}
+\label{tab:frozen}
+\centering\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Parameter} & \textbf{Value} & \textbf{Role} \\
+\midrule
+$p$                & 3      & Minkowski exponent \\
+$\alpha$           & 1.0    & Energy coupling \\
+$\lambda$          & 0.2    & Decay rate \\
+$\eta$             & 0.001  & Return-domain window \\
+$\mathrm{tol}_{\rm seam}$ & 0.005  & Seam closure tolerance \\
+$\mathrm{tol}_{\rm id}$   & $10^{-9}$ & Identity check tolerance \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Channel Normalization Constants}
+
+The 8-channel trace vector uses the following normalization
+constants, all frozen per run:
+
+\begin{table}[H]
+\caption{Channel normalization constants (from
+\texttt{subatomic\_kernel.py}).  These define the exact mapping
+from physical observables to $c_i \in [\eps, 1{-}\eps]$.}
+\label{tab:normalization}
+\centering\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Constant} & \textbf{Value} & \textbf{Used In} \\
+\midrule
+$m_{\rm floor}$   & $10^{-11}$ GeV  & mass\_log: $\log_{10}(m/m_{\rm floor})$ \\
+$m_{\rm ceil}$    & $200.0$ GeV     & mass\_log: $/\log_{10}(m_{\rm ceil}/m_{\rm floor})$ \\
+$\tau_{\rm Planck}$  & $5.391 \times 10^{-44}$ s & stability: $\log_{10}(\tau/\tau_{\rm Planck})$ \\
+$\tau_{\rm universe}$ & $4.35 \times 10^{17}$ s & stability: $/\log_{10}(\tau_{\rm universe}/\tau_{\rm Planck})$ \\
+$Y_{\rm max}$     & $\max_i |Y_i/2|$ over 17~SM particles & hypercharge normalization \\
+$\log_2(9)$       & $\approx 3.17$  & color\_dof: $\log_2(N_c+1)/\log_2(9)$ \\
+\midrule
+$\eps$ (this paper) & $10^{-6}$ & Guard band (robustness: $10^{-2}$ to $10^{-12}$) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Weights}
+
+Equal weights: $w_i = 1/n = 1/8$ for all 8 channels.
+This is the unique uninformative prior; any deviation would
+require a physics-motivated argument that has not been made.
+
+\begin{remark}[Contract vs.\ Paper Guard Band]\label{rem:epsilon}
+The parent contract \texttt{UMA.INTSTACK.v1} freezes
+$\eps = 10^{-8}$.  This paper uses $\eps = 10^{-6}$ as the
+default, demonstrated robust across $[10^{-12}, 10^{-2}]$
+(Table~\ref{tab:epsilon}).  The 14/14 bound holds at
+\emph{every} value, including the canon $10^{-8}$.
+\end{remark}
+
+\subsection{Constituent Quark Masses}
+
+The binding fraction channel uses constituent (not current)
+quark masses~\cite{pdg2024}:
+\begin{center}\small
+\begin{tabular}{cccccc}
+$u$ & $d$ & $s$ & $c$ & $b$ & $t$ \\
+\midrule
+0.336 & 0.340 & 0.486 & 1.55 & 4.73 & 172.69 \\[2pt]
+\multicolumn{6}{c}{(GeV, constituent masses)}
+\end{tabular}
+\end{center}
 
 
 % ============================================================
@@ -1029,6 +1143,55 @@ implies.  Nothing is tuned.
 
 
 % ============================================================
+\section{Reproducibility: CasePack Bundle}\label{sec:casepack}
+% ============================================================
+
+All results in this paper are reproducible via a single command.
+The reference implementation ships a CasePack-style bundle
+(\texttt{casepacks/confinement\_T3/}) containing:
+
+\begin{enumerate}
+\item \textbf{PDG raw table}: the 31 particles (17~fundamental +
+  14~composite) with all quantum numbers and mass/lifetime data
+  transcribed from PDG~2024~\cite{pdg2024}
+  (\texttt{raw\_particles.csv}).
+\item \textbf{Constructed trace vectors}: the 8-channel normalized
+  vectors for each particle, computed under the frozen contract
+  (\texttt{expected/trace\_vectors.json}).
+\item \textbf{Run manifest}: contract reference, closure paths,
+  frozen parameters, and expected outputs
+  (\texttt{manifest.json}).
+\item \textbf{Script entrypoint}: a single Python script that
+  reads the raw table, constructs trace vectors, computes kernel
+  invariants, verifies Theorem~T3 (19/19 sub-tests), and
+  produces a conformance receipt
+  (\texttt{run\_confinement\_T3.py}).
+\end{enumerate}
+
+\begin{tcolorbox}[
+  colback=PreambleBox, colframe=EpsBlue,
+  title=One-Command Rerun, fonttitle=\bfseries\small,
+  boxrule=0.8pt, arc=2pt, left=8pt, right=8pt
+]
+\small\ttfamily
+\$ cd casepacks/confinement\_T3 \\
+\$ python run\_confinement\_T3.py \\[2pt]
+\rmfamily\small
+Produces: kernel invariants for all 31 particles,
+Theorem~T3 verdict (19/19 sub-tests), guard band
+robustness table, and exotic hadron verification.
+All frozen parameters are sourced from the contract,
+not hardcoded in the script.
+\end{tcolorbox}
+
+The CasePack references \texttt{SM.INTSTACK.v1.yaml}
+(Sec.~\ref{sec:contract}) and the closure
+\texttt{closures/standard\_model/subatomic\_kernel.py}.
+The full repository is at
+\url{https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS}.
+
+
+% ============================================================
 \section{Conclusions}\label{sec:conclusions}
 % ============================================================
 
@@ -1087,10 +1250,10 @@ Reference implementation:
 
 \vspace{4pt}
 
-% ── weld receipt summary ──────────────────────────────────────
+% ── proof-battery receipt summary ─────────────────────────────
 \begin{tcolorbox}[
   colback=white, colframe=WeldGreen,
-  title={\small SS1m Weld Receipt — \WeldID},
+  title={\small SS1m Proof-Battery Receipt — \WeldID},
   fonttitle=\bfseries\small,
   boxrule=1pt, arc=2pt, left=6pt, right=6pt
 ]
@@ -1112,7 +1275,11 @@ Reference implementation:
 \textbf{Verdict}: Theorem~T3 proven 19/19.
 Guard band invariant across $\eps\in[10^{-12}, 10^{-2}]$.
 Exotic hadrons extend bound to 20/20.
-Weld closed.
+Proof battery closed.
+\\[4pt]
+{\scriptsize\textit{Note: ``proof battery closed'' = all theorem sub-tests pass.
+This is a single-edition verification, not a PRE$\to$POST canon
+weld (which requires two declared editions under a frozen contract).}}
 \end{tcolorbox}
 
 \bibliographystyle{unsrt}

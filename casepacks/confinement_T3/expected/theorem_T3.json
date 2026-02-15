@@ -1,0 +1,269 @@
+{
+  "theorem": "T3",
+  "title": "Confinement as IC Collapse",
+  "total_tests": 19,
+  "passed": 19,
+  "verdict": "PROVEN",
+  "tests": [
+    {
+      "id": 1,
+      "name": "IC(proton) < IC_q_min",
+      "IC_hadron": 0.020405,
+      "IC_q_min": 0.516654,
+      "passed": true
+    },
+    {
+      "id": 2,
+      "name": "IC(neutron) < IC_q_min",
+      "IC_hadron": 0.00352,
+      "IC_q_min": 0.516654,
+      "passed": true
+    },
+    {
+      "id": 3,
+      "name": "IC(Lambda) < IC_q_min",
+      "IC_hadron": 0.015331,
+      "IC_q_min": 0.516654,
+      "passed": true
+    },
+    {
+      "id": 4,
+      "name": "IC(Sigma+) < IC_q_min",
+      "IC_hadron": 0.022898,
+      "IC_q_min": 0.516654,
+      "passed": true
+    },
+    {
+      "id": 5,
+      "name": "IC(Xi0) < IC_q_min",
+      "IC_hadron": 0.004452,
+      "IC_q_min": 0.516654,
+      "passed": true
+    },
+    {
+      "id": 6,
+      "name": "IC(Omega-) < IC_q_min",
+      "IC_hadron": 0.028695,
+      "IC_q_min": 0.516654,
+      "passed": true
+    },
+    {
+      "id": 7,
+      "name": "IC(Lambda_c+) < IC_q_min",
+      "IC_hadron": 0.02392,
+      "IC_q_min": 0.516654,
+      "passed": true
+    },
+    {
+      "id": 8,
+      "name": "IC(pion+) < IC_q_min",
+      "IC_hadron": 0.004696,
+      "IC_q_min": 0.516654,
+      "passed": true
+    },
+    {
+      "id": 9,
+      "name": "IC(pion0) < IC_q_min",
+      "IC_hadron": 0.000808,
+      "IC_q_min": 0.516654,
+      "passed": true
+    },
+    {
+      "id": 10,
+      "name": "IC(kaon+) < IC_q_min",
+      "IC_hadron": 0.02124,
+      "IC_q_min": 0.516654,
+      "passed": true
+    },
+    {
+      "id": 11,
+      "name": "IC(kaon0) < IC_q_min",
+      "IC_hadron": 0.003783,
+      "IC_q_min": 0.516654,
+      "passed": true
+    },
+    {
+      "id": 12,
+      "name": "IC(J/psi) < IC_q_min",
+      "IC_hadron": 0.001961,
+      "IC_q_min": 0.516654,
+      "passed": true
+    },
+    {
+      "id": 13,
+      "name": "IC(Upsilon) < IC_q_min",
+      "IC_hadron": 0.000832,
+      "IC_q_min": 0.516654,
+      "passed": true
+    },
+    {
+      "id": 14,
+      "name": "IC(D0) < IC_q_min",
+      "IC_hadron": 0.002516,
+      "IC_q_min": 0.516654,
+      "passed": true
+    },
+    {
+      "id": 15,
+      "name": "Collapse magnitude < 5%",
+      "IC_q_mean": 0.581361,
+      "IC_h_mean": 0.011076,
+      "ratio": 0.019051,
+      "drop_pct": 98.1,
+      "passed": true
+    },
+    {
+      "id": 16,
+      "name": "Gap amplification > 5x",
+      "delta_q_mean": 0.040067,
+      "delta_h_mean": 0.433374,
+      "ratio": 10.82,
+      "passed": true
+    },
+    {
+      "id": 17,
+      "name": "Baryon IC < quark IC",
+      "baryon_IC_mean": 0.017032,
+      "IC_q_mean": 0.581361,
+      "passed": true
+    },
+    {
+      "id": 18,
+      "name": "Meson IC < quark IC",
+      "meson_IC_mean": 0.00512,
+      "IC_q_mean": 0.581361,
+      "passed": true
+    },
+    {
+      "id": 19,
+      "name": "F ratio > 0.5 (F not annihilated)",
+      "F_q_mean": 0.621428,
+      "F_h_mean": 0.444449,
+      "ratio": 0.7152,
+      "passed": true
+    }
+  ],
+  "robustness": [
+    {
+      "epsilon": 0.01,
+      "IC_q_mean": 0.5804,
+      "IC_h_mean": 0.1548,
+      "drop_pct": 73.3,
+      "14_of_14": true
+    },
+    {
+      "epsilon": 0.001,
+      "IC_q_mean": 0.5813,
+      "IC_h_mean": 0.0768,
+      "drop_pct": 86.8,
+      "14_of_14": true
+    },
+    {
+      "epsilon": 0.0001,
+      "IC_q_mean": 0.5814,
+      "IC_h_mean": 0.0395,
+      "drop_pct": 93.2,
+      "14_of_14": true
+    },
+    {
+      "epsilon": 1e-05,
+      "IC_q_mean": 0.5814,
+      "IC_h_mean": 0.0207,
+      "drop_pct": 96.4,
+      "14_of_14": true
+    },
+    {
+      "epsilon": 1e-06,
+      "IC_q_mean": 0.5814,
+      "IC_h_mean": 0.0111,
+      "drop_pct": 98.1,
+      "14_of_14": true
+    },
+    {
+      "epsilon": 1e-07,
+      "IC_q_mean": 0.5814,
+      "IC_h_mean": 0.0111,
+      "drop_pct": 98.1,
+      "14_of_14": true
+    },
+    {
+      "epsilon": 1e-08,
+      "IC_q_mean": 0.5814,
+      "IC_h_mean": 0.0111,
+      "drop_pct": 98.1,
+      "14_of_14": true
+    },
+    {
+      "epsilon": 1e-10,
+      "IC_q_mean": 0.5814,
+      "IC_h_mean": 0.0111,
+      "drop_pct": 98.1,
+      "14_of_14": true
+    },
+    {
+      "epsilon": 1e-12,
+      "IC_q_mean": 0.5814,
+      "IC_h_mean": 0.0111,
+      "drop_pct": 98.1,
+      "14_of_14": true
+    }
+  ],
+  "exotics": [
+    {
+      "name": "Pc(4312)+",
+      "type": "Pentaquark",
+      "F": 0.525937,
+      "IC": 0.02279,
+      "delta": 0.503147,
+      "n_dead": 2,
+      "below_IC_q_min": true
+    },
+    {
+      "name": "Pc(4440)+",
+      "type": "Pentaquark",
+      "F": 0.526057,
+      "IC": 0.022793,
+      "delta": 0.503264,
+      "n_dead": 2,
+      "below_IC_q_min": true
+    },
+    {
+      "name": "Pc(4457)+",
+      "type": "Pentaquark",
+      "F": 0.588572,
+      "IC": 0.024857,
+      "delta": 0.563716,
+      "n_dead": 2,
+      "below_IC_q_min": true
+    },
+    {
+      "name": "Tcc+(3875)",
+      "type": "Tetraquark",
+      "F": 0.652553,
+      "IC": 0.027252,
+      "delta": 0.625301,
+      "n_dead": 2,
+      "below_IC_q_min": true
+    },
+    {
+      "name": "X(3872)",
+      "type": "Tetraquark",
+      "F": 0.406655,
+      "IC": 0.000872,
+      "delta": 0.405783,
+      "n_dead": 4,
+      "below_IC_q_min": true
+    },
+    {
+      "name": "Zc(3900)+",
+      "type": "Tetraquark",
+      "F": 0.525515,
+      "IC": 0.004817,
+      "delta": 0.520698,
+      "n_dead": 3,
+      "below_IC_q_min": true
+    }
+  ],
+  "exotic_verdict": "6/6 below IC_q_min",
+  "total_composite_bound": "20/20"
+}

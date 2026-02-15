@@ -17,6 +17,7 @@ import matplotlib
 matplotlib.use("Agg")
 from pathlib import Path
 
+import matplotlib.axes
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -94,7 +95,7 @@ OUT = Path(__file__).parent / "figures"
 OUT.mkdir(exist_ok=True)
 
 
-def style_ax(ax: plt.Axes) -> None:
+def style_ax(ax: matplotlib.axes.Axes) -> None:
     """Apply consistent styling."""
     ax.set_facecolor(BG_CREAM)
     ax.spines["top"].set_visible(False)
@@ -182,8 +183,8 @@ def fig_confinement_cliff() -> None:
     )
 
     # Mean lines
-    mean_q = np.mean(q_ic)
-    mean_h = np.mean(h_ic)
+    mean_q = float(np.mean(q_ic))
+    mean_h = float(np.mean(h_ic))
     ax.axhline(y=mean_q, color=CANON, linestyle=":", linewidth=0.8, alpha=0.5)
     ax.axhline(y=mean_h, color=CLIFF_RED, linestyle=":", linewidth=0.8, alpha=0.5)
 
@@ -238,14 +239,21 @@ def fig_confinement_cliff() -> None:
 # FIGURE 2: Channel Death Heatmap
 # ══════════════════════════════════════════════════════════════
 def fig_channel_death() -> None:
-    fig, ax = plt.subplots(figsize=(8, 4))
+    import matplotlib.gridspec as gridspec
+    from matplotlib.colors import LinearSegmentedColormap
+
+    fig = plt.figure(figsize=(11, 4.8))
+
+    # Use gridspec: heatmap (wide) | IC column (narrow) | colorbar (thin)
+    gs = gridspec.GridSpec(1, 3, width_ratios=[8, 1.8, 0.3], wspace=0.05, left=0.12, right=0.92, top=0.88, bottom=0.18)
+    ax = fig.add_subplot(gs[0])
+    ax_ic = fig.add_subplot(gs[1])
+    ax_cb = fig.add_subplot(gs[2])
 
     # Use log scale for the colour to reveal the dead channels
     log_matrix = np.log10(trace_matrix + 1e-8)
 
     # Custom colourmap: dead channels in red, live channels in blue-green
-    from matplotlib.colors import LinearSegmentedColormap
-
     cmap = LinearSegmentedColormap.from_list(
         "channel_death",
         [(0.0, CLIFF_RED), (0.35, "#FFCC66"), (0.6, "#88CC88"), (1.0, CANON)],
@@ -267,19 +275,11 @@ def fig_channel_death() -> None:
                 fw = "normal"
             ax.text(j, i, txt, ha="center", va="center", fontsize=10, color=clr, fontweight=fw)
 
-    # IC values on the right
-    ic_vals = [0.561, 0.020, 0.0008, 0.002]
-    for i, ic in enumerate(ic_vals):
-        ax.text(
-            8.3,
-            i,
-            f"IC={ic:.4f}",
-            ha="left",
-            va="center",
-            fontsize=9,
-            color=CLIFF_RED if ic < 0.1 else CANON,
-            fontweight="bold",
-        )
+    # Mark dead channels with X overlay
+    for i in range(trace_matrix.shape[0]):
+        for j in range(trace_matrix.shape[1]):
+            if trace_matrix[i, j] < 0.001:
+                ax.plot(j, i, marker="x", markersize=18, color="white", markeredgewidth=2.5, alpha=0.4)
 
     ax.set_xticks(range(8))
     ax.set_xticklabels(trace_channels, fontsize=9, rotation=30, ha="right")
@@ -294,18 +294,43 @@ def fig_channel_death() -> None:
         pad=10,
     )
 
-    # Colour bar
-    cbar = fig.colorbar(im, ax=ax, shrink=0.8, pad=0.15)
-    cbar.set_label("log₁₀(channel value)", fontsize=9, color=HUD_GRAY)
+    # ── IC column (dedicated right panel) ─────────────────────
+    ic_vals = [0.561, 0.020, 0.0008, 0.002]
+    ic_colors = [CANON if ic >= 0.1 else CLIFF_RED for ic in ic_vals]
+
+    ax_ic.set_xlim(0, 1)
+    ax_ic.set_ylim(-0.5, 3.5)
+    ax_ic.invert_yaxis()
+    ax_ic.set_facecolor(BG_CREAM)
+
+    for i, (ic, clr) in enumerate(zip(ic_vals, ic_colors, strict=True)):
+        # Background bar proportional to IC (log-scaled for visibility)
+        bar_w = max(0.08, min(1.0, ic / 0.6))
+        ax_ic.barh(i, bar_w, height=0.7, color=clr, alpha=0.15, left=0)
+        # IC text label
+        ax_ic.text(
+            0.5,
+            i,
+            f"IC = {ic:.4f}",
+            ha="center",
+            va="center",
+            fontsize=10,
+            color=clr,
+            fontweight="bold",
+            fontfamily="monospace",
+        )
+
+    ax_ic.set_yticks([])
+    ax_ic.set_xticks([])
+    ax_ic.set_title("IC", fontsize=11, fontweight="bold", color="#333333", pad=10)
+    for spine in ax_ic.spines.values():
+        spine.set_visible(False)
+
+    # ── Colour bar (dedicated rightmost panel) ────────────────
+    cbar = fig.colorbar(im, cax=ax_cb)
+    cbar.set_label("log₁₀(c)", fontsize=9, color=HUD_GRAY)
     cbar.ax.tick_params(labelsize=8, colors=HUD_GRAY)
 
-    # Mark dead channels with X overlay
-    for i in range(trace_matrix.shape[0]):
-        for j in range(trace_matrix.shape[1]):
-            if trace_matrix[i, j] < 0.001:
-                ax.plot(j, i, marker="x", markersize=18, color="white", markeredgewidth=2.5, alpha=0.4)
-
-    fig.tight_layout()
     fig.savefig(OUT / "channel_death.pdf", dpi=300, bbox_inches="tight", facecolor="white")
     fig.savefig(OUT / "channel_death.png", dpi=300, bbox_inches="tight", facecolor="white")
     plt.close(fig)

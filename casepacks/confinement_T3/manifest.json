@@ -1,0 +1,31 @@
+{
+  "schema": "schemas/manifest.schema.json",
+  "casepack": {
+    "id": "confinement_T3",
+    "version": "1.0.0",
+    "title": "Confinement as Integrity Collapse — Theorem T3 (19/19 Sub-Tests)",
+    "description": "Complete reproducibility bundle for the confinement paper. Contains PDG-2024 raw particle data (17 fundamental + 14 composite), 8-channel trace vectors, kernel invariant computation, guard band robustness analysis, and exotic hadron verification. All frozen parameters sourced from SM.INTSTACK.v1.yaml. One-command rerun: python run_confinement_T3.py",
+    "created_utc": "2026-02-15T00:00:00Z",
+    "timezone": "UTC",
+    "authors": ["Caleb Pruett", "Clement Paulus"]
+  },
+  "refs": {
+    "canon_anchors": { "path": "canon/sm_anchors.yaml" },
+    "contract": { "id": "SM.INTSTACK.v1", "path": "contracts/SM.INTSTACK.v1.yaml" },
+    "closures_registry": { "id": "UMCP.CLOSURES.SM.v1", "path": "closures/registry.yaml" }
+  },
+  "artifacts": {
+    "raw_measurements": {
+      "path": "raw_particles.csv",
+      "format": "csv"
+    },
+    "expected": {
+      "invariants_json": { "path": "expected/kernel_invariants.json" },
+      "trace_vectors_json": { "path": "expected/trace_vectors.json" },
+      "theorem_T3_json": { "path": "expected/theorem_T3.json" }
+    }
+  },
+  "run_intent": {
+    "notes": "Entrypoint: python run_confinement_T3.py — Computes 8-channel kernel invariants for 31 SM particles, verifies Theorem T3 (19/19 sub-tests: universal suppression IC_h < IC_q^min, 98.1% collapse, 10.8x gap amplification, baryon/meson ordering, F non-annihilation), guard band robustness across eps in [1e-12, 1e-2], and exotic hadron predictions (6/6 LHCb-confirmed). All frozen parameters from SM.INTSTACK.v1.yaml."
+  }
+}
