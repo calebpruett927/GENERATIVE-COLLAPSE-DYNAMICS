@@ -39,8 +39,6 @@ _THIS = Path(__file__).resolve()
 _CASEPACK_DIR = _THIS.parent
 _WORKSPACE = _CASEPACK_DIR.parents[1]
 _SRC = _WORKSPACE / "src"
-
-# Insert src first so umcp module is found
 if str(_SRC) not in sys.path:
     sys.path.insert(0, str(_SRC))
 if str(_WORKSPACE) not in sys.path:
@@ -60,7 +58,7 @@ from closures.standard_model.subatomic_kernel import (  # noqa: E402
     normalize_composite,
     normalize_fundamental,
 )
-from umcp.kernel_optimized import compute_kernel_outputs  # noqa: E402
+from umcp.kernel_optimized import compute_kernel_outputs  # noqa: E402  # type: ignore[import-not-found]
 
 # ═══════════════════════════════════════════════════════════════
 # SECTION 1: CONTRACT LOADING
