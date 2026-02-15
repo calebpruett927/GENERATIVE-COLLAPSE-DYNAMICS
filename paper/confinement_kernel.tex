@@ -107,7 +107,7 @@
 \newcommand{\EIDsections}{14}
 \newcommand{\EIDequations}{18}
 \newcommand{\EIDtables}{6}
-\newcommand{\EIDfigures}{0}
+\newcommand{\EIDfigures}{4}
 \newcommand{\EIDtheorems}{1}
 \newcommand{\EIDclaims}{6}
 \newcommand{\EIDpredictions}{5}
@@ -545,6 +545,25 @@ $\langle \IC \rangle_{\rm quarks} = 0.581$,
 $\langle \IC \rangle_{\rm hadrons} = 0.011$---a factor of
 $53\times$.
 
+Figure~\ref{fig:cliff} presents this contrast visually on a
+logarithmic scale.  The quark band (blue) occupies
+$\IC \in [0.517, 0.634]$; every hadron (red) and LHCb exotic
+(gold) falls 1--3 orders of magnitude below.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{figures/confinement_cliff.pdf}
+  \caption{\textbf{The Confinement Cliff.}
+    Integrity composite (IC) on a log scale for 6~quarks
+    (blue), 14~conventional hadrons (red), and
+    6~LHCb-confirmed exotics (gold).  Every composite particle
+    falls below $\IC_q^{\min} = 0.517$ (dashed line), producing
+    a gap of $\geq 1$ order of magnitude.  The 98.1\% average
+    drop is structural: dead channels in composite trace vectors
+    collapse the geometric mean.}
+  \label{fig:cliff}
+\end{figure}
+
 \subsection{Channel Death: The Mechanism}
 
 Table~\ref{tab:channels} shows trace vectors for representative
@@ -596,6 +615,24 @@ $\kappa$, pushing IC from $\sim 0.56$ down to $0.020$.
 
 For $\pi^0$, four channels die (charge, spin, strangeness, heavy
 flavor), producing $\IC = 0.0008$---a $99.86\%$ drop from quarks.
+
+Figure~\ref{fig:channels} shows this mechanism as a heatmap.
+Live channels appear in blue-green; dead channels
+(clamped to $\eps$) appear in red with white crosses.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{figures/channel_death.pdf}
+  \caption{\textbf{Channel Death Heatmap.}
+    Trace vector channels (log-scaled) for four representative
+    particles across the confinement boundary.  The up quark
+    (top row) has all 8 channels live.  The proton loses~2,
+    $\pi^0$ loses~4, and $J/\psi$ loses~4.  Each dead channel
+    contributes $w_i \ln\eps$ to $\kappa$, collapsing IC
+    exponentially.  White~$\times$ marks indicate channels
+    at~$\eps$.}
+  \label{fig:channels}
+\end{figure}
 
 
 % ============================================================
@@ -713,6 +750,25 @@ trace vectors are uniformly above $0.33$.  The cliff is a
 value.
 \end{resultbox}
 
+Figure~\ref{fig:epsilon} visualizes the guard band robustness.
+The left panel shows quark and hadron IC averages as functions
+of~$\eps$; the right panel shows the cliff depth percentage.
+Below $\eps = 10^{-6}$, the results saturate completely.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{figures/epsilon_robustness.pdf}
+  \caption{\textbf{Guard Band Robustness.}
+    \emph{Left}: Average IC for quarks (blue) and hadrons (red)
+    across 9~orders of magnitude of $\eps$.  The gap (shaded)
+    persists at every value.  \emph{Right}: Cliff depth
+    (percentage IC drop) vs.\ $\eps$.  The 14/14 bound holds
+    at all tested values.  Below $\eps = 10^{-6}$ (green
+    shading), results are fully saturated---the normalization
+    itself produces the zeros, not the guard band.}
+  \label{fig:epsilon}
+\end{figure}
+
 
 % ============================================================
 \section{Robustness II: Channel Basis Defense}\label{sec:channels}
@@ -826,6 +882,26 @@ exotics computed.  Combined with the original 14 conventional
 hadrons, the bound now holds for \textbf{20/20} composite
 particles tested.
 \end{resultbox}
+
+Figure~\ref{fig:gap} shows the gap amplification mechanism on
+an F--IC scatter plot.  Quarks cluster near the $\IC = F$ line
+(small $\Delta$); upon binding, particles drop vertically
+into the hadron band while retaining comparable~$F$.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\linewidth]{figures/gap_amplification.pdf}
+  \caption{\textbf{Gap Amplification.}
+    Fidelity ($F$) vs.\ integrity~composite ($\IC$) for quarks
+    (circles), conventional hadrons (squares), and LHCb exotics
+    (diamonds).  The diagonal line marks $\IC = F$ (zero gap).
+    Quarks have small heterogeneity gaps ($\Delta \approx 0.04$);
+    hadrons have enormous gaps ($\Delta \approx 0.43$), a
+    $10.8\times$ amplification.  Dashed vertical lines show
+    $\Delta$ for the up~quark ($0.034$) and the proton
+    ($0.529$).}
+  \label{fig:gap}
+\end{figure}
 
 
 % ============================================================
