@@ -24,6 +24,14 @@ from umcp.dashboard._utils import (
 )
 from umcp.dashboard.pages_physics import render_gcd_panel, translate_to_gcd
 
+# Import optimized kernel computer for real computation
+try:
+    from umcp.kernel_optimized import OptimizedKernelComputer
+
+    _HAS_KERNEL = True
+except ImportError:  # pragma: no cover
+    _HAS_KERNEL = False
+
 
 def render_test_templates_page() -> None:
     """
@@ -212,39 +220,47 @@ def render_test_templates_page() -> None:
 
         # ========== TIER 1: KERNEL COMPUTATION ==========
         try:
-            # Compute kernel invariants
-            fidelity = float(np.sum(w_raw * c_clipped))  # F: Fidelity
-            drift = 1 - fidelity  # ω: Drift
+            # Use OptimizedKernelComputer for auditable, lemma-verified computation
+            if _HAS_KERNEL:
+                computer = OptimizedKernelComputer(epsilon=epsilon)
+                outputs = computer.compute(c_clipped, w_raw)
+                fidelity = outputs.F
+                drift = outputs.omega
+                log_ic = outputs.kappa
+                integrity_composite = outputs.IC
+                entropy = outputs.S
+                curvature = outputs.C
+                amgm_gap = outputs.amgm_gap
+                is_homogeneous = outputs.is_homogeneous
+                het_regime = outputs.regime
+                computation_mode = outputs.computation_mode
 
-            # Log-space kappa computation
-            log_ic = float(np.sum(w_raw * np.log(c_clipped)))  # κ
-            integrity_composite = float(np.exp(log_ic))  # IC: Integrity composite
-
-            # Entropy
-            entropy = 0.0
-            for ci, wi in zip(c_clipped, w_raw, strict=False):
-                if wi > 0 and 0 < ci < 1:
-                    entropy += wi * (-ci * np.log(ci) - (1 - ci) * np.log(1 - ci))
-            entropy = float(entropy)
-
-            # Curvature proxy
-            curvature = float(np.std(c_clipped, ddof=0) / 0.5)
-
-            # Heterogeneity gap
-            amgm_gap = fidelity - integrity_composite
-
-            # Check homogeneity
-            is_homogeneous = np.allclose(c_clipped, c_clipped[0], atol=1e-15)
-
-            # Heterogeneity classification
-            if amgm_gap < 1e-6:
-                het_regime = "homogeneous"
-            elif amgm_gap < 0.01:
-                het_regime = "coherent"
-            elif amgm_gap < 0.05:
-                het_regime = "heterogeneous"
+                # Lipschitz error bounds (OPT-12)
+                error_bounds = computer.propagate_coordinate_error(epsilon)
             else:
-                het_regime = "fragmented"
+                # Fallback: inline computation
+                fidelity = float(np.sum(w_raw * c_clipped))
+                drift = 1 - fidelity
+                log_ic = float(np.sum(w_raw * np.log(c_clipped)))
+                integrity_composite = float(np.exp(log_ic))
+                entropy = 0.0
+                for ci, wi in zip(c_clipped, w_raw, strict=False):
+                    if wi > 0 and 0 < ci < 1:
+                        entropy += wi * (-ci * np.log(ci) - (1 - ci) * np.log(1 - ci))
+                entropy = float(entropy)
+                curvature = float(np.std(c_clipped, ddof=0) / 0.5)
+                amgm_gap = fidelity - integrity_composite
+                is_homogeneous = np.allclose(c_clipped, c_clipped[0], atol=1e-15)
+                if amgm_gap < 1e-6:
+                    het_regime = "homogeneous"
+                elif amgm_gap < 0.01:
+                    het_regime = "coherent"
+                elif amgm_gap < 0.05:
+                    het_regime = "heterogeneous"
+                else:
+                    het_regime = "fragmented"
+                computation_mode = "inline_fallback"
+                error_bounds = None
 
             # Validate bounds (Lemma 1)
             bounds_valid = (
@@ -266,9 +282,18 @@ def render_test_templates_page() -> None:
                 "amgm_gap": amgm_gap,
                 "is_homogeneous": bool(is_homogeneous),
                 "heterogeneity_regime": het_regime,
+                "computation_mode": computation_mode,
                 "bounds_valid": bounds_valid,
                 "identity_F_omega": abs(fidelity + drift - 1.0) < 1e-9,
                 "identity_IC_kappa": abs(integrity_composite - np.exp(log_ic)) < 1e-9,
+                "error_bounds": {
+                    "F": error_bounds.F,
+                    "omega": error_bounds.omega,
+                    "kappa": error_bounds.kappa,
+                    "S": error_bounds.S,
+                }
+                if error_bounds is not None
+                else None,
             }
 
             progress.progress(60, text="Tier 2: Computing diagnostics and regime...")

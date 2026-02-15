@@ -11,7 +11,7 @@ Usage:
   streamlit run src/umcp/dashboard/__init__.py
 
 Features:
-  - Real-time system health monitoring (33 pages)
+  - Real-time system health monitoring (36 pages)
   - Interactive ledger exploration with anomaly detection
   - Casepack browser with validation status
   - Regime phase space visualization with trajectories
@@ -38,6 +38,7 @@ Package structure:
   - pages_management.py: Notifications, Bookmarks, API Integration
   - pages_science.py: Cosmology, Astronomy, Nuclear, Quantum, Finance, RCFT, Materials Science, Security
   - pages_advanced.py: Precision, Geometry, Canon Explorer, Domain Overview
+  - pages_diagnostic.py: τ_R* Diagnostic, Epistemic Classification, Insights Engine
 """
 # pyright: reportUnknownMemberType=false
 # pyright: reportUnknownVariableType=false
@@ -106,6 +107,11 @@ from umcp.dashboard.pages_core import (
     render_overview_page,
     render_regime_page,
 )
+from umcp.dashboard.pages_diagnostic import (
+    render_epistemic_page,
+    render_insights_page,
+    render_tau_r_star_page,
+)
 from umcp.dashboard.pages_interactive import (
     render_batch_validation_page,
     render_live_runner_page,
@@ -148,7 +154,6 @@ __all__ = [
     "GCD_REGIMES",
     "GCD_SYMBOLS",
     "HAS_VIZ_DEPS",
-    # Constants
     "KERNEL_SYMBOLS",
     "PHYSICS_QUANTITIES",
     "REGIME_COLORS",
@@ -156,7 +161,6 @@ __all__ = [
     "THEMES",
     "_cache_data",
     "_ensure_closures_path",
-    # Utilities
     "classify_regime",
     "convert_from_base_unit",
     "convert_to_base_unit",
@@ -165,12 +169,10 @@ __all__ = [
     "get_regime_color",
     "get_repo_root",
     "get_trend_indicator",
-    # Data loaders
     "load_casepacks",
     "load_closures",
     "load_contracts",
     "load_ledger",
-    # Entry point
     "main",
     "normalize_to_bounded",
     "render_api_integration_page",
@@ -183,16 +185,16 @@ __all__ = [
     "render_closures_page",
     "render_comparison_page",
     "render_contracts_page",
-    # Science pages
     "render_cosmology_page",
     "render_domain_overview_page",
-    # Analysis pages
+    "render_epistemic_page",
     "render_exports_page",
     "render_finance_page",
     "render_formula_builder_page",
     "render_gcd_panel",
     "render_geometry_page",
     "render_health_page",
+    "render_insights_page",
     "render_kinematics_interface_page",
     "render_layer1_state_space",
     "render_layer2_projections",
@@ -201,25 +203,20 @@ __all__ = [
     "render_live_runner_page",
     "render_materials_science_page",
     "render_metrics_page",
-    # Management pages
     "render_notifications_page",
     "render_nuclear_page",
-    # Core pages
     "render_overview_page",
-    # Physics pages
     "render_physics_interface_page",
-    # Advanced pages
     "render_precision_page",
     "render_quantum_page",
     "render_rcft_page",
     "render_regime_page",
     "render_security_page",
     "render_standard_model_page",
-    # Interactive pages
+    "render_tau_r_star_page",
     "render_test_templates_page",
     "render_time_series_page",
     "render_unified_geometry_view",
-    # Physics helpers
     "translate_to_gcd",
 ]
 
@@ -327,6 +324,10 @@ def main() -> None:
         "Physics": ("⚗️", render_physics_interface_page),
         "Kinematics": ("🎯", render_kinematics_interface_page),
         "Cosmology": ("🌌", render_cosmology_page),
+        # Diagnostic Pages
+        "τ_R* Diagnostic": ("🌡️", render_tau_r_star_page),
+        "Epistemic": ("🧿", render_epistemic_page),
+        "Insights": ("💡", render_insights_page),
         # Analysis Pages
         "Formula Builder": ("🔧", render_formula_builder_page),
         "Time Series": ("📈", render_time_series_page),

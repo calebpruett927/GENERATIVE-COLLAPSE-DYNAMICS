@@ -17,6 +17,22 @@ from umcp.dashboard._utils import (
     get_repo_root,
 )
 
+# Import optimized kernel computer for real computation
+try:
+    from umcp.kernel_optimized import OptimizedKernelComputer
+
+    _HAS_KERNEL = True
+except ImportError:  # pragma: no cover
+    _HAS_KERNEL = False
+
+# Import seam chain accumulator for real seam accounting
+try:
+    from umcp.seam_optimized import SeamChainAccumulator, SeamCompositionAnalyzer
+
+    _HAS_SEAM = True
+except ImportError:  # pragma: no cover
+    _HAS_SEAM = False
+
 
 def render_precision_page() -> None:
     """
@@ -103,31 +119,42 @@ def render_precision_page() -> None:
     w_arr = np.array(w_normalized)
     eps = 1e-8  # Clipping epsilon
 
-    # Fidelity (arithmetic mean)
-    F = float(np.sum(w_arr * c_arr))
+    # Use OptimizedKernelComputer for real, auditable computation
+    if _HAS_KERNEL:
+        computer = OptimizedKernelComputer(epsilon=eps)
+        c_clipped = np.clip(c_arr, eps, 1 - eps)
+        outputs = computer.compute(c_clipped, w_arr)
+        F = outputs.F
+        omega = outputs.omega
+        kappa = outputs.kappa
+        IC = outputs.IC
+        C = outputs.C
+        S = outputs.S
+        gap = outputs.amgm_gap
+        is_homogeneous = outputs.is_homogeneous
+        computation_mode = outputs.computation_mode
+        het_regime = outputs.regime
 
-    # Drift
-    omega = 1.0 - F
-
-    # Log-integrity (kappa)
-    c_clipped = np.clip(c_arr, eps, 1 - eps)
-    kappa = float(np.sum(w_arr * np.log(c_clipped)))
-
-    # Integrity Composite (geometric mean)
-    IC = float(np.exp(kappa))
-
-    # Curvature proxy
-    C = float(np.std(c_arr) / 0.5)  # Population std / 0.5
-
-    # Bernoulli field entropy (Shannon entropy is the degenerate limit)
-    S_terms = []
-    for c in c_clipped:
-        s = -c * np.log(c) - (1 - c) * np.log(1 - c) if 0 < c < 1 else 0
-        S_terms.append(s)
-    S = float(np.sum(w_arr * np.array(S_terms)))
-
-    # Heterogeneity gap
-    gap = F - IC
+        # Lipschitz error bounds (OPT-12)
+        error_bounds = computer.propagate_coordinate_error(eps)
+    else:
+        # Fallback: inline computation (same formulas, no error bounds)
+        c_clipped = np.clip(c_arr, eps, 1 - eps)
+        F = float(np.sum(w_arr * c_arr))
+        omega = 1.0 - F
+        kappa = float(np.sum(w_arr * np.log(c_clipped)))
+        IC = float(np.exp(kappa))
+        C = float(np.std(c_arr) / 0.5)
+        S_terms = []
+        for c in c_clipped:
+            s = -c * np.log(c) - (1 - c) * np.log(1 - c) if 0 < c < 1 else 0
+            S_terms.append(s)
+        S = float(np.sum(w_arr * np.array(S_terms)))
+        gap = F - IC
+        is_homogeneous = bool(np.std(c_arr) < 1e-10)
+        computation_mode = "inline_fallback"
+        het_regime = "unknown"
+        error_bounds = None
 
     # ========== Display Results with Full Precision ==========
     st.subheader("📊 Computed Invariants")
@@ -158,6 +185,35 @@ def render_precision_page() -> None:
 
     df_inv = pd.DataFrame(invariants_data)
     st.dataframe(df_inv, width="stretch", hide_index=True)
+
+    # ========== Computation Metadata ==========
+    if _HAS_KERNEL:
+        meta_col1, meta_col2, meta_col3 = st.columns(3)
+        with meta_col1:
+            st.caption(f"Mode: {computation_mode}")
+        with meta_col2:
+            st.caption(f"Heterogeneity: {het_regime}")
+        with meta_col3:
+            st.caption(f"Homogeneous: {is_homogeneous}")
+
+    # ========== Lipschitz Error Bounds (OPT-12) ==========
+    if error_bounds is not None:
+        with st.expander("📐 Lipschitz Error Bounds (OPT-12)", expanded=False):
+            st.markdown("""
+            **Lemma 23**: Given max coordinate perturbation δ = ε, output error bounds
+            are computed via Lipschitz constants — instant uncertainty quantification
+            without Monte Carlo.
+            """)
+            error_data = {
+                "Output": ["F", "ω", "κ", "S"],
+                "Lipschitz Bound": [
+                    f"±{error_bounds.F:.2e}",
+                    f"±{error_bounds.omega:.2e}",
+                    f"±{error_bounds.kappa:.2e}",
+                    f"±{error_bounds.S:.2e}",
+                ],
+            }
+            st.dataframe(pd.DataFrame(error_data), width="stretch", hide_index=True)
 
     # ========== Formal Verification Checks ==========
     st.subheader("✅ Formal Verification")
@@ -1088,6 +1144,103 @@ def render_layer3_seam_graph() -> None:
         width="stretch",
         hide_index=True,
     )
+
+    # ========== SeamChainAccumulator Analysis (Real Engine) ==========
+    if _HAS_SEAM:
+        st.markdown("#### 🔗 SeamChainAccumulator Analysis (Real Engine)")
+
+        st.markdown("""
+        This section feeds the simulated seam data through the **real**
+        `SeamChainAccumulator` from `seam_optimized.py`, providing:
+        - Incremental Δκ tracking (OPT-10, Lemma 20)
+        - Residual growth exponent (OPT-11, Lemma 27)
+        - Returning vs non-returning dynamics detection
+        """)
+
+        chain = SeamChainAccumulator()
+        chain_error = False
+
+        for seam in seams:
+            if seam["tau_R"] == "INF_REC":
+                continue
+            try:
+                chain.add_seam(
+                    t0=seam["t0"],
+                    t1=seam["t1"],
+                    kappa_t0=seam["kappa0"],
+                    kappa_t1=seam["kappa1"],
+                    tau_R=seam["tau_R"],
+                    R=R,
+                    D_omega=seam["D_omega"],
+                    D_C=seam["D_C"],
+                )
+            except ValueError:
+                chain_error = True
+                break
+
+        metrics = chain.get_metrics()
+
+        chain_col1, chain_col2, chain_col3, chain_col4 = st.columns(4)
+        with chain_col1:
+            st.metric("Total Δκ", f"{metrics.total_delta_kappa:.6f}")
+        with chain_col2:
+            st.metric("Growth Exponent", f"{metrics.growth_exponent:.3f}")
+        with chain_col3:
+            returning_icon = "✅" if metrics.is_returning else "❌"
+            st.metric("Returning?", f"{returning_icon} {'Yes' if metrics.is_returning else 'No'}")
+        with chain_col4:
+            st.metric("Cum |Residual|", f"{metrics.cumulative_abs_residual:.6f}")
+
+        if chain_error:
+            st.error("⚠️ Residual accumulation failure detected — non-returning dynamics")
+
+        # Composition law validation
+        if chain.seam_history:
+            analyzer = SeamCompositionAnalyzer()
+            comp_result = analyzer.validate_composition_law(
+                chain,
+                chain.seam_history[0].t0,
+                chain.seam_history[-1].t1,
+            )
+            if comp_result.get("valid"):
+                st.success(
+                    f"✅ Lemma 20 composition law verified (|Σ − direct| = {comp_result.get('difference', 0):.2e})"
+                )
+            else:
+                st.warning(f"⚠️ Composition law check: {comp_result.get('reason', 'unknown')}")
+
+        # Cumulative residual growth curve
+        if chain.residuals:
+            cumsum = np.cumsum(np.abs(chain.residuals))
+            fig_growth = go.Figure()
+            fig_growth.add_trace(
+                go.Scatter(
+                    x=list(range(1, len(cumsum) + 1)),
+                    y=cumsum,
+                    mode="lines+markers",
+                    line={"color": "#6f42c1", "width": 2},
+                    name="Σ|sₖ| (actual)",
+                )
+            )
+            # Sublinear reference: K^0.5
+            K = np.arange(1, len(cumsum) + 1)
+            scale = cumsum[-1] / (len(cumsum) ** 0.5)
+            fig_growth.add_trace(
+                go.Scatter(
+                    x=K.tolist(),
+                    y=(scale * K**0.5).tolist(),
+                    mode="lines",
+                    line={"color": "gray", "dash": "dash"},
+                    name="K^0.5 reference (sublinear)",
+                )
+            )
+            fig_growth.update_layout(
+                height=300,
+                xaxis_title="Seam Index K",
+                yaxis_title="Cumulative |Residual|",
+                title=f"Residual Accumulation (growth exponent b = {metrics.growth_exponent:.3f})",
+            )
+            st.plotly_chart(fig_growth, width="stretch")
 
 
 def render_unified_geometry_view() -> None:
