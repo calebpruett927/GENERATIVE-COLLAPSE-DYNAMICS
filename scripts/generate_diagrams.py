@@ -16,6 +16,7 @@ import os
 import matplotlib
 
 matplotlib.use("Agg")
+import matplotlib.colors as mcolors
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import numpy as np
@@ -717,14 +718,12 @@ def plot_generation_spin() -> None:
 
     # Monotonicity arrows
     for i in range(2):
-        (q_vals[i] + q_vals[i + 1]) / 2
         ax1.annotate(
             "",
             xy=(i + 0.85 - width / 2, q_vals[i + 1]),
             xytext=(i + 0.15 - width / 2, q_vals[i]),
             arrowprops={"arrowstyle": "->", "color": ACCENT, "lw": 2},
         )
-        (l_vals[i] + l_vals[i + 1]) / 2
         ax1.annotate(
             "",
             xy=(i + 0.85 + width / 2, l_vals[i + 1]),
@@ -995,7 +994,7 @@ def plot_periodic_heatmap() -> None:
     fig, ax = plt.subplots(figsize=(16, 9))
 
     cmap = plt.cm.RdYlGn  # type: ignore[attr-defined]
-    norm = plt.Normalize(vmin=0.15, vmax=0.75)
+    norm = mcolors.Normalize(vmin=0.15, vmax=0.75)
 
     for z in range(1, 119):
         if z not in PT_LAYOUT or z not in PERIODIC_F:
@@ -1004,7 +1003,7 @@ def plot_periodic_heatmap() -> None:
         f_val = PERIODIC_F[z]
         color = cmap(norm(f_val))
 
-        rect = plt.Rectangle((col, -row), 0.92, 0.92, facecolor=color, edgecolor="#30363d", linewidth=0.5)
+        rect = mpatches.Rectangle((col, -row), 0.92, 0.92, facecolor=color, edgecolor="#30363d", linewidth=0.5)
         ax.add_patch(rect)
 
         sym = SYMBOLS.get(z, "")
