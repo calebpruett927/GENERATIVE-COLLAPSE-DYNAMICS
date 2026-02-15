@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# mypy: disable-error-code="import-not-found"
 """Confinement as Integrity Collapse — Theorem T3 Reproducibility Script.
 
 One-command rerun for the confinement paper's complete analysis.
@@ -58,8 +59,8 @@ from closures.standard_model.subatomic_kernel import (  # noqa: E402
     normalize_composite,
     normalize_fundamental,
 )
-from umcp.kernel_optimized import (  # noqa: E402
-    compute_kernel_outputs,  # type: ignore[import-not-found]  # pyright: ignore[reportMissingModuleSource]
+from umcp.kernel_optimized import (  # noqa: E402  # type: ignore[import-not-found]  # pyright: ignore[reportMissingModuleSource]
+    compute_kernel_outputs,
 )
 
 # ═══════════════════════════════════════════════════════════════
