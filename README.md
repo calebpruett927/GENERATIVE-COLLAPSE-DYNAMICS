@@ -30,6 +30,12 @@ This is not a simulation. It is a **metrological enforcement engine**: schema co
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [CLI Reference](#cli-reference)
+  - [Startup — From Clone to Running](#startup--from-clone-to-running)
+  - [C++ Accelerator — Build & Verify](#c-accelerator--build--verify)
+  - [Services — API & Dashboard](#services--api--dashboard)
+  - [Development Loop — Edit, Validate, Commit](#development-loop--edit-validate-commit)
+  - [Reset & Clean Slate](#reset--clean-slate)
+  - [Useful Utilities](#useful-utilities)
 - [Validation Pipeline](#validation-pipeline)
 - [Test Suite](#test-suite)
 - [Documentation](#documentation)
@@ -456,6 +462,122 @@ print(f"Heterogeneity gap: {result.amgm_gap:.6f}")  # Δ = F − IC
 | `umcp-ext list` | List available extensions |
 | `umcp-api` | Start FastAPI server (:8000) |
 | `umcp-dashboard` | Start Streamlit dashboard (:8501) |
+
+### Startup — From Clone to Running
+
+```bash
+# 1. Clone and install
+git clone https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS.git
+cd GENERATIVE-COLLAPSE-DYNAMICS
+pip install -e ".[all]"                    # Core + dev + API + viz dependencies
+
+# 2. Verify installation
+umcp health                                # System health check
+umcp integrity                             # Verify SHA-256 checksums
+umcp validate .                            # Full repo validation → CONFORMANT
+
+# 3. Run the test suite
+pytest -v --tb=short                       # 3,515 tests, ~114s
+```
+
+### C++ Accelerator — Build & Verify
+
+```bash
+# Build (requires CMake ≥ 3.16 and a C++17 compiler)
+cd src/umcp_cpp && mkdir -p build && cd build
+cmake .. && make -j$(nproc)
+cd ../../..                                # Return to repo root
+
+# Verify backend
+python -c "from umcp.accel import backend; print(backend())"   # → 'cpp'
+
+# Run correctness + performance benchmark (30 checks)
+python scripts/benchmark_cpp.py
+
+# Run C++ unit tests (Catch2, built alongside the extension)
+cd src/umcp_cpp/build && ctest --output-on-failure && cd ../../..
+```
+
+### Services — API & Dashboard
+
+```bash
+# FastAPI REST server (http://localhost:8000)
+umcp-api                                   # Or: uvicorn umcp.api_umcp:app --reload --port 8000
+
+# Streamlit dashboard (http://localhost:8501, 33 pages)
+umcp-dashboard                             # Or: streamlit run src/umcp/dashboard/__init__.py --server.port 8501
+
+# Start/stop dashboard via helper scripts
+bash scripts/start_dashboard.sh
+bash scripts/stop_dashboard.sh
+```
+
+### Development Loop — Edit, Validate, Commit
+
+```bash
+# After ANY tracked file change:
+python scripts/update_integrity.py         # Regenerate SHA-256 checksums (mandatory)
+ruff check --fix . && ruff format .        # Auto-fix lint + formatting
+pytest -v --tb=short                       # Run full test suite
+
+# Full pre-commit protocol (mirrors CI exactly — must exit 0 before committing)
+python scripts/pre_commit_protocol.py      # manifold → ruff → mypy → integrity → pytest → validate
+
+# Dry-run (report-only, no auto-fix)
+python scripts/pre_commit_protocol.py --check
+
+# Commit only after pre-commit passes
+git add -A && git commit -m "feat: description"
+git push origin main
+```
+
+### Reset & Clean Slate
+
+```bash
+# Regenerate all integrity checksums from scratch
+python scripts/update_integrity.py
+
+# Re-validate the full repo (clears any stale state)
+umcp validate .
+
+# Rebuild the C++ extension from scratch
+rm -rf src/umcp_cpp/build
+cd src/umcp_cpp && mkdir build && cd build && cmake .. && make -j$(nproc) && cd ../../..
+
+# Verify everything is green after a reset
+python scripts/pre_commit_protocol.py      # Full protocol: lint + test + validate
+
+# Force NumPy fallback (bypass C++ even if built)
+UMCP_NO_CPP=1 python -c "from umcp.accel import backend; print(backend())"  # → 'numpy'
+```
+
+### Useful Utilities
+
+```bash
+# Kernel calculator (interactive CLI)
+umcp-calc
+
+# Finance domain CLI
+umcp-finance
+
+# List/inspect extensions
+umcp-ext list
+umcp-ext info api
+umcp-ext check api
+
+# Generate all diagrams from kernel data
+python scripts/generate_diagrams.py
+
+# Periodic table report (118 elements)
+python scripts/periodic_table_report.py
+
+# Profile the test landscape
+python scripts/profile_test_landscape.py
+
+# Build LaTeX papers (RevTeX4-2)
+cd paper && pdflatex standard_model_kernel.tex && bibtex standard_model_kernel \
+  && pdflatex standard_model_kernel.tex && pdflatex standard_model_kernel.tex
+```
 
 ---
 
