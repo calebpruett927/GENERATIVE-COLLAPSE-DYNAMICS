@@ -19,6 +19,7 @@ This is not a simulation. It is a **metrological enforcement engine**: schema co
 ## Table of Contents
 
 - [Core Concepts](#core-concepts)
+- [At a Glance](#at-a-glance)
 - [Architecture](#architecture)
 - [Closure Domains (12 Physics Domains)](#closure-domains)
 - [The Kernel](#the-kernel)
@@ -62,6 +63,28 @@ Every validation produces one of three outcomes — never boolean:
 - **`CONFORMANT`** — All contracts, identities, and integrity checks pass
 - **`NONCONFORMANT`** — At least one check fails
 - **`NON_EVALUABLE`** — Insufficient data to determine status
+
+---
+
+## At a Glance
+
+### The Three-Tier Stack
+
+Tier-1 (immutable invariants) → Tier-0 (protocol) → Tier-2 (expansion space). One-way dependency. No back-edges within a frozen run. Every domain closure is validated *through* Tier-0 *against* Tier-1.
+
+![Tier Architecture](images/10_tier_architecture.png)
+
+### Integrity Bound: IC ≤ F — Zero Violations
+
+The integrity bound holds universally across 31 Standard Model particles + 118 periodic table elements. Derived independently from Axiom-0. Zero violations.
+
+![Integrity Bound Proof](images/09_integrity_bound_proof.png)
+
+### Validation Timelapse: Living Ledger History
+
+Every `umcp validate` run is recorded in the append-only ledger. Cumulative runs, kernel invariant evolution, and conformance rate over time. *"Nihil in memoria perit."*
+
+![Validation Timelapse](images/08_validation_timelapse.png)
 
 ---
 
@@ -428,7 +451,7 @@ This mirrors CI exactly: format → lint → type-check → integrity → test �
 
 ## Test Suite
 
-**3,516 tests** across **86 test files**, organized by tier and domain:
+**3,515 tests** across **86 test files**, organized by tier and domain:
 
 | Test Range | Domain | Tests |
 |------------|--------|------:|
@@ -505,7 +528,7 @@ The framework is anchored by peer-reviewed Zenodo publications covering the core
 ├── schemas/                   # 12 JSON Schema files
 ├── canon/                     # 11 canonical anchor files
 ├── casepacks/                 # 13 reproducible validation bundles
-├── tests/                     # 86 test files, 3516 tests
+├── tests/                     # 86 test files, 3515 tests
 ├── paper/                     # 3 LaTeX papers + Bibliography.bib
 ├── integrity/                 # SHA-256 checksums
 ├── ledger/                    # Append-only validation log
@@ -523,6 +546,7 @@ The framework is anchored by peer-reviewed Zenodo publications covering the core
 | Document | Purpose |
 |----------|---------|
 | [AXIOM.md](AXIOM.md) | **Start here.** The foundational axiom, operational definitions, and why this system is original |
+| [LIBER_COLLAPSUS.md](LIBER_COLLAPSUS.md) | *Liber Universalis de Collapsus Mathematica* — the Tier-1 Latin foundation text |
 | [TIER_SYSTEM.md](TIER_SYSTEM.md) | The three-tier architecture: Immutable Invariants → Protocol → Expansion Space |
 | [KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md) | Complete kernel mathematics, OPT-* lemmas, and degenerate-limit proofs |
 | [QUICKSTART_TUTORIAL.md](QUICKSTART_TUTORIAL.md) | Getting started: first validation in 5 minutes |
@@ -605,24 +629,6 @@ The four-regime classification with real Standard Model particles mapped to thei
 Kernel fidelity increases with scale resolution: composite(0.444) < atomic(0.516) < fundamental(0.558). The heterogeneity gap distribution across 118 elements reveals the landscape of channel heterogeneity.
 
 ![Cross-Scale Universality](images/07_cross_scale_amgm_gap.png)
-
-### Validation Timelapse: Living Ledger History
-
-The project's complete validation history — every `umcp validate` run recorded in the append-only ledger. Cumulative runs, kernel invariant evolution, and conformance rate over time. *"Nihil in memoria perit."*
-
-![Validation Timelapse](images/08_validation_timelapse.png)
-
-### Integrity Bound Proof: IC ≤ F Across All Data
-
-Zero violations across 31 Standard Model particles + 118 periodic table elements. The integrity bound holds universally — derived independently from Axiom-0.
-
-![Integrity Bound Proof](images/09_integrity_bound_proof.png)
-
-### Tier Architecture: The Three-Tier Stack
-
-The UMCP tier system: Tier-1 (immutable invariants) → Tier-0 (protocol) → Tier-2 (expansion space). One-way dependency. No back-edges within a frozen run. Every domain closure is validated *through* Tier-0 *against* Tier-1.
-
-![Tier Architecture](images/10_tier_architecture.png)
 
 ---
 
