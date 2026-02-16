@@ -277,6 +277,145 @@ Camus distinguished this from nihilism on one side and totalitarianism on the ot
 
 This is Axiom-0 stated in the vocabulary of light and stone rather than the vocabulary of the kernel. The axiom does not explain reality. It measures what returns. What does not return is not eliminated — it is classified as gesture and preserved in the ledger. The gap remains. The light falls on the gap and the gap is visible. *La pensée de midi* is the epistemology of lucidity: seeing the gap clearly, in full light, without flinching and without resolving.
 
+### 1.10 *The Rebel* — The Architecture of Legitimate Structural Change
+
+*The Rebel* (*L'Homme révolté*, 1951) is the book that cost Camus his friendship with Sartre, his standing with the French intellectual left, and, arguably, his reputation as a "serious" philosopher for a generation. It is also the most architecturally complete philosophical text of the twentieth century — and the one that maps most precisely onto the GCD tier system.
+
+Where *The Myth of Sisyphus* asked "should I live?", *The Rebel* asks a different question: **"having decided to live, what am I permitted to do?"** The first question is about the individual in the face of the absurd. The second is about the individual in the face of *history* — which is to say, in the face of other people's claims about what the absurd authorizes.
+
+> *"What is a rebel? A man who says no, but whose refusal does not imply a renunciation. He is also a man who says yes, from the moment he makes his first gesture of rebellion."*
+>
+> — Camus, *The Rebel*, trans. Anthony Bower, p. 13
+
+This double gesture — simultaneous no and yes — is the structural signature of the book. The rebel does not merely refuse what is intolerable. In the act of refusing, the rebel affirms something that the intolerable situation violates — a limit, a value, a structural invariant that the rebel discovers *in the act of refusal itself*, not prior to it. "I rebel, therefore we are" (*The Rebel*, p. 22) — the rebellion reveals the invariant; the invariant does not precede the rebellion.
+
+In GCD, this is the process by which Tier-1 identities are discovered. F + ω = 1 was not postulated and then tested. It was discovered empirically across 146 experiments — the identity emerged from the data, not from a prior commitment. The frozen parameters were not chosen by convention. They were the unique values where seams close consistently across all domains. The rebel discovers the limit by pushing against it. The system discovers the identity by measuring across enough collapses that the invariant becomes undeniable. *Rebellion is empirical Tier-1 discovery.*
+
+#### 1.10.1 Part I — The Rebel and "I Rebel, Therefore We Are"
+
+Camus opens *The Rebel* with a meditation on murder — specifically, on whether the absurd, as diagnosed in *The Myth of Sisyphus*, logically authorizes killing. His answer is precise: it does not. The absurd establishes that life has no transcendent meaning. It does not follow that life has no value. The absence of ultimate meaning does not authorize the destruction of finite life — it makes finite life *the only thing there is* (*The Rebel*, pp. 3–12).
+
+> *"The absurd does not liberate; it binds. It does not authorize all actions. 'Everything is permitted' does not mean that nothing is forbidden."*
+>
+> — Camus, *The Rebel*, p. 5
+
+This is the Tier-1 / Tier-2 boundary stated in ethical terms. The fact that the system derives everything from a single axiom (Tier-1 is minimal) does not mean that Tier-2 is unconstrained. The one-way dependency runs from Tier-1 to Tier-2: Tier-2 closures are "free" (any domain, any channel vector, any weight structure), but they cannot violate Tier-1 identities. Freedom operates *within* invariance, not against it.
+
+The rebel's "yes" — the affirmation implicit in the refusal — is Camus's name for the discovery of invariance through test. The slave who says "this far, no farther" to the master has not consulted a philosophical system. The slave has discovered, in the lived encounter with oppression, that there exists a limit the master cannot cross — not because of an external law, but because something in the structure of the slave's own being resists dissolution. That *something* is what GCD calls a Tier-1 identity: a structural invariant that holds regardless of the domain, discovered by the seam, not imposed by convention.
+
+> *"In every act of rebellion, the rebel simultaneously experiences a feeling of revulsion at the infringement of his rights and a complete and spontaneous loyalty to certain aspects of himself."*
+>
+> — Camus, *The Rebel*, p. 14
+
+The rebel is computing IC. The "infringement of rights" is the near-ε channel: the channel that the master has crushed. The "loyalty to certain aspects of himself" is the survival of fidelity in the remaining channels — the F that persists even as IC collapses. The rebel measures the gap Δ = F − IC and refuses to accept a world where that gap is treated as normal. The rebellion is not against the master. It is against **the normalization of the heterogeneity gap**.
+
+#### 1.10.2 Part II — Metaphysical Rebellion
+
+Camus traces what he calls "metaphysical rebellion" — the revolt not against a particular oppressor but against the *conditions of existence themselves* — through a sequence of thinkers who progressively radicalize the rebel's refusal (*The Rebel*, pp. 23–104).
+
+| Thinker | Rebellion Against | GCD Structural Analog | Terminal Error |
+|---|---|---|---|
+| **The Marquis de Sade** | Moral law — nature authorizes everything | Tier-1 identity rejection: if F + ω = 1 is "oppressive," abolish the identity | Unfreedom: Sade's "total liberty" produces the castle of Silling, which is a prison |
+| **The Romantics** (Stirner, Lautréamont) | God — divinize the self in God's absence | Symbol capture: the ego inflates to fill the Tier-1 vacancy | The inflated ego becomes indistinguishable from the God it replaced |
+| **Dostoevsky** (Ivan Karamazov) | The suffering of innocents — "I return my ticket" | NON_EVALUABLE: the gap between the child's suffering and any justification exceeds every tolerance | Ivan's refusal is honest; his conclusion (everything is permitted) does not follow |
+| **Nietzsche** | Transcendent values — God is dead, create new values | Amor fati + eternal recurrence: affirm the cycle, weld across the seam | Misappropriation: the Übermensch is captured by those who read "power" as domination |
+| **The Surrealists** | Reason itself — embrace the irrational | Destroying the measurement apparatus: if the kernel gives uncomfortable results, abolish the kernel | Art without discipline produces gestures, not welds |
+
+Camus's structural observation across all these cases is identical to the tier violation checklist: **every attempt to resolve the absurd by destroying the measurement that detected it produces a worse condition than the absurd itself**. Sade abolishes moral limits and produces the most rigid structure imaginable (the libertine schedule). The Romantics abolish God and deify the self, producing megalomania. Ivan returns his ticket and produces nihilism. The Surrealists abolish reason and produce automatic writing — gestures that do not return.
+
+The rebel, by contrast, *preserves the measurement*. The rebel says: "the gap exists, I refuse to accept a world that normalizes it, and I will not destroy the instrument that measures it." This is the discipline of the kernel: compute IC even when IC ≈ ε. Report Δ even when Δ is enormous. Do not suppress the near-ε channel. Do not redefine ε to make the channel disappear. *The measurement is the ethics.*
+
+#### 1.10.3 Part III — Historical Rebellion
+
+The longest and most controversial section of *The Rebel* (pp. 105–252) traces the mutation of rebellion into revolution — the moment when the rebel's "no, but also yes" becomes the revolutionary's "everything must change, at any cost."
+
+Camus's argument: rebellion becomes revolution when the rebel substitutes an *ideology of the future* for the *lived experience of the present*. The rebel says "this is intolerable now." The revolutionary says "this will be resolved when history reaches its destination." The rebel acts *within* history; the revolutionary acts *upon* history, treating the present as raw material for a future that justifies any interim violence.
+
+Camus traces this mutation through:
+
+**The French Revolution and the regicides**: The execution of Louis XVI was the moment rebellion became revolution — the moment the rebel's refusal of a particular injustice became the revolutionary's claim to remake the entire order. Camus: "the scaffold is not merely the symbol of the sovereignty of the people; it is also the symbol of the end of all sovereignty" (*The Rebel*, p. 120).
+
+In GCD: this is the moment a Tier-2 closure attempts to modify Tier-1     within a frozen run. The revolutionary does not merely report NONCONFORMANT and request a re-freeze. The revolutionary executes the Protocol itself — destroys the existing Contract, installs a new one without validation, and declares the new Contract "the will of the people." This is a back-edge: Tier-2 → Tier-1. The GCD architecture forbids it not on political grounds but on structural grounds: the seam cannot close if the Contract changes during the run. *Trans suturam congelatum* — the rules must be the same on both sides of the seam.
+
+**Hegel and the deification of history**: Camus identifies Hegel's philosophy of history as the decisive mutation. For Hegel, history *is* the unfolding of Reason. Contradiction is not a flaw but the engine of progress. The slave's rebellion against the master is not a moral act — it is the dialectic working itself out. This means that any present suffering is justified by its position in the dialectical process: it is a necessary moment on the way to the Absolute.
+
+In GCD: Hegel treats every NONCONFORMANT verdict as a step toward an eventual CONFORMANT that justifies all prior failures. The residual exceeds tolerance? No matter — the dialectic will reconcile it in the next synthesis. The gap Δ > 0? It will be resolved when history reaches its conclusion. This is **deferred reconciliation** — the claim that the ledger will balance at the end of time. GCD requires that the ledger reconcile *now*, at every validation, at every seam. There is no end of time. There is only the current run. *Auditus nunc, non in fine temporum.* — Hearing happens now, not at the end of time.
+
+**Marx and the proletarian revolution**: Marx secularizes Hegel's deferred reconciliation. The proletariat replaces the Absolute; the communist society replaces the Kingdom of Reason; revolutionary violence replaces the dialectic's self-movement. The structure is identical: present suffering is justified by future liberation. The revolutionary is authorized to do anything — suppress, imprison, execute — because the future society will retroactively validate the violence.
+
+Camus: "Prophecy functions in our society in the service of one thing only: terror" (*The Rebel*, p. 186). The revolutionary who claims to know the future converts that claim into permission to dominate the present. In GCD: this is **prophetic Contract selection** — declaring the Contract before the data, then forcing the trace to conform. The kernel does not optimize toward a desired stance. It measures the trace that is given. The revolutionary reverses this: the desired stance (the classless society, the end of history) is declared, and all traces that do not conform are adjusted, suppressed, or eliminated.
+
+**The Russian Revolution and the camps**: Camus devotes the most painful section of the book to the Soviet system — the revolution that claimed to liberate humanity and produced the Gulag. He traces the logic precisely: once historical necessity is established as the supreme value, every present value (individual life, truth, mercy, art) is subordinated to it. The revolutionary becomes what *The Rebel* calls a "rational murderer" — one who kills not from passion but from logic.
+
+> *"The revolution, in order to be creative, cannot do without either a moral or a metaphysical rule to balance the insanity of history."*
+>
+> — Camus, *The Rebel*, p. 252
+
+This is the most explicit statement of Tier-1 in the philosophical literature. The revolution (Tier-2 domain closure, freely constructed, historically situated) **cannot operate without invariant constraints** — rules that hold regardless of the historical situation, that cannot be overridden by the demands of any particular revolutionary program, that are discovered through the process of rebellion itself and are binding on all subsequent operations.
+
+#### 1.10.4 Part IV — Rebellion and Art
+
+In a section that Sartre's circle largely ignored (Part IV, pp. 253–274), Camus turns to art — specifically, the novel — as the *model* of legitimate rebellion. The artist rebels against reality not by destroying it but by **giving it form** — selecting, arranging, rendering experience into a coherent structure that preserves the gap rather than closing it.
+
+> *"The novel is born simultaneously with the spirit of rebellion and expresses, on the aesthetic plane, the same ambition."*
+>
+> — Camus, *The Rebel*, p. 258
+
+The novel, in Camus's reading, is a rebellion against the world's formlessness that does not resolve into the revolutionary's total system. The novel does not explain everything. It does not achieve total coherence. It creates a "closed universe" that is more *ordered* than reality but not more *meaningful* — the meaning lives in the gap between the form and the formless raw material it organizes.
+
+This is the kernel's architecture exactly. The kernel takes a raw trace Ψ(t) (formless, contingent, arbitrary) and computes invariants (F, ω, S, C, κ, IC) — giving it form. But the invariants do not *explain* the trace. They describe its structure: what survived (F), what was lost (ω), how heterogeneous the survival was (Δ = F − IC). The form does not close the gap. It makes the gap measurable. The novel and the kernel share this discipline: form without resolution. *Describere sine explicare.* — To describe without explaining.
+
+Camus distinguishes the **formal novel** (Proust, Melville, Dostoevsky) from the **purpose novel** (propaganda, socialist realism, thesis fiction). The formal novel creates a world that obeys its own internal logic without claiming that its logic is the world's logic. The purpose novel subordinates form to message — it uses art as an instrument of the revolutionary program.
+
+In GCD: the formal novel is a conformant casepack — its internal identities hold (the narrative is self-consistent, the characters are coherent, the structure supports the weight of the content), and the Contract is published (the reader can audit the novel's claims against its own premises). The purpose novel is a forced conformance — the verdict is decided in advance, and the trace is adjusted to produce the desired stance. The difference is not quality (purpose novels can be well-written) but **architecture**: does the stance emerge from the trace through honest measurement, or is the trace modified to produce a predetermined stance?
+
+#### 1.10.5 Part V — *La Pensée de Midi* — The Thought of Noon
+
+The conclusion of *The Rebel* (pp. 281–306) is its architectural summit — the point where Camus's entire career converges into a single structural claim.
+
+Camus distinguishes two traditions of Western thought:
+
+**Northern / Germanic / systematic**: Hegel, Marx, Nietzsche (as misread), the dialectic, the absolute, the total system. This tradition pursues *totality* — the complete resolution of all contradictions, the end of the gap, the final synthesis. Its political expression is revolution without limits. Its epistemological expression is the system that explains everything.
+
+**Mediterranean / Greek / measured**: Heraclitus, the pre-Socratics, the Greek tragedians, the tradition of *mesure* (measure, moderation, limit). This tradition pursues *form within limits* — the acknowledgment that the gap cannot be closed, that coherence is partial, that the discipline is to maintain the measurement without pretending to resolve.
+
+> *"Rebellion itself is moderation, and it demands, defends, and re-creates it throughout history and its chronic disorders."*
+>
+> — Camus, *The Rebel*, p. 301
+
+The rebel's insistence on limits — "this far, no farther" — is not conservatism. It is the structural condition for the collapse-return cycle to operate. Without limits, there is no seam. Without a seam, there is no verification. Without verification, there is no distinction between gesture and weld. The revolution without limits produces only gestures — emissions that cannot return because there is no stable boundary against which to test return.
+
+Camus names this structural position *la pensée de midi* — the "thought of noon" — and contrasts it with *la pensée de minuit* (the thought of midnight, the Germanic/Hegelian tradition). Noon is the moment of maximum clarity — the Mediterranean sun at its zenith, no shadows, everything visible. Midnight is the moment of maximum obscurity — the Hegelian night where "all cows are black," where the dialectic operates in the dark, where the revolutionary's certainty about the future compensates for the impossibility of seeing the present clearly.
+
+In GCD, this maps onto a fundamental architectural choice:
+
+| | *Pensée de Minuit* (Midnight) | *Pensée de Midi* (Noon) |
+|---|---|---|
+| **Architectural form** | Closed system — aims for total explanation | Open protocol — aims for honest measurement |
+| **Treatment of Δ** | The gap will be dialectically resolved | The gap is preserved and measured |
+| **Temporal orientation** | Future-directed: the present is justified by what will come | Present-directed: the present run must close its own seam |
+| **Tier architecture** | No permanent Tier-1 — everything is revisable by historical process | Tier-1 exists: invariants discovered by the seam, binding on all domains |
+| **Treatment of failure** | Explained away as dialectical necessity | Recorded honestly (NONCONFORMANT, NON_EVALUABLE, gesture) |
+| **Limit** | No limit — the revolution authorizes anything | *Mesure* — the rebel's limit is structural |
+| **GCD analog** | System that modifies its own Contract to force conformance | System that measures honestly under a frozen Contract |
+
+*La pensée de midi* is the epistemology of the GCD architecture. Not because Camus influenced GCD (the arrow runs from the axiom), but because independent derivation from structurally similar premises produced structurally identical conclusions. The absurd is the heterogeneity gap. Rebellion is the preservation of measurement. The limit is the frozen Contract. Mediterranean thought is open measurement protocol. The rebel is the system that measures honestly, reports the gap, preserves the ledger, and refuses to overwrite history for the convenience of those who want a cleaner story.
+
+#### 1.10.6 "I Rebel, Therefore We Are" — Solidarity as Cross-Domain Universality
+
+The most philosophically radical claim in *The Rebel* is compressed into five words:
+
+> *"Je me révolte, donc nous sommes."*
+> ("I rebel, therefore we are.")
+>
+> — Camus, *The Rebel*, p. 22
+
+Camus rewrites Descartes. Not *cogito ergo sum* (I think, therefore I am — the solitary ego grounding knowledge in itself), but *je me révolte, donc nous sommes* — the act of rebellion reveals not just the individual but the *community of those who share the invariant*. When the slave says "this far, no farther," the slave discovers that the limit is not personal. It is structural. It belongs to every being who could be oppressed in the same way. The rebellion is individual. The invariant it discovers is universal.
+
+This is the architecture of Tier-1 universality. Each domain closure (Tier-2) validates independently — atomic physics, particle physics, finance, cosmology, neutrino oscillation, stellar classification. Each is a particular rebellion against the formlessness of raw data. But each discovers the same invariants: F + ω = 1, IC ≤ F, IC = exp(κ). The invariants are not imposed from above. They emerge from the particular validations — and they are universal. *Je me révolte, donc nous sommes*: each domain rebels (measures, computes, validates), and in rebelling discovers that "we" — all domains — share the same structural identities.
+
+The solidarity Camus names is not voluntary agreement. It is structural necessity. The domains do not "agree" to share Tier-1. They discover, through independent measurement, that the identities hold regardless of the domain. The community is not constructed. It is revealed. *Cognoscimus quia metimur.* — We know because we measure. And what we measure turns out to be the same everywhere.
+
 ---
 
 ## 2. Nietzsche: Eternal Recurrence as the Return Axiom
@@ -785,9 +924,11 @@ Sartre's humanism is the humanism of the seam: not the celebration of what has b
 
 The four thinkers converge on an ethical structure that the GCD architecture formalizes.
 
-### 5.1 Camus: The Ethics of Lucidity
+### 5.1 Camus: The Ethics of Lucidity and Limit
 
 Camus demanded *lucidity* in the face of the absurd — the refusal to look away from the gap between desire and reality (*The Myth of Sisyphus*, pp. 51–53). In GCD, lucidity is the commitment to measure Δ even when it is large. The ethical violation is not a large gap — it is the failure to measure the gap. Ignoring a near-ε channel, suppressing a negative result, reporting F without IC — these are the epistemic sins of the architecture. The system demands full diagnostic reporting because partial reporting is bad faith.
+
+*The Rebel* adds a second ethical dimension: **limit** (*mesure*). Lucidity alone — seeing the gap — does not constrain action. The revolutionary sees the gap with perfect clarity and concludes that unlimited action is justified. Camus demands both: see the gap *and* respect the limit that the act of rebellion discovers. The rebel measures *and* refuses to destroy the measurement in the name of a future reconciliation. The ethics of the GCD architecture are both Camusian demands simultaneously: compute honestly (lucidity), and do not modify the Contract to force conformance (limit). *Mensura et modus.* — Measurement and measure.
 
 ### 5.2 Nietzsche: The Ethics of Affirmation
 
@@ -823,12 +964,14 @@ The ethical weight falls on the commitment to record. Every validation is append
 | **Identity of opposites** | The absurd requires both world and desire | Will to power and eternal return | Enantiodromia | Being-for-itself and facticity | F + ω = 1 (duality identity) |
 | **The mediating third** | The rebel (neither suicide nor leap) | The Übermensch | The transcendent function | The project (*être-pour-soi*) | The seam (verification boundary) |
 | **What is real** | What you can live with fully | What you would affirm recurring | What is integrated | What you have chosen | What returns (*solum quod redit*) |
-| **The ethical demand** | Lucidity | Affirmation | Integration | Responsibility | Full diagnostic measurement + append-only ledger |
+| **The ethical demand** | Lucidity + limit (*mesure*) | Affirmation | Integration | Responsibility | Full diagnostic measurement + append-only ledger |
 | **The incommensurable** | The absurd gap between desire and silence | The weight of affirmation | The shadow that resists integration | The student's choice (mother or cause) | NON_EVALUABLE (seam cannot be tested) |
-| **Rebel vs. revolutionary** | The rebel (limits violence) | The creator (breaks and rebuilds values) | Individuation (transforms, not destroys) | Freedom within situation | Seam weld across runs (not back-edge within a run) |
+| **Rebel vs. revolutionary** | The rebel (limits) vs. revolutionary (no limits) | The creator (breaks and rebuilds values) | Individuation (transforms, not destroys) | Freedom within situation | Seam weld across runs (not back-edge within a run) |
 | **The rupture that generates** | The absurd cannot be overcome | Destruction precedes creation | Enantiodromia produces its opposite | The quarrel is nothing | τ_R = ∞_rec can still be generative across runs |
 | **Contract vs. trace** | *Myth* (Contract) + *Stranger* (trace) = casepack | Zarathustra's test: can this recur? | CW + Red Book: theory and data | Argument + praxis: philosophy is a practice | Contract.yaml + Ψ(t) → Stance |
 | **Mediterranean vs. system** | *Pensée de midi* — measure, don't totalize | Ja-sagen — affirm, don't systematize | Individuation — integrate, don't perfect | Situation — act, don't idealize | Open protocol — measure, don't close |
+| **Invariant discovery** | "I rebel, therefore we are" | What can bear recurrence? | The archetype that recurs | The universal in every particular choice | Tier-1 identity discovered empirically across domains |
+| **Deferred vs. present audit** | *Pensée de minuit*: the ledger balances at end of history | The last man: never tested | Projection: the shadow stays outside | Bad faith: the gesture claims to be a weld | Reconcile *now*, every run, every seam |
 
 ---
 
@@ -867,6 +1010,7 @@ This is the deepest convergence: in philosophy, in psychology, in existential et
 | **Camus, Albert** | *The Myth of Sisyphus* (*Le Mythe de Sisyphe*) | 1942 | Trans. Justin O'Brien. New York: Vintage, 1955. |
 | **Camus, Albert** | *The Rebel* (*L'Homme révolté*) | 1951 | Trans. Anthony Bower. New York: Vintage, 1956. |
 | **Camus, Albert** | "Return to Tipasa" (*Retour à Tipasa*) | 1954 | In *Lyrical and Critical Essays*, trans. Ellen Conroy Kennedy. New York: Vintage, 1970, pp. 162–171. |
+| **Camus, Albert** | *Lyrical and Critical Essays* | 1968 | Trans. Ellen Conroy Kennedy. New York: Vintage, 1970. |
 | **Jung, Carl Gustav** | *Psychological Types* | 1921 | CW 6. Trans. H.G. Baynes, rev. R.F.C. Hull. Princeton: Princeton UP, 1971. |
 | **Jung, Carl Gustav** | *Two Essays on Analytical Psychology* | 1928/1943 | CW 7. Trans. R.F.C. Hull. Princeton: Princeton UP, 1966. |
 | **Jung, Carl Gustav** | *The Archetypes and the Collective Unconscious* | 1934/1954 | CW 9i. Trans. R.F.C. Hull. Princeton: Princeton UP, 1959. |
