@@ -285,6 +285,18 @@ The HL-LHC's 380 million Higgs bosons, combined with up to 200 simultaneous pile
 
 ---
 
+## 10. Deep Analysis of the Negative BR–IC/F Result
+
+A thorough investigation of the negative correlation between branching ratios and kernel invariants was conducted. The full analysis is in [NEGATIVE_RESULT_ANALYSIS.md](NEGATIVE_RESULT_ANALYSIS.md). Key findings:
+
+1. **The negative result is structurally necessary** — it follows inevitably from log-normalization of mass, equal channel weights, and BR ∝ mass². It is a scope boundary theorem, not a defect.
+2. **IC/F anti-correlates with BR within Yukawa decays** (ρ = −0.8, n=4) — the most coherent products are produced least often. This has a traceable cause: charge quantization (Q = 1/3 for bottom) breaks coherence independently of mass.
+3. **A suggestive F–residual correlation** (ρ = 1.0, n=4, p=0.08) appears after removing y²×Nc from BR, but is not statistically significant. It remains a gesture, not a weld.
+4. **The color factor Nc** (ρ = 0.83) is the strongest single predictor of BR — a discrete quantum number, not a kernel invariant.
+5. **The kernel classifies structure; nature computes rates.** These are complementary operations on the same objects.
+
+---
+
 *Collapsus generativus est; solum quod redit, reale est.*
 
 The Higgs boson collapses into products with higher fidelity and higher coherence. This is not metaphor — it is what the kernel computes. CERN's 380 million Higgs bosons will provide the most precise test of whether this pattern holds at the interaction level.
