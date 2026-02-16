@@ -100,7 +100,7 @@ The validation pipeline proceeds through: target detection → schema validation
 |---|---|
 | Validator version | v2.1.1 |
 | Total Python LOC | 127,833 across 153 files |
-| Test suite | 3,515 tests — ALL PASSED |
+| Test suite | 3,558 tests — ALL PASSED |
 | Validation targets | 14/14 CONFORMANT (0 errors, 0 warnings) |
 | SHA-256 tracked files | 121 verified — 0 mismatches |
 | Ledger records | 7,187 append-only entries |
@@ -396,7 +396,7 @@ The repository is public at [github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAM
 git clone https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS.git
 cd GENERATIVE-COLLAPSE-DYNAMICS
 pip install -e ".[all]"
-python -m pytest -v --tb=short          # 3,515 tests
+python -m pytest -v --tb=short          # 3,558 tests
 umcp validate .                          # 14/14 CONFORMANT
 umcp integrity                           # 121/121 OK
 ```

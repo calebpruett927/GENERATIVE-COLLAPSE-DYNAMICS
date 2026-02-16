@@ -403,7 +403,7 @@ umcp validate casepacks/hello_world --strict
 ### Run the test suite
 
 ```bash
-pytest                          # All 3,515 tests
+pytest                          # All 3,558 tests
 pytest -v --tb=short            # Verbose with short tracebacks
 pytest -n auto                  # Parallel execution
 ```
@@ -477,7 +477,7 @@ umcp integrity                             # Verify SHA-256 checksums
 umcp validate .                            # Full repo validation → CONFORMANT
 
 # 3. Run the test suite
-pytest -v --tb=short                       # 3,515 tests, ~114s
+pytest -v --tb=short                       # 3,558 tests, ~114s
 ```
 
 ### C++ Accelerator — Build & Verify
@@ -599,7 +599,7 @@ umcp validate <target>
 The GitHub Actions workflow (`.github/workflows/validate.yml`) enforces:
 
 1. **Lint** — `ruff format --check` + `ruff check` + `mypy`
-2. **Test** — Full pytest suite (3,515 tests)
+2. **Test** — Full pytest suite (3,558 tests)
 3. **Validate** — Baseline + strict validation (both must return CONFORMANT)
 
 ### Pre-Commit Protocol
@@ -617,7 +617,7 @@ This mirrors CI exactly: format → lint → type-check → integrity → test �
 
 ## Test Suite
 
-**3,515 tests** across **86 test files**, organized by tier and domain:
+**3,558 tests** across **88 test files**, organized by tier and domain:
 
 | Test Range | Domain | Tests |
 |------------|--------|------:|
@@ -694,7 +694,7 @@ The framework is anchored by peer-reviewed Zenodo publications covering the core
 ├── schemas/                   # 12 JSON Schema files
 ├── canon/                     # 11 canonical anchor files
 ├── casepacks/                 # 13 reproducible validation bundles
-├── tests/                     # 86 test files, 3515 tests
+├── tests/                     # 88 test files, 3558 tests
 ├── paper/                     # 3 LaTeX papers + Bibliography.bib
 ├── integrity/                 # SHA-256 checksums
 ├── ledger/                    # Append-only validation log

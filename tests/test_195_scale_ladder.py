@@ -333,9 +333,9 @@ class TestPillarResults:
 
     def test_fidelity_range(self, ladder: ScaleLadder) -> None:
         f_min, f_max = ladder.pillar_results["fidelity_range"]
-        assert f_min > 0.0
-        assert f_max < 1.0
-        assert f_min < f_max
+        assert float(f_min) > 0.0
+        assert float(f_max) < 1.0
+        assert float(f_min) < float(f_max)
 
     def test_dynamic_range_oom(self, ladder: ScaleLadder) -> None:
         assert ladder.pillar_results["dynamic_range_OOM"] == 61

@@ -333,7 +333,7 @@ All papers use RevTeX4-2 (`revtex4-2` document class) and share `Bibliography.bi
 
 ```bash
 pip install -e ".[all]"                     # Dev install (core + api + viz + dev tools)
-pytest                                       # 3,515 tests (growing), ~114s
+pytest                                       # 3,558 tests (growing), ~114s
 python scripts/update_integrity.py          # MUST run after changing any tracked file
 umcp validate .                             # Validate entire repo
 umcp validate casepacks/hello_world --strict # Validate casepack (strict = fail on warnings)
@@ -394,7 +394,7 @@ umcp validate <target>
 
 ## Test Patterns
 
-**2,476 test cases** in `tests/`, numbered by tier and domain (`test_00_*` through `test_140_*`). Single `tests/conftest.py` provides:
+**3,558 test cases** in `tests/`, numbered by tier and domain (`test_00_*` through `test_200_*`). Single `tests/conftest.py` provides:
 - Frozen `RepoPaths` dataclass (session-scoped) with all critical paths
 - `@lru_cache` helpers: `_read_file()`, `_parse_json()`, `_parse_yaml()`, `_compile_schema()`
 - Convention: `test_<subject>_<behavior>()` for functions; `TestCLI*` classes with `subprocess.run` for CLI integration

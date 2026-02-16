@@ -12,7 +12,7 @@
 | Metric | Value |
 |---|---|
 | **Overall Verdict** | **CONFORMANT** — 0 errors, 0 warnings |
-| **Test Suite** | **3,515 tests — ALL PASSED** (115s) |
+| **Test Suite** | **3,558 tests — ALL PASSED** (114s) |
 | **Integrity** | **121 files verified — 0 mismatches, 0 missing** |
 | **Casepacks Validated** | **13/13 CONFORMANT** + 1 repo-level |
 | **Domain Closures** | **12 domains, ~110 closure files** |

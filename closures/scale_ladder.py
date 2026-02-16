@@ -171,7 +171,7 @@ class ScaleLadder:
     rungs: list[Rung]
     total_objects: int = 0
     total_tier1_violations: int = 0
-    pillar_results: dict[str, dict[str, Any]] = field(default_factory=dict)
+    pillar_results: dict[str, Any] = field(default_factory=dict)
     build_time_ms: float = 0.0
 
     def rung_by_name(self, name: str) -> Rung | None:
