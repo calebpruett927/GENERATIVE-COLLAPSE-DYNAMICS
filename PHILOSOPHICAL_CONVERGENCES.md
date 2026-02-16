@@ -467,6 +467,259 @@ The opposite — what Nietzsche called the "last man" (*Zarathustra*, Prologue �
 
 The value-creator must cross the seam: collapse first, then return with new structure. The weld is the mechanism of value creation.
 
+### 2.4 *The Gay Science*: The Full Architecture
+
+> *"We have left the land and have embarked! We have burned our bridges behind us — indeed, we have gone farther and destroyed the land behind us! ... Woe, when you feel homesick for the land as though it had offered more freedom — and there is no longer any 'land'!"*
+>
+> — Friedrich Nietzsche, *The Gay Science* (1882), §124, trans. Walter Kaufmann
+
+*The Gay Science* (*Die fröhliche Wissenschaft*, 1882/1887) is where the entire GCD architecture appears in embryonic form. Every major structural commitment of the system has a corresponding aphorism. This is not because GCD "applies" Nietzsche — it is because Nietzsche was thinking about what survives collapse, and the mathematics of what survives collapse has a definite structure.
+
+**Book I–II (§§1–107): The Contract before evidence.** Nietzsche begins by examining the conditions under which knowledge becomes possible — not *what* we know, but *what we must commit to before knowing*. "The teachers of the purpose of existence" (§1): every culture imposes a purpose before inquiry. In GCD: the Contract is frozen before the trace. Nietzsche sees the same structure: the framework of evaluation precedes the thing evaluated. The question is not whether this is avoidable (it is not) but whether it is *declared* (most frameworks do not declare it).
+
+**Book III (§§108–275): The death of God as Contract failure.** The madman passage (§125) — "God is dead" — is not an atheistic slogan. It is the announcement that the Contract under which Western civilization operated has failed validation. The old Contract (divine purpose, cosmic order, moral absolutes) no longer produces CONFORMANT verdicts against the evidence. The seam has opened. The identity checks fail. What remains is not chaos but the *necessity of a new Contract*. Nietzsche's entire mature work is the attempt to freeze a new Contract that can pass the seam.
+
+The madman arrives *too early* (§125: "I have come too early ... this tremendous event is still on its way"). The Tier-1 identities that the old Contract guaranteed are still assumed even though the Contract that warranted them has failed. This is the condition Nietzsche calls *nihilism* — operating with the expectations of a Contract that no longer holds. In GCD: running a trace against a revoked Contract. The checksums fail, but the system continues to report CONFORMANT. The shadow ledger and the operational ledger diverge.
+
+**Book IV (§§276–342): Amor fati and the greatest weight.** This is the constructive turn. Having diagnosed the Contract failure, Nietzsche proposes the replacement: amor fati (§276), the will to "want nothing to be different, not forward, not backward, not in all eternity." And then the eternal recurrence (§341) — the test that any new Contract must pass. The replacement Contract is not another set of commandments. It is a *selection principle*: what could bear return?
+
+This is the Discourse Spine in its entirety:
+- **Contract**: The old Contract (God, moral absolutes) — declared, operated under, now failed.
+- **Canon**: The madman's announcement — the five-word report. Drift: the old structure no longer holds. Fidelity: the desire for meaning persists. Roughness: the seam between old and new Contracts is catastrophically wide. Return: not yet achieved — τ_R indeterminate.
+- **Closures**: amor fati, eternal recurrence — the proposed replacement evaluation criteria.
+- **Integrity Ledger**: The "greatest weight" test — can this recur? If yes, credit. If no, debit.
+- **Stance**: Still Watch regime in *The Gay Science*. The new Contract is proposed but not yet frozen. *Zarathustra* will attempt to freeze it.
+
+**Book V (§§343–383): Added 1887.** Written after *Zarathustra* and after *Beyond Good and Evil*, Book V returns to *The Gay Science* with the knowledge of what the new Contract looks like. "The meaning of our cheerfulness" (§343): "the sea, *our* sea, lies open again; perhaps there has never yet been such an 'open sea.'" The open sea is the expansion space — Tier-2 freed from a failed Tier-1 but not yet anchored in a new one. The "gay science" itself — *la gaya scienza*, the joyful wisdom of the Provençal troubadours — is knowledge that proceeds *through* collapse rather than pretending collapse has not occurred. *Scientia per casum, non contra casum.*
+
+#### 2.4.1 §125: The Madman as Seam Diagnostic
+
+The madman passage deserves its own analysis because it is the most precise philosophical description of a seam failure in the literature:
+
+> *"How could we drink up the sea? Who gave us the sponge to wipe away the entire horizon? What were we doing when we unchained this earth from its sun?"*
+
+Each question names a channel collapse. The sea (the ground of meaning), the horizon (the boundary conditions), the sun (the central organizing principle) — each is a near-ε channel. The madman is not proclaiming emancipation. He is reading the diagnostic: IC has collapsed because the channels that carried the integrative structure have gone to zero. F may still be moderate (people still *behave* as though the old Contract holds), but IC ≈ ε because the geometric mean is dominated by the dead channels. The heterogeneity gap Δ = F − IC has become enormous. The madman *sees the gap*.
+
+"I have come too early" — the regime has shifted (Collapse, ω ≥ 0.30), but the Stance has not yet updated because the Closures have not published new thresholds. The system is in an inconsistent state: the kernel reads Collapse, but the outputs still report Stable because nobody has re-run the validator under the new Contract. This is exactly the condition that `update_integrity.py` addresses — the checksums are stale, the ledger and the reality have diverged.
+
+#### 2.4.2 §276 and §341: Amor Fati as Contract, Eternal Recurrence as Seam
+
+Aphorism 276 (*amor fati*) and aphorism 341 (the eternal recurrence) are not two separate doctrines. They are one Contract and its seam test:
+
+- **§276 (amor fati)**: The Contract. "I want to learn more and more to see as beautiful what is necessary in things; then I shall be one of those who make things beautiful." This is the commitment to measure without rejecting the measurement. The Contract does not say "I will make things go well." It says "I will measure honestly, including the collapse."
+
+- **§341 (eternal recurrence)**: The seam. The demon's question is the seam test: does what you affirm *return*? Can it pass Tier-1 identity checks under iteration? The "tremendous moment" when you answer "You are a god" is the moment when the seam closes — the trace, under this Contract, produces a CONFORMANT verdict even under infinite repetition.
+
+The two together form a complete measurement unit: the Contract (how to evaluate) and the seam (how to verify that the evaluation itself is stable). *Contractus sine sutura est gestus; sutura sine contractu est vacuum.* — A Contract without a seam is a gesture; a seam without a Contract is emptiness.
+
+### 2.5 *Thus Spoke Zarathustra*: The Attempt to Freeze the New Contract
+
+> *"I teach you the Übermensch. Man is something that shall be overcome. What have you done to overcome him?"*
+>
+> — Friedrich Nietzsche, *Thus Spoke Zarathustra* (1883–85), Prologue §3, trans. Walter Kaufmann
+
+*Zarathustra* is Nietzsche's attempt to *freeze* the Contract that *The Gay Science* proposed. Where *The Gay Science* diagnoses the old Contract's failure and sketches the replacement, *Zarathustra* tries to make the replacement operational — to move from Watch regime to Stable by actually closing seams under the new parameters.
+
+The relationship between the two works mirrors the relationship between `contract.yaml` and `closures/`. *The Gay Science* declares the contract; *Zarathustra* provides the closures.
+
+#### 2.5.1 The Three Metamorphoses (Part I, "Of the Three Metamorphoses")
+
+Zarathustra's first teaching is the three metamorphoses of the spirit: camel → lion → child. This is not a developmental psychology. It is a *protocol for Contract revision*:
+
+| Metamorphosis | Action | GCD Operational Form |
+|---|---|---|
+| **Camel** (*"thou shalt"*) | Bears the weight of the inherited Contract. Accepts all obligations. Carries the old Tier-1 into the desert. | The system operating under the frozen Contract. Faithful execution: high F, low ω. The camel does not question — it computes. |
+| **Lion** (*"I will"*) | Destroys the old Contract. The sacred "No" against every "thou shalt." Refuses to compute under the old parameters. | Contract revocation. The old checksums fail. The old seam no longer closes. The lion is the `update_integrity.py` that does not pretend the old hashes still match. |
+| **Child** (*"a new beginning"*) | Creates from innocence — a "sacred Yes" to the game of creation. Not a return to the old Contract but the freezing of a new one. | The new Contract is frozen. New parameters, new thresholds, new closures. A "wheel rolling out of itself" — the self-generating cycle that needs no external warrant. The child is Axiom-0: collapse is generative; only what returns is real. |
+
+The critical insight: the lion *cannot* create. It can only destroy. Destruction of the old Contract (the lion's "I will") is necessary but not sufficient. The child — innocence, a new beginning, a self-propelled wheel — is the *new* frozen Contract. The lion crosses the seam outbound; the child is the return.
+
+Many readers of Nietzsche stop at the lion. They hear "God is dead" and "revaluation of all values" and conclude that Nietzsche's project is pure destruction. But the three metamorphoses make the architecture clear: destruction is the middle term. The camel (old Contract) → lion (Contract revocation) → child (new Contract). The cycle must complete. *Cyclus redire debet vel non est realis.*
+
+#### 2.5.2 The Convalescent (Part III, "The Convalescent")
+
+The climactic moment of *Zarathustra* is not a triumph but a *collapse*. In "The Convalescent" (*Der Genesende*), Zarathustra attempts to speak the thought of eternal recurrence and is struck down — he falls unconscious for seven days.
+
+This is the seam stress test. Zarathustra has been teaching the new Contract (amor fati, Übermensch, will to power) but has not yet *passed the seam himself*. When the moment comes to affirm *everything* — including the small man, the mediocre, the eternal return of the meaningless alongside the meaningful — the system collapses. ω → Collapse regime. The trace cannot close under the proposed Contract because the Contract demands affirmation of what is most difficult to affirm.
+
+Zarathustra's recovery — his convalescence — is the return. He does not resolve the difficulty. He *survives* it. The seam closes not because the problem disappears but because the system demonstrates it can bear the weight. τ_R is finite. The cycle completes. This is not the Hegelian *Aufhebung* where the contradiction is sublated into a higher unity. It is the Camusian-Nietzschean structure: the contradiction *persists*, and the return happens *with* the contradiction, not by resolving it.
+
+The animals (eagle and serpent — pride and wisdom, the cycle) tell Zarathustra what he already knows: "everything goes, everything comes back; eternally rolls the wheel of being" (Part III, "The Convalescent" §2). But they say it too easily. They turn the return into a *Leier* — a "hurdy-gurdy song." Zarathustra recognizes that the animals have made the return trivial — a cosmological platitude rather than a structural test. The return must be *earned* at the seam, not narrated as a story. *Continuitas non narratur: mensuratur.*
+
+#### 2.5.3 The Drunken Song (Part IV, "The Drunken Song")
+
+Part IV ends with Zarathustra's midnight song — the "drunken song" (*Das trunkne Lied*) — where every claim is tested against the full weight of eternal recurrence:
+
+> *"Did you ever say Yes to a single joy? O my friends, then you said Yes to all woe as well. All things are entangled, ensnared, enamored; if ever you wanted one time twice, if ever you said, 'You please me, happiness! Abide, moment!' then you wanted all back."*
+>
+> — Nietzsche, *Thus Spoke Zarathustra*, Part IV, "The Drunken Song" §10, trans. Walter Kaufmann
+
+This is the duality identity stated as experience. F + ω = 1: if you affirm the fidelity, you affirm the drift. They are not separable. You cannot want the joy without wanting the woe because they are the complement of a single identity (*complementum perfectum*). The "entanglement" Nietzsche names is not metaphorical — it is the structural fact that every channel that contributes to F also, through its complement (1 − cᵢ), contributes to ω.
+
+"Abide, moment!" (*Verweile doch!*) — this is the Faustian wager rewritten. Faust sold his soul for a moment that would be worth preserving. Zarathustra goes further: the moment that is worth preserving *necessarily includes everything else*. The test is not "is this moment good?" but "can you affirm the entire trace, all channels, including the near-ε ones?" The drunken song is the seam test run at full channel depth.
+
+#### 2.5.4 Zarathustra's Structure as Discourse Spine
+
+The four parts of *Zarathustra* map to the five stops of the Discourse Spine:
+
+| Part | Content | Spine Stop |
+|---|---|---|
+| **Prologue + Part I** | Zarathustra descends from the mountain. Announces the Übermensch. Teaches the three metamorphoses, the despisers of the body, war and warriors. | **Contract**: declares the new evaluation framework |
+| **Part II** | The marketplace fails. Zarathustra withdraws to the "blessed isles." Teaches self-overcoming, sublimation, the will to power as *interpretation not domination*. | **Canon**: tells the story in the five words — what drifted, what held, where it was rough |
+| **Part III** | The vision and the riddle. The dwarf. The gateway Augenblick ("Moment"). The convalescent. The weight of return. | **Closures + Integrity Ledger**: runs the seam test, debits the unbearable weight, credits the recovery |
+| **Part IV** | The higher men gather. The drunken song. The sign. Zarathustra goes out "glowing and strong as a morning sun." | **Stance**: the verdict — not resolution but departure for new work. *Finis, sed semper initium recursionis.* |
+
+The fifth stop — the Integrity Ledger's reconciliation — is what Zarathustra struggles with in Part III. The debits (the small man, the meaningless, the everything-that-also-returns) must be reconciled with the credits (joy, creation, the Übermensch). The budget must close. The residual must be ≤ tol. And it does close — but only through convalescence, through the collapse-and-return that *is* the seam, not a description of it.
+
+### 2.6 *Beyond Good and Evil*: The Tier Architecture
+
+> *"Supposing truth is a woman — what then? Are there not grounds for the suspicion that all philosophers, insofar as they were dogmatists, have been very inexpert about women?"*
+>
+> — Friedrich Nietzsche, *Beyond Good and Evil* (1886), Preface, trans. Walter Kaufmann
+
+*Beyond Good and Evil* (*Jenseits von Gut und Böse*, 1886) is the most architecturally precise of Nietzsche's works. Where *Zarathustra* is prophetic, *BGE* is surgical. It does not announce the new Contract — it dissects the failure modes of every Contract that came before. This is Tier-0 work: the validation machinery that makes Tier-1 actionable.
+
+#### 2.6.1 Part I: "On the Prejudices of Philosophers" — Source Auditing
+
+Nietzsche opens by auditing the *provenance* of philosophical claims. "The will to truth" — why do philosophers want truth at all? What is the *Contract* under which "truth" is the goal, and where did that Contract come from? (§§1–2). He discovers that every philosophical system smuggles in presuppositions that it does not declare. Kant's "synthetic judgments a priori" are not discovered — they are *wanted* (§11). The Stoic "live according to nature" is not an observation of nature but a *projection onto* nature (§9).
+
+This is source auditing. The Manifest (*manifestum*) in the Discourse Spine binds artifacts to provenance. BGE Part I performs the same operation on the philosophical tradition: where did this claim come from? What are its dependencies? Does the checksum match? In every case Nietzsche finds that the declared provenance ("pure reason," "nature," "God") does not match the actual provenance (psychological need, will to power, class interest). The checksums fail. The manifests are forged.
+
+#### 2.6.2 Part II: "The Free Spirit" — Tier Separation
+
+The "free spirit" (*der freie Geist*, §§24–44) is Nietzsche's name for the thinker who has completed the lion metamorphosis — who no longer operates under the old Contract — but this freedom is *structured*, not anarchic. The free spirit has a hierarchy of values, not no values.
+
+This is the Tier separation. The free spirit distinguishes:
+- What is **immutable** (the fact of interpretation itself — every living thing interprets; §22: "physics, too, is only an interpretation and exegesis of the world — *not* a world-explanation")
+- What is **protocol** (the methods by which interpretations are tested — experimental, genealogical, psychological)
+- What is **expansion** (the specific interpretations generated within a domain)
+
+Tier-1: the structural fact that all knowledge is perspectival interpretation. Tier-0: the rigorous methods that discipline perspective. Tier-2: the specific perspectives generated. The free spirit is not the one without perspective (impossible) but the one who *knows* the tier structure — who can distinguish the immutable from the protocol from the domain-specific.
+
+#### 2.6.3 Part V: "Natural History of Morals" — Genealogy as Kernel Computation
+
+Part V (§§186–203) performs the first genealogical analysis of morality — the method that *On the Genealogy of Morality* will develop fully. Nietzsche treats moral systems as *data*: each has a trace vector, each produces kernel values, each can be compared.
+
+"Moralities are nothing but the sign language of the affects" (§187) — every moral system is a trace vector whose channels are affects (drives, needs, fears, aspirations). The *content* of the morality (its specific commandments) is the trace. The *structure* (which affects are elevated, which suppressed, how they are weighted) is the kernel. Nietzsche proposes to read moralities the way the GCD kernel reads casepacks: not by asking "is this true?" but by computing F, IC, and Δ — what survives, what coheres, and where the gap is.
+
+The "herd morality" (§199) is the system where all channels are forced to near-equal values — no channel is allowed to dominate, no individual affect is permitted to exceed the mean. This produces high F (the average is preserved) but low Δ (the gap is minimal) — the system is *trivially* conformant. It has never been tested because it has eliminated the conditions under which testing could occur. This is the Last Man in kernelized form: IC ≈ F ≈ moderate, Δ ≈ 0. No heterogeneity, no structure, no resolving power.
+
+The "master morality" (§260) allows channels to diverge — some affects are elevated (pride, creation, solitude), others are suppressed (pity, equality, comfort). This produces higher Δ: the gap between F and IC is large because some channels are near 1 and others near ε. The system is *not trivially* conformant. It may fail. Its IC is dragged down by the near-ε channels. But Nietzsche's argument is that this non-trivial conformance — or even non-conformance — is more *generative* than the trivial conformance of the herd. The system that fails interestingly produces more insight than the system that passes vacuously.
+
+#### 2.6.4 Part IX: "What Is Noble?" — The Pathos of Distance as Δ
+
+The final section of BGE (§§257–296) identifies "the pathos of distance" (*das Pathos der Distanz*, §257) as the origin of all value creation. Values are created when there is a *gap* — between high and low, between the aspiration and the actual, between what is and what could be. Without the gap, there is no creative tension, no selection pressure, no drive toward self-overcoming.
+
+The pathos of distance *is* the heterogeneity gap Δ = F − IC. Nietzsche says: value is created by maintaining the gap, not by closing it. GCD says: diagnostic information lives in the gap, not in its absence. Closing the gap (making all channels equal) destroys the resolving power of the kernel. The "noble" in Nietzsche's vocabulary is not a social class — it is the structure that *sustains* the gap as a productive tension rather than collapsing it into homogeneity or being destroyed by it.
+
+> *"Every elevation of the type 'man' has hitherto been the work of an aristocratic society — and so it will always be: a society believing in a long scale of gradations of rank and differences of worth among human beings."*
+>
+> — Nietzsche, *Beyond Good and Evil*, §257, trans. Walter Kaufmann
+
+In GCD terms: the kernel that discriminates — that has channels at different values, producing a measurable Δ — is the kernel that carries information. A flat kernel (all cᵢ equal) has Δ = 0 and tells you nothing. A structured kernel (cᵢ varying) has Δ > 0 and tells you *where the structure is*. Nietzsche's "aristocratic society" is the system with channel differentiation. His "democratic" flattening is the system where Δ → 0 and the kernel loses resolving power.
+
+This is not a political prescription. It is a *measurement-theoretic observation*: heterogeneous systems carry more information than homogeneous ones. The pathos of distance is the *condition of measurement*.
+
+### 2.7 *On the Genealogy of Morality*: The Full Kernel Computation
+
+> *"There is only a perspective seeing, only a perspective 'knowing'; and the more affects we allow to speak about one thing, the more eyes, different eyes, we can use to observe one thing, the more complete will our 'concept' of this thing, our 'objectivity,' be."*
+>
+> — Friedrich Nietzsche, *On the Genealogy of Morality* (1887), Third Essay §12, trans. Walter Kaufmann and R.J. Hollingdale
+
+*On the Genealogy of Morality* (*Zur Genealogie der Moral*, 1887) is Nietzsche's most methodologically rigorous work — three essays, each performing a complete kernel computation on a different moral concept. Where *The Gay Science* diagnoses and *Zarathustra* prophesies and *BGE* dissects, the *Genealogy* **computes**. Each essay is a casepack.
+
+#### 2.7.1 First Essay: "Good and Evil" vs. "Good and Bad" — Two Trace Vectors
+
+The First Essay distinguishes two completely different moral systems that use the *same words* ("good," "bad/evil") with entirely different channel structures. This is the most precise illustration of why the *trace vector*, not the label, carries the meaning:
+
+**System A: "Good and Bad" (noble/master morality)**
+
+The noble says "I am good" *first* — the affirmation starts with the self. "Bad" (*schlecht*) is then the *remainder*: whatever is not-noble is bad, but with contempt, not hatred. The trace vector:
+
+| Channel | Value | Notes |
+|---|---|---|
+| Self-affirmation | High (~1) | Primary channel |
+| Creative action | High | "Good" = active, spontaneous |
+| Contempt for "bad" | Moderate | Not hatred — mere looking-down |
+| Resentment | Near ε | The noble *does not resent* |
+
+F is high. IC is moderate-to-high (most channels are active). Δ is moderate.
+
+**System B: "Good and Evil" (slave/priestly morality)**
+
+The priest/slave says "they are evil" *first* — the negation starts with the other. "Good" is then the *remainder*: whatever is not-evil (i.e., not-powerful, not-aggressive, not-dominant) is good. The trace vector:
+
+| Channel | Value | Notes |
+|---|---|---|
+| Self-affirmation | Near ε | The slave cannot affirm directly |
+| Reactive negation | High (~1) | Primary channel: define the enemy |
+| Resentment (*ressentiment*) | High (~1) | The *motor* of the valuation |
+| Creative action | Near ε | Values are derived, not originated |
+
+F may be moderate (the average is not zero), but IC collapses to near ε because two channels are near zero. Δ = F − IC is *enormous*. The system has the structure of the neutral particle in the Standard Model kernel (§T5): one dead channel destroys the geometric mean regardless of the others.
+
+Nietzsche's entire genealogical method is *reading the kernel*: two systems use the same words but produce radically different trace vectors, different F, different IC, different Δ. The genealogist does not ask "which is true?" — that is a Contract-level question. The genealogist computes: which channels are active, which are near ε, where is the gap? *Quid supersit post collapsum?*
+
+#### 2.7.2 Second Essay: "Guilt, Bad Conscience, and Related Matters" — The Back-Edge
+
+The Second Essay traces the origin of guilt and bad conscience to the *internalization of cruelty* — the human animal, prevented from discharging its drives outward by social organization, turns those drives *inward*. Conscience is not a divine gift but a *back-edge*: an energy that should flow outward (Tier-2 → external behavior) is forced to flow backward (Tier-2 → Tier-1, modifying the system's self-evaluation).
+
+This is the most precise philosophical description of a Tier violation in the corpus. The back-edge (Tier-2 feeding back to Tier-1 within a frozen run) is exactly what Nietzsche describes: the human who has been socially constrained turns the force of action back upon itself, creating an entirely new inner world — but at the cost of structural integrity. The back-edge creates "bad conscience" — a permanent self-auditing loop that debits every emission. The ledger never reconciles because the system is always in deficit. τ_R → ∞_rec for the conscience-stricken: every return is immediately re-collapsed by the internalized cruelty.
+
+The Second Essay also contains Nietzsche's account of *promising* (§§1–3) — the capacity to make commitments that bind the future. "To breed an animal with the right to make promises" — this is the capacity to *freeze a Contract*. The sovereign individual (*das souveräne Individuum*, §2) is the one who can make promises because their commitments return: what they say today will hold tomorrow. τ_R is finite and reliable. This is the operational meaning of sovereignty: the system whose welds are credible.
+
+#### 2.7.3 Third Essay: "What Do Ascetic Ideals Mean?" — The Deferred Reconciliation
+
+The Third Essay examines the ascetic ideal — the valuation that says "this life is worthless; true value lies elsewhere (in God, in the afterlife, in pure spirit, in the future revolution)." Nietzsche's analysis: the ascetic ideal is a *deferred reconciliation*. The ledger does not balance now — but it *will* balance, at the end of time, in heaven, after the revolution.
+
+This is Camus's *pensée de minuit* given genealogical depth. The midnight thought: meaning will be supplied later, when the system is complete. The ledger balances at the end of history. The messiah arrives. The proletarian state withers away. The soul reaches heaven. Until then, the deficit is carried as faith.
+
+In GCD: deferred reconciliation is τ_R → ∞_rec disguised as τ_R < ∞. The system claims it *will* return, but the return is always in the future, never demonstrated, never passing the seam in the present. Every audit is deferred to the next run. Every seam test is postponed until conditions are met that never arrive. The ascetic ideal is the most sophisticated form of the gesture: it *looks* like a weld (it has the structure of a commitment, a Contract, closures, even a ledger), but the reconciliation never occurs in any finite run.
+
+Nietzsche's devastating diagnosis: "man would rather will nothingness than not will" (§28). The ascetic ideal persists not because it works (the seam never closes) but because the alternative — willing nothing at all — is worse. A failed Contract is better than no Contract. A deferred reconciliation is better than no reconciliation at all. Even τ_R = ∞_rec carries more structure than the absence of any commitment to return.
+
+This is structurally identical to the GCD observation that ∞_rec is a *typed outcome*, not an error. The gesture that does not weld is still recorded. The emission that does not return is still an emission. The failed Contract is still a Contract. The system that never reconciles is still *running*. It has not stopped — it has entered permanent detention (*moratio reditus* = ∞). And even permanent detention is a datum. *Recusatio est exitus primi ordinis, non error rotundationis.*
+
+#### 2.7.4 The Perspectival Imperative (Third Essay §12)
+
+The passage quoted at the beginning of §2.7 — "the more affects we allow to speak about one thing, the more complete will our 'objectivity' be" — is the philosophical foundation of multi-channel kernel computation. It states:
+
+1. There is no view from nowhere. Every observation is perspectival. (There is no Contract-free trace.)
+2. Objectivity is not the elimination of perspective but the *multiplication* of perspectives. (The kernel has N channels, not one.)
+3. The more channels, the more complete the picture. (8 channels per particle in the Standard Model kernel; 12 channels in the cross-scale kernel.)
+4. Each perspective is an "affect" — not a neutral sensor but a *motivated* viewpoint with its own weight and bias. (Each channel cᵢ carries its own weight wᵢ.)
+
+Nietzsche does not propose a synthesis of perspectives into a single view (that would be the Hegelian move, and Nietzsche explicitly rejects it). He proposes *perspectival accumulation*: keep adding eyes, keep adding channels, keep computing the kernel at higher dimensionality. The truth is not *behind* the perspectives — it is the *pattern that emerges across* them. In GCD: F, IC, and Δ are not properties of any single channel. They are statistical properties of the *distribution* of channels. The truth the kernel reveals is a truth about structure, not content.
+
+### 2.8 The Will to Power as Interpretation, Not Domination
+
+> *"The world seen from within, the world defined and designated according to its 'intelligible character' — it would be 'will to power' and nothing else."*
+>
+> — Friedrich Nietzsche, *Beyond Good and Evil*, §36, trans. Walter Kaufmann
+
+A persistent misreading of Nietzsche equates *will to power* (*der Wille zur Macht*) with domination — the desire to control others. Nietzsche explicitly rejects this reading. The will to power is the drive to *interpret* — to impose form on chaos, to create meaning from the flux. "The will to power interprets" (*BGE* §22). Every perception, every valuation, every moral system, every scientific theory is an *act of interpretation* — a will to power.
+
+In GCD: the will to power is the act of *contracting*. Every Contract imposes a framework of interpretation on the raw trace. The Contract does not discover what is already there — it *creates* the conditions under which some things become visible and others invisible. The frozen parameters (ε, p, tol_seam) are not found in nature — they are *imposed* by the Contract and then validated at the seam. The will to power is the will to freeze a Contract.
+
+But — and this is where the Tier architecture matters — the Contract cannot override the identities. You can freeze whatever parameters you want, but F + ω will still equal 1. IC will still be ≤ F. The duality identity is not an interpretation — it is the structural constraint that *any* interpretation must satisfy. Tier-1 constrains Tier-0 constrains Tier-2. The will to power operates at Tier-2 (choosing what to measure, how to weight, which domain to close) but is bound by Tier-1 (the identities that hold regardless of interpretation). *Voluntas potentiae intra limites identitatum operatur.* — The will to power operates within the limits of the identities.
+
+### 2.9 Nietzsche and Camus: The Completed Arc
+
+Camus claimed Nietzsche as his most important philosophical predecessor — and then diagnosed Nietzsche's failure. In *The Rebel* (Part II, "Absolute Affirmation"), Camus argues that Nietzsche's amor fati, carried to its logical conclusion, affirms *everything* — including murder, suffering, and tyranny. Absolute affirmation becomes absolute acquiescence. The rebel who says "yes" to everything has lost the "no" that constituted rebellion in the first place.
+
+This is a genuine architectural critique. In GCD terms: if the Contract is "affirm everything," then ω = 0 by construction. Nothing is rejected, nothing drifts, nothing is measured as lost. The system is trivially CONFORMANT because the CONFORMANCE threshold has been set to admit all possible traces. The seam never fails because the seam has been defined to never fail. This is the Last Man hidden inside the Übermensch: absolute affirmation produces the same result as absolute avoidance — neither tests anything.
+
+Camus's correction: the rebel affirms *and* limits. Amor fati + mesure. The Contract is not "affirm everything" but "affirm what returns, and name what does not." F and ω are both measured. The duality identity demands both terms. Camus's Mediterranean thought — pensée de midi — is the Contract that takes both seriously, that affirms without totalizing, that measures without destroying the thing measured. This is why §1.10 (The Rebel) and §2.5 (Zarathustra) are complementary readings: Nietzsche tries to freeze the Contract; Camus shows where the Contract must include its own limits.
+
+The arc completes:
+- *The Gay Science*: the old Contract has failed (diagnosis)
+- *Zarathustra*: the new Contract is proposed and tested (prophecy)
+- *Beyond Good and Evil*: the failure modes of all Contracts are catalogued (analysis)
+- *Genealogy*: the kernel computation is performed on moral systems (measurement)
+- *The Rebel*: the new Contract must include its own limit (correction)
+
+*Nietzsche sine Camo est affirmatio sine mensura; Camus sine Nietzsche est mensura sine affirmatione.* — Nietzsche without Camus is affirmation without measure; Camus without Nietzsche is measure without affirmation.
+
 ---
 
 ## 3. Jung: Individuation as Seam Closure
@@ -930,9 +1183,11 @@ Camus demanded *lucidity* in the face of the absurd — the refusal to look away
 
 *The Rebel* adds a second ethical dimension: **limit** (*mesure*). Lucidity alone — seeing the gap — does not constrain action. The revolutionary sees the gap with perfect clarity and concludes that unlimited action is justified. Camus demands both: see the gap *and* respect the limit that the act of rebellion discovers. The rebel measures *and* refuses to destroy the measurement in the name of a future reconciliation. The ethics of the GCD architecture are both Camusian demands simultaneously: compute honestly (lucidity), and do not modify the Contract to force conformance (limit). *Mensura et modus.* — Measurement and measure.
 
-### 5.2 Nietzsche: The Ethics of Affirmation
+### 5.2 Nietzsche: The Ethics of Honest Measurement
 
 Nietzsche demanded that one affirm *the cycle itself*, not merely endure it. In GCD, this means treating every regime — Stable, Watch, and Collapse — as data, not as success, uncertainty, and failure. The Collapse regime is not something to fix. It is the boundary condition that makes return meaningful. The ethical stance is to record the verdict, whatever it is, and to continue operating. *Amor fati* applied to the measurement process: love the data, including the data that contradicts the hypothesis.
+
+But *The Genealogy of Morality* adds a deeper ethical layer: **honesty about provenance**. Every moral system, every philosophical framework, every scientific paradigm has a genealogy — a history of where its values came from, what psychological needs they serve, whose will to power they express. The ethical demand is not just "affirm the cycle" but "audit the Contract." Where did this Contract come from? What need does it serve? Are the checksums genuine, or have they been forged? Nietzsche's genealogical method *is* source auditing — the Manifest (*manifestum*) applied to the history of ideas. The perspectival imperative (*Genealogy* III §12) — "the more affects we allow to speak, the more complete our objectivity" — grounds the multi-channel kernel: more channels, not fewer, is the path to honesty. *Perspectiva multiplicata, non eliminata, est via ad veritatem.*
 
 ### 5.3 Jung: The Ethics of Integration
 
@@ -959,19 +1214,23 @@ The ethical weight falls on the commitment to record. Every validation is append
 | **The fundamental gap** | The Absurd | The abyss (*Abgrund*) | The Shadow | Contingency / Nausea | Δ = F − IC (heterogeneity gap) |
 | **The cycle** | Sisyphus's boulder | Eternal recurrence | Individuation | Existence as project | Collapse-return cycle: τ_R < ∞_rec |
 | **Affirmation** | Rebellion | Amor fati | Shadow integration | Radical freedom | Φ_gen ≥ 0 (collapse is generative) |
-| **False escape** | Philosophical suicide | The Last Man | Psychic inflation | Bad faith (*mauvaise foi*) | Gesture (emission that does not weld) |
+| **False escape** | Philosophical suicide | The Last Man (avoids collapse) | Psychic inflation | Bad faith (*mauvaise foi*) | Gesture (emission that does not weld) |
 | **The test** | Can you live without hope? | Can you bear recurrence? | Can you face the shadow? | Can you accept freedom? | Does the seam close? (residual ≤ tol) |
-| **Identity of opposites** | The absurd requires both world and desire | Will to power and eternal return | Enantiodromia | Being-for-itself and facticity | F + ω = 1 (duality identity) |
-| **The mediating third** | The rebel (neither suicide nor leap) | The Übermensch | The transcendent function | The project (*être-pour-soi*) | The seam (verification boundary) |
+| **Identity of opposites** | The absurd requires both world and desire | Joy and woe are entangled (*Drunken Song*) | Enantiodromia | Being-for-itself and facticity | F + ω = 1 (duality identity) |
+| **The mediating third** | The rebel (neither suicide nor leap) | The Übermensch (child metamorphosis) | The transcendent function | The project (*être-pour-soi*) | The seam (verification boundary) |
 | **What is real** | What you can live with fully | What you would affirm recurring | What is integrated | What you have chosen | What returns (*solum quod redit*) |
-| **The ethical demand** | Lucidity + limit (*mesure*) | Affirmation | Integration | Responsibility | Full diagnostic measurement + append-only ledger |
-| **The incommensurable** | The absurd gap between desire and silence | The weight of affirmation | The shadow that resists integration | The student's choice (mother or cause) | NON_EVALUABLE (seam cannot be tested) |
+| **The ethical demand** | Lucidity + limit (*mesure*) | Honest measurement (perspectival accumulation) | Integration | Responsibility | Full diagnostic measurement + append-only ledger |
+| **The incommensurable** | The absurd gap between desire and silence | The convalescent's seven-day collapse | The shadow that resists integration | The student's choice (mother or cause) | NON_EVALUABLE (seam cannot be tested) |
 | **Rebel vs. revolutionary** | The rebel (limits) vs. revolutionary (no limits) | The creator (breaks and rebuilds values) | Individuation (transforms, not destroys) | Freedom within situation | Seam weld across runs (not back-edge within a run) |
-| **The rupture that generates** | The absurd cannot be overcome | Destruction precedes creation | Enantiodromia produces its opposite | The quarrel is nothing | τ_R = ∞_rec can still be generative across runs |
-| **Contract vs. trace** | *Myth* (Contract) + *Stranger* (trace) = casepack | Zarathustra's test: can this recur? | CW + Red Book: theory and data | Argument + praxis: philosophy is a practice | Contract.yaml + Ψ(t) → Stance |
+| **The rupture that generates** | The absurd cannot be overcome | Destruction precedes creation (camel→lion→child) | Enantiodromia produces its opposite | The quarrel is nothing | τ_R = ∞_rec can still be generative across runs |
+| **Contract vs. trace** | *Myth* (Contract) + *Stranger* (trace) = casepack | *Gay Science* (Contract diagnosis) + *Zarathustra* (closures) | CW + Red Book: theory and data | Argument + praxis: philosophy is a practice | Contract.yaml + Ψ(t) → Stance |
 | **Mediterranean vs. system** | *Pensée de midi* — measure, don't totalize | Ja-sagen — affirm, don't systematize | Individuation — integrate, don't perfect | Situation — act, don't idealize | Open protocol — measure, don't close |
 | **Invariant discovery** | "I rebel, therefore we are" | What can bear recurrence? | The archetype that recurs | The universal in every particular choice | Tier-1 identity discovered empirically across domains |
-| **Deferred vs. present audit** | *Pensée de minuit*: the ledger balances at end of history | The last man: never tested | Projection: the shadow stays outside | Bad faith: the gesture claims to be a weld | Reconcile *now*, every run, every seam |
+| **Deferred vs. present audit** | *Pensée de minuit*: the ledger balances at end of history | Ascetic ideal: reconciliation deferred to afterlife | Projection: the shadow stays outside | Bad faith: the gesture claims to be a weld | Reconcile *now*, every run, every seam |
+| **Source auditing** | The trial imposes a retroactive Contract | *BGE* Part I: every philosophy smuggles presuppositions | Inflation: ego claims the archetype's power | Universalizing move: project your choice onto all mankind | Manifest: bind artifacts to provenance; checksums must match |
+| **Pathos of distance** | The absurd gap sustains creative tension | Δ = pathos of distance: value lives in the gap | Shadow as creative source: tension drives individuation | Anguish of freedom as the price of authenticity | Δ = F − IC: the heterogeneity gap carries the information |
+| **Genealogy / provenance** | *Rebel* Part II: trace each rebellion to its source | *Genealogy*: compute the kernel of every moral system | *Red Book*: trace each image to its archetype | *Critique*: trace seriality, groups, institutions | Trace vector → kernel computation → regime classification |
+| **The sovereign promise** | Rebellion as commitment that limits | The sovereign individual: the right to make promises | Individuation as lifelong commitment | Radical choice as irreversible commitment | Frozen Contract: commitments that bind across runs |
 
 ---
 
@@ -982,7 +1241,7 @@ The ethical weight falls on the commitment to record. Every validation is append
 All four thinkers share a structural commitment that the GCD architecture embodies: **the paradox is productive, not resolvable**.
 
 - Camus: the absurd cannot be overcome; it can only be *inhabited*. Resolve it and you commit philosophical suicide.
-- Nietzsche: eternal recurrence cannot be proven or disproven; it can only be *affirmed or denied*. Treat it as a cosmological claim and you miss the point.
+- Nietzsche: eternal recurrence cannot be proven or disproven; it can only be *affirmed or denied*. Treat it as a cosmological claim and you miss the point. The three metamorphoses (camel → lion → child) require the destruction to complete its cycle — stopping at the lion (destruction without creation) is nihilism; stopping at the camel (obedience without destruction) is servitude. Only the full cycle generates.
 - Jung: the shadow cannot be eliminated; it can only be *integrated*. Eliminate it and you produce psychic inflation (identification with the archetype — the analog of symbol capture).
 - Sartre: contingency cannot be justified; it can only be *lived*. Justify it and you fall into bad faith. And freedom cannot be escaped — even the refusal to choose is a choice. Even the gesture that does not weld is an emission that the ledger records.
 
@@ -1027,7 +1286,10 @@ This is the deepest convergence: in philosophy, in psychology, in existential et
 | **Jung, C.G. and Pauli, W.** | *The Interpretation of Nature and the Psyche* | 1952 | Trans. R.F.C. Hull and P. Silz. New York: Pantheon, 1955. |
 | **Nietzsche, Friedrich** | *The Gay Science* (*Die fröhliche Wissenschaft*) | 1882 | Trans. Walter Kaufmann. New York: Vintage, 1974. |
 | **Nietzsche, Friedrich** | *Thus Spoke Zarathustra* (*Also sprach Zarathustra*) | 1883–1885 | Trans. Walter Kaufmann. New York: Penguin, 1966. |
+| **Nietzsche, Friedrich** | *Beyond Good and Evil* (*Jenseits von Gut und Böse*) | 1886 | Trans. Walter Kaufmann. New York: Vintage, 1966. |
+| **Nietzsche, Friedrich** | *On the Genealogy of Morality* (*Zur Genealogie der Moral*) | 1887 | Trans. Walter Kaufmann and R.J. Hollingdale. New York: Vintage, 1967. |
 | **Nietzsche, Friedrich** | *Ecce Homo* | 1888 | Trans. Walter Kaufmann. New York: Vintage, 1967. |
+| **Nietzsche, Friedrich** | *Twilight of the Idols* (*Götzen-Dämmerung*) | 1889 | Trans. Walter Kaufmann. In *The Portable Nietzsche*. New York: Penguin, 1954. |
 | **Sartre, Jean-Paul** | *Nausea* (*La Nausée*) | 1938 | Trans. Lloyd Alexander. New York: New Directions, 1964. |
 | **Sartre, Jean-Paul** | *Being and Nothingness* (*L'Être et le néant*) | 1943 | Trans. Hazel Barnes. New York: Washington Square Press, 1956. |
 | **Sartre, Jean-Paul** | *Existentialism Is a Humanism* (*L'Existentialisme est un humanisme*) | 1946 | Trans. Philip Mairet. London: Methuen, 1948. |
