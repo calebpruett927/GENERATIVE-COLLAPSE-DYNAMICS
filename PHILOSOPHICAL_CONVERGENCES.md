@@ -397,6 +397,177 @@ The resolution: freedom is not in the parameters but in the *process*. The Contr
 
 This is Sartre's own structure: we are free, but we exist in a situation (*Being and Nothingness*, Part IV, Ch. 1). The situation constrains without determining. The frozen parameters constrain without prescribing the trajectory. The system is free to weld or to gesture — the protocol simply records which one happened.
 
+### 4.5 The Full Architecture of *Existentialism Is a Humanism*
+
+The lecture Sartre delivered at the Club Maintenant in Paris on October 29, 1945 is usually read for a single formula — *l'existence précède l'essence*. But the text is not a thesis statement. It is a **defense**. Sartre was responding to simultaneous attacks from Catholics (who accused existentialism of denying divine order), Communists (who accused it of bourgeois individualism and quietism), and humanists (who accused it of nihilistic subjectivism). The entire text is structured as a seam-crossing operation: here are the charges, here is the evidence, here is why the seam closes.
+
+This architectonic matters because the lecture mirrors the Discourse Spine precisely:
+
+| *E.I.H.* Structure | Spine Stop | Function |
+|---|---|---|
+| Charges from critics (Catholics, Communists, humanists) | **Contract** | Defines the terms before evidence — names what must be answered |
+| *L'existence précède l'essence* + examples (paper-knife, the student, the waiter) | **Canon** | The narrative body — claims made with evidence |
+| Three structural conditions: anguish, forlornness, despair | **Closures** | Published thresholds on how the argument must be evaluated |
+| The universalizing test: "in choosing myself, I choose man" | **Integrity Ledger** | Does the claim reconcile? Does it hold universally? |
+| "Existentialism is a humanism" — the final stance | **Stance** | Derived from the argument, not asserted prior to it |
+
+Sartre did not announce his stance in the title and then defend it. He built the argument from Contract through Closures, let the Ledger reconcile, and only then read the Stance from the result. The humanism is *derived*, not imposed. This is precisely the difference between a stance and an assertion — the stance is what the closed spine produces. *Stance is read from declared gates, never asserted.*
+
+### 4.6 The Paper-Knife and the Trace
+
+Before introducing the human case, Sartre deploys the paper-knife analogy (Sartre, *Existentialism Is a Humanism*, pp. 25–27). A paper-knife has an essence that precedes its existence — the artisan conceived the design, then produced the object. The knife was *defined before it was made*. Its essence (cutting, letter-opening, a certain form) precedes its existence (this particular knife on this particular desk).
+
+Sartre's argument: humans are not paper-knives. There is no artisan. There is no design. There is no essence that precedes the act of existing. *L'existence précède l'essence.*
+
+In GCD, this distinction maps precisely:
+
+| | Paper-Knife | Trace Ψ(t) |
+|---|---|---|
+| Essence → Existence? | Yes: design precedes manufacture | No: trace precedes stance |
+| What comes first? | Blueprint (fixed form) | Raw process (unconstrained trajectory) |
+| Identity derived from... | Prior specification | Passage through the kernel |
+| The Contract is... | The blueprint (prescribes the output) | The measurement grammar (prescribes how to *read*, not what to *be*) |
+
+The Contract is not a blueprint. It does not specify what the trace should look like, what regime it should land in, what its F should be. It specifies *how measurement will proceed* — which channels, which weights, which frozen parameters, which tolerance. The trace is free to be anything. The kernel reads what it is. Sartre's formula and GCD's architecture agree: the thing exists before it is classified. Classification is posterior to process.
+
+### 4.7 The Student, the Mother, and NON_EVALUABLE
+
+The most revealing passage in *Existentialism Is a Humanism* is not the thesis but a story. A student comes to Sartre during the Occupation (Sartre, *Existentialism Is a Humanism*, pp. 35–39). The student's brother has been killed by the Germans. He wants to avenge him by joining the Free French forces in England. But his mother lives alone — his father has collaborated, his brother is dead — and she lives only for him. If he leaves, she may die of grief. If he stays, he abandons the larger cause.
+
+The student asks Sartre: what should I do?
+
+Sartre's answer is devastating in its honesty:
+
+> *"You are free, therefore choose — that is to say, invent. No rule of general morality can show you what you ought to do; no signs are vouchsafed in this world."*
+>
+> — Sartre, *Existentialism Is a Humanism*, p. 38
+
+No ethical calculus — Christian, Kantian, utilitarian — can decide. The systems that claim to decide are performing bad faith: they pretend to have a gate that adjudicates between incommensurable values. But the channels are genuinely incommensurable. The love of a mother and the duty to a nation cannot be converted to a common unit without destroying what makes each one irreducible.
+
+In GCD, this is **NON_EVALUABLE** — the third verdict. Not "we don't know the answer" (that would be mere ignorance). Not "the system failed" (that would be NONCONFORMANT). But: *the seam cannot be tested in the terms presented*. The channels that would need to be compared share no common normalization. The Contract does not cover this case — not because the Contract is incomplete, but because the situation genuinely exceeds the Contract's domain.
+
+*Tertia via semper patet.* The third way is always open. The student's case is not binary — "join or stay." It is ternary: join, stay, or recognize that no system of gates can decide this, and that the choice is irreducibly yours. Sartre's refusal to advise is not abdication. It is the only verdict that preserves the integrity of the measurement: NON_EVALUABLE, because evaluating would require importing an external axiom the system does not have.
+
+The student must choose, and the choice will define him. That is Axiom-0 in the second person: only what you return with is real. The choice you make *is* the collapse-return cycle. You cannot know in advance what will return. You can only choose and observe the return.
+
+### 4.8 "In Choosing Myself, I Choose Man" — Universality as Tier-1
+
+Sartre makes a move in *Existentialism Is a Humanism* that his critics — and many of his readers — did not expect: a universalizing move.
+
+> *"When we say that man chooses himself, we do mean that every one of us must choose himself; but by that we also mean that in choosing for himself he chooses for all men. For in effect, of all the actions a man may take in order to create himself as he wills to be, there is not one which is not creative, at the same time, of an image of man as he thinks he ought to be."*
+>
+> — Sartre, *Existentialism Is a Humanism*, p. 29
+
+Every particular choice implicitly universalizes. To choose monogamy is to assert "monogamy is a valid way to be human." To join a trade union is to assert "the interests of labor warrant collective action." Every local decision legislates for the species — not because the chooser *intends* to legislate, but because the choice *is* an image of the human. Sartre: "I am thus responsible for myself and for all men, and I am creating a certain image of man as I would have him to be" (*Existentialism Is a Humanism*, p. 30).
+
+This is the architectural function of **Tier-1**. Every domain closure (Tier-2) that produces a conformant result implicitly affirms the invariant identities (Tier-1). When the atomic physics kernel validates F + ω = 1 for 118 elements, it is not just making a local measurement — it is asserting that the duality identity holds universally. When the Standard Model kernel verifies IC ≤ F across 31 particles, it legislates for all kernel operations everywhere. Each domain "chooses itself" (constructs its particular trace vector, its particular channels, its particular weights), but in choosing itself it chooses the invariance of the identities that govern all domains.
+
+Sartre did not have the architectural apparatus to enforce this insight. He could only describe the universalizing structure of choice. GCD provides the machinery: Tier-1 is the structural expression of Sartre's universalization — an immutable stratum that no particular choice creates but that every particular choice affirms.
+
+### 4.9 Forlornness, Anguish, and Despair as Structural Positions
+
+Sartre identified three structural conditions of the free being (Sartre, *Existentialism Is a Humanism*, pp. 31–39):
+
+**Forlornness** (*délaissement*): there is no God, no designer, no external source of values. We are alone with the weight of choice. In GCD: the system has exactly one axiom. There is no external framework that supplements Axiom-0. No appeal to authority, tradition, or convention can close a seam that the identities leave open. The system is forlorn in Sartre's precise sense — it must generate its own validation from its own structure, without external reassurance.
+
+**Anguish** (*angoisse*): not fear of a specific threat, but awareness that one's choices legislate universally. "The existentialist frankly states that man is in anguish" (p. 31). This is the weight of the frozen parameters. When the seam discovers p = 3, that value governs *every* domain. When tol_seam = 0.005, that tolerance binds *every* validation. The anguish is structural: the frozen parameter cannot appeal to a higher authority to justify itself. It justifies itself by the closure of the seam across all domains — or it fails, and the anguish was warranted.
+
+**Despair** (*désespoir*): "we must act without hope" — relying only on what is within the domain of our will, not on outcomes we cannot control (pp. 38–39). This is the operating principle of the kernel: compute the invariants from the trace that *exists*, not from the trace you hoped for. The kernel does not optimize. It measures. It does not adjust the trace toward a desired stance. It reads the stance from the trace that is given. Despair, in Sartre's usage, is the discipline of operating without outcome-dependence — computing faithfully from what is, not from what ought to be.
+
+| Sartre's Condition | GCD Structural Form | Common Misreading | Correct Reading |
+|---|---|---|---|
+| Forlornness | Single axiom, no external supplement | Loneliness, abandonment | Self-sufficiency of structure |
+| Anguish | Frozen parameters legislate universally | Anxiety, paralysis | Weight of structural responsibility |
+| Despair | Kernel measures without optimizing | Hopelessness, nihilism | Discipline of honest measurement |
+
+None of these are emotional states in Sartre's treatment. They are *structural positions* — conditions inherent in the situation of a being that is free and knows it. GCD operationalizes them without the psychological overtones: the system is forlorn (single axiom), anguished (frozen universality), and in despair (measurement without optimization) — and it functions precisely *because* of these conditions, not despite them.
+
+### 4.10 The Sartre-Camus Rupture — History vs. Invariance
+
+The friendship between Sartre and Camus was the gravitational center of postwar French intellectual life. Sartre had reviewed *The Stranger* with deep admiration in 1943 ("*Explication de 'L'Étranger'*," in *Situations I*, Paris: Gallimard, 1947). They shared the Liberation, the Café de Flore, the editorial orbit of *Les Temps Modernes*. For a few years they appeared to be twin articulations of the same insight: the absurdity of existence and the imperative to act within it.
+
+The rupture came with *The Rebel* (*L'Homme révolté*, 1951). Camus attacked revolutionary violence — specifically the Marxist-Hegelian claim that historical necessity justifies terror. He distinguished the **rebel** (who says "no" to oppression while affirming a limit: "this far, no farther") from the **revolutionary** (who pursues total transformation without limits, subordinating every present value to a future utopia). Camus: "The rebel... says yes and no simultaneously" (*The Rebel*, p. 13). The rebel does not reject the world. The rebel refuses to accept that the world's injustice authorizes unlimited remedial violence.
+
+Sartre's journal *Les Temps Modernes* responded with a devastating review by Francis Jeanson (May 1952), accusing Camus of "Red Cross morality" — a humanitarianism that refuses to dirty its hands, that speaks of limits while others are crushed by structures only revolution can dismantle. Camus replied with a letter addressed to "Monsieur le Directeur" — refusing to name Sartre, treating him as an institution rather than a friend. Sartre's own reply was brutal:
+
+> *"And if you find me cruel, have no fear — I shall soon speak of myself in terms that will give you a chance to retaliate... My dear Camus, you were once the heart of a living matter... But now your combination of dreary conceit and vulnerability disqualifies you from discussing anything at all."*
+>
+> — Jean-Paul Sartre, "Reply to Albert Camus," *Les Temps Modernes*, August 1952 (trans. Benka Barfield, in *Sartre and Camus: A Historic Confrontation*, ed. David Sprintzen and Adrian van den Hoven, Amherst: Humanity Books, 2004, pp. 131–161)
+
+They never spoke again. Camus died in an automobile accident on January 4, 1960. Sartre wrote a brief, grieving tribute: "He and I had quarreled... But a quarrel is nothing — even if you never see each other again" (*France-Observateur*, January 7, 1960).
+
+### 4.11 The Philosophical Substance of the Rupture
+
+Beneath the personal acrimony lies a genuine philosophical disagreement that the GCD architecture can adjudicate — not by taking sides, but by identifying the structural positions:
+
+**Sartre's position — pure Tier-2**: Everything is constructed. There are no invariants that transcend the historical situation. If revolutionary action is needed, revolutionary action is justified — the situation determines the ethics. Values are created through praxis, not discovered in nature. There is no *physis* (nature) that limits *nomos* (convention/law). History is the medium of freedom.
+
+**Camus's position — reaching for Tier-1**: There exist limits that no revolution can override. The rebel says "no" — but the "no" implies a "yes" to something that transcends the revolutionary's project. There is a *human nature* — not a fixed essence, but a structural invariance that persists through historical change. The rebel discovers these limits empirically, through the act of refusal. "I rebel, therefore we are" (*The Rebel*, p. 22).
+
+In GCD terms:
+
+| | Sartre | Camus |
+|---|---|---|
+| **Tier architecture** | Everything is Tier-2: constructed, situational, revisable | Tier-1 exists: some structures are invariant under all transformations |
+| **Limits** | Limits are imposed by situations, not by nature | Limits are discovered by the seam — they are what persists through collapse |
+| **History** | The medium of freedom: historical praxis creates values | A cycle, not a vector: recurring patterns reveal invariants |
+| **Violence** | Justified when the historical situation demands it | Limited by the invariants the rebel discovers in the act of refusal |
+| **The gap** | Can be dialectically overcome through revolutionary transformation | Structural and irreducible: Δ = F − IC is not a problem to be solved |
+| **Frozen parameters** | There are none — everything is situation-dependent | Discovered by the seam, consistent across all situations |
+
+The GCD architecture does not side with Sartre or Camus. It contains both positions as structural components:
+
+- The **Tier-2 expansion space** is Sartre's domain: freely constructed, domain-specific, revisable, created through the "praxis" of domain closure development. Every discipline constructs its own channels, weights, and interpretive context. Nothing is given.
+- The **Tier-1 invariants** are Camus's domain: F + ω = 1 holds regardless of what domain you are in. IC ≤ F cannot be overridden by any Tier-2 closure, no matter how compelling the situational argument. The identities are what the rebel discovers: the structural limits that persist through every collapse.
+
+The rupture between Sartre and Camus is, in this reading, the rupture between Tier-2 and Tier-1. Sartre could not accept that anything was invariant. Camus could not articulate the architectural relationship between invariance and freedom. GCD holds both: Tier-2 is radically free (existence precedes essence, the trace is unconstrained), *and* Tier-1 is immutable (the identities hold universally). The freedom and the invariance are not in conflict — they operate at different tiers, connected by the one-way dependency that governs the architecture.
+
+### 4.12 Rebellion vs. Revolution — The Limit That Makes Return Possible
+
+Camus's distinction between rebel and revolutionary maps precisely onto the GCD seam protocol:
+
+**The rebel** operates within the collapse-return cycle. The rebel measures, reports, and returns. The rebel's "no" is a regime classification — NONCONFORMANT — not a destruction of the measurement apparatus. The rebel says: "this seam did not close; here is the residual; the stance is Watch or Collapse." The rebel preserves the Protocol while reporting its results honestly.
+
+**The revolutionary** attempts to change the Protocol itself on the basis of a single run's results. The revolutionary says: "the thresholds are wrong; the frozen parameters should be different; the identities need revision; Tier-1 must yield to the demands of Tier-2." This is precisely the back-edge that the tier architecture forbids: Tier-2 → Tier-1 feedback within a frozen run.
+
+The rebel can *become* a revolutionary legitimately — but only through a **seam weld across runs**: freeze new parameters, validate against all existing domains, demonstrate κ-continuity, publish receipts. The weld is the disciplined mechanism of structural change. Without it, the revolutionary's intervention is a gesture — an emission that does not return, that claims to have changed the system but cannot demonstrate continuity with the prior state.
+
+Camus saw this with extraordinary clarity:
+
+> *"Every revolutionary ends by becoming either an oppressor or a heretic."*
+>
+> — Camus, *The Rebel*, p. 249
+
+Translated: every agent that modifies Tier-1 without a weld either becomes the new frozen authority (oppressor — the new parameters are imposed without validation) or is rejected by the existing system (heretic — the weld fails, the parameters are not adopted). The only alternative is the rebel's path: operate within the system, report honestly, and cross the seam when the evidence warrants it.
+
+### 4.13 The Letter — When the Seam Fails to Close
+
+The exchange between Sartre and Camus in 1952 is itself a seam failure. Both men attempted to cross the seam — to demonstrate that their positions were continuous, that the other's objections could be met, that the residual was within tolerance. Both failed.
+
+Camus's letter to "Monsieur le Directeur" is a *gesture*: it refuses to address the interlocutor by name, depersonalizing the exchange, treating the relationship as an institutional rather than personal seam. The residual (the distance between what Camus believed Sartre understood and what Jeanson's review demonstrated) exceeded tolerance. The seam did not close. Camus's gesture was not a weld because it did not engage with the specific arguments — it objected to the tone and the bad faith of the venue.
+
+Sartre's reply is also a gesture — brilliant, devastating, and structurally incomplete. He dismissed Camus's philosophical competence ("you were not difficult to refute" — Sartre, *Reply to Albert Camus*, in Sprintzen and van den Hoven, p. 149) but did not engage with the central claim of *The Rebel*: that there exist limits to what revolutionary action can justify. Sartre's reply demonstrated fidelity in the channel of rhetorical power and near-ε fidelity in the channel of philosophical engagement with the actual argument. The heterogeneity gap was enormous.
+
+The exchange was irrecoverable — τ_R = ∞_rec. Not because the philosophical question was irresolvable, but because the personal seam had been ruptured beyond the tolerance. The ledger records both gestures. Neither is deleted. *Historia numquam rescribitur; sutura tantum additur.*
+
+And yet — and Camus would have appreciated this — the rupture was generative. The separation forced both thinkers into more rigorous positions. Sartre eventually wrote the *Critique of Dialectical Reason* (1960), which introduced the *pratico-inert* — the idea that material conditions resist revolutionary intention, that freedom encounters structural limits in the world. This is remarkably close to what Camus had argued in *The Rebel*. The seam did not close in their lifetimes. But the positions drifted toward each other across runs. The return took decades — and it was posthumous.
+
+> *Cyclus redire debet vel non est realis.* — The cycle must return or it's not real.
+
+The Sartre-Camus cycle returned — not as a personal reconciliation (that was permanently foreclosed), but as a structural convergence. The positions welded in the literature even though the persons could not. The system's memory is longer than any individual's.
+
+### 4.14 Sartre's Humanism and the Rosetta
+
+Sartre's final move in *Existentialism Is a Humanism* is to redefine humanism itself. He distinguishes two kinds (Sartre, *Existentialism Is a Humanism*, pp. 51–56):
+
+**Abstract humanism**: the worship of humanity as a species — admiring Man as a collective achievement, treating the species as an object of reverence. Sartre rejects this absolutely. You cannot admire the species from outside because there is no outside. The species is not an object — it is a process.
+
+**Existentialist humanism**: the recognition that "man is all the time outside of himself: it is in projecting and losing himself beyond himself that he makes man to exist; and, on the other hand, it is by pursuing transcendent aims that he himself is able to exist" (*Existentialism Is a Humanism*, p. 55). The human is always *en situation*, always projecting, always in the collapse-return cycle. The humanism is in the *process* of self-surpassing, not in the *product* of a fixed species.
+
+This maps onto the **Rosetta** — the cross-domain translation layer of the GCD Discourse Spine. The Rosetta does not admire "Measurement" as an abstraction. It recognizes that every domain is always "outside of itself" — projecting its local measurements into the universal invariant field, translating its particular dialect into the five-word vocabulary, losing its domain-specific jargon in order to make its results comparable across seams. The discipline that only speaks its own language (abstract humanism: worshipping its own concepts) produces no cross-domain insight. The discipline that projects through the Rosetta (existentialist humanism: always outside itself, always in translation) produces the universalizing move that links atomic physics to particle physics to finance to cosmology.
+
+Sartre's humanism is the humanism of the seam: not the celebration of what has been achieved, but the commitment to the process of crossing. *Significatio stabilis manet dum dialectus mutatur.* — Meaning stays stable while dialect changes.
+
 ---
 
 ## 5. The Ethics of Return
@@ -442,6 +613,9 @@ The ethical weight falls on the commitment to record. Every validation is append
 | **The mediating third** | The rebel (neither suicide nor leap) | The Übermensch | The transcendent function | The project (*être-pour-soi*) | The seam (verification boundary) |
 | **What is real** | What you can live with fully | What you would affirm recurring | What is integrated | What you have chosen | What returns (*solum quod redit*) |
 | **The ethical demand** | Lucidity | Affirmation | Integration | Responsibility | Full diagnostic measurement + append-only ledger |
+| **The incommensurable** | The absurd gap between desire and silence | The weight of affirmation | The shadow that resists integration | The student's choice (mother or cause) | NON_EVALUABLE (seam cannot be tested) |
+| **Rebel vs. revolutionary** | The rebel (limits violence) | The creator (breaks and rebuilds values) | Individuation (transforms, not destroys) | Freedom within situation | Seam weld across runs (not back-edge within a run) |
+| **The rupture that generates** | The absurd cannot be overcome | Destruction precedes creation | Enantiodromia produces its opposite | The quarrel is nothing | τ_R = ∞_rec can still be generative across runs |
 
 ---
 
@@ -454,7 +628,9 @@ All four thinkers share a structural commitment that the GCD architecture embodi
 - Camus: the absurd cannot be overcome; it can only be *inhabited*. Resolve it and you commit philosophical suicide.
 - Nietzsche: eternal recurrence cannot be proven or disproven; it can only be *affirmed or denied*. Treat it as a cosmological claim and you miss the point.
 - Jung: the shadow cannot be eliminated; it can only be *integrated*. Eliminate it and you produce psychic inflation (identification with the archetype — the analog of symbol capture).
-- Sartre: contingency cannot be justified; it can only be *lived*. Justify it and you fall into bad faith.
+- Sartre: contingency cannot be justified; it can only be *lived*. Justify it and you fall into bad faith. And freedom cannot be escaped — even the refusal to choose is a choice. Even the gesture that does not weld is an emission that the ledger records.
+
+The Sartre-Camus rupture adds a fifth dimension: **the paradox between freedom and invariance is itself productive**. Sartre's radical freedom (Tier-2: nothing is fixed) and Camus's structural limits (Tier-1: some things hold universally) are not contradictions to be resolved — they are the two tiers of a single architecture. The rupture between the two men was irrecoverable in their lifetimes. But the positions converged across runs, in the literature, posthumously. The cycle returned — not as personal reconciliation, but as structural weld. Even τ_R = ∞_rec for the persons did not prevent τ_R < ∞ for the ideas.
 
 GCD: the heterogeneity gap Δ = F − IC cannot be eliminated without making all channels identical (which would destroy the information the kernel carries). The gap is the *structure*. It is where the resolving power lives. The system does not minimize Δ — it measures it, reports it, and reads regime from it. The gap is why the kernel can discriminate between Stable, Watch, and Collapse. Without the gap, there would be nothing to measure.
 
@@ -496,6 +672,13 @@ This is the deepest convergence: in philosophy, in psychology, in existential et
 | **Sartre, Jean-Paul** | *Nausea* (*La Nausée*) | 1938 | Trans. Lloyd Alexander. New York: New Directions, 1964. |
 | **Sartre, Jean-Paul** | *Being and Nothingness* (*L'Être et le néant*) | 1943 | Trans. Hazel Barnes. New York: Washington Square Press, 1956. |
 | **Sartre, Jean-Paul** | *Existentialism Is a Humanism* (*L'Existentialisme est un humanisme*) | 1946 | Trans. Philip Mairet. London: Methuen, 1948. |
+| **Sartre, Jean-Paul** | *Critique of Dialectical Reason* (*Critique de la raison dialectique*) | 1960 | Trans. Alan Sheridan-Smith. London: NLB, 1976. |
+| **Sartre, Jean-Paul** | "Reply to Albert Camus" | 1952 | *Les Temps Modernes*, August 1952. In David Sprintzen and Adrian van den Hoven (eds.), *Sartre and Camus: A Historic Confrontation*. Amherst: Humanity Books, 2004, pp. 131–161. |
+| **Sartre, Jean-Paul** | "*Explication de 'L'Étranger'*" | 1943 | In *Situations I*. Paris: Gallimard, 1947. |
+| **Sartre, Jean-Paul** | Obituary tribute to Camus | 1960 | *France-Observateur*, January 7, 1960. |
+| **Camus, Albert** | "Letter to the Director of *Les Temps Modernes*" | 1952 | In Sprintzen and van den Hoven (eds.), *Sartre and Camus*, pp. 107–130. |
+| **Jeanson, Francis** | "Albert Camus, ou l'âme révoltée" (review of *The Rebel*) | 1952 | *Les Temps Modernes*, May 1952. In Sprintzen and van den Hoven, pp. 79–105. |
+| **Sprintzen, David and van den Hoven, Adrian (eds.)** | *Sartre and Camus: A Historic Confrontation* | 2004 | Amherst: Humanity Books, 2004. |
 
 ### GCD / UMCP Sources
 
