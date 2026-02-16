@@ -303,6 +303,22 @@ registry:
         outputs: ["t_MS", "evolutionary_phase", "L_ZAMS", "T_ZAMS", "regime"]
         frozen_params:
           t_sun_MS: 10.0
+      - name: "cosmology"
+        path: "closures/astronomy/cosmology.py"
+        description: "Planck 2018 ΛCDM parameters across 6 cosmological epochs (inflation → present)"
+        contract: "ASTRO.INTSTACK.v1"
+        inputs: ["redshift", "H", "Omega_b", "Omega_c", "Omega_Lambda", "T_cmb", "n_s", "sigma_8", "tau"]
+        outputs: ["F", "omega", "IC", "kappa", "S", "C", "gap", "regime"]
+        frozen_params:
+          H0_Planck: 67.36
+          Omega_b_h2: 0.02237
+          Omega_c_h2: 0.1200
+          T_CMB: 2.7255
+          n_s: 0.9649
+          sigma_8: 0.8111
+        cross_references:
+          - "closures/astronomy/distance_ladder.py"
+          - "closures/astronomy/gravitational_dynamics.py"
 
     quantum_mechanics:
       - name: "wavefunction_collapse"
@@ -544,6 +560,21 @@ registry:
           A_pdg: 0.790
           rho_bar_pdg: 0.141
           eta_bar_pdg: 0.357
+      - name: "pmns_mixing"
+        path: "closures/standard_model/pmns_mixing.py"
+        description: "PMNS lepton mixing matrix from NuFIT 5.3, neutrino oscillations, CKM-PMNS complementarity"
+        contract: "SM.INTSTACK.v1"
+        inputs: ["sin2_theta12", "sin2_theta23", "sin2_theta13", "delta_cp_deg"]
+        outputs: ["U_matrix", "J_CP", "unitarity_check", "F", "omega", "IC", "gap", "regime"]
+        frozen_params:
+          sin2_theta12: 0.303
+          sin2_theta23: 0.572
+          sin2_theta13: 0.02203
+          delta_cp_deg: 197.0
+          dm2_21: 7.41e-5
+          dm2_32: 2.507e-3
+        cross_references:
+          - "closures/standard_model/ckm_mixing.py"
 
     materials_science:
       - name: "cohesive_energy"
@@ -637,3 +668,70 @@ registry:
           - "closures/materials_science/cohesive_energy.py"
           - "closures/rcft/universality_class.py"
           - "closures/materials_science/elastic_moduli.py"
+
+    everyday_physics:
+      - name: "thermodynamics"
+        path: "closures/everyday_physics/thermodynamics.py"
+        description: "Thermal material properties (Cp, k, ρ, Tm, Tb, α) mapped to 6-channel kernel"
+        contract: "UMA.INTSTACK.v1"
+        inputs: ["name", "Cp", "k_th", "rho", "T_m", "T_b"]
+        outputs: ["F", "omega", "IC", "kappa", "S", "C", "gap", "regime"]
+        frozen_params:
+          epsilon: 1.0e-8
+          n_channels: 6
+        cross_references:
+          - "closures/materials_science/element_database.py"
+          - "closures/atomic_physics/periodic_kernel.py"
+      - name: "electromagnetism"
+        path: "closures/everyday_physics/electromagnetism.py"
+        description: "Electromagnetic material properties (σ, ε_r, work function, band gap, μ_r, ρ) mapped to 6-channel kernel"
+        contract: "UMA.INTSTACK.v1"
+        inputs: ["name", "category", "sigma", "eps_r", "work_fn", "band_gap", "mu_r", "resistivity"]
+        outputs: ["F", "omega", "IC", "kappa", "S", "C", "gap", "regime"]
+        frozen_params:
+          epsilon: 1.0e-8
+          n_channels: 6
+        cross_references:
+          - "closures/atomic_physics/periodic_kernel.py"
+          - "closures/materials_science/band_structure.py"
+      - name: "optics"
+        path: "closures/everyday_physics/optics.py"
+        description: "Optical material properties (n, Abbe, transmittance, reflectance, band gap) mapped to 6-channel kernel"
+        contract: "UMA.INTSTACK.v1"
+        inputs: ["name", "n_d", "V_d", "T_vis", "R_vis", "E_gap", "n_group"]
+        outputs: ["F", "omega", "IC", "kappa", "S", "C", "gap", "regime"]
+        frozen_params:
+          epsilon: 1.0e-8
+          n_channels: 6
+        cross_references:
+          - "closures/atomic_physics/spectral_lines.py"
+          - "closures/standard_model/particle_catalog.py"
+      - name: "wave_phenomena"
+        path: "closures/everyday_physics/wave_phenomena.py"
+        description: "Wave systems (sound, EM, water, seismic, gravitational, matter) mapped to 6-channel kernel"
+        contract: "UMA.INTSTACK.v1"
+        inputs: ["name", "wave_type", "frequency", "wavelength", "phase_velocity", "Q_factor", "coherence_lengths", "amplitude_norm"]
+        outputs: ["F", "omega", "IC", "kappa", "S", "C", "gap", "regime"]
+        frozen_params:
+          epsilon: 1.0e-8
+          n_channels: 6
+        cross_references:
+          - "closures/quantum_mechanics/wavefunction_collapse.py"
+          - "closures/quantum_mechanics/double_slit_interference.py"
+
+    unified:
+      - name: "unified_minimal_structure"
+        path: "closures/unified_minimal_structure.py"
+        description: "Cross-scale formalization: 7 theorems (T17-T23) proving Tier-1 identities across 6 physical scales (subatomic → cosmological)"
+        contract: "UMA.INTSTACK.v1"
+        inputs: []
+        outputs: ["scale_signatures", "three_pillars", "theorem_results", "grand_summary"]
+        frozen_params:
+          epsilon: 1.0e-8
+          n_scales: 6
+        cross_references:
+          - "closures/standard_model/subatomic_kernel.py"
+          - "closures/standard_model/pmns_mixing.py"
+          - "closures/atomic_physics/cross_scale_kernel.py"
+          - "closures/astronomy/cosmology.py"
+          - "closures/everyday_physics/thermodynamics.py"

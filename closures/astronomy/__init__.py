@@ -1,7 +1,8 @@
 """Astronomy Closures — ASTRO.INTSTACK.v1
 
 Provides closures for stellar luminosity, distance ladder, spectral
-analysis, stellar evolution, orbital mechanics, and gravitational dynamics.
+analysis, stellar evolution, orbital mechanics, gravitational dynamics,
+and cosmological parameter analysis (Planck 2018).
 
 Cross-references:
     Contract:  contracts/ASTRO.INTSTACK.v1.yaml
@@ -11,6 +12,7 @@ Cross-references:
 
 from __future__ import annotations
 
+from closures.astronomy.cosmology import compute_all_cosmological_epochs, compute_cosmological_epoch
 from closures.astronomy.distance_ladder import compute_distance_ladder
 from closures.astronomy.gravitational_dynamics import compute_gravitational_dynamics
 from closures.astronomy.orbital_mechanics import compute_orbital_mechanics
@@ -19,6 +21,8 @@ from closures.astronomy.stellar_evolution import compute_stellar_evolution
 from closures.astronomy.stellar_luminosity import compute_stellar_luminosity
 
 __all__ = [
+    "compute_all_cosmological_epochs",
+    "compute_cosmological_epoch",
     "compute_distance_ladder",
     "compute_gravitational_dynamics",
     "compute_orbital_mechanics",
