@@ -735,3 +735,22 @@ registry:
           - "closures/atomic_physics/cross_scale_kernel.py"
           - "closures/astronomy/cosmology.py"
           - "closures/everyday_physics/thermodynamics.py"
+
+      - name: "scale_ladder"
+        path: "closures/scale_ladder.py"
+        description: "Complete scale ladder from Planck (10⁻³⁵ m) to cosmic horizon (10²⁶ m): 11 rungs, 406 objects, 61 OOM, with explicit inter-rung bridges and Tier-1 verification at every object"
+        contract: "UMA.INTSTACK.v1"
+        inputs: []
+        outputs: ["rungs", "bridges", "pillar_results", "total_objects", "tier1_violations"]
+        frozen_params:
+          epsilon: 1.0e-8
+          n_rungs: 11
+          dynamic_range_oom: 61
+        cross_references:
+          - "closures/standard_model/subatomic_kernel.py"
+          - "closures/materials_science/element_database.py"
+          - "closures/everyday_physics/thermodynamics.py"
+          - "closures/everyday_physics/electromagnetism.py"
+          - "closures/everyday_physics/optics.py"
+          - "closures/everyday_physics/wave_phenomena.py"
+          - "closures/astronomy/cosmology.py"
