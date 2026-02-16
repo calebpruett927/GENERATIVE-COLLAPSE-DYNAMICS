@@ -335,36 +335,42 @@ The dominant decay (bb̄, 58.2%) fills the most channels. Each product repairs d
 These predictions are laid down now for future verification. Each is falsifiable. Each uses a different kernel diagnostic.
 
 ### Prediction 1: Generative Collapse is the Dominant Pattern
+
 **Claim**: For ANY scalar boson (Higgs or BSM), the dominant decay channel produces products with F > F_parent.
 **Current evidence**: 97.0% of Higgs BR goes to F-increasing channels.
 **Test**: If a BSM scalar is discovered at HL-LHC, compute its product kernel profiles.
 **Falsification**: If the dominant decay produces products with F < F_parent.
 
 ### Prediction 2: Curvature C Ranks Yukawa BR
+
 **Claim**: Among Yukawa decay products of a scalar, higher curvature C correlates positively with BR.
 **Current evidence**: ρ = +0.8 for Higgs Yukawa decays (n = 4).
 **Test**: Extend to inclusive fermion decays of other heavy particles (top, W, Z).
 **Falsification**: If C shows zero or negative correlation across a larger sample.
 
 ### Prediction 3: Heterogeneity Gap Δ Ranks Both Yukawa and Boson BR
+
 **Claim**: Within coupling-type families, the heterogeneity gap Δ = F − IC positively correlates with BR.
 **Current evidence**: ρ = +0.8 (Yukawa, n=4), ρ = +1.0 (bosons, n=4).
 **Test**: Apply to top quark decays, W decays, Z decays — all have multiple channels.
 **Falsification**: If Δ fails to rank BR in any coupling-type family with n ≥ 4.
 
 ### Prediction 4: F Ranks Boson Decay Products
+
 **Claim**: Among boson decay products of the Higgs, F perfectly ranks BR.
 **Current evidence**: ρ = +1.0 (W > gluon > Z > photon), n = 4.
 **Test**: HL-LHC precision measurements of rare decay channels (H → Zγ at ~0.15% BR). The Zγ product should slot into the F-ordering between Z and γ products.
 **Falsification**: If H → Zγ BR does not respect F-ordering of its products.
 
 ### Prediction 5: IC Amplification Across Decay Vertices
+
 **Claim**: All Yukawa products of the Higgs have IC > 100× the Higgs IC.
 **Current evidence**: 151–167× amplification for all 4 measured channels.
 **Test**: Event-level IC computation on CERN Open Data reconstructed decays.
 **Falsification**: If event-level trace vectors show IC suppression rather than amplification.
 
 ### Prediction 6: Entropy Ordering Within Yukawa
+
 **Claim**: Among Yukawa products, lower Bernoulli field entropy S tends to correlate with higher BR.
 **Current evidence**: ρ = −0.6 (n = 4). Bottom (S = 0.455) has higher BR than charm (S = 0.543).
 **Test**: Extend to fermion decays of other heavy particles.
@@ -375,16 +381,19 @@ These predictions are laid down now for future verification. Each is falsifiable
 ## 12. Honest Path Forward
 
 ### What we can do now
+
 - Accept the scope boundary as a structural theorem, not a limitation to be "fixed"
 - Use the anti-correlation finding to sharpen understanding of what the heterogeneity gap measures
 - Document the negative result as a contribution — clean negative results define domain boundaries
 
 ### What we should NOT do
+
 - Claim the F–residual correlation as evidence (n = 4, p = 0.08 — this is a gesture)
 - Attempt to modify the kernel to "fix" the BR correlation (this would destroy classification)
 - Frame the negative result as a failure (scope boundaries are features of well-defined theories)
 
 ### What could be tested with CERN Open Data
+
 - **Event-level trace vectors**: Map each collision event to an 8-channel trace using observables (jet multiplicity, missing ET, lepton count, etc.). Test whether F + ω = 1 and IC ≤ F hold at the event level.
 - **Regime classification for anomaly detection**: Events near regime boundaries (Watch ↔ Collapse) could flag unusual physics.
 - **Detector coherence monitoring**: Run GCD kernel on detector subsystem health metrics over time — this IS a measurement coherence problem, directly within the kernel's domain.

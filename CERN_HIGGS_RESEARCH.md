@@ -11,12 +11,15 @@
 The High-Luminosity LHC (HL-LHC), scheduled to begin operations around 2030, will accumulate **3 ab⁻¹** of integrated luminosity — producing approximately **380 million Higgs bosons**, a 10× increase over the current dataset. CERN identifies three fundamental questions this dataset will address:
 
 ### Question 1: The Fate of the Universe (Vacuum Stability)
+
 Current measurements place the universe in a narrow zone between **stable** and **metastable** vacuum states. The answer depends on the precise relationship between the top quark mass (m_t) and Higgs mass (m_H). If λ(Φ) — the quartic coupling of the Higgs potential at high energy scales — turns negative, the universe sits in a false vacuum that could eventually decay.
 
 ### Question 2: Matter-Antimatter Asymmetry (Higgs Self-Coupling)
+
 The Higgs self-coupling λ₃ has **never been measured**. Current bounds: −0.71 < κ_λ < 6.1 at 95% CL. If λ₃ is ≥50% stronger than the Standard Model prediction, the electroweak phase transition would be strongly first-order (FOPT), potentially explaining the observed matter-antimatter asymmetry. The HL-LHC expects >7σ discovery of di-Higgs (HH) production and ~30% precision on λ₃.
 
 ### Question 3: Beyond Standard Model Physics (BSM Scalars)
+
 Any additional scalar boson S mixing with the Higgs would shift its couplings. The HL-LHC can probe coupling deviations as small as **0.1‰** (one part per thousand), making it sensitive to BSM physics at mass scales far exceeding direct reach.
 
 ---
@@ -101,7 +104,7 @@ The symmetry breaking closure (`symmetry_breaking.py`) computes the electroweak 
 | VEV (v) | 246.22 GeV | Fermi constant G_F |
 | Higgs mass (m_H) | 125.25 GeV | PDG 2024 |
 | Quartic coupling (λ) | 0.1294 | λ = m_H²/(2v²) |
-| μ² | −7843.78 GeV² | V(φ) = μ²|φ|² + λ|φ|⁴ |
+| μ² | −7843.78 GeV² | V(φ) = μ²φ² + λφ⁴ |
 | M_W predicted | 80.377 GeV | g₂·v/2 |
 | M_Z predicted | 91.671 GeV | v·√(g₁²+g₂²)/2 |
 | ω_eff | 0.000000 | SM mass predictions exact |
@@ -219,29 +222,34 @@ A complete analysis code exists on CERN Open Data (record 12350): H→ττ from 
 ## 7. Five Key Findings
 
 ### Finding 1: The Higgs is the Most Internally Incoherent Massive Particle
+
 - IC/F = 0.98% — only the photon (0.23%) and gluon (0.21%) are lower, and they are massless
 - This is not a flaw; it is the structural cost of being the only spin-0, neutral, generation-less massive particle
 - The Higgs carries information (high F) but cannot hold it together across channels (low IC)
 
 ### Finding 2: Higgs Decay is Generative Collapse (Axiom-0 in Action)
+
 - The Higgs (F = 0.415, IC = 0.004) decays into bb̄ (F = 0.667, IC = 0.615)
 - Fidelity increases: F goes UP from parent to product
 - Coherence increases: IC/F goes from 1% to 92%
 - This is what "collapse is generative" means operationally: the collapsed state has MORE structure than the original
 
 ### Finding 3: The Top Quark is the Higgs's Mirror
+
 - Top Yukawa coupling: y_t = 0.992 (near unity)
 - Top kernel: F = 0.638, IC = 0.589, IC/F = 92.3%
 - The top is everything the Higgs is not: charged (2/3), colored (3), generation-3, spin-½
 - The top fills every channel the Higgs leaves empty — they are complementary across the kernel
 
 ### Finding 4: Vacuum Metastability Maps to GCD Watch Regime
+
 - CERN: "The universe lives on the knife-edge between stable and unstable"
 - GCD: The Higgs decay products sit in Watch regime (ω between 0.038 and 0.30)
 - Watch is exactly "metastable" — not stable enough to be frozen, not collapsed enough to dissolve
 - The GCD regime classification independently rediscovers the vacuum's phase structure
 
 ### Finding 5: CERN Open Data Could Test Event-Level Kernel Structure
+
 - Current GCD analysis is on **particle properties** (static trace vectors)
 - CERN's 5+ PB of collision data enables **event-level** trace vectors
 - If the kernel structure (F + ω = 1, IC ≤ F) holds at the event level, it would be a fundamentally new validation: the kernel describes not just what particles ARE, but what they DO when they interact
@@ -266,7 +274,8 @@ The HL-LHC's 380 million Higgs bosons, combined with up to 200 simultaneous pile
 
 ## 9. Honest Assessment: What GCD Can and Cannot Do Here
 
-### What GCD CAN do:
+### What GCD CAN Do
+
 - **Classify** particles by kernel structure (Kernel-split, Kernel-structured, etc.)
 - **Measure** channel heterogeneity and coherence efficiency for any particle with measurable properties
 - **Identify** which channels destroy coherence (the near-ε IC killers)
@@ -274,13 +283,15 @@ The HL-LHC's 380 million Higgs bosons, combined with up to 200 simultaneous pile
 - **Map** phase transitions to regime boundary crossings
 - **Process** CERN Open Data through the kernel to test event-level structure
 
-### What GCD CANNOT do (yet):
+### What GCD CANNOT Do (Yet)
+
 - **Predict** branching ratios (these depend on coupling constants and phase space, not channel balance)
 - **Compute** λ₃ from first principles (it is a single parameter, not a multi-channel trace)
 - **Replace** quantum field theory calculations (GCD is a measurement formalism, not a dynamical theory)
 - **Determine** whether the vacuum is stable (this requires the full RGE evolution of λ(Φ))
 
-### What would change this:
+### What Would Change This
+
 - If the kernel structure (F + ω = 1, IC ≤ F, IC = exp(κ)) is shown to hold at the **collision event level** using CERN Open Data, it would demonstrate that GCD's invariants are not merely descriptive of particle properties but structural in particle dynamics
 
 ---
