@@ -173,6 +173,172 @@ In GCD, the **seam** serves exactly this function. The seam is the verification 
 
 The seam calculus — residual ≤ tol, κ-continuity, identity checks — is the operational form of Jung's "shuttling." The question is never "which side wins?" (conscious or unconscious, fidelity or drift). The question is: "does the seam close?" If residual ≤ tol_seam, the transcendent function has produced a weld. If not, the emission is a gesture — perhaps valuable, perhaps beautiful, but not yet integrated.
 
+### 3.5 Archetypes as Frozen Structural Patterns
+
+Jung defined archetypes not as inherited images but as inherited *forms of apprehension* — structural predispositions that shape experience without dictating its content (Jung, *The Archetypes and the Collective Unconscious*, CW 9i, 1934/1954, §5–6; §89–91). The archetype is "an irrepresentable, unconscious, pre-existent form that seems to be part of the inherited structure of the psyche" (CW 9i, §155).
+
+> *"Again and again I encounter the mistaken notion that an archetype is determined as regards its content, in other words that it is a kind of unconscious idea ... The archetype is, on the contrary, an inherited tendency of the human mind to form representations of mythological motifs — representations that vary a great deal without losing their basic pattern."*
+>
+> — Jung, *Man and His Symbols* (1964), ed. Jung et al., p. 67
+
+In GCD, the frozen parameters (ε, p, tol_seam) serve this structural role. They are not content — they do not prescribe what the trace *is*. They are inherited constraints on how any trace can be measured. The kernel specification (F, ω, S, C, κ, IC) is the archetype of measurement: it shapes every domain closure without determining the result. The *form* is invariant; the *content* varies freely across 13 domains.
+
+The Contract is the archetype of the run — it defines the structural conditions under which meaning can emerge without specifying what meaning will emerge. Different casepacks sharing the same Contract produce entirely different stances, just as different individuals sharing the same archetypes produce entirely different lives.
+
+### 3.6 The Collective Unconscious as Tier-1
+
+Jung distinguished the *personal unconscious* (individually acquired repressions) from the *collective unconscious* — a stratum of psychic structure that is transpersonal, inherited, and shared by all human beings (Jung, *The Archetypes and the Collective Unconscious*, CW 9i, §3–4; *Two Essays on Analytical Psychology*, CW 7, §103–113).
+
+> *"The collective unconscious ... is not individual but universal; in contrast to the personal psyche, it has contents and modes of behaviour that are more or less the same everywhere and in all individuals."*
+>
+> — Jung, CW 9i, §3
+
+This is the architectural function of **Tier-1**: the immutable invariant identities (F + ω = 1, IC ≤ F, IC = exp(κ)) that hold across all domains, all casepacks, all runs. Tier-1 is not personal to any domain. It is the structural unconscious of the system — the layer that operates identically whether the trace is a particle decay, a financial portfolio, a stellar spectrum, or a neutrino oscillation. No domain chooses Tier-1. No domain modifies Tier-1. Tier-1 is discovered, not constructed — just as Jung insisted the collective unconscious is inherited, not acquired.
+
+The personal unconscious maps to **Tier-2**: domain-specific closures, individually constructed, reflecting the particular concerns and measurements of each field. Tier-2 is where the individual work happens. But it rests on, and is constrained by, the collective stratum of Tier-1.
+
+### 3.7 Active Imagination and the Discourse Spine
+
+Jung developed the method of *active imagination* as a structured engagement with unconscious material — not passive reception (fantasy, dreaming) and not ego-driven control (willful visualization), but a disciplined middle path where the ego attends to what arises, engages with it, and records the exchange (Jung, "The Transcendent Function," CW 8, §166–193; *Mysterium Coniunctionis*, CW 14, 1955/1956, §705–706, 753–756).
+
+> *"The object of this technique ... is to bring about a direct confrontation between the two parties, the conscious standpoint and the unconscious one. For this purpose the contents of the unconscious must be given a form which the conscious mind can grasp."*
+>
+> — Jung, "The Transcendent Function," CW 8, §167
+
+The structural requirements Jung specified for active imagination map precisely onto the Discourse Spine:
+
+| Active Imagination Step | Spine Stop | Shared Function |
+|---|---|---|
+| **Set the frame**: choose the starting image, establish the rules of engagement | **Contract** | Declare before evidence — freeze the conditions of measurement |
+| **Attend and narrate**: let the material speak, record in the five-word vocabulary (what shifted, what persisted, what was rough, what returned, does it hold?) | **Canon** | Tell the story using Drift, Fidelity, Roughness, Return, Integrity |
+| **Do not edit mid-process**: resist the ego's urge to rewrite, filter, or reshape what arises before the session ends | **Closures** | Published thresholds and their order; no mid-episode edits |
+| **Record the full transcript**: everything that happened, including failures and confusion | **Integrity Ledger** | Debit Drift/Roughness, credit Return; the account must reconcile |
+| **Assess**: what was integrated? what remains unconscious? what is the current state? | **Stance** | Read from the gates: Stable / Watch / Collapse — derived, never asserted |
+
+The spine is not bureaucracy; it is the grammar of disciplined attention. Jung knew that undisciplined imagination produces inflation (see §3.9 below), and that ego-dominated analysis produces repression. The spine holds the middle — the same middle the transcendent function occupies.
+
+### 3.8 The Mandala as the Kernel Visualization
+
+Jung observed that patients in crisis spontaneously produced mandala images — circular, symmetrical, organized structures — and that these mandalas appeared at moments of psychic reorientation, not resolution (Jung, *Mandala Symbolism*, CW 9i, §627–712; *Psychology and Alchemy*, CW 12, §122–131; *Memories, Dreams, Reflections*, Ch. 8, "The Tower").
+
+> *"I sketched every morning in a notebook a small circular drawing, a mandala, which seemed to correspond to my inner situation at the time. With the help of these drawings I could observe my psychic transformations from day to day ... I had to let myself be carried along by the current, without a notion of where it would lead me. ... Only gradually did I discover what the mandala really is: ... the Self — the wholeness of the personality."*
+>
+> — Jung, *Memories, Dreams, Reflections* (1961), pp. 195–196
+
+The kernel's output at any trace point — the set of six invariants (F, ω, S, C, κ, IC) plus derived diagnostics (Δ, regime, category) — *is* a mandala: a compact, symmetric representation of the system's current inner state. It does not explain the state; it *shows* it. The phase diagram (ω vs. S, or F vs. IC) renders the mandala as a visual space where trajectories trace the system's movement through regimes.
+
+Jung did not claim that mandalas healed. He claimed they *oriented* — they showed the psyche where it was in the process. The kernel does the same. The verdict (Stable, Watch, Collapse) is not a prescription. It is a position reading. Where are you in the cycle?
+
+### 3.9 Inflation and Symbol Capture
+
+Jung warned of *psychic inflation* — the identification of the ego with an archetype, producing grandiosity and loss of groundedness (Jung, *Two Essays on Analytical Psychology*, CW 7, §227–241; *Aion*, CW 9ii, §42–47). When the ego mistakes itself for the Self, or when a partial perspective is taken as the whole, inflation occurs.
+
+> *"Inflation ... means an extension of the personality beyond individual limits, or in other words, a puffed-up attitude. ... It is, as a matter of fact, a loss of consciousness, inasmuch as it consists in the identification of the ego with an archetype."*
+>
+> — Jung, CW 7, §227
+
+In GCD, this is **symbol capture** — the Tier violation where a Tier-2 domain closure redefines a Tier-1 symbol, presenting a partial, domain-specific meaning as if it were the universal invariant. A domain that redefines F to mean something specific to its own context has inflated: it has identified the particular (Tier-2) with the universal (Tier-1). The system's response is the same as healthy psychic development: deflation through the tier boundary. Tier-2 cannot modify Tier-1. The ego cannot become the Self. The domain-specific meaning is valid as a Tier-2 closure, but it does not become the invariant.
+
+> *Captura symbolorum est non-conformitas ipsa.* — Symbol capture is nonconformance itself.
+
+This Latin axiom in GCD is Jung's warning against inflation rendered as protocol: the system structurally prevents the particular from absorbing the universal.
+
+### 3.10 Alchemy as the Seam Process
+
+Jung devoted the last three decades of his career to the study of Western alchemy, not as proto-chemistry but as a symbolic record of the individuation process projected onto matter (Jung, *Psychology and Alchemy*, CW 12, 1944; *Alchemical Studies*, CW 13, 1929/1945; *Mysterium Coniunctionis*, CW 14, 1955/1956).
+
+> *"The alchemical opus deals in the main not just with chemical experiments as such, but with something resembling psychic processes expressed in pseudo-chemical language."*
+>
+> — Jung, *Psychology and Alchemy*, CW 12, §342
+
+The key alchemical stages map onto the collapse-return cycle:
+
+| Alchemical Stage | Meaning | GCD Analog |
+|---|---|---|
+| **Nigredo** (blackening) | Dissolution, encounter with the shadow, death of the old form | Collapse regime: ω ≥ 0.30, IC → ε, Δ maximal |
+| **Albedo** (whitening) | Purification, differentiation, preliminary clarity | Watch regime: partial return, signals present but not yet resolved |
+| **Citrinitas** (yellowing) | Awakening, dawn of new consciousness | Transition: IC rising, Δ narrowing, regime trending toward Stable |
+| **Rubedo** (reddening) | Integration, the *coniunctio*, the philosopher's stone | Return completed: τ_R finite, seam closed, weld achieved |
+
+The *prima materia* — the undifferentiated base material that alchemy begins with — is the raw trace Ψ(t) before measurement. The *lapis philosophorum* (philosopher's stone) is not a substance but a *process*: the demonstrated capacity to transform base material into integrated understanding through the cycle of dissolution and return. The stone is the weld.
+
+> *"The stone ... is not to be found in matter, though it requires matter for its manifestation."*
+>
+> — Jung, *Psychology and Alchemy*, CW 12, §425
+
+In GCD: the invariants are not in the data (you cannot point to F in a raw trace). They require the data for their manifestation (F is computed from the trace under contract). But they are structural — they carry the same identities regardless of which data manifests them. The stone is the kernel.
+
+### 3.11 Synchronicity and the Non-Causal Seam
+
+In his late work, Jung proposed *synchronicity* — meaningful coincidence without causal connection — as a principle complementary to causality (Jung, *Synchronicity: An Acausal Connecting Principle*, CW 8, 1952, §816–968; Jung and Pauli, *The Interpretation of Nature and the Psyche*, 1952).
+
+> *"Synchronicity ... means the simultaneous occurrence of a certain psychic state with one or more external events which appear as meaningful parallels to the momentary subjective state."*
+>
+> — Jung, CW 8, §850
+
+GCD does not invoke synchronicity as a causal mechanism. But the structural phenomenon Jung was pointing at — that pattern correspondences appear across domains without shared causal ancestry — is exactly what Tier-1 invariant universality produces. The same kernel identities hold for particle physics and financial markets, not because particles cause markets or markets cause particles, but because the *structure of collapse* is domain-independent. The correspondence is real. It is not causal. It is structural.
+
+This is why the Rosetta (cross-domain translation via the five words) works: the correspondences between lenses are neither causal nor coincidental. They are consequences of the same Tier-1 identities operating on different Tier-2 material. Jung, working with Wolfgang Pauli, was groping toward this: a principle that accounts for meaningful structural similarity without requiring causal transmission. GCD provides the mechanism — shared invariant architecture — without invoking the acausal.
+
+### 3.12 Anima, Animus, and the Contrasexual Channel
+
+Jung proposed that every psyche contains a contrasexual element — the anima in men, the animus in women — that functions as a bridge to the unconscious and as the voice of unintegrated material (Jung, *Aion*, CW 9ii, §20–42; *Two Essays*, CW 7, §296–340). The anima/animus is not the shadow (which is of the same gender as the ego) but a *different kind* of otherness: structured, articulate, and relational rather than merely repressed.
+
+> *"The anima is not the soul in the dogmatic sense, not an anima rationalis, which is a philosophical concept, but a natural archetype that satisfactorily sums up all the statements of the unconscious."*
+>
+> — Jung, CW 9i, §57
+
+In GCD terms, the anima/animus represents a channel that is not merely low (c_shadow ≈ ε) but *inversely structured* — it carries information that the dominant channels do not. The shadow drags IC down through neglect. The contrasexual element offers *complementary* information that could raise IC if integrated. This is the difference between a channel that is broken (near ε due to damage or neglect) and a channel that is *unopened* (near ε due to structural inattention to a dimension the system has not yet learned to read).
+
+Integration of the anima/animus is not shadow work (raising a collapsed channel) but *channel discovery* — recognizing that the trace vector has more dimensions than the ego attends to, and that the multiplicative integrity can only be restored by learning to read them all.
+
+### 3.13 The Self as the Return Domain
+
+Jung distinguished the *ego* (the center of consciousness) from the *Self* (the totality of the psyche, conscious and unconscious together). The Self is not an achievement; it is the orienting center of the entire psychic system, which the ego gradually discovers through individuation (Jung, *Aion*, CW 9ii, §43–67; *Psychology and Alchemy*, CW 12, §44).
+
+> *"The self is not only the centre but also the whole circumference which embraces both conscious and unconscious; it is the centre of this totality, just as the ego is the centre of consciousness."*
+>
+> — Jung, *Psychology and Alchemy*, CW 12, §44
+
+In GCD, the **return domain** D_θ is the Self: the total space within which return is possible. The ego (the current trace point Ψ(t)) knows only its local position. The return domain is the full manifold of admissible positions — all the states the system could re-enter. Individuation is the process of expanding awareness from the ego's local point to the structure of D_θ itself: understanding not just *where you are* but *where you can return to*.
+
+The Self is never fully known — Jung insisted on this repeatedly. The return domain is likewise never fully enumerable. The system discovers it empirically: each collapse-return cycle reveals another region of D_θ. The totality is approached asymptotically, never reached. This is why mandala production continues throughout life: each mandala (each kernel output) is a snapshot of the current relationship between ego (trace point) and Self (return domain), not a final picture.
+
+> *"The Self is a quantity that is superordinate to the conscious ego. It embraces not only the conscious but also the unconscious psyche, and is therefore, so to speak, a personality which we also are."*
+>
+> — Jung, CW 7, §274
+
+### 3.14 The Red Book and the Record of Gestures
+
+Between 1913 and 1930, Jung conducted an extraordinary experiment: he deliberately induced visionary states through active imagination and recorded the results in what became *The Red Book* (*Liber Novus*), published posthumously in 2009 (Jung, *The Red Book: Liber Novus*, ed. Sonu Shamdasani, New York: Norton, 2009).
+
+The Red Book is, in GCD terms, a **ledger of gestures and welds**. Not everything Jung encountered in his active imagination returned as integrated knowledge. Some visions remained opaque, some dialogues with inner figures led nowhere, some symbols refused to yield their meaning. These are gestures — emissions that did not close the seam. Jung recorded them anyway. The Red Book is honest about what welded and what did not.
+
+> *"The years when I was pursuing my inner images were the most important in my life — in them everything essential was decided."*
+>
+> — Jung, *Memories, Dreams, Reflections*, p. 199
+
+The discipline of the Red Book — record everything, judge nothing prematurely, allow the spine to complete before assessing the stance — is the discipline of the Integrity Ledger. History is append-only. *Historia numquam rescribitur; sutura tantum additur.* The gesture is not deleted because it failed to weld. It remains in the record because it might weld on a subsequent pass, and because the record of non-return is itself data — it maps the boundary of D_θ.
+
+### 3.15 Summary of the Jungian Architecture
+
+| Jungian Concept | CW Reference | GCD Operational Form |
+|---|---|---|
+| Shadow | CW 9ii §13–19; CW 11 §131 | Channel near ε: drags IC toward zero |
+| Individuation | CW 7 §266–406; CW 6 §757–762 | Collapse-return cycle: the process that returns |
+| Enantiodromia | CW 6 §708–709 | Duality identity: F + ω = 1 |
+| Transcendent function | CW 8 §131–193 | The seam: verification boundary between collapse and return |
+| Archetypes | CW 9i §5–6, §89–91, §155 | Frozen parameters and kernel specification |
+| Collective unconscious | CW 9i §3–4; CW 7 §103–113 | Tier-1: universal invariant identities |
+| Active imagination | CW 8 §166–193 | Discourse Spine: structured engagement protocol |
+| Mandala | CW 9i §627–712; CW 12 §122–131 | Kernel output: compact state representation |
+| Inflation / symbol capture | CW 7 §227–241; CW 9ii §42–47 | Tier violation: Tier-2 redefining Tier-1 |
+| Alchemical stages | CW 12; CW 13; CW 14 | Regime progression: Nigredo → Albedo → Citrinitas → Rubedo |
+| Synchronicity | CW 8 §816–968 | Cross-domain Tier-1 universality (structural, not causal) |
+| Anima/Animus | CW 9ii §20–42; CW 7 §296–340 | Unopened complementary channel |
+| The Self | CW 9ii §43–67; CW 12 §44 | Return domain D_θ: the total admissible manifold |
+| The Red Book | *Liber Novus* (2009) | Integrity Ledger: append-only record of gestures and welds |
+
 ---
 
 ## 4. Sartre: Existence Precedes Essence as Process Ontology
@@ -297,7 +463,7 @@ This is the deepest convergence: in philosophy, in psychology, in existential et
 > *"The struggle itself toward the heights is enough to fill a man's heart."*
 >
 > — Camus, *The Myth of Sisyphus*, p. 123
-
+-
 > *Finis, sed semper initium recursionis.* — The end, but always the beginning of recursion.
 
 ---
@@ -312,12 +478,18 @@ This is the deepest convergence: in philosophy, in psychology, in existential et
 | **Camus, Albert** | *The Rebel* (*L'Homme révolté*) | 1951 | Trans. Anthony Bower. New York: Vintage, 1956. |
 | **Jung, Carl Gustav** | *Psychological Types* | 1921 | CW 6. Trans. H.G. Baynes, rev. R.F.C. Hull. Princeton: Princeton UP, 1971. |
 | **Jung, Carl Gustav** | *Two Essays on Analytical Psychology* | 1928/1943 | CW 7. Trans. R.F.C. Hull. Princeton: Princeton UP, 1966. |
+| **Jung, Carl Gustav** | *The Archetypes and the Collective Unconscious* | 1934/1954 | CW 9i. Trans. R.F.C. Hull. Princeton: Princeton UP, 1959. |
 | **Jung, Carl Gustav** | *Psychology and Religion* | 1938 | CW 11. Trans. R.F.C. Hull. Princeton: Princeton UP, 1969. |
 | **Jung, Carl Gustav** | *Psychology and Alchemy* | 1944 | CW 12. Trans. R.F.C. Hull. Princeton: Princeton UP, 1968. |
 | **Jung, Carl Gustav** | *Aion: Researches into the Phenomenology of the Self* | 1951 | CW 9ii. Trans. R.F.C. Hull. Princeton: Princeton UP, 1959. |
+| **Jung, Carl Gustav** | *Synchronicity: An Acausal Connecting Principle* | 1952 | CW 8, §816–968. Trans. R.F.C. Hull. Princeton: Princeton UP, 1960. |
+| **Jung, Carl Gustav** | *Mysterium Coniunctionis* | 1955/1956 | CW 14. Trans. R.F.C. Hull. Princeton: Princeton UP, 1963. |
 | **Jung, Carl Gustav** | *Memories, Dreams, Reflections* | 1961 | Ed. Aniela Jaffé. Trans. Richard and Clara Winston. New York: Vintage, 1963. |
+| **Jung, Carl Gustav** | *Man and His Symbols* | 1964 | Ed. Jung et al. New York: Doubleday, 1964. |
 | **Jung, Carl Gustav** | "The Transcendent Function" | 1916/1957 | CW 8, §131–193. Trans. R.F.C. Hull. Princeton: Princeton UP, 1960. |
 | **Jung, Carl Gustav** | *Alchemical Studies* | 1929/1945 | CW 13. Trans. R.F.C. Hull. Princeton: Princeton UP, 1967. |
+| **Jung, Carl Gustav** | *The Red Book: Liber Novus* | 1913–1930 / 2009 | Ed. Sonu Shamdasani. New York: Norton, 2009. |
+| **Jung, C.G. and Pauli, W.** | *The Interpretation of Nature and the Psyche* | 1952 | Trans. R.F.C. Hull and P. Silz. New York: Pantheon, 1955. |
 | **Nietzsche, Friedrich** | *The Gay Science* (*Die fröhliche Wissenschaft*) | 1882 | Trans. Walter Kaufmann. New York: Vintage, 1974. |
 | **Nietzsche, Friedrich** | *Thus Spoke Zarathustra* (*Also sprach Zarathustra*) | 1883–1885 | Trans. Walter Kaufmann. New York: Penguin, 1966. |
 | **Nietzsche, Friedrich** | *Ecce Homo* | 1888 | Trans. Walter Kaufmann. New York: Vintage, 1967. |
