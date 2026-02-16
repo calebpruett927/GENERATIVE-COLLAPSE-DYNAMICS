@@ -66,6 +66,217 @@ In GCD terms:
 
 Camus's rebellion is the ethical stance the GCD architecture demands: do not exit the cycle, do not import external meaning to close the gap artificially, and do not pretend the gap does not exist. Operate within the structure with full knowledge that Δ > 0. The heterogeneity gap is a feature, not a flaw. *Ruptura est fons constantiae.*
 
+### 1.4 The Full Architecture of *The Myth of Sisyphus*
+
+*The Myth of Sisyphus* (1942) is not an essay about suicide. It is a **diagnostic treatise** — a systematic investigation of what happens when the demand for coherence encounters a world that does not supply it. Camus announces this in the opening sentence:
+
+> *"There is but one truly serious philosophical problem, and that is suicide."*
+>
+> — Camus, *The Myth of Sisyphus*, p. 3
+
+This sentence is routinely misread as dramatic provocation. It is precision. Camus is not asking whether life is worth living as a psychological question. He is asking: **given that the gap between demand and reality is structural and irreducible, what legitimately follows?** This is a question about the relationship between measurement and action — between the verdict (Δ > 0 always) and the operational response to the verdict. The question of suicide is not emotional; it is architectural: if the gap cannot be closed, does the system have a reason to continue operating?
+
+The essay proceeds through a rigorous elimination protocol:
+
+**Part I — An Absurd Reasoning** (pp. 3–63): Camus surveys the philosophical traditions that claim to resolve the absurd. Each is tested against the structural definition and found to commit what he calls *philosophical suicide* — the elimination of one term of the absurd relation (either the human demand or the world's silence). He examines Jaspers, Kierkegaard, Husserl, Chestov, and Scheler. Each imports meaning from outside the relation to close the gap. Each, in GCD terms, modifies the Contract mid-run to force conformance.
+
+| Thinker | Move | GCD Violation |
+|---|---|---|
+| **Kierkegaard** | The leap of faith — cross the gap by importing the divine | Importing a second axiom (supplementing Axiom-0 with an external source of meaning) |
+| **Jaspers** | Transcendence — the gap itself proves that something exists beyond it | Treating a diagnostic (Δ > 0) as a gate (concluding "transcendence" from the gap) |
+| **Husserl** | Phenomenological reduction — bracket the world, retain the structures of consciousness | Redefining the trace — removing channels that produce low fidelity, retaining only the ego's projections |
+| **Chestov** | Radical irrationalism — reason itself is to be abandoned | Destroying the measurement apparatus — refusing to compute the kernel because the results are uncomfortable |
+
+In each case, Camus identifies the same structural error: the thinker eliminates the absurd by destroying the measurement that detected it. The gap is "resolved" by refusing to measure. In GCD, this is the cardinal sin: suppressing a near-ε channel, redefining F, changing ε — any operation that closes the gap artificially rather than reporting it honestly.
+
+**Part II — The Absurd Man** (pp. 66–91): Camus examines three figures who live within the absurd without resolving it: Don Juan, the Actor, and the Conqueror. Each embodies a different strategy of *lucidity* — a different way to maintain the measurement while continuing to operate.
+
+| Absurd Figure | Strategy | GCD Analog |
+|---|---|---|
+| **Don Juan** | Serial intensity — each encounter is fully present, none is final | Multiple runs: each casepack is validated on its own terms; none claims to be the definitive case |
+| **The Actor** | Inhabits multiple lives without identifying with any single one | Multi-domain closure: the same kernel validates particles, portfolios, stellar spectra — each is a role, none is an essence |
+| **The Conqueror** | Acts in history without believing history has a teleology | Operates in Collapse regime without treating Collapse as failure — the regime label is *data*, not destiny |
+
+These are not metaphors. They are three implementations of the same architectural principle: continue to operate, continue to measure, continue to return — without resolving the gap. The absurd figures are systems that function in the Watch or Collapse regime as a *permanent operating condition*, not a temporary failure state.
+
+**Part III — Absurd Creation** (pp. 93–118): Camus turns to art — specifically, the novel. The question: can a work of art be created within the absurd, without resolving it? His answer: yes, but only if the art *describes without explaining*. The absurd creator does not impose meaning on experience. The absurd creator gives form to experience while preserving its irreducibility.
+
+> *"Thinking is learning all over again how to see, directing one's consciousness, making of every image a privileged place."*
+>
+> — Camus, *The Myth of Sisyphus*, p. 99
+
+This is the kernel's discipline: the kernel does not explain the trace. It computes invariants *of* the trace. F does not explain why the trace has the fidelity it has. F measures what survives collapse. The kernel describes without explaining. It gives formal structure to raw data without imposing a narrative on the data. The result (Stable, Watch, Collapse) is a *description* of where the trace is, not an *explanation* of why it is there.
+
+Camus explicitly names the novels that embody this discipline: Dostoevsky's *Brothers Karamazov* (which describes without resolving — the Grand Inquisitor chapter poses the question and does not answer it), Kafka's *The Trial* and *The Castle* (which present systems of measurement that never deliver a verdict — or rather, deliver only NON_EVALUABLE), and Melville's *Moby-Dick* (which describes the pursuit of an absolute that the narrative knows will not yield meaning).
+
+**Part IV — The Myth of Sisyphus** (pp. 119–123): The final four pages are the conclusion — the shortest and most precise section. Sisyphus *is* the absurd hero because his cycle is permanent, his lucidity is complete (he *knows* the boulder will roll back), and his rebellion is structural (he descends to retrieve it). The happiness of Sisyphus is not pleasure. It is the generative potential of the cycle: Φ_gen ≥ 0. The descent is where the generation lives.
+
+> *"The struggle itself toward the heights is enough to fill a man's heart. One must imagine Sisyphus happy."*
+>
+> — Camus, *The Myth of Sisyphus*, p. 123
+
+The four-part structure of *The Myth of Sisyphus* maps directly to the Discourse Spine:
+
+| *Myth of Sisyphus* Part | Spine Stop | Function |
+|---|---|---|
+| I. An Absurd Reasoning | **Contract** | Defines the absurd precisely — names the terms before evaluating |
+| II. The Absurd Man | **Canon** | Three figures narrate what it looks like to live under the Contract |
+| III. Absurd Creation | **Closures** | The discipline of art within absurdity — how to produce without resolving |
+| IV. Sisyphus | **Stance** | The verdict, read from the argument: the cycle is generative |
+
+The Integrity Ledger is implicit throughout: Camus holds the gap open for 118 pages, refusing to close it, accumulating evidence that every attempt to close it destroys the measurement. By the time we reach Sisyphus, the ledger has reconciled — every debit (each failed philosophical system, each false escape) has been recorded, and the credit (the generative cycle) is the only position that closes the seam.
+
+### 1.5 *The Stranger* — Meursault as the Kernel Without a Contract
+
+*The Stranger* (*L'Étranger*, 1942) is not a companion piece to *The Myth of Sisyphus*. It is its **operational test** — a novel that embodies the absurd rather than arguing for it. Camus published both in the same year deliberately. The essay provides the Contract; the novel provides the trace.
+
+Meursault is a kernel without a Contract. He computes. He registers. He measures. But he does not evaluate. He does not assign meaning. He does not import an external framework to interpret his own experience. This is what makes him a "stranger" — not to the world (he is acutely perceptive) but to the interpretive machinery that the world demands of him.
+
+#### 1.5.1 Part One — Pure Trace, No Stance
+
+The opening line is the most analyzed sentence in French literature:
+
+> *"Aujourd'hui, maman est morte. Ou peut-être hier, je ne sais pas."*
+> ("Mother died today. Or maybe yesterday; I can't be sure.")
+>
+> — Camus, *The Stranger* (1942), trans. Matthew Ward, p. 3
+
+The sentence is not cold. It is *precise*. Meursault is reporting a measurement: "Maman died" is a fact (low fidelity in the channel of maternal connection; the channel has collapsed to ε). "Today or yesterday" is an uncertainty — the timestamp is noisy. He reports both the fact and the uncertainty without attaching a narrative to either. He is a trace that records its own channels without computing a stance.
+
+Part One of *The Stranger* is a sequence of channel readings with no regime classification:
+
+| Event | Channel | Value | Meursault's Response |
+|---|---|---|---|
+| Mother's death | Familial attachment | Near ε (actual grief unclear) | Reports the fact, attends the vigil, does not perform the expected emotion |
+| Marie's affection | Physical pleasure | High cᵢ | Registers enjoyment without imposing a narrative of love |
+| Raymond's violence | Moral judgment | Near ε (no evaluation performed) | Assists a neighbor without evaluating the ethics of the request |
+| The sun, the sea | Sensory experience | Very high cᵢ | Registers with extraordinary perceptual precision |
+| The murder | Consequence | — | Fires five shots; reports sun, sand, light, the trigger giving way |
+
+Meursault's channels are not uniformly low. His Fidelity F is moderate — some channels deliver real signal (the physical world is vivid to him). But his Integrity Composite IC is near ε because the channels that society regards as essential (moral judgment, emotional performance, self-narrativization) are near zero. The heterogeneity gap Δ = F − IC is enormous. Meursault's *mean* experience is that of a functioning person. His *integrated* experience, judged by the multiplicative product of all channels, is near zero — because the channels he does not operate drag the geometric mean toward ε.
+
+This is the absurd in narrative form. Meursault is not a sociopath. He is a system that computes F but does not compute IC — that registers individual channels but does not take the geometric product. He has no mechanism for letting a single weak channel drag down the whole. He lives in the arithmetic mean and the world demands the geometric mean.
+
+#### 1.5.2 The Murder — Collapse Without Contract
+
+The murder on the beach (Camus, *The Stranger*, pp. 57–59) is the moment of regime transition. Meursault walks back toward the Arab, who draws a knife. The sun blazes. The sea glares. Meursault fires one shot. Then, after a pause — in one of the most haunting sentences in modern literature:
+
+> *"And it was like knocking four quick times on the door of unhappiness."*
+>
+> — Camus, *The Stranger*, p. 59
+
+He fires four more shots into the motionless body. The sentence does not explain. It *describes*. The four additional shots are the trace recording itself past the point of collapse. The system has already transitioned to Collapse regime (ω ≥ 0.30) with the first shot. The remaining four are the trace continuing to emit after collapse — gestures that cannot return, τ_R = ∞_rec, each one deepening a dissolution that was already irreversible.
+
+Camus's genius is that Meursault does not narrate the murder as a choice. He narrates it as an event that happened to him — the sun's pressure on his forehead, the blade of light from the knife, the trigger "giving way." This is not evasion of responsibility. It is precise reporting from a system that has no Contract against which to evaluate its own trajectory. The trace has no gates. The regime transition occurs, but no gate detects it, and no stance is read. The system collapses without knowing it has collapsed.
+
+#### 1.5.3 Part Two — The Imposed Contract and the Trial as Audit
+
+Part Two of *The Stranger* reverses everything. Society now imposes a Contract on Meursault — the legal system becomes a Tier-0 protocol that retroactively audits his trace. The trial (Camus, *The Stranger*, pp. 83–107) is the most explicit representation of the GCD validation architecture in any literary work.
+
+The prosecutor constructs a narrative: Meursault did not cry at his mother's funeral. He went swimming with Marie the next day. He watched a comedy film. He helped Raymond beat a woman. Therefore, the murder was premeditated. Therefore, he is a monster.
+
+What the prosecutor is actually doing is computing IC across channels that Meursault never operated:
+
+> *"He said that he had peered into my soul and that he had found nothing, gentlemen of the jury."*
+>
+> — Camus, *The Stranger*, p. 101
+
+The prosecutor's channel vector includes: filial piety (Meursault's channel value ≈ ε), moral self-narration (≈ ε), social conformity (≈ ε), intentionality (≈ ε). Against these channels, which the prosecutor's Contract treats as essential, Meursault's IC is vanishingly small. The prosecutor's verdict (guilty of premeditated murder) is a legitimate regime classification *under the prosecutor's Contract* — the channels are genuinely near ε, the integrity gap is genuinely enormous, the regime is genuinely Collapse.
+
+But the prosecutor's Contract is not Meursault's Contract. The prosecutor evaluates channels Meursault never claimed to operate. The audit is formally correct — every identity holds, every gate fires properly — but the Contract was imposed, not frozen. This is the structural horror of Part Two: **a technically conformant audit against the wrong Contract**.
+
+In GCD, this is a violation not of the identities (which hold regardless of Contract) but of the Contract-formation protocol. The Contract must be frozen *before* evidence — not selected *after* the trace to maximize the probability of a NONCONFORMANT verdict. The prosecutor commits what the system would call **retroactive Contract selection**: choosing the channels that produce the worst IC after observing the trace. This is not measurement. It is conviction by post-hoc channel engineering.
+
+#### 1.5.4 The Chaplain and the Final Rebellion
+
+In the final chapter (Camus, *The Stranger*, pp. 108–123), a chaplain visits Meursault in his cell and offers what Camus would call philosophical suicide — the leap to faith, the importation of divine meaning to close the gap. Meursault explodes:
+
+> *"I had only a little time left and I didn't want to waste it on God. He tried to change the subject by asking me why I called him 'Monsieur' instead of 'Father.' That irritated me and I told him he wasn't my father."*
+>
+> — Camus, *The Stranger*, p. 116
+
+This eruption is the moment of rebellion — *Myth of Sisyphus* §1.3 enacted in narrative. Meursault refuses the chaplain's axiom (God exists, therefore the gap has meaning) with the same ferocity that the GCD architecture refuses external supplements to Axiom-0. The system has one axiom. No supplementation is accepted. The chaplain's offer is a second axiom — it claims to close the gap by importing a source of meaning the system did not derive. Meursault's refusal is the architectural refusal to import.
+
+And then, in the final paragraphs, Meursault arrives at something the essay only theorized:
+
+> *"As if that blind rage had washed me clean, rid me of hope and, gazing up at the dark sky spangled with its signs and stars, for the first time, the first, I laid my heart open to the benign indifference of the universe."*
+>
+> — Camus, *The Stranger*, p. 122
+
+This is the moment Meursault becomes Sisyphus. The "benign indifference of the universe" is not nihilism — it is the world's silence recognized as *structural rather than hostile*. The universe is not cruel. The universe is *indifferent* — it neither supplies meaning nor witholds it. The gap Δ = F − IC is not the universe's fault. The gap is the structural relation between the demand for coherence and the heterogeneity of the channels. Recognizing this — laying the heart open to it — is lucidity. It is what Camus demanded in the essay and what Meursault achieves, too late, in the novel.
+
+> *"To feel it so like myself, indeed, so brotherly, made me realize that I'd been happy, and that I was happy still."*
+>
+> — Camus, *The Stranger*, p. 123
+
+"Happy" — the same word, with the same structural meaning, as "One must imagine Sisyphus happy." Not pleasure. Not satisfaction. The recognition that the cycle is generative, that the gap is the structure, and that operating within the gap *without resolving it* is the only honest stance. Φ_gen ≥ 0.
+
+### 1.6 *The Stranger* and *The Myth of Sisyphus* as Contract and Trace
+
+The two 1942 works form a single architectural unit. They are not two books that happen to share an author and a publication year. They are the **Contract and the trace** — the specification and the data:
+
+| | *The Myth of Sisyphus* | *The Stranger* |
+|---|---|---|
+| **GCD role** | Contract | Trace Ψ(t) |
+| **Mode** | Defines terms, tests philosophical systems, establishes the absurd as irreducible | Instantiates a life within the terms, lets the trace run, produces a verdict |
+| **Outcome** | "One must imagine Sisyphus happy" — the stance derived from the argument | Meursault lays his heart open — the stance derived from the life |
+| **What it does NOT do** | Does not produce a character who lives the absurd | Does not produce a philosophical argument for the absurd |
+| **What it needs from the other** | A *case* — evidence that the Contract produces real verdicts on actual traces | A *Contract* — the interpretive framework that makes Meursault's behavior legible |
+
+Without *The Myth of Sisyphus*, Meursault appears to be a sociopath — a cold man who murders without cause and does not cry at his mother's funeral. The literary criticism of the 1940s read him exactly this way. The essay provides the Contract that makes the trace legible: Meursault is not cold. He is operating without a Contract. His channels are functioning — many at high fidelity — but no kernel computes the invariants, no gates classify the regime, and no stance is read. He is raw data without a validation protocol.
+
+Without *The Stranger*, *The Myth of Sisyphus* remains an abstraction — a philosophical argument about the absurd that could be dismissed as academic. The novel provides the trace that makes the Contract real: here is a human being who lives within the gap, who does not resolve it, who is destroyed by a society that cannot tolerate unresolved heterogeneity, and who discovers lucidity at the last possible moment.
+
+Together, they form a casepack — the first existential casepack. Contract + trace + verdict + ledger. The ledger records: Meursault is NONCONFORMANT under the prosecutor's Contract (retroactively imposed, channels selected for maximum condemnation), and CONFORMANT under the Camusian Contract (the absurd measured and maintained, the gap preserved, the cycle affirmed). The two verdicts coexist because they apply different Contracts to the same trace. *The system does not resolve contradictions between Contracts. It records them.*
+
+### 1.7 The Quantitative Feel of *The Stranger* — How Camus Encodes Channels
+
+Camus was not a philosopher who happened to write novels. He was a writer whose philosophical precision is *in the prose*. The surface of *The Stranger* carries the channel structure in its sentence-level details.
+
+**Sensory channels are at full fidelity.** The sun, the sea, Marie's body, the smell of brine, the texture of the sand — these are rendered with extraordinary perceptual exactness. Meursault's sensory trace is high-F, high-IC: the channels are strong and they cohere. The physical world holds together for him.
+
+> *"The sun was the same as it had been the day I'd buried Maman, and like then, my forehead especially was hurting me, all the veins in it throbbing under the skin."*
+>
+> — Camus, *The Stranger*, p. 57
+
+**Evaluative channels are at ε.** When questioned about love ("Do you love me, Marie?" — "I told her it didn't mean anything but that I didn't think so," p. 35), about ambition ("My employer offered me a promotion — I told him you could never change your life," p. 41), about morality ("Raymond asked if I thought she'd cheated on him — I said you couldn't ever be sure about a thing like that," p. 32), Meursault returns ε in every evaluative channel. Not zero — ε. The guard-band value. The minimal positive reading that prevents the channel from being literally undefined but contributes nothing to the geometric mean.
+
+**The heterogeneity gap is therefore maximal.** High-fidelity sensory channels and guard-band evaluative channels produce F ≈ 0.5 (the arithmetic mean of strong and weak channels) and IC ≈ ε (the geometric mean is dragged to nothing by the evaluative channels). Δ = F − IC ≈ 0.5 − ε ≈ 0.5. The absurd, measured in the prose itself, is a 50% heterogeneity gap.
+
+Camus embeds this in the syntax. Part One is written in the *passé composé* — the French tense of completed actions, factual reporting, oral testimony. Not the *passé simple* (literary past, narrative distance) and not the *imparfait* (ongoing, habitual). The *passé composé* is the tense of the witness. Meursault is a trace that testifies to its own values without interpretation. The prose is its own channel vector.
+
+### 1.8 The Absurd Figures Reconsidered — Don Juan, the Actor, the Conqueror
+
+*The Myth of Sisyphus* devotes its most underread section (Part II, pp. 66–91) to three figures Camus calls "absurd" — not because they are ridiculous, but because they consciously operate within the gap. They are three strategies for living in Watch/Collapse regime without pretending to be in Stable:
+
+**Don Juan** (pp. 66–74): The serial lover. Don Juan does not seek the one perfect love — the single casepack that would validate all channels simultaneously. He seeks *quantity* — the multiplication of experiences, each complete in itself, none pretending to be the final word. Camus: "He leaves a woman not because he no longer desires her. A beautiful woman is always desirable. But he desires *another*, and no, this is not the same thing" (p. 69).
+
+In GCD: Don Juan runs multiple casepacks, each against the same Contract, each producing its own stance. No single run claims to be the definitive validation. The canon grows not through depth (one perfect run) but through breadth (many runs, each conformant on its own terms, the aggregate pattern emerging from the multiplicity). Don Juan is the opposite of the system that runs once and declares victory. He is the system that runs *always*, knowing that no single run resolves the gap.
+
+**The Actor** (pp. 75–80): The player of many roles. The actor inhabits multiple lives, each fully, and identifies with none permanently. Camus: "The actor teaches us ... that there is no frontier between what a man wants to be and what he is" (p. 77).
+
+In GCD: The actor is the kernel itself — the same computational apparatus that processes atomic physics, stellar classification, particle decay, financial markets, neutrino oscillation. The kernel does not identify with any domain. It inhabits each fully (computing F, ω, S, C, κ, IC with total engagement) and leaves each when the computation is complete. The kernel is the actor: many roles, one method, no permanent identity. *Multi-domain closure is the actor's discipline.*
+
+**The Conqueror** (pp. 81–91): The one who acts in history. Not for historical meaning (that would be Hegel's error — treating history as the medium of Spirit), but because action is the only form the absurd man's rebellion can take. Camus: "The conqueror ... knows that action is in itself useless. There is only one useful action, that of remaking man and the earth" (p. 87).
+
+In GCD: The conqueror operates in Collapse regime and does not flinch. ω ≥ 0.30 is not a problem to solve. It is the territory to act within. The conqueror does not seek to move the system to Stable regime (that would be quietism — Nietzsche's "last man"). The conqueror acts *within* dissolution, knowing that dissolution is where the generative flux lives. *Ruptura est fons constantiae.* The conqueror is the system that runs in Collapse, measures honestly, and continues.
+
+### 1.9 The Mediterranean Thought — Light Against System
+
+There is a dimension of Camus that the existentialist classification obscures — a dimension he insisted on and that his critics mostly ignored. Camus was not a Parisian intellectual. He was Algerian — born in Mondovi (now Dréan), raised in Belcourt, educated in Algiers. The Mediterranean light, the physical world, the body's knowledge — these are not decorations in his work. They are the *primary data*.
+
+> *"In the depth of winter, I finally learned that within me there lay an invincible summer."*
+>
+> — Camus, "Return to Tipasa" (1954), in *Lyrical and Critical Essays*, trans. Ellen Conroy Kennedy, p. 169
+
+Camus called his philosophical orientation *la pensée de midi* — "the thought of noon," Mediterranean thought, the thought of light and limit as against the Northern European thought of system and absolute (Camus, *The Rebel*, pp. 281–306). Where Hegel and Marx pursued totality (the complete system that subsumes all contradiction), Camus pursued measure (*mesure*) — the limit that preserves the gap rather than closing it.
+
+In GCD, this is the architectural distinction between a closed system (every anomaly is explained, every gap is closed, every contradiction is "dialectically resolved") and an open measurement protocol. The GCD architecture does not aim for totality. It aims for **honest measurement with published limits**. The Contract declares its thresholds; the gates classify honestly; the verdict is three-valued; the gap is preserved. *Pensée de midi* is the epistemology of a system that measures rather than explains.
+
+Camus distinguished this from nihilism on one side and totalitarianism on the other. The nihilist says: "nothing means anything." The totalitarian says: "everything will mean something once the system is complete." The Mediterranean thinker says: "some things mean something, the gap between meaning and silence is structural, and the discipline is to measure without pretending to resolve."
+
+This is Axiom-0 stated in the vocabulary of light and stone rather than the vocabulary of the kernel. The axiom does not explain reality. It measures what returns. What does not return is not eliminated — it is classified as gesture and preserved in the ledger. The gap remains. The light falls on the gap and the gap is visible. *La pensée de midi* is the epistemology of lucidity: seeing the gap clearly, in full light, without flinching and without resolving.
+
 ---
 
 ## 2. Nietzsche: Eternal Recurrence as the Return Axiom
@@ -616,6 +827,8 @@ The ethical weight falls on the commitment to record. Every validation is append
 | **The incommensurable** | The absurd gap between desire and silence | The weight of affirmation | The shadow that resists integration | The student's choice (mother or cause) | NON_EVALUABLE (seam cannot be tested) |
 | **Rebel vs. revolutionary** | The rebel (limits violence) | The creator (breaks and rebuilds values) | Individuation (transforms, not destroys) | Freedom within situation | Seam weld across runs (not back-edge within a run) |
 | **The rupture that generates** | The absurd cannot be overcome | Destruction precedes creation | Enantiodromia produces its opposite | The quarrel is nothing | τ_R = ∞_rec can still be generative across runs |
+| **Contract vs. trace** | *Myth* (Contract) + *Stranger* (trace) = casepack | Zarathustra's test: can this recur? | CW + Red Book: theory and data | Argument + praxis: philosophy is a practice | Contract.yaml + Ψ(t) → Stance |
+| **Mediterranean vs. system** | *Pensée de midi* — measure, don't totalize | Ja-sagen — affirm, don't systematize | Individuation — integrate, don't perfect | Situation — act, don't idealize | Open protocol — measure, don't close |
 
 ---
 
@@ -650,8 +863,10 @@ This is the deepest convergence: in philosophy, in psychology, in existential et
 
 | Author | Work | Year | Edition / Translation Cited |
 |---|---|---|---|
+| **Camus, Albert** | *The Stranger* (*L'Étranger*) | 1942 | Trans. Matthew Ward. New York: Vintage International, 1989. |
 | **Camus, Albert** | *The Myth of Sisyphus* (*Le Mythe de Sisyphe*) | 1942 | Trans. Justin O'Brien. New York: Vintage, 1955. |
 | **Camus, Albert** | *The Rebel* (*L'Homme révolté*) | 1951 | Trans. Anthony Bower. New York: Vintage, 1956. |
+| **Camus, Albert** | "Return to Tipasa" (*Retour à Tipasa*) | 1954 | In *Lyrical and Critical Essays*, trans. Ellen Conroy Kennedy. New York: Vintage, 1970, pp. 162–171. |
 | **Jung, Carl Gustav** | *Psychological Types* | 1921 | CW 6. Trans. H.G. Baynes, rev. R.F.C. Hull. Princeton: Princeton UP, 1971. |
 | **Jung, Carl Gustav** | *Two Essays on Analytical Psychology* | 1928/1943 | CW 7. Trans. R.F.C. Hull. Princeton: Princeton UP, 1966. |
 | **Jung, Carl Gustav** | *The Archetypes and the Collective Unconscious* | 1934/1954 | CW 9i. Trans. R.F.C. Hull. Princeton: Princeton UP, 1959. |
