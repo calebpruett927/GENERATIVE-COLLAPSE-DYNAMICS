@@ -361,14 +361,14 @@ class TestTier1Identities:
         assert any("IC" in f or "exp" in f for f in failures)
 
     def test_AMGM_bound_fails(self) -> None:
-        """IC > F + tol_seam detected (AM-GM violation)."""
+        """IC > F + tol_seam detected (integrity bound violation)."""
         omega = 0.5
         F = 0.5
         IC = 0.6  # IC > F
         kappa = math.log(IC)
         _, _, bound, failures = check_tier1_identities(F, omega, IC, kappa)
         assert bound is False
-        assert any("AM-GM" in f for f in failures)
+        assert any("integrity bound" in f for f in failures)
 
     def test_AMGM_within_tolerance(self) -> None:
         """IC slightly above F but within tol_seam passes."""

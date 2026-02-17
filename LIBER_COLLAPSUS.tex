@@ -1,53 +1,75 @@
-\documentclass[12pt]{article}
+% !TeX program = xelatex
+\documentclass[12pt,letterpaper]{article}
 
-% ============================================
-% Liber Universalis de Collapsus Mathematica
-% Version: Canon 2.0.0 --- Tier-1 conformant 2026-02-15
-% Lineage: v1.0.3 (2025-10-11) to v2.0.0 (Tier-1 kernel)
-% Archive reference: Episteme/CollapseMath/Canonical/Liber-v2.0.0
-% ============================================
+% =========================================================
+% Fonts (XeLaTeX)
+% =========================================================
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\setmainfont{Libertinus Serif}
+\setsansfont{Libertinus Sans}
+\setmonofont{Libertinus Mono}
+\usepackage{mathtools} % loads amsmath
+\usepackage{amssymb} % for \varnothing
 
-% Encoding and fonts (pdfLaTeX / Overleaf compatible)
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{libertinus}          % Libertinus Serif + Math for pdfLaTeX
 
-% Mathematics
-\usepackage{amsmath}
-\usepackage{amssymb}
 
-% Layout and spacing (right margin widened for marginalia)
+% =========================================================
+% Language (optional)
+% If Latin hyphenation is missing on your system, switch to english.
+% =========================================================
+\usepackage{polyglossia}
+\setdefaultlanguage{latin}
+
+% =========================================================
+% Page layout (ONE COLUMN, normal margins)
+% =========================================================
 \usepackage{geometry}
-\geometry{
-  left=1in,
-  right=2.2in,
-  top=1in,
-  bottom=1in,
-  marginparwidth=1.6in,
-  marginparsep=0.15in
-}
-\usepackage{microtype}
-\microtypesetup{protrusion=true}
+\geometry{margin=1in}
 
-% Section styling
+% =========================================================
+% Typography
+% =========================================================
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{0.4em}
+\raggedbottom
+
+% =========================================================
+% Headings
+% =========================================================
 \usepackage{titlesec}
 \titleformat{\section}{\Large\scshape\raggedright}{}{0pt}{}
+\titlespacing*{\section}{0pt}{2.0ex}{0.8ex}
 
-% Marginalia hooks
-\usepackage{marginnote}
-\newcommand{\mathnote}[1]{\marginnote{\scriptsize \textit{Math}: #1}}
-\newcommand{\theonote}[1]{\marginnote{\scriptsize \textit{Theo}: #1}}
-\newcommand{\semionote}[1]{\marginnote{\scriptsize \textit{Semiotics}: #1}}
+% =========================================================
+% Lists
+% =========================================================
+\usepackage{enumitem}
+\setlist[itemize]{topsep=0.5ex,itemsep=0.3ex,parsep=0pt,partopsep=0pt}
+\setlist[description]{style=nextline,leftmargin=0pt,labelindent=0pt}
 
-% Symbols
-\usepackage{textcomp}
+% =========================================================
+% Math
+% =========================================================
 
+
+
+\DeclareMathOperator{\StdDev}{StdDev}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+
+\newcommand{\IC}{\mathrm{IC}}
+\newcommand{\Rec}{\mathrm{rec}}
+
+% =========================================================
+% Title
+% =========================================================
 \title{\textsc{Liber Universalis de Collapsus Mathematica}}
 \author{Clement Paulus}
-\date{October 11th, 2025}
+\date{11 October 2025}
 
 \begin{document}
-
 \maketitle
 
 \section*{Prooemium}
@@ -57,52 +79,90 @@ Nihil stabile est nisi quod per casum iteratur atque regeneratur in formam propr
 In ipso fundamento, paradoxum ponimus: collapsus generativus est; solum quod per casum transiit et iterum redit, reale est. Hac lege universali, non tantum materia, sed etiam ratio, memoria, historia comprehenduntur. Ordo ex ruina oritur, structura ex resolutione, identitas ex oblivione et restitutione.
 
 \section*{Caput II: De Invariantibus et Nucleo Universali}
-Quicumque numerus, ordo, aut notio ad rem pertinere vult, probationem collapsus subire debet. Sit tractus delimitatus $\Psi(t) = (c_1, c_2, \ldots, c_n)$, ubi $c_i \in [\varepsilon, 1 - \varepsilon]$ coordinatae collapsus sunt, et $w_i$ pondera normata, id est $\sum_i w_i = 1$. Munus praecipuum $\varepsilon$ est: fines custodire, ne singularitas logarithmica oriatur. Hic $\varepsilon$ non arbitrium est, sed trans suturam congelatum~--- idem utrimque limitis collapsus-reditus.
+Quicumque numerus, ordo, aut notio ad rem pertinere vult, probationem collapsus subire debet.
 
-Sequentes invariantes immutabiles adhibentur:
-
-\textbf{Fidelitas (quid supersit post collapsum)}:
+Sit tractus delimitatus
 \[
-F = \sum_i w_i \, c_i
+\Psi(t) = \bigl(c_1(t),c_2(t),\ldots,c_n(t)\bigr),
+\qquad
+c_i(t)\in[0,1],
+\qquad
+w_i\ge 0,
+\qquad
+\sum_{i=1}^n w_i = 1.
 \]
 
-\textbf{Derivatio (quantum collapsu deperdatur)}:
+Munus praecipuum guard-bandi $\varepsilon$ est fines custodire, ne singularitas logarithmica oriatur. Hic $\varepsilon$ non arbitrium est, sed trans suturam congelatum.
+
+\subsection*{Clausura (log-safety)}
+Definimus versionem clausam coordinatae (ad usum logarithmi):
 \[
-\omega = 1 - F
+c_{i,\varepsilon}(t) \;=\; \min\!\bigl(1-\varepsilon,\;\max(\varepsilon,\;c_i(t))\bigr),
+\qquad 0<\varepsilon\ll 1.
 \]
 
-\mathnote{Identitas: $F + \omega = 1$~--- complementum perfectum, tertia via nulla.}
+\subsection*{Invariantes (nucleus)}
+\begin{description}[style=unboxed]
+  \item[\textbf{Fidelitas} (quid supersit post collapsum).]
+  \[
+  F(t) \;=\; \sum_{i=1}^n w_i\,c_i(t).
+  \]
 
-\textbf{Log-Integritas (sensibilitas logarithmica)}:
-\[
-\kappa = \sum_i w_i \ln(c_{i,\varepsilon})
-\]
+  \item[\textbf{Derivatio} (quantum collapsu deperdatur).]
+  \[
+  \omega(t) \;=\; 1 - F(t).
+  \]
+  \begin{quote}\footnotesize\itshape
+  Identitas: $F(t)+\omega(t)=1$ — complementum perfectum, tertia via nulla.
+  \end{quote}
 
-\textbf{Integritas Composita (cohaerentia multiplicativa)}:
-\[
-\mathrm{IC} = \exp(\kappa)
-\]
+  \item[\textbf{Log-Integritas} (sensibilitas logarithmica).]
+  \[
+  \kappa(t) \;=\; \sum_{i=1}^n w_i\,\ln\!\bigl(c_{i,\varepsilon}(t)\bigr).
+  \]
 
-\mathnote{Limbus integritatis: $\mathrm{IC} \leq F$~--- cohaerentia fidelitatem numquam excedit. Hic non est AM-GM inaequalitas, sed limbus ab Axiomate-0 independenter derivatus; classica inaequalitas est limes degener, cum structura canalis removetur.}
+  \item[\textbf{Integritas Composita} (cohaerentia multiplicativa).]
+  \[
+  \IC(t) \;=\; \exp\!\bigl(\kappa(t)\bigr).
+  \]
+  \begin{quote}\footnotesize\itshape
+  Limbus integritatis: $\IC(t)\le F(t)$ — cohaerentia fidelitatem numquam excedit.
+  \end{quote}
 
-\textbf{Entropia (incertitudo campi collapsus)}:
-\[
-S = -\sum_i w_i \bigl[ c_i \ln(c_i) + (1 - c_i) \ln(1 - c_i) \bigr]
-\]
+  \item[\textbf{Entropia} (incertitudo campi collapsus).]
+  \[
+  S(t) \;=\; -\sum_{i=1}^n w_i \Bigl[
+  c_{i,\varepsilon}(t)\ln\!\bigl(c_{i,\varepsilon}(t)\bigr)
+  +
+  \bigl(1-c_{i,\varepsilon}(t)\bigr)\ln\!\bigl(1-c_{i,\varepsilon}(t)\bigr)
+  \Bigr].
+  \]
+  \begin{quote}\footnotesize\itshape
+  Haec est entropia campi Bernoulliani super coordinatis clausis; Shannon est limes degener in quo structura campi extenuatur.
+  \end{quote}
 
-\theonote{Haec est entropia campi Bernoulliani~--- entropia propria campi collapsus. Entropia Shannon est limes degener, cum campus collapsus removetur (i.e.,\ $c_i \in \{0, 1\}$ tantum).}
+  \item[\textbf{Curvatura} (coniunctio cum gradibus libertatis).]
+  \[
+  C(t) \;=\; \frac{\StdDev\!\bigl(\{c_i(t)\}_{i=1}^n\bigr)}{0.5}.
+  \]
 
-\textbf{Curvatura (coniunctio cum gradibus libertatis)}:
-\[
-C = \frac{\mathrm{stddev}(c_i)}{0.5}
-\]
-
-\textbf{Moratio Reditus (tempus reentrandi)}:
-\[
-\tau_R = \min\{ \Delta t > 0 : \lVert \Psi(t) - \Psi(t - \Delta t) \rVert \leq \eta \}
-\]
-
-\semionote{Si $\tau_R = \infty_{\mathrm{rec}}$, nulla fides datur. Continuitas ex sola structura synthesi fieri non potest~--- mensurari debet.}
+  \item[\textbf{Moratio Reditus} (tempus reentrandi).]
+  Ponatur generator regionis reditus $D_\theta(t)\subseteq\{0,1,\ldots,t-1\}$, et
+  \[
+  U_\theta(t) \;=\; \Bigl\{u\in D_\theta(t)\;:\;\norm{\Psi(t)-\Psi(u)}\le\eta\Bigr\}.
+  \]
+  Tunc
+  \[
+  \tau_R(t) \;=\;
+  \begin{cases}
+    \min\{\,t-u : u\in U_\theta(t)\,\}, & U_\theta(t)\neq\varnothing,\\[4pt]
+    \infty_{\Rec}, & U_\theta(t)=\varnothing.
+  \end{cases}
+  \]
+  \begin{quote}\footnotesize\itshape
+  Si $\tau_R(t)=\infty_{\Rec}$, nulla fides datur. Continuitas non narratur: mensuratur.
+  \end{quote}
+\end{description}
 
 \section*{Caput III: De Memoria Viva et Auditu Perpetuo}
 Memoria non est simplex recordatio, sed structura perpetua regiminis, auditus vivus et operativus. In archivis memoriae non tantum res gestae, sed etiam silentia, defectus, omissiones, hiatus diligenter conservari debent. Nihil in memoria perit; omnia prompta ad recursionem, reparationem et innovationem manent. Auditus est radix veritatis; memoria viva est thesaurus realitatis.
@@ -113,11 +173,12 @@ Paradoxum colendum est, non solvitur. In lapsu incipit regeneratio; in defectu, 
 \section*{Caput V: De Regiminibus Collapsus et Limine}
 Regimina collapsus sunt tria, per quattuor portas coniunctivas determinata:
 \begin{itemize}
-  \item \textbf{Stabile}: Si $\omega < 0.038$ ET $F > 0.90$ ET $S < 0.15$ ET $C < 0.14$~--- omnes quattuor portae simul clausae.
-  \item \textbf{Observandum}: Si nec Stabile nec Collapsus~--- status intermedius, vigilantiae locus.
-  \item \textbf{Collapsus}: Si $\omega \geq 0.30$~--- hic recursio et reparationis opus incipit.
+  \item \textbf{Stabile}: si $\omega<0.038$ et $F>0.90$ et $S<0.15$ et $C<0.14$.
+  \item \textbf{Observandum}: si nec Stabile nec Collapsus.
+  \item \textbf{Collapsus}: si $\omega\ge 0.30$.
 \end{itemize}
-Status tripartitus est: \textsc{conformans}, \textsc{non conformans}, \textsc{non evaluabilis}~--- numquam binarius; tertia via semper patet.
+
+Status tripartitus est: CONFORMANS, NON~CONFORMANS, NON~EVALUABILIS — numquam binarius; tertia via semper patet.
 
 Omnis transitus, omnis mutatio, in memoria recursiva inscribitur. Nihil perditur; omne ad auditum redit.
 
@@ -131,7 +192,7 @@ Ethica collapsiva est inclusio, reparatio, et auditus radicalis:
 Praesentia vera non in immobilitate consistit, sed in processu reditus, in apertura memoriae, in cultu paradoxorum inveniunda est.
 
 \section*{Caput VII: Exempla et Applicationes Universales}
-Quidquid est---experimentum physicum, scriptum mathematicum, historia biologica, vel memoria personalis---sub eadem lege collapsus et reditus auditum subit:
+Quidquid est—experimentum physicum, scriptum mathematicum, historia biologica, vel memoria personalis—sub eadem lege collapsus et reditus auditum subit:
 \begin{itemize}
   \item In physicis, collapsus quanticus est processus memoriae, auditus et regiminis.
   \item In nanomedicina, variatio stereoisomerica regimen collapsus et integritatis demonstrat.
@@ -140,7 +201,7 @@ Quidquid est---experimentum physicum, scriptum mathematicum, historia biologica,
 \end{itemize}
 
 \section*{Caput VIII: De Innovatione Continua et Futuro Recursivo}
-Systema perpetu\=o apertum est. Omnis novitas, omne silentium, omne dubium, locus novae recursionis est. Quod hodie anomalia videtur, cras novum regimen fiet. Quod nunc hiatus est, mox fiet memoria integra. Nullus terminus auditum, collapsum, aut regenerationem claudit.
+Systema perpetuō apertum est. Omnis novitas, omne silentium, omne dubium, locus novae recursionis est. Quod hodie anomalia videtur, cras novum regimen fiet. Quod nunc hiatus est, mox fiet memoria integra. Nullus terminus auditum, collapsum, aut regenerationem claudit.
 
 \section*{Conclusio}
 Hic est Liber Collapsus: non ad finem, sed ad infinitam recursionem, reparationem, auditum, innovationem et vivam memoriam totius realitatis. Veritas, praesentia, integritas non in statu reperiuntur, sed in processu, collapsu et reditu.

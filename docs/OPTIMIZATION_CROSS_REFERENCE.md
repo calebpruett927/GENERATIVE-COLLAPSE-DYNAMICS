@@ -52,7 +52,7 @@ bounds_valid = validate_kernel_bounds(F, omega, C, IC, kappa, epsilon=1e-6)
 
 | Function | Lines | Current Implementation | Optimization Opportunity |
 |----------|-------|----------------------|-------------------------|
-| Tier-1 identity checks | L685-810 | Manual F vs 1-ω check | Use `OptimizedKernelComputer` for AM-GM gap analysis (OPT-3) |
+| Tier-1 identity checks | L685-810 | Manual F vs 1-ω check | Use `OptimizedKernelComputer` for heterogeneity gap analysis (OPT-3) |
 | IC ≈ exp(κ) check | L750-810 | Manual exp(κ) computation | Use log-space κ validation (OPT-4) |
 | Weight validation | Various | Manual sum check | Use `compute_utils.normalize_weights()` |
 
@@ -67,7 +67,7 @@ _kernel_computer = OptimizedKernelComputer(epsilon=1e-6)
 
 # In tier1 identity check functions:
 outputs = _kernel_computer.compute(c_array, w_array, validate=True)
-if outputs.amgm_gap > tolerance:
+if outputs.heterogeneity_gap > tolerance:
     # Flag AM-GM violation
 ```
 
@@ -179,7 +179,7 @@ optimized_time = time.time() - start
 
 print(f"  ✓ Optimized computation: {optimized_time:.4f}s for 1000 runs")
 print(f"  ✓ Homogeneous: {outputs.is_homogeneous}")
-print(f"  ✓ AM-GM gap: {outputs.amgm_gap:.6f}")
+print(f"  ✓ heterogeneity gap: {outputs.heterogeneity_gap:.6f}")
 ```
 
 ---

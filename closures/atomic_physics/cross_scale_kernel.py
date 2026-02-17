@@ -280,7 +280,7 @@ class EnhancedKernelResult:
     C: float
     kappa: float
     IC: float
-    amgm_gap: float
+    heterogeneity_gap: float
 
     # Tier-1 checks
     F_plus_omega: float
@@ -308,14 +308,14 @@ def _classify_regime(omega: float, F: float, S: float, C: float) -> str:
     return "Watch"
 
 
-def _derive_gcd_category(F: float, IC: float, amgm_gap: float, S: float, C: float) -> str:
+def _derive_gcd_category(F: float, IC: float, heterogeneity_gap: float, S: float, C: float) -> str:
     """Enhanced classification using subatomic-informed thresholds."""
     if F > 0.55:
-        if amgm_gap < 0.03:
+        if heterogeneity_gap < 0.03:
             return "Kernel-concentrated"
         return "Kernel-structured"
     if F > 0.40:
-        if amgm_gap < 0.04:
+        if heterogeneity_gap < 0.04:
             return "Kernel-balanced"
         return "Kernel-split"
     if F > 0.30:
@@ -343,7 +343,7 @@ def compute_enhanced_kernel(el: Element) -> EnhancedKernelResult:
     ic_exp = abs(k["IC"] - math.exp(k["kappa"])) < 1e-12
 
     regime = _classify_regime(k["omega"], k["F"], k["S"], k["C"])
-    gcd_cat = _derive_gcd_category(k["F"], k["IC"], k["amgm_gap"], k["S"], k["C"])
+    gcd_cat = _derive_gcd_category(k["F"], k["IC"], k["heterogeneity_gap"], k["S"], k["C"])
 
     # Channel diagnostics
     min_idx = int(np.argmin(c))
@@ -373,7 +373,7 @@ def compute_enhanced_kernel(el: Element) -> EnhancedKernelResult:
         C=round(k["C"], 6),
         kappa=round(k["kappa"], 6),
         IC=round(k["IC"], 6),
-        amgm_gap=round(k["amgm_gap"], 6),
+        heterogeneity_gap=round(k["heterogeneity_gap"], 6),
         F_plus_omega=round(F_po, 9),
         IC_leq_F=bool(ic_leq),
         IC_eq_exp_kappa=bool(ic_exp),
@@ -427,7 +427,7 @@ def cross_scale_comparison(
     for label, results in scales:
         Fs = [r.F for r in results]
         ICs = [r.IC for r in results]
-        gaps = [r.amgm_gap for r in results]
+        gaps = [r.heterogeneity_gap for r in results]
         Ss = [r.S for r in results]
         Cs = [r.C for r in results]
         n = len(results)
@@ -462,7 +462,7 @@ def cross_scale_comparison(
         n = len(group)
         Fs = [r.F for r in group]
         ICs = [r.IC for r in group]
-        gaps = [r.amgm_gap for r in group]
+        gaps = [r.heterogeneity_gap for r in group]
         print(f"  {label:<25s} {n:3d}  {sum(Fs) / n:6.4f} {sum(ICs) / n:6.4f} {sum(gaps) / n:6.4f}")
 
 
@@ -545,14 +545,14 @@ def analyze_nuclear_binding_curve(results: list[EnhancedKernelResult]) -> None:
         mag = "YES" if r.is_magic else ""
         print(
             f"  {r.symbol:>3s} {r.Z:3d} {r.A:4d} {r.N_over_Z:5.3f} {r.BE_per_A:6.3f} "
-            f"{r.F:6.4f} {r.IC:6.4f} {r.amgm_gap:6.4f} {mag:>5s}  {note}"
+            f"{r.F:6.4f} {r.IC:6.4f} {r.heterogeneity_gap:6.4f} {mag:>5s}  {note}"
         )
 
     # Correlation: BE/A vs F
     bea_vals = np.array([r.BE_per_A for r in results])
     f_vals = np.array([r.F for r in results])
     ic_vals = np.array([r.IC for r in results])
-    gap_vals = np.array([r.amgm_gap for r in results])
+    gap_vals = np.array([r.heterogeneity_gap for r in results])
 
     # Only for A > 1 (H has no binding)
     mask = bea_vals > 0
@@ -583,8 +583,8 @@ def analyze_magic_numbers(results: list[EnhancedKernelResult]) -> None:
         avg_F_nm = sum(r.F for r in non_magic) / len(non_magic)
         avg_IC_m = sum(r.IC for r in magic) / len(magic)
         avg_IC_nm = sum(r.IC for r in non_magic) / len(non_magic)
-        avg_gap_m = sum(r.amgm_gap for r in magic) / len(magic)
-        avg_gap_nm = sum(r.amgm_gap for r in non_magic) / len(non_magic)
+        avg_gap_m = sum(r.heterogeneity_gap for r in magic) / len(magic)
+        avg_gap_nm = sum(r.heterogeneity_gap for r in non_magic) / len(non_magic)
 
         print(f"\n  {'':>14s} {'⟨F⟩':>7s} {'⟨IC⟩':>7s} {'⟨Δ⟩':>7s}")
         print(f"  {'Magic':>14s} {avg_F_m:7.4f} {avg_IC_m:7.4f} {avg_gap_m:7.4f}")
@@ -605,7 +605,7 @@ def analyze_magic_numbers(results: list[EnhancedKernelResult]) -> None:
             magic_in.append(f"N={r.N}")
         mstr = "+".join(magic_in)
         print(
-            f"  {r.symbol:>4s} {r.Z:3d} {r.N:3d} {mstr:>10s} {r.F:6.4f} {r.IC:6.4f} {r.amgm_gap:6.4f} {r.gcd_category}"
+            f"  {r.symbol:>4s} {r.Z:3d} {r.N:3d} {mstr:>10s} {r.F:6.4f} {r.IC:6.4f} {r.heterogeneity_gap:6.4f} {r.gcd_category}"
         )
 
 
@@ -632,7 +632,7 @@ def analyze_nz_stability(results: list[EnhancedKernelResult]) -> None:
         n = len(group)
         avg_F = sum(r.F for r in group) / n
         avg_IC = sum(r.IC for r in group) / n
-        avg_gap = sum(r.amgm_gap for r in group) / n
+        avg_gap = sum(r.heterogeneity_gap for r in group) / n
         avg_bea = sum(r.BE_per_A for r in group) / n
         print(f"  {label:<18s} {n:3d}  {avg_F:6.4f} {avg_IC:6.4f} {avg_gap:6.4f} {avg_bea:6.3f}")
 
@@ -660,7 +660,7 @@ def analyze_old_vs_new(results: list[EnhancedKernelResult]) -> None:
             continue
         F_diffs.append(r.F - old.F)
         IC_diffs.append(r.IC - old.IC)
-        gap_diffs.append(r.amgm_gap - old.amgm_gap)
+        gap_diffs.append(r.heterogeneity_gap - old.heterogeneity_gap)
         if r.regime != old.regime:
             regime_changes += 1
         if r.gcd_category != old.gcd_category:
@@ -710,7 +710,7 @@ def analyze_enhanced_table(results: list[EnhancedKernelResult]) -> None:
         print(
             f"  {r.Z:3d} {r.symbol:>3s} {r.period:>1d}{g_str:>3s} {r.block:>1s} "
             f"{r.N_over_Z:5.3f} {r.BE_per_A:5.3f} {mag:>3s} {r.valence_e:2d} "
-            f"{r.F:6.4f} {r.IC:6.4f} {r.amgm_gap:6.4f} {r.min_channel:>13s} "
+            f"{r.F:6.4f} {r.IC:6.4f} {r.heterogeneity_gap:6.4f} {r.min_channel:>13s} "
             f"{r.regime:>8s} {r.gcd_category:>20s}"
         )
 
@@ -731,7 +731,7 @@ def analyze_block_enhanced(results: list[EnhancedKernelResult]) -> None:
         n = len(rs)
         print(
             f"  {blk:>5s} {n:3d} {sum(r.F for r in rs) / n:7.4f} "
-            f"{sum(r.IC for r in rs) / n:7.4f} {sum(r.amgm_gap for r in rs) / n:7.4f} "
+            f"{sum(r.IC for r in rs) / n:7.4f} {sum(r.heterogeneity_gap for r in rs) / n:7.4f} "
             f"{sum(r.BE_per_A for r in rs) / n:7.3f} {sum(r.N_over_Z for r in rs) / n:6.3f} "
             f"{sum(r.S for r in rs) / n:6.4f}"
         )
@@ -752,7 +752,7 @@ def analyze_period_enhanced(results: list[EnhancedKernelResult]) -> None:
         n_magic = sum(1 for r in rs if r.is_magic)
         print(
             f"  {p:3d} {n:3d} {sum(r.F for r in rs) / n:7.4f} "
-            f"{sum(r.IC for r in rs) / n:7.4f} {sum(r.amgm_gap for r in rs) / n:7.4f} "
+            f"{sum(r.IC for r in rs) / n:7.4f} {sum(r.heterogeneity_gap for r in rs) / n:7.4f} "
             f"{sum(r.BE_per_A for r in rs) / n:7.3f} {sum(r.N_over_Z for r in rs) / n:6.3f} "
             f"{n_magic:5d}"
         )
@@ -862,17 +862,17 @@ if __name__ == "__main__":
     print(f"{'━' * 80}")
 
     all_Fs = [r.F for r in results]
-    all_gaps = [r.amgm_gap for r in results]
+    all_gaps = [r.heterogeneity_gap for r in results]
     max_F = max(results, key=lambda r: r.F)
     min_F = min(results, key=lambda r: r.F)
-    max_gap = max(results, key=lambda r: r.amgm_gap)
+    max_gap = max(results, key=lambda r: r.heterogeneity_gap)
 
     print("\n  Enhanced kernel (12-ch, nuclear-informed):")
     print(f"    ⟨F⟩  = {sum(all_Fs) / len(all_Fs):.4f}")
     print(f"    ⟨Δ⟩  = {sum(all_gaps) / len(all_gaps):.4f}")
     print(f"    Highest F: {max_F.symbol} (Z={max_F.Z}) F={max_F.F:.4f}")
     print(f"    Lowest F:  {min_F.symbol} (Z={min_F.Z}) F={min_F.F:.4f}")
-    print(f"    Largest Δ: {max_gap.symbol} (Z={max_gap.Z}) Δ={max_gap.amgm_gap:.4f}")
+    print(f"    Largest Δ: {max_gap.symbol} (Z={max_gap.Z}) Δ={max_gap.heterogeneity_gap:.4f}")
 
     print("\n  What subatomic physics taught atomic physics:")
     print("    1. Zero-channels kill IC — now we track which channel is the 'IC killer'")

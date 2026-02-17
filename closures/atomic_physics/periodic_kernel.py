@@ -4,9 +4,9 @@ Takes each element's fundamental measurable properties, normalizes them into
 a GCD kernel trace vector c ∈ [ε, 1−ε]^n, and derives Tier-1 invariants:
 
     F + ω = 1            (Definition 4)
-    IC ≤ F               (integrity bound, Lemma 4; AM-GM inequality is the degenerate limit)
+    IC ≤ F               (integrity bound, Lemma 4)
     IC = exp(κ)          (Log-space identity, Lemma 2)
-    amgm_gap = F − IC    (Heterogeneity diagnostic, Lemma 34)
+    heterogeneity_gap = F − IC    (Heterogeneity diagnostic, Lemma 34)
     S = h_w(c)           (Weighted entropy, Definition 6)
     C = curvature(c)     (Dispersion proxy, Definition 7)
 
@@ -172,15 +172,15 @@ class PropertyKernelResult:
     # Tier-1 invariants
     F: float  # Fidelity (arithmetic mean of trace)
     omega: float  # Degradation = 1 − F
-    S: float  # Shannon entropy of trace profile
+    S: float  # Bernoulli field entropy of trace profile
     C: float  # Curvature (dispersion proxy)
     kappa: float  # Log-space fidelity = Σ w_i ln(c_i)
     IC: float  # Geometric mean = exp(κ)
-    amgm_gap: float  # F − IC (always ≥ 0)
+    heterogeneity_gap: float  # F − IC (always ≥ 0)
 
     # Tier-1 identity checks
     F_plus_omega: float  # Should be exactly 1.0
-    IC_leq_F: bool  # AM-GM: IC ≤ F
+    IC_leq_F: bool  # Integrity bound: IC ≤ F
     IC_eq_exp_kappa: bool  # IC = exp(κ)
 
     # Regime classification (from kernel)
@@ -214,7 +214,7 @@ def _derive_gcd_category(
     S: float,
     C: float,
     IC: float,
-    amgm_gap: float,
+    heterogeneity_gap: float,
     block: str,
     el: Element,
 ) -> str:
@@ -227,8 +227,8 @@ def _derive_gcd_category(
     Classification logic (derived, not assumed):
         - High F (> 0.55) + Low C (< 0.1):    "Kernel-stable"    (uniform properties)
         - High F + High C (> 0.1):             "Kernel-structured" (high but dispersed)
-        - Mid F (0.35-0.55) + Low amgm:        "Kernel-balanced"  (moderate, homogeneous)
-        - Mid F + High amgm (> 0.05):          "Kernel-split"     (moderate, heterogeneous)
+        - Mid F (0.35-0.55) + Low heterogeneity:        "Kernel-balanced"  (moderate, homogeneous)
+        - Mid F + High heterogeneity (> 0.05):          "Kernel-split"     (moderate, heterogeneous)
         - Low F (< 0.35) + Low S:              "Kernel-sparse"    (weak, low entropy)
         - Low F + High S:                      "Kernel-diffuse"   (weak, high entropy)
     """
@@ -237,7 +237,7 @@ def _derive_gcd_category(
             return "Kernel-stable"
         return "Kernel-structured"
     if F > 0.35:
-        if amgm_gap < 0.05:
+        if heterogeneity_gap < 0.05:
             return "Kernel-balanced"
         return "Kernel-split"
     if S < 0.40:
@@ -285,7 +285,7 @@ def compute_element_kernel(
         k["S"],
         k["C"],
         k["IC"],
-        k["amgm_gap"],
+        k["heterogeneity_gap"],
         el.block,
         el,
     )
@@ -307,7 +307,7 @@ def compute_element_kernel(
         C=round(k["C"], 6),
         kappa=round(k["kappa"], 6),
         IC=round(k["IC"], 6),
-        amgm_gap=round(k["amgm_gap"], 6),
+        heterogeneity_gap=round(k["heterogeneity_gap"], 6),
         F_plus_omega=round(F_plus_omega, 9),
         IC_leq_F=bool(IC_leq_F),
         IC_eq_exp_kappa=bool(IC_eq_exp_kappa),
@@ -346,7 +346,7 @@ def print_full_table(results: list[PropertyKernelResult]) -> None:
         g_str = f"{r.group:>2d}" if r.group is not None else " -"
         print(
             f"{r.Z:>3} {r.symbol:>3} {r.period:>1}{g_str:>3} {r.block:>1} "
-            f"{r.n_channels:>2} {r.F:>7.4f} {r.omega:>7.4f} {r.IC:>7.4f} {r.amgm_gap:>7.4f} "
+            f"{r.n_channels:>2} {r.F:>7.4f} {r.omega:>7.4f} {r.IC:>7.4f} {r.heterogeneity_gap:>7.4f} "
             f"{r.S:>7.4f} {r.C:>7.4f} {r.regime:>8} "
             f"{r.category:>22} {r.gcd_category:>18}"
         )
@@ -412,7 +412,7 @@ def print_block_analysis(results: list[PropertyKernelResult]) -> None:
         mean_F = sum(r.F for r in rs) / n
         mean_w = sum(r.omega for r in rs) / n
         mean_IC = sum(r.IC for r in rs) / n
-        mean_gap = sum(r.amgm_gap for r in rs) / n
+        mean_gap = sum(r.heterogeneity_gap for r in rs) / n
         mean_S = sum(r.S for r in rs) / n
         mean_C = sum(r.C for r in rs) / n
         print(
@@ -436,7 +436,7 @@ def print_period_trend(results: list[PropertyKernelResult]) -> None:
         mean_F = sum(r.F for r in rs) / n
         mean_w = sum(r.omega for r in rs) / n
         mean_IC = sum(r.IC for r in rs) / n
-        mean_gap = sum(r.amgm_gap for r in rs) / n
+        mean_gap = sum(r.heterogeneity_gap for r in rs) / n
         mean_S = sum(r.S for r in rs) / n
         mean_C = sum(r.C for r in rs) / n
         print(

@@ -21,6 +21,8 @@ from dataclasses import dataclass
 
 import numpy as np
 
+from umcp.frozen_contract import EPSILON as _FROZEN_EPSILON
+
 
 @dataclass
 class PruningResult:
@@ -101,7 +103,7 @@ def prune_zero_weights(
 
 def clip_coordinates(
     c: np.ndarray,
-    epsilon: float = 1e-6,
+    epsilon: float = _FROZEN_EPSILON,
     w: np.ndarray | None = None,
 ) -> ClippingResult:
     """
@@ -164,7 +166,7 @@ def normalize_weights(w: np.ndarray, validate: bool = True) -> np.ndarray:
 def validate_inputs(
     c: np.ndarray,
     w: np.ndarray,
-    epsilon: float = 1e-6,
+    epsilon: float = _FROZEN_EPSILON,
 ) -> dict[str, bool | str]:
     """
     Validate kernel inputs against contract requirements.
@@ -211,7 +213,7 @@ def validate_inputs(
 
 def batch_validate_outputs(
     outputs_array: np.ndarray,
-    epsilon: float = 1e-6,
+    epsilon: float = _FROZEN_EPSILON,
 ) -> np.ndarray:
     """
     OPT-20: Vectorized range checking for batch outputs.
@@ -249,7 +251,7 @@ def batch_validate_outputs(
 def preprocess_trace_row(
     c: np.ndarray,
     w: np.ndarray,
-    epsilon: float = 1e-6,
+    epsilon: float = _FROZEN_EPSILON,
     prune_weights: bool = True,
     clip_coords: bool = True,
 ) -> tuple[np.ndarray, np.ndarray, dict[str, PruningResult | ClippingResult | None]]:
@@ -305,7 +307,7 @@ class BatchProcessor:
     Optimized for processing multiple timesteps efficiently.
     """
 
-    def __init__(self, epsilon: float = 1e-6):
+    def __init__(self, epsilon: float = _FROZEN_EPSILON):
         """Initialize batch processor."""
         self.epsilon = epsilon
 

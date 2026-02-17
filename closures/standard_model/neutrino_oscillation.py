@@ -510,7 +510,7 @@ def _oscillation_to_kernel(P_row: list[float]) -> dict[str, Any]:
 
     Returns
     -------
-    dict with F, omega, IC, kappa, S, C, amgm_gap, regime
+    dict with F, omega, IC, kappa, S, C, heterogeneity_gap, regime
     """
     c = np.array(P_row, dtype=float)
     c = np.clip(c, EPSILON, 1 - EPSILON)

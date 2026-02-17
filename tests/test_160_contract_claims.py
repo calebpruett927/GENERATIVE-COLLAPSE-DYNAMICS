@@ -268,16 +268,16 @@ class TestClaim5_LogIntegrity:
         assert ko_high.IC > ko_low.IC, "IC should increase with higher coordinates"
         assert ko_high.omega < ko_low.omega, "ω should decrease with higher coordinates"
 
-    def test_IC_is_geometric_mean_unweighted(self) -> None:
-        """IC = exp(Σ ln cᵢ) = ∏ cᵢ (unweighted product)."""
+    def test_IC_is_weighted_geometric_mean(self) -> None:
+        """IC = exp(Σ wᵢ ln cᵢ) (weighted geometric mean)."""
         c = np.array([0.5, 0.8, 0.6])
         w = _uniform_weights(3)
         ko = compute_kernel(c, w, tau_R=1.0, epsilon=EPSILON)
-        product = float(np.prod(c))
-        assert abs(ko.IC - product) < 1e-12, f"IC={ko.IC}, ∏cᵢ={product}"
+        expected_IC = float(np.exp(np.dot(w, np.log(c))))
+        assert abs(ko.IC - expected_IC) < 1e-12, f"IC={ko.IC}, exp(Σwᵢlncᵢ)={expected_IC}"
 
     @pytest.mark.bounded_identity
-    def test_amgm_inequality_holds(self) -> None:
+    def test_integrity_bound_holds(self) -> None:
         """IC ≤ F always (AM-GM inequality)."""
         for _ in range(100):
             c = _random_psi(n=5, rng=RNG)

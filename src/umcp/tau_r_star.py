@@ -507,9 +507,9 @@ def check_tier1_identities(
     """Verify Tier-1 kernel identities (Tier-0 protocol check).
 
     Checks:
-        1. F = 1 - ω (conservation / unitarity)
+        1. F = 1 - ω (duality identity)
         2. IC ≈ exp(κ) (exponential identity)
-        3. IC ≤ F + tol_seam (AM-GM bound)
+        3. IC ≤ F + tol_seam (integrity bound)
 
     Args:
         F: Fidelity
@@ -518,7 +518,7 @@ def check_tier1_identities(
         kappa: Log-integrity
         tol_F: Tolerance for F = 1 - ω
         tol_IC: Tolerance for IC = exp(κ)
-        tol_seam: Tolerance for AM-GM bound
+        tol_seam: Tolerance for integrity bound
 
     Returns:
         (identity_F, identity_IC, bound_AMGM, failures)
@@ -536,10 +536,10 @@ def check_tier1_identities(
     if not identity_IC:
         failures.append(f"|IC-exp(κ)|={abs(IC - exp_kappa):.2e} ≥ tol={tol_IC}")
 
-    # IC ≤ F (AM-GM)
+    # IC ≤ F (integrity bound)
     bound_AMGM = F + tol_seam >= IC
     if not bound_AMGM:
-        failures.append(f"IC={IC:.6f} > F+tol={F + tol_seam:.6f} (AM-GM violated)")
+        failures.append(f"IC={IC:.6f} > F+tol={F + tol_seam:.6f} (integrity bound violated)")
 
     return identity_F, identity_IC, bound_AMGM, failures
 

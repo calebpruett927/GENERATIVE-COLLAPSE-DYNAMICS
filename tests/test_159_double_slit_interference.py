@@ -268,8 +268,8 @@ class TestKernelComputation:
         assert abs(k["IC"] - np.exp(k["kappa"])) < 1e-10
 
     @pytest.mark.parametrize("name", SCENARIO_ORDER)
-    def test_amgm_gap_nonneg(self, name: str, kernels: dict) -> None:
-        assert kernels[name]["amgm_gap"] >= -1e-10
+    def test_heterogeneity_gap_nonneg(self, name: str, kernels: dict) -> None:
+        assert kernels[name]["heterogeneity_gap"] >= -1e-10
 
     @pytest.mark.parametrize("name", SCENARIO_ORDER)
     def test_regime_is_string(self, name: str, kernels: dict) -> None:
@@ -353,7 +353,7 @@ class TestComplementarityCliff:
         assert max_s == "S4"
 
     def test_S4_smallest_gap(self, kernels: dict) -> None:
-        gap_vals = {s: kernels[s]["amgm_gap"] for s in SCENARIO_ORDER}
+        gap_vals = {s: kernels[s]["heterogeneity_gap"] for s in SCENARIO_ORDER}
         min_s = min(gap_vals, key=lambda s: gap_vals[s])
         assert min_s == "S4"
 

@@ -292,7 +292,7 @@ def test_kernel_compute_heterogeneous(client, auth_headers):
     assert abs(data["F"] - 0.75) < 1e-10  # Mean of [0.9, 0.8, 0.7, 0.6]
     assert abs(data["omega"] - 0.25) < 1e-10
     assert data["is_homogeneous"] is False
-    assert data["amgm_gap"] >= 0  # AM-GM inequality
+    assert data["heterogeneity_gap"] >= 0  # Integrity bound
 
 
 def test_kernel_budget_pass(client, auth_headers):

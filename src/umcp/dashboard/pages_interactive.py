@@ -230,7 +230,7 @@ def render_test_templates_page() -> None:
                 integrity_composite = outputs.IC
                 entropy = outputs.S
                 curvature = outputs.C
-                amgm_gap = outputs.amgm_gap
+                heterogeneity_gap = outputs.heterogeneity_gap
                 is_homogeneous = outputs.is_homogeneous
                 het_regime = outputs.regime
                 computation_mode = outputs.computation_mode
@@ -249,13 +249,13 @@ def render_test_templates_page() -> None:
                         entropy += wi * (-ci * np.log(ci) - (1 - ci) * np.log(1 - ci))
                 entropy = float(entropy)
                 curvature = float(np.std(c_clipped, ddof=0) / 0.5)
-                amgm_gap = fidelity - integrity_composite
+                heterogeneity_gap = fidelity - integrity_composite
                 is_homogeneous = np.allclose(c_clipped, c_clipped[0], atol=1e-15)
-                if amgm_gap < 1e-6:
+                if heterogeneity_gap < 1e-6:
                     het_regime = "homogeneous"
-                elif amgm_gap < 0.01:
+                elif heterogeneity_gap < 0.01:
                     het_regime = "coherent"
-                elif amgm_gap < 0.05:
+                elif heterogeneity_gap < 0.05:
                     het_regime = "heterogeneous"
                 else:
                     het_regime = "fragmented"
@@ -279,7 +279,7 @@ def render_test_templates_page() -> None:
                 "C": curvature,
                 "kappa": log_ic,
                 "IC": integrity_composite,
-                "amgm_gap": amgm_gap,
+                "heterogeneity_gap": heterogeneity_gap,
                 "is_homogeneous": bool(is_homogeneous),
                 "heterogeneity_regime": het_regime,
                 "computation_mode": computation_mode,
@@ -333,7 +333,7 @@ def render_test_templates_page() -> None:
                 recommendations.append("High drift detected - review data sources")
             if curvature > 0.3:
                 recommendations.append("High curvature - coordinates are dispersed")
-            if amgm_gap > 0.1:
+            if heterogeneity_gap > 0.1:
                 recommendations.append("Large heterogeneity gap - significant heterogeneity")
             if not bounds_valid:
                 recommendations.append("⚠️ Lemma 1 bounds violated - check inputs")
@@ -419,7 +419,7 @@ def render_test_templates_page() -> None:
                     st.metric("κ (Log-IC)", f"{t1['kappa']:.4f}")
                     st.metric("IC", f"{t1['IC']:.4f}")
 
-                st.markdown(f"**Heterogeneity Gap:** {t1['amgm_gap']:.4f}")
+                st.markdown(f"**Heterogeneity Gap:** {t1['heterogeneity_gap']:.4f}")
                 st.markdown(f"**Heterogeneity:** {t1['heterogeneity_regime']}")
 
                 # Identity checks

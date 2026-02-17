@@ -48,7 +48,7 @@ class TestOptimizedKernelComputer:
         assert abs(result.F + result.omega - 1.0) < 1e-10
 
     @pytest.mark.bounded_identity
-    def test_am_gm_inequality(self):
+    def test_integrity_bound(self):
         """F >= IC always (AM-GM inequality)."""
         computer = OptimizedKernelComputer()
         for _ in range(50):
@@ -77,7 +77,7 @@ class TestOptimizedKernelComputer:
         assert result.C == 0  # No dispersion
 
     @pytest.mark.bounded_identity
-    def test_homogeneous_am_gm_equality(self):
+    def test_homogeneous_integrity_bound_equality(self):
         """F = IC for homogeneous state (Lemma 4)."""
         computer = OptimizedKernelComputer()
         c = np.array([0.75, 0.75, 0.75])
@@ -95,13 +95,13 @@ class TestOptimizedKernelComputer:
         assert not result.is_homogeneous
         assert result.C > 0  # Dispersion exists
 
-    def test_amgm_gap_computed(self):
+    def test_heterogeneity_gap_computed(self):
         """AM-GM gap is F - IC."""
         computer = OptimizedKernelComputer()
         c = np.array([0.9, 0.3, 0.7, 0.1])
         w = np.array([0.25, 0.25, 0.25, 0.25])
         result = computer.compute(c, w)
-        assert abs(result.amgm_gap - (result.F - result.IC)) < 1e-10
+        assert abs(result.heterogeneity_gap - (result.F - result.IC)) < 1e-10
 
     @pytest.mark.bounded_identity
     def test_entropy_non_negative(self):
@@ -186,7 +186,7 @@ class TestKernelOutputs:
             C=0.1,
             kappa=-0.5,
             IC=0.55,
-            amgm_gap=0.05,
+            heterogeneity_gap=0.05,
             regime="normal",
             is_homogeneous=False,
             computation_mode="full_heterogeneous",

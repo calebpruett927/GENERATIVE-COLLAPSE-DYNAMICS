@@ -75,4 +75,3 @@ echo "    latexmk -pdf paper/<file>.tex   — Compile paper"
 echo "    cd paper && pdflatex → bibtex → pdflatex × 2"
 echo ""
 echo "══════════════════════════════════════════════════════════════"
-# verified hook runs

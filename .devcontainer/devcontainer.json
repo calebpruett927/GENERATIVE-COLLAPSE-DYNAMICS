@@ -1,6 +1,6 @@
-// UMCP Development Container
-// Fully configured Python 3.12 environment matching CI (validate.yml).
-// Includes all tooling: ruff, mypy, pytest, LaTeX, and project deps.
+// UMCP Development Container — v2.1.2
+// Python 3.12 on Debian Bookworm, matching CI (validate.yml).
+// Includes: ruff, mypy, pytest, LaTeX (RevTeX4-2), and full project deps.
 {
 	"name": "UMCP Development",
 	"build": {
@@ -40,39 +40,28 @@
 
 	"customizations": {
 		"vscode": {
-			// ── Extensions ──────────────────────────────────────
+			// Essential extensions only
 			"extensions": [
 				"ms-python.python",
 				"ms-python.vscode-pylance",
 				"ms-python.debugpy",
 				"charliermarsh.ruff",
 				"ms-python.mypy-type-checker",
-				"ms-python.pytest-adapter",
-				"littlefoxteam.vscode-python-test-adapter",
 				"redhat.vscode-yaml",
-				"zainchen.json",
 				"james-yu.latex-workshop",
-				"yzhang.markdown-all-in-one",
-				"davidanson.vscode-markdownlint",
-				"mechatroner.rainbow-csv",
-				"eamodio.gitlens",
-				"mhutchie.git-graph",
-				"editorconfig.editorconfig",
-				"streetsidesoftware.code-spell-checker",
-				"gruntfuggly.todo-tree",
-				"github.copilot",
-				"github.copilot-chat",
-				"GitHub.copilot"
+				"github.copilot"
 			],
 
-			// ── VS Code Settings ────────────────────────────────
 			"settings": {
 				// ── Python ──
 				"python.defaultInterpreterPath": "/usr/local/bin/python",
 				"python.terminal.activateEnvironment": false,
+				"python.analysis.typeCheckingMode": "basic",
+				"python.analysis.autoImportCompletions": true,
 
-				// ── Ruff (single tool for format + lint, matching CI) ──
+				// ── Ruff (format + lint on save, matching CI) ──
 				"[python]": {
+					"editor.defaultFormatter": "charliermarsh.ruff",
 					"editor.formatOnSave": true,
 					"editor.codeActionsOnSave": {
 						"source.fixAll.ruff": "explicit",
@@ -100,16 +89,22 @@
 				},
 				"yaml.format.enable": true,
 
-				// ── LaTeX (paper/) ──
+				// ── LaTeX (paper/) — compile in-place, matching tracked PDFs ──
 				"latex-workshop.latex.recipe.default": "latexmk (pdflatex)",
-				"latex-workshop.latex.outDir": "paper/out",
 				"latex-workshop.latex.rootFile.useSubFile": true,
+				"latex-workshop.latex.autoClean.run": "onBuilt",
+				"latex-workshop.chktex.enabled": true,
+				"latex-workshop.chktex.args.active": [
+					"-wall", "-n1", "-n3", "-n8", "-n24", "-n36", "-n44"
+				],
 
-				// ── Editor defaults ──
+				// ── Editor ──
 				"editor.rulers": [120],
 				"editor.tabSize": 4,
 				"editor.insertSpaces": true,
 				"editor.trimAutoWhitespace": true,
+				"editor.bracketPairColorization.enabled": true,
+				"editor.guides.bracketPairs": "active",
 				"files.trimTrailingWhitespace": true,
 				"files.insertFinalNewline": true,
 				"files.trimFinalNewlines": true,
@@ -121,7 +116,7 @@
 					"*.schema.json": "json"
 				},
 
-				// ── Search exclusions (keep sidebar clean) ──
+				// ── Search & file exclusions ──
 				"search.exclude": {
 					"**/__pycache__": true,
 					"**/.pytest_cache": true,
@@ -136,37 +131,18 @@
 					"**/.pytest_cache": true,
 					"**/*.egg-info": true
 				},
+				"files.watcherExclude": {
+					"**/__pycache__/**": true,
+					"**/.pytest_cache/**": true,
+					"**/*.egg-info/**": true,
+					"**/.git/objects/**": true,
+					"**/.ruff_cache/**": true,
+					"**/.mypy_cache/**": true
+				},
 
 				// ── Terminal ──
 				"terminal.integrated.defaultProfile.linux": "zsh",
-				"terminal.integrated.scrollback": 10000,
-
-				// ── cSpell (hints only — never in Problems panel) ──
-				"cSpell.diagnosticLevel": "Hint",
-				"cSpell.showStatus": true,
-				"cSpell.spellCheckOnlyWorkspaceFiles": true,
-
-				// ── Spell checker (domain terms) ──
-				"cSpell.words": [
-					"UMCP", "RCFT", "casepack", "casepacks",
-					"dataclass", "dataclasses",
-					"invariants", "conformant", "nonconformant",
-					"ruff", "mypy", "pylance", "pytest",
-					"checksums", "checksum",
-					"kinematics", "thermodynamic",
-					"Weizsäcker", "Jarlskog", "Wolfenstein",
-					"Yukawa", "Higgs", "boson", "fermion",
-					"nucleon", "hadron", "lepton", "quark",
-					"isospin", "baryon",
-					"RevTeX", "pdflatex", "bibtex"
-				],
-
-				// ── Todo Tree (OPT-* tags + standard) ──
-				"todo-tree.general.tags": [
-					"TODO", "FIXME", "HACK", "BUG",
-					"OPT", "IMPORTANT", "NOTE"
-				],
-				"todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*(-|\\d+.))\\s*($TAGS)"
+				"terminal.integrated.scrollback": 10000
 			}
 		}
 	},

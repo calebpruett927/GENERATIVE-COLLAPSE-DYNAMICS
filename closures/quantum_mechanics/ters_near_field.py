@@ -743,7 +743,7 @@ class TheoremResult:
 # ═══════════════════════════════════════════════════════════════════
 
 
-def theorem_T_TERS_1_amgm_decomposition() -> TheoremResult:
+def theorem_T_TERS_1_integrity_bound_decomposition() -> TheoremResult:
     """T-TERS-1: Self/Cross Decomposition as AM-GM Gap.
 
     STATEMENT:
@@ -828,7 +828,7 @@ def theorem_T_TERS_1_amgm_decomposition() -> TheoremResult:
     if t2:
         tests_passed += 1
     details["fisher_gap_gas"] = round(fisher_gap_gas, 6)
-    details["fisher_vs_amgm_ratio"] = round(fisher_gap_gas / gap_gas if gap_gas > 0 else 0.0, 3)
+    details["fisher_vs_integrity_bound_ratio"] = round(fisher_gap_gas / gap_gas if gap_gas > 0 else 0.0, 3)
     details["fisher_relative_error"] = round(abs(gap_gas - fisher_gap_gas) / gap_gas if gap_gas > 0 else 0.0, 4)
 
     # Test 3: Surface increases channel variance
@@ -2036,7 +2036,7 @@ def run_all_ters_theorems() -> list[TheoremResult]:
         Results for T-TERS-1 through T-TERS-7.
     """
     theorems = [
-        theorem_T_TERS_1_amgm_decomposition,
+        theorem_T_TERS_1_integrity_bound_decomposition,
         theorem_T_TERS_2_screening_sign_reversal,
         theorem_T_TERS_3_linear_regime,
         theorem_T_TERS_4_positional_illusion,
@@ -2568,7 +2568,7 @@ class MCResult:
     delta_mean: float  # AM-GM gap
     delta_std: float
     delta_ci95: tuple[float, float]
-    amgm_violation_rate: float  # fraction where IC > F
+    integrity_bound_violation_rate: float  # fraction where IC > F
     budget_identity_violation_rate: float  # fraction where |F+ω−1| > tol
 
 
@@ -2612,7 +2612,7 @@ def monte_carlo_uncertainty(
     IC_arr = np.empty(n_samples, dtype=float)
     kappa_arr = np.empty(n_samples, dtype=float)
     delta_arr = np.empty(n_samples, dtype=float)
-    amgm_violations = 0
+    integrity_bound_violations = 0
     budget_violations = 0
 
     for i in range(n_samples):
@@ -2624,7 +2624,7 @@ def monte_carlo_uncertainty(
         kappa_arr[i] = k["kappa"]
         delta_arr[i] = k["F"] - k["IC"]
         if k["IC"] > k["F"] + 1e-12:
-            amgm_violations += 1
+            integrity_bound_violations += 1
         if abs(k["F"] + k["omega"] - 1.0) > 1e-10:
             budget_violations += 1
 
@@ -2648,7 +2648,7 @@ def monte_carlo_uncertainty(
         delta_mean=round(float(np.mean(delta_arr)), 6),
         delta_std=round(float(np.std(delta_arr)), 6),
         delta_ci95=_ci95(delta_arr),
-        amgm_violation_rate=round(amgm_violations / n_samples, 8),
+        integrity_bound_violation_rate=round(integrity_bound_violations / n_samples, 8),
         budget_identity_violation_rate=round(budget_violations / n_samples, 8),
     )
 
@@ -2703,7 +2703,7 @@ def mos2_data_driven_analysis() -> dict[str, Any]:
         "regime_counts": s["regime_counts"],
         "mc_F_ci95": mc.F_ci95,
         "mc_IC_ci95": mc.IC_ci95,
-        "mc_amgm_violation_rate": mc.amgm_violation_rate,
+        "mc_integrity_bound_violation_rate": mc.integrity_bound_violation_rate,
         "conclusion": (
             "Pristine MoS₂ produces a spatially uniform kernel map with "
             "negligible AM-GM gap variation, confirming that translational "
@@ -2762,7 +2762,7 @@ def tcne_data_driven_analysis() -> dict[str, Any]:
         "regime_counts": s["regime_counts"],
         "mc_F_ci95": mc.F_ci95,
         "mc_kappa_ci95": mc.kappa_ci95,
-        "mc_amgm_violation_rate": mc.amgm_violation_rate,
+        "mc_integrity_bound_violation_rate": mc.integrity_bound_violation_rate,
         "IC_tcne_vs_mgp": round(ic_tcne_mean - ic_mgp_mean, 6),
         "periodicity_test": ic_mgp_mean > ic_tcne_mean,
         "conclusion": (

@@ -510,7 +510,7 @@ SCENARIOS: dict[str, CrossDomainScenario] = {
 def all_scenario_kernels() -> dict[str, dict[str, Any]]:
     """Compute kernel outputs for all 12 scenarios.
 
-    Returns dict[scenario_name → dict[F, omega, S, C, kappa, IC, amgm_gap, regime]].
+    Returns dict[scenario_name → dict[F, omega, S, C, kappa, IC, heterogeneity_gap, regime]].
     """
     results: dict[str, dict[str, Any]] = {}
     for name, sc in SCENARIOS.items():

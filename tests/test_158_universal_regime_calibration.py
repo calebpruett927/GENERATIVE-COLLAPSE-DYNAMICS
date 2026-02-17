@@ -208,8 +208,8 @@ class TestKernelComputation:
         assert 0.0 <= kernels[name]["C"] <= 1.0
 
     @pytest.mark.parametrize("name", SCENARIO_ORDER)
-    def test_amgm_gap_non_negative(self, kernels: dict, name: str) -> None:
-        assert kernels[name]["amgm_gap"] >= -1e-10
+    def test_heterogeneity_gap_non_negative(self, kernels: dict, name: str) -> None:
+        assert kernels[name]["heterogeneity_gap"] >= -1e-10
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -520,10 +520,10 @@ class TestCrossDomainInsights:
         for s in watch:
             assert 0.70 <= kernels[s]["F"] <= 0.962
 
-    def test_amgm_gap_increases_with_heterogeneity(self, kernels: dict) -> None:
+    def test_heterogeneity_gap_increases_with_heterogeneity(self, kernels: dict) -> None:
         """Collapse scenarios have larger AM-GM gap than Stable scenarios."""
         stable = [s for s in SCENARIO_ORDER if SCENARIOS[s].expected_regime == "Stable"]
         collapse = [s for s in SCENARIO_ORDER if SCENARIOS[s].expected_regime == "Collapse"]
-        avg_gap_stable = np.mean([kernels[s]["amgm_gap"] for s in stable])
-        avg_gap_collapse = np.mean([kernels[s]["amgm_gap"] for s in collapse])
+        avg_gap_stable = np.mean([kernels[s]["heterogeneity_gap"] for s in stable])
+        avg_gap_collapse = np.mean([kernels[s]["heterogeneity_gap"] for s in collapse])
         assert avg_gap_collapse > avg_gap_stable

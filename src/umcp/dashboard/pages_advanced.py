@@ -130,7 +130,7 @@ def render_precision_page() -> None:
         IC = outputs.IC
         C = outputs.C
         S = outputs.S
-        gap = outputs.amgm_gap
+        gap = outputs.heterogeneity_gap
         is_homogeneous = outputs.is_homogeneous
         computation_mode = outputs.computation_mode
         het_regime = outputs.regime

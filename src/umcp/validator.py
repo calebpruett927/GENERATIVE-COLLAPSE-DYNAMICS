@@ -300,9 +300,9 @@ class RootFileValidator:
                     f"⚠ IC ≈ exp(κ) slightly off: IC={IC}, exp(κ)={expected_IC:.6f}, diff={abs(IC - expected_IC)}"
                 )
 
-            # Check integrity bound (Lemma 4: IC ≤ F; AM-GM inequality is the degenerate limit)
+            # Check integrity bound (Lemma 4: IC ≤ F)
             if IC <= F + 1e-9:
-                self.passed.append(f"✓ Lemma 4 AM-GM satisfied: IC={IC:.6f} ≤ F={F:.6f}")
+                self.passed.append(f"✓ Lemma 4 integrity bound satisfied: IC={IC:.6f} ≤ F={F:.6f}")
             else:
                 self.errors.append(f"✗ Lemma 4 violated: IC={IC:.6f} > F={F:.6f}")
 

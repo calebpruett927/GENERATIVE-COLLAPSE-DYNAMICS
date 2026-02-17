@@ -268,11 +268,11 @@ def compute_recursive_analysis(
         drift = cum_drift[i]
         drift_per_z = drift / Z if Z > 0 else 0.0
         tau_r = drift / r.IC if r.IC > 1e-10 else float("inf")
-        returnability = r.IC / r.amgm_gap if r.amgm_gap > 1e-10 else float("inf")
-        category = _classify_recursive_category(Z, r.amgm_gap, r.IC, stable)
+        returnability = r.IC / r.heterogeneity_gap if r.heterogeneity_gap > 1e-10 else float("inf")
+        category = _classify_recursive_category(Z, r.heterogeneity_gap, r.IC, stable)
 
         # Cumulative gap/Z: total accumulated gap divided by Z
-        cum_gap = sum(results[j].amgm_gap for j in range(i + 1))
+        cum_gap = sum(results[j].heterogeneity_gap for j in range(i + 1))
         cum_gap_per_z = cum_gap / Z if Z > 0 else 0.0
 
         profiles.append(
@@ -283,7 +283,7 @@ def compute_recursive_analysis(
                 period=r.period,
                 F=r.F,
                 IC=r.IC,
-                gap=r.amgm_gap,
+                gap=r.heterogeneity_gap,
                 cumulative_drift=drift,
                 drift_per_Z=drift_per_z,
                 gap_per_Z=cum_gap_per_z,

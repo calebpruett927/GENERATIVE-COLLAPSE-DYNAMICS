@@ -1,0 +1,25 @@
+# chktex configuration for UMCP papers
+# Suppress false positives from revtex4-2, math mode, and custom macros
+
+# 1: "Command terminated with space" — false positive on custom macros
+#    (\IC, \beq, \eeq, \sum, \prod, etc.) used in math mode
+CmdSpaceStyle = ignore
+
+# 3: "Enclose parenthesis with {}" — false positive on math brackets
+#    like [\eps, 1-\eps]^n
+MathEnvir { alignat }
+
+# 8: "Wrong length of dash" — false positive on minus signs in math
+#    like F - \IC or revtex4-2 in document class
+# 24: "Delete space for page references" — newline between \section
+#     and \label is standard practice
+# 36: "Space in front of parenthesis" — valid in math like c(1-c)
+# 44: "User Regex" — \hline in ruledtabular is standard revtex
+
+# Suppress these warning numbers globally
+-n1
+-n3
+-n8
+-n24
+-n36
+-n44

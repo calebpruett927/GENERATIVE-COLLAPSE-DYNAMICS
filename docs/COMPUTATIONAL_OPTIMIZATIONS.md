@@ -79,7 +79,7 @@ def validate_kernel_outputs(F, omega, C, IC, kappa, epsilon):
 
 **Implementation**:
 ```python
-def compute_amgm_gap(F, IC):
+def compute_heterogeneity_gap(F, IC):
     gap = F - IC  # Always >= 0 by AM-GM
     
     # Interpretation thresholds

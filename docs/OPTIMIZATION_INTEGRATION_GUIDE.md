@@ -52,7 +52,7 @@ IC = outputs.IC
 
 # Bonus diagnostics (OPT-3)
 print(f"Heterogeneity: {outputs.regime}")
-print(f"AM-GM gap: {outputs.amgm_gap:.6f}")
+print(f"heterogeneity gap: {outputs.heterogeneity_gap:.6f}")
 print(f"Fast path: {outputs.is_homogeneous}")
 ```
 
@@ -160,7 +160,7 @@ calibrator = ThresholdCalibrator()
 # Compute kernel outputs
 trace_outputs = [computer.compute(c_t, w) for c_t in trace]
 
-# OPT-15: Adaptive calibration via AM-GM gap
+# OPT-15: Adaptive calibration via heterogeneity gap
 base_threshold = 0.3
 adaptive_thresholds = []
 
@@ -444,7 +444,7 @@ print(f"Effective dimensions: {np.sum(w_sparse > 0)}")
 - [ ] Replace manual seam chains with `SeamChainAccumulator`
 - [ ] Add error propagation for uncertainty quantification
 - [ ] Use coherence proxy for single-check validation
-- [ ] Calibrate thresholds adaptively via AM-GM gap
+- [ ] Calibrate thresholds adaptively via heterogeneity gap
 - [ ] Profile before/after to measure gains
 - [ ] Verify numerical equivalence on test data
 - [ ] Update documentation with new imports

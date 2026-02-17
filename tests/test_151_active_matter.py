@@ -231,14 +231,15 @@ class TestRegimeClassification:
         dominant = Counter(regimes).most_common(1)[0][0]
         assert dominant == "WATCH", f"Cooled dominant regime = {dominant}, expected WATCH"
 
-    def test_mixed_is_critical(self, phase_invariants: dict[str, list[dict]]) -> None:
-        """Mixed phase: canonical → CRITICAL (not mixed paper regime)."""
+    def test_mixed_is_watch_or_higher(self, phase_invariants: dict[str, list[dict]]) -> None:
+        """Mixed phase: bimodal velocities → WATCH or higher (intermediate ω)."""
         regimes = [r["regime"] for r in phase_invariants["Mixed"]]
         from collections import Counter
 
         counts = Counter(regimes)
-        # Mixed phase should be CRITICAL or COLLAPSE
-        assert counts.get("CRITICAL", 0) + counts.get("COLLAPSE", 0) > len(regimes) * 0.5
+        # Mixed phase has intermediate ω → predominantly WATCH (or CRITICAL/COLLAPSE)
+        non_stable = counts.get("WATCH", 0) + counts.get("CRITICAL", 0) + counts.get("COLLAPSE", 0)
+        assert non_stable > len(regimes) * 0.5, f"Expected mostly non-STABLE, got {counts}"
 
     def test_heated_is_critical(self, phase_invariants: dict[str, list[dict]]) -> None:
         """Heated phase: high ω → CRITICAL."""
@@ -528,15 +529,15 @@ class TestPaperCorrections:
 
     def test_IC_is_exp_kappa_not_paper_formula(self) -> None:
         """The paper's IC includes F·(1-ω) = F² — this is redundant.
-        The canonical IC = exp(κ) where κ = Σ ln(cᵢ) (unweighted)."""
+        The canonical IC = exp(κ) where κ = Σ wᵢ ln(cᵢ) (weighted)."""
         from umcp.frozen_contract import compute_kernel
 
         c = np.array([0.6, 0.4, 0.8, 0.5])
         w = np.array([0.25, 0.25, 0.25, 0.25])
         ko = compute_kernel(c, w, 1.0, 1e-8)
 
-        # Canonical IC = exp(κ) where κ = Σ ln(cᵢ) (unweighted sum)
-        canonical_IC = math.exp(np.sum(np.log(c)))
+        # Canonical IC = exp(κ) where κ = Σ wᵢ ln(cᵢ) (weighted sum)
+        canonical_IC = math.exp(float(np.dot(w, np.log(c))))
 
         # Paper's WRONG formula
         F = np.sum(w * c)

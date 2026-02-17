@@ -440,7 +440,7 @@ def all_scenario_traces() -> dict[str, np.ndarray]:
 def all_scenario_kernels() -> dict[str, dict[str, Any]]:
     """Compute kernel outputs for all 8 scenarios.
 
-    Returns dict[scenario_name → dict[F, omega, S, C, kappa, IC, amgm_gap,
+    Returns dict[scenario_name → dict[F, omega, S, C, kappa, IC, heterogeneity_gap,
     regime]].
     """
     results: dict[str, dict[str, Any]] = {}
@@ -539,9 +539,9 @@ def theorem_T_DSE_1_tier1() -> TheoremResult:
 
         # Test: IC ≤ F (AM-GM inequality)
         n_tests += 1
-        amgm = k["IC"] <= k["F"] + 1e-10
-        sd["IC_le_F"] = amgm
-        if amgm:
+        ic_le_f = k["IC"] <= k["F"] + 1e-10
+        sd["IC_le_F"] = ic_le_f
+        if ic_le_f:
             n_passed += 1
 
         details[s] = sd
@@ -786,9 +786,9 @@ def theorem_T_DSE_4_quantum_eraser() -> TheoremResult:
 
     # Test: S5 Δ < S2 Δ (less heterogeneous)
     n_tests += 1
-    if k_s5["amgm_gap"] < k_s2["amgm_gap"]:
+    if k_s5["heterogeneity_gap"] < k_s2["heterogeneity_gap"]:
         n_passed += 1
-    details["S5_gap_lt_S2_gap"] = k_s5["amgm_gap"] < k_s2["amgm_gap"]
+    details["S5_gap_lt_S2_gap"] = k_s5["heterogeneity_gap"] < k_s2["heterogeneity_gap"]
 
     n_failed = n_tests - n_passed
     return TheoremResult(
@@ -940,7 +940,7 @@ def theorem_T_DSE_6_delayed_choice() -> TheoremResult:
 
     # Test: Δ within 20 % relative
     n_tests += 1
-    gap_diff = abs(k_s1["amgm_gap"] - k_s6["amgm_gap"]) / (k_s1["amgm_gap"] + 1e-12)
+    gap_diff = abs(k_s1["heterogeneity_gap"] - k_s6["heterogeneity_gap"]) / (k_s1["heterogeneity_gap"] + 1e-12)
     if gap_diff < 0.20:
         n_passed += 1
     details["gap_relative_diff"] = gap_diff
@@ -1015,7 +1015,7 @@ def theorem_T_DSE_7_partial_transcends() -> TheoremResult:
 
     # Test: S4 has the smallest Δ among all scenarios
     n_tests += 1
-    gap_vals = {s: kernels[s]["amgm_gap"] for s in SCENARIO_ORDER}
+    gap_vals = {s: kernels[s]["heterogeneity_gap"] for s in SCENARIO_ORDER}
     min_gap_scenario = min(gap_vals, key=lambda s: gap_vals[s])
     if min_gap_scenario == "S4":
         n_passed += 1
@@ -1116,7 +1116,7 @@ def summary_report() -> str:
         k = kernels[s]
         lines.append(
             f"  {s:<4} {sc.V:>5.3f} {sc.D:>5.3f} {k['F']:>6.4f} "
-            f"{k['omega']:>6.4f} {k['IC']:>8.6f} {k['amgm_gap']:>6.4f} "
+            f"{k['omega']:>6.4f} {k['IC']:>8.6f} {k['heterogeneity_gap']:>6.4f} "
             f"{k['C']:>6.4f} {k['S']:>6.4f} {k['regime']:<12}"
         )
 

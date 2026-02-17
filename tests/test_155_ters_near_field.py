@@ -41,7 +41,7 @@ from closures.quantum_mechanics.ters_near_field import (
     run_all_with_validation,
     tcne_data_driven,
     tcne_data_driven_analysis,
-    theorem_T_TERS_1_amgm_decomposition,
+    theorem_T_TERS_1_integrity_bound_decomposition,
     theorem_T_TERS_2_screening_sign_reversal,
     theorem_T_TERS_3_linear_regime,
     theorem_T_TERS_4_positional_illusion,
@@ -92,21 +92,21 @@ class TestTTERS1:
     """T-TERS-1: Self/Cross Decomposition as AM-GM Gap."""
 
     def test_proven(self) -> None:
-        result = theorem_T_TERS_1_amgm_decomposition()
+        result = theorem_T_TERS_1_integrity_bound_decomposition()
         assert result.verdict == "PROVEN"
 
     def test_all_subtests_pass(self) -> None:
-        result = theorem_T_TERS_1_amgm_decomposition()
+        result = theorem_T_TERS_1_integrity_bound_decomposition()
         assert result.n_failed == 0
         assert result.n_passed == result.n_tests
 
     def test_surface_gap_larger(self) -> None:
-        result = theorem_T_TERS_1_amgm_decomposition()
+        result = theorem_T_TERS_1_integrity_bound_decomposition()
         assert result.details["gap_surf"] > result.details["gap_gas"]
 
     def test_fisher_identity_tightened(self) -> None:
         """Fisher identity tolerance was tightened from 50% to 25%."""
-        result = theorem_T_TERS_1_amgm_decomposition()
+        result = theorem_T_TERS_1_integrity_bound_decomposition()
         assert result.details["fisher_relative_error"] < 0.25
 
 
@@ -312,16 +312,16 @@ class TestPixelKernelMap:
         pmap = compute_pixel_kernel_map("mos2")
         assert pmap.grid_shape == (11, 11)
 
-    def test_amgm_holds_everywhere_mgp(self) -> None:
+    def test_integrity_bound_holds_everywhere_mgp(self) -> None:
         """IC ≤ F at every pixel (AM-GM inequality)."""
         pmap = compute_pixel_kernel_map("mgp")
         assert np.all(pmap.IC <= pmap.F + 1e-12)
 
-    def test_amgm_holds_everywhere_mos2(self) -> None:
+    def test_integrity_bound_holds_everywhere_mos2(self) -> None:
         pmap = compute_pixel_kernel_map("mos2")
         assert np.all(pmap.IC <= pmap.F + 1e-12)
 
-    def test_amgm_holds_everywhere_tcne(self) -> None:
+    def test_integrity_bound_holds_everywhere_tcne(self) -> None:
         pmap = compute_pixel_kernel_map("tcne")
         assert np.all(pmap.IC <= pmap.F + 1e-12)
 
@@ -397,21 +397,21 @@ class TestDataDrivenTraces:
 class TestMonteCarlo:
     """Full Gaussian Monte Carlo uncertainty (10 000 samples)."""
 
-    def test_mgp_no_amgm_violations(self) -> None:
+    def test_mgp_no_integrity_bound_violations(self) -> None:
         mc = monte_carlo_uncertainty("mgp", n_samples=10_000, seed=42)
-        assert mc.amgm_violation_rate == 0.0
+        assert mc.integrity_bound_violation_rate == 0.0
 
     def test_mgp_no_budget_violations(self) -> None:
         mc = monte_carlo_uncertainty("mgp", n_samples=10_000, seed=42)
         assert mc.budget_identity_violation_rate == 0.0
 
-    def test_tcne_no_amgm_violations(self) -> None:
+    def test_tcne_no_integrity_bound_violations(self) -> None:
         mc = monte_carlo_uncertainty("tcne", n_samples=10_000, seed=42)
-        assert mc.amgm_violation_rate == 0.0
+        assert mc.integrity_bound_violation_rate == 0.0
 
-    def test_mos2_no_amgm_violations(self) -> None:
+    def test_mos2_no_integrity_bound_violations(self) -> None:
         mc = monte_carlo_uncertainty("mos2", n_samples=10_000, seed=42)
-        assert mc.amgm_violation_rate == 0.0
+        assert mc.integrity_bound_violation_rate == 0.0
 
     def test_ci95_contains_mean(self) -> None:
         mc = monte_carlo_uncertainty("mgp", n_samples=10_000, seed=42)
@@ -448,9 +448,9 @@ class TestMoS2Analysis:
         result = mos2_data_driven_analysis()
         assert result["intensity_cv"] < 0.01
 
-    def test_mc_no_amgm_violations(self) -> None:
+    def test_mc_no_integrity_bound_violations(self) -> None:
         result = mos2_data_driven_analysis()
-        assert result["mc_amgm_violation_rate"] == 0.0
+        assert result["mc_integrity_bound_violation_rate"] == 0.0
 
 
 class TestTCNEAnalysis:
@@ -471,6 +471,6 @@ class TestTCNEAnalysis:
         result = tcne_data_driven_analysis()
         assert result["periodicity_test"] is True
 
-    def test_mc_no_amgm_violations(self) -> None:
+    def test_mc_no_integrity_bound_violations(self) -> None:
         result = tcne_data_driven_analysis()
-        assert result["mc_amgm_violation_rate"] == 0.0
+        assert result["mc_integrity_bound_violation_rate"] == 0.0

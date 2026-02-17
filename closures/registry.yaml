@@ -381,7 +381,7 @@ registry:
                  "screening_factor", "mode_projection", "self_fraction",
                  "periodicity_fidelity", "binding_sensitivity"]
         outputs: ["F", "omega", "IC", "kappa", "regime",
-                  "delta_amgm", "fisher_distance", "theorem_verdicts"]
+                  "delta_heterogeneity", "fisher_distance", "theorem_verdicts"]
         frozen_params:
           epsilon: 1.0e-8
           tip_height_AA: 4.0

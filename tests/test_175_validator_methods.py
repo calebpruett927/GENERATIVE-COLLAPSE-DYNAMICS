@@ -160,7 +160,7 @@ class TestValidateInvariantIdentities:
         ko = compute_kernel(c, w, tau_R=1.0, epsilon=EPSILON)
         assert abs(ko.IC - math.exp(ko.kappa)) < 1e-12
 
-    def test_ic_le_f_amgm(self) -> None:
+    def test_ic_le_f_integrity_bound(self) -> None:
         """IC ≤ F (AM-GM bound) for random inputs."""
         rng = np.random.default_rng(99)
         for _ in range(100):

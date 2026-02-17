@@ -871,7 +871,7 @@ class UniversalCalculator:
             "c_max": float(np.max(c)),
             "c_mean": float(np.mean(c)),
             "c_std": float(np.std(c)),
-            "am_gm_gap": kernel.F - kernel.IC,  # Lemma 4
+            "heterogeneity_gap": kernel.F - kernel.IC,  # Lemma 4
             "identity_check": abs(kernel.F - (1 - kernel.omega)) < 1e-10,  # F = 1 - ω
             "ic_exp_kappa_check": abs(kernel.IC - math.exp(kernel.kappa)) < 1e-10,
             "is_homogeneous": float(np.std(c)) < 1e-10,

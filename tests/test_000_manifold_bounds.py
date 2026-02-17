@@ -245,7 +245,7 @@ class TestLayer0Identity:
     # ── AM-GM: IC ≤ F ──────────────────────────────────────────
 
     @pytest.mark.parametrize("dim", [1, 2, 3, 5, 10, 50])
-    def test_am_gm_inequality(self, dim: int) -> None:
+    def test_integrity_bound(self, dim: int) -> None:
         """IC ≤ F (geometric mean ≤ arithmetic mean)."""
         rng = np.random.default_rng(77)
         w = np.ones(dim) / dim

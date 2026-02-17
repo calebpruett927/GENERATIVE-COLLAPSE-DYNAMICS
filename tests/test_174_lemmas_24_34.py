@@ -193,11 +193,10 @@ class TestLemma28_MinimalClosureSet:
         assert abs(result_full.omega - result_pruned.omega) < 1e-12
 
     def test_prune_preserves_kappa(self) -> None:
-        """Pruning zero-weight dims preserves F and omega.
+        """Pruning zero-weight dims preserves F, ω, and κ.
 
-        Note: frozen_contract.compute_kernel uses unweighted kappa
-        (κ = Σ ln(cᵢ)), so kappa changes when dimensions are removed.
-        The invariant is that F and ω are preserved, not kappa.
+        With weighted κ = Σ wᵢ ln(cᵢ,ε), zero-weight dimensions contribute
+        nothing to κ, so pruning them preserves all kernel invariants.
         """
         c = np.array([0.3, 0.5, 0.7, 0.9])
         w = np.array([0.4, 0.0, 0.3, 0.3])
@@ -206,10 +205,10 @@ class TestLemma28_MinimalClosureSet:
         pruned = prune_zero_weights(c, w)
         result_pruned = compute_kernel(pruned.c_active, pruned.w_active, tau_R=1.0, epsilon=EPSILON)
 
-        # F and omega preserved (weighted quantities)
+        # F, omega, and kappa preserved (all weighted quantities)
         assert abs(result_full.F - result_pruned.F) < 1e-12
         assert abs(result_full.omega - result_pruned.omega) < 1e-12
-        # kappa is finite in both (but differs: unweighted sum over different dims)
+        assert abs(result_full.kappa - result_pruned.kappa) < 1e-12
         assert math.isfinite(result_full.kappa)
         assert math.isfinite(result_pruned.kappa)
 
@@ -278,11 +277,10 @@ class TestLemma31_EmbeddingConsistency:
         assert abs(ko_base.omega - ko_ext.omega) < 1e-12
 
     def test_add_zero_weight_dim_no_change_kappa(self) -> None:
-        """Adding zero-weight dims preserves F and omega.
+        """Adding zero-weight dims preserves F, ω, and κ.
 
-        Note: frozen_contract.compute_kernel uses unweighted kappa
-        (κ = Σ ln(cᵢ)), so adding any dimension changes kappa.
-        The invariant is that F and ω are preserved.
+        With weighted κ = Σ wᵢ ln(cᵢ,ε), zero-weight dimensions contribute
+        nothing to κ, so adding them preserves all kernel invariants.
         """
         c_base = np.array([0.3, 0.7])
         w_base = np.array([0.5, 0.5])
@@ -293,10 +291,10 @@ class TestLemma31_EmbeddingConsistency:
         ko_base = compute_kernel(c_base, w_base, tau_R=1.0, epsilon=EPSILON)
         ko_ext = compute_kernel(c_ext, w_ext, tau_R=1.0, epsilon=EPSILON)
 
-        # F and omega preserved (zero-weight dim doesn't contribute)
+        # F, omega, and kappa preserved (zero-weight dim doesn't contribute)
         assert abs(ko_base.F - ko_ext.F) < 1e-12
         assert abs(ko_base.omega - ko_ext.omega) < 1e-12
-        # Both kappas finite
+        assert abs(ko_base.kappa - ko_ext.kappa) < 1e-12
         assert math.isfinite(ko_base.kappa)
         assert math.isfinite(ko_ext.kappa)
 
@@ -362,21 +360,28 @@ class TestLemma34_AMGMGap:
             w = normalize_weights(RNG.dirichlet(np.ones(5)))
             ko = compute_kernel(c, w, tau_R=1.0, epsilon=EPSILON)
             gap = ko.F - ko.IC
-            assert gap >= -1e-12, f"AM-GM violated: F={ko.F}, IC={ko.IC}, gap={gap}"
+            assert gap >= -1e-12, f"Integrity bound violated: F={ko.F}, IC={ko.IC}, gap={gap}"
 
     def test_gap_zero_when_homogeneous(self) -> None:
-        """Homogeneous coordinates with n=1 → F = IC (gap = 0).
+        """Homogeneous coordinates → F = IC (heterogeneity gap = 0).
 
-        Note: frozen_contract.compute_kernel uses unweighted kappa
-        (κ = Σ ln(cᵢ)), so IC = exp(n·ln(c)) = cⁿ.
-        For n > 1, IC ≠ F even when homogeneous.
-        AM-GM equality holds only for n=1 (single dimension).
+        With weighted κ = Σ wᵢ ln(cᵢ,ε), homogeneous coordinates
+        (all cᵢ equal) give IC = exp(ln(c)) = c = F.
+        Integrity bound equality holds when channels are uniform.
         """
+        # Single dimension: trivially F = IC
         c = np.array([0.7])
         w = np.array([1.0])
         ko = compute_kernel(c, w, tau_R=1.0, epsilon=EPSILON)
         gap = ko.F - ko.IC
         assert abs(gap) < 1e-12
+
+        # Multi-dimensional homogeneous: F = IC with weighted κ
+        c_multi = np.full(4, 0.5)
+        w_multi = np.full(4, 0.25)
+        ko_multi = compute_kernel(c_multi, w_multi, tau_R=1.0, epsilon=EPSILON)
+        gap_multi = ko_multi.F - ko_multi.IC
+        assert abs(gap_multi) < 1e-12
 
     def test_gap_increases_with_heterogeneity(self) -> None:
         """More heterogeneous coordinates → larger gap."""

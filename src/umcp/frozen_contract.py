@@ -472,8 +472,8 @@ def compute_kernel(
     # Curvature: C = stddev({c_i}) / 0.5
     C = float(np.std(c_safe) / 0.5)
 
-    # Log-integrity: κ = Σ ln(c_i) (unweighted for IC)
-    kappa = float(np.sum(np.log(c_safe)))
+    # Log-integrity: κ = Σ wᵢ ln(cᵢ,ε)  (Tier-1 definition)
+    kappa = float(np.dot(w, np.log(c_safe)))
 
     # Integrity: I = exp(κ)
     IC = float(np.exp(kappa))

@@ -1205,7 +1205,7 @@ def render_physics_interface_page() -> None:
                 entropy += wi * (-ci * np.log(ci) - (1 - ci) * np.log(1 - ci))
 
         curvature = float(np.std(c, ddof=0) / 0.5) if len(c) > 1 else 0.0
-        amgm_gap = fidelity - integrity_composite
+        heterogeneity_gap = fidelity - integrity_composite
 
         audit_entry["tier1"] = {
             "F": fidelity,
@@ -1214,7 +1214,7 @@ def render_physics_interface_page() -> None:
             "C": curvature,
             "kappa": log_ic,
             "IC": integrity_composite,
-            "amgm_gap": amgm_gap,
+            "heterogeneity_gap": heterogeneity_gap,
         }
 
         # TIER 2: Regime classification
@@ -1780,7 +1780,7 @@ def render_kinematics_interface_page() -> None:
                 entropy += wi * (-ci * np.log(ci) - (1 - ci) * np.log(1 - ci))
 
         curvature = float(np.std(c, ddof=0) / 0.5)
-        amgm_gap = fidelity - integrity_composite
+        heterogeneity_gap = fidelity - integrity_composite
 
         audit_entry["tier1"] = {
             "F": fidelity,
@@ -1789,7 +1789,7 @@ def render_kinematics_interface_page() -> None:
             "C": curvature,
             "kappa": log_ic,
             "IC": integrity_composite,
-            "amgm_gap": amgm_gap,
+            "heterogeneity_gap": heterogeneity_gap,
             "is_homogeneous": np.allclose(c, c[0], atol=1e-15),
         }
 
@@ -1842,7 +1842,7 @@ def render_kinematics_interface_page() -> None:
             recommendations.append("⚠️ Non-returning motion: kinematic credit = 0 (AXIOM-0)")
         if x_clip or v_clip or a_clip:
             recommendations.append("⚠️ OOR clipping applied: check reference scales")
-        if amgm_gap > 0.1:
+        if heterogeneity_gap > 0.1:
             recommendations.append("📊 Large heterogeneity gap: heterogeneous phase space")
 
         # Conservation checks

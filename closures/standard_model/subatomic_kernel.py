@@ -8,9 +8,9 @@ For each particle, measurable properties are normalized into a trace
 vector c ∈ [ε, 1−ε]^n, then fed through the GCD kernel to extract:
 
     F + ω = 1            (Conservation — closed process)
-    IC ≤ F               (AM-GM — coherence bounded by fidelity)
+    IC ≤ F               (integrity bound — coherence bounded by fidelity)
     IC = exp(κ)          (Exp map — log/linear duality)
-    Δ = F − IC           (AM-GM gap — heterogeneity cost)
+    Δ = F − IC           (heterogeneity gap — heterogeneity cost)
 
 Normalization channels for FUNDAMENTAL particles (8 channels):
     1. mass_log:      log₁₀(m / m_floor) / log₁₀(m_ceil / m_floor)
@@ -784,7 +784,7 @@ class ParticleKernelResult:
     C: float
     kappa: float
     IC: float
-    amgm_gap: float
+    heterogeneity_gap: float
 
     # Identity checks
     F_plus_omega: float
@@ -813,7 +813,7 @@ def _classify_regime(omega: float, F: float, S: float, C: float) -> str:
     return "Watch"
 
 
-def _derive_gcd_category(F: float, IC: float, amgm_gap: float, S: float, C: float) -> str:
+def _derive_gcd_category(F: float, IC: float, heterogeneity_gap: float, S: float, C: float) -> str:
     """Derive GCD-based classification from kernel invariants.
 
     These categories emerge from the shape of the property profile:
@@ -825,11 +825,11 @@ def _derive_gcd_category(F: float, IC: float, amgm_gap: float, S: float, C: floa
         Kernel-diffuse:      Low F, high entropy     (low values spread wide)
     """
     if F > 0.55:
-        if amgm_gap < 0.03:
+        if heterogeneity_gap < 0.03:
             return "Kernel-concentrated"
         return "Kernel-structured"
     if F > 0.35:
-        if amgm_gap < 0.05:
+        if heterogeneity_gap < 0.05:
             return "Kernel-balanced"
         return "Kernel-split"
     if S < 0.40:
@@ -847,7 +847,7 @@ def compute_fundamental_kernel(p: FundamentalParticle) -> ParticleKernelResult:
     ic_exp = abs(k["IC"] - math.exp(k["kappa"])) < 1e-12
 
     regime = _classify_regime(k["omega"], k["F"], k["S"], k["C"])
-    gcd_cat = _derive_gcd_category(k["F"], k["IC"], k["amgm_gap"], k["S"], k["C"])
+    gcd_cat = _derive_gcd_category(k["F"], k["IC"], k["heterogeneity_gap"], k["S"], k["C"])
 
     return ParticleKernelResult(
         name=p.name,
@@ -863,7 +863,7 @@ def compute_fundamental_kernel(p: FundamentalParticle) -> ParticleKernelResult:
         C=k["C"],
         kappa=k["kappa"],
         IC=k["IC"],
-        amgm_gap=k["amgm_gap"],
+        heterogeneity_gap=k["heterogeneity_gap"],
         F_plus_omega=F_po,
         IC_leq_F=ic_leq,
         IC_eq_exp_kappa=ic_exp,
@@ -885,7 +885,7 @@ def compute_composite_kernel(p: CompositeParticle) -> ParticleKernelResult:
     ic_exp = abs(k["IC"] - math.exp(k["kappa"])) < 1e-12
 
     regime = _classify_regime(k["omega"], k["F"], k["S"], k["C"])
-    gcd_cat = _derive_gcd_category(k["F"], k["IC"], k["amgm_gap"], k["S"], k["C"])
+    gcd_cat = _derive_gcd_category(k["F"], k["IC"], k["heterogeneity_gap"], k["S"], k["C"])
 
     return ParticleKernelResult(
         name=p.name,
@@ -901,7 +901,7 @@ def compute_composite_kernel(p: CompositeParticle) -> ParticleKernelResult:
         C=k["C"],
         kappa=k["kappa"],
         IC=k["IC"],
-        amgm_gap=k["amgm_gap"],
+        heterogeneity_gap=k["heterogeneity_gap"],
         F_plus_omega=F_po,
         IC_leq_F=ic_leq,
         IC_eq_exp_kappa=ic_exp,
@@ -950,7 +950,7 @@ def display_particle_table(results: list[ParticleKernelResult], title: str = "")
     for r in results:
         print(
             f"  {r.name:<20s} {r.symbol:>5s}  {r.F:6.4f} {r.omega:6.4f} "
-            f"{r.IC:6.4f} {r.amgm_gap:6.4f} {r.S:5.3f} {r.C:5.3f}  "
+            f"{r.IC:6.4f} {r.heterogeneity_gap:6.4f} {r.S:5.3f} {r.C:5.3f}  "
             f"{r.regime:<8s} {r.gcd_category:<20s}"
         )
 
@@ -992,7 +992,7 @@ def analyze_by_category(results: list[ParticleKernelResult]) -> None:
         Fs = [r.F for r in gs]
         omegas = [r.omega for r in gs]
         ICs = [r.IC for r in gs]
-        gaps = [r.amgm_gap for r in gs]
+        gaps = [r.heterogeneity_gap for r in gs]
         Ss = [r.S for r in gs]
 
         avg_F = sum(Fs) / len(Fs)
@@ -1022,7 +1022,7 @@ def analyze_generation_structure(fund_results: list[ParticleKernelResult]) -> No
             continue
 
         Fs = [r.F for r in gen_particles]
-        gaps = [r.amgm_gap for r in gen_particles]
+        gaps = [r.heterogeneity_gap for r in gen_particles]
         avg_F = sum(Fs) / len(Fs)
         avg_gap = sum(gaps) / len(gaps)
 
@@ -1031,7 +1031,7 @@ def analyze_generation_structure(fund_results: list[ParticleKernelResult]) -> No
         print(f"    ⟨F⟩ = {avg_F:.4f}   ⟨Δ⟩ = {avg_gap:.4f}")
 
         for r in gen_particles:
-            print(f"      {r.symbol:>5s}  F={r.F:.4f}  IC={r.IC:.4f}  Δ={r.amgm_gap:.4f}  {r.gcd_category}")
+            print(f"      {r.symbol:>5s}  F={r.F:.4f}  IC={r.IC:.4f}  Δ={r.heterogeneity_gap:.4f}  {r.gcd_category}")
 
 
 def _get_generation(name: str) -> int:
@@ -1067,7 +1067,9 @@ def analyze_mass_hierarchy(results: list[ParticleKernelResult]) -> None:
     print("  " + "─" * 80)
 
     for r in massive:
-        print(f"  {r.name:<20s} {r.mass_GeV:12.5g}  {r.F:6.4f} {r.IC:6.4f} {r.amgm_gap:6.4f}  {r.gcd_category}")
+        print(
+            f"  {r.name:<20s} {r.mass_GeV:12.5g}  {r.F:6.4f} {r.IC:6.4f} {r.heterogeneity_gap:6.4f}  {r.gcd_category}"
+        )
 
 
 def analyze_fermion_boson_split(fund_results: list[ParticleKernelResult]) -> None:
@@ -1082,7 +1084,7 @@ def analyze_fermion_boson_split(fund_results: list[ParticleKernelResult]) -> Non
     for label, group in [("Fermions (12)", fermions), ("Bosons (5)", bosons)]:
         Fs = [r.F for r in group]
         ICs = [r.IC for r in group]
-        gaps = [r.amgm_gap for r in group]
+        gaps = [r.heterogeneity_gap for r in group]
         Ss = [r.S for r in group]
 
         print(f"\n  {label}:")
@@ -1120,8 +1122,8 @@ def analyze_quark_lepton_duality(fund_results: list[ParticleKernelResult]) -> No
         lepton_avg_F = (rlc.F + rln.F) / 2
         F_sum = quark_avg_F + lepton_avg_F
 
-        quark_avg_gap = (rqu.amgm_gap + rqd.amgm_gap) / 2
-        lepton_avg_gap = (rlc.amgm_gap + rln.amgm_gap) / 2
+        quark_avg_gap = (rqu.heterogeneity_gap + rqd.heterogeneity_gap) / 2
+        lepton_avg_gap = (rlc.heterogeneity_gap + rln.heterogeneity_gap) / 2
 
         print(f"\n  Generation {gen}:")
         print(f"    Quarks  ({rqu.symbol}, {rqd.symbol}):  ⟨F⟩ = {quark_avg_F:.4f}  ⟨Δ⟩ = {quark_avg_gap:.4f}")
@@ -1148,7 +1150,7 @@ def analyze_composite_binding(comp_results: list[ParticleKernelResult]) -> None:
         print(
             f"  {r.name:<15s} {p.quark_content:>6s} {p.mass_GeV:9.5f} "
             f"{p.constituent_mass_sum_GeV:9.5f} {bind_pct:5.1f}%  "
-            f"{r.F:6.4f} {r.IC:6.4f} {r.amgm_gap:6.4f}"
+            f"{r.F:6.4f} {r.IC:6.4f} {r.heterogeneity_gap:6.4f}"
         )
 
 
@@ -1229,16 +1231,16 @@ if __name__ == "__main__":
     # Key findings
     fund_Fs = [r.F for r in fund_results]
     comp_Fs = [r.F for r in comp_results]
-    all_gaps = [r.amgm_gap for r in all_results]
+    all_gaps = [r.heterogeneity_gap for r in all_results]
 
     max_F_all = max(all_results, key=lambda r: r.F)
     min_F_all = min(all_results, key=lambda r: r.F)
-    max_gap = max(all_results, key=lambda r: r.amgm_gap)
+    max_gap = max(all_results, key=lambda r: r.heterogeneity_gap)
 
     print("\n  Key Findings:")
     print(f"    Highest F:     {max_F_all.symbol} ({max_F_all.name}) F={max_F_all.F:.4f}")
     print(f"    Lowest F:      {min_F_all.symbol} ({min_F_all.name}) F={min_F_all.F:.4f}")
-    print(f"    Largest gap:   {max_gap.symbol} ({max_gap.name}) Δ={max_gap.amgm_gap:.4f}")
+    print(f"    Largest gap:   {max_gap.symbol} ({max_gap.name}) Δ={max_gap.heterogeneity_gap:.4f}")
     print(f"    ⟨F⟩ fundamental: {sum(fund_Fs) / len(fund_Fs):.4f}")
     print(f"    ⟨F⟩ composite:   {sum(comp_Fs) / len(comp_Fs):.4f}")
     print(f"    ⟨Δ⟩ all:         {sum(all_gaps) / len(all_gaps):.4f}")

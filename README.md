@@ -320,7 +320,7 @@ This system is **original**. It does not borrow from, extend, or reinterpret exi
 | **Bernoulli field entropy** S | Shannon entropy (restrict collapse field to {0,1}) |
 | **Duality identity** F + ω = 1 | Unitarity (strip thermodynamic cost function) |
 | **Log-integrity relation** IC = exp(κ) | Exponential map (strip kernel architecture) |
-| **Heterogeneity gap** Δ = F − IC | AM-GM gap (strip channel semantics) |
+| **Heterogeneity gap** Δ = F − IC | heterogeneity gap (strip channel semantics) |
 | **Frozen parameters** (ε, p, tol_seam) | Constants / hyperparameters (strip seam derivation) |
 
 **Key vocabulary**: Say "integrity bound," not "AM-GM inequality." Say "Bernoulli field entropy," not "Shannon entropy." Say "derives independently," not "rederives" or "recovers." Say "frozen," not "constant" or "hyperparameter." See `AXIOM.md` and `.github/copilot-instructions.md` for the complete terminology reference.
@@ -443,7 +443,7 @@ weights = [0.125] * 8  # Equal weights
 result = compute_kernel_outputs(channels, weights)
 print(f"F={result.F:.4f}, ω={result.omega:.4f}, IC={result.IC:.6f}")
 print(f"Regime: {result.regime}")
-print(f"Heterogeneity gap: {result.amgm_gap:.6f}")  # Δ = F − IC
+print(f"Heterogeneity gap: {result.heterogeneity_gap:.6f}")  # Δ = F − IC
 ```
 
 ---
@@ -794,7 +794,7 @@ The four-regime classification with real Standard Model particles mapped to thei
 
 Kernel fidelity increases with scale resolution: composite(0.444) < atomic(0.516) < fundamental(0.558). The heterogeneity gap distribution across 118 elements reveals the landscape of channel heterogeneity.
 
-![Cross-Scale Universality](images/07_cross_scale_amgm_gap.png)
+![Cross-Scale Universality](images/07_cross_scale_heterogeneity_gap.png)
 
 ---
 

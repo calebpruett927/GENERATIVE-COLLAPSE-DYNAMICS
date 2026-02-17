@@ -390,7 +390,7 @@ class ResidualEnvelope:
     # Partition residual: max |F + ω − 1| (should be 0 at float64)
     partition_residual_max: float = 0.0
     # AM-GM: max(IC − F) (should be ≤ 0)
-    amgm_excess_max: float = 0.0
+    integrity_excess_max: float = 0.0
     # Observed ranges
     omega_min: float = 0.000578
     omega_max: float = 0.999481
@@ -404,8 +404,8 @@ class ResidualEnvelope:
     IC_max: float = 0.999422
     kappa_min: float = -7.564080
     kappa_max: float = -0.000578
-    amgm_gap_min: float = 0.0
-    amgm_gap_max: float = 0.434547
+    heterogeneity_gap_min: float = 0.0
+    heterogeneity_gap_max: float = 0.434547
 
     # Regime transition boundaries (homogeneous c = (v,v,v))
     # v < 0.300 → CRITICAL (IC < 0.30)

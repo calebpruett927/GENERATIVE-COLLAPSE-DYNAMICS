@@ -1210,9 +1210,9 @@ def plot_cross_scale() -> None:
 
     fig.suptitle("Cross-Scale Patterns: Universality of the GCD Kernel", fontsize=12, y=1.01, fontweight="bold")
     fig.tight_layout()
-    fig.savefig(fig_path("07_cross_scale_amgm_gap.png"), bbox_inches="tight")
+    fig.savefig(fig_path("07_cross_scale_heterogeneity_gap.png"), bbox_inches="tight")
     plt.close(fig)
-    print("  ✓ 07_cross_scale_amgm_gap.png")
+    print("  ✓ 07_cross_scale_heterogeneity_gap.png")
 
 
 # ═══════════════════════════════════════════════════════════════════════════

@@ -1481,7 +1481,7 @@ class KernelComputeResponse(BaseModel):
     C: float = Field(..., description="Curvature (normalized std)")
     kappa: float = Field(..., description="Log-integrity")
     IC: float = Field(..., description="Integrity composite (geometric mean)")
-    amgm_gap: float = Field(..., description="F - IC (heterogeneity measure)")
+    heterogeneity_gap: float = Field(..., description="F - IC (heterogeneity measure)")
     regime: str = Field(..., description="Regime classification")
     is_homogeneous: bool = Field(..., description="Whether all coordinates equal")
 
@@ -1544,7 +1544,7 @@ async def compute_kernel(
         C=float(outputs.C),
         kappa=float(outputs.kappa),
         IC=float(outputs.IC),
-        amgm_gap=float(outputs.amgm_gap),
+        heterogeneity_gap=float(outputs.heterogeneity_gap),
         regime=outputs.regime,
         is_homogeneous=outputs.is_homogeneous,
     )

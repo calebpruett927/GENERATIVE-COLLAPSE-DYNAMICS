@@ -267,5 +267,7 @@ paper/*.bbl
 paper/*.blg
 paper/*.out
 paper/*.log
+paper/*.fdb_latexmk
+paper/*.fls
 paper/*Notes.bib
 paper/generated_demo.*

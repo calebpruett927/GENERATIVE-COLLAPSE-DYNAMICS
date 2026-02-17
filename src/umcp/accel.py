@@ -67,7 +67,7 @@ def compute_kernel(
         validate: Whether to validate output ranges (Lemma 1)
 
     Returns:
-        dict with keys: F, omega, S, C, kappa, IC, amgm_gap, regime
+        dict with keys: F, omega, S, C, kappa, IC, heterogeneity_gap, regime
     """
     if _USE_CPP:
         c_cont = np.ascontiguousarray(c, dtype=np.float64)
@@ -333,7 +333,7 @@ def _compute_kernel_numpy(
         "C": C,
         "kappa": kappa,
         "IC": IC,
-        "amgm_gap": delta,
+        "heterogeneity_gap": delta,
         "regime": regime,
         "is_homogeneous": is_homogeneous,
         "computation_mode": "fast_homogeneous" if is_homogeneous else "full_heterogeneous",
@@ -364,7 +364,7 @@ def _compute_kernel_batch_numpy(
         C_arr[t] = result["C"]
         kappa_arr[t] = result["kappa"]
         IC_arr[t] = result["IC"]
-        delta_arr[t] = result["amgm_gap"]
+        delta_arr[t] = result["heterogeneity_gap"]
 
     return {
         "F": F_arr,

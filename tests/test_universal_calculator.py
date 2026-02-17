@@ -527,10 +527,10 @@ class TestDiagnostics:
         )
 
         assert "n_coordinates" in result.diagnostics
-        assert "am_gm_gap" in result.diagnostics
+        assert "heterogeneity_gap" in result.diagnostics
         assert "identity_check" in result.diagnostics
 
-    def test_amgm_gap_diagnostic(self):
+    def test_heterogeneity_gap_diagnostic(self):
         """Test AM-GM gap is correctly computed."""
         calc = UniversalCalculator()
         result = calc.compute_all(
@@ -539,5 +539,5 @@ class TestDiagnostics:
         )
 
         expected_gap = result.kernel.F - result.kernel.IC
-        assert result.diagnostics["am_gm_gap"] == pytest.approx(expected_gap, rel=1e-10)
-        assert result.diagnostics["am_gm_gap"] >= 0  # AM-GM inequality
+        assert result.diagnostics["heterogeneity_gap"] == pytest.approx(expected_gap, rel=1e-10)
+        assert result.diagnostics["heterogeneity_gap"] >= 0  # AM-GM inequality

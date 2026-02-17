@@ -192,7 +192,7 @@ def gen_kernel_timeseries(df: pd.DataFrame) -> None:
 # ══════════════════════════════════════════════════════════════════
 # 3. AM-GM GAP ANALYSIS (F ≥ IC)
 # ══════════════════════════════════════════════════════════════════
-def gen_amgm_gap(df: pd.DataFrame) -> None:
+def gen_heterogeneity_gap(df: pd.DataFrame) -> None:
     sample = df.head(50).copy().reset_index(drop=True)
 
     fig = go.Figure()
@@ -240,8 +240,8 @@ def gen_amgm_gap(df: pd.DataFrame) -> None:
         legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "center", "x": 0.5},
     )
 
-    fig.write_image(str(OUT_DIR / "03_amgm_gap_analysis.png"), scale=2)
-    print("  ✓ 03_amgm_gap_analysis.png")
+    fig.write_image(str(OUT_DIR / "03_heterogeneity_gap_analysis.png"), scale=2)
+    print("  ✓ 03_heterogeneity_gap_analysis.png")
 
 
 # ══════════════════════════════════════════════════════════════════
@@ -742,7 +742,7 @@ def main() -> None:
 
     gen_regime_phase_space(df)
     gen_kernel_timeseries(df)
-    gen_amgm_gap(df)
+    gen_heterogeneity_gap(df)
     gen_ledger_overview(df)
     gen_three_layer_geometry()
     gen_seam_graph()

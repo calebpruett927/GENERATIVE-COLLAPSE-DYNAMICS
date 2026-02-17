@@ -7,7 +7,7 @@ for ANY input vector c ∈ [ε, 1−ε]^n with ANY weight vector w ∈ Δ^n.
 The identities:
 
     IDENTITY 1:  F + ω = 1          (Definition, not theorem)
-    IDENTITY 2:  IC ≤ F             (AM-GM inequality — pure algebra)
+    IDENTITY 2:  IC ≤ F             (integrity bound — pure algebra)
     IDENTITY 3:  IC = exp(κ)        (Definition of geometric mean)
 
 These three identities ARE the bare constraints. They model a process:
@@ -28,7 +28,7 @@ This is tested against:
     3. Adversarial edge cases (near-zero, near-one, maximally heterogeneous)
     4. Varying dimensions (1D to 10000D)
     5. Varying weight distributions (uniform, Dirichlet, degenerate)
-    6. The AM-GM gap decomposition (showing it equals variance / 2F)
+    6. The heterogeneity gap decomposition (showing it equals variance / 2F)
     7. Compound molecules (H2O, CO2, CH4, NaCl, etc.)
 
 If ANY test fails, the kernel implementation has a bug. The math cannot fail.
@@ -94,7 +94,8 @@ def prove_identity_2_algebraic() -> None:
 
     This identity is a structural consequence of the kernel architecture:
     geometric integrity (IC) can never exceed arithmetic integrity (F).
-    The classical AM-GM inequality is the degenerate limit when the
+    The integrity bound derives independently from Axiom-0;
+    the classical AM-GM inequality is the degenerate limit when the
     collapse field is removed.
 
     PROOF:
@@ -123,16 +124,15 @@ def prove_identity_2_algebraic() -> None:
 
     This is not a physical law — it is a structural necessity of the
     kernel architecture. It holds for ANY positive coordinates with
-    ANY weights. The AM-GM inequality is the classical shadow of this
-    identity — it emerges as the degenerate limit when the collapse
-    field is removed.
+    ANY weights. The classical AM-GM inequality is the degenerate
+    limit — it emerges when the collapse field is removed.
     """
     print("IDENTITY 2: IC ≤ F (integrity bound, Lemma 4)")
     print("  Status: ALGEBRAIC THEOREM (proved via concavity of ln)")
     print("  Proof:  ln concave → Σwᵢ ln(cᵢ) ≤ ln(Σwᵢcᵢ)")
     print("          → exp(κ) ≤ F → IC ≤ F  ∎")
     print("  Gap:    Δ = F − IC ≈ Var_w(c)/(2F) for small perturbations")
-    print("  Note:   AM-GM inequality is the degenerate limit.")
+    print("  Note:   Classical AM-GM inequality is the degenerate limit.")
     print("  Content: Coherence cannot exceed fidelity.")
     print("           Heterogeneity always costs.")
     print()
@@ -196,7 +196,7 @@ def verify_identities(c: np.ndarray, w: np.ndarray, label: str = "") -> dict:
         "kappa": k["kappa"],
         "S": k["S"],
         "C": k["C"],
-        "amgm_gap": k["amgm_gap"],
+        "heterogeneity_gap": k["heterogeneity_gap"],
         "id1_F_plus_omega_eq_1": id1,
         "id2_IC_leq_F": id2,
         "id3_IC_eq_exp_kappa": id3,
@@ -237,8 +237,8 @@ def test_adversarial_cases() -> list[dict]:
         c = np.full(n, val)
         w = np.ones(n) / n
         r = verify_identities(c, w, f"homogeneous c={val}")
-        # Extra check: AM-GM gap should be 0
-        r["gap_zero"] = abs(r["amgm_gap"]) < TOL
+        # Extra check: heterogeneity gap should be 0
+        r["gap_zero"] = abs(r["heterogeneity_gap"]) < TOL
         results.append(r)
 
     # Case 2: Maximum heterogeneity (one channel at ε, rest at 1-ε)
@@ -304,10 +304,10 @@ def test_adversarial_cases() -> list[dict]:
     return results
 
 
-def test_am_gm_gap_decomposition() -> None:
-    """Verify the AM-GM gap ≈ Var_w(c) / (2F) for small perturbations.
+def test_heterogeneity_gap_decomposition() -> None:
+    """Verify the heterogeneity gap ≈ Var_w(c) / (2F) for small perturbations.
 
-    The AM-GM gap has a second-order expansion:
+    The heterogeneity gap has a second-order expansion:
         Δ = F − IC ≈ Var_w(c) / (2·F)
 
     where Var_w(c) = Σ wᵢ(cᵢ − F)² is the weighted variance.
@@ -316,7 +316,7 @@ def test_am_gm_gap_decomposition() -> None:
     quantity: the gap IS the cost of heterogeneity, measured in units
     of variance per fidelity.
     """
-    print("═══ AM-GM GAP DECOMPOSITION ═══")
+    print("═══ HETEROGENEITY GAP DECOMPOSITION ═══")
     print("  Theory: Δ = F − IC ≈ Var_w(c) / (2F)  [second-order]")
     print()
 
@@ -331,7 +331,7 @@ def test_am_gm_gap_decomposition() -> None:
 
         k = compute_kernel_outputs(c, w, EPSILON)
         F = k["F"]
-        gap = k["amgm_gap"]
+        gap = k["heterogeneity_gap"]
 
         var_w = np.sum(w * (c - F) ** 2)
         gap_approx = var_w / (2 * F)
@@ -450,7 +450,7 @@ def print_bare_constraints() -> None:
     print()
     print("The THREE immutable constraints are:")
     print("  1. F + ω = 1        → Process is CLOSED (conservation)")
-    print("  2. IC ≤ F           → Coherence ≤ Fidelity (AM-GM)")
+    print("  2. IC ≤ F           → Coherence ≤ Fidelity (integrity bound)")
     print("  3. IC = exp(κ)      → Log/linear duality (exponential map)")
     print()
     print("These constraints mean:")
@@ -512,7 +512,7 @@ def print_standard_model_connection() -> None:
     print("but F + ω still equals 1, IC still ≤ F, and IC still = exp(κ).")
     print()
     print("What Tier-1 DOES tell you about Standard Model data:")
-    print("  • AM-GM gap measures how HETEROGENEOUS the mass spectrum is")
+    print("  • Heterogeneity gap measures how HETEROGENEOUS the mass spectrum is")
     print("  • A large gap means the observables span a wide range")
     print("  • The SM is KNOWN to be heterogeneous (electron mass ≪ top mass)")
     print("  • The kernel quantifies this: gap = cost of non-uniformity")
@@ -587,8 +587,8 @@ if __name__ == "__main__":
     print(f"  Molecules: {mol_passed}/{mol_passed + mol_failed} passed, {mol_failed} failed")
     print()
 
-    # 2e: AM-GM gap decomposition
-    test_am_gm_gap_decomposition()
+    # 2e: Heterogeneity gap decomposition
+    test_heterogeneity_gap_decomposition()
 
     # ───── SECTION 3: The Bare Constraints ─────
     print("━" * 62)

@@ -111,7 +111,7 @@ def sweep_coordinate_space() -> dict[str, Any]:
         C_t = ValueTracker("C")
         IC_t = ValueTracker("IC")
         kappa_t = ValueTracker("κ")
-        amgm_gap_t = ValueTracker("amgm_gap")
+        heterogeneity_gap_t = ValueTracker("heterogeneity_gap")
         regimes = RegimeCounter()
 
         for dim in (3, 5, 10):
@@ -133,7 +133,7 @@ def sweep_coordinate_space() -> dict[str, Any]:
                 C_t.add(r.C)
                 IC_t.add(r.IC)
                 kappa_t.add(r.kappa)
-                amgm_gap_t.add(r.F - r.IC)
+                heterogeneity_gap_t.add(r.F - r.IC)
 
                 regime = classify_regime(r.omega, r.F, r.S, r.C, r.IC)
                 regimes.add(regime)
@@ -147,7 +147,7 @@ def sweep_coordinate_space() -> dict[str, Any]:
                 "C": C_t.to_dict(),
                 "IC": IC_t.to_dict(),
                 "κ": kappa_t.to_dict(),
-                "amgm_gap": amgm_gap_t.to_dict(),
+                "heterogeneity_gap": heterogeneity_gap_t.to_dict(),
             },
             "regimes": regimes.to_dict(),
         }
@@ -237,14 +237,14 @@ def compute_residual_envelope() -> dict[str, Any]:
 
     envelope = {
         "partition_residual": {"max_abs": 0.0, "samples": 0},
-        "amgm_excess": {"max": float("-inf"), "samples": 0},
+        "integrity_excess": {"max": float("-inf"), "samples": 0},
         "omega_range": {"min": float("inf"), "max": float("-inf")},
         "F_range": {"min": float("inf"), "max": float("-inf")},
         "S_range": {"min": float("inf"), "max": float("-inf")},
         "C_range": {"min": float("inf"), "max": float("-inf")},
         "IC_range": {"min": float("inf"), "max": float("-inf")},
         "kappa_range": {"min": float("inf"), "max": float("-inf")},
-        "amgm_gap_range": {"min": float("inf"), "max": float("-inf")},
+        "heterogeneity_gap_range": {"min": float("inf"), "max": float("-inf")},
     }
 
     n_total = 0
@@ -259,7 +259,7 @@ def compute_residual_envelope() -> dict[str, Any]:
             envelope["partition_residual"]["max_abs"] = max(envelope["partition_residual"]["max_abs"], pr)
 
             ae = r.IC - r.F
-            envelope["amgm_excess"]["max"] = max(envelope["amgm_excess"]["max"], ae)
+            envelope["integrity_excess"]["max"] = max(envelope["integrity_excess"]["max"], ae)
 
             gap = r.F - r.IC
             for key, val in [
@@ -269,14 +269,14 @@ def compute_residual_envelope() -> dict[str, Any]:
                 ("C_range", r.C),
                 ("IC_range", r.IC),
                 ("kappa_range", r.kappa),
-                ("amgm_gap_range", gap),
+                ("heterogeneity_gap_range", gap),
             ]:
                 if math.isfinite(val):
                     envelope[key]["min"] = min(envelope[key]["min"], val)
                     envelope[key]["max"] = max(envelope[key]["max"], val)
 
     envelope["partition_residual"]["samples"] = n_total
-    envelope["amgm_excess"]["samples"] = n_total
+    envelope["integrity_excess"]["samples"] = n_total
 
     # Round for readability
     for _k, v in envelope.items():
@@ -377,14 +377,16 @@ def main() -> None:
     print("\n[1/4] Computing residual envelope...")
     envelope = compute_residual_envelope()
     print(f"  Partition residual max |F+ω-1| = {envelope['partition_residual']['max_abs']:.2e}")
-    print(f"  AM-GM excess max (IC-F)        = {envelope['amgm_excess']['max']:.2e}")
+    print(f"  AM-GM excess max (IC-F)        = {envelope['integrity_excess']['max']:.2e}")
     print(f"  ω range: [{envelope['omega_range']['min']:.6f}, {envelope['omega_range']['max']:.6f}]")
     print(f"  F range: [{envelope['F_range']['min']:.6f}, {envelope['F_range']['max']:.6f}]")
     print(f"  S range: [{envelope['S_range']['min']:.6f}, {envelope['S_range']['max']:.6f}]")
     print(f"  C range: [{envelope['C_range']['min']:.6f}, {envelope['C_range']['max']:.6f}]")
     print(f"  IC range: [{envelope['IC_range']['min']:.6f}, {envelope['IC_range']['max']:.6f}]")
     print(f"  κ range: [{envelope['kappa_range']['min']:.6f}, {envelope['kappa_range']['max']:.6f}]")
-    print(f"  amgm_gap range: [{envelope['amgm_gap_range']['min']:.6f}, {envelope['amgm_gap_range']['max']:.6f}]")
+    print(
+        f"  heterogeneity_gap range: [{envelope['heterogeneity_gap_range']['min']:.6f}, {envelope['heterogeneity_gap_range']['max']:.6f}]"
+    )
 
     print("\n[2/4] Computing regime transition map...")
     transitions = compute_regime_transition_map()
@@ -434,12 +436,12 @@ def main() -> None:
         regime_str = ", ".join(f"{k}:{v}" for k, v in sorted(rd.items()))
         omega_info = data["invariants"]["ω"]
         F_info = data["invariants"]["F"]
-        gap_info = data["invariants"]["amgm_gap"]
+        gap_info = data["invariants"]["heterogeneity_gap"]
         print(f"\n  {region_name}: {data['description']}")
         print(
             f"    ω ∈ [{omega_info['min']:.6f}, {omega_info['max']:.6f}]  F ∈ [{F_info['min']:.6f}, {F_info['max']:.6f}]"
         )
-        print(f"    amgm_gap ∈ [{gap_info['min']:.8f}, {gap_info['max']:.8f}]")
+        print(f"    heterogeneity_gap ∈ [{gap_info['min']:.8f}, {gap_info['max']:.8f}]")
         print(f"    regimes: {regime_str}")
 
     # Save full profile

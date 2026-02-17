@@ -525,7 +525,7 @@ class TestIntegration:
         # d_eff = 2p = 6
         assert ce.d_eff == pytest.approx(6.0)
 
-    def test_fisher_distance_vs_amgm(self) -> None:
+    def test_fisher_distance_vs_integrity_bound(self) -> None:
         """Fisher distance = 0 iff states identical (relates to AM-GM gap = 0)."""
         c_same = 0.7
         assert fisher_distance_1d(c_same, c_same) == pytest.approx(0.0, abs=1e-12)

@@ -25,7 +25,7 @@ The ten theorems:
 Every theorem rests on the three Tier-1 identities (algebraically proven
 in tier1_proof.py):
     F + ω = 1        (definitional)
-    IC ≤ F            (AM-GM / Jensen)
+    IC ≤ F            (integrity bound)
     IC = exp(κ)       (definitional)
 
 The kernel doesn't know what a quark is, what charge means, or what mass
@@ -368,8 +368,8 @@ def theorem_T3_confinement_IC_collapse() -> TheoremResult:
     t4_pass = avg_IC_mesons < avg_IC_quarks
 
     # Test 5: The gap (Δ) increases upon confinement
-    avg_gap_quarks = sum(r.amgm_gap for r in quarks) / len(quarks)
-    avg_gap_comp = sum(r.amgm_gap for r in comp) / len(comp)
+    avg_gap_quarks = sum(r.heterogeneity_gap for r in quarks) / len(quarks)
+    avg_gap_comp = sum(r.heterogeneity_gap for r in comp) / len(comp)
     t5_pass = avg_gap_comp > avg_gap_quarks
 
     # Test 6: F comparison — composites shouldn't be THAT different in F
@@ -866,7 +866,7 @@ def theorem_T8_ckm_unitarity() -> TheoremResult:
       The kernel interprets it as: quark flavor mixing is a process
       where "input" (one flavor) is distributed across three outputs,
       and the fidelity of this distribution is governed by F + ω = 1.
-      CP violation appears as the AM-GM gap of the mixing row.
+      CP violation appears as the heterogeneity gap of the mixing row.
     """
     from closures.standard_model.ckm_mixing import compute_ckm_mixing
 
@@ -900,7 +900,7 @@ def theorem_T8_ckm_unitarity() -> TheoremResult:
                 "sum": round(sum(v**2 for v in row), 8),
                 "F": round(k["F"], 6),
                 "IC": round(k["IC"], 6),
-                "gap": round(k["amgm_gap"], 6),
+                "gap": round(k["heterogeneity_gap"], 6),
                 "tier1_pass": ok,
             }
         )
@@ -932,7 +932,7 @@ def theorem_T8_ckm_unitarity() -> TheoremResult:
 
     return TheoremResult(
         name="T8: CKM Unitarity as Kernel Identity",
-        statement="CKM row unitarity ↔ F + ω = 1; CP violation ↔ AM-GM gap",
+        statement="CKM row unitarity ↔ F + ω = 1; CP violation ↔ heterogeneity gap",
         n_tests=total_tests,
         n_passed=total_pass,
         n_failed=total_tests - total_pass,
@@ -1069,12 +1069,12 @@ def theorem_T10_nuclear_binding_curve() -> TheoremResult:
     STATEMENT:
       The nuclear binding energy per nucleon BE/A, computed from the
       Bethe-Weizsäcker semi-empirical mass formula, anti-correlates
-      with the AM-GM gap Δ of the 12-channel atomic kernel:
+      with the heterogeneity gap Δ of the 12-channel atomic kernel:
 
           r(BE/A, Δ) < -0.3   (moderate negative correlation)
 
       Interpretation: tighter nuclear binding → more homogeneous
-      trace vector → smaller gap between AM and GM means.
+      trace vector → smaller heterogeneity gap.
 
     PROOF:
       We compute both BE/A and Δ for all 118 elements (excluding H,
@@ -1107,7 +1107,7 @@ def theorem_T10_nuclear_binding_curve() -> TheoremResult:
     if not has_data or len(results) < 10:
         return TheoremResult(
             name="T10: Nuclear Binding Curve Correspondence",
-            statement="BE/A anti-correlates with AM-GM gap (r < -0.3)",
+            statement="BE/A anti-correlates with heterogeneity gap (r < -0.3)",
             n_tests=1,
             n_passed=0,
             n_failed=1,
@@ -1119,7 +1119,7 @@ def theorem_T10_nuclear_binding_curve() -> TheoremResult:
     valid = [r for r in results if r.A > 1]
 
     bea = np.array([r.BE_per_A for r in valid])
-    gaps = np.array([r.amgm_gap for r in valid])
+    gaps = np.array([r.heterogeneity_gap for r in valid])
     Fs = np.array([r.F for r in valid])
     ICs = np.array([r.IC for r in valid])
 
@@ -1160,7 +1160,7 @@ def theorem_T10_nuclear_binding_curve() -> TheoremResult:
 
     return TheoremResult(
         name="T10: Nuclear Binding Curve Correspondence",
-        statement="BE/A anti-correlates with AM-GM gap: r(BE/A, Δ) < -0.3",
+        statement="BE/A anti-correlates with heterogeneity gap: r(BE/A, Δ) < -0.3",
         n_tests=total_tests,
         n_passed=total_pass,
         n_failed=total_tests - total_pass,

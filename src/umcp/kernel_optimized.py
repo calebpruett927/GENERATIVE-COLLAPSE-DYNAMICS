@@ -25,18 +25,20 @@ from typing import Any
 
 import numpy as np
 
+from umcp.frozen_contract import EPSILON as _FROZEN_EPSILON
+
 
 @dataclass
 class KernelOutputs:
     """Container for kernel computation results."""
 
-    F: float  # Fidelity (arithmetic mean)
+    F: float  # Fidelity (weighted mean)
     omega: float  # Drift = 1 - F
     S: float  # Bernoulli field entropy (Shannon entropy is the degenerate limit)
     C: float  # Curvature proxy (normalized std)
     kappa: float  # Log-integrity
     IC: float  # Integrity composite (geometric mean)
-    amgm_gap: float  # F - IC (heterogeneity measure)
+    heterogeneity_gap: float  # F - IC (heterogeneity measure)
     regime: str  # Homogeneity regime classification
     is_homogeneous: bool  # Early detection flag
     computation_mode: str  # "fast_homogeneous" or "full_heterogeneous"
@@ -64,7 +66,7 @@ class OptimizedKernelComputer:
     - OPT-12: Lipschitz error propagation
     """
 
-    def __init__(self, epsilon: float = 1e-6, homogeneity_tolerance: float = 1e-15):
+    def __init__(self, epsilon: float = _FROZEN_EPSILON, homogeneity_tolerance: float = 1e-15):
         """
         Initialize kernel computer.
 
@@ -131,7 +133,7 @@ class OptimizedKernelComputer:
         OPT-1: Fast computation for homogeneous coordinates.
 
         When all c_i = c:
-        - Lemma 4: F = IC (AM-GM equality)
+        - Lemma 4: F = IC (integrity bound equality)
         - Lemma 10: C = 0 (no dispersion)
         - Lemma 15: S = h(F) (entropy simplifies)
 
@@ -152,8 +154,8 @@ class OptimizedKernelComputer:
         # Entropy simplifies to Bernoulli entropy of the single value
         S = self._bernoulli_entropy(c_value)
 
-        # AM-GM gap is zero (equality case)
-        amgm_gap = 0.0
+        # Heterogeneity gap is zero (equality case)
+        heterogeneity_gap = 0.0
 
         return KernelOutputs(
             F=F,
@@ -162,7 +164,7 @@ class OptimizedKernelComputer:
             C=C,
             kappa=kappa,
             IC=IC,
-            amgm_gap=amgm_gap,
+            heterogeneity_gap=heterogeneity_gap,
             regime="homogeneous",
             is_homogeneous=True,
             computation_mode="fast_homogeneous",
@@ -190,10 +192,10 @@ class OptimizedKernelComputer:
         C = self._compute_curvature(c)
 
         # OPT-3: Heterogeneity gap for quantification (Lemma 4, Lemma 34)
-        amgm_gap = F - IC  # Always >= 0 by kernel integrity bound (IC ≤ F)
+        heterogeneity_gap = F - IC  # Always >= 0 by kernel integrity bound (IC ≤ F)
 
         # Classify heterogeneity regime
-        regime = self._classify_heterogeneity(amgm_gap)
+        regime = self._classify_heterogeneity(heterogeneity_gap)
 
         return KernelOutputs(
             F=F,
@@ -202,7 +204,7 @@ class OptimizedKernelComputer:
             C=C,
             kappa=kappa,
             IC=IC,
-            amgm_gap=amgm_gap,
+            heterogeneity_gap=heterogeneity_gap,
             regime=regime,
             is_homogeneous=False,
             computation_mode="full_heterogeneous",
@@ -241,17 +243,17 @@ class OptimizedKernelComputer:
         std_pop = np.std(c, ddof=0)  # Population standard deviation
         return float(std_pop / 0.5)  # Normalized to [0, 1]
 
-    def _classify_heterogeneity(self, amgm_gap: float) -> str:
+    def _classify_heterogeneity(self, heterogeneity_gap: float) -> str:
         """
         OPT-3: Classify heterogeneity regime based on heterogeneity gap.
 
         Lemma 34: Δ_gap quantifies coordinate dispersion.
         """
-        if amgm_gap < 1e-6:
+        if heterogeneity_gap < 1e-6:
             return "homogeneous"
-        elif amgm_gap < 0.01:
+        elif heterogeneity_gap < 0.01:
             return "coherent"
-        elif amgm_gap < 0.05:
+        elif heterogeneity_gap < 0.05:
             return "heterogeneous"
         else:
             return "fragmented"
@@ -363,7 +365,7 @@ class ThresholdCalibrator:
 
 
 # Convenience functions for backward compatibility
-def compute_kernel_outputs(c: np.ndarray, w: np.ndarray, epsilon: float = 1e-6) -> dict[str, Any]:
+def compute_kernel_outputs(c: np.ndarray, w: np.ndarray, epsilon: float = _FROZEN_EPSILON) -> dict[str, Any]:
     """
     Compute kernel outputs (legacy interface).
 
@@ -379,12 +381,14 @@ def compute_kernel_outputs(c: np.ndarray, w: np.ndarray, epsilon: float = 1e-6) 
         "C": outputs.C,
         "kappa": outputs.kappa,
         "IC": outputs.IC,
-        "amgm_gap": outputs.amgm_gap,
+        "heterogeneity_gap": outputs.heterogeneity_gap,
         "regime": outputs.regime,
     }
 
 
-def validate_kernel_bounds(F: float, omega: float, C: float, IC: float, kappa: float, epsilon: float = 1e-6) -> bool:
+def validate_kernel_bounds(
+    F: float, omega: float, C: float, IC: float, kappa: float, epsilon: float = _FROZEN_EPSILON
+) -> bool:
     """Validate kernel outputs satisfy Lemma 1 bounds."""
     checks: list[bool] = [
         0 <= F <= 1,

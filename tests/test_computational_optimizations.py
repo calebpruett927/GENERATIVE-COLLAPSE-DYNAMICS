@@ -47,7 +47,7 @@ class TestOptimizedKernelComputer:
         assert outputs.computation_mode == "fast_homogeneous"
         assert outputs.C == 0.0  # Lemma 10: C = 0 iff homogeneous
         assert abs(outputs.F - outputs.IC) < 1e-10  # Lemma 4: F = IC iff homogeneous
-        assert outputs.amgm_gap < 1e-10
+        assert outputs.heterogeneity_gap < 1e-10
 
     def test_heterogeneous_computation(self):
         """Verify heterogeneous computation is correct."""
@@ -120,7 +120,7 @@ class TestOptimizedKernelComputer:
         kappa_expected = np.sum(w * np.log(c))
         assert abs(outputs.kappa - kappa_expected) < 1e-10
 
-    def test_amgm_gap_lemma4_lemma34(self):
+    def test_heterogeneity_gap_lemma4_lemma34(self):
         """OPT-3: Verify AM-GM gap computation (Lemmas 4, 34)."""
         computer = OptimizedKernelComputer(epsilon=1e-6)
 
@@ -132,14 +132,14 @@ class TestOptimizedKernelComputer:
 
         # Lemma 4: F >= IC, equality iff homogeneous
         assert outputs.F >= outputs.IC
-        assert outputs.amgm_gap >= 0
+        assert outputs.heterogeneity_gap >= 0
 
         # Manual verification
         F_manual = 0.5 * 0.2 + 0.5 * 0.8  # = 0.5
         IC_manual = (0.2**0.5) * (0.8**0.5)  # = 0.4
         gap_manual = F_manual - IC_manual
 
-        assert abs(outputs.amgm_gap - gap_manual) < 1e-10
+        assert abs(outputs.heterogeneity_gap - gap_manual) < 1e-10
 
     def test_lipschitz_error_propagation_lemma23(self):
         """OPT-12: Verify Lipschitz error bounds (Lemma 23)."""

@@ -745,7 +745,7 @@ def fig07_cross_scale_bridge() -> None:
 
     # Panel 3: Top-20 heterogeneity gaps (Δ = F − IC)
     ax3 = axes[2]
-    all_gaps = sorted([(r.symbol, r.amgm_gap) for r in all_results], key=lambda t: t[1], reverse=True)
+    all_gaps = sorted([(r.symbol, r.heterogeneity_gap) for r in all_results], key=lambda t: t[1], reverse=True)
     top20 = all_gaps[:20]
     gap_colors = [COLLAPSE_COLOR if g[1] > 0.2 else WATCH_COLOR if g[1] > 0.1 else STABLE_COLOR for g in top20]
     ax3.barh(range(len(top20)), [g[1] for g in top20], color=gap_colors, edgecolor="black", linewidth=0.3, height=0.7)
