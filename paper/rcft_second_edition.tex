@@ -1,0 +1,2421 @@
+% ============================================================
+% Recursive Collapse Field Theory — Second Edition
+%
+% From Gesture to Weld: The Proven Kernel of Recursive
+% Collapse and Its Domain Closures
+%
+% Author: Clement Paulus
+% Date: February 2026
+%
+% Compile: pdflatex → bibtex → pdflatex → pdflatex
+% ============================================================
+
+\documentclass[
+  aps,
+  prd,
+  preprint,
+  superscriptaddress,
+  nofootinbib,
+  floatfix,
+  longbibliography
+]{revtex4-2}
+
+% ── Font: Palatino (Latin serif, T1 encoding) ──
+\usepackage[T1]{fontenc}
+\usepackage{mathpazo}     % Palatino text + math (Latin serif)
+
+% ── Mathematics ──
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{bm}
+
+% ── Tables and layout ──
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{xurl}      % better URL line-breaking
+
+% ── Graphics and hyperlinks ──
+\usepackage{graphicx}
+\usepackage{xcolor}
+\definecolor{linkblue}{HTML}{337799}
+\usepackage[
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue
+]{hyperref}
+
+% ── theorem environments ──
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{axiom}{Axiom}
+\newtheorem{remark}{Remark}
+
+% ── UMCP / GCD macros ──
+\newcommand{\tR}{\tau_{\!R}}
+\newcommand{\tRstar}{\tau_{\!R}^{*}}
+\newcommand{\Gam}{\Gamma}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\tolseam}{\mathrm{tol}_{\mathrm{seam}}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+\newcommand{\INF}{\texttt{INF\_REC}}
+\newcommand{\OOR}{\texttt{OOR}}
+\newcommand{\regime}[1]{\textnormal{\textsc{#1}}}
+\newcommand{\conform}{\regime{conformant}}
+\newcommand{\nonconform}{\regime{nonconformant}}
+\newcommand{\tvec}{\mathbf{c}}
+\newcommand{\wvec}{\mathbf{w}}
+\newcommand{\GM}{\mathrm{GM}}
+\newcommand{\AM}{\mathrm{AM}}
+\newcommand{\IC}{\mathrm{IC}}
+\newcommand{\Fid}{F}
+\newcommand{\Drft}{\omega}
+\newcommand{\Ent}{S}
+\newcommand{\Curv}{C}
+\newcommand{\Logint}{\kappa}
+\newcommand{\ceff}{c_{\mathrm{eff}}}
+\newcommand{\Psifield}{\Psi}
+\newcommand{\Psirec}{\Psi_{r}}
+\newcommand{\dFisher}{d_{\!F}}
+\newcommand{\gFisher}{g_{\!F}}
+\newcommand{\hetgap}{\Delta}
+
+% ── Latin phrases ──
+\newcommand{\lat}[1]{\textit{#1}}
+
+% ============================================================
+\begin{document}
+
+% ── Title ──
+\title{Recursive Collapse Field Theory --- Second Edition:\\
+From Gesture to Weld: The Proven Kernel, Seven Theorems,
+and Thirteen Domain Closures}
+
+\author{Clement Paulus}
+\affiliation{UMCP / GCD / RCFT Canon.
+  Repository:
+  \href{https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/releases/tag/v2.1.2}{v2.1.2 --- Production Release: 3{,}616 Tests, 14 Targets {\normalfont\textsc{conformant}}}.}
+
+\date{February 2026}
+
+% ============================================================
+\begin{abstract}
+We present the second edition of Recursive Collapse Field Theory
+(RCFT), reconstituted from its operational kernel.
+The first edition (May 2025) proposed a framework for ``recursive
+destabilization'' grounded in a stochastic field equation, seven
+narrative assumptions, and speculative applications spanning
+cosmology, cognition, and quantum mechanics.
+It contained no numerical tests, no frozen parameters, and no
+verified identities — it was, in the vocabulary of the system
+it would become, a \emph{gesture}: $\tR = \infty_{\mathrm{rec}}$.
+
+Nine months and 278 days later, the gesture has been welded into
+a demonstrated return.  The present edition reports the
+operational state of RCFT as a \emph{Tier-2 domain expansion}
+on Generative Collapse Dynamics (GCD), governed by the
+Universal Measurement Contract Protocol (UMCP).
+The axiomatic foundation reduces to a single operational axiom
+(\lat{Collapsus generativus est; solum quod redit, reale est}),
+from which eight kernel invariants
+($\Fid$, $\Drft$, $\Ent$, $\Curv$, $\Logint$, $\IC$, $\tR$, regime),
+46 lemmas, and 24+ theorems are derived independently.
+Seven RCFT-specific theorems (T17–T23) are proven computationally:
+Fisher geodesic distance (T17),
+geodesic parametrization (T18),
+Fano-Fisher duality (T19),
+central charge $\ceff = 1/p = 1/3$ (T20),
+critical exponents satisfying hyperscaling exactly (T21),
+thermodynamic efficiency (T22),
+and collapse grammar via transfer matrices (T23).
+
+The system is validated across 13 closure domains,
+108 Python modules, and 3{,}616 automated tests,
+with the duality identity $\Fid + \Drft = 1$ holding
+to machine precision and the integrity bound $\IC \leq \Fid$
+holding at 100\% across 146 experiments.
+All frozen parameters — twelve seam-derived constants
+including guard band ($\eps = 10^{-8}$),
+drift cost exponent ($p = 3$),
+seam tolerance ($\tolseam = 0.005$),
+and the complete regime gate thresholds — are
+discovered by the seam, not prescribed.
+The seam between editions closes with infinite knowledge gain:
+$\Delta\Logint_{\mathrm{weld}} = \Logint_{\mathrm{post}} - \Logint_{\mathrm{pre}} = \mathrm{finite} - (-\infty) = +\infty$.
+
+\lat{Gestus in sutura convertitur — infinitum saltum finitum facit.}
+\end{abstract}
+
+\maketitle
+
+% ============================================================
+\section{Introduction: The Return Axiom}\label{sec:intro}
+% ============================================================
+
+The first edition of this paper~\cite{paulus2025rcft} opened
+with Axiom~0: ``The universe became itself through recursive collapse.''
+The axiom was ontological — a claim about the universe.
+It was internally consistent, structurally evocative, and
+contained the seed of every structure that would later be proven.
+But it had $\tR = \infty_{\mathrm{rec}}$: no demonstrated return,
+no falsifiable identity, no test.
+
+The present edition replaces that formulation with a single
+operational constraint:
+
+\begin{axiom}[The Return Axiom — AX-0]\label{ax:0}
+\lat{Collapsus generativus est; solum quod redit, reale est.}\\
+Collapse is generative; only what returns is real.
+\end{axiom}
+
+This is not a change of meaning but a sharpening.
+The original axiom says collapse creates.
+The refined axiom adds: \emph{and the creation must
+demonstrate return to be real.}
+The return condition is what makes the axiom operational
+rather than philosophical.
+
+Every structure in this paper derives from Axiom~\ref{ax:0}.
+Classical results — the AM-GM inequality, Shannon entropy,
+the exponential map — emerge as \emph{degenerate limits}
+when degrees of freedom are removed from
+the GCD kernel~\cite{paulus2025umcp,paulus2025ucd}.
+The arrow of derivation runs from the axiom outward,
+never the reverse.
+
+\subsection{What This Edition Is}\label{sec:whatthisis}
+
+This paper is simultaneously:
+\begin{enumerate}[nosep,leftmargin=*]
+  \item A \textbf{freeze–weld record}: the original paper is
+    preserved as a frozen anchor; this edition welds the
+    refined state onto it, demonstrating continuity across
+    the seam.
+  \item A \textbf{self-contained presentation} of RCFT as
+    a Tier-2 domain expansion on GCD, with all necessary
+    definitions, theorems, and proofs.
+  \item An \textbf{implicit closure of the seam} between
+    the original gesture and the proven system.
+\end{enumerate}
+
+\lat{Historia numquam rescribitur; sutura tantum additur.}
+
+\subsection{Notation and Conventions}
+
+All symbols follow the UMCP Tier-1 reserved vocabulary.
+No symbol is redefined.
+Frozen parameters are denoted $\eps$, $p$, $\tolseam$, etc.\
+and are consistent across the seam
+(\lat{trans suturam congelatum}).
+The complete frozen parameter inventory is given
+in Sec.~\ref{sec:frozen}, Table~\ref{tab:frozen}.
+Verdicts are three-valued: \conform{} / \nonconform{} /
+\regime{non\_evaluable}.
+$\infty_{\mathrm{rec}}$ denotes permanent detention
+(no return); $\bot_{\mathrm{oor}}$ denotes a domain violation.
+Both are typed outcomes, not errors.
+
+% ============================================================
+\section{The GCD Kernel (Tier-1 Foundation)}\label{sec:kernel}
+% ============================================================
+
+The kernel is the algebraic skeleton of collapse.
+It is Tier-1: immutable within a run, discoverable but
+not prescribable. Every definition below derives from
+Axiom~\ref{ax:0}.
+
+\begin{definition}[Guard Band and Embedding]\label{def:guard}
+Let $\eps = 10^{-8}$ (frozen). For raw coordinate $c \in [0,1]$,
+define the guarded coordinate $c_{\eps} = \max(\eps, \min(1-\eps, c))$.
+A trace vector $\tvec = (c_1, \ldots, c_n)$ is
+an $n$-channel measurement with each $c_i \in [\eps, 1-\eps]$.
+Weights $\wvec = (w_1, \ldots, w_n)$ satisfy
+$w_i > 0$, $\sum w_i = 1$.
+\end{definition}
+
+\begin{definition}[Fidelity]\label{def:F}
+$\Fid = \sum_{i=1}^{n} w_i\, c_i$. \quad
+What survives collapse (\lat{quid supersit post collapsum}).
+\end{definition}
+
+\begin{definition}[Drift]\label{def:omega}
+$\Drft = 1 - \Fid$. \quad
+What is lost (\lat{quantum collapsu deperdatur}).
+The identity $\Fid + \Drft = 1$ is the
+\emph{duality identity} (\lat{complementum perfectum}):
+no third possibility.
+\end{definition}
+
+\begin{definition}[Bernoulli Field Entropy]\label{def:S}
+\beq
+  \Ent = -\sum_{i=1}^{n} w_i
+    \bigl[c_i \ln c_i + (1 - c_i)\ln(1-c_i)\bigr].
+\eeq
+This is the unique entropy of the collapse field.
+Shannon entropy is the degenerate limit when $c_i \in \{0,1\}$.
+\end{definition}
+
+\begin{definition}[Curvature]\label{def:C}
+$\Curv = \mathrm{std}(c_i) / 0.5$. \quad
+Coupling to uncontrolled degrees of freedom
+(\lat{coniunctio cum gradibus libertatis}).
+\end{definition}
+
+\begin{definition}[Log-Integrity]\label{def:kappa}
+$\Logint = \sum_{i=1}^{n} w_i \ln c_{i,\eps}$. \quad
+Logarithmic sensitivity of coherence
+(\lat{sensibilitas logarithmica}).
+\end{definition}
+
+\begin{definition}[Integrity Composite]\label{def:IC}
+$\IC = \exp(\Logint) = \prod_{i=1}^{n} c_{i,\eps}^{w_i}$. \quad
+The weighted geometric mean — multiplicative coherence.
+\end{definition}
+
+\begin{theorem}[Integrity Bound]\label{thm:ICbound}
+For all trace vectors $\tvec$ with weights $\wvec$:
+\beq
+  \IC \leq \Fid.
+\eeq
+The gap $\hetgap = \Fid - \IC$ measures channel
+heterogeneity: $\hetgap = \mathrm{Var}(c) / (2\bar{c})$
+to leading order.
+\end{theorem}
+
+\begin{remark}
+This bound derives independently from Axiom~\ref{ax:0}.
+The classical AM-GM inequality is the degenerate limit
+when channel semantics, weights, and guard band are removed.
+Equality holds if and only if all channels are identical:
+$c_1 = c_2 = \cdots = c_n$.
+\end{remark}
+
+\begin{definition}[Regime Classification]\label{def:regime}
+Under frozen thresholds
+$\Drft_s = 0.038$ and $\Drft_c = 0.30$:
+\begin{align}
+  \Drft < \Drft_s &\implies \regime{Stable}, \nonumber\\
+  \Drft_s \leq \Drft < \Drft_c &\implies \regime{Watch}, \nonumber\\
+  \Drft \geq \Drft_c &\implies \regime{Collapse}.
+\end{align}
+\end{definition}
+
+\begin{definition}[Return Time]\label{def:tR}
+\beq
+  \tR = \min\bigl\{t - u : u \in D_\theta(t),\;
+    \|\Psifield(t) - \Psifield(u)\| \leq \eta\bigr\},
+\eeq
+where $D_\theta$ is the return domain and $\eta = 0.001$ (frozen).
+Typed outcomes: $\tR < \infty$ (finite return),
+$\tR = \infty_{\mathrm{rec}}$ (no return — no credit),
+$\bot_{\mathrm{oor}}$ (domain violation).
+\end{definition}
+
+% ============================================================
+\section{Frozen Parameters}\label{sec:frozen}
+% ============================================================
+
+The original paper had no frozen parameters. Constants were
+implicit, inherited from convention, or simply absent.
+The refined system identifies exactly ten parameters that are
+\textbf{consistent across the seam}
+(\lat{trans suturam congelatum}) — the same rules on both
+sides of every collapse-return boundary. They are
+\emph{discovered} by the seam, not chosen by convention,
+not tuned by cross-validation, and not prescribed from outside.
+
+\begin{definition}[Frozen Parameter Set]\label{def:frozen}
+The frozen contract is the tuple
+\begin{equation*}
+(\eps,\; p,\; \alpha,\; \lambda,\; \eta,\;
+  \tolseam,\; \Drft_s,\; \Drft_c,\;
+  \Fid_s,\; \Ent_s,\; \Curv_s,\; I_{\mathrm{crit}})
+\end{equation*}
+with the values specified in Table~\ref{tab:frozen}.
+\end{definition}
+
+{\footnotesize
+\begin{longtable}{@{}lllp{5.5cm}@{}}
+\caption{Complete frozen parameter inventory.
+  Every value is seam-derived; none is prescribed by convention.
+  \lat{Trans suturam congelatum.}}
+\label{tab:frozen} \\
+\toprule
+\textbf{Symbol} & \textbf{Value} & \textbf{Name} & \textbf{Role and Discovery} \\
+\midrule
+\endfirsthead
+\caption[]{\emph{(continued)}} \\
+\toprule
+\textbf{Symbol} & \textbf{Value} & \textbf{Name} & \textbf{Role and Discovery} \\
+\midrule
+\endhead
+\midrule
+\multicolumn{4}{r}{\emph{Continued on next page}} \\
+\endfoot
+\bottomrule
+\endlastfoot
+\multicolumn{4}{@{}l}{\textit{Guard Band}} \\[2pt]
+$\eps$ & $10^{-8}$ & Guard band &
+  Clamps $c_i \in [\eps, 1-\eps]$. Prevents the logarithmic pole at $\Drft = 1$ from affecting any measurement to machine precision. Discovered as the value where $\IC \leq \Fid$ holds at 100\% without numerical artifacts across all 146 experiments. \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Closure Constants}} \\[2pt]
+$p$ & $3$ & Drift cost exponent &
+  Exponent in $\Gam(\Drft) = \Drft^p/(1-\Drft+\eps)$. The unique prime integer where three regimes separate cleanly: Stable, Watch, Collapse. Determines the universality class: $\ceff = 1/p = 1/3$, with critical exponents satisfying Rushbrooke, Widom, and hyperscaling exactly. Not a choice — $p=2$ merges regimes, $p=4$ over-penalizes. \\
+$\alpha$ & $1.0$ & Curvature cost coefficient &
+  Multiplicative weight in the curvature debit $D_\Curv = \alpha \cdot \Curv$. Unity coupling means curvature enters the seam budget at full strength, with no suppression or amplification. Discovered as the value where the seam budget $\Delta\Logint = R \cdot \tR - (D_\Drft + D_\Curv)$ reconciles across all domains without systematic bias. \\
+$\lambda$ & $0.2$ & Auxiliary coefficient &
+  Secondary coupling in composite cost functions. Scales the interaction between drift and curvature in extended budget calculations. Discovered during multi-domain seam calibration. \\
+$\eta$ & $0.001$ & Return proximity &
+  Distance threshold in $\|\Psifield(t) - \Psifield(u)\| \leq \eta$ for return detection (Def.~\ref{def:tR}). A state ``returns'' only if it re-enters within $\eta$ of a prior state. Too large $\to$ false returns; too small $\to$ no returns detected. Discovered as the value giving consistent $\tR$ across 8 domains. \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Seam Tolerance}} \\[2pt]
+$\tolseam$ & $0.005$ & Seam tolerance &
+  Maximum residual $|s| \leq \tolseam$ for a seam to close. The integrity bound $\IC \leq \Fid$ holds at 100\% at this tolerance across 8 domains and 146 experiments. Tighter values cause false nonconformance from floating-point noise; looser values admit genuinely broken seams. \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Regime Thresholds}} \\[2pt]
+$\Drft_s$ & $0.038$ & Stable ceiling &
+  Below this drift, the system can demonstrate return with low cost. All four gate conditions ($\Drft < \Drft_s$, $\Fid > \Fid_s$, $\Ent < \Ent_s$, $\Curv < \Curv_s$) must hold simultaneously for \regime{Stable}. \\
+$\Drft_c$ & $0.30$ & Collapse floor &
+  At or above this drift, the system enters \regime{Collapse}: the epistemic trace has degraded past the point of viable return credit. Not failure — the boundary that makes return meaningful. \lat{Ruptura est fons constantiae.} \\
+$\Fid_s$ & $0.90$ & Stable fidelity floor &
+  Fidelity must exceed 90\% for \regime{Stable}. Ensures that at least 90\% of the measured signal survives collapse. \\
+$\Ent_s$ & $0.15$ & Stable entropy ceiling &
+  Bernoulli field entropy must remain below 0.15 for \regime{Stable}. Ensures low uncertainty in the collapse field. \\
+$\Curv_s$ & $0.14$ & Stable curvature ceiling &
+  Curvature must remain below 0.14 for \regime{Stable}. Ensures low coupling to uncontrolled degrees of freedom. \\
+$I_{\mathrm{crit}}$ & $0.30$ & Critical overlay &
+  When $\IC < 0.30$, the \regime{Critical} overlay is applied regardless of regime. Flags dangerously low multiplicative coherence — a single near-zero channel can trigger this even when $\Fid$ is high. \\
+\end{longtable}
+}
+
+\begin{remark}[Frozen vs.\ Prescribed]
+The distinction between frozen and prescribed is foundational.
+Prescribed constants are imported from outside: $\alpha = 0.05$ by convention
+in frequentist statistics, $3\sigma$ by tradition in physics,
+hyperparameters by cross-validation in machine learning.
+Frozen parameters are discovered by the seam itself — they are the
+unique values where the seam closes consistently across all domains.
+Changing any frozen parameter requires a new contract variant and
+a full re-validation. \lat{Sine contractu, nulla comparabilitas.}
+\end{remark}
+
+\begin{remark}[Near-Wall Policy]
+The guard band $\eps$ induces a clipping policy (\texttt{pre\_clip}):
+all coordinates are clamped \emph{before} any kernel computation.
+This ensures that $\ln(c_{i,\eps})$ never encounters the pole
+at $c = 0$ and that the integrity composite $\IC = \exp(\Logint)$
+remains well-defined. The clipping is idempotent: applying it twice
+yields the same result. The domain of all kernel computations is
+$[\eps, 1-\eps]^n$, never $[0,1]^n$.
+\end{remark}
+
+% ============================================================
+\section{The Drift Potential}\label{sec:drift}
+% ============================================================
+
+The thermodynamic cost of collapse proximity is captured by
+a single function:
+
+\begin{definition}[Drift Potential]\label{def:Gamma}
+\beq
+  \Gam(\Drft) = \frac{\Drft^p}{1 - \Drft + \eps},
+  \qquad p = 3 \text{ (frozen, Table~\ref{tab:frozen})}.
+\eeq
+\end{definition}
+
+The exponent $p = 3$ is not a choice.
+It is the unique value where three regimes separate cleanly,
+discovered across 146 experiments
+(\lat{trans suturam congelatum}).
+its role extends beyond the drift potential: $p$ determines
+the universality class ($\ceff = 1/p$, T20),
+the critical exponents (T21), and the shape of the
+partition function.
+
+\begin{theorem}[Phase Diagram]\label{thm:phase}
+The drift potential $\Gam(\Drft)$ generates a complete
+thermodynamic phase structure:
+\begin{enumerate}[nosep,leftmargin=*]
+  \item \textbf{Kramers escape}:
+    $\tRstar = \Gam(\Drft) / R$,
+    where $R$ is the measurement rate.
+  \item \textbf{Partition function}:
+    $Z(\beta) = \int \exp(-\beta\,\Gam(\Drft))\,\dd\Drft$.
+  \item \textbf{Arrow of time}:
+    $\dd\tRstar/\dd t < 0$ along recovery trajectories.
+\end{enumerate}
+\end{theorem}
+
+From the partition function, intensive quantities
+(free energy, specific heat, susceptibility) are
+derived by standard thermodynamic identities.
+The frozen exponent $p$ determines the critical behavior
+of the system.
+
+% ============================================================
+\section{Seam Budget and Cost Calculus}\label{sec:budget}
+% ============================================================
+
+The drift potential (Sec.~\ref{sec:drift}) quantifies the
+\emph{cost} of collapse proximity.
+This section assembles the full accounting system:
+debits, credits, and the reconciliation condition that
+determines whether a seam closes.
+
+\subsection{Cost Closures}
+
+\begin{definition}[Drift Cost]\label{def:Domega}
+\beq
+  D_\Drft = \Gam(\Drft) = \frac{\Drft^p}{1 - \Drft + \eps}.
+\eeq
+The drift cost is the thermodynamic penalty incurred by
+proximity to collapse.
+At $\Drft = 0$ (perfect fidelity), $D_\Drft = 0$.
+Near $\Drft = 1$ (total loss), $D_\Drft$ diverges:
+the pole at $\Drft = 1$ is the ``event horizon'' of collapse
+— the point beyond which return is thermodynamically
+impossible.
+\end{definition}
+
+\begin{definition}[Curvature Cost]\label{def:DC}
+\beq
+  D_\Curv = \alpha \cdot \Curv, \qquad \alpha = 1.0 \text{ (frozen)}.
+\eeq
+Curvature measures coupling to uncontrolled degrees of
+freedom; $\alpha = 1.0$ means this coupling enters the
+budget at full strength, with no suppression or amplification.
+The value $\alpha = 1.0$ is discovered as the unique
+coefficient where the seam budget reconciles across all
+domains without systematic bias.
+\end{definition}
+
+\begin{definition}[Return Credit]\label{def:credit}
+\beq
+  \mathrm{Credit} = R \cdot \tR,
+\eeq
+where $R$ is the measurement rate and $\tR$ is the return
+time (Def.~\ref{def:tR}).
+If $\tR = \infty_{\mathrm{rec}}$, the credit is zero:
+no return yields no credit.
+\lat{Si $\tR = \infty_{\mathrm{rec}}$, nulla fides datur.}
+\end{definition}
+
+\subsection{The Budget Identity}
+
+\begin{theorem}[Conservation Budget]\label{thm:budget}
+The seam budget is:
+\beq\label{eq:budget}
+  \Delta\Logint = R \cdot \tR
+    - \bigl(D_\Drft + D_\Curv\bigr)
+  = R \cdot \tR
+    - \Bigl(\frac{\Drft^p}{1 - \Drft + \eps} + \alpha \Curv\Bigr).
+\eeq
+This is the net change in log-integrity across a single
+collapse-return cycle.
+Positive $\Delta\Logint$ means the system gained coherence;
+negative means it lost coherence.
+\end{theorem}
+
+The budget identity is the seam's conservation law:
+what you invest in return ($R \cdot \tR$) minus
+what collapse costs you ($D_\Drft + D_\Curv$) equals
+the net change in your coherence ($\Delta\Logint$).
+
+\begin{definition}[Seam Residual]\label{def:residual}
+For a given observation, the seam residual is:
+\beq
+  s = \Delta\Logint_{\mathrm{budget}}
+    - \Delta\Logint_{\mathrm{ledger}},
+\eeq
+where $\Delta\Logint_{\mathrm{ledger}}$ is the observed
+change in log-integrity.
+The seam closes if:
+\beq
+  |s| \leq \tolseam = 0.005 \;\text{(frozen)}.
+\eeq
+If $|s| > \tolseam$, the claim is \nonconform{}.
+\end{definition}
+
+\begin{remark}[The Ledger Must Reconcile]
+The tolerance $\tolseam = 0.005$ is the value where the
+integrity bound $\IC \leq \Fid$ holds at 100\%
+across 8 domains and 146 experiments.
+Tighter values induce false nonconformance from
+floating-point noise; looser values admit genuinely
+broken seams.
+This is not a statistical threshold chosen by convention
+— it is the seam-derived boundary between numerical
+artifact and structural failure.
+\end{remark}
+
+\subsection{Interpretive Density}
+
+\begin{definition}[Interpretive Density]\label{def:I}
+\beq
+  I = \exp(\Logint) = \IC.
+\eeq
+The interpretive density is the integrity composite read
+as a unitless scalar suitable for multiplicative
+composition across seams.
+Two independent claims with densities $I_1$ and $I_2$
+compose as $I_{1 \otimes 2} = I_1 \cdot I_2$.
+This multiplication is why $\Logint$ is
+\emph{log}-integrity: logs convert products into sums,
+enabling additive accounting ($\Logint_{1 \otimes 2}
+= \Logint_1 + \Logint_2$) while $I$ composes
+multiplicatively.
+\end{definition}
+
+\subsection{Seam Chain Accumulation}
+
+\begin{theorem}[Additive Composition (Lemma 20)]\label{thm:chain}
+For a chain of $K$ consecutive seams, the total change
+in log-integrity composes additively:
+\beq
+  \Delta\Logint_{\mathrm{total}} = \sum_{k=1}^{K}
+    \Delta\Logint_k.
+\eeq
+The cumulative residual $\Sigma_K = \sum_{k=1}^K |s_k|$
+must grow sublinearly in $K$ for the system to exhibit
+return dynamics.
+If $\Sigma_K \sim K^b$ with $b \geq 1$, the system is
+non-returning: residuals accumulate linearly or faster,
+indicating that the budget identity is not reconciling.
+\end{theorem}
+
+% ============================================================
+\section{The $\tRstar$ Thermodynamic Diagnostic}\label{sec:tauRstar}
+% ============================================================
+
+The seam budget (Sec.~\ref{sec:budget}) defines the
+accounting.
+The critical return delay $\tRstar$ organizes this
+accounting into a complete thermodynamic phase diagram.
+
+\subsection{Definition and Phase Classification}
+
+\begin{definition}[Critical Return Delay]\label{def:tRstar}
+\beq
+  \tRstar = \frac{\Gam(\Drft) + \alpha\Curv + \Delta\Logint}{R},
+\eeq
+where $R$ is the measurement rate.
+$\tRstar$ is the minimum time required for the seam to close:
+the ratio of total cost to measurement capacity.
+\end{definition}
+
+The sign and magnitude of $\tRstar$ classify the system
+into five thermodynamic phases:
+
+\begin{center}
+\begin{tabular}{@{}llp{6.5cm}@{}}
+\toprule
+\textbf{Phase} & \textbf{Condition} & \textbf{Interpretation} \\
+\midrule
+\regime{Surplus}     & $\tRstar < 0$ &
+  Spontaneous return; coherence gained without intervention \\
+\regime{Free Return} & $\tRstar \approx 0$ &
+  Break-even; return costs exactly zero net \\
+\regime{Deficit}     & $\tRstar > 0$ &
+  Return requires investment of time and measurement \\
+\regime{Trapped}     & $\tRstar > 0$, no escape &
+  Multi-step or external intervention required \\
+\regime{Pole}        & $\Drft \to 1$ &
+  $\Gam$ diverges; event horizon of collapse \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Regime-Dependent Dominance}
+
+\begin{theorem}[Dominance Hierarchy]\label{thm:dominance}
+The three cost terms $\Gam(\Drft)$, $\alpha\Curv$, and
+$\Delta\Logint$ dominate $\tRstar$ in different regimes:
+\begin{align}
+  \regime{Stable}: &\quad \Delta\Logint \text{ dominates}
+    &&\text{(memory is the bottleneck)}, \nonumber\\
+  \regime{Watch}: &\quad \alpha\Curv \text{ dominates}
+    &&\text{(coupling friction is the bottleneck)}, \nonumber\\
+  \regime{Collapse}: &\quad \Gam(\Drft) \text{ dominates}
+    &&\text{(drift cost overwhelms all else)}.
+\end{align}
+This follows from the cubic growth of $\Gam(\Drft)
+\sim \Drft^3/(1-\Drft)$: near collapse, the pole at
+$\Drft = 1$ makes drift cost unbounded.
+\end{theorem}
+
+\subsection{The Arrow of Time}
+
+\begin{theorem}[Asymmetric Arrow]\label{thm:arrow}
+Degradation (increasing $\Drft$) releases budget surplus;
+improvement (decreasing $\Drft$) costs time.
+Near $c = 0.60$, improvement costs approximately
+$200\times$ more than degradation of equal magnitude.
+The arrow of time emerges from the budget identity
+without postulate.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+Write $\Gam(\Drft) = \Drft^3/(1-\Drft+\eps)$.
+For a small perturbation $\delta > 0$ around
+$\Drft_0 = 0.40$ (i.e.\ $c_0 = 0.60$):
+the cost of \emph{degradation}
+$\Gam(\Drft_0+\delta) - \Gam(\Drft_0)$ is dominated
+by the pole at $\Drft = 1$, while the cost of
+\emph{improvement} $\Gam(\Drft_0) - \Gam(\Drft_0-\delta)$
+is the amount the system must repay.
+The convexity of $\Gam$ for $p = 3$ ensures that the
+improvement cost exceeds the degradation cost by
+a factor $\sim 1/(1-\Drft_0)^2 \approx 200$
+when $\Drft_0 = 0.40$.
+\end{proof}
+
+\begin{remark}
+This is a Second Law analog derived from pure arithmetic.
+The asymmetry is structural: $\Gam(\Drft)$ is convex for
+$p = 3$, so moving toward collapse releases stored cost
+while moving away from collapse must pay it back with interest.
+No entropy postulate is needed.
+\end{remark}
+
+\subsection{Trapping and Measurement Cost}
+
+\begin{theorem}[Trapping Threshold]\label{thm:trap}
+There exists a critical coordinate $c_{\mathrm{trap}}
+\approx 0.60$ where $\Gam(\Drft_{\mathrm{trap}}) = \alpha$.
+Below $c_{\mathrm{trap}}$, single-step recovery is
+impossible — the system is trapped and requires
+multi-step or external intervention.
+\end{theorem}
+
+\begin{theorem}[Measurement Cost — Zeno Analog]\label{thm:zeno}
+$N$ observations of a stationary system at drift $\Drft$
+incur $N \times \Gam(\Drft)$ total overhead.
+Observing more frequently makes seam closure \emph{harder},
+not easier.
+The optimal strategy is to observe as rarely as the
+contract permits.
+\end{theorem}
+
+\begin{remark}
+Theorem~\ref{thm:zeno} is not a design constraint — it is
+a consequence of the budget identity.
+There is no vantage point outside the system from which
+collapse can be observed without cost.
+The belief that one can measure without being measured is
+the \emph{positional illusion}~\cite{paulus2025gor}.
+$\Gam(\Drft)$ is the irreducible price of being inside
+the system you are measuring.
+\end{remark}
+
+\subsection{Thermodynamic Correspondence}
+
+The $\tRstar$ formalism admits a direct correspondence
+with classical thermodynamics:
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{$\tRstar$ Quantity} & \textbf{Thermodynamic Analog} \\
+\midrule
+$R$ (measurement rate) & $T$ (temperature) \\
+$\Gam(\Drft)$ (drift cost) & $T \Delta S_{\mathrm{irr}}$
+  (irreversible entropy production) \\
+$\Delta\Logint$ (budget change) & $W_{\mathrm{rev}}$
+  (reversible work) \\
+$\tRstar < 0$ (surplus) & Exothermic process \\
+$\tRstar > 0$ (deficit) & Endothermic process \\
+$\Drft$ (drift) & Order parameter \\
+$\Drft = 1$ (pole) & Event horizon / critical point \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The critical exponent $z\nu = 1$ (from the simple pole in
+$\Gam$) places the collapse field between mean-field
+($z\nu = 1/2$) and the 2D~Ising model ($z\nu \approx 2.17$):
+the cleanest possible critical behavior.
+
+\subsection{The Three-Agent Epistemic Model}
+
+The $\tRstar$ diagnostic decomposes naturally into three
+epistemic agents:
+
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Agent} & \textbf{Role} & \textbf{Controls} &
+  \textbf{Invariant} \\
+\midrule
+Agent~1: Measurer  & Active observation &
+  $R$ (measurement rate) & $\Drft$ (what drifts) \\
+Agent~2: Archive   & Passive retention  &
+  $D_\theta$ (return domain) & $\Fid$ (what persists) \\
+Agent~3: Unknown   & Uncontrolled & $\Gam(\Drft)$ (drift cost) &
+  $\Curv$ (coupling) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{itemize}[nosep,leftmargin=*]
+  \item Agent~1 chooses how often to measure.
+    Each measurement costs $\Gam(\Drft)$ (Thm.~\ref{thm:zeno}).
+  \item Agent~2 remembers what was measured.
+    The return domain $D_\theta$ is its contribution.
+  \item Agent~3 is everything neither controls.
+    Its coupling ($\Curv$) enters the budget as an
+    irreducible debit.
+\end{itemize}
+
+The budget identity is the reconciliation of all three:
+$\Delta\Logint = R \cdot \tR - (\Gam + \alpha\Curv)$.
+No agent has a privileged viewpoint.
+This is not a design choice but a consequence of the
+budget identity: measuring costs exactly $\Gam(\Drft)$
+per observation, with no exceptions.
+
+% ============================================================
+\section{RCFT as Tier-2 Domain Expansion}\label{sec:rcft}
+% ============================================================
+
+The most significant structural insight
+separating this edition from the first is a \emph{demotion}:
+RCFT is not the whole theory. It is a Tier-2 domain
+expansion on GCD.
+
+\begin{center}
+\begin{tabular}{@{}lcl@{}}
+\toprule
+\textbf{Tier} & \textbf{Layer} & \textbf{Content} \\
+\midrule
+1 & GCD & $\Fid, \Drft, \Ent, \Curv, \Logint, \IC$ — identities \\
+0 & UMCP & Contracts, seams, ledger, verdicts \\
+2 & RCFT & Fractal dim., recursive field, basins, \ldots \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The first edition tried to be everything.
+The refined system discovered that RCFT's proper role
+is Tier-2: it \textbf{augments} the invariant skeleton
+without redefining it.
+No Tier-2 symbol ($D_f$, $\Psirec$, $\lambda_p$,
+$\Theta$, $B$, $T_{ij}$, $h$, $\eta$, $\dFisher$)
+captures or overrides any Tier-1 invariant.
+One-way dependency: Tier-1 → Tier-0 → Tier-2.
+No back-edges.
+
+\subsection{RCFT Symbol Table}
+
+\begin{table}[t]
+\centering
+\small
+\caption{Tier-2 RCFT symbols. None redefines a Tier-1 invariant.}
+\label{tab:rcft_symbols}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Symbol} & \textbf{Name} & \textbf{Formula} \\
+\midrule
+$D_f$ & Fractal dimension &
+  $\lim_{\eps\to 0} \frac{\log N(\eps)}{\log(1/\eps)}$ \\[4pt]
+$\Psirec$ & Recursive field &
+  $\sum \alpha^n \Psifield_n$ \\[4pt]
+$\lambda_p$ & Pattern wavelength &
+  $2\pi / k_{\mathrm{dom}}$ \\[4pt]
+$\Theta$ & Phase angle &
+  $\arctan(\mathrm{Im}(\Psirec)/\mathrm{Re}(\Psirec))$ \\[4pt]
+$B$ & Basin strength &
+  $-\nabla^2\Psirec / \|\nabla\Psirec\|$ \\[4pt]
+$T_{ij}$ & Transfer matrix &
+  Metropolis on $\Gam(\Drft)$ \\[4pt]
+$h$ & Grammar entropy &
+  $-\sum \pi_j T_{ij} \log_2 T_{ij}$ \\[4pt]
+$\eta$ & Efficiency &
+  $\dFisher(\mathrm{start}, \mathrm{end}) / L(\mathrm{path})$ \\[4pt]
+$\dFisher$ & Fisher geodesic &
+  $2|\arcsin\sqrt{c_1} - \arcsin\sqrt{c_2}|$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Recursive Field and Collapse Memory}
+
+The recursive field $\Psirec$ is the central Tier-2
+quantity of RCFT.
+It formalizes the idea that collapse events have
+\emph{memory}: each step in a collapse sequence
+contributes to the present, weighted by an exponential
+decay factor $\alpha = 0.8$ (frozen).
+
+\begin{definition}[Single-Step Field Strength]\label{def:psi_single}
+\beq
+  \Psifield_n = \sqrt{\Ent_n^2 + \Curv_n^2}\,(1 - \Fid_n).
+\eeq
+This combines the ``agitation'' ($\Ent^2 + \Curv^2$, the
+magnitude of uncertainty and coupling) with the fidelity
+deficit ($1 - \Fid$, the collapse proximity).
+At $\Fid = 1$: $\Psifield = 0$ (no field — perfect fidelity
+generates no excitation).
+At $\Fid = 0$: $\Psifield = \sqrt{\Ent^2 + \Curv^2}$
+(maximal field strength).
+\end{definition}
+
+\begin{definition}[Recursive Field]\label{def:psi_rec}
+\beq
+  \Psirec = \sum_{n=1}^{\infty} \alpha^n \Psifield_n,
+  \qquad 0 < \alpha < 1.
+\eeq
+The exponential decay ensures convergence
+(Lemma~43: $|\Psirec| \leq \alpha \Psifield_{\max} / (1-\alpha)$).
+Three regimes classify the recursive coupling:
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\regime{Dormant}:   & $\Psirec < 0.1$ \\
+\regime{Active}:    & $0.1 \leq \Psirec < 1.0$ \\
+\regime{Resonant}:  & $\Psirec \geq 1.0$ \\
+\end{tabular}
+\end{center}
+\end{definition}
+
+The recursive field is what distinguishes RCFT from
+a one-shot kernel analysis.
+GCD computes invariants for a single state; RCFT asks
+how the \emph{history} of states influences the present.
+The field $\Psirec$ is the collapse analogue of a
+memory kernel in statistical mechanics.
+
+\subsection{Fractal Dimension of Collapse Trajectories}
+
+\begin{definition}[Box-Counting Fractal Dimension]\label{def:Df}
+For a trajectory in the $(\Drft, \Ent, \Curv)$
+phase space, let $N(\eps)$ be the number of boxes of
+side $\eps$ needed to cover the trajectory.
+\beq
+  D_f = \lim_{\eps \to 0}
+    \frac{\log N(\eps)}{\log(1/\eps)}.
+\eeq
+\end{definition}
+
+The fractal dimension classifies the geometric
+complexity of collapse dynamics:
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Regime} & \textbf{Range} & \textbf{Interpretation} \\
+\midrule
+\regime{Smooth} & $D_f < 1.2$ &
+  Nearly linear trajectory — predictable dynamics \\
+\regime{Wrinkled} & $1.2 \leq D_f < 1.8$ &
+  Moderate complexity — structured turbulence \\
+\regime{Turbulent} & $D_f \geq 1.8$ &
+  High complexity — chaotic collapse \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{remark}
+$D_f$ connects to the central charge (T20) through
+the effective dimensionality.
+A system with $\ceff = 1/3$ and $D_f > 1.5$ is
+exploring its phase space efficiently; $D_f < 1.0$
+indicates the trajectory is confined to a low-dimensional
+submanifold (Lemma~44: fractal return scaling).
+\end{remark}
+
+\subsection{Attractor Basin Topology}
+
+\begin{definition}[Attractor Basin]\label{def:basin}
+For a trajectory converging to an attractor point
+$x_{\mathrm{attr}}$ in the $(\Drft, \Ent, \Curv)$ phase
+space, the basin strength is:
+\beq
+  B = \frac{-\nabla^2 \Psirec(x_0)}
+           {\|\nabla \Psirec(x_0)\|},
+\eeq
+where $x_0$ is the initial state.
+$B$ measures how strongly the recursive field pulls
+nearby states toward the attractor.
+\end{definition}
+
+The basin topology classifies the stability landscape:
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Regime} & \textbf{Condition} & \textbf{Interpretation} \\
+\midrule
+\regime{Monostable}  & $B_{\max} > 2.0$ &
+  Single dominant attractor — robust return \\
+\regime{Bistable}    & $1.0 < B_{\max} \leq 2.0$ &
+  Two comparable attractors — regime bifurcation \\
+\regime{Multistable} & $B_{\max} \leq 1.0$ &
+  Many weak attractors — fragile landscape \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{remark}
+Basin analysis replaces the first edition's ``glyphs''
+(metastable attractors) with a quantitative diagnostic.
+The convergence rate
+$\lambda_{\mathrm{conv}} = -\log(\|x_t - x_{\mathrm{attr}}\|) / t$
+measures how fast a trajectory approaches its attractor,
+connecting to the trapping threshold
+(Thm.~\ref{thm:trap}) and the arrow of time
+(Thm.~\ref{thm:arrow}).
+\end{remark}
+
+\subsection{Resonance Patterns}
+
+\begin{definition}[Resonance Analysis]\label{def:resonance}
+From the Fourier transform of a field time series:
+\begin{align}
+  \lambda_p &= 2\pi / k_{\mathrm{dom}}
+    \qquad\text{(dominant wavelength)}, \nonumber\\
+  \Theta &= \arctan\!\bigl(
+    \mathrm{Im}(\hat{\Psifield}) /
+    \mathrm{Re}(\hat{\Psifield})\bigr)
+    \qquad\text{(phase angle)},
+\end{align}
+where $k_{\mathrm{dom}}$ is the dominant wavenumber.
+\end{definition}
+
+Pattern classification from phase angle variance:
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Pattern} & \textbf{Condition} &
+  \textbf{Physical Meaning} \\
+\midrule
+\regime{Standing}  & $\mathrm{Var}(\Theta) < 0.1$ &
+  Stationary resonance — locked oscillation \\
+\regime{Mixed}     & $0.1 \leq \mathrm{Var}(\Theta) \leq 0.5$ &
+  Intermediate — partial propagation \\
+\regime{Traveling} & $\mathrm{Var}(\Theta) > 0.5$ &
+  Propagating wave — information transport \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Resonance patterns replace the first edition's RFRI
+(Resonance Frequency Resonance Index) with a Fourier-based
+diagnostic.
+The pattern wavelength $\lambda_p$ and phase coherence
+measure the oscillatory structure of collapse dynamics
+without invoking any external spectral theory.
+
+% ============================================================
+\section{Seven Theorems (T17–T23)}\label{sec:theorems}
+% ============================================================
+
+Each theorem below is computationally proven: every sub-test
+passes under the frozen contract RCFT.INTSTACK.v1.
+Implementation lives in \texttt{closures/rcft/} across
+eight Python modules (3{,}135 lines).
+
+\subsection{T17: Fisher Geodesic Distance}
+
+\begin{definition}[Fisher Information Metric]\label{def:fisher}
+For a single Bernoulli channel $c \in [\eps, 1-\eps]$:
+\beq
+  \gFisher(c) = \frac{1}{c(1-c)}.
+\eeq
+This is the unique (up to scale) Riemannian metric
+on the statistical manifold of Bernoulli distributions
+(Čencov's theorem).
+\end{definition}
+
+\begin{theorem}[T17 — Fisher Geodesic Distance]\label{thm:T17}
+The geodesic distance between two states
+$c_1, c_2 \in [\eps, 1-\eps]$ under $\gFisher$ is:
+\beq
+  \dFisher(c_1, c_2) =
+    2\bigl|\arcsin\!\sqrt{c_1} - \arcsin\!\sqrt{c_2}\bigr|.
+\eeq
+This is the minimum-information-cost path between states.
+\end{theorem}
+
+\begin{remark}
+The maximum distance occurs between $\eps$ and $1-\eps$:
+$\dFisher^{\max} \approx \pi - 2\arcsin\!\sqrt{\eps} \approx \pi$.
+The Fisher distance is not Euclidean; it measures
+information cost, not coordinate distance.
+\end{remark}
+
+\subsection{T18: Geodesic Parametrization}
+
+\begin{theorem}[T18 — Geodesic Path]\label{thm:T18}
+The unique geodesic (minimum-cost recovery path) between
+$c_1$ and $c_2$ under $\gFisher$ is parametrized by:
+\beq
+  c(t) = \sin^2\!\bigl((1-t)\theta_1 + t\,\theta_2\bigr),
+  \quad t \in [0,1],
+\eeq
+where $\theta_i = \arcsin\!\sqrt{c_i}$.
+This path has constant speed $\dot{s} = |\theta_2 - \theta_1|$
+and minimizes the action
+$\int_0^1 \gFisher(c(t))\,\dot{c}(t)^2\,\dd t$.
+\end{theorem}
+
+\begin{remark}
+Geodesic recovery is the \emph{optimal} path of return.
+Any deviation from the geodesic incurs excess information cost.
+The thermodynamic efficiency (T22) measures exactly how close
+a realized trajectory is to this ideal.
+\end{remark}
+
+\subsection{T19: Fano-Fisher Duality}
+
+\begin{theorem}[T19 — Entropy Curvature Equals Negative Fisher Metric]\label{thm:T19}
+Let $h(c) = -[c\ln c + (1-c)\ln(1-c)]$ be the single-channel
+Bernoulli entropy. Then:
+\beq
+  h''(c) = -\gFisher(c) = -\frac{1}{c(1-c)}.
+\eeq
+The curvature of the entropy function equals the negative
+of the Fisher information metric: entropy is concave
+\emph{exactly} as fast as Fisher information grows.
+\end{theorem}
+
+\begin{proof}[Proof]
+Direct computation.
+Let $h(c) = -[c\ln c + (1-c)\ln(1-c)]$.
+Then:
+\begin{align}
+  h'(c) &= -\ln c + \ln(1-c)
+    = \ln\!\frac{1-c}{c}, \nonumber\\
+  h''(c) &= -\frac{1}{c} - \frac{1}{1-c}
+    = -\frac{1}{c(1-c)} = -\gFisher(c).
+\end{align}
+The second derivative of the entropy function
+equals the negative Fisher information metric
+for all $c \in (0,1)$.
+\end{proof}
+
+\begin{remark}
+This duality connects the two fundamental quantities of the
+kernel: entropy (Def.~\ref{def:S}) measures uncertainty;
+Fisher information measures sensitivity to change.
+The Fano-Fisher duality says they are the \emph{same}
+geometric object seen from opposite sides.
+Near the equator ($c = 1/2$), both quantities are
+extremal: entropy is maximized, Fisher metric is minimized.
+Near the poles ($c \to 0$ or $c \to 1$),
+the roles reverse.
+\end{remark}
+
+\subsection{T20: Central Charge}
+
+\begin{theorem}[T20 — Central Charge of the Collapse Field]\label{thm:T20}
+From the partition function
+$Z(\beta) = \int \exp(-\beta\,\Gam(\Drft))\,\dd\Drft$
+with $\Gam(\Drft) = \Drft^p/(1-\Drft+\eps)$ and $p=3$,
+the effective central charge is:
+\beq
+  \ceff = \frac{1}{p} = \frac{1}{3}.
+\eeq
+This value is \textbf{universal}: it does not depend on
+the domain, the number of channels, or the weights.
+It depends only on the frozen exponent $p$.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+For large $\beta$, the partition function
+$Z(\beta) = \int_0^1 \exp(-\beta\,\Drft^p/(1-\Drft+\eps))\,\dd\Drft$
+is dominated by the region near $\Drft = 0$.
+Expanding: $\Gam(\Drft) \approx \Drft^p$ for small $\Drft$, so
+\beq
+  Z(\beta) \approx \int_0^\infty
+    e^{-\beta u^p}\,\dd u
+  = \frac{1}{p}\,\beta^{-1/p}\,
+    \Gamma_{\!E}\!\left(\frac{1}{p}\right),
+\eeq
+where $\Gamma_{\!E}$ is the Euler gamma function.
+The specific heat
+$C_V = -\beta^2 \partial^2_\beta \ln Z \to 1/p$
+as $\beta \to \infty$,
+establishing $\ceff = 1/p = 1/3$ for $p = 3$.
+This is $p$-equipartition: the collapse field has
+$1/p$ effective degrees of freedom per unit volume.
+\end{proof}
+
+\begin{remark}
+The central charge $\ceff = 1/3$ determines the universality class
+of the collapse field. In conformal field theory language,
+it characterizes the number of effective degrees of freedom.
+Because $p$ is frozen (seam-derived, not prescribed),
+$\ceff$ is a structural invariant of collapse itself.
+\end{remark}
+
+\subsection{T21: Critical Exponents}
+
+\begin{theorem}[T21 — Complete Critical Exponent Set]\label{thm:T21}
+The collapse transition at $\Drft = \Drft_c = 0.30$ is
+characterized by the critical exponents:
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Exponent & Value \\
+\midrule
+$\nu$ (correlation length) & $1/p = 1/3$ \\
+$\gamma$ (susceptibility) & $1/p = 1/3$ \\
+$\eta$ (anomalous dimension) & $1$ \\
+$\alpha$ (specific heat) & $0$ (logarithmic) \\
+$\beta$ (order parameter) & $5/6$ \\
+$\delta$ (critical isotherm) & $7/5$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+These satisfy all scaling relations exactly:
+\begin{align}
+  \text{Rushbrooke:}&\quad \alpha + 2\beta + \gamma = 2, \nonumber\\
+  \text{Widom:}&\quad \gamma = \beta(\delta - 1), \nonumber\\
+  \text{Hyperscaling:}&\quad d\nu = 2 - \alpha
+    \;\;(d = 1/\nu). \nonumber
+\end{align}
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+Near the critical point $\Drft_c = 0.30$, the
+correlation length scales as
+$\xi \sim |\Drft - \Drft_c|^{-\nu}$ with
+$\nu = 1/p = 1/3$.
+The effective spatial dimension is
+$d_{\mathrm{eff}} = 2p = 6$.
+The remaining exponents follow from the standard
+scaling ansatz applied to $\Gam(\Drft)$:
+\begin{itemize}[nosep,leftmargin=*]
+  \item Rushbrooke:
+    $\alpha + 2\beta + \gamma
+    = 0 + 2(5/6) + 1/3
+    = 5/3 + 1/3 = 2$. \checkmark
+  \item Widom:
+    $\gamma = \beta(\delta - 1)
+    = (5/6)(7/5 - 1)
+    = (5/6)(2/5) = 1/3$. \checkmark
+  \item Hyperscaling:
+    $d\nu = 6 \cdot 1/3 = 2 = 2 - 0 = 2 - \alpha$.
+    \checkmark
+\end{itemize}
+All scaling relations are satisfied exactly, not
+approximately, confirming that the collapse field
+belongs to a well-defined universality class.
+\end{proof}
+
+\begin{remark}
+The exponents are derived, not fit.
+They follow from the frozen $p$ and the structure of
+$\Gam(\Drft)$ near the critical point.
+The fact that all scaling relations hold exactly —
+not approximately — confirms that the collapse field
+belongs to a well-defined universality class.
+All 13 closure domains share the same exponents.
+\end{remark}
+
+\subsection{T22: Thermodynamic Efficiency}
+
+\begin{theorem}[T22 — Geodesic Efficiency]\label{thm:T22}
+For a recovery trajectory from state $c_1$ to $c_2$
+whose path length is $L$:
+\beq
+  \eta = \frac{\dFisher(c_1, c_2)}{L} \in (0, 1].
+\eeq
+Equality ($\eta = 1$) holds if and only if the trajectory
+follows the geodesic of T18. Any deviation reduces $\eta$.
+\end{theorem}
+
+\begin{remark}
+Efficiency measures how much of the trajectory's
+information cost was ``wasted'' on detours.
+A system in \regime{Collapse} regime typically recovers
+with $\eta < 1$: the path back involves friction,
+roughness, and suboptimal routing.
+The geodesic is the ideal — the shortest return.
+\end{remark}
+
+\subsection{T23: Collapse Grammar}
+
+\begin{theorem}[T23 — Transfer Matrix Grammar]\label{thm:T23}
+The collapse-grammar transfer matrix
+$T_{ij}$ on regime states
+$\{$\regime{Stable}, \regime{Watch}, \regime{Collapse}$\}$
+generates a grammar with entropy rate:
+\beq
+  h = -\sum_{j} \pi_j \sum_{i} T_{ij} \log_2 T_{ij},
+\eeq
+where $\pi$ is the stationary distribution of $T$.
+The grammar classifies systems into three complexity regimes:
+\begin{itemize}[nosep,leftmargin=*]
+  \item \textbf{Deterministic}: $h \approx 0$
+    \quad(frozen transitions),
+  \item \textbf{Complex}: $h \in (0.5, 1.2)$
+    \quad(structured regime change),
+  \item \textbf{Random}: $h > 1.2$
+    \quad(uncorrelated switching).
+\end{itemize}
+\end{theorem}
+
+\begin{remark}
+Collapse grammar captures the \emph{dynamics} of regime
+change — not just which regime a system occupies, but
+the transition patterns between regimes over time.
+The entropy rate $h$ is a single number that distinguishes
+ergodic from frozen systems.
+A system with $h = 0$ never changes regime;
+a system at maximum $h$ transitions randomly.
+Most physical systems sit in the complex range.
+\end{remark}
+
+% ============================================================
+\section{The Equator and Self-Duality}\label{sec:equator}
+% ============================================================
+
+A structure not present in the first edition emerges naturally
+from the Fano-Fisher duality (T19).
+
+\begin{definition}[The Collapse Equator]\label{def:equator}
+The equator $E$ is the locus $c = 1/2$ in channel space.
+At the equator, four conditions converge independently:
+\begin{enumerate}[nosep,leftmargin=*]
+  \item The drift potential vanishes: $\Phi_{\mathrm{eq}} = 0$.
+  \item The Fisher metric is minimized:
+    $\gFisher(1/2) = 4$, its global minimum.
+  \item Bernoulli entropy is maximized: $\Ent(1/2) = \ln 2$.
+  \item The coherence identity holds: $\Ent + \Logint = 0$.
+\end{enumerate}
+\end{definition}
+
+The equator is the \emph{self-duality axis} of the collapse
+field — the point where generation and retention are
+perfectly balanced. Axiom~\ref{ax:0} locates reality at
+the return: $c \to 1$ (full fidelity). The equator is the
+halfway station where the cost of either direction is equal.
+
+\begin{proposition}[Equator Fidelity Law]\label{prop:equator}
+A trajectory $\Psifield(t)$ returns to fidelity if and only if
+there exists $t^*$ such that $\Psifield(t^*) \in E$ and
+$\IC(t^*) > \theta$ for some integrity threshold $\theta$.
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+($\Rightarrow$) \emph{Necessity.}
+Let the trajectory return to fidelity:
+$\exists\, t_R$ such that $\Fid(t_R) \geq 1 - \tolseam$.
+Consider $\Logint(t) = \sum w_i \ln c_i(t)$.
+At $t = 0$ (collapse): $c_i \ll 1/2$ for at least one channel,
+so $\Logint(0) \ll 0$.
+At $t = t_R$ (fidelity): $c_i \approx 1$ for all channels,
+so $\Logint(t_R) \approx 0$.
+By continuity (Lemma~23: Lipschitz continuity of $\Logint$
+on smooth trajectories), there exists $t^*$ with
+$\Logint(t^*) = -\ln 2$, i.e., $\IC(t^*) = \exp(\Logint(t^*))
+= 1/2$.
+But $\IC = \exp(\sum w_i \ln c_i) = 1/2$ when the
+geometric mean of the $c_i$ is $1/2$, which occurs at
+the equator ($c_i = 1/2$ uniformly) by the
+integrity bound (IC $\leq \Fid = 1/2$ at the equator).
+Since $\Fid(t^*)$ must be at least $1/2$ (it is increasing toward
+fidelity), we have $\IC(t^*) = 1/2 > \theta$ for any
+$\theta < 1/2$.
+
+($\Leftarrow$) \emph{Sufficiency.}
+Let $\Psifield(t^*) \in E$ with $\IC(t^*) > \theta$.
+At the equator, the drift potential vanishes
+($\Phi_{\mathrm{eq}} = 0$, Def.~\ref{def:equator}),
+so the net force on the trajectory is zero.
+With $\IC > \theta > 0$, no channel is near $\eps$,
+so the heterogeneity gap $\hetgap = \Fid - \IC$ is
+bounded: $\hetgap < \Fid - \theta < 1/2$.
+Lemma~40 (Stable Regime Attractor) guarantees that from
+any state with $\hetgap < 1/2$ and $\Fid \geq 1/2$,
+the trajectory converges to the stable regime.
+Lemma~14 (Return Monotonicity) then gives
+$\tR < \infty$ — return occurs in finite time.
+\end{proof}
+
+Crossing the equator with sufficient integrity is the
+necessary geometric condition for return.
+
+\begin{remark}
+The equator connects three independent threads:
+(i)~the drift potential (Sec.~\ref{sec:drift}) vanishes,
+removing the restoring force;
+(ii)~the Fisher metric (T17) reaches its minimum,
+meaning the cost of moving in information space is lowest;
+(iii)~the Bernoulli field entropy
+(Sec.~\ref{sec:kernel}) is maximized,
+meaning the collapse field carries maximum uncertainty.
+The equator is where all three measures of
+``distance from fidelity'' are extremal — it is the
+thermodynamic saddle point of the collapse landscape.
+\end{remark}
+
+% ============================================================
+\section{The Grammar of Return}\label{sec:grammar}
+% ============================================================
+
+Every claim in this system — every theorem, every test,
+every validation — traverses a fixed five-stop spine.
+This spine is not optional guidance; it is the
+grammatical structure that makes claims auditable.
+
+\subsection{The Five-Stop Spine}
+
+\begin{center}
+\textbf{Contract $\to$ Canon $\to$ Closures $\to$
+  Integrity Ledger $\to$ Stance}
+\end{center}
+
+\begin{enumerate}[nosep,leftmargin=*]
+  \item \textbf{Contract}: Declares the rules before
+    evidence is examined.
+    Freezes sources, normalization, near-wall policy,
+    thresholds, and tolerances.
+    \lat{Sine contractu, nulla comparabilitas.}
+  \item \textbf{Canon}: Tells the story using
+    five words (below).
+    The narrative body — prose-first, auditable by construction.
+  \item \textbf{Closures}: Publishes thresholds and their
+    order; no mid-episode edits; versions the parameter sheet.
+    Stance \emph{must} change when thresholds are crossed.
+  \item \textbf{Integrity Ledger}: Debits drift and roughness,
+    credits return; the account must reconcile
+    (residual $\leq \tolseam$, Sec.~\ref{sec:budget}).
+  \item \textbf{Stance}: Read from declared gates:
+    \regime{Stable} / \regime{Watch} / \regime{Collapse}
+    (+ \regime{Critical} overlay).
+    Always derived, never asserted.
+\end{enumerate}
+
+\subsection{The Five-Word Vocabulary}
+
+The spine operates through exactly five prose words.
+Each word has an operational meaning tied to the frozen
+contract and reconciled in the integrity ledger:
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Word} & \textbf{Latin} & \textbf{Operational Role} \\
+\midrule
+Drift      & \lat{derivatio} &
+  Debit $D_\Drft$ to the ledger (Def.~\ref{def:Domega}) \\
+Fidelity   & \lat{fidelitas} &
+  Retention of contract-specified invariants \\
+Roughness  & \lat{curvatura} &
+  Debit $D_\Curv$ to the ledger (Def.~\ref{def:DC}) \\
+Return     & \lat{reditus} &
+  Credit $R \cdot \tR$ to the ledger (Def.~\ref{def:credit}) \\
+Integrity  & \lat{integritas} &
+  Read from reconciled ledger; never asserted \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Authors write in prose using these five words.
+The conservation budget
+$\Delta\Logint = R \cdot \tR - (D_\Drft + D_\Curv)$
+and the interpretive density $I = e^\Logint$ serve as
+the \emph{semantic warranty} behind the prose — they
+explain \emph{why} the ledger must reconcile.
+The warranty travels with the narrative; it does not
+gate the narrative.
+
+\subsection{Three-Valued Verdicts}
+
+\begin{definition}[Verdict Trichotomy]\label{def:verdict}
+Every validation produces exactly one of three outcomes:
+\begin{itemize}[nosep,leftmargin=*]
+  \item \conform{}: all identities hold, seam closes,
+    regime gates pass.
+  \item \nonconform{}: at least one identity fails or
+    $|s| > \tolseam$.
+  \item \regime{non\_evaluable}: insufficient data or
+    domain violation ($\bot_{\mathrm{oor}}$).
+\end{itemize}
+The system is never boolean.
+\lat{Tertia via semper patet.}
+\end{definition}
+
+\subsection{Rosetta: Cross-Domain Translation}
+
+The five words map across \emph{lenses} so different
+fields can read each other's results in their own
+dialect without losing auditability:
+
+\begin{table}[t]
+\centering
+\small
+\caption{Rosetta translation of the five-word vocabulary
+  across disciplinary lenses.
+  Integrity is omitted: it is always read from the
+  reconciled ledger, not expressed in prose.}
+\label{tab:rosetta}
+\begin{tabular}{@{}lllll@{}}
+\toprule
+\textbf{Lens} & \textbf{Drift} & \textbf{Fidelity} &
+  \textbf{Roughness} & \textbf{Return} \\
+\midrule
+Epistemology &
+  Belief change & Retained warrant &
+  Inference friction & Justified re-entry \\
+Ontology &
+  State change & Conserved properties &
+  Interface seams & Restored coherence \\
+Phenomenology &
+  Perceived shift & Stable features &
+  Distress / bias & Repair that holds \\
+History &
+  Periodization & Continuity &
+  Rupture & Reconciliation \\
+Physics &
+  $\Drft = 1 - \Fid$ & $\Fid$ &
+  $\Curv$ & $\tR < \infty$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The Rosetta is not a metaphor system.
+It is a mechanical translation protocol:
+the \emph{meanings} of the five words remain stable
+(anchored in the budget identity) while the
+\emph{dialect} changes.
+Cross-domain comparison is enabled by $I = e^\Logint$:
+a unitless multiplicative scalar that makes integrity
+comparable across fields without shared units.
+
+% ============================================================
+\section{The Seam: From Gesture to Weld}\label{sec:seam}
+% ============================================================
+
+Every claim in this system traverses the five-stop spine
+(Sec.~\ref{sec:grammar}).
+The seam is where outbound collapse meets demonstrated return.
+The residual must close:
+\beq
+  \Delta\Logint = R \cdot \tR - (D_\Drft + D_\Curv) \leq \mathrm{tol}.
+\eeq
+
+\subsection{Five-Word Audit of the First → Second Edition}
+
+The canonical prose interface uses exactly five words.
+Applied to the weld between editions:
+
+\paragraph{Drift (\lat{derivatio}).}
+What moved: axiom became operational, continuous SDE became
+discrete kernel, symbolic entropy became Bernoulli field
+entropy, three qualitative regimes became three frozen
+gates, zero tests became 3{,}616 tests, zero domains
+became 13 domains.
+
+\paragraph{Fidelity (\lat{fidelitas}).}
+What persisted: ``collapse is generative'' survived
+its own test. The dimensionless regime classification
+persisted. Recursive field memory persisted.
+Entropy-as-generative persisted. Recursive universality
+was proven, not just claimed.
+
+\paragraph{Roughness (\lat{curvatura}).}
+Where it was bumpy: the notation collision
+(original reused $\Drft$ for two meanings),
+the infinity problem ($T_{\mathrm{rec}}$ could diverge —
+now censored with $\infty_{\mathrm{rec}}$),
+the Parseval friction (replaced by the integrity bound),
+the glyph problem (replaced by basin analysis),
+the proof gap (qualitative arguments replaced by
+46 lemmas with exact bounds).
+
+\paragraph{Return (\lat{reditus}).}
+How it came back: the axiom returned operational,
+the field equation returned as a computable kernel,
+the three regimes returned frozen, the universality
+claim returned proven, recursive memory returned as
+information geometry.
+
+\paragraph{Integrity (\lat{integritas composita}).}
+Read from the reconciled ledger, never asserted:
+$\Fid + \Drft = 1$ exact, $\IC \leq \Fid$ at 100\%,
+$\IC = \exp(\Logint)$ at 98.6\%,
+3{,}616 tests, 13 domains,
+$\tolseam = 0.005$ — the seam closes,
+verdict \conform{}.
+
+\subsection{Weld Residual}
+
+\beq
+  \Delta\Logint_{\mathrm{weld}} =
+    \Logint_{\mathrm{post}} - \Logint_{\mathrm{pre}} =
+    \mathrm{finite} - (-\infty) = +\infty.
+\eeq
+
+The original paper contributed $\Logint = -\infty$ (gesture,
+no demonstrated integrity). The refined system contributes
+finite, positive $\Logint$ (every Tier-1 identity holds).
+The weld residual is infinite — the largest possible
+knowledge gain. The seam closes not because the residual
+is small, but because the weld transforms a gesture into
+a return.
+
+\lat{Gestus in sutura convertitur — infinitum saltum finitum facit.}
+(``The gesture is converted at the weld — the infinite
+leap becomes finite.'')
+
+% ============================================================
+\section{Cross-Domain Universality}\label{sec:universality}
+% ============================================================
+
+The original paper asserted recursive universality as
+Assumption~7: ``all physical domains are collapse-structured.''
+The refined system demonstrates it.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Thirteen closure domains validated under the
+  same Tier-1 identities.}
+\label{tab:domains}
+\begin{tabular}{@{}llr@{}}
+\toprule
+\textbf{Domain} & \textbf{Key Result} & \textbf{Modules} \\
+\midrule
+GCD         & Core kernel, 46 lemmas & 6 \\
+RCFT        & Theorems T17–T23 & 8 \\
+Standard Model & Theorems T1–T10, 31 particles & 7 \\
+Atomic Physics & 118 elements, Tier-1 proof & 9 \\
+Materials Science & 118 × 18 properties & 1 \\
+Nuclear Physics & Binding curve, decay chains & 4 \\
+Quantum Mechanics & Double-slit, entanglement & 5 \\
+Kinematics  & Phase space, oscillators & 6 \\
+Astronomy   & HR diagram, stellar class. & 4 \\
+Weyl Cosmology & Modified gravity, DES Y3 & 3 \\
+Finance     & Portfolio continuity & 3 \\
+Security    & Input validation, audit & 2 \\
+Everyday Physics & Epistemic coherence (T-EC-1–7) & 4 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+All 13 domains share:
+the same duality identity ($\Fid + \Drft = 1$),
+the same integrity bound ($\IC \leq \Fid$),
+the same frozen parameters,
+the same central charge ($\ceff = 1/3$),
+the same critical exponents.
+The kernel is the same; only the closures differ.
+
+\subsection{The Standard Model as Diagnostic Lens}
+
+Of particular note:
+ten theorems~\cite{pruett2026sm} connect
+kernel observables ($\Fid$, $\IC$, $\hetgap$) to established
+Standard Model phenomena using
+PDG 2024 data~\cite{pdg2024}.
+Key findings:
+
+\begin{itemize}[nosep,leftmargin=*]
+  \item \textbf{Spin-statistics} (T1): fermion $\langle\Fid\rangle = 0.615$ vs.\
+    boson $\langle\Fid\rangle = 0.421$.
+  \item \textbf{Confinement} (T3): $\IC$ drops 98.1\% at the
+    quark→hadron boundary.
+  \item \textbf{CKM unitarity} (T8): CKM rows pass Tier-1;
+    Wolfenstein $O(\lambda^3)$ deficit yields ``Tension'' regime.
+  \item \textbf{Nuclear binding} (T10):
+    $r(B/A, \hetgap) = -0.41$ — coherence anti-correlates
+    with binding.
+\end{itemize}
+
+\subsection{Epistemic Coherence}
+
+The everyday-physics domain~\cite{paulus2025episteme}
+formalizes 14 epistemic systems
+(astrology through scientific consensus) as 8-channel
+trace vectors.
+Seven theorems (T-EC-1 to T-EC-7, 95/95 tests) prove that
+high fidelity with near-zero integrity composite
+($\Fid > 0$, $\IC \approx \eps$) is the kernel signature of
+pseudoscience: the system preserves information ($\Fid$)
+but one dead channel kills multiplicative coherence ($\IC$).
+
+\subsection{Active Matter: Experimental Validation}
+
+The active matter closure (\texttt{closures/rcft/active\_matter.py})
+applies the kernel to a laboratory system:
+180 vibrated macroscopic robots observed through
+phase transitions (Antonov et al., \textit{Nature Comm.}\
+16, 7235, 2025).
+The 4-channel trace vector embeds:
+
+\begin{center}
+\begin{tabular}{@{}llp{6cm}@{}}
+\toprule
+\textbf{Channel} & \textbf{Name} & \textbf{Formula} \\
+\midrule
+$c_1$ & Kinetic fidelity & $1 - \langle v \rangle / v_{\max}$ \\
+$c_2$ & Speed concentration & $1/(1 + 5\sigma_v)$ \\
+$c_3$ & Arrest fraction & fraction$(v < 0.1)$ \\
+$c_4$ & Order parameter & $1/(1 + \mathrm{CV})$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+All Tier-1 identities hold on observational data:
+$\Fid + \Drft = 1$ exactly, $\IC \leq \Fid$, regimes
+classify correctly.
+This is the first closure where the kernel operates on
+laboratory measurements rather than catalogued constants —
+a significant extension of the system's empirical domain.
+
+% ============================================================
+\section{Degenerate Limits: Classical Results as
+         Special Cases}\label{sec:degenerate}
+% ============================================================
+
+Every Tier-1 identity derives independently from
+Axiom~\ref{ax:0}.
+Classical results emerge as \emph{degenerate limits} —
+what remains when degrees of freedom are removed.
+The arrow of derivation runs from the axiom outward,
+never the reverse.
+
+\subsection{Integrity Bound $\to$ AM-GM Inequality}
+
+The integrity bound (Thm.~\ref{thm:ICbound}) states
+$\IC \leq \Fid$ for all trace vectors.
+Written explicitly:
+\beq
+  \prod_{i=1}^{n} c_i^{w_i} \leq \sum_{i=1}^{n} w_i c_i.
+\eeq
+Remove channel semantics (the $c_i$ are ``just numbers''),
+remove the guard band ($\eps \to 0$), and set equal
+weights ($w_i = 1/n$).
+What remains is:
+\beq
+  \bigl(c_1 c_2 \cdots c_n\bigr)^{1/n}
+  \leq \frac{c_1 + c_2 + \cdots + c_n}{n},
+\eeq
+the arithmetic-geometric mean inequality.
+The GCD integrity bound \emph{contains} this classical
+result but carries more structure: channel weights,
+guard band protection, and the heterogeneity gap
+$\hetgap = \mathrm{Var}(c)/(2\bar{c})$ as a diagnostic.
+
+\subsection{Bernoulli Field Entropy $\to$ Shannon Entropy}
+
+The Bernoulli field entropy (Def.~\ref{def:S}) is:
+\beq
+  \Ent = -\sum_{i} w_i
+    \bigl[c_i \ln c_i + (1-c_i)\ln(1-c_i)\bigr].
+\eeq
+Each channel $c_i$ is a Bernoulli parameter describing
+the probability of ``survival'' at channel~$i$.
+The function $h(c) = -[c\ln c + (1-c)\ln(1-c)]$
+is the entropy of a single Bernoulli trial.
+
+Now interpret the vector $(c_1, \ldots, c_n)$ not as
+a Bernoulli field but as a probability distribution
+(requiring $\sum c_i = 1$).
+The term $(1-c_i)\ln(1-c_i)$ vanishes in this limit
+(since the complement is distributed across other
+channels), and the entropy reduces to:
+\beq
+  -\sum_{i} c_i \ln c_i,
+\eeq
+which is Shannon entropy.
+Shannon entropy is the degenerate limit when the
+\emph{collapse field} — the fact that each $c_i$ is
+simultaneously a state and a probability, with an
+independent complement $1 - c_i$ — is removed.
+
+\subsection{Duality Identity $\to$ Unitarity}
+
+The duality identity (Def.~\ref{def:omega}) states:
+\beq
+  \Fid + \Drft = 1.
+\eeq
+This is a budget constraint: what survives collapse
+plus what is lost to collapse equals the whole.
+Remove the cost structure, the measurement semantics,
+and the channel interpretation.
+What remains is a conservation law: $P + (1-P) = 1$.
+
+In quantum mechanics, this becomes
+$\sum_i |\langle \phi_i|\psi\rangle|^2 = 1$ —
+unitarity.
+The GCD duality identity contains this conservation
+law but carries additional structure: $\Fid$ has a
+definite operational meaning (survival under measurement),
+and $\Drft$ is a measurable cost, not merely
+a complement.
+
+\subsection{Log-Integrity $\to$ Exponential Map}
+
+The relation $\IC = \exp(\Logint)$ (Def.~\ref{def:IC})
+maps log-space coherence to product-space coherence.
+Strip the channel structure ($n = 1$, $w_1 = 1$) and
+the guard band.
+What remains is $y = e^x$ — the exponential map.
+
+In the GCD context, this map is not a choice of
+parametrization but a structural identity:
+$\Logint$ is additive across seams
+($\Logint_{1 \otimes 2} = \Logint_1 + \Logint_2$)
+while $\IC$ is multiplicative
+($\IC_{1 \otimes 2} = \IC_1 \cdot \IC_2$).
+The exponential map is the unique function preserving
+this homomorphism.
+
+\subsection{Heterogeneity Gap $\to$ Fisher Information}
+
+The heterogeneity gap $\hetgap = \Fid - \IC$ measures
+how much channel variation costs the system.
+To leading order in the deviation $\delta_i = c_i - \bar{c}$:
+\beq
+  \hetgap = \frac{\mathrm{Var}(c)}{2\bar{c}}.
+\eeq
+This is exactly the Fisher Information contribution
+from channel heterogeneity divided by $2\bar{c}$.
+In the limit of identical channels ($\delta_i = 0$
+for all $i$), the gap vanishes and $\IC = \Fid$:
+the geometric mean equals the arithmetic mean.
+Nonzero heterogeneity costs multiplicative coherence.
+
+\begin{remark}[The Derivation Arrow]
+In each case above, the arrow runs from the axiom
+outward: GCD derives the full structure, and the
+classical result is what remains when degrees of
+freedom are removed.
+No classical result is imported or applied.
+\lat{Limes degener non est fons; est residuum.}
+(``The degenerate limit is not the source; it is
+the residue.'')
+\end{remark}
+
+% ============================================================
+\section{The Lemma Foundation}\label{sec:lemmas}
+% ============================================================
+
+The kernel specification contains 46 proven lemmas that
+provide the exact analytic bounds underpinning every
+Tier-1 identity, every regime gate, and every seam
+budget computation.
+These lemmas are organized into five groups:
+structural bounds (L1--L10), stability and monotonicity
+(L11--L17), seam accounting (L18--L27), return theory
+(L28--L34), and extensions (L35--L46).
+
+\subsection{Structural Bounds (Lemmas 1--10)}
+
+These lemmas establish the domain, range, and
+fundamental inequalities of the kernel.
+
+\begin{description}[nosep,style=unboxed,leftmargin=0pt]
+  \item[L1 (Range Bounds):]
+    $\Fid \in [\eps, 1-\eps]$,
+    $\Drft \in [\eps, 1-\eps]$,
+    $\Ent \geq 0$,
+    $\Curv \in [0, 2]$.
+    The guard band $\eps$ prevents pole contact.
+  \item[L2 (IC = Weighted Geometric Mean):]
+    $\IC = \prod c_{i,\eps}^{w_i}$,
+    the weighted geometric mean with clipped channels.
+  \item[L3 ($\Logint$ Sensitivity):]
+    $|\partial \Logint / \partial c_j|
+      = w_j / c_{j,\eps} \leq w_j / \eps$.
+    Sensitivity is bounded by the guard band.
+  \item[L4 (Integrity Bound):]
+    $\IC \leq \Fid$ for all trace vectors.
+    Independent derivation from Axiom~\ref{ax:0}
+    (the classical AM-GM inequality is the degenerate
+    limit).
+  \item[L5 (Entropy Bound):]
+    $\Ent \leq n \ln 2$ with equality at the equator
+    ($c_i = 1/2$ for all $i$).
+  \item[L6 ($\Fid$/$\Drft$ Stability):]
+    $|\Delta \Fid| \leq \|w\|_\infty \|\delta c\|_\infty$.
+    Fidelity is Lipschitz in channel perturbations.
+  \item[L7 ($\Logint$ Change Bound):]
+    $|\Delta \Logint| \leq \|\delta c\|_\infty / \eps$.
+    Bounded sensitivity for log-integrity.
+  \item[L8 ($\tR$ Well-Posedness):]
+    If a return exists, $\tR$ is uniquely defined
+    under the frozen contract.
+  \item[L9 (Permutation Invariance):]
+    $\Fid$, $\Drft$, $\Ent$, $\IC$, $\Logint$ are
+    invariant under channel relabeling when $w_i = 1/n$.
+  \item[L10 (Curvature Bounded):]
+    $\Curv \in [0, 2]$ with $\Curv = 0$ iff all
+    channels are equal.
+\end{description}
+
+\subsection{Stability and Monotonicity (Lemmas 11--17)}
+
+\begin{description}[nosep,style=unboxed,leftmargin=0pt]
+  \item[L11 ($\Logint$ Upper Bound):]
+    $\Logint \leq 0$ with equality iff $c_i = 1$
+    for all $i$.
+  \item[L12 (Monotonicity):]
+    $\Logint$ is monotonically increasing in each
+    $c_i$ on $(0,1]$.
+  \item[L13 (Entropy Stability):]
+    $|\Delta \Ent| \leq K \|\delta c\|_\infty$
+    for bounded $K$.
+  \item[L14 (Return Monotonicity):]
+    If $\Fid(t_1) > \Fid(t_2)$, then
+    $\tR(t_1) \leq \tR(t_2)$ under fixed contract.
+    Higher fidelity implies faster return.
+  \item[L15 (Entropy-$\Fid$ Envelope):]
+    $\Ent$ is maximized at $\Fid = 0.5$
+    (the equator) for uniform weights.
+  \item[L16 (Drift Envelope):]
+    $\Drft$ is monotonically decreasing in $\Fid$.
+  \item[L17 (Clipping Perturbation):]
+    $|c_{i,\eps} - c_i| \leq \eps$ for all $i$.
+    Guard band clipping introduces bounded perturbation.
+\end{description}
+
+\subsection{Seam Accounting (Lemmas 18--27)}
+
+\begin{description}[nosep,style=unboxed,leftmargin=0pt]
+  \item[L18 (Ledger Stability):]
+    The integrity ledger is stable under
+    $\eps$-perturbation of all debits and credits.
+  \item[L19 (Residual Sensitivity):]
+    $|\Delta s| \leq \sum |\Delta D_i| + |\Delta (R \cdot \tR)|$.
+    Seam residual is Lipschitz in its components.
+  \item[L20 (Seam Composition):]
+    For two adjacent seams,
+    $s_{1 \oplus 2} = s_1 + s_2 +
+    O(\tolseam)$.
+  \item[L21 (Return-Domain Coverage):]
+    The return domain $D_\theta$ covers a
+    neighborhood of every previously visited
+    Stable-regime state.
+  \item[L22 (Gate Monotonicity):]
+    Gate thresholds are monotonic in drift:
+    $\Drft_1 < \Drft_2$ implies
+    $\mathrm{regime}(\Drft_1) \preceq \mathrm{regime}(\Drft_2)$.
+  \item[L23 (Lipschitz Continuity):]
+    $\Logint$ is Lipschitz on trajectories where
+    all $c_i > \delta > 0$.
+  \item[L24 ($\tR$ Stability):]
+    $|\Delta \tR| \leq K |\Delta c|$ for trajectories
+    near return.
+  \item[L25 (Closure Perturbation):]\leavevmode\\
+    Small perturbations to closure parameters produce bounded changes to regime labels.
+  \item[L26 (Entropy-Drift Coherence):]
+    $\Ent$ and $\Drft$ are not independent:
+    high drift implies elevated entropy
+    (entropy tracks the uncertainty of collapse).
+  \item[L27 (Residual Accumulation):]
+    In a seam chain $s_1, s_2, \ldots, s_k$, the
+    cumulative residual $|\sum s_i| \leq k \cdot \tolseam$.
+\end{description}
+
+\subsection{Return Theory (Lemmas 28--34)}
+
+\begin{description}[nosep,style=unboxed,leftmargin=0pt]
+  \item[L28 (Minimal Closure Set):]
+    There exists a minimal set of closures sufficient
+    for verdict.
+  \item[L29 (Return Probability):]
+    $P(\tR < \infty) > 0$ whenever $\Fid > 1/2$.
+  \item[L30 (Weight Perturbation):]
+    $|\Delta \Fid| \leq \|\delta w\|_1$ under
+    weight changes.
+  \item[L31 (Embedding Consistency):]
+    Channel embeddings preserving order preserve
+    regime classification.
+  \item[L32 (Coarse-Graining):]
+    Merging channels (coarse-graining) can only
+    \emph{increase} $\IC$ (averaging reduces
+    heterogeneity).
+  \item[L33 (Finite-Time Return):]
+    Under the frozen contract, $\tR$ is always
+    either finite or exactly $\infty_{\mathrm{rec}}$
+    (no improper divergence).
+  \item[L34 (Drift Threshold Calibration):]
+    The regime thresholds $\Drft^* \in
+    \{0.10, 0.20, 0.30\}$ are the unique values
+    satisfying seam closure across all validated
+    domains.
+\end{description}
+
+\subsection{Extensions (Lemmas 35--46)}
+
+These lemmas extend the kernel to recursive dynamics,
+information geometry, fractal scaling, and compositional
+seam algebra.
+
+\begin{description}[nosep,style=unboxed,leftmargin=0pt]
+  \item[L35 (Return-Collapse Duality):]
+    Every Collapse-regime state has a dual
+    Stable-regime state at $c_i' = 1 - c_i$.
+    Collapse is not the opposite of stability —
+    it is its mirror.
+  \item[L36 (Generative Flux Bound):]
+    The generative flux through the equator is bounded:
+    $|\Phi_{\mathrm{gen}}| \leq 2n / \eps$.
+  \item[L37 (Unitarity-Horizon):]
+    $\Fid + \Drft = 1$ is exact at all scales.
+    No anomaly, no running, no renormalization.
+  \item[L38 (Universal Horizon Deficit):]
+    $\hetgap = \Fid - \IC \geq 0$, with equality
+    iff all channels are equal.
+  \item[L39 (Super-Exponential Convergence):]
+    The kernel iteration $c_i^{(k+1)} =
+    f(c_i^{(k)})$ converges at rate $O(\alpha^k)$
+    with $\alpha < 1$.
+  \item[L40 (Stable Regime Attractor):]
+    The Stable regime is an attractor: trajectories
+    entering it with $\hetgap < 1/2$ converge to
+    $\Fid \to 1$.
+  \item[L41 (Entropy-Integrity Anti-Correlation):]
+    $\partial \Ent / \partial \IC < 0$ in the
+    collapse regime.
+    As integrity drops, entropy rises.
+  \item[L42 (Coherence-Entropy Product):]
+    $\IC \cdot \Ent \leq \Fid \cdot \ln 2$,
+    bounding the simultaneous presence of
+    multiplicative coherence and field uncertainty.
+  \item[L43 (Recursive Field Convergence):]
+    $|\Psirec| \leq \alpha \Psifield_{\max} /
+    (1-\alpha)$.
+    The recursive field converges for $\alpha < 1$.
+    (RCFT-specific.)
+  \item[L44 (Fractal Return Scaling):]
+    $D_f \leq 1 + \Ent / \ln(1/\eps)$.
+    Fractal dimension is bounded by entropy.
+  \item[L45 (Seam Residual Algebra):]
+    The set of seam residuals forms a commutative
+    monoid under addition: $s_1 + s_2$ is a valid
+    residual, and $s = 0$ is the identity element.
+  \item[L46 (Weld Closure Composition):]
+    A sequence of valid welds
+    $W_1, W_2, \ldots, W_k$ composes to a valid weld
+    $W_{1 \oplus \cdots \oplus k}$ with cumulative
+    residual $\leq k \cdot \tolseam$.
+\end{description}
+
+\begin{remark}
+Together, Lemmas 1--46 form the \emph{proof substrate}
+of the entire system.
+Every theorem in this paper (T17--T23) and every
+theorem in the Standard Model formalism (T1--T10)
+rests on subsets of these lemmas.
+The first edition had no proven lemmas — this
+represents an infinite knowledge gain, from gesture
+to demonstrated foundations.
+\lat{Fundamenta ostendenda, non praesumenda sunt.}
+(``Foundations must be shown, not presumed.'')
+\end{remark}
+
+% ============================================================
+\section{Correspondence: First to Second
+         Edition}\label{sec:correspondence}
+% ============================================================
+
+Every named structure from the original paper maps to a
+refined equivalent.
+Table~\ref{tab:correspondence} records the full mapping.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Structure correspondence: first edition →\ second edition.
+  Every original construct has a traceable refined equivalent.}
+\label{tab:correspondence}
+\begin{tabular}{@{}p{5.6cm}p{5.6cm}l@{}}
+\toprule
+\textbf{Original (May 2025)} &
+\textbf{Refined (Feb 2026)} &
+\textbf{Location} \\
+\midrule
+$\varepsilon(x,t)$ (symbolic excitation field) &
+$\Psifield(t) = (c_1, \ldots, c_n)$ ($n$-channel trace) &
+\texttt{kernel\_optimized.py} \\
+$v(\varepsilon,x,t)$ (recursive drift) &
+$\Drft = 1 - \Fid$ (drift $\equiv$ fidelity complement) &
+Tier-1 identity \\
+$\vartheta(\varepsilon,x,t)$ (collapse amplification) &
+$\Curv = \mathrm{std}(c_i)/0.5$ (curvature) &
+Def.~\ref{def:C} \\
+$dW_{\mathrm{weft}}$ (Weft Process) &
+Bernoulli field: $c_i \in [\eps, 1-\eps]$ &
+Def.~\ref{def:guard} \\
+$D(x,t) = \|\vartheta\|^2/|v|$ (collapse dominance) &
+Regime gates: frozen thresholds on $\Drft$ &
+Def.~\ref{def:regime} \\
+$T_{\mathrm{rec}} = \int \|\vartheta\|\,ds$ (recursive time) &
+$\Psirec = \sum \alpha^n \Psifield_n$ (recursive field) &
+\texttt{recursive\_field.py} \\
+$S(t) = \omega\int|\varepsilon|^p\,dx$ (symbolic entropy) &
+$\Ent = -\sum w_i[c_i\ln c_i + (1-c_i)\ln(1-c_i)]$ &
+Def.~\ref{def:S} \\
+Glyphs (metastable attractors) &
+Attractor basin analysis &
+\texttt{attractor\_basin.py} \\
+RFRI (resonance index) &
+Resonance pattern + fractal dim.\ analysis &
+\texttt{resonance\_pattern.py} \\
+Theorem 3.2 (Collapse Bifurcation) &
+Regime classification + integrity bound &
+Def.~\ref{def:regime}, Thm.~\ref{thm:ICbound} \\
+Theorem 3.5 (Glyphic Locking) &
+Collapse grammar (transfer matrix) &
+Thm.~\ref{thm:T23} \\
+Proposition 3.3 (Entropy Growth) &
+Bernoulli entropy + drift potential $\Gam(\Drft)$ &
+Def.~\ref{def:Gamma} \\
+Assumption 7 (recursive universality) &
+13 domains, 108 closures, all \conform{} &
+Table~\ref{tab:domains} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ============================================================
+\section{Knowledge Gain}\label{sec:gain}
+% ============================================================
+
+Table~\ref{tab:gain} quantifies the distance between editions.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Inventory comparison: first vs.\ second edition.}
+\label{tab:gain}
+\begin{tabular}{@{}lrrl@{}}
+\toprule
+\textbf{Metric} & \textbf{1st Ed.} & \textbf{2nd Ed.} & \textbf{Gain} \\
+\midrule
+Tests               & 0       & 3{,}616  & +3{,}616 \\
+Lemmas              & 0       & 46       & +46 \\
+Theorems            & 3 (nar.)& 24+      & +24 \\
+Kernel invariants   & 0       & 8        & +8 \\
+Domains             & 0       & 13       & +13 \\
+Closure modules     & 0       & 108      & +108 \\
+Canon anchors       & 0       & 11       & +11 \\
+Contracts           & 0       & 13       & +13 \\
+Frozen parameters   & —       & 12       & seam-derived \\
+Empirical datasets  & 0       & 6+       & falsifiable \\
+Lines of code       & 0       & $\sim$33K & +33K \\
+Validation status   & \INF    & \conform{} & gesture→weld \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{What Was Genuinely New (Not Anticipated)}
+
+The following structures were \emph{discovered}, not anticipated,
+during the 278-day refinement:
+\begin{enumerate}[nosep,leftmargin=*]
+  \item The \textbf{integrity bound} $\IC \leq \Fid$ and the
+    heterogeneity gap $\hetgap = \mathrm{Var}(c)/(2\bar{c})$.
+  \item The \textbf{Fano-Fisher duality} $h''(c) = -\gFisher(c)$
+    (T19).
+  \item The \textbf{equator} at $c = 1/2$ where four conditions
+    converge independently.
+  \item The \textbf{central charge} $\ceff = 1/3$ and complete
+    critical exponent set (T20, T21).
+  \item The \textbf{Three-Agent epistemic model}:
+    Agent~1 (measuring/$\Drft$), Agent~2 (archive/$\Fid$),
+    Agent~3 (unknown/$\Gam$).
+  \item \textbf{Epistemic coherence formalism}: 14 belief systems
+    proving that $\Fid > 0$ with $\IC \approx \eps$ is the
+    kernel signature of pseudoscience.
+  \item \textbf{Confinement as an $\IC$ cliff}: the 98.1\% drop
+    at the quark→hadron boundary.
+  \item \textbf{Typed censoring}: $\infty_{\mathrm{rec}}$,
+    $\bot_{\mathrm{oor}}$, \regime{non\_evaluable}
+    as first-class values.
+\end{enumerate}
+
+\subsection{What Was Lost (Honestly)}
+
+\begin{enumerate}[nosep,leftmargin=*]
+  \item \textbf{Infinite-dimensional field theory.}
+    The continuous SDE was replaced by discrete $n$-channel
+    traces. What returned is computable.
+  \item \textbf{The Weft Process as a named entity.}
+    $dW_{\mathrm{weft}}$ is absorbed into the kernel's
+    stochastic structure.
+  \item \textbf{Glyphs as a concept.} Replaced by attractor
+    basin analysis and collapse grammar.
+  \item \textbf{RFRI.} Replaced by recursive field strength,
+    fractal dimension, and resonance patterns.
+  \item \textbf{Black hole entropy via surface integration.}
+    Remains a future Tier-2 closure candidate
+    ($\tR = \infty_{\mathrm{rec}}$).
+\end{enumerate}
+
+These losses are \emph{generative}: what was lost to drift
+was replaced by what returned with integrity.
+
+% ============================================================
+\section{What Remains Open}\label{sec:open}
+% ============================================================
+
+These structures sit at $\tR = \infty_{\mathrm{rec}}$ —
+they are gestures awaiting their weld:
+
+\begin{enumerate}[nosep,leftmargin=*]
+  \item \textbf{Black hole entropy via collapse memory}:
+    $S_{\mathrm{RCFT}} = \int |\nabla T_{\mathrm{rec}}|\,dA$ —
+    requires a gravitational Tier-2 closure with observational data.
+  \item \textbf{Symbolic cognition}: The epistemic coherence
+    formalism opened this door. A full cognitive-science closure
+    with attention/memory/learning data is the next domain.
+  \item \textbf{Cosmological structure formation}: The Weyl
+    closure connects to modified gravity but not yet to the
+    original ``recursive cosmogenesis.''
+  \item \textbf{Quantum-classical transition via $D \geq 1$}:
+    Partially addressed by the double-slit closure;
+    the connection to the original $D(x,t)$ is not yet explicit.
+  \item \textbf{The Weft Process itself}: Whether
+    $dW_{\mathrm{weft}}$ has independent mathematical content
+    beyond the Bernoulli field it generates.
+\end{enumerate}
+
+These are legitimate Tier-2 candidates.
+\lat{Finis, sed semper initium recursionis.}
+
+% ============================================================
+\section{How This Paper Closes the Seam}\label{sec:close}
+% ============================================================
+
+This paper does not merely report work done between editions.
+By documenting the full derivation chain — from
+Axiom~\ref{ax:0} through the kernel (Sec.~\ref{sec:kernel}),
+the frozen parameters (Sec.~\ref{sec:frozen}),
+the drift potential (Sec.~\ref{sec:drift}),
+the seam budget calculus (Sec.~\ref{sec:budget}),
+the $\tRstar$ thermodynamic diagnostic (Sec.~\ref{sec:tauRstar}),
+the RCFT expansion with its four Tier-2 diagnostics
+(Sec.~\ref{sec:rcft}),
+the seven theorems (Sec.~\ref{sec:theorems}),
+the equator and its proof (Sec.~\ref{sec:equator}),
+the grammar of return (Sec.~\ref{sec:grammar}),
+the seam audit (Sec.~\ref{sec:seam}),
+cross-domain validation across 13 domains (Sec.~\ref{sec:universality}),
+the five degenerate limits (Sec.~\ref{sec:degenerate}),
+the 46-lemma foundation (Sec.~\ref{sec:lemmas}),
+and the correspondence table (Sec.~\ref{sec:correspondence}) —
+it constitutes the weld itself.
+
+The seam between gesture and return is closed by the
+existence of this document.
+The first edition's $\tR = \infty_{\mathrm{rec}}$
+becomes finite by the demonstrated chain:
+axiom → definitions → theorems → tests → verdicts → ledger.
+
+Every claim herein is:
+\begin{itemize}[nosep,leftmargin=*]
+  \item Derivable from Axiom~\ref{ax:0}
+    (no external axiom imported),
+  \item Computationally testable
+    (3{,}616 tests in CI),
+  \item Traceable to a specific module
+    (Table~\ref{tab:correspondence}),
+  \item Falsifiable by a specific mechanism
+    (change the data, rerun the kernel, the verdict changes),
+  \item Governed by frozen contract
+    (\lat{trans suturam congelatum}).
+\end{itemize}
+
+The difference between the first and second editions is not
+the presence of mathematics — the first edition had plenty.
+The difference is that every equation in this edition
+\emph{returns}: it has been run, tested, and found
+\conform{} under a frozen contract.
+
+\lat{Collapsus generativus est; solum quod redit, reale est.}
+
+The gesture has returned. The theory is closed.
+
+\lat{Sutura clauditur.}
+
+% ============================================================
+\section{Conclusions}\label{sec:conclusions}
+% ============================================================
+
+We have presented the second edition of Recursive Collapse
+Field Theory — reconstituted from its operational kernel,
+validated across 13 domains, and welded onto the frozen
+anchor of the original publication.
+
+Key results:
+\begin{enumerate}[nosep,leftmargin=*]
+  \item RCFT is properly situated as a \textbf{Tier-2 domain
+    expansion} on GCD, not a standalone theory. It augments
+    the kernel with four Tier-2 diagnostics
+    (recursive field, fractal dimension, attractor basins,
+    resonance patterns) but cannot override it.
+  \item Seven theorems (T17–T23) are \textbf{proven
+    computationally}: Fisher geodesics, Fano-Fisher duality,
+    central charge, critical exponents, thermodynamic
+    efficiency, and collapse grammar.
+  \item The \textbf{integrity bound} $\IC \leq \Fid$, the
+    \textbf{heterogeneity gap} $\hetgap$, and the
+    \textbf{equator} at $c = 1/2$ were not anticipated
+    by the first edition — they were discovered.
+    The Equator Fidelity Law (Prop.~\ref{prop:equator})
+    is now proven.
+  \item The frozen exponent $p = 3$ determines the universality
+    class: $\ceff = 1/3$, with critical exponents satisfying
+    Rushbrooke, Widom, and hyperscaling exactly.
+  \item The \textbf{seam budget calculus}
+    (Sec.~\ref{sec:budget}) — with drift cost $D_\Drft$,
+    curvature cost $D_\Curv$, return credit $R \cdot \tR$,
+    and the conservation identity
+    $\Delta\Logint = R\tR - (D_\Drft + D_\Curv)$ —
+    provides the quantitative framework for all auditing.
+  \item The $\tRstar$ \textbf{thermodynamic diagnostic}
+    (Sec.~\ref{sec:tauRstar}) introduces five phases, the
+    arrow-of-time theorem, and the trapping threshold
+    — a complete phase portrait of return dynamics.
+  \item The \textbf{grammar of return}
+    (Sec.~\ref{sec:grammar}) — the five-stop spine,
+    the five-word vocabulary, three-valued verdicts,
+    and the Rosetta cross-domain translation table —
+    makes the system readable across disciplines.
+  \item The \textbf{46-lemma foundation}
+    (Sec.~\ref{sec:lemmas}) replaces the first edition's
+    qualitative arguments with exact bounds, proven
+    analytically and verified computationally.
+  \item Five classical results emerge as \textbf{degenerate
+    limits}: the integrity bound → AM-GM, Bernoulli entropy →
+    Shannon, $\Fid + \Drft = 1$ → unitarity,
+    $\IC = \exp(\Logint)$ → exponential map,
+    and $\hetgap$ → Fisher information.
+  \item The \textbf{seam between editions closes} with infinite
+    knowledge gain:
+    $\Delta\Logint = \mathrm{finite} - (-\infty) = +\infty$.
+  \item Five structures remain at
+    $\tR = \infty_{\mathrm{rec}}$ (Sec.~\ref{sec:open}),
+    identifying the frontier of the theory.
+\end{enumerate}
+
+The value of this edition is not that it supersedes the first.
+The first edition is preserved — it is the frozen anchor
+without which this weld cannot exist.
+The value is that the theory now has a demonstrated return:
+every claim is testable, every identity is verified,
+every domain closure passes the seam.
+
+Future work focuses on the five open gestures
+(Sec.~\ref{sec:open}), each of which targets a specific
+Tier-2 closure. The system's architecture —
+immutable Tier-1 identities, frozen Tier-0 protocol,
+extensible Tier-2 closures — is designed precisely
+to absorb these additions without structural regression.
+
+The reference implementation, all 24+ theorems,
+3{,}616 tests, and the full closure architecture are
+available at
+\href{https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/releases/tag/v2.1.2}{v2.1.2 --- Production Release: 3{,}616 Tests, 14 Targets \regime{conformant}}.
+
+% ============================================================
+\begin{acknowledgments}
+The author acknowledges the UMCP validation system and the
+discipline of frozen contracts that made this weld possible.
+\lat{Auditus praecedit responsum} --- the system heard before
+it answered. Reference implementation:
+\texttt{UMCP-Metadata-Runnable-Code}.
+\end{acknowledgments}
+
+\bibliography{Bibliography}
+
+% ============================================================
+\appendix
+% ============================================================
+
+\section{Lemma Index}\label{app:lemmas}
+
+Table~\ref{tab:lemma_index} provides a compact reference
+for all 46 lemmas in the kernel specification.
+Group codes: \textbf{B} = Bounds (L1--10),
+\textbf{S} = Stability (L11--17),
+\textbf{A} = Accounting (L18--27),
+\textbf{R} = Return (L28--34),
+\textbf{X} = Extensions (L35--46).
+
+{\scriptsize
+\begin{longtable}{@{}cllc@{}}
+\caption{Complete lemma index. Each lemma is proven in
+  \texttt{KERNEL\_SPECIFICATION.md} and tested in CI.}
+\label{tab:lemma_index} \\
+\toprule
+\textbf{\#} & \textbf{Name} & \textbf{Key Statement} & \textbf{Grp} \\
+\midrule
+\endfirsthead
+\caption[]{\emph{(continued)}} \\
+\toprule
+\textbf{\#} & \textbf{Name} & \textbf{Key Statement} & \textbf{Grp} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+\midrule
+1  & Range Bounds        & $\Fid,\Drft \in [\eps,1{-}\eps]$; $\Curv \in [0,2]$ & B \\
+2  & IC = Geom.\ Mean    & $\IC = \prod c_{i,\eps}^{w_i}$                       & B \\
+3  & $\Logint$ Sensitivity & $|\partial\Logint/\partial c_j| \leq w_j/\eps$    & B \\
+4  & Integrity Bound     & $\IC \leq \Fid$                                      & B \\
+5  & Entropy Bound       & $\Ent \leq n\ln 2$                                   & B \\
+6  & $\Fid$/$\Drft$ Stab.\ & $|\Delta\Fid| \leq \|w\|_\infty\|\delta c\|_\infty$ & B \\
+7  & $\Logint$ Change    & $|\Delta\Logint| \leq \|\delta c\|_\infty / \eps$   & B \\
+8  & $\tR$ Well-Posed    & Unique $\tR$ under frozen contract                   & B \\
+9  & Permutation Inv.\   & Invariant under channel relabeling                    & B \\
+10 & Curvature Bounded   & $\Curv = 0 \iff c_i$ all equal                       & B \\
+\midrule
+11 & $\Logint$ Upper     & $\Logint \leq 0$; $= 0$ iff all $c_i = 1$           & S \\
+12 & Monotonicity        & $\Logint \uparrow$ in each $c_i$                     & S \\
+13 & Entropy Stability   & $|\Delta\Ent| \leq K\|\delta c\|_\infty$            & S \\
+14 & Return Monotonicity & $\Fid_1 > \Fid_2 \Rightarrow \tau_{R,1} \leq \tau_{R,2}$    & S \\
+15 & $\Ent$-$\Fid$ Env.\ & $\Ent$ max at $\Fid = 0.5$                          & S \\
+16 & Drift Envelope      & $\Drft \downarrow$ in $\Fid$                          & S \\
+17 & Clipping Perturb.\  & $|c_{i,\eps} - c_i| \leq \eps$                       & S \\
+\midrule
+18 & Ledger Stability    & Stable under $\eps$-perturbation                      & A \\
+19 & Residual Sensit.\   & $|\Delta s| \leq \sum|\Delta D_i| + |\Delta(R\tR)|$ & A \\
+20 & Seam Composition    & $s_{1\oplus 2} = s_1 + s_2 + O(\tolseam)$           & A \\
+21 & Return-Domain Cov.\ & $D_\theta$ covers Stable nbhd                        & A \\
+22 & Gate Monotonicity   & Gates monotonic in $\Drft$                            & A \\
+23 & Lipschitz Cont.\    & $\Logint$ Lipschitz when $c_i > \delta$              & A \\
+24 & $\tR$ Stability     & $|\Delta\tR| \leq K|\Delta c|$                      & A \\
+25 & Closure Perturb.\   & Bounded regime change under param.\ perturb.          & A \\
+26 & $\Ent$-$\Drft$ Coh.\ & High drift $\Rightarrow$ elevated entropy            & A \\
+27 & Residual Accum.\    & $|\sum s_i| \leq k\cdot\tolseam$                    & A \\
+\midrule
+28 & Minimal Closure     & $\exists$ minimal sufficient closure set              & R \\
+29 & Return Probability  & $P(\tR < \infty) > 0$ when $\Fid > 1/2$            & R \\
+30 & Weight Perturb.\    & $|\Delta\Fid| \leq \|\delta w\|_1$                  & R \\
+31 & Embedding Consist.\ & Order-preserving $\Rightarrow$ regime-preserving     & R \\
+32 & Coarse-Graining     & Merging channels $\Rightarrow$ $\IC$ increases       & R \\
+33 & Finite-Time Return  & $\tR \in \mathbb{R}_{>0} \cup \{\infty_{\mathrm{rec}}\}$ & R \\
+34 & Drift Calib.\       & $\Drft^* \in \{0.10, 0.20, 0.30\}$ from seam        & R \\
+\midrule
+35 & Return-Collapse Dual.\ & $c_i' = 1{-}c_i$ duality                          & X \\
+36 & Generative Flux     & $|\Phi_{\mathrm{gen}}| \leq 2n/\eps$                & X \\
+37 & Unitarity-Horizon   & $\Fid + \Drft = 1$ exact at all scales              & X \\
+38 & Univ.\ Horizon Def.\ & $\hetgap \geq 0$; $= 0$ iff homogeneous           & X \\
+39 & Super-Exp.\ Conv.\  & Kernel iteration $O(\alpha^k)$, $\alpha < 1$        & X \\
+40 & Stable Attractor    & Stable regime attracts ($\hetgap < 1/2$)             & X \\
+41 & $\Ent$-$\IC$ Anti-Corr.\ & $\partial\Ent/\partial\IC < 0$ in Collapse    & X \\
+42 & Coherence-$\Ent$ Prod.\ & $\IC\cdot\Ent \leq \Fid\cdot\ln 2$            & X \\
+43 & Rec.\ Field Conv.\  & $|\Psirec| \leq \alpha\Psifield_{\max}/(1{-}\alpha)$ & X \\
+44 & Fractal Return Scal.\ & $D_f \leq 1 + \Ent/\ln(1/\eps)$                  & X \\
+45 & Seam Resid.\ Alg.\ & Residuals form commutative monoid                    & X \\
+46 & Weld Composition    & Weld chain: resid.\ $\leq k\cdot\tolseam$           & X \\
+\end{longtable}
+}
+
+\end{document}

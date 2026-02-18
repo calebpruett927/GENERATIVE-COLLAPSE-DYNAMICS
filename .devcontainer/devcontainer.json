@@ -49,7 +49,8 @@
 				"ms-python.mypy-type-checker",
 				"redhat.vscode-yaml",
 				"james-yu.latex-workshop",
-				"github.copilot"
+				"github.copilot",
+				"James-Yu.latex-workshop"
 			],
 
 			"settings": {
