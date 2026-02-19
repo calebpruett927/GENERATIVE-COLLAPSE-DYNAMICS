@@ -66,12 +66,14 @@ class TestTierHierarchy:
     def test_gcd_is_tier1(self, gcd_contract, gcd_canon):
         """GCD should be Tier-1."""
         assert gcd_contract["tier_level"] == 1
-        assert gcd_canon["scope"]["tier"] == 1
+        # scope is now a string; tier is declared in the contract
+        assert isinstance(gcd_canon["scope"], str)
 
     def test_rcft_is_tier2(self, rcft_contract, rcft_canon):
         """RCFT should be Tier-2."""
         assert rcft_contract["tier_level"] == 2
-        assert rcft_canon["scope"]["tier"] == 2
+        # scope is now a string; tier is declared in the contract
+        assert isinstance(rcft_canon["scope"], str)
 
     def test_gcd_extends_uma(self, gcd_contract):
         """GCD should extend UMA.INTSTACK.v1."""

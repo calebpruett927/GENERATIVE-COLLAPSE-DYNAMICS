@@ -1,19 +1,17 @@
-schema: canon.anchors.schema.json
+schema: canon.domain_anchors.schema.json
 id: UMCP.CANON.QM.v1
 version: 1.0.0
 created: '2026-02-07'
-
-scope:
-  hierarchy: GCD → QM (Tier-1)
-  description: |
-    Quantum Mechanics canonical anchors for UMCP.
-    Maps the six foundational pillars of QM into the GCD invariant framework.
-    Wavefunction collapse is the literal archetype of Generative Collapse Dynamics:
-    the indefinite superposition resolves into a definite outcome, generating
-    observable reality from quantum potentiality.
+hierarchy: "GCD → QM (Tier-1)"
+scope: >
+  Quantum Mechanics canonical anchors for UMCP. Maps the six foundational pillars
+  of QM into the GCD invariant framework. Wavefunction collapse is the literal
+  archetype of Generative Collapse Dynamics: the indefinite superposition resolves
+  into a definite outcome, generating observable reality from quantum potentiality.
 
 axioms:
   - id: AX-0
+    name: "Collapse is generative"
     statement: Collapse is generative
     source: GCD Tier-1 (inherited, frozen)
     qm_realization: |
@@ -22,6 +20,7 @@ axioms:
       P = |⟨φ|ψ⟩|² is the measure of generative potential released
       at collapse. Φ_gen ≥ 0 always.
   - id: AX-1
+    name: "Boundary defines interior"
     statement: Boundary defines interior
     source: GCD Tier-1 (inherited, frozen)
     qm_realization: |
@@ -29,6 +28,7 @@ axioms:
       wavefunctions (eigenstates) and energy eigenvalues. Measurement
       apparatus defines the observable basis.
   - id: AX-2
+    name: "Entropy measures determinacy"
     statement: Entropy measures determinacy
     source: GCD Tier-1 (inherited, frozen)
     qm_realization: |
@@ -36,24 +36,28 @@ axioms:
       mixedness. Pure state (S_vN = 0) = fully determinate. Maximally
       mixed = maximum indeterminacy.
   - id: AX-Q0
+    name: "Born rule governs measurement outcomes"
     statement: Born rule governs measurement outcomes
     source: QM.INTSTACK.v1
     qm_realization: |
       P = |⟨φ|ψ⟩|² bridges amplitudes → probabilities.
       Born violation (delta_P) maps directly to GCD drift ω.
   - id: AX-Q1
+    name: "Entanglement is non-local correlation"
     statement: Entanglement is non-local correlation
     source: QM.INTSTACK.v1
     qm_realization: |
       Bell-CHSH S > 2 violates local realism.
       Concurrence C ∈ [0,1] maps to GCD coupling.
   - id: AX-Q2
+    name: "Tunneling transcends classical barriers"
     statement: Tunneling transcends classical barriers
     source: QM.INTSTACK.v1
     qm_realization: |
       T = exp(-2κL) for E < V₀. Generative collapse through
       classically forbidden regions.
   - id: AX-Q3
+    name: "Uncertainty bounds joint measurements"
     statement: Uncertainty bounds joint measurements
     source: QM.INTSTACK.v1
     qm_realization: |
@@ -203,57 +207,59 @@ umcp_invariant_mapping:
         experimental error.
 
 regime_gates:
-  - name: Born deviation gate
-    parameter: delta_P
-    thresholds:
-      Faithful: delta_P < 0.01
-      Perturbed: 0.01 ≤ delta_P < 0.05
-      Decoherent: 0.05 ≤ delta_P < 0.15
-      Anomalous: delta_P ≥ 0.15
-    umcp_mapping:
-      Faithful: Stable
-      Perturbed: Watch
-      Decoherent: Watch
-      Anomalous: Collapse
+  description: "Regime classification gates for quantum mechanics"
+  gates:
+    - name: Born deviation gate
+      parameter: delta_P
+      thresholds:
+        Faithful: delta_P < 0.01
+        Perturbed: 0.01 ≤ delta_P < 0.05
+        Decoherent: 0.05 ≤ delta_P < 0.15
+        Anomalous: delta_P ≥ 0.15
+      umcp_mapping:
+        Faithful: Stable
+        Perturbed: Watch
+        Decoherent: Watch
+        Anomalous: Collapse
 
-  - name: Entanglement strength gate
-    parameter: concurrence
-    thresholds:
-      Separable: C < 0.1
-      Weak: 0.1 ≤ C < 0.4
-      Strong: 0.4 ≤ C < 0.8
-      Maximal: C ≥ 0.8
-    umcp_mapping:
-      Separable: Stable
-      Weak: Watch
-      Strong: Watch
-      Maximal: Stable
+    - name: Entanglement strength gate
+      parameter: concurrence
+      thresholds:
+        Separable: C < 0.1
+        Weak: 0.1 ≤ C < 0.4
+        Strong: 0.4 ≤ C < 0.8
+        Maximal: C ≥ 0.8
+      umcp_mapping:
+        Separable: Stable
+        Weak: Watch
+        Strong: Watch
+        Maximal: Stable
 
-  - name: Tunneling transparency gate
-    parameter: T_coeff
-    thresholds:
-      Opaque: T < 0.001
-      Suppressed: 0.001 ≤ T < 0.05
-      Moderate: 0.05 ≤ T < 0.3
-      Transparent: T ≥ 0.3
-    umcp_mapping:
-      Opaque: Stable
-      Suppressed: Watch
-      Moderate: Watch
-      Transparent: Stable
+    - name: Tunneling transparency gate
+      parameter: T_coeff
+      thresholds:
+        Opaque: T < 0.001
+        Suppressed: 0.001 ≤ T < 0.05
+        Moderate: 0.05 ≤ T < 0.3
+        Transparent: T ≥ 0.3
+      umcp_mapping:
+        Opaque: Stable
+        Suppressed: Watch
+        Moderate: Watch
+        Transparent: Stable
 
-  - name: Coherence quality gate
-    parameter: purity
-    thresholds:
-      Pure: γ ≥ 0.99
-      High: 0.90 ≤ γ < 0.99
-      Mixed: 0.50 ≤ γ < 0.90
-      Decoherent: γ < 0.50
-    umcp_mapping:
-      Pure: Stable
-      High: Stable
-      Mixed: Watch
-      Decoherent: Collapse
+    - name: Coherence quality gate
+      parameter: purity
+      thresholds:
+        Pure: γ ≥ 0.99
+        High: 0.90 ≤ γ < 0.99
+        Mixed: 0.50 ≤ γ < 0.90
+        Decoherent: γ < 0.50
+      umcp_mapping:
+        Pure: Stable
+        High: Stable
+        Mixed: Watch
+        Decoherent: Collapse
 
 budget_identity_analog:
   description: |

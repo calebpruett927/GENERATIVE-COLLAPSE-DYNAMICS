@@ -118,9 +118,9 @@ umcp_canon:
       note: "Diagnostic only; never used as a gate."
 
   # Extension canon anchors documented in canon/README.md:
-  # - canon/gcd_anchors.yaml (UMCP.GCD.v1) - Tier-1 invariant structure
-  # - canon/kin_anchors.yaml (UMCP.KIN.v1) - Tier-0 Kinematics diagnostic
-  # - canon/rcft_anchors.yaml (UMCP.RCFT.v1) - Tier-2 RCFT domain expansion
+  # - canon/gcd_anchors.yaml (UMCP.CANON.GCD.v1) - Tier-1 invariant structure
+  # - canon/kin_anchors.yaml (UMCP.CANON.KIN.v1) - Tier-0 Kinematics diagnostic
+  # - canon/rcft_anchors.yaml (UMCP.CANON.RCFT.v1) - Tier-2 RCFT domain expansion
 
   change_control:
     mutation_policy: "append-only; bump canon_id on any semantic change"

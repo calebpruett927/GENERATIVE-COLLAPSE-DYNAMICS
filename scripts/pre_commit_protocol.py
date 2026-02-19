@@ -599,7 +599,7 @@ def step_repo_health(ctx: RepoContext, mode: str) -> StepResult:
         sys.path.insert(0, scripts_dir)
 
     try:
-        from repo_health_check import run_health_check, sync_version
+        from repo_health_check import run_health_check, sync_version  # type: ignore[import-not-found]
 
         # Always sync version first (proactive, not reactive)
         if mode == "fix":

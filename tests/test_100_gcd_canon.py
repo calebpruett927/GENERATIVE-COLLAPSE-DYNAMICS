@@ -42,13 +42,13 @@ def test_gcd_canon_exists(repo_root):
 def test_gcd_canon_schema(gcd_canon):
     """Test GCD canon has correct schema reference."""
     assert "schema" in gcd_canon, "Canon must reference schema"
-    assert "canon.anchors.schema.json" in gcd_canon["schema"]
+    assert "canon.domain_anchors.schema.json" in gcd_canon["schema"]
 
 
 def test_gcd_canon_id(gcd_canon):
     """Test GCD canon has correct ID."""
     assert "id" in gcd_canon
-    assert gcd_canon["id"] == "UMCP.GCD.v1"
+    assert gcd_canon["id"] == "UMCP.CANON.GCD.v1"
 
 
 def test_gcd_canon_version(gcd_canon):

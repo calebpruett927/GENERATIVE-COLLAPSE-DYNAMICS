@@ -344,6 +344,121 @@ This release consolidates all version references throughout the repository to v1
 
 ---
 
+## [1.4.5] - 2026-01-23
+
+### Changed - PyPI Release
+
+Version bump to v1.4.5 for PyPI publication. Disabled attestations for
+compatibility with token-based authentication.
+
+- Bumped version to 1.4.5 in pyproject.toml and __init__.py
+
+---
+
+## [1.4.4] - 2026-01-23
+
+### Fixed - PyPI Authentication
+
+Switched to token-based PyPI authentication (same commit as v1.4.3 —
+tags v1.4.3 and v1.4.4 share commit `1dab70f`).
+
+---
+
+## [1.4.3] - 2026-01-23
+
+### Fixed - Repository Cleanup & CI Hardening
+
+**Production Hardening**: Comprehensive repository cleanup, CI fixes,
+and code quality improvements for PyPI publication readiness.
+
+- Switched to token-based PyPI authentication
+- Fixed all ruff lint errors (SIM103, UP009, UP015, UP035, I001)
+- Fixed all ruff format violations across test and source files
+- Fixed 70→1 type annotation errors (mypy/Pylance)
+- Unified infrastructure: moved all code to `src/umcp`, removed legacy files
+- Resolved CI failures for optional dependencies (FastAPI guards)
+- Added environment setup instructions to README
+- Updated integrity checksums and validation ledger
+
+### Stats
+
+- **Tests**: 436+ passing
+- **Lint**: ruff clean
+
+---
+
+## [1.4.2] - 2026-01-21
+
+### Fixed - Integrity Alignment
+
+Updated integrity checksums to match current file state after v1.4.1
+metadata changes.
+
+---
+
+## [1.4.1] - 2026-01-21
+
+### Fixed - PyPI Compliance
+
+Updated license classifier and project metadata for PyPI publication
+compliance.
+
+- Updated license field and Python classifiers in pyproject.toml
+
+---
+
+## [1.4.0] - 2026-01-21
+
+### Added - Documentation From Manuscript & AXIOM-0 Compliance
+
+**Major Documentation Release**: Extracted and formalized core documentation
+from the manuscript into standalone reference files.
+
+#### Manuscript Extractions
+
+- **TIER_SYSTEM.md**: Comprehensive Tier System documentation from manuscript §3
+- **KERNEL_SPECIFICATION.md**: Kernel Specification from manuscript §8
+- **FACE_POLICY.md**: UHMP and Face Policy protocol foundations from manuscript
+- **docs/publication_infrastructure.md**: Publication Infrastructure from manuscript §5.19
+- **docs/casepack_reference.md**: CasePack Reference Structure from manuscript §5
+
+#### Framework Improvements
+
+- Implemented AXIOM-0 compliance in checksum validation
+- Added comprehensive glossary and indexing infrastructure (GLOSSARY.md)
+- Enhanced canon anchor files with interconnection headers
+- Clarified operational terms with enforcement-tied definitions
+- Recursive refinement of interconnections across full repository
+
+#### Code & CI
+
+- Extension system integration with core axiom (`umcp-ext` entry point)
+- Normalized root outputs from trace
+- Multiple integrity checksum updates for consistency
+- Disabled PyPI auto-publish workflow (manual releases only)
+- Replaced misleading badges with verifiable commands
+
+### Stats
+
+- **Tests**: 233+ passing
+- **New documentation**: 5 major reference files from manuscript
+
+---
+
+## [1.3.1] - 2026-01-20
+
+### Fixed - Version Sync & PyPI Deployment
+
+Post-release fixes for v1.3.0 deployment.
+
+- Synced `__version__` in `__init__.py` with pyproject.toml for v1.3.1
+- Switched to API token for PyPI deployment (trusted publishing not available)
+- Standardized Python version requirements to 3.11+ (3.12+ recommended)
+- Added duplicate directory protection
+- Updated return log from test runs
+
+---
+
 ## [1.3.0] - 2026-01-20
 
 ### Added - Performance Optimization System

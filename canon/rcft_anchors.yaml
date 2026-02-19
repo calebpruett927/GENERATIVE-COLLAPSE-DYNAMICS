@@ -1,4 +1,4 @@
-# RCFT Canon Anchor (UMCP.RCFT.v1)
+# RCFT Canon Anchor (UMCP.CANON.RCFT.v1)
 # Recursive Collapse Field Theory - Tier-2 Domain Expansion
 #
 # Interconnections:
@@ -13,20 +13,16 @@
 # Symbol lookup: ../SYMBOL_INDEX.md#tier-2-rcft-extension-symbols
 # Term index: ../TERM_INDEX.md#r
 
-schema: canon.anchors.schema.json
-id: UMCP.RCFT.v1
+schema: canon.domain_anchors.schema.json
+id: "UMCP.CANON.RCFT.v1"
 version: "1.0.0"
 created: "2026-01-18"
-
-scope:
-  hierarchy: "RCFT > GCD > UMCP (Tier-2 domain expansion)"
-  tier: 2
-  parent_framework: "UMCP.GCD.v1"
-  description: |
-    Recursive Collapse Field Theory (RCFT) is a Tier-2 domain expansion on GCD that analyzes
-    recursive patterns, fractal structures, and field dynamics in collapse events.
-    RCFT augments GCD's Tier-1 invariants with advanced geometric and topological metrics
-    without modifying or overriding the frozen Tier-1 foundation.
+hierarchy: "RCFT > GCD > UMCP (Tier-2 domain expansion)"
+scope: >
+  Recursive Collapse Field Theory (RCFT) is a Tier-2 domain expansion on GCD that analyzes
+  recursive patterns, fractal structures, and field dynamics in collapse events. RCFT augments
+  GCD's Tier-1 invariants with advanced geometric and topological metrics without modifying
+  or overriding the frozen Tier-1 foundation.
 
 tier_hierarchy:
   description: |
@@ -141,20 +137,22 @@ regime_classification:
       interpretation: "Strong recursive resonance, collapse events tightly coupled"
 
 mathematical_identities:
-  - name: "Fractal dimension bounds"
-    formula: "1 ≤ D_f ≤ 3"
-    tolerance: 1.0e-6
-    description: "Fractal dimension constrained by embedding space (3D)"
+  description: "RCFT mathematical identity relationships"
+  identities:
+    - name: "Fractal dimension bounds"
+      formula: "1 ≤ D_f ≤ 3"
+      tolerance: 1.0e-6
+      description: "Fractal dimension constrained by embedding space (3D)"
 
-  - name: "Phase periodicity"
-    formula: "Θ(t + T) = Θ(t) mod 2π"
-    tolerance: 1.0e-6
-    description: "Phase angle is periodic with period T"
+    - name: "Phase periodicity"
+      formula: "Θ(t + T) = Θ(t) mod 2π"
+      tolerance: 1.0e-6
+      description: "Phase angle is periodic with period T"
 
-  - name: "Wavelength-frequency relation"
-    formula: "λ_p · f = v_phase"
-    tolerance: 1.0e-6
-    description: "Pattern wavelength relates to oscillation frequency"
+    - name: "Wavelength-frequency relation"
+      formula: "λ_p · f = v_phase"
+      tolerance: 1.0e-6
+      description: "Pattern wavelength relates to oscillation frequency"
 
 tolerances:
   description: "RCFT-specific numerical tolerances (Tier-2)"
@@ -207,7 +205,7 @@ provenance:
   created_by: "UMCP-RCFT Working Group"
   created_date: "2026-01-18"
   git_commit: "bfa6f58"
-  parent_framework: "UMCP.GCD.v1"
+  parent_framework: "UMCP.CANON.GCD.v1"
   references:
     - "Recursive Collapse Field Theory (RCFT) framework"
     - "Fractal analysis in collapse dynamics"

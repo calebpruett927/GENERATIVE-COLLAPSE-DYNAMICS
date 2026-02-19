@@ -1,17 +1,14 @@
-schema: canon.anchors.schema.json
+schema: canon.domain_anchors.schema.json
 id: UMCP.CANON.NUC.v1
 version: 1.0.0
 created: '2026-02-08'
-
-scope:
-  hierarchy: GCD → NUC (Tier-2 domain expansion)
-  description: |
-    Nuclear Physics canonical anchors for UMCP.
-    Maps nuclear binding, decay dynamics, shell structure, and fissility
-    into the GCD invariant framework.  The iron peak (Ni-62, BE/A = 8.7945
-    MeV/nucleon) serves as the collapse attractor, with both fusion (light
-    side) and decay/fission (heavy side) converging on it — the "double-
-    sided collapse" (AX-N4).
+hierarchy: "GCD → NUC (Tier-2 domain expansion)"
+scope: >
+  Nuclear Physics canonical anchors for UMCP. Maps nuclear binding, decay dynamics,
+  shell structure, and fissility into the GCD invariant framework. The iron peak
+  (Ni-62, BE/A = 8.7945 MeV/nucleon) serves as the collapse attractor, with both
+  fusion (light side) and decay/fission (heavy side) converging on it — the
+  double-sided collapse (AX-N4).
 
     Frozen choices (per expert review, 2026-02-08):
       - Lifetime: mean lifetime τ = T½/ln(2), not half-life T½
@@ -21,6 +18,7 @@ scope:
 
 axioms:
   - id: AX-0
+    name: "Collapse is generative"
     statement: Collapse is generative
     source: GCD Tier-1 (inherited, frozen)
     nuc_realization: |
@@ -30,6 +28,7 @@ axioms:
       configurations of decreasing mass-per-nucleon.
 
   - id: AX-1
+    name: "Boundary defines interior"
     statement: Boundary defines interior
     source: GCD Tier-1 (inherited, frozen)
     nuc_realization: |
@@ -38,6 +37,7 @@ axioms:
       barrier defines the boundary for alpha decay and fission.
 
   - id: AX-2
+    name: "Entropy measures determinacy"
     statement: Entropy measures determinacy
     source: GCD Tier-1 (inherited, frozen)
     nuc_realization: |
@@ -46,6 +46,7 @@ axioms:
       relative to the strong force binding, driving radioactive decay.
 
   - id: AX-N0
+    name: "Iron peak is the collapse attractor"
     statement: Iron peak is the collapse attractor
     source: NUC.INTSTACK.v1
     nuc_realization: |
@@ -55,6 +56,7 @@ axioms:
       the thermodynamic limit.
 
   - id: AX-N1
+    name: "Half-life is the return time τ_R"
     statement: Half-life is the return time τ_R
     source: NUC.INTSTACK.v1
     nuc_realization: |
@@ -64,6 +66,7 @@ axioms:
       Frozen choice: use mean lifetime, not half-life.
 
   - id: AX-N2
+    name: "Gamow tunneling governs decay scaling"
     statement: Gamow tunneling governs decay scaling
     source: NUC.INTSTACK.v1
     nuc_realization: |
@@ -74,6 +77,7 @@ axioms:
       the nuclear Coulomb barrier.
 
   - id: AX-N3
+    name: "Mass is an entropy reservoir"
     statement: Mass is an entropy reservoir (substrate axiom)
     source: NUC.INTSTACK.v1
     nuc_realization: |
@@ -83,6 +87,7 @@ axioms:
       determines stability.
 
   - id: AX-N4
+    name: "Collapse converges from both sides"
     statement: Collapse converges from both sides
     source: NUC.INTSTACK.v1
     nuc_realization: |
@@ -235,57 +240,59 @@ umcp_invariant_mapping:
         τ → 0 for superheavy elements.
 
 regime_gates:
-  - name: Binding deficit gate
-    parameter: omega_eff
-    thresholds:
-      Peak: omega_eff < 0.01
-      Plateau: 0.01 ≤ omega_eff < 0.05
-      Slope: 0.05 ≤ omega_eff < 0.15
-      Deficit: omega_eff ≥ 0.15
-    umcp_mapping:
-      Peak: Stable
-      Plateau: Stable
-      Slope: Watch
-      Deficit: Collapse
+  description: "Regime classification gates for nuclear physics"
+  gates:
+    - name: Binding deficit gate
+      parameter: omega_eff
+      thresholds:
+        Peak: omega_eff < 0.01
+        Plateau: 0.01 ≤ omega_eff < 0.05
+        Slope: 0.05 ≤ omega_eff < 0.15
+        Deficit: omega_eff ≥ 0.15
+      umcp_mapping:
+        Peak: Stable
+        Plateau: Stable
+        Slope: Watch
+        Deficit: Collapse
 
-  - name: Decay urgency gate
-    parameter: log10_tau_s
-    thresholds:
-      Eternal: log₁₀(τ/s) > 24.5
-      Geological: 10.5 < log₁₀(τ/s) ≤ 24.5
-      Laboratory: -3 ≤ log₁₀(τ/s) ≤ 10.5
-      Ephemeral: log₁₀(τ/s) < -3
-    umcp_mapping:
-      Eternal: Stable
-      Geological: Watch
-      Laboratory: Watch
-      Ephemeral: Collapse
+    - name: Decay urgency gate
+      parameter: log10_tau_s
+      thresholds:
+        Eternal: log₁₀(τ/s) > 24.5
+        Geological: 10.5 < log₁₀(τ/s) ≤ 24.5
+        Laboratory: -3 ≤ log₁₀(τ/s) ≤ 10.5
+        Ephemeral: log₁₀(τ/s) < -3
+      umcp_mapping:
+        Eternal: Stable
+        Geological: Watch
+        Laboratory: Watch
+        Ephemeral: Collapse
 
-  - name: Fissility gate
-    parameter: fissility_x
-    thresholds:
-      Subfissile: x < 0.70
-      Transitional: 0.70 ≤ x < 0.90
-      Fissile: 0.90 ≤ x < 1.00
-      Supercritical: x ≥ 1.00
-    umcp_mapping:
-      Subfissile: Stable
-      Transitional: Watch
-      Fissile: Collapse
-      Supercritical: Collapse
+    - name: Fissility gate
+      parameter: fissility_x
+      thresholds:
+        Subfissile: x < 0.70
+        Transitional: 0.70 ≤ x < 0.90
+        Fissile: 0.90 ≤ x < 1.00
+        Supercritical: x ≥ 1.00
+      umcp_mapping:
+        Subfissile: Stable
+        Transitional: Watch
+        Fissile: Collapse
+        Supercritical: Collapse
 
-  - name: Shell structure gate
-    parameter: magic_proximity
-    thresholds:
-      DoublyMagic: both Z and N magic
-      SinglyMagic: one of Z, N magic
-      NearMagic: within ±2 of magic
-      MidShell: far from magic
-    umcp_mapping:
-      DoublyMagic: Stable
-      SinglyMagic: Stable
-      NearMagic: Watch
-      MidShell: Watch
+    - name: Shell structure gate
+      parameter: magic_proximity
+      thresholds:
+        DoublyMagic: both Z and N magic
+        SinglyMagic: one of Z, N magic
+        NearMagic: within ±2 of magic
+        MidShell: far from magic
+      umcp_mapping:
+        DoublyMagic: Stable
+        SinglyMagic: Stable
+        NearMagic: Watch
+        MidShell: Watch
 
 budget_identity_analog:
   description: |

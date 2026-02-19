@@ -8,11 +8,11 @@ The **canon** directory contains the authoritative specifications for UMCP's mat
 canon/
 ├── README.md              # This file
 ├── anchors.yaml           # UMCP.CANON.v1 - Base framework
-├── gcd_anchors.yaml       # UMCP.GCD.v1 - Tier-1 invariant structure (GCD)
-├── rcft_anchors.yaml      # UMCP.RCFT.v1 - Tier-2 domain expansion (RCFT)
-├── kin_anchors.yaml       # UMCP.KIN.v1 - Tier-0 diagnostic (Kinematics)
-├── astro_anchors.yaml     # UMCP.ASTRO.v1 - Tier-2 domain expansion (Astronomy)
-├── weyl_anchors.yaml      # UMCP.WEYL.v1 - Weyl geometry extension
+├── gcd_anchors.yaml       # UMCP.CANON.GCD.v1 - Tier-1 invariant structure (GCD)
+├── rcft_anchors.yaml      # UMCP.CANON.RCFT.v1 - Tier-2 domain expansion (RCFT)
+├── kin_anchors.yaml       # UMCP.CANON.KIN.v1 - Tier-0 diagnostic (Kinematics)
+├── astro_anchors.yaml     # UMCP.CANON.ASTRO.v1 - Tier-2 domain expansion (Astronomy)
+├── weyl_anchors.yaml      # UMCP.CANON.WEYL.v1 - Weyl geometry extension
 └── docs/
     └── validator_usage.md # Validation guidance
 ```
@@ -22,11 +22,11 @@ canon/
 | Tier | Canon File | Framework | Description |
 |------|------------|-----------|-------------|
 | Base | [anchors.yaml](anchors.yaml) | UMCP.CANON.v1 | Base framework: hygiene rules, DOI anchors, contract defaults |
-| 1 | [gcd_anchors.yaml](gcd_anchors.yaml) | UMCP.GCD.v1 | Invariant structure: frozen structural identities (ω, F, S, C, τ_R, κ, IC) |
-| 0-diag | [kin_anchors.yaml](kin_anchors.yaml) | UMCP.KIN.v1 | Protocol diagnostic: kinematics control experiments (x, v, a, E_kin, τ_kin, K_stability) |
-| 2 | [astro_anchors.yaml](astro_anchors.yaml) | UMCP.ASTRO.v1 | Domain expansion: stellar luminosity, orbital mechanics, spectral analysis |
-| 2 | [weyl_anchors.yaml](weyl_anchors.yaml) | UMCP.WEYL.v1 | Domain expansion: conformal symmetry, curvature invariants |
-| 2 | [rcft_anchors.yaml](rcft_anchors.yaml) | UMCP.RCFT.v1 | Domain expansion: recursive collapse field theory (D_f, Ψ_r, λ_p, Θ) |
+| 1 | [gcd_anchors.yaml](gcd_anchors.yaml) | UMCP.CANON.GCD.v1 | Invariant structure: frozen structural identities (ω, F, S, C, τ_R, κ, IC) |
+| 0-diag | [kin_anchors.yaml](kin_anchors.yaml) | UMCP.CANON.KIN.v1 | Protocol diagnostic: kinematics control experiments (x, v, a, E_kin, τ_kin, K_stability) |
+| 2 | [astro_anchors.yaml](astro_anchors.yaml) | UMCP.CANON.ASTRO.v1 | Domain expansion: stellar luminosity, orbital mechanics, spectral analysis |
+| 2 | [weyl_anchors.yaml](weyl_anchors.yaml) | UMCP.CANON.WEYL.v1 | Domain expansion: conformal symmetry, curvature invariants |
+| 2 | [rcft_anchors.yaml](rcft_anchors.yaml) | UMCP.CANON.RCFT.v1 | Domain expansion: recursive collapse field theory (D_f, Ψ_r, λ_p, Θ) |
 
 ## Key Principles
 
@@ -54,7 +54,7 @@ The base canon anchor defines:
 
 **Schema**: [schemas/canon.anchors.schema.json](../schemas/canon.anchors.schema.json)
 
-### gcd_anchors.yaml (UMCP.GCD.v1)
+### gcd_anchors.yaml (UMCP.CANON.GCD.v1)
 
 The Tier-1 GCD anchor defines:
 - **Axioms**: AX-0 (Collapse is generative), AX-1 (Boundary defines interior), AX-2 (Entropy measures determinacy)
@@ -63,7 +63,7 @@ The Tier-1 GCD anchor defines:
 - **Tolerances**: tol_seam = 0.005, tol_identity = 1e-9
 - **Typed censoring**: INF_REC, UNIDENTIFIABLE
 
-### kin_anchors.yaml (UMCP.KIN.v1)
+### kin_anchors.yaml (UMCP.CANON.KIN.v1)
 
 The Tier-1 Kinematics extension defines:
 - **Axioms**: KIN-AX-0 (Phase Space Closure), KIN-AX-1 (Return Time Finiteness), KIN-AX-2 (Conservation Closure), KIN-AX-3 (Stability Finiteness)
@@ -73,7 +73,7 @@ The Tier-1 Kinematics extension defines:
 - **Return time**: τ_kin - phase space return detection
 - **Stability index**: K_stability ∈ [0, 1]
 
-### rcft_anchors.yaml (UMCP.RCFT.v1)
+### rcft_anchors.yaml (UMCP.CANON.RCFT.v1)
 
 The Tier-2 RCFT overlay defines:
 - **Extension symbols**: D_f (fractal dimension), Ψ_r (recursive field), λ_p (pattern wavelength), Θ (phase angle)
@@ -81,7 +81,7 @@ The Tier-2 RCFT overlay defines:
 - **Recursive regime classification**: Dormant, Active, Resonant
 - **Computational notes**: Box-counting, FFT analysis, series convergence
 
-### astro_anchors.yaml (UMCP.ASTRO.v1)
+### astro_anchors.yaml (UMCP.CANON.ASTRO.v1)
 
 The Tier-1 Astronomy extension defines:
 - **Axioms**: AX-A0 (Inverse square law anchors distance), AX-A1 (Mass determines stellar fate), AX-A2 (Spectral class encodes temperature), AX-A3 (Kepler's laws govern bound orbits)
@@ -90,7 +90,7 @@ The Tier-1 Astronomy extension defines:
 - **Regime classifications**: Luminosity deviation, spectral fit, orbital stability, distance confidence
 - **Closures**: stellar_luminosity, orbital_mechanics, spectral_analysis, distance_ladder, gravitational_dynamics, stellar_evolution
 
-### weyl_anchors.yaml (UMCP.WEYL.v1)
+### weyl_anchors.yaml (UMCP.CANON.WEYL.v1)
 
 The Tier-1 Weyl geometry extension defines:
 - **Extension symbols**: W_μν (Weyl tensor), C_inv (conformal invariant), R_s (Ricci scalar)
@@ -191,11 +191,11 @@ print(f"Collapse: ω ≥ {regimes['collapse']['omega_gte']}")
 | File | Canon ID | Version | Created |
 |------|----------|---------|---------|
 | anchors.yaml | UMCP.CANON.v1 | 1.0.0 | 2026-01-18 |
-| gcd_anchors.yaml | UMCP.GCD.v1 | 1.0.0 | 2026-01-18 |
-| kin_anchors.yaml | UMCP.KIN.v1 | 1.0.0 | 2026-01-18 |
-| rcft_anchors.yaml | UMCP.RCFT.v1 | 1.0.0 | 2026-01-18 |
-| astro_anchors.yaml | UMCP.ASTRO.v1 | 1.0.0 | 2026-02-07 |
-| weyl_anchors.yaml | UMCP.WEYL.v1 | 1.0.0 | 2026-01-18 |
+| gcd_anchors.yaml | UMCP.CANON.GCD.v1 | 1.0.0 | 2026-01-18 |
+| kin_anchors.yaml | UMCP.CANON.KIN.v1 | 1.0.0 | 2026-01-18 |
+| rcft_anchors.yaml | UMCP.CANON.RCFT.v1 | 1.0.0 | 2026-01-18 |
+| astro_anchors.yaml | UMCP.CANON.ASTRO.v1 | 1.0.0 | 2026-02-07 |
+| weyl_anchors.yaml | UMCP.CANON.WEYL.v1 | 1.0.0 | 2026-01-18 |
 
 ---
 

@@ -1,4 +1,4 @@
-# Astronomy Canon Anchor (UMCP.ASTRO.v1)
+# Astronomy Canon Anchor (UMCP.CANON.ASTRO.v1)
 # Observational Astronomy — Tier-2 Domain Expansion
 #
 # Interconnections:
@@ -12,23 +12,20 @@
 # Term definitions: GLOSSARY.md#astronomy-framework
 # Symbol lookup: SYMBOL_INDEX.md#astronomy-reserved-symbols
 
-schema: canon.anchors.schema.json
-id: UMCP.ASTRO.v1
+schema: canon.domain_anchors.schema.json
+id: "UMCP.CANON.ASTRO.v1"
 version: "1.0.0"
 created: "2026-02-07"
-
-scope:
-  hierarchy: "ASTRO > GCD > UMCP (astronomical realization)"
-  tier: 1
-  description: |
-    Astronomy framework provides the observational-science realization of GCD
-    principles. ASTRO maps stellar, orbital, spectral, and distance observables
-    to UMCP invariants through physically motivated embeddings.
-    Core principle: The inverse square law (AX-A0) anchors all astronomical
-    distance measurements, just as the GCD collapse boundary anchors drift.
+hierarchy: "ASTRO > GCD > UMCP (astronomical realization)"
+scope: >
+  Astronomy framework provides the observational-science realization of GCD principles.
+  ASTRO maps stellar, orbital, spectral, and distance observables to UMCP invariants
+  through physically motivated embeddings. Core principle: The inverse square law (AX-A0)
+  anchors all astronomical distance measurements, just as the GCD collapse boundary anchors drift.
 
 axioms:
   - id: AX-A0
+    name: "Inverse square law anchors distance"
     statement: "Inverse square law anchors distance"
     description: |
       All astronomical distances derive from F = L/(4πd²). The distance modulus
@@ -38,6 +35,7 @@ axioms:
       intrinsic luminosity.
 
   - id: AX-A1
+    name: "Mass determines stellar fate"
     statement: "Mass determines stellar fate"
     description: |
       The mass-luminosity relation (L ∝ M^α) is the fundamental driver of
@@ -46,6 +44,7 @@ axioms:
       conditions (mass) dictate the full evolutionary trajectory.
 
   - id: AX-A2
+    name: "Spectral class encodes temperature"
     statement: "Spectral class encodes temperature"
     description: |
       Wien's displacement law (λ_peak = b/T) and the Planck spectrum encode
@@ -53,6 +52,7 @@ axioms:
       is a monotone temperature ordering embedded to [0,1].
 
   - id: AX-A3
+    name: "Kepler's laws govern bound orbits"
     statement: "Kepler's laws govern bound orbits"
     description: |
       For gravitationally bound two-body systems, P² = (4π²/GM)·a³.

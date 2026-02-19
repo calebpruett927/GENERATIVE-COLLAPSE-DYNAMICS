@@ -1,4 +1,4 @@
-# Kinematics Canon Anchor (UMCP.KIN.v1)
+# Kinematics Canon Anchor (UMCP.CANON.KIN.v1)
 # Kinematics Extension - Physics-Based Motion Layer
 #
 # Interconnections:
@@ -12,27 +12,26 @@
 # Complete term definitions: ../GLOSSARY.md#kinematics-reserved-symbols
 # Symbol lookup: ../SYMBOL_INDEX.md#kinematics-symbols
 
-schema: canon.anchors.schema.json
-id: UMCP.KIN.v1
+schema: canon.domain_anchors.schema.json
+id: "UMCP.CANON.KIN.v1"
 version: "1.0.0"
 created: "2026-01-27"
-
-scope:
-  hierarchy: "KIN > UMA (kinematics extension)"
-  tier: 1
-  description: |
-    Kinematics Extension provides a physics-based layer for motion within UMCP.
-    Maps classical mechanics (position, velocity, acceleration, energy, momentum)
-    to UMCP's return axiom via phase space (x,v).
+hierarchy: "KIN > UMA (kinematics extension)"
+scope: >
+  Kinematics Extension provides a physics-based layer for motion within UMCP.
+  Maps classical mechanics (position, velocity, acceleration, energy, momentum)
+  to UMCP's return axiom via phase space (x,v).
 
 axioms:
   - id: KIN-AX-0
+    name: "Phase Space Closure"
     statement: "Phase Space Closure"
     description: |
       Every kinematic observable must map to a point in phase space Γ_kin.
       Γ_kin = {(x, v) : x ∈ [0,1], v ∈ [0,1]}
 
   - id: KIN-AX-1
+    name: "Return Time Finiteness"
     statement: "Return Time Finiteness"
     description: |
       For periodic motion: τ_kin < ∞ (motion returns through phase space).
@@ -40,12 +39,14 @@ axioms:
       This connects to UMCP's core axiom: "What returns is real."
 
   - id: KIN-AX-2
+    name: "Conservation Closure"
     statement: "Conservation Closure"
     description: |
       Conserved quantities (momentum, mechanical energy in conservative systems)
       define invariant subspaces in phase space.
 
   - id: KIN-AX-3
+    name: "Stability Finiteness"
     statement: "Stability Finiteness"
     description: |
       Stable motion satisfies K_stability ∈ [0, 1].
@@ -171,24 +172,26 @@ closures:
     description: "K_stability index and regime classification"
 
 mathematical_identities:
-  - id: "KIN-ID-1"
-    name: "Kinetic Energy"
-    formula: "E_kin = (1/2) * m * v²"
-  - id: "KIN-ID-2"
-    name: "Gravitational Potential"
-    formula: "E_pot = m * g * h"
-  - id: "KIN-ID-3"
-    name: "Mechanical Energy Conservation"
-    formula: "E_mech = E_kin + E_pot = const (conservative)"
-  - id: "KIN-ID-4"
-    name: "Momentum Definition"
-    formula: "p = m * v"
-  - id: "KIN-ID-5"
-    name: "Impulse-Momentum"
-    formula: "J = Δp = F * Δt"
-  - id: "KIN-ID-6"
-    name: "Angular Momentum"
-    formula: "L = I * ω"
-  - id: "KIN-ID-7"
-    name: "Phase Magnitude"
-    formula: "|γ| = √(x² + v²)"
+  description: "Kinematics mathematical identity relationships"
+  identities:
+    - id: "KIN-ID-1"
+      name: "Kinetic Energy"
+      formula: "E_kin = (1/2) * m * v²"
+    - id: "KIN-ID-2"
+      name: "Gravitational Potential"
+      formula: "E_pot = m * g * h"
+    - id: "KIN-ID-3"
+      name: "Mechanical Energy Conservation"
+      formula: "E_mech = E_kin + E_pot = const (conservative)"
+    - id: "KIN-ID-4"
+      name: "Momentum Definition"
+      formula: "p = m * v"
+    - id: "KIN-ID-5"
+      name: "Impulse-Momentum"
+      formula: "J = Δp = F * Δt"
+    - id: "KIN-ID-6"
+      name: "Angular Momentum"
+      formula: "L = I * ω"
+    - id: "KIN-ID-7"
+      name: "Phase Magnitude"
+      formula: "|γ| = √(x² + v²)"

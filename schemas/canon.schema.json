@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/canon.schema.json",
+  "title": "UMCP Canon Files (union schema)",
+  "description": "Union schema for all canon/*.yaml files. Accepts both the root anchors.yaml format (with umcp_canon wrapper) and domain-specific anchor formats (flat with id/version). Specific schemas: canon.anchors.schema.json (anchors.yaml), canon.domain_anchors.schema.json (*_anchors.yaml).",
+  "oneOf": [
+    {
+      "type": "object",
+      "description": "Root anchors.yaml format (umcp_canon wrapper)",
+      "required": ["schema", "umcp_canon"],
+      "properties": {
+        "schema": { "type": "string" },
+        "umcp_canon": { "type": "object" }
+      }
+    },
+    {
+      "type": "object",
+      "description": "Domain anchor format (flat with id/version)",
+      "required": ["schema", "id", "version"],
+      "properties": {
+        "schema": { "type": "string" },
+        "id": {
+          "type": "string",
+          "pattern": "^UMCP\\.CANON\\..+\\.v\\d+$"
+        },
+        "version": { "type": "string" }
+      }
+    }
+  ]
+}

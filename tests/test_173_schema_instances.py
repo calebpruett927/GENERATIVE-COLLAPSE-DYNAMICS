@@ -148,6 +148,8 @@ class TestAllSchemasLoadable:
         "schema_name",
         [
             "canon.anchors.schema.json",
+            "canon.domain_anchors.schema.json",
+            "canon.schema.json",
             "closures.schema.json",
             "closures_registry.schema.json",
             "contract.schema.json",

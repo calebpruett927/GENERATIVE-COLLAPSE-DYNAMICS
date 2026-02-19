@@ -1,7 +1,7 @@
 # canon/atom_anchors.yaml
 # Atomic Physics Canon Anchors — UMCP.CANON.ATOM.v1
 # Cross-references: contracts/ATOM.INTSTACK.v1.yaml, closures/atomic_physics/
-schema: canon.anchors.schema.json
+schema: canon.domain_anchors.schema.json
 id: "UMCP.CANON.ATOM.v1"
 version: "1.0.0"
 domain: "Atomic Physics"

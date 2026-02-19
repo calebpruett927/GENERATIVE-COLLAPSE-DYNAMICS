@@ -1,7 +1,7 @@
 # Astronomy Complete Casepack
 
-**Contract:** `ASTRO.INTSTACK.v1`  
-**Canon Anchor:** `UMCP.ASTRO.v1`  
+**Contract:** `ASTRO.INTSTACK.v1`
+**Canon Anchor:** `UMCP.CANON.ASTRO.v1`
 **Status:** CONFORMANT
 
 ## Overview

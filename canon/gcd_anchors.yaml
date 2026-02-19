@@ -1,4 +1,4 @@
-# GCD Canon Anchor (UMCP.GCD.v1)
+# GCD Canon Anchor (UMCP.CANON.GCD.v1)
 # Generative Collapse Dynamics - Tier-1 Framework
 #
 # Interconnections:
@@ -13,21 +13,19 @@
 # Symbol lookup: ../SYMBOL_INDEX.md#tier-1-gcd-reserved-symbols
 # Term index: ../TERM_INDEX.md#g
 
-schema: canon.anchors.schema.json
-id: UMCP.GCD.v1
+schema: canon.domain_anchors.schema.json
+id: "UMCP.CANON.GCD.v1"
 version: "1.0.0"
 created: "2026-01-18"
-
-scope:
-  hierarchy: "GCD > UMCP (contract-first)"
-  tier: 1
-  description: |
-    Generative Collapse Dynamics (GCD) provides the foundational grammar for collapse-driven systems.
-    GCD defines Tier-1 invariants that cannot be redefined by domain programmes or overlays.
-    UMCP implements GCD principles through contract-first metadata protocols.
+hierarchy: "GCD > UMCP (contract-first)"
+scope: >
+  Generative Collapse Dynamics (GCD) provides the foundational grammar for collapse-driven
+  systems. GCD defines Tier-1 invariants that cannot be redefined by domain programmes or
+  overlays. UMCP implements GCD principles through contract-first metadata protocols.
 
 axioms:
   - id: AX-0
+    name: "Collapse is generative"
     statement: "Collapse is generative"
     description: |
       The primary axiom of GCD: collapse events are not terminal failures but generative processes
@@ -35,12 +33,14 @@ axioms:
       boundary, making collapse the fundamental truth of the system.
 
   - id: AX-1
+    name: "Boundary defines interior"
     statement: "Boundary defines interior"
     description: |
       The collapse boundary (ω ≥ 0.30) defines what is stable. Distance from collapse determines
       system behavior. Watch and Stable regimes are measured by their proximity to collapse.
 
   - id: AX-2
+    name: "Entropy measures determinacy"
     statement: "Entropy measures determinacy"
     description: |
       Bernoulli field entropy (S) quantifies system uncertainty. S=0 represents perfect determinacy;

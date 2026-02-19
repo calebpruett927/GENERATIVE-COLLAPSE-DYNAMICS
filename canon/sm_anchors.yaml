@@ -1,7 +1,7 @@
 # canon/sm_anchors.yaml
 # Standard Model Canon Anchors — UMCP.CANON.SM.v1
 # Cross-references: contracts/SM.INTSTACK.v1.yaml, closures/standard_model/
-schema: canon.anchors.schema.json
+schema: canon.domain_anchors.schema.json
 id: "UMCP.CANON.SM.v1"
 version: "1.0.0"
 domain: "Standard Model (Particle Physics)"

@@ -1,4 +1,4 @@
-schema: canon.anchors.schema.json
+schema: canon.domain_anchors.schema.json
 id: "UMCP.CANON.MATL.v1"
 version: "1.0.0"
 domain: "Materials Science"

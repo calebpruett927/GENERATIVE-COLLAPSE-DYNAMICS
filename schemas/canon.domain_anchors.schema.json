@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/canon.domain_anchors.schema.json",
+  "title": "UMCP Domain Canon Anchors",
+  "description": "Schema for domain-specific canon anchor files (atomic, nuclear, quantum, standard model, etc.). Requires id, version, and schema reference; domain-specific keys are permitted.",
+  "type": "object",
+  "required": ["schema", "id", "version"],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "description": "Schema reference for this anchor file"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^UMCP\\.CANON\\..+\\.v\\d+$",
+      "description": "Canon identifier (e.g., UMCP.CANON.ATOM.v1)"
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version of this anchor file"
+    },
+    "domain": {
+      "type": "string",
+      "description": "Human-readable domain name"
+    },
+    "hierarchy": {
+      "type": "string",
+      "description": "Tier hierarchy path (e.g., GCD > ATOM (Tier-2))"
+    },
+    "created": {
+      "type": "string",
+      "description": "Creation date (ISO 8601)"
+    },
+    "scope": {
+      "type": "string",
+      "description": "Scope description for this domain"
+    },
+    "description": {
+      "type": "string",
+      "description": "Full description of the domain anchors"
+    },
+    "axioms": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "statement"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "statement": { "type": "string" },
+          "frozen": { "type": "boolean" }
+        }
+      },
+      "description": "Domain-specific axioms"
+    },
+    "symbols": {
+      "type": "array",
+      "description": "Domain-specific symbols"
+    },
+    "regime_gates": {
+      "type": "object",
+      "description": "Regime classification gates"
+    },
+    "constants": {
+      "type": "object",
+      "description": "Domain-specific physical constants"
+    },
+    "closures": {
+      "type": "array",
+      "description": "Registered closure modules"
+    },
+    "lessons_learned": {
+      "type": "array",
+      "description": "Documented lessons from domain exploration"
+    },
+    "tier_1_invariants": {
+      "type": "object",
+      "description": "Tier-1 invariant references"
+    },
+    "umcp_invariant_mapping": {
+      "type": "object",
+      "description": "Mapping from domain observables to UMCP invariants"
+    },
+    "budget_identity_analog": {
+      "type": "object",
+      "description": "Domain-specific budget identity analog"
+    },
+    "reference": {
+      "type": "object",
+      "description": "Reference material for this domain"
+    },
+    "particle_count": {
+      "type": "object",
+      "description": "Particle count information (Standard Model)"
+    },
+    "tier_hierarchy": {
+      "type": "object",
+      "description": "Tier hierarchy specification"
+    },
+    "principles": {
+      "type": "array",
+      "description": "Domain principles"
+    },
+    "tier_2_extensions": {
+      "type": "object",
+      "description": "Tier-2 extension definitions"
+    },
+    "regime_classification": {
+      "type": "object",
+      "description": "Regime classification rules"
+    },
+    "mathematical_identities": {
+      "type": "object",
+      "description": "Mathematical identity definitions"
+    },
+    "tolerances": {
+      "type": "object",
+      "description": "Tolerance values"
+    },
+    "typed_censoring": {
+      "type": "object",
+      "description": "Typed censoring rules"
+    },
+    "frozen_parameters": {
+      "type": "object",
+      "description": "Frozen parameter values"
+    },
+    "regimes": {
+      "type": "object",
+      "description": "Regime definitions"
+    },
+    "gcd_extensions": {
+      "type": "object",
+      "description": "GCD extension definitions"
+    },
+    "provenance": {
+      "type": "object",
+      "description": "Provenance metadata"
+    },
+    "notes": {
+      "type": ["string", "array"],
+      "description": "Additional notes"
+    },
+    "computational_notes": {
+      "type": "object",
+      "description": "Computational implementation notes"
+    },
+    "anchors": {
+      "type": "object",
+      "description": "Named anchor references"
+    },
+    "nuclear_constants": {
+      "type": "object",
+      "description": "Nuclear physics constants"
+    },
+    "quantum_constants": {
+      "type": "object",
+      "description": "Quantum mechanics constants"
+    },
+    "astronomical_constants": {
+      "type": "object",
+      "description": "Astronomical constants"
+    },
+    "horndeski_constraints": {
+      "type": "object",
+      "description": "Horndeski theory constraints (Weyl)"
+    }
+  },
+  "additionalProperties": true
+}

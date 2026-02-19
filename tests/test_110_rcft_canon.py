@@ -36,21 +36,21 @@ def test_rcft_canon_exists():
 def test_rcft_canon_schema_reference(rcft_canon):
     """RCFT canon should reference the correct schema."""
     assert "schema" in rcft_canon
-    assert rcft_canon["schema"] == "canon.anchors.schema.json"
+    assert rcft_canon["schema"] == "canon.domain_anchors.schema.json"
 
 
 def test_rcft_canon_id_and_version(rcft_canon):
     """RCFT canon should have correct ID and version."""
-    assert rcft_canon["id"] == "UMCP.RCFT.v1"
+    assert rcft_canon["id"] == "UMCP.CANON.RCFT.v1"
     assert rcft_canon["version"] == "1.0.0"
 
 
 def test_rcft_canon_tier_hierarchy(rcft_canon):
     """RCFT should declare Tier-2 hierarchy."""
-    scope = rcft_canon["scope"]
-    assert scope["tier"] == 2
-    assert scope["parent_framework"] == "UMCP.GCD.v1"
-    assert "RCFT > GCD > UMCP" in scope["hierarchy"]
+    # scope is now a string; hierarchy is a top-level key
+    assert isinstance(rcft_canon["scope"], str)
+    assert "hierarchy" in rcft_canon
+    assert "RCFT > GCD > UMCP" in rcft_canon["hierarchy"]
 
 
 def test_rcft_tier1_frozen_symbols(rcft_canon):
@@ -145,7 +145,11 @@ def test_rcft_regime_classifications(rcft_canon):
 
 def test_rcft_mathematical_identities(rcft_canon):
     """RCFT should define mathematical identities."""
-    identities = rcft_canon["mathematical_identities"]
+    math_ids = rcft_canon["mathematical_identities"]
+    # mathematical_identities is now an object with description + identities list
+    assert isinstance(math_ids, dict)
+    assert "identities" in math_ids
+    identities = math_ids["identities"]
     assert len(identities) >= 3
 
     names = [i["name"] for i in identities]
@@ -224,4 +228,4 @@ def test_rcft_provenance(rcft_canon):
     assert "created_by" in provenance
     assert "created_date" in provenance
     assert "parent_framework" in provenance
-    assert provenance["parent_framework"] == "UMCP.GCD.v1"
+    assert provenance["parent_framework"] == "UMCP.CANON.GCD.v1"
