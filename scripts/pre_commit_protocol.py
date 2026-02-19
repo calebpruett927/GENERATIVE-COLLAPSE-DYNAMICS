@@ -580,6 +580,93 @@ def step_pytest(ctx: RepoContext) -> StepResult:
     )
 
 
+def step_repo_health(ctx: RepoContext, mode: str) -> StepResult:
+    """Step 6½: Repository Health Check — detect drift, sync versions, verify freeze.
+
+    Ensures every satellite file uses the canonical (latest) version,
+    freeze hashes match current files, manifest refs exist, and no merge
+    conflict markers remain.  In fix mode, auto-corrects what it can.
+
+    This is the "assume latest" enforcer — it runs before integrity
+    checksums so any auto-fixed files get included in the hash sweep.
+    """
+    t0 = time.monotonic()
+
+    # Import from scripts/ — add to path temporarily
+    scripts_dir = str(ctx.scripts_dir)
+    orig_path = sys.path[:]
+    if scripts_dir not in sys.path:
+        sys.path.insert(0, scripts_dir)
+
+    try:
+        from repo_health_check import run_health_check, sync_version
+
+        # Always sync version first (proactive, not reactive)
+        if mode == "fix":
+            synced = sync_version(ctx.root, quiet=True)
+        else:
+            synced = 0
+
+        # Run the full health check (with fix in fix mode)
+        health_report = run_health_check(ctx.root, fix=(mode == "fix"))
+
+        errors = health_report.error_count
+        warnings = health_report.warn_count
+        checks = len(health_report.checked)
+
+        # Re-stage any files changed by auto-fix or version sync
+        if mode == "fix" and (synced > 0 or errors > 0):
+            _run(["git", "add", "-A"], cwd=ctx.root)
+
+        if errors > 0:
+            # Summarize first 3 errors
+            err_msgs = [f.message for f in health_report.findings if f.severity.value == "ERROR"][:3]
+            detail = "; ".join(err_msgs)
+            msg = f"{errors} error(s), {warnings} warning(s) across {checks} checks: {detail}"
+            status = StepStatus.FAIL
+        elif warnings > 0:
+            msg = f"PASS with {warnings} warning(s) across {checks} checks"
+            if synced:
+                msg += f" [{synced} file(s) synced]"
+            status = StepStatus.WARN
+        else:
+            msg = f"All {checks} checks clean"
+            if synced:
+                msg += f" [{synced} file(s) synced]"
+            status = StepStatus.PASS
+
+    except Exception as e:
+        # Fallback: run as subprocess
+        fix_flag = ["--fix"] if mode == "fix" else []
+        result = _run(
+            [ctx.python_exe, str(ctx.scripts_dir / "repo_health_check.py"), "--json", *fix_flag],
+            cwd=ctx.root,
+            timeout=60,
+        )
+        try:
+            data = json.loads(result.stdout)
+            errors = data.get("errors", 0)
+            warnings = data.get("warnings", 0)
+            status_str = data.get("status", "UNKNOWN")
+            status = StepStatus.PASS if status_str == "PASS" else StepStatus.FAIL
+            msg = f"{status_str}: {errors} error(s), {warnings} warning(s)"
+        except (json.JSONDecodeError, KeyError):
+            status = StepStatus.WARN
+            msg = f"Health check subprocess failed: {e}"
+            errors = 0
+    finally:
+        sys.path[:] = orig_path
+
+    return StepResult(
+        name="repo health",
+        status=status,
+        duration_s=time.monotonic() - t0,
+        message=msg,
+        fixed_count=synced if "synced" in dir() else 0,
+        blocking=True,  # Errors block; warnings don't (status=WARN passes)
+    )
+
+
 def step_umcp_validate(ctx: RepoContext) -> StepResult:
     """Step 7: umcp validate — contract validation (must be CONFORMANT).
 
@@ -642,12 +729,21 @@ def step_umcp_validate(ctx: RepoContext) -> StepResult:
 # ── Protocol Runner ──────────────────────────────────────────────
 
 # Step registry: (display_label, function_key)
+# Order matters:
+#   1-4: Code quality (bounds, format, lint, types)
+#   5:   Stage files
+#   6:   Repo Health — version sync + drift detection (before integrity!)
+#   7:   Test count
+#   8:   Update integrity checksums (after health fix so fixed files get hashed)
+#   9:   Pytest bounds
+#   10:  UMCP validate
 _STEP_REGISTRY: list[tuple[str, str]] = [
     ("Manifold Bounds", "bounds"),
     ("Ruff Format", "ruff_format"),
     ("Ruff Lint", "ruff_lint"),
     ("Mypy Type Check", "mypy"),
     ("Stage Files", "stage"),
+    ("Repo Health", "health"),
     ("Update Test Count", "test_count"),
     ("Update Integrity", "integrity"),
     ("Pytest Bounds", "pytest"),
@@ -673,6 +769,7 @@ def run_protocol(ctx: RepoContext, mode: str = "fix") -> ProtocolReport:
         "ruff_lint": lambda: step_ruff_lint(ctx, mode),
         "mypy": lambda: step_mypy(ctx),
         "stage": lambda: step_stage_files(ctx),
+        "health": lambda: step_repo_health(ctx, mode),
         "test_count": lambda: step_update_test_count(ctx),
         "integrity": lambda: step_update_integrity(ctx),
         "pytest": lambda: step_pytest(ctx),
