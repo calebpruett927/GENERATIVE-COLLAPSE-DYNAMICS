@@ -3,56 +3,56 @@ schema: "schemas/closures.schema.json"
 closure:
   kind: "trust_baseline"
   id: "SECURITY.TRUST.baseline.v1"
-  
+
   trust_baseline:
     # Frozen trust baseline - the "return domain" for security
     # Analogous to return_domain.window64.v1.yaml
-    
+
     # Baseline computation method
     method: "rolling_median"
     window: 64  # samples
-    
+
     # Baseline signals (what "normal" looks like)
     baseline_signals:
       file_access_rate:
         normal_range: [0, 50]  # files per minute
         unit: "files/min"
-        
+
       network_bandwidth:
         normal_range: [0, 100]  # MB per minute
         unit: "MB/min"
-        
+
       process_count:
         normal_range: [50, 300]
         unit: "processes"
-        
+
       failed_auth_rate:
         normal_range: [0, 3]  # per hour
         unit: "attempts/hour"
-        
+
       privilege_changes:
         normal_range: [0, 2]  # per day
         unit: "changes/day"
-        
+
   norms:
     # Proximity norm for return detection
     # Analogous to norms.l2_eta1e-3.v1.yaml
     norm: "L2"
     eta_baseline: 0.01  # Must match contract frozen parameter
-    
+
   return_domain:
     # Which historical states are eligible as baselines
     # Analogous to D_θ(t) in UMCP
     horizon: 64         # H_rec samples
     exclude_anomalies: true  # Don't use known-bad states as baseline
     require_stable: true     # Only use states that were previously stable
-    
+
   notes: >
     Tier-0 closure defining the trust baseline for security return detection.
     τ_A (anomaly return time) measures how long until security state
     returns to this frozen baseline.
-    
+
     "No return, no credit" - entities that never return to baseline
     do not earn trust (τ_A = INF_ANOMALY).
-    
+
   extensions: {}

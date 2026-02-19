@@ -269,5 +269,11 @@ paper/*.out
 paper/*.log
 paper/*.fdb_latexmk
 paper/*.fls
+paper/*.synctex
+paper/*.synctex.gz
+paper/*.synctex(busy)
+paper/*.toc
+paper/*.run.xml
+paper/*.bcf
 paper/*Notes.bib
 paper/generated_demo.*

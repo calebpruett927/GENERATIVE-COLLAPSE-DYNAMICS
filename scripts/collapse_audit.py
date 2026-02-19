@@ -224,7 +224,7 @@ Budget Equation:
 
 Seam Types:
   Type I:   Δκ = 0, s = 0  (Return Without Loss)
-  Type II:  Δκ < 0, |s| ≤ tol  (Return With Loss)  
+  Type II:  Δκ < 0, |s| ≤ tol  (Return With Loss)
   Type III: |s| > tol  (Irreconcilable Collapse)
         """,
     )

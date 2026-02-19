@@ -7,7 +7,7 @@ embedding:
   id: "KIN.EMBEDDING.v1"
   contract: "KIN.INTSTACK.v1"
   description: "Normalization embedding for kinematics observables"
-  
+
   # Domain bounds
   domain:
     interval: [0.0, 1.0]
@@ -36,37 +36,37 @@ embedding:
       formula: "x_norm = clip(x_phys / L_ref, 0, 1)"
       inverse: "x_phys = x_norm * L_ref"
       notes: "Position normalized by reference length"
-      
+
     # Linear velocity: v_norm = |v_phys| / v_ref, clipped to [0,1]
     velocity:
       formula: "v_norm = clip(|v_phys| / v_ref, 0, 1)"
       inverse: "v_phys = v_norm * v_ref"
       notes: "Velocity magnitude normalized by reference velocity"
-      
+
     # Linear acceleration: a_norm = |a_phys| / a_ref, clipped to [0,1]
     acceleration:
       formula: "a_norm = clip(|a_phys| / a_ref, 0, 1)"
       inverse: "a_phys = a_norm * a_ref"
       notes: "Acceleration magnitude normalized by reference (1g)"
-      
+
     # Angular position: θ_norm = θ_phys / (2π), clipped to [0,1]
     angular_position:
       formula: "theta_norm = clip(theta_phys / (2*pi), 0, 1)"
       inverse: "theta_phys = theta_norm * 2 * pi"
       notes: "Angular position normalized to single revolution"
-      
+
     # Angular velocity: ω_norm = |ω_phys| / ω_ref, clipped to [0,1]
     angular_velocity:
       formula: "omega_norm = clip(|omega_phys| / omega_ref, 0, 1)"
       inverse: "omega_phys = omega_norm * omega_ref"
       notes: "Angular velocity normalized by reference"
-      
+
     # Energy: E_norm = E_phys / E_ref, clipped to [0,1]
     energy:
       formula: "E_norm = clip(E_phys / E_ref, 0, 1)"
       inverse: "E_phys = E_norm * E_ref"
       notes: "Energy normalized by reference"
-      
+
     # Momentum: p_norm = p_phys / p_ref, clipped to [0,1]
     momentum:
       formula: "p_norm = clip(p_phys / p_ref, 0, 1)"

@@ -3,7 +3,7 @@ schema: "schemas/embedding.schema.json"
 embedding:
   id: "rcft_complete.embedding"
   version: "1.0.0"
-  
+
   source_space:
     description: "Raw RCFT test measurements"
     channels:
@@ -16,12 +16,12 @@ embedding:
       - name: "x3_si"
         unit: "arbitrary"
         physical_range: [0.0, 10.0]
-  
+
   target_space:
     description: "Unit hypercube Ψ-coordinates"
     interval: [0.0, 1.0]
     coordinates: ["c_1", "c_2", "c_3"]
-  
+
   transform:
     method: "linear_affine"
     formula: "c_i = (x_i - a) / (b - a)"
@@ -30,15 +30,15 @@ embedding:
       b: 10.0
     face: "pre_clip"
     epsilon: 1.0e-8
-  
+
   oor_policy:
     method: "clip_and_flag"
     clip_to: [0.0, 1.0]
     flag_field: "oor_i"
     description: "Values outside [0,10] clipped to [0,1] and flagged"
-  
+
   sampling:
     temporal: "discrete_integer_t"
     rate: "single_shot_per_t"
-  
+
   notes: "RCFT embedding: x(t) → Ψ(t) via linear scaling."

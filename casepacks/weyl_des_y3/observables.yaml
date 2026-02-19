@@ -10,7 +10,7 @@ metadata:
   lens_sample: "MAGLIM"
   n_source_bins: 4
   n_lens_bins: 4
-  
+
 # Lens bin effective redshifts
 redshift_bins:
   z_eff:
@@ -41,7 +41,7 @@ hJ_measurements:
     z4:
       mean: 0.354
       sigma: 0.033
-  
+
   # Standard scale cuts + NO CMB prior
   standard_no_cmb:
     z1:
@@ -56,7 +56,7 @@ hJ_measurements:
     z4:
       mean: 0.345
       sigma: 0.043
-  
+
   # Pessimistic (stringent) scale cuts + CMB prior
   pessimistic_cmb:
     z1:
@@ -71,7 +71,7 @@ hJ_measurements:
     z4:
       mean: 0.370
       sigma: 0.064
-  
+
   # Pessimistic scale cuts + NO CMB prior
   pessimistic_no_cmb:
     z1:
@@ -97,7 +97,7 @@ sigma8_comparison:
       mean: 0.743
       sigma: 0.039
     tension_percent: 14.3
-  
+
   without_cmb_prior:
     from_parameters:
       mean: 1.028
@@ -116,14 +116,14 @@ Sigma0_fits:
     g_model: "Ω_Λ(z)"
     chi2_red: 1.1
     p_value: 0.33
-  
+
   constant:
     mean: 0.13
     sigma: 0.06
     g_model: "1 for z∈[0,1]"
     chi2_red: 1.1
     p_value: 0.33
-  
+
   exponential:
     mean: 0.027
     sigma: 0.013
@@ -144,7 +144,7 @@ horndeski_constraints:
     mean: 0.55
     sigma: 0.22
     interpretation: "Running of Planck mass"
-  
+
   gamma_c0:
     mean: 0.79
     sigma_plus: 0.37
@@ -165,17 +165,17 @@ umcp_mapping:
   hJ_to_coordinates:
     description: "ĥJ values are the primary Ψ-coordinates in WEYL space"
     embedding: "hJ ∈ [0, 1] after normalization by max(hJ)"
-  
+
   Sigma0_to_drift:
     description: "Σ₀ deviation from GR maps to ω (drift from ideal)"
     formula: "ω_analog = |Σ₀|"
     value: 0.24
-  
+
   sigma8_tension_to_collapse:
     description: "σ8 discrepancy maps to collapse potential Φ_collapse"
     formula: "Φ_collapse_analog = |σ8_params - σ8_hJ| / σ8_hJ"
     value: 0.143
-  
+
   z_star_to_return_anchor:
     description: "High-z anchor z* maps to return domain generator D_θ"
     interpretation: "GR holds at z* = 10, deviations measured relative to this"

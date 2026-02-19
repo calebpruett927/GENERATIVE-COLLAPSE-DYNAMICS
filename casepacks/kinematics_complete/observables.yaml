@@ -12,7 +12,7 @@ observables:
     description: "Physical x-position in meters"
     sampling_rate: 100  # Hz
     range: [0, 10]  # meters
-    
+
   position_y:
     name: "Position (y-component)"
     symbol: "y_phys"
@@ -20,7 +20,7 @@ observables:
     description: "Physical y-position in meters"
     sampling_rate: 100  # Hz
     range: [0, 10]  # meters
-    
+
   velocity_x:
     name: "Velocity (x-component)"
     symbol: "v_x"
@@ -28,7 +28,7 @@ observables:
     description: "Physical x-velocity in m/s"
     sampling_rate: 100  # Hz
     range: [-10, 10]  # m/s
-    
+
   velocity_y:
     name: "Velocity (y-component)"
     symbol: "v_y"
@@ -36,7 +36,7 @@ observables:
     description: "Physical y-velocity in m/s"
     sampling_rate: 100  # Hz
     range: [-10, 10]  # m/s
-    
+
   acceleration_x:
     name: "Acceleration (x-component)"
     symbol: "a_x"
@@ -44,7 +44,7 @@ observables:
     description: "Physical x-acceleration in m/s²"
     sampling_rate: 100  # Hz
     range: [-20, 20]  # m/s²
-    
+
   acceleration_y:
     name: "Acceleration (y-component)"
     symbol: "a_y"
@@ -61,7 +61,7 @@ observables:
     description: "Angular position in radians"
     sampling_rate: 100  # Hz
     range: [0, 6.283185]  # 0 to 2π
-    
+
   omega:
     name: "Angular Velocity"
     symbol: "ω_rot"
@@ -69,7 +69,7 @@ observables:
     description: "Angular velocity in rad/s"
     sampling_rate: 100  # Hz
     range: [0, 10]  # rad/s
-    
+
   alpha:
     name: "Angular Acceleration"
     symbol: "α"
@@ -85,7 +85,7 @@ observables:
     unit: "kg"
     description: "Object mass in kilograms"
     range: [0.1, 100]  # kg
-    
+
   height:
     name: "Height"
     symbol: "h"
@@ -103,7 +103,7 @@ scenarios:
       vy0: 5.0  # m/s
     constants:
       g: 9.81  # m/s²
-      
+
   harmonic_oscillator:
     description: "Simple harmonic oscillation"
     initial_conditions:
@@ -112,7 +112,7 @@ scenarios:
     constants:
       omega_natural: 2.0  # rad/s
       amplitude: 0.3  # normalized
-      
+
   damped_oscillator:
     description: "Damped harmonic oscillation"
     initial_conditions:

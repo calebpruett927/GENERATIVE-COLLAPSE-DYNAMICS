@@ -3,76 +3,76 @@ schema: "schemas/closures.schema.json"
 closure:
   kind: "identity_verification"
   id: "SECURITY.IDENTITY.verification.v1"
-  
+
   identity_verification:
     # Frozen identity verification rules
     # Defines trust signals for identity claims
-    
+
     authentication_signals:
       password_strength:
         min_length: 12
         require_complexity: true
         weight: 0.2
-        
+
       mfa_enabled:
         required: true
         weight: 0.3
-        
+
       session_validity:
         max_age_hours: 24
         weight: 0.15
-        
+
       ip_consistency:
         check_geolocation: true
         max_distance_km: 500
         weight: 0.15
-        
+
       device_fingerprint:
         track_changes: true
         weight: 0.2
-        
+
     identity_signals:
       email_verified:
         required: true
         weight: 0.25
-        
+
       phone_verified:
         required: false
         weight: 0.15
-        
+
       identity_document:
         types: ["passport", "drivers_license", "national_id"]
         weight: 0.3
-        
+
       biometric:
         types: ["fingerprint", "face_id", "voice"]
         weight: 0.3
-        
+
     risk_indicators:
       # Negative signals that reduce trust
       credential_breach:
         check_haveibeenpwned: true
         severity: "critical"
-        
+
       suspicious_location:
         check_vpn: true
         check_tor: true
         severity: "moderate"
-        
+
       rapid_auth_attempts:
         threshold: 5
         window_minutes: 10
         severity: "high"
-        
+
   scoring:
     # Identity score calculation
     # Contributes to Trust Fidelity (T)
     positive_weight: 0.7   # Weight for positive signals
     negative_weight: 0.3   # Weight for risk reduction
-    
+
   notes: >
     Tier-0 closure defining frozen identity verification rules.
     Identity score contributes to Trust Fidelity (T) and
     affects Trust Integrity Composite (TIC).
-    
+
   extensions: {}

@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "schemas/glossary.schema.json",
   "title": "UMCP Glossary Entry Schema",
   "description": "Schema for structured glossary entries in the UMCP protocol. Ensures every term has required fields for self-service lookup and protocol compliance.",

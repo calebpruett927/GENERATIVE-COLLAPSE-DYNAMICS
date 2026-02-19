@@ -35,7 +35,7 @@ tier_hierarchy:
     - Cannot modify GCD axioms (AX-0, AX-1, AX-2)
     - Can only augment with new Tier-2 symbols and metrics
     - Must respect all GCD regime classifications and tolerances
-  
+
   tier_1_frozen_symbols:
     - ω        # Drift (GCD Tier-1)
     - F        # Fidelity (GCD Tier-1)
@@ -57,13 +57,13 @@ principles:
     description: |
       RCFT adds new dimensions of analysis without modifying GCD's Tier-1 foundation.
       All Tier-1 invariants remain frozen and unchanged.
-  
+
   - id: "P-RCFT-1"
     statement: "Recursion reveals hidden structure"
     description: |
       Collapse events exhibit recursive patterns across scales. RCFT metrics quantify
       these self-similar structures through fractal dimension and recursive field analysis.
-  
+
   - id: "P-RCFT-2"
     statement: "Fields carry collapse memory"
     description: |
@@ -80,7 +80,7 @@ tier_2_extensions:
       domain: "[1, 3]"
       interpretation: "D_f ≈ 1 for smooth trajectories, D_f ≈ 2 for space-filling, D_f > 2 for volumetric"
       tier: 2
-    
+
     - symbol: Psi_recursive
       latex: Ψ_r
       description: "Recursive field strength at collapse boundary"
@@ -88,7 +88,7 @@ tier_2_extensions:
       domain: "[0, ∞)"
       interpretation: "Measures cumulative field strength from recursive collapse iterations"
       tier: 2
-    
+
     - symbol: lambda_pattern
       latex: λ_p
       description: "Pattern wavelength in resonance field"
@@ -96,7 +96,7 @@ tier_2_extensions:
       domain: "(0, ∞)"
       interpretation: "Characteristic scale of recursive oscillations in collapse field"
       tier: 2
-    
+
     - symbol: Theta_phase
       latex: Θ
       description: "Phase angle of recursive oscillation"
@@ -107,34 +107,34 @@ tier_2_extensions:
 
 regime_classification:
   description: "RCFT-specific regime classifications (Tier-2, complement GCD regimes)"
-  
+
   fractal_complexity:
     - label: "Smooth"
       condition: "D_f < 1.2"
       color: "green"
       interpretation: "Trajectory is nearly linear, low complexity"
-    
+
     - label: "Wrinkled"
       condition: "1.2 ≤ D_f < 1.8"
       color: "yellow"
       interpretation: "Moderate fractal complexity, self-similar patterns emerge"
-    
+
     - label: "Turbulent"
       condition: "D_f ≥ 1.8"
       color: "red"
       interpretation: "High fractal dimension, chaotic collapse dynamics"
-  
+
   recursive_strength:
     - label: "Dormant"
       condition: "Ψ_r < 0.1"
       color: "green"
       interpretation: "Weak recursive field, collapse events isolated"
-    
+
     - label: "Active"
       condition: "0.1 ≤ Ψ_r < 1.0"
       color: "yellow"
       interpretation: "Moderate recursion, collapse history influences present"
-    
+
     - label: "Resonant"
       condition: "Ψ_r ≥ 1.0"
       color: "red"
@@ -145,12 +145,12 @@ mathematical_identities:
     formula: "1 ≤ D_f ≤ 3"
     tolerance: 1.0e-6
     description: "Fractal dimension constrained by embedding space (3D)"
-  
+
   - name: "Phase periodicity"
     formula: "Θ(t + T) = Θ(t) mod 2π"
     tolerance: 1.0e-6
     description: "Phase angle is periodic with period T"
-  
+
   - name: "Wavelength-frequency relation"
     formula: "λ_p · f = v_phase"
     tolerance: 1.0e-6
@@ -162,28 +162,28 @@ tolerances:
     - name: "tol_fractal"
       value: 1.0e-6
       description: "Tolerance for fractal dimension computation"
-    
+
     - name: "tol_recursive"
       value: 1.0e-6
       description: "Tolerance for recursive field convergence"
-    
+
     - name: "tol_phase"
       value: 1.0e-6
       description: "Tolerance for phase angle computation"
 
 typed_censoring:
   description: "RCFT-specific enumerations (Tier-2)"
-  
+
   fractal_regime_enum:
     - "Smooth"
     - "Wrinkled"
     - "Turbulent"
-  
+
   recursive_regime_enum:
     - "Dormant"
     - "Active"
     - "Resonant"
-  
+
   pattern_type_enum:
     - "Standing"
     - "Traveling"
@@ -194,11 +194,11 @@ computational_notes:
     Compute using box-counting method: partition trajectory into boxes of size ε,
     count N(ε) boxes intersecting trajectory, then D_f = lim(ε→0) log(N(ε))/log(1/ε).
     In practice, use multiple ε values and fit log-log slope.
-  
+
   recursive_field: |
     Sum recursive contributions with exponential decay: Ψ_r = Σ α^n·Ψ_n where α < 1
     is decay factor. Truncate series when α^n < tol_recursive.
-  
+
   pattern_wavelength: |
     Perform FFT on resonance field time series, identify dominant frequency k_dominant,
     then λ_p = 2π/k_dominant.
@@ -220,6 +220,6 @@ notes: |
   - Recursive field strength (Ψ_r) for collapse memory quantification
   - Pattern wavelength (λ_p) for oscillation scale analysis
   - Phase coherence (Θ) for recursive field synchronization
-  
+
   All RCFT metrics are computed from Tier-1 invariants and do not replace them.
   GCD axioms (AX-0, AX-1, AX-2) remain authoritative for all collapse analysis.

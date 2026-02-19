@@ -7,7 +7,7 @@ registry:
   id: "UMCP.CLOSURES.KIN_REF_PHASE.v1"
   description: "Closure registry for KIN.REF.PHASE phase-anchor selection casepack"
   contract: "KIN.INTSTACK.v1"
-  
+
   # Base closures (inherited from UMCP)
   base_closures:
     gamma:
@@ -16,7 +16,7 @@ registry:
       path: "closures/return_domain.window64.v1.yaml"
     norms:
       path: "closures/norms.l2_eta1e-3.v1.yaml"
-      
+
   # KIN.REF.PHASE specific closure
   phase_anchor_closures:
     kin_ref_phase:
@@ -24,7 +24,7 @@ registry:
       path: "casepacks/kin_ref_phase_oscillator/closures/kin_ref_phase.py"
       function: "select_phase_anchor"
       description: "Deterministic phase-anchor selection for oscillatory motion"
-      
+
       # Inputs
       inputs:
         - name: "x_series"
@@ -36,7 +36,7 @@ registry:
         - name: "t"
           type: "int"
           description: "Current time index"
-          
+
       # Outputs
       outputs:
         - name: "anchor_u"
@@ -54,7 +54,7 @@ registry:
         - name: "eligible_count"
           type: "int"
           description: "Number of eligible anchors"
-          
+
       # Frozen parameters
       frozen_params:
         delta_phi_max:
@@ -66,7 +66,7 @@ registry:
         debounce:
           value: 3
           description: "Debounce lag (samples)"
-          
+
       # Tie-breaker specification
       tie_breakers:
         order:

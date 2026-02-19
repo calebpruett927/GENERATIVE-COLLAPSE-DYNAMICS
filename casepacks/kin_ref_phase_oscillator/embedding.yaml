@@ -7,7 +7,7 @@ embedding:
   id: "KIN.REF.PHASE.EMBEDDING.v1"
   contract: "KIN.INTSTACK.v1"
   description: "Normalization embedding for phase-anchor oscillator observables"
-  
+
   # Domain bounds
   domain:
     interval: [0.0, 1.0]
@@ -28,13 +28,13 @@ embedding:
       formula: "x_norm = clip(x, 0, 1)"
       inverse: "x = x_norm"
       notes: "Position assumed already normalized in raw data"
-      
+
     # Velocity: already normalized in [0,1]
     velocity:
       formula: "v_norm = clip(v, 0, 1)"
       inverse: "v = v_norm"
       notes: "Velocity assumed already normalized in raw data"
-      
+
     # Phase: computed from centered coordinates
     phase:
       formula: "phi = atan2(2*v - 1, 2*x - 1), wrapped to [0, 2π)"
@@ -51,13 +51,13 @@ embedding:
   phase_anchor_settings:
     # Maximum phase mismatch tolerance (π/6 radians = 30°)
     delta_phi_max: 0.5235987756
-    
+
     # Return-domain window size (samples)
     window: 20
-    
+
     # Debounce lag (minimum delay before eligibility)
     debounce: 3
-    
+
     # Tie-breaker order
     tie_breakers:
       - "minimize_delta_phi"

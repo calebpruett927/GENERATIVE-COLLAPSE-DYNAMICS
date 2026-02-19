@@ -3,7 +3,7 @@
   "contract_id": "SECURITY.INTSTACK.v1",
   "casepack_id": "security_validation",
   "computed_at_utc": "2026-02-04T00:00:00Z",
-  
+
   "classification_rules": {
     "TRUSTED": {
       "condition": "T >= 0.8 AND tau_A != INF_ANOMALY",
@@ -22,7 +22,7 @@
       "description": "Cannot compute invariants"
     }
   },
-  
+
   "file_classifications": [
     {
       "file_id": 1,
@@ -74,7 +74,7 @@
       "recommendation": "Extract and scan contents"
     }
   ],
-  
+
   "url_classifications": [
     {
       "url_id": 1,
@@ -137,7 +137,7 @@
       "recommendation": "Internal IP - verify network context"
     }
   ],
-  
+
   "summary": {
     "files_trusted": 2,
     "files_suspicious": 1,
@@ -147,6 +147,6 @@
     "urls_suspicious": 2,
     "urls_blocked": 2
   },
-  
+
   "notes": "Tier-2 threat classification based on Tier-1 invariants. Classification is deterministic given frozen Tier-0 policy. Phishing detection uses homoglyph analysis and suspicious TLD patterns from threat_patterns.v1.yaml."
 }

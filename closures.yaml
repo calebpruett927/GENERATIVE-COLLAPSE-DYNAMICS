@@ -5,7 +5,7 @@ closures:
   version: "1.0.0"
   registry_id: "UMCP.CLOSURES.DEFAULT.v1"
   registry_path: "closures/registry.yaml"
-  
+
   # Gamma form (drift dissipation closure)
   gamma:
     id: "gamma"
@@ -15,7 +15,7 @@ closures:
     parameters:
       p: 3
       epsilon: 1.0e-8
-  
+
   # Return domain generator
   return_domain:
     id: "return_domain"
@@ -25,7 +25,7 @@ closures:
     parameters:
       window_size: 64
       method: "sliding"
-  
+
   # Norm specification
   norms:
     id: "norms"
@@ -35,7 +35,7 @@ closures:
     parameters:
       norm_type: "l2"
       eta: 1.0e-3
-  
+
   # Curvature neighborhood
   curvature_neighborhood:
     id: "curvature_neighborhood"
@@ -45,17 +45,17 @@ closures:
     parameters:
       method: "stddev_ratio"
       scale: 0.5
-  
+
   # Computational closures
   computational:
     - id: "F_from_omega"
       path: "closures/F_from_omega.py"
       description: "Compute F from ω using Tier-1 identity"
-    
+
     - id: "tau_R_compute"
       path: "closures/tau_R_compute.py"
       description: "Compute return time τ_R"
-    
+
     - id: "stiffness_check"
       path: "closures/stiffness_check.py"
       description: "Stiffness validation check"

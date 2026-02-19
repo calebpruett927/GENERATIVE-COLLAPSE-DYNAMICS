@@ -3,13 +3,13 @@
   "description": "Σ(z) to UMCP invariant mapping for DES Y3",
   "contract": "WEYL.INTSTACK.v1",
   "source": "Nature Communications 15:9295 (2024) Eq. 11-13",
-  
+
   "Sigma_parametrization": {
     "equation": "Σ(z) = 1 + Σ₀ × g(z)",
     "GR_value": 1.0,
     "interpretation": "Σ=1 is General Relativity; Σ≠1 indicates modified gravity"
   },
-  
+
   "g_z_models": {
     "standard": {
       "formula": "g(z) = Ω_Λ(z)",
@@ -33,7 +33,7 @@
       "p_value": 0.48
     }
   },
-  
+
   "hJ_to_Sigma_mapping": {
     "equation": "ĥJ(z_i) = Ω_m(z_i) × [D₁(z_i)/D₁(z*)] × σ8(z*) × Σ(z_i)",
     "inverse": "Σ(z_i) = ĥJ(z_i) / [Ω_m(z_i) × (D₁(z_i)/D₁(z*)) × σ8(z*)]",
@@ -44,7 +44,7 @@
       {"z": 0.771, "hJ": 0.354, "Sigma_inferred": 1.22}
     ]
   },
-  
+
   "umcp_drift_mapping": {
     "formula": "ω_analog = |Σ₀|",
     "values": {
@@ -58,7 +58,7 @@
       "exponential": "Stable regime (ω=0.027 near GR)"
     }
   },
-  
+
   "seam_residual_mapping": {
     "description": "χ² improvement as seam closure quality",
     "LCDM_chi2": 2.1,
@@ -67,7 +67,7 @@
     "improvement_ratio": 0.476,
     "seam_interpretation": "Σ₀ model closes residual 47.6% better than GR baseline"
   },
-  
+
   "return_domain_mapping": {
     "z_star": 10.0,
     "Sigma_at_z_star": 1.0,

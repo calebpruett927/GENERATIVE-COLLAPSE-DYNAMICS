@@ -7,7 +7,7 @@ registry:
   id: "UMCP.CLOSURES.KINEMATICS.v1"
   description: "Closure registry for kinematics casepack"
   contract: "KIN.INTSTACK.v1"
-  
+
   # Base closures (inherited from UMCP)
   base_closures:
     gamma:
@@ -16,7 +16,7 @@ registry:
       path: "closures/return_domain.window64.v1.yaml"
     norms:
       path: "closures/norms.l2_eta1e-3.v1.yaml"
-      
+
   # Kinematics-specific closures
   kinematics_closures:
     linear_kinematics:
@@ -25,14 +25,14 @@ registry:
       description: "Linear position, velocity, acceleration"
       inputs: ["x", "v", "a", "dt"]
       outputs: ["position", "velocity", "acceleration", "phase_magnitude", "predicted_x_next", "predicted_v_next", "regime"]
-      
+
     rotational_kinematics:
       path: "closures/kinematics/rotational_kinematics.py"
       function: "compute_rotational_kinematics"
       description: "Angular position, velocity, acceleration, torque"
       inputs: ["theta", "omega_rot", "alpha", "I_normalized", "dt"]
       outputs: ["theta", "omega_rot", "alpha", "angular_momentum", "torque", "E_rotational", "regime"]
-      
+
     energy_mechanics:
       path: "closures/kinematics/energy_mechanics.py"
       functions:
@@ -43,7 +43,7 @@ registry:
         - compute_power
         - verify_energy_conservation
       description: "Energy calculations and conservation verification"
-      
+
     momentum_dynamics:
       path: "closures/kinematics/momentum_dynamics.py"
       functions:
@@ -52,14 +52,14 @@ registry:
         - compute_collision_1d
         - verify_momentum_conservation
       description: "Momentum calculations and conservation verification"
-      
+
     phase_space_return:
       path: "closures/kinematics/phase_space_return.py"
       function: "compute_kinematic_return"
       description: "Return time computation in phase space"
       inputs: ["x_series", "v_series", "eta_phase", "H_rec_kin"]
       outputs: ["tau_kin", "return_status", "return_rate", "dynamics_regime"]
-      
+
     kinematic_stability:
       path: "closures/kinematics/kinematic_stability.py"
       function: "compute_kinematic_stability"

@@ -48,15 +48,15 @@ def render_overview_page() -> None:
     with st.expander("📜 **Core Axiom**: What Returns Through Collapse Is Real", expanded=False):
         st.markdown("""
         **AXIOM-0 (The Return Axiom)**: *"Collapse is generative; only what returns is real."*
-        
+
         This is the fundamental axiom upon which UMCP, GCD, and RCFT are built.
-        
+
         **Operational Definitions**:
         - **Collapse**: Regime label produced by kernel gates on (ω, F, S, C) under frozen thresholds
         - **Return (τ_R)**: Re-entry condition with prior u ∈ Dθ(t) where ‖Ψ(t) - Ψ(u)‖ ≤ η
         - **Drift (ω)**: ω = 1 - F, collapse proximity measure on [0,1]
         - **Integrity (IC)**: IC = exp(κ) where κ = Σ wᵢ ln(cᵢ,ε)
-        
+
         **Constitutional Principle**: *One-way dependency flow within a frozen run, with return-based canonization between runs.*
         """)
 

@@ -3,7 +3,7 @@ schema: "schemas/closures_registry.schema.json"
 registry:
   id: "hello_world.closures"
   version: "1.0.0"
-  
+
   closures:
     gamma:
       id: "gamma.default.v1"
@@ -13,7 +13,7 @@ registry:
         p: 3
         epsilon: 1.0e-8
       path: "closures/gamma.default.v1.yaml"
-    
+
     DC_form:
       id: "DC.alpha_scaling.v1"
       description: "Dissipation-curvature coupling DC = α·C"
@@ -21,21 +21,21 @@ registry:
       parameters:
         alpha: 1.0
       notes: "Linear coupling"
-    
+
     R_estimator:
       id: "R.tau_procedure.v1"
       description: "Return estimator R from τ_R"
       formula: "R = f(τ_R, regime_history)"
       method: "trivial"
       notes: "Test case - no return expected"
-    
+
     curvature_neighborhood:
       id: "curvature_neighborhood.default.v1"
       description: "Curvature neighborhood for κ computation"
       method: "local_variance"
       radius: "adaptive"
       path: "closures/curvature_neighborhood.default.v1.yaml"
-  
+
   weld_budget:
     enabled: false
     note: "Test case - no weld assertion"
@@ -44,5 +44,5 @@ registry:
       - "R·τ_R: return credit term"
       - "D_ω: omega dissipation"
       - "D_C: curvature dissipation"
-  
+
   notes: "Hello world closure registry - budget terms declared but not computed."

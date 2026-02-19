@@ -57,13 +57,13 @@ We claim continuity across the impact seam. The weld receipt verifies:
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.95\textwidth]{casepacks/KIN.CP.BALLISTIC/plots/kernel_trace_with_seam.png}
-  \caption{Ballistic motion with impact seam at \(t_s=1.33\,\mathrm{s}\). 
-    Top-left: 2D trajectory with ground contact marker. 
-    Remaining panels: Tier-1 kernel invariants \(\omega\) (drift), \(F\) (fidelity), 
-    \(S\) (entropy), \(C\) (curvature), \(\tau_R\) (recurrence), \(IC\) (integrity), 
+  \caption{Ballistic motion with impact seam at \(t_s=1.33\,\mathrm{s}\).
+    Top-left: 2D trajectory with ground contact marker.
+    Remaining panels: Tier-1 kernel invariants \(\omega\) (drift), \(F\) (fidelity),
+    \(S\) (entropy), \(C\) (curvature), \(\tau_R\) (recurrence), \(IC\) (integrity),
     \(\kappa\) (log-integrity), contribution channels \(\Psi_i\), and jerk magnitude.
-    Vertical red dashed lines mark the impact seam. The curvature \(C\) and jerk 
-    \(|j(t)|\) show localized spikes at the seam, while integrity \(IC\) remains 
+    Vertical red dashed lines mark the impact seam. The curvature \(C\) and jerk
+    \(|j(t)|\) show localized spikes at the seam, while integrity \(IC\) remains
     stable, indicating admissible post-impact recovery.
     Source: \texttt{KIN.CP.BALLISTIC/plots/kernel\_trace\_with\_seam.png}.}
   \label{fig:bal_trace}
@@ -104,10 +104,10 @@ We claim continuity across the impact seam. The weld receipt verifies:
       \end{tabular}
     };
   \end{tikzpicture}
-  \caption{Weld receipt for impact seam \texttt{KIN.SEAM.IMP.001}. 
-    The seam residual \(|\Delta\kappa|=0.0\) is below the contract tolerance 
-    \(\mathrm{tol}_{\mathrm{seam}}=0.005\), and 97.4\% of post-seam samples 
-    exhibit finite recurrence delay, satisfying the return-admissibility 
+  \caption{Weld receipt for impact seam \texttt{KIN.SEAM.IMP.001}.
+    The seam residual \(|\Delta\kappa|=0.0\) is below the contract tolerance
+    \(\mathrm{tol}_{\mathrm{seam}}=0.005\), and 97.4\% of post-seam samples
+    exhibit finite recurrence delay, satisfying the return-admissibility
     criterion for continuity claims across the impact event.
     Source: \texttt{KIN.CP.BALLISTIC/receipts/weld\_receipt.json}.}
   \label{fig:bal_receipt}

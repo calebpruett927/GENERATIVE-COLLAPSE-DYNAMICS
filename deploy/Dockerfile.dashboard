@@ -1,5 +1,5 @@
 # UMCP Dashboard Docker Image
-# 
+#
 # Build: docker build -t umcp-dashboard -f deploy/Dockerfile.dashboard .
 # Run:   docker run -p 8501:8501 -p 8000:8000 umcp-dashboard
 

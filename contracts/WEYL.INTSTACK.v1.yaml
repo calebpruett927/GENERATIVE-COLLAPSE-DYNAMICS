@@ -270,11 +270,11 @@ contract:
   notes: |
     WEYL.INTSTACK.v1 extends GCD.INTSTACK.v1 with the Weyl evolution framework
     for testing modified gravity using weak gravitational lensing.
-    
+
     This contract implements the mathematical framework from:
     "Model-independent test of gravity with a network of galaxy surveys"
     (Nature Communications 15:9295, 2024; s41467-024-53363-6)
-    
+
     Core Principle Alignment:
     - Within-run: Frozen cosmological parameters (Ω_m, σ8, z*) determine the
       Weyl trace; Tier-1 invariants (ĥJ, Σ) are computed from that frozen trace.
@@ -282,18 +282,18 @@ contract:
     - Between-run: Canonization requires return-weld. A new Σ₀ fit is only
       "canon-continuous" with prior results if χ² improves AND identity checks
       (parameter consistency) close within tolerance.
-    
+
     Core Mapping to UMCP:
     - ĥJ(z_i) per redshift bin → Kernel coordinates c_i(t)
     - Σ₀ deviation from GR → Collapse/drift metric ω
     - χ²_red fit quality → Seam residual s
     - CMB prior toggle → Closure registry discipline
     - z* anchor → Return domain generator D_θ
-    
+
     The Weyl axiom (AX-W0) is the cosmological realization of AX-1
     ("Boundary defines interior"): the high-z anchor where GR holds
     defines the meaning of gravitational deviation at lower redshift.
-    
+
     Reference Data (DES Y3 MAGLIM, CMB prior):
     - z_bins: [0.295, 0.467, 0.626, 0.771]
     - ĥJ: [0.326±0.020, 0.332±0.015, 0.387±0.026, 0.354±0.033]

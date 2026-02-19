@@ -125,5 +125,3 @@ umcp_canon:
   change_control:
     mutation_policy: "append-only; bump canon_id on any semantic change"
     provenance_reference: "Provenance & Canon Note 1.0.1"
-
-

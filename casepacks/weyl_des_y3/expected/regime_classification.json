@@ -2,7 +2,7 @@
   "schema": "expected.schema.json",
   "description": "Regime classification for DES Y3 Weyl analysis",
   "contract": "WEYL.INTSTACK.v1",
-  
+
   "gravity_deviation_regime": {
     "Sigma_0": 0.24,
     "thresholds": {
@@ -14,7 +14,7 @@
     "confidence": "2.4σ from GR",
     "interpretation": "Mild tension with General Relativity, not yet conclusive modified gravity"
   },
-  
+
   "sigma8_tension_regime": {
     "sigma8_params": 0.849,
     "sigma8_hJ": 0.743,
@@ -28,7 +28,7 @@
     "classification": "Significant",
     "interpretation": "14.3% tension is ~2σ discrepancy"
   },
-  
+
   "chi2_fit_regime": {
     "LCDM_chi2_red": 2.1,
     "Sigma_chi2_red": 1.1,
@@ -42,13 +42,13 @@
     "Sigma_classification": "Good",
     "interpretation": "Σ₀ model provides better fit than ΛCDM baseline"
   },
-  
+
   "overall_regime": {
     "umcp_equivalent": "Watch",
     "stability_score": 0.65,
     "description": "System shows deviation from ideal (GR) but not full collapse into modified gravity regime"
   },
-  
+
   "regime_evolution": {
     "z_bins": [0.295, 0.467, 0.626, 0.771],
     "per_bin_regime": [

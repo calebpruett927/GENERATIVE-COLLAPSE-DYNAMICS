@@ -12,7 +12,7 @@ observables:
     description: "Normalized x-position in [0,1]"
     sampling_rate: 10  # Hz (for oscillator demo)
     range: [0.0, 1.0]
-    
+
   # Velocity observable (v-coordinate in phase space)
   velocity_x:
     name: "Velocity (x-component)"
@@ -53,18 +53,18 @@ observables:
 phase_mapping:
   id: "KIN.REF.PHASE.PHI.v1"
   description: "Phase angle from centered (x, v) coordinates"
-  
+
   # Centering: map [0,1] to [-1,1]
   centering:
     x_centered: "2 * x - 1"
     v_centered: "2 * v - 1"
-  
+
   # Phase computation
   phi_formula: "atan2(v_centered, x_centered)"
-  
+
   # Wrapping to [0, 2π)
   wrapping: "phi_raw + 2π if phi_raw < 0 else phi_raw"
-  
+
   # Result domain
   domain: "[0, 2π)"
 

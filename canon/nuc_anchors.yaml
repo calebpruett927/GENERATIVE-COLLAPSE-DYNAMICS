@@ -1,4 +1,4 @@
-schema: schemas/canon.anchors.schema.json
+schema: canon.anchors.schema.json
 id: UMCP.CANON.NUC.v1
 version: 1.0.0
 created: '2026-02-08'

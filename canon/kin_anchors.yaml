@@ -31,20 +31,20 @@ axioms:
     description: |
       Every kinematic observable must map to a point in phase space Γ_kin.
       Γ_kin = {(x, v) : x ∈ [0,1], v ∈ [0,1]}
-  
+
   - id: KIN-AX-1
     statement: "Return Time Finiteness"
     description: |
       For periodic motion: τ_kin < ∞ (motion returns through phase space).
       For drifting motion: τ_kin = INF_KIN (motion never returns).
       This connects to UMCP's core axiom: "What returns is real."
-  
+
   - id: KIN-AX-2
     statement: "Conservation Closure"
     description: |
       Conserved quantities (momentum, mechanical energy in conservative systems)
       define invariant subspaces in phase space.
-  
+
   - id: KIN-AX-3
     statement: "Stability Finiteness"
     description: |
@@ -54,7 +54,7 @@ axioms:
 
 tier_1_invariants:
   description: "Kinematics-specific frozen symbols - extend UMA.INTSTACK.v1"
-  
+
   reserved_symbols:
     position:
       ascii: "x"
@@ -124,16 +124,16 @@ frozen_parameters:
   a_ref: 9.81             # Reference acceleration (g) [m/s²]
   m_ref: 1.0              # Reference mass [kg]
   t_ref: 1.0              # Reference time [s]
-  
+
   # Damping coefficients
   gamma_v: 0.1            # Velocity damping
   gamma_a: 0.05           # Acceleration damping
-  
+
   # Stability thresholds
   v_stable_max: 0.8       # Stable velocity threshold
   a_stable_max: 0.5       # Stable acceleration threshold
   E_stable_max: 0.7       # Stable energy threshold
-  
+
   # Return detection
   eta_position: 0.01      # Position return tolerance
   eta_velocity: 0.05      # Velocity return tolerance

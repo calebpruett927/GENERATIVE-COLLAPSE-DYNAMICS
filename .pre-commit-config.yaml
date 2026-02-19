@@ -2,6 +2,11 @@
 # Install: pre-commit install
 # Run: pre-commit run --all-files
 
+minimum_pre_commit_version: "3.6.0"
+
+default_language_version:
+  python: python3.12
+
 repos:
   # Basic hygiene checks
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -16,6 +21,7 @@ repos:
       - id: check-toml
       - id: check-json
         exclude: ^\.devcontainer/.*\.json$
+      - id: check-merge-conflict
       - id: detect-private-key
       - id: check-added-large-files
         args: ['--maxkb=500']
@@ -26,8 +32,14 @@ repos:
     rev: v0.14.14
     hooks:
       - id: ruff
-        # args: ["<REDACTED_GITHUB_TOKEN>"]
       - id: ruff-format
+
+  # Markdown linting (repo conventions in .markdownlint.json)
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.18.1
+    hooks:
+      - id: markdownlint-cli2
+        exclude: ^(\.venv/|archive/)
 
   # Type checking with mypy (enable after initial setup is stable)
   # - repo: https://github.com/pre-commit/mirrors-mypy
