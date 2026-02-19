@@ -49,18 +49,33 @@ axioms:
     frozen: true
 
 symbols:
-  tier_1_mapping:
-    omega_eff: "1 − (shell_completeness | spectral_precision | 1−perturbation_fraction)"
-    F_eff: "1 − ω_eff"
-    S: "configurational_entropy (subshell diversity)"
-    C: "fine_structure_curvature ((Zα)² parameter)"
-
-  tier_2_expansion:
-    Psi_IE: "IE₁/13.598 (ionization embedding)"
-    lambda_pred: "Rydberg-predicted wavelength (nm)"
-    g_J: "Landé g-factor"
-    delta_fine: "Fine structure correction (eV)"
-    shell_completeness: "Fraction of outermost shell filled"
+  - name: "omega_eff"
+    tier: 1
+    definition: "1 − (shell_completeness | spectral_precision | 1−perturbation_fraction)"
+  - name: "F_eff"
+    tier: 1
+    definition: "1 − ω_eff"
+  - name: "S"
+    tier: 1
+    definition: "configurational_entropy (subshell diversity)"
+  - name: "C"
+    tier: 1
+    definition: "fine_structure_curvature ((Zα)² parameter)"
+  - name: "Psi_IE"
+    tier: 2
+    definition: "IE₁/13.598 (ionization embedding)"
+  - name: "lambda_pred"
+    tier: 2
+    definition: "Rydberg-predicted wavelength (nm)"
+  - name: "g_J"
+    tier: 2
+    definition: "Landé g-factor"
+  - name: "delta_fine"
+    tier: 2
+    definition: "Fine structure correction (eV)"
+  - name: "shell_completeness"
+    tier: 2
+    definition: "Fraction of outermost shell filled"
 
 regime_gates:
   ionization:

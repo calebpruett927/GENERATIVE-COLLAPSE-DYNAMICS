@@ -1,565 +1,563 @@
 schema: canon.domain_anchors.schema.json
-id: "UMCP.CANON.MATL.v1"
-version: "1.0.0"
-domain: "Materials Science"
-hierarchy: "GCD > ATOM + RCFT > MATL (Tier-2 cross-domain)"
-created: "2026-02-10"
-
-description: >
-  Canon anchors for materials science closures derived from atomic physics
-  observables through the RCFT (Recursive Collapse Field Theory) universality
-  framework.  Each anchor is a well-established material property that serves
-  as a ground-truth calibration point for closure predictions.
-
-  The derivation chain crosses two Tier-2 domains:
-    ATOM (atomic physics) → RCFT (universality class) → MATL (materials)
-
-  Core insight: material properties are macroscopic returns of microscopic
-  atomic collapses.  The RCFT universality class (c_eff = 1/p, critical
-  exponents) governs phase transitions, band structures, and thermal
-  behavior identically because they share the same collapse geometry.
-
+id: UMCP.CANON.MATL.v1
+version: 1.0.0
+domain: Materials Science
+hierarchy: GCD > ATOM + RCFT > MATL (Tier-2 cross-domain)
+created: '2026-02-10'
+description: "Canon anchors for materials science closures derived from atomic physics observables through the RCFT (Recursive\
+  \ Collapse Field Theory) universality framework.  Each anchor is a well-established material property that serves as a ground-truth\
+  \ calibration point for closure predictions.\nThe derivation chain crosses two Tier-2 domains:\n  ATOM (atomic physics)\
+  \ → RCFT (universality class) → MATL (materials)\n\nCore insight: material properties are macroscopic returns of microscopic\
+  \ atomic collapses.  The RCFT universality class (c_eff = 1/p, critical exponents) governs phase transitions, band structures,\
+  \ and thermal behavior identically because they share the same collapse geometry.\n"
 axioms:
-  - id: "AX-MT0"
-    name: "Cohesive Collapse"
-    statement: >
-      The cohesive energy of a solid is the macroscopic return of individual
-      atomic ionization collapses.  E_coh bridges atomic IE to bulk binding:
-      for ionic crystals via Madelung electrostatics, for metals via Friedel
-      d-band filling, for covalent bonds via orbital overlap.
-    frozen: true
+- id: AX-MT0
+  name: Cohesive Collapse
+  statement: 'The cohesive energy of a solid is the macroscopic return of individual atomic ionization collapses.  E_coh bridges
+    atomic IE to bulk binding: for ionic crystals via Madelung electrostatics, for metals via Friedel d-band filling, for
+    covalent bonds via orbital overlap.
 
-  - id: "AX-MT1"
-    name: "RCFT Universality Governs Phase Transitions"
-    statement: >
-      The GCD drift potential Γ(ω) = ω^p/(1−ω+ε) defines a universality
-      class with critical exponents ν=1/(p−1), γ=(p−2)/(p−1), β=(2p−1)/(2(p−1)),
-      α=0 (logarithmic).  These exponents govern material phase transitions
-      (magnetic, structural, displacive) identically to RCFT conformal
-      field theory predictions.
-    frozen: true
+    '
+  frozen: true
+- id: AX-MT1
+  name: RCFT Universality Governs Phase Transitions
+  statement: 'The GCD drift potential Γ(ω) = ω^p/(1−ω+ε) defines a universality class with critical exponents ν=1/(p−1), γ=(p−2)/(p−1),
+    β=(2p−1)/(2(p−1)), α=0 (logarithmic).  These exponents govern material phase transitions (magnetic, structural, displacive)
+    identically to RCFT conformal field theory predictions.
 
-  - id: "AX-MT2"
-    name: "Band Gap as Basin Boundary"
-    statement: >
-      The electronic band gap E_g is the energy cost of crossing the RCFT
-      attractor basin boundary.  Metals have a single attractor (Monostable),
-      semiconductors are Bistable (valence + conduction basins), insulators
-      are Bistable_Strong.  The Fisher geodesic distance d_F maps gap width
-      to information geometry: d_F = (π/2)·√(E_g/E_g_max).
-    frozen: true
+    '
+  frozen: true
+- id: AX-MT2
+  name: Band Gap as Basin Boundary
+  statement: 'The electronic band gap E_g is the energy cost of crossing the RCFT attractor basin boundary.  Metals have a
+    single attractor (Monostable), semiconductors are Bistable (valence + conduction basins), insulators are Bistable_Strong.  The
+    Fisher geodesic distance d_F maps gap width to information geometry: d_F = (π/2)·√(E_g/E_g_max).
 
-  - id: "AX-MT3"
-    name: "Partition Function ↔ Phonon Sum"
-    statement: >
-      The RCFT partition function Z(β) = ∫ exp(−βΓ(ω))dω maps to the
-      Debye phonon partition function.  The effective central charge
-      c_eff = 1/p = 1/3 (for p=3) corresponds to the 3 acoustic phonon
-      branches out of 3N total modes in 3D — a structural identity, not
-      a coincidence.
-    frozen: true
+    '
+  frozen: true
+- id: AX-MT3
+  name: Partition Function ↔ Phonon Sum
+  statement: 'The RCFT partition function Z(β) = ∫ exp(−βΓ(ω))dω maps to the Debye phonon partition function.  The effective
+    central charge c_eff = 1/p = 1/3 (for p=3) corresponds to the 3 acoustic phonon branches out of 3N total modes in 3D —
+    a structural identity, not a coincidence.
 
-  - id: "AX-MT4"
-    name: "Drift Measures Model Quality"
-    statement: >
-      The ω_eff value honestly exposes where first-principles models break
-      down.  High ω does not mean the physics is wrong — it means the model
-      needs refinement.  This is the UMCP value proposition: drift as a
-      diagnostic, not a failure.
-    frozen: true
+    '
+  frozen: true
+- id: AX-MT4
+  name: Drift Measures Model Quality
+  statement: 'The ω_eff value honestly exposes where first-principles models break down.  High ω does not mean the physics
+    is wrong — it means the model needs refinement.  This is the UMCP value proposition: drift as a diagnostic, not a failure.
 
-  - id: "AX-MT5"
-    name: "Magnetic Ordering Through RCFT + Zeeman"
-    statement: >
-      Bulk magnetic ordering (ferro, antiferro, para) emerges from atomic
-      Zeeman splitting scaled to many-body interactions via Weiss molecular
-      field theory.  The ordering temperature T_c is the return boundary
-      of the magnetic collapse — below T_c, spins are frozen; above T_c,
-      thermal fluctuations destroy coherence.
-    frozen: true
+    '
+  frozen: true
+- id: AX-MT5
+  name: Magnetic Ordering Through RCFT + Zeeman
+  statement: 'Bulk magnetic ordering (ferro, antiferro, para) emerges from atomic Zeeman splitting scaled to many-body interactions
+    via Weiss molecular field theory.  The ordering temperature T_c is the return boundary of the magnetic collapse — below
+    T_c, spins are frozen; above T_c, thermal fluctuations destroy coherence.
 
-  - id: "AX-MT6"
-    name: "BCS Pairing as RCFT Condensation"
-    statement: >
-      BCS superconductivity is a partition function condensation: Cooper
-      pairing occurs when the electron-phonon coupling λ_ep creates a new
-      minimum in the free energy landscape.  The BCS gap Δ(0) ≈
-      2ℏω_D·exp(−1/λ_ep) mirrors the RCFT collapse-return structure where
-      the return time τ_R determines the gap scale.
-    frozen: true
+    '
+  frozen: true
+- id: AX-MT6
+  name: BCS Pairing as RCFT Condensation
+  statement: 'BCS superconductivity is a partition function condensation: Cooper pairing occurs when the electron-phonon coupling
+    λ_ep creates a new minimum in the free energy landscape.  The BCS gap Δ(0) ≈ 2ℏω_D·exp(−1/λ_ep) mirrors the RCFT collapse-return
+    structure where the return time τ_R determines the gap scale.
 
-  - id: "AX-MT7"
-    name: "Surface Energy from Broken Bonds"
-    statement: >
-      Surface energy γ_s ∝ E_coh · (1 − z_s/z_b) where z_s/z_b is the
-      ratio of surface to bulk coordination.  This connects cohesive collapse
-      to interfacial properties.  Catalytic activity follows from d-band
-      center theory: E_ads ~ ε_d, creating a Sabatier volcano.
-    frozen: true
+    '
+  frozen: true
+- id: AX-MT7
+  name: Surface Energy from Broken Bonds
+  statement: 'Surface energy γ_s ∝ E_coh · (1 − z_s/z_b) where z_s/z_b is the ratio of surface to bulk coordination.  This
+    connects cohesive collapse to interfacial properties.  Catalytic activity follows from d-band center theory: E_ads ~ ε_d,
+    creating a Sabatier volcano.
 
+    '
+  frozen: true
 symbols:
-  tier_1_mapping:
-    omega_eff: >
-      |predicted − measured| / max(measured, ε) — cohesion, elastic, band, thermal drift
-    F_eff: "1 − ω_eff"
-    S: "Configurational entropy of bonding ensemble"
-    C: "Curvature of interatomic potential energy surface"
-
-  tier_2_expansion:
-    # Cohesive
-    E_coh: "Cohesive energy per atom (eV)"
-    Psi_coh: "E_coh / E_coh_ref, clipped [0,1]"
-    # Phase transition
-    Phi_order: "Order parameter |t|^β below T_c, 0 above"
-    chi_susc: "|t|^{-γ} susceptibility"
-    xi_corr: "|t|^{-ν} correlation length ratio"
-    # Elastic
-    K_bulk: "Bulk modulus (GPa)"
-    G_shear: "Shear modulus (GPa)"
-    E_young: "Young's modulus (GPa) = 9KG/(3K+G)"
-    # Band
-    E_g: "Band gap (eV)"
-    Psi_band: "1 − E_g/E_g_max"
-    d_F_band: "Fisher geodesic distance (π/2)·√(E_g/E_g_max)"
-    # Thermal
-    Theta_D: "Debye temperature (K)"
-    C_V_norm: "C_V/(3R) Dulong-Petit fraction"
-    rcft_c_eff: "RCFT central charge = 1/p"
-    # Magnetic
-    M_sat: "Saturation magnetization (μ_B/atom)"
-    chi_mag: "Magnetic susceptibility (SI, dimensionless)"
-    # BCS
-    Delta_BCS: "BCS gap energy (meV)"
-    lambda_ep: "Electron-phonon coupling"
-    # Surface
-    gamma_surf: "Surface energy (J/m²)"
-    E_ads: "Adsorption energy (eV, negative = exothermic)"
-
+- name: omega_eff
+  tier: 1
+  definition: '|predicted − measured| / max(measured, ε) — cohesion, elastic, band, thermal drift'
+- name: F_eff
+  tier: 1
+  definition: 1 − ω_eff
+- name: S
+  tier: 1
+  definition: Configurational entropy of bonding ensemble
+- name: C
+  tier: 1
+  definition: Curvature of interatomic potential energy surface
+- name: E_coh
+  tier: 2
+  definition: Cohesive energy per atom (eV)
+- name: Psi_coh
+  tier: 2
+  definition: E_coh / E_coh_ref, clipped [0,1]
+- name: Phi_order
+  tier: 2
+  definition: Order parameter |t|^β below T_c, 0 above
+- name: chi_susc
+  tier: 2
+  definition: '|t|^{-γ} susceptibility'
+- name: xi_corr
+  tier: 2
+  definition: '|t|^{-ν} correlation length ratio'
+- name: K_bulk
+  tier: 2
+  definition: Bulk modulus (GPa)
+- name: G_shear
+  tier: 2
+  definition: Shear modulus (GPa)
+- name: E_young
+  tier: 2
+  definition: Young's modulus (GPa) = 9KG/(3K+G)
+- name: E_g
+  tier: 2
+  definition: Band gap (eV)
+- name: Psi_band
+  tier: 2
+  definition: 1 − E_g/E_g_max
+- name: d_F_band
+  tier: 2
+  definition: Fisher geodesic distance (π/2)·√(E_g/E_g_max)
+- name: Theta_D
+  tier: 2
+  definition: Debye temperature (K)
+- name: C_V_norm
+  tier: 2
+  definition: C_V/(3R) Dulong-Petit fraction
+- name: rcft_c_eff
+  tier: 2
+  definition: RCFT central charge = 1/p
+- name: M_sat
+  tier: 2
+  definition: Saturation magnetization (μ_B/atom)
+- name: chi_mag
+  tier: 2
+  definition: Magnetic susceptibility (SI, dimensionless)
+- name: Delta_BCS
+  tier: 2
+  definition: BCS gap energy (meV)
+- name: lambda_ep
+  tier: 2
+  definition: Electron-phonon coupling
+- name: gamma_surf
+  tier: 2
+  definition: Surface energy (J/m²)
+- name: E_ads
+  tier: 2
+  definition: Adsorption energy (eV, negative = exothermic)
 regime_gates:
   cohesive:
-    StrongBond: "ω_eff < 0.05"
-    ModerateBond: "0.05 ≤ ω_eff < 0.15"
-    WeakBond: "0.15 ≤ ω_eff < 0.30"
-    Anomalous: "ω_eff ≥ 0.30"
-
+    StrongBond: ω_eff < 0.05
+    ModerateBond: 0.05 ≤ ω_eff < 0.15
+    WeakBond: 0.15 ≤ ω_eff < 0.30
+    Anomalous: ω_eff ≥ 0.30
   phase_transition:
-    Ordered: "|t| > 0.30 below T_c"
-    Fluctuation: "0.05 < |t| ≤ 0.30"
-    Critical: "|t| ≤ 0.05"
-    Disordered: "T > T_c"
-
+    Ordered: '|t| > 0.30 below T_c'
+    Fluctuation: 0.05 < |t| ≤ 0.30
+    Critical: '|t| ≤ 0.05'
+    Disordered: T > T_c
   elastic:
-    Stiff: "ω_eff < 0.10"
-    Moderate: "0.10 ≤ ω_eff < 0.25"
-    Compliant: "0.25 ≤ ω_eff < 0.50"
-    Anomalous: "ω_eff ≥ 0.50"
-
+    Stiff: ω_eff < 0.10
+    Moderate: 0.10 ≤ ω_eff < 0.25
+    Compliant: 0.25 ≤ ω_eff < 0.50
+    Anomalous: ω_eff ≥ 0.50
   band_structure:
-    Metal: "E_g = 0"
-    Semimetal: "0 < E_g < 0.1 eV"
-    Semiconductor: "0.1 ≤ E_g < 3.0 eV"
-    Insulator: "E_g ≥ 3.0 eV"
-
+    Metal: E_g = 0
+    Semimetal: 0 < E_g < 0.1 eV
+    Semiconductor: 0.1 ≤ E_g < 3.0 eV
+    Insulator: E_g ≥ 3.0 eV
   debye_thermal:
-    Quantum: "T/Θ_D < 0.10"
-    Intermediate: "0.10 ≤ T/Θ_D < 0.70"
-    Classical: "T/Θ_D ≥ 0.70"
-
+    Quantum: T/Θ_D < 0.10
+    Intermediate: 0.10 ≤ T/Θ_D < 0.70
+    Classical: T/Θ_D ≥ 0.70
   magnetic:
-    Diamagnetic: "χ < 0"
-    Paramagnetic: "χ > 0 and T > T_ordering"
-    Ferromagnetic: "T < T_c and J_exchange > 0"
-    Antiferromagnetic: "T < T_N and J_exchange < 0"
-
+    Diamagnetic: χ < 0
+    Paramagnetic: χ > 0 and T > T_ordering
+    Ferromagnetic: T < T_c and J_exchange > 0
+    Antiferromagnetic: T < T_N and J_exchange < 0
   superconductor:
-    Normal: "T > T_c"
-    TypeI: "κ_GL < 1/√2"
-    TypeII: "κ_GL ≥ 1/√2"
-
+    Normal: T > T_c
+    TypeI: κ_GL < 1/√2
+    TypeII: κ_GL ≥ 1/√2
   surface:
-    Noble: "ω_eff < 0.10 (inert surface)"
-    Reactive: "0.10 ≤ ω_eff < 0.30"
-    Active: "ω_eff ≥ 0.30 (strong catalytic)"
-
+    Noble: ω_eff < 0.10 (inert surface)
+    Reactive: 0.10 ≤ ω_eff < 0.30
+    Active: ω_eff ≥ 0.30 (strong catalytic)
 constants:
-  # Fundamental
-  k_B: {value: 1.380649e-23, unit: "J/K", source: "CODATA 2022 (exact)"}
-  mu_B: {value: 5.7883818060e-5, unit: "eV/T", source: "CODATA 2022"}
-  R_gas: {value: 8.314462618, unit: "J/(mol·K)", source: "CODATA 2022 (exact)"}
-  N_A: {value: 6.02214076e23, unit: "1/mol", source: "CODATA 2022 (exact)"}
-  hbar: {value: 1.054571817e-34, unit: "J·s", source: "CODATA 2022"}
-  alpha_fine: {value: 0.0072973525693, unit: "dimensionless", source: "CODATA 2022"}
-
-  # Derived
-  KE2_EV_A: {value: 14.3996, unit: "eV·Å", source: "e²/(4πε₀) in eV·Å"}
-  eV_A3_to_GPa: {value: 160.2176634, unit: "GPa per eV/ų", source: "Unit conversion"}
-  Dulong_Petit: {value: 24.94338, unit: "J/(mol·K)", source: "3R"}
-
-  # GCD kernel
-  p_exponent: {value: 3, unit: "dimensionless", source: "GCD Γ(ω) = ω^p/(1−ω+ε)"}
-  epsilon: {value: 1.0e-08, unit: "dimensionless", source: "Regularization"}
-
-  # RCFT universality (p=3)
-  c_eff: {value: 0.333333, unit: "dimensionless", source: "1/p"}
-  nu: {value: 0.333333, unit: "dimensionless", source: "1/(p−1)"}
-  gamma: {value: 0.333333, unit: "dimensionless", source: "(p−2)/(p−1)"}
-  alpha_critical: {value: 0.0, unit: "dimensionless", source: "2−d_eff·ν"}
-  beta_exp: {value: 0.833333, unit: "dimensionless", source: "(2p−1)/(2(p−1))"}
-  delta: {value: 1.4, unit: "dimensionless", source: "1+γ/β"}
-  d_eff: {value: 6, unit: "dimensionless", source: "2p"}
-
-  # BCS
-  BCS_ratio: {value: 3.528, unit: "dimensionless", source: "2Δ(0)/k_BT_c weak coupling"}
-  Euler_gamma: {value: 0.5772156649, unit: "dimensionless", source: "Euler-Mascheroni"}
-
+  k_B:
+    value: 1.380649e-23
+    unit: J/K
+    source: CODATA 2022 (exact)
+  mu_B:
+    value: 5.788381806e-05
+    unit: eV/T
+    source: CODATA 2022
+  R_gas:
+    value: 8.314462618
+    unit: J/(mol·K)
+    source: CODATA 2022 (exact)
+  N_A:
+    value: 6.02214076e23
+    unit: 1/mol
+    source: CODATA 2022 (exact)
+  hbar:
+    value: 1.054571817e-34
+    unit: J·s
+    source: CODATA 2022
+  alpha_fine:
+    value: 0.0072973525693
+    unit: dimensionless
+    source: CODATA 2022
+  KE2_EV_A:
+    value: 14.3996
+    unit: eV·Å
+    source: e²/(4πε₀) in eV·Å
+  eV_A3_to_GPa:
+    value: 160.2176634
+    unit: GPa per eV/ų
+    source: Unit conversion
+  Dulong_Petit:
+    value: 24.94338
+    unit: J/(mol·K)
+    source: 3R
+  p_exponent:
+    value: 3
+    unit: dimensionless
+    source: GCD Γ(ω) = ω^p/(1−ω+ε)
+  epsilon:
+    value: 1.0e-08
+    unit: dimensionless
+    source: Regularization
+  c_eff:
+    value: 0.333333
+    unit: dimensionless
+    source: 1/p
+  nu:
+    value: 0.333333
+    unit: dimensionless
+    source: 1/(p−1)
+  gamma:
+    value: 0.333333
+    unit: dimensionless
+    source: (p−2)/(p−1)
+  alpha_critical:
+    value: 0.0
+    unit: dimensionless
+    source: 2−d_eff·ν
+  beta_exp:
+    value: 0.833333
+    unit: dimensionless
+    source: (2p−1)/(2(p−1))
+  delta:
+    value: 1.4
+    unit: dimensionless
+    source: 1+γ/β
+  d_eff:
+    value: 6
+    unit: dimensionless
+    source: 2p
+  BCS_ratio:
+    value: 3.528
+    unit: dimensionless
+    source: 2Δ(0)/k_BT_c weak coupling
+  Euler_gamma:
+    value: 0.5772156649
+    unit: dimensionless
+    source: Euler-Mascheroni
 anchors:
-  # ─────────── Cohesive Energy Anchors ───────────
-  - id: "A-MT-COH-01"
-    element: "Cu"
-    property: "cohesive_energy"
+  A-MT-COH-01:
+    element: Cu
+    property: cohesive_energy
     value: 3.49
-    unit: "eV/atom"
-    source: "Kittel (2005)"
-    notes: "FCC metal, d-band filling n_d=10 → fully filled 3d"
-
-  - id: "A-MT-COH-02"
-    element: "Fe"
-    property: "cohesive_energy"
+    unit: eV/atom
+    source: Kittel (2005)
+    notes: FCC metal, d-band filling n_d=10 → fully filled 3d
+  A-MT-COH-02:
+    element: Fe
+    property: cohesive_energy
     value: 4.28
-    unit: "eV/atom"
-    source: "Kittel (2005)"
-    notes: "BCC metal, Friedel d-band model, n_d=6. ω_eff ~0.77 honestly flags model limits."
-
-  - id: "A-MT-COH-03"
-    element: "W"
-    property: "cohesive_energy"
-    value: 8.90
-    unit: "eV/atom"
-    source: "Kittel (2005)"
-    notes: "BCC refractory metal, highest cohesive energy among elements"
-
-  - id: "A-MT-COH-04"
-    element: "C (diamond)"
-    property: "cohesive_energy"
+    unit: eV/atom
+    source: Kittel (2005)
+    notes: BCC metal, Friedel d-band model, n_d=6. ω_eff ~0.77 honestly flags model limits.
+  A-MT-COH-03:
+    element: W
+    property: cohesive_energy
+    value: 8.9
+    unit: eV/atom
+    source: Kittel (2005)
+    notes: BCC refractory metal, highest cohesive energy among elements
+  A-MT-COH-04:
+    element: C (diamond)
+    property: cohesive_energy
     value: 7.37
-    unit: "eV/atom"
-    source: "Ashcroft & Mermin (1976)"
-    notes: "sp³ covalent, tetrahedral coordination"
-
-  - id: "A-MT-COH-05"
-    element: "NaCl"
-    property: "cohesive_energy"
+    unit: eV/atom
+    source: Ashcroft & Mermin (1976)
+    notes: sp³ covalent, tetrahedral coordination
+  A-MT-COH-05:
+    element: NaCl
+    property: cohesive_energy
     value: 6.61
-    unit: "eV/ion pair"
-    source: "Kittel (2005)"
-    notes: "Ionic crystal, Madelung constant M=1.748"
-
-  # ─────────── Phase Transition Anchors ───────────
-  - id: "A-MT-PT-01"
-    material: "Fe"
-    property: "Curie_temperature"
+    unit: eV/ion pair
+    source: Kittel (2005)
+    notes: Ionic crystal, Madelung constant M=1.748
+  A-MT-PT-01:
+    material: Fe
+    property: Curie_temperature
     value: 1043
-    unit: "K"
-    source: "Kittel (2005)"
-    notes: "BCC ferromagnet, second-order magnetic transition"
-
-  - id: "A-MT-PT-02"
-    material: "Ni"
-    property: "Curie_temperature"
+    unit: K
+    source: Kittel (2005)
+    notes: BCC ferromagnet, second-order magnetic transition
+  A-MT-PT-02:
+    material: Ni
+    property: Curie_temperature
     value: 631
-    unit: "K"
-    source: "Kittel (2005)"
-    notes: "FCC ferromagnet"
-
-  - id: "A-MT-PT-03"
-    material: "BaTiO3"
-    property: "ferroelectric_Tc"
+    unit: K
+    source: Kittel (2005)
+    notes: FCC ferromagnet
+  A-MT-PT-03:
+    material: BaTiO3
+    property: ferroelectric_Tc
     value: 393
-    unit: "K"
-    source: "Lines & Glass (2001)"
-    notes: "Displacive ferroelectric, cubic → tetragonal"
-
-  - id: "A-MT-PT-04"
-    material: "Nb"
-    property: "superconducting_Tc"
+    unit: K
+    source: Lines & Glass (2001)
+    notes: Displacive ferroelectric, cubic → tetragonal
+  A-MT-PT-04:
+    material: Nb
+    property: superconducting_Tc
     value: 9.26
-    unit: "K"
-    source: "Kittel (2005)"
-    notes: "Type-II superconductor, highest T_c among elements"
-
-  # ─────────── Elastic Moduli Anchors ───────────
-  - id: "A-MT-EL-01"
-    element: "Cu"
-    property: "bulk_modulus"
+    unit: K
+    source: Kittel (2005)
+    notes: Type-II superconductor, highest T_c among elements
+  A-MT-EL-01:
+    element: Cu
+    property: bulk_modulus
     value: 140
-    unit: "GPa"
-    source: "Ashcroft & Mermin (1976)"
-
-  - id: "A-MT-EL-02"
-    element: "Fe"
-    property: "bulk_modulus"
+    unit: GPa
+    source: Ashcroft & Mermin (1976)
+  A-MT-EL-02:
+    element: Fe
+    property: bulk_modulus
     value: 170
-    unit: "GPa"
-    source: "Kittel (2005)"
-
-  - id: "A-MT-EL-03"
-    element: "C (diamond)"
-    property: "bulk_modulus"
+    unit: GPa
+    source: Kittel (2005)
+  A-MT-EL-03:
+    element: C (diamond)
+    property: bulk_modulus
     value: 443
-    unit: "GPa"
-    source: "McSkimin & Bond (1957)"
-    notes: "Hardest known natural material"
-
-  - id: "A-MT-EL-04"
-    element: "W"
-    property: "bulk_modulus"
+    unit: GPa
+    source: McSkimin & Bond (1957)
+    notes: Hardest known natural material
+  A-MT-EL-04:
+    element: W
+    property: bulk_modulus
     value: 310
-    unit: "GPa"
-    source: "Kittel (2005)"
-
-  # ─────────── Band Structure Anchors ───────────
-  - id: "A-MT-BS-01"
-    material: "Si"
-    property: "band_gap"
+    unit: GPa
+    source: Kittel (2005)
+  A-MT-BS-01:
+    material: Si
+    property: band_gap
     value: 1.12
-    unit: "eV"
-    source: "Kittel (2005)"
-    notes: "Indirect gap semiconductor, sp³ tetrahedral"
-
-  - id: "A-MT-BS-02"
-    material: "Ge"
-    property: "band_gap"
+    unit: eV
+    source: Kittel (2005)
+    notes: Indirect gap semiconductor, sp³ tetrahedral
+  A-MT-BS-02:
+    material: Ge
+    property: band_gap
     value: 0.66
-    unit: "eV"
-    source: "Kittel (2005)"
-    notes: "Indirect gap semiconductor"
-
-  - id: "A-MT-BS-03"
-    material: "GaAs"
-    property: "band_gap"
+    unit: eV
+    source: Kittel (2005)
+    notes: Indirect gap semiconductor
+  A-MT-BS-03:
+    material: GaAs
+    property: band_gap
     value: 1.42
-    unit: "eV"
-    source: "Kittel (2005)"
-    notes: "Direct gap III-V semiconductor"
-
-  - id: "A-MT-BS-04"
-    material: "C (diamond)"
-    property: "band_gap"
+    unit: eV
+    source: Kittel (2005)
+    notes: Direct gap III-V semiconductor
+  A-MT-BS-04:
+    material: C (diamond)
+    property: band_gap
     value: 5.47
-    unit: "eV"
-    source: "Clark et al. (1964)"
-    notes: "Wide-gap insulator"
-
-  - id: "A-MT-BS-05"
-    material: "NaCl"
-    property: "band_gap"
+    unit: eV
+    source: Clark et al. (1964)
+    notes: Wide-gap insulator
+  A-MT-BS-05:
+    material: NaCl
+    property: band_gap
     value: 8.5
-    unit: "eV"
-    source: "Kittel (2005)"
-    notes: "Ionic insulator"
-
-  # ─────────── Debye Temperature Anchors ───────────
-  - id: "A-MT-DB-01"
-    element: "Cu"
-    property: "Debye_temperature"
+    unit: eV
+    source: Kittel (2005)
+    notes: Ionic insulator
+  A-MT-DB-01:
+    element: Cu
+    property: Debye_temperature
     value: 343
-    unit: "K"
-    source: "Kittel (2005)"
-
-  - id: "A-MT-DB-02"
-    element: "Fe"
-    property: "Debye_temperature"
+    unit: K
+    source: Kittel (2005)
+  A-MT-DB-02:
+    element: Fe
+    property: Debye_temperature
     value: 470
-    unit: "K"
-    source: "Kittel (2005)"
-
-  - id: "A-MT-DB-03"
-    element: "C (diamond)"
-    property: "Debye_temperature"
+    unit: K
+    source: Kittel (2005)
+  A-MT-DB-03:
+    element: C (diamond)
+    property: Debye_temperature
     value: 2230
-    unit: "K"
-    source: "Kittel (2005)"
-    notes: "Highest Debye temperature among known materials"
-
-  - id: "A-MT-DB-04"
-    element: "Pb"
-    property: "Debye_temperature"
+    unit: K
+    source: Kittel (2005)
+    notes: Highest Debye temperature among known materials
+  A-MT-DB-04:
+    element: Pb
+    property: Debye_temperature
     value: 105
-    unit: "K"
-    source: "Kittel (2005)"
-    notes: "Soft metal, low Θ_D → strong electron-phonon coupling → superconductor"
-
-  # ─────────── Magnetic Anchors ───────────
-  - id: "A-MT-MAG-01"
-    element: "Fe"
-    property: "saturation_magnetization"
+    unit: K
+    source: Kittel (2005)
+    notes: Soft metal, low Θ_D → strong electron-phonon coupling → superconductor
+  A-MT-MAG-01:
+    element: Fe
+    property: saturation_magnetization
     value: 2.22
-    unit: "μ_B/atom"
-    source: "Kittel (2005)"
-    notes: "BCC ferromagnet, d^6 config, 4 unpaired electrons reduced by band effects"
-
-  - id: "A-MT-MAG-02"
-    element: "Ni"
-    property: "saturation_magnetization"
+    unit: μ_B/atom
+    source: Kittel (2005)
+    notes: BCC ferromagnet, d^6 config, 4 unpaired electrons reduced by band effects
+  A-MT-MAG-02:
+    element: Ni
+    property: saturation_magnetization
     value: 0.606
-    unit: "μ_B/atom"
-    source: "Kittel (2005)"
-    notes: "FCC ferromagnet, d^8 config"
-
-  - id: "A-MT-MAG-03"
-    element: "Co"
-    property: "saturation_magnetization"
+    unit: μ_B/atom
+    source: Kittel (2005)
+    notes: FCC ferromagnet, d^8 config
+  A-MT-MAG-03:
+    element: Co
+    property: saturation_magnetization
     value: 1.72
-    unit: "μ_B/atom"
-    source: "Kittel (2005)"
-    notes: "HCP ferromagnet, d^7 config"
-
-  # ─────────── BCS Superconductor Anchors ───────────
-  - id: "A-MT-BCS-01"
-    material: "Nb"
-    property: "T_c"
+    unit: μ_B/atom
+    source: Kittel (2005)
+    notes: HCP ferromagnet, d^7 config
+  A-MT-BCS-01:
+    material: Nb
+    property: T_c
     value: 9.26
-    unit: "K"
-    source: "Kittel (2005)"
-    notes: "Type-II, highest elemental T_c"
-
-  - id: "A-MT-BCS-02"
-    material: "Pb"
-    property: "T_c"
+    unit: K
+    source: Kittel (2005)
+    notes: Type-II, highest elemental T_c
+  A-MT-BCS-02:
+    material: Pb
+    property: T_c
     value: 7.19
-    unit: "K"
-    source: "Kittel (2005)"
-    notes: "Strong-coupling Type-I superconductor"
-
-  - id: "A-MT-BCS-03"
-    material: "Al"
-    property: "T_c"
+    unit: K
+    source: Kittel (2005)
+    notes: Strong-coupling Type-I superconductor
+  A-MT-BCS-03:
+    material: Al
+    property: T_c
     value: 1.18
-    unit: "K"
-    source: "Kittel (2005)"
-    notes: "Weak-coupling Type-I superconductor"
-
-  - id: "A-MT-BCS-04"
-    material: "MgB2"
-    property: "T_c"
+    unit: K
+    source: Kittel (2005)
+    notes: Weak-coupling Type-I superconductor
+  A-MT-BCS-04:
+    material: MgB2
+    property: T_c
     value: 39.0
-    unit: "K"
-    source: "Nagamatsu et al. (2001)"
-    notes: "Two-gap superconductor, phonon-mediated"
-
-  # ─────────── Surface Energy Anchors ───────────
-  - id: "A-MT-SURF-01"
-    element: "Cu"
-    property: "surface_energy"
+    unit: K
+    source: Nagamatsu et al. (2001)
+    notes: Two-gap superconductor, phonon-mediated
+  A-MT-SURF-01:
+    element: Cu
+    property: surface_energy
     value: 1.79
-    unit: "J/m²"
-    source: "Tyson & Miller (1977)"
-    notes: "FCC (111) surface"
-
-  - id: "A-MT-SURF-02"
-    element: "Fe"
-    property: "surface_energy"
+    unit: J/m²
+    source: Tyson & Miller (1977)
+    notes: FCC (111) surface
+  A-MT-SURF-02:
+    element: Fe
+    property: surface_energy
     value: 2.42
-    unit: "J/m²"
-    source: "Tyson & Miller (1977)"
-    notes: "BCC (110) surface"
-
-  - id: "A-MT-SURF-03"
-    element: "W"
-    property: "surface_energy"
+    unit: J/m²
+    source: Tyson & Miller (1977)
+    notes: BCC (110) surface
+  A-MT-SURF-03:
+    element: W
+    property: surface_energy
     value: 3.27
-    unit: "J/m²"
-    source: "Tyson & Miller (1977)"
-    notes: "BCC (110), highest surface energy among metals"
-
+    unit: J/m²
+    source: Tyson & Miller (1977)
+    notes: BCC (110), highest surface energy among metals
 lessons_learned:
-  - id: "LL-MT-01"
-    domain: "Cohesive Energy"
-    pattern: "Friedel d-band model underestimates Fe by ~77%"
-    lesson: >
-      Simple band-filling models (n_d(10−n_d)/20) capture trends across
-      transition metals but systematically underestimate elements with strong
-      magnetic exchange (Fe, Mn).  The missing energy is the magnetic
-      cohesive contribution — spin alignment adds ~1.5 eV to the binding.
-      Lesson: magnetic order is not separate from structural bonding; it IS
-      part of the cohesive collapse.
-    implication: "Need EAM + magnetic exchange corrections for ferromagnets"
+- id: LL-MT-01
+  domain: Cohesive Energy
+  pattern: Friedel d-band model underestimates Fe by ~77%
+  lesson: 'Simple band-filling models (n_d(10−n_d)/20) capture trends across transition metals but systematically underestimate
+    elements with strong magnetic exchange (Fe, Mn).  The missing energy is the magnetic cohesive contribution — spin alignment
+    adds ~1.5 eV to the binding. Lesson: magnetic order is not separate from structural bonding; it IS part of the cohesive
+    collapse.
 
-  - id: "LL-MT-02"
-    domain: "Band Structure"
-    pattern: "Fisher geodesic distance correlates with gap × dielectric response"
-    lesson: >
-      The RCFT Fisher distance d_F = (π/2)√(E_g/E_g_max) isn't just a
-      mathematical curiosity — it measures how much information is lost when
-      crossing the valence-conduction basin boundary.  Wider gaps = more
-      information cost = stronger insulator.  This connects band theory to
-      information geometry naturally.
-    implication: "Fisher distance could predict dielectric constant"
+    '
+  implication: Need EAM + magnetic exchange corrections for ferromagnets
+- id: LL-MT-02
+  domain: Band Structure
+  pattern: Fisher geodesic distance correlates with gap × dielectric response
+  lesson: 'The RCFT Fisher distance d_F = (π/2)√(E_g/E_g_max) isn''t just a mathematical curiosity — it measures how much
+    information is lost when crossing the valence-conduction basin boundary.  Wider gaps = more information cost = stronger
+    insulator.  This connects band theory to information geometry naturally.
 
-  - id: "LL-MT-03"
-    domain: "Phase Transitions"
-    pattern: "α=0 (logarithmic specific heat) matches exactly for p=3"
-    lesson: >
-      The observation that α=0 in the GCD universality class (p=3) means
-      specific heat has a logarithmic divergence at T_c, not a power law.
-      This is exactly what's observed in many ferromagnetic transitions
-      (the 'lambda anomaly').  The fact that this emerges from Γ(ω) rather
-      than being assumed is a non-trivial validation of the kernel.
-    implication: "GCD p=3 naturally selects lambda-transition universality"
+    '
+  implication: Fisher distance could predict dielectric constant
+- id: LL-MT-03
+  domain: Phase Transitions
+  pattern: α=0 (logarithmic specific heat) matches exactly for p=3
+  lesson: 'The observation that α=0 in the GCD universality class (p=3) means specific heat has a logarithmic divergence at
+    T_c, not a power law. This is exactly what''s observed in many ferromagnetic transitions (the ''lambda anomaly'').  The
+    fact that this emerges from Γ(ω) rather than being assumed is a non-trivial validation of the kernel.
 
-  - id: "LL-MT-04"
-    domain: "Debye Thermal"
-    pattern: "c_eff = 1/3 ↔ 3 acoustic phonon branches is structural"
-    lesson: >
-      The RCFT effective central charge c_eff = 1/p = 1/3 for p=3.  In 3D
-      crystals there are exactly 3 acoustic phonon branches (1 longitudinal +
-      2 transverse).  The ratio 3/3N → 1/N approaches c_eff for large N.
-      This isn't a coincidence — both arise from dimensionality constraints
-      on the collapse geometry.
-    implication: "Central charge counts independent collapse channels"
+    '
+  implication: GCD p=3 naturally selects lambda-transition universality
+- id: LL-MT-04
+  domain: Debye Thermal
+  pattern: c_eff = 1/3 ↔ 3 acoustic phonon branches is structural
+  lesson: 'The RCFT effective central charge c_eff = 1/p = 1/3 for p=3.  In 3D crystals there are exactly 3 acoustic phonon
+    branches (1 longitudinal + 2 transverse).  The ratio 3/3N → 1/N approaches c_eff for large N. This isn''t a coincidence
+    — both arise from dimensionality constraints on the collapse geometry.
 
-  - id: "LL-MT-05"
-    domain: "Cross-Domain"
-    pattern: "Elements with Z > 70 show systematic ω_eff increases"
-    lesson: >
-      Relativistic effects (6s contraction, 5d expansion) break the
-      predictability of simple atomic models for heavy elements.  Gold's
-      color, mercury's liquid state, and lead's low Debye temperature all
-      trace to the same cause: relativistic orbital contraction changes
-      the effective binding landscape.  The ω_eff increase for Z > 70 is
-      not a model failure — it's a signal that new physics (QED corrections)
-      must be incorporated.
-    implication: "Relativistic regime requires separate calibration anchors"
+    '
+  implication: Central charge counts independent collapse channels
+- id: LL-MT-05
+  domain: Cross-Domain
+  pattern: Elements with Z > 70 show systematic ω_eff increases
+  lesson: 'Relativistic effects (6s contraction, 5d expansion) break the predictability of simple atomic models for heavy
+    elements.  Gold''s color, mercury''s liquid state, and lead''s low Debye temperature all trace to the same cause: relativistic
+    orbital contraction changes the effective binding landscape.  The ω_eff increase for Z > 70 is not a model failure — it''s
+    a signal that new physics (QED corrections) must be incorporated.
 
-  - id: "LL-MT-06"
-    domain: "Superconductivity"
-    pattern: "Low Θ_D correlates with higher T_c among elemental superconductors"
-    lesson: >
-      Soft phonon modes (low Debye temperature) enhance electron-phonon
-      coupling λ_ep because the phonon energy denominator is smaller.
-      Pb (Θ_D=105K, T_c=7.19K) vs Cu (Θ_D=343K, normal metal) illustrates
-      this: soft lattices favor Cooper pairing.  The RCFT partition function
-      Z(β) shows this directly — lower Γ(ω) barrier = easier condensation.
-    implication: "Surface of Θ_D vs λ_ep predicts superconducting tendency"
+    '
+  implication: Relativistic regime requires separate calibration anchors
+- id: LL-MT-06
+  domain: Superconductivity
+  pattern: Low Θ_D correlates with higher T_c among elemental superconductors
+  lesson: 'Soft phonon modes (low Debye temperature) enhance electron-phonon coupling λ_ep because the phonon energy denominator
+    is smaller. Pb (Θ_D=105K, T_c=7.19K) vs Cu (Θ_D=343K, normal metal) illustrates this: soft lattices favor Cooper pairing.  The
+    RCFT partition function Z(β) shows this directly — lower Γ(ω) barrier = easier condensation.
 
-  - id: "LL-MT-07"
-    domain: "Surface Science"
-    pattern: "Surface energy ∝ cohesive energy × broken-bond fraction"
-    lesson: >
-      The broken-bond model γ_s ≈ E_coh·(1−z_s/z_b)·n_s/A_s is remarkably
-      accurate for close-packed metal surfaces (within 20%).  It fails for
-      reconstructed surfaces where the surface creates NEW bonds not present
-      in the bulk — reconstruction is a surface-level return that partially
-      heals the collapse.
-    implication: "Surface reconstruction = partial return → reduced γ_s"
+    '
+  implication: Surface of Θ_D vs λ_ep predicts superconducting tendency
+- id: LL-MT-07
+  domain: Surface Science
+  pattern: Surface energy ∝ cohesive energy × broken-bond fraction
+  lesson: 'The broken-bond model γ_s ≈ E_coh·(1−z_s/z_b)·n_s/A_s is remarkably accurate for close-packed metal surfaces (within
+    20%).  It fails for reconstructed surfaces where the surface creates NEW bonds not present in the bulk — reconstruction
+    is a surface-level return that partially heals the collapse.
 
-  - id: "LL-MT-08"
-    domain: "Elastic Moduli"
-    pattern: "RCFT predicts K ~ |t|^{1/3} softening near T_c"
-    lesson: >
-      Elastic softening near structural phase transitions follows the RCFT
-      correlation length exponent ν=1/3.  The bulk modulus K drops as
-      K(T) = K_0·|1−T/T_c|^{ν} because long-range correlations reduce
-      the effective restoring force.  This is observed in BaTiO3 near 393K
-      and in Fe near its BCC→FCC transition at 1185K.
-    implication: "Elastic anomalies locate hidden phase transitions"
+    '
+  implication: Surface reconstruction = partial return → reduced γ_s
+- id: LL-MT-08
+  domain: Elastic Moduli
+  pattern: RCFT predicts K ~ |t|^{1/3} softening near T_c
+  lesson: 'Elastic softening near structural phase transitions follows the RCFT correlation length exponent ν=1/3.  The bulk
+    modulus K drops as K(T) = K_0·|1−T/T_c|^{ν} because long-range correlations reduce the effective restoring force.  This
+    is observed in BaTiO3 near 393K and in Fe near its BCC→FCC transition at 1185K.
+
+    '
+  implication: Elastic anomalies locate hidden phase transitions

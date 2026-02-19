@@ -321,12 +321,13 @@ ignore_errors = true
 
 # Pyright/Pylance configuration for VS Code
 [tool.pyright]
-pythonVersion = "3.11"
+pythonVersion = "3.12"
 typeCheckingMode = "basic"
 reportUnknownParameterType = false
 reportUnknownLambdaType = false
 reportUnknownMemberType = false
 reportMissingTypeStubs = false
+reportMissingModuleSource = false
 reportUnknownArgumentType = false
 reportUnnecessaryTypeIgnoreComment = false
 

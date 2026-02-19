@@ -51,21 +51,42 @@ axioms:
     frozen: true
 
 symbols:
-  tier_1_mapping:
-    omega_eff: "mass_drift | coupling_drift | unitarity_deficit"
-    F_eff: "1 − ω_eff"
-    S: "generation_entropy (flavor mixing complexity)"
-    C: "running_curvature (β-function slope)"
-
-  tier_2_expansion:
-    alpha_s: "Strong coupling constant at energy Q"
-    alpha_em: "Electromagnetic coupling at energy Q"
-    V_CKM: "CKM mixing matrix magnitudes"
-    J_CP: "Jarlskog invariant (CP violation measure)"
-    R_ratio: "e⁺e⁻ → hadrons R-ratio"
-    v_EW: "Electroweak VEV (246.22 GeV)"
-    lambda_quartic: "Higgs quartic coupling"
-    m_f_predicted: "Yukawa-predicted fermion mass"
+  - name: "omega_eff"
+    tier: 1
+    definition: "mass_drift | coupling_drift | unitarity_deficit"
+  - name: "F_eff"
+    tier: 1
+    definition: "1 − ω_eff"
+  - name: "S"
+    tier: 1
+    definition: "generation_entropy (flavor mixing complexity)"
+  - name: "C"
+    tier: 1
+    definition: "running_curvature (β-function slope)"
+  - name: "alpha_s"
+    tier: 2
+    definition: "Strong coupling constant at energy Q"
+  - name: "alpha_em"
+    tier: 2
+    definition: "Electromagnetic coupling at energy Q"
+  - name: "V_CKM"
+    tier: 2
+    definition: "CKM mixing matrix magnitudes"
+  - name: "J_CP"
+    tier: 2
+    definition: "Jarlskog invariant (CP violation measure)"
+  - name: "R_ratio"
+    tier: 2
+    definition: "e⁺e⁻ → hadrons R-ratio"
+  - name: "v_EW"
+    tier: 2
+    definition: "Electroweak VEV (246.22 GeV)"
+  - name: "lambda_quartic"
+    tier: 2
+    definition: "Higgs quartic coupling"
+  - name: "m_f_predicted"
+    tier: 2
+    definition: "Yukawa-predicted fermion mass"
 
 regime_gates:
   coupling:
