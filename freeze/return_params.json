@@ -1,5 +1,6 @@
 {
-  "eta": null,
-  "H_rec": null,
-  "norm": null
+  "eta": 0.001,
+  "norm": "l2",
+  "window_size": 64,
+  "no_return_no_credit": true
 }

@@ -76,7 +76,9 @@ def freeze_baseline(root: Path, run_id: str | None = None) -> dict[str, str]:
     if obs_path.exists():
         with open(obs_path) as f:
             obs = yaml.safe_load(f)
-        bounds = obs.get("bounds", obs.get("coordinate_bounds", {}))
+        # Navigate nested structure: top key may be 'observables'
+        obs_inner = obs.get("observables", obs)
+        bounds = obs_inner.get("bounds", obs_inner.get("coordinate_bounds", {}))
         bounds_file = freeze_dir / "bounds.json"
         bounds_file.write_text(json.dumps(bounds, indent=2))
         print(f"  ✓ Froze bounds: {bounds_file}")
@@ -86,10 +88,14 @@ def freeze_baseline(root: Path, run_id: str | None = None) -> dict[str, str]:
     if return_path.exists():
         with open(return_path) as f:
             ret = yaml.safe_load(f)
+        # Navigate nested structure: top key may be 'return_domain'
+        ret_inner = ret.get("return_domain", ret.get("return", ret))
+        neighborhood = ret_inner.get("neighborhood", {})
         params = {
-            "eta": ret.get("return", {}).get("eta"),
-            "H_rec": ret.get("return", {}).get("H_rec"),
-            "norm": ret.get("return", {}).get("norm"),
+            "eta": neighborhood.get("tolerance"),
+            "norm": neighborhood.get("norm"),
+            "window_size": ret_inner.get("parameters", {}).get("window_size"),
+            "no_return_no_credit": ret_inner.get("censoring", {}).get("no_return_no_credit"),
         }
         params_file = freeze_dir / "return_params.json"
         params_file.write_text(json.dumps(params, indent=2))

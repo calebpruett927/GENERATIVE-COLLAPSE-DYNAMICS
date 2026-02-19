@@ -43,6 +43,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.1.1] - 2026-02-13
+
+### Fixed - Documentation Formatting
+
+Markdown lint cleanup across CHANGELOG.md and other documentation files.
+Fixes for MD050 (consistent emphasis style), MD031 (fenced code blocks),
+MD022 (headings with blank lines). Tagged `v2.1.1` — no code changes.
+
+---
+
 ## [2.1.0] - 2026-02-12
 
 ### Fixed - Environment Portability

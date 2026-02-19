@@ -35,16 +35,17 @@ refs:
     notes: "Base closures + GCD + RCFT extensions"
 
 artifacts:
-  raw_measurements:
-    path: "raw_measurements.csv"
-    format: "csv"
   expected:
     psi_csv:
       path: "derived/trace.csv"
-    invariants_json:
+    invariants_csv:
       path: "outputs/invariants.csv"
-    ss1m_receipt_json:
-      path: "expected/ss1m_receipt.json"
+    regimes_csv:
+      path: "outputs/regimes.csv"
+    welds_csv:
+      path: "outputs/welds.csv"
+    report_txt:
+      path: "outputs/report.txt"
 
 run_intent:
   notes: "Complete UMCP implementation with full observables, embeddings, return domain specifications, closures, and integrity verification."
