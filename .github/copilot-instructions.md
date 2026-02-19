@@ -1,5 +1,7 @@
 # Copilot Instructions for GENERATIVE-COLLAPSE-DYNAMICS
 
+**UMCP v2.1.3** · **3,618 tests** · **13 domains** · **108 closure modules** · **46 lemmas** · **37 dashboard pages**
+
 ## Foundational Principle — Read This First
 
 > **AXIOM-0 (The Return Axiom)**: *"Collapse is generative; only what returns is real."*
@@ -133,18 +135,45 @@ The UMCP tier system has exactly three tiers. No half-tiers. No confusion. Every
 
 ### Tier-1 Reserved Symbols (IMMUTABLE — Never Redefine)
 
-| Symbol | Name | Formula | Structural Role |
-|--------|------|---------|-----------------|
-| **F** | Fidelity | F = Σ wᵢcᵢ | How much survives collapse |
-| **ω** | Drift | ω = 1 − F | How much is lost to collapse |
-| **S** | Entropy | S = −Σ wᵢ[cᵢ ln(cᵢ) + (1−cᵢ)ln(1−cᵢ)] | Bernoulli field entropy |
-| **C** | Curvature | C = stddev(cᵢ)/0.5 | Coupling to uncontrolled degrees of freedom |
-| **κ** | Log-integrity | κ = Σ wᵢ ln(cᵢ,ε) | Logarithmic fidelity |
-| **IC** | Integrity composite | IC = exp(κ) | Multiplicative coherence |
-| **τ_R** | Return time | Re-entry delay to D_θ | How long until the system returns |
-| **regime** | Regime label | Gates on (ω,F,S,C) | {Stable, Watch, Collapse} |
+| Symbol | Name | Formula | Range | Structural Role |
+|--------|------|---------|-------|-----------------|
+| **F** | Fidelity | F = Σ wᵢcᵢ | [0,1] | How much survives collapse |
+| **ω** | Drift | ω = 1 − F | [0,1] | How much is lost to collapse |
+| **S** | Entropy | S = −Σ wᵢ[cᵢ ln(cᵢ) + (1−cᵢ)ln(1−cᵢ)] | ≥0 | Bernoulli field entropy (Shannon entropy is the degenerate limit) |
+| **C** | Curvature | C = stddev(cᵢ)/0.5 | [0,1] | Coupling to uncontrolled degrees of freedom |
+| **κ** | Log-integrity | κ = Σ wᵢ ln(cᵢ,ε) | ≤0 | Logarithmic fidelity (sensitivity-aware) |
+| **IC** | Integrity composite | IC = exp(κ) | (0,1] | Multiplicative coherence |
+| **τ_R** | Return time | Re-entry delay to D_θ | ℕ∪{∞_rec} | How long until the system returns |
+| **regime** | Regime label | Gates on (ω,F,S,C) | {Stable, Watch, Collapse} | Which structural phase the system occupies |
 
 **Any Tier-2 code that redefines F, ω, S, C, κ, IC, τ_R, or regime is automatic nonconformance (symbol capture).** *— Captura symbolorum est non-conformitas ipsa.*
+
+### Frozen Parameters (from `frozen_contract.py` — Seam-Derived, Not Prescribed)
+
+These values are the unique constants where seams close consistently across all 13 domains. They are discovered by the mathematics, not chosen by convention. All code **must** reference these from `frozen_contract.py`, never hardcode alternatives.
+
+| Parameter | Value | Symbol | Role | Source |
+|-----------|-------|--------|------|--------|
+| `EPSILON` | `1e-8` | ε | Guard band / ε-clamp | `frozen_contract.EPSILON` |
+| `P_EXPONENT` | `3` | p | Drift cost exponent in Γ(ω) = ω^p/(1−ω+ε) | `frozen_contract.P_EXPONENT` |
+| `ALPHA` | `1.0` | α | Curvature cost coefficient in D_C = α·C | `frozen_contract.ALPHA` |
+| `LAMBDA` | `0.2` | λ | Auxiliary coefficient | `frozen_contract.LAMBDA` |
+| `TOL_SEAM` | `0.005` | tol_seam | Seam residual tolerance: \|s\| ≤ tol for PASS | `frozen_contract.TOL_SEAM` |
+| `DOMAIN_MIN/MAX` | `0.0 / 1.0` | [a, b] | Normalization domain | `frozen_contract.DOMAIN_*` |
+| `FACE_POLICY` | `"pre_clip"` | — | Clipping policy | `frozen_contract.FACE_POLICY` |
+
+### Regime Gates (from `frozen_contract.RegimeThresholds`)
+
+The four-gate criterion translates continuous Tier-1 invariants into discrete regime labels. These thresholds are frozen per run and sourced from `frozen_contract.DEFAULT_THRESHOLDS`:
+
+```
+Stable:   ω < 0.038  AND  F > 0.90  AND  S < 0.15  AND  C < 0.14   (conjunctive)
+Watch:    0.038 ≤ ω < 0.30  (or Stable gates not all satisfied)
+Collapse: ω ≥ 0.30
+Critical: IC < 0.30  (severity overlay — accompanies any regime)
+```
+
+Stable is conjunctive because stability requires *all* invariants to be clean simultaneously. Critical is an overlay, not a regime — it flags that integrity is dangerously low regardless of regime classification.
 
 ### One-Way Dependency (No Back-Edges)
 
@@ -164,13 +193,17 @@ Before writing or modifying code, verify:
 
 ## What This Project Is
 
-UMCP (Universal Measurement Contract Protocol) validates reproducible computational workflows against mathematical contracts. The unit of work is a **casepack** — a directory containing raw data, a contract reference, closures, and expected outputs. The validator checks schema conformance, Tier-1 kernel identities (F = 1 − ω, IC ≈ exp(κ), IC ≤ F), regime classification, and SHA256 integrity, producing a CONFORMANT/NONCONFORMANT verdict and appending to `ledger/return_log.csv`.
+UMCP (Universal Measurement Contract Protocol) validates reproducible computational workflows against mathematical contracts. The unit of work is a **casepack** — a directory containing raw data, a contract reference, closures, and expected outputs. The validator checks schema conformance, Tier-1 kernel identities (F = 1 − ω, IC ≈ exp(κ), IC ≤ F), regime classification, and SHA256 integrity, producing a three-valued CONFORMANT/NONCONFORMANT/NON_EVALUABLE verdict and appending to `ledger/return_log.csv`.
+
+**Version**: 2.1.3 · **Python**: ≥ 3.11 · **License**: MIT
 
 ## Architecture
 
 ```
 src/umcp/
-├── cli.py                    # 2500-line argparse CLI — validation engine, all subcommands
+├── __init__.py               # Public API: validate(), MeasurementEngine, __version__ (v2.1.3)
+├── __main__.py               # python -m umcp entry point
+├── cli.py                    # 2659-line argparse CLI — validation engine, all subcommands
 ├── validator.py              # Root-file validator (16 files, checksums, math identities)
 ├── kernel_optimized.py       # Lemma-based kernel computation (F, ω, S, C, κ, IC)
 ├── seam_optimized.py         # Optimized seam budget computation (Γ, D_C, Δκ)
@@ -178,23 +211,35 @@ src/umcp/
 ├── tau_r_star_dynamics.py    # Dynamic τ_R* evolution and trajectories
 ├── compute_utils.py          # Vectorized utilities (OPT-17,20: coordinate clipping, bounds)
 ├── epistemic_weld.py         # Epistemic cost tracking (Theorem T9: observation cost)
+├── measurement_engine.py     # Measurement pipeline: raw data → Ψ(t) → invariants
+├── ss1m_triad.py             # SS1M triad computation
+├── closures.py               # Closure loader and registry interface
 ├── insights.py               # Lessons-learned database (pattern discovery)
 ├── uncertainty.py            # Uncertainty propagation and error analysis
 ├── frozen_contract.py        # Frozen contract constants dataclass
+├── accel.py                  # C++ accelerator wrapper (auto-fallback to NumPy)
+├── outputs.py                # Output formatting and report generation
+├── file_refs.py              # File reference resolution
+├── preflight.py              # Pre-validation checks
+├── logging_utils.py          # Structured logging utilities
+├── minimal_cli.py            # Minimal CLI for lightweight use
 ├── api_umcp.py               # [Optional] FastAPI REST extension (Pydantic models)
 ├── finance_cli.py            # Finance domain CLI
 ├── finance_dashboard.py      # Finance Streamlit dashboard
 ├── universal_calculator.py   # Universal kernel calculator CLI
 ├── umcp_extensions.py        # Protocol-based plugin system
-├── dashboard/                # [Optional] Modular Streamlit dashboard package
-│   ├── __init__.py           # Main dashboard entry point (31 pages)
-│   ├── pages_core.py         # Core validation pages
-│   ├── pages_analysis.py     # Analysis & diagnostics pages
-│   ├── pages_science.py      # Scientific domain pages
-│   ├── pages_physics.py      # Physics-specific pages
-│   ├── pages_interactive.py  # Interactive exploration pages
-│   ├── pages_management.py   # Project management pages
-│   └── pages_advanced.py     # Advanced tools & settings
+├── dashboard/                # [Optional] Modular Streamlit dashboard (37 pages)
+│   ├── __init__.py           # Main dashboard entry point
+│   ├── _deps.py              # Dashboard dependency management
+│   ├── _utils.py             # Shared dashboard utilities
+│   ├── pages_core.py         # Overview, Ledger, Casepacks, Contracts, Closures, Regime, Metrics, Health
+│   ├── pages_analysis.py     # Exports, Comparison, Time Series, Formula Builder
+│   ├── pages_science.py      # Cosmology, Astronomy, Nuclear, Quantum, Finance, RCFT, Materials, Security, Atomic, SM
+│   ├── pages_physics.py      # GCD framework, Physics interface, Kinematics interface
+│   ├── pages_interactive.py  # Test Templates, Batch Validation, Live Runner
+│   ├── pages_management.py   # Notifications, Bookmarks, API Integration
+│   ├── pages_diagnostic.py   # τ_R* Diagnostic, Epistemic Classification, Insights Engine
+│   └── pages_advanced.py     # Precision, Geometry, Canon Explorer, Domain Overview
 ├── fleet/                    # Distributed fleet-scale validation
 │   ├── __init__.py           # Fleet public API
 │   ├── scheduler.py          # Job scheduler (submit, route, track)
@@ -203,7 +248,7 @@ src/umcp/
 │   ├── cache.py              # Content-addressable artifact cache
 │   ├── tenant.py             # Multi-tenant isolation, quotas, namespaces
 │   └── models.py             # Shared dataclass models (Job, WorkerInfo, etc.)
-└── __init__.py               # Public API: validate() convenience function, __version__
+└── __init__.py               # (see top)
 
 src/umcp_cpp/                     # [Optional] C++ accelerator (Tier-0 Protocol)
 ├── include/umcp/
@@ -251,7 +296,7 @@ closures/
 | `neutrino_oscillation.py` | Neutrino oscillation and mass mixing | Oscillation parameters |
 | `pmns_mixing.py` | PMNS matrix, leptonic mixing angles | Leptonic CP violation |
 | `subatomic_kernel.py` | 31 particles → 8-channel trace → kernel | 17 fundamental + 14 composite |
-| `particle_physics_formalism.py` | 10 proven theorems (74/2476 tests) | Duality exact to 0.0e+00 |
+| `particle_physics_formalism.py` | 10 proven theorems (74/74 subtests) | Duality exact to 0.0e+00 |
 
 **Atomic Physics closures** (`closures/atomic_physics/`):
 
@@ -266,6 +311,7 @@ closures/
 | `spectral_lines.py` | Spectral line analysis | Emission/absorption |
 | `selection_rules.py` | Quantum selection rules | Δl = ±1 |
 | `zeeman_stark.py` | Zeeman and Stark effects | Field splitting |
+| `recursive_instantiation.py` | Recursive instantiation patterns | Structural self-similarity |
 
 **Data artifacts** (not Python — never import these):
 - `contracts/*.yaml` — 13 versioned mathematical contracts (JSON Schema Draft 2020-12)
@@ -273,11 +319,12 @@ closures/
 - `casepacks/*/manifest.json` — 14 casepack manifests referencing contract, closures, expected outputs
 - `schemas/*.schema.json` — 14 JSON Schema Draft 2020-12 files validating all artifacts
 - `canon/*.yaml` — 11 canonical anchor files (domain-specific reference points)
+- `integrity/sha256.txt` — SHA-256 checksums for 138 tracked files
 - `ledger/return_log.csv` — append-only validation log
 
 ## Standard Model Formalism (10 Theorems)
 
-The particle physics formalism (`closures/standard_model/particle_physics_formalism.py`) proves ten theorems connecting Standard Model physics to GCD kernel patterns. All 10/10 PROVEN with 74/74 individual tests. Duality F + ω = 1 verified to machine precision (0.0e+00).
+The particle physics formalism (`closures/standard_model/particle_physics_formalism.py`) proves ten theorems connecting Standard Model physics to GCD kernel patterns. All 10/10 PROVEN with 74/74 subtests. Duality identity F + ω = 1 verified to machine precision (0.0e+00).
 
 | # | Theorem | Tests | Key Result |
 |---|---------|:-----:|------------|
@@ -292,7 +339,7 @@ The particle physics formalism (`closures/standard_model/particle_physics_formal
 | T9 | Running Coupling Flow | 6/6 | α_s monotone for Q≥10 GeV, confinement→NonPerturbative |
 | T10 | Nuclear Binding Curve | 6/6 | r(BE/A,Δ)=-0.41, peak at Cr/Fe (Z∈[23,30]) |
 
-**Key physics insights encoded in theorems**:
+**Key physics insights encoded in theorems** (sourced from `particle_physics_formalism.py`):
 - The heterogeneity gap (Δ = F − IC) is the central diagnostic — it measures channel heterogeneity
 - Confinement is visible as a cliff: IC drops 2 OOM at the quark→hadron boundary
 - Neutral particles have IC near ε because the charge channel destroys the geometric mean
@@ -327,9 +374,9 @@ Published papers live in `paper/`. Current papers:
 
 All papers use RevTeX4-2 (`revtex4-2` document class) and share `Bibliography.bib`. Compile: `pdflatex → bibtex → pdflatex → pdflatex`.
 
-**Bibliography** (`paper/Bibliography.bib`): 43 entries organized by section:
+**Bibliography** (`paper/Bibliography.bib`): **43 entries** organized by section:
 - Standard Model: PDG 2024, Cabibbo 1963, Kobayashi-Maskawa 1973, Wolfenstein 1983, Jarlskog 1985, Gross-Wilczek 1973, Politzer 1973, Higgs 1964, Weizsäcker 1935, Bethe 1936
-- Canon anchors: paulus2025episteme (Zenodo), paulus2025physicscoherence (Zenodo), paulus2026umcpcasepack (Zenodo)
+- Canon anchors: paulus2025episteme (Zenodo DOI:10.5281/zenodo.17756705), paulus2025physicscoherence (Zenodo DOI:10.5281/zenodo.18072852), paulus2026umcpcasepack (Zenodo DOI:10.5281/zenodo.18226878)
 - Core corpus: paulus2025umcp, paulus2025ucd, paulus2025cmp, paulus2025seams, paulus2025gor, paulus2025canonnote, paulus2026kinematics
 - Implementation: umcpmetadatarepo (GitHub), umcppypi (PyPI)
 - Classical: Goldstein, Landau-Lifshitz, Einstein (SR/GR), Misner-Thorne-Wheeler
@@ -340,10 +387,11 @@ All papers use RevTeX4-2 (`revtex4-2` document class) and share `Bibliography.bi
 
 ```bash
 pip install -e ".[all]"                     # Dev install (core + api + viz + dev tools)
-pytest                                       # 3,618 tests (growing)
+pytest                                       # 3,618 tests (pytest --collect-only to verify)
 python scripts/update_integrity.py          # MUST run after changing any tracked file
 umcp validate .                             # Validate entire repo
 umcp validate casepacks/hello_world --strict # Validate casepack (strict = fail on warnings)
+umcp integrity                              # Verify SHA-256 checksums (138 tracked files)
 ```
 
 **⚠️ `python scripts/update_integrity.py` is mandatory** after modifying any `src/umcp/*.py`, `contracts/*.yaml`, `closures/**`, `schemas/**`, or `scripts/*.py` file. It regenerates SHA256 checksums in `integrity/sha256.txt`. CI will fail on mismatch.
@@ -401,11 +449,38 @@ umcp validate <target>
 
 ## Test Patterns
 
-**3,618 test cases** in `tests/`, numbered by tier and domain (`test_00_*` through `test_200_*`). Single `tests/conftest.py` provides:
+**3,618 test cases** across **90 test files** in `tests/` (88 top-level `test_*.py` + 1 in `tests/closures/` + `conftest.py`), numbered by tier and domain (`test_000_*` through `test_201_*`). Single `tests/conftest.py` provides:
 - Frozen `RepoPaths` dataclass (session-scoped) with all critical paths
 - `@lru_cache` helpers: `_read_file()`, `_parse_json()`, `_parse_yaml()`, `_compile_schema()`
 - Convention: `test_<subject>_<behavior>()` for functions; `TestCLI*` classes with `subprocess.run` for CLI integration
-- New test coverage: `test_fleet_worker.py` (Worker, WorkerPool, WorkerConfig), `test_insights.py` (PatternDatabase, InsightEngine)
+- Additional coverage: `test_fleet_worker.py` (Worker, WorkerPool, WorkerConfig), `test_insights.py` (PatternDatabase, InsightEngine)
+- Parametrized tests expand the 2,857 test functions to 3,618 collected items (verify: `pytest --collect-only | grep "::" | wc -l`)
+
+### Test Distribution by Range
+
+| Test Range | Domain | Tests |
+|------------|--------|------:|
+| `test_000–001` | Manifold bounds, invariant separation | 91 |
+| `test_00` | Schema validation | 3 |
+| `test_10` | Canon, contract, casepack, semantic, CLI validation | 55 |
+| `test_100–102` | GCD (canon, closures, contract) | 52 |
+| `test_110–115` | RCFT (canon, closures, contract, layering) | 97 |
+| `test_120` | Kinematics closures | 55 |
+| `test_130` | Kinematics audit spec | 35 |
+| `test_135` | Nuclear physics closures | 76 |
+| `test_140` | Weyl cosmology closures | 43 |
+| `test_145–147` | τ_R* diagnostics (79), dashboard (144), dynamics (57) | 280 |
+| `test_148–149` | Standard Model (subatomic kernel, formalism, RCFT universality) | 108 |
+| `test_150–153` | Measurement engine, active matter, epistemic weld | 172 |
+| `test_154–159` | Advanced QM: TERS, atom-dot, muon-laser, double-slit, regime calibration | 963 |
+| `test_160` | Contract claims | 77 |
+| `test_170–177` | CLI subcommands, batch validate, τ_R sentinel, schema, lemmas, finance, public API | 177 |
+| `test_180` | Materials science closures | 150 |
+| `test_190–195` | Atomic physics closures, scale ladder | 190 |
+| `test_200–201` | Fleet, recursive instantiation, neutrino oscillation | 187 |
+| `closures/` | Closure-specific tests (kinematics phase) | 58 |
+| Infrastructure | Kernel, seam, frozen contract, extensions, uncertainty, calculator, etc. | 801 |
+| **TOTAL** | | **3,618** |
 
 ## Extension System
 
@@ -426,9 +501,9 @@ Extensions use `typing.Protocol` (`ExtensionProtocol` requiring `name`, `version
 | C++ kernel/seam/SHA-256 | `src/umcp_cpp/` (headers, pybind11 bindings, Catch2 tests) |
 | Accelerator benchmark | `scripts/benchmark_cpp.py` (correctness + performance) |
 | Fleet architecture | `src/umcp/fleet/` (Scheduler, Worker, Queue, Cache, Tenant) |
-| Dashboard pages | `src/umcp/dashboard/` (31 modular pages) |
+| Dashboard pages | `src/umcp/dashboard/` (37 modular pages) |
 | Subatomic particles | `closures/standard_model/subatomic_kernel.py` (31 particles, 8-channel trace) |
-| SM 10 theorems | `closures/standard_model/particle_physics_formalism.py` (74/2476 tests) |
+| SM 10 theorems | `closures/standard_model/particle_physics_formalism.py` (74/74 subtests) |
 | CKM mixing | `closures/standard_model/ckm_mixing.py` (Wolfenstein, Jarlskog) |
 | Running couplings | `closures/standard_model/coupling_constants.py` (α_s, α_em RGE) |
 | EWSB / Higgs | `closures/standard_model/symmetry_breaking.py` (VEV, Yukawa) |
@@ -438,7 +513,7 @@ Extensions use `typing.Protocol` (`ExtensionProtocol` requiring `name`, `version
 | Tier-1 proof | `closures/atomic_physics/tier1_proof.py` (10,162 tests) |
 | Element database | `closures/materials_science/element_database.py` (118 × 18 fields) |
 | SM paper | `paper/standard_model_kernel.tex` (RevTeX4-2, 10 theorems) |
-| Bibliography | `paper/Bibliography.bib` (30+ entries, PDG → Kramers) |
+| Bibliography | `paper/Bibliography.bib` (43 entries, PDG → Kramers) |
 | Test fixtures | `tests/conftest.py` (first 100 lines) |
 | Casepack structure | `casepacks/hello_world/` |
 | Contract format | `contracts/UMA.INTSTACK.v1.yaml` |
@@ -480,7 +555,7 @@ There is no fourth option. No external framework is co-equal with Axiom-0 inside
 
 2. **Classical results are degenerate limits, not sources.** The arrow of derivation runs FROM Axiom-0 TO classical results. Strip the channel semantics from IC ≤ F and you get AM-GM. Strip the collapse field from S and you get Shannon entropy. Strip the cost function from F + ω = 1 and you get unitarity. The classical versions are what remain when degrees of freedom are removed.
 
-3. **Frozen parameters are seam-derived, not prescribed.** Standard frameworks prescribe constants from outside (α = 0.05 by convention, 3σ by tradition, hyperparameters by cross-validation). UMCP's frozen parameters are the unique values where seams close consistently: p = 3 is discovered (not chosen), tol_seam = 0.005 is where IC ≤ F holds at 100% across 8 domains, ε = 10⁻⁸ is where the pole at ω = 1 does not affect any measurement to machine precision.
+3. **Frozen parameters are seam-derived, not prescribed.** Standard frameworks prescribe constants from outside (α = 0.05 by convention, 3σ by tradition, hyperparameters by cross-validation). UMCP's frozen parameters are the unique values where seams close consistently: p = 3 is discovered (not chosen), tol_seam = 0.005 is where IC ≤ F holds at 100% across 13 domains, ε = 10⁻⁸ is where the pole at ω = 1 does not affect any measurement to machine precision.
 
 4. **Three-valued verdicts, not boolean.** CONFORMANT / NONCONFORMANT / NON_EVALUABLE. There is always a third state. *Tertia via semper patet.*
 
