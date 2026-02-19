@@ -5,6 +5,54 @@ All notable changes to the UMCP validator and repository will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.3] - 2026-02-19
+
+### Changed — Version Bump, README Refinement & Accurate Stats
+
+**Version bump**: Updated to v2.1.3 across all 11 versioned files:
+- `pyproject.toml`, `src/umcp/__init__.py`, `integrity/code_version.txt`
+- `.devcontainer/devcontainer.json`, `.devcontainer/Dockerfile`
+- `src/umcp/dashboard/__init__.py`, `derived/trace_meta.yaml`
+- `freeze/freeze_manifest.json`, `freeze/baseline_invariants.json`
+- `archive/README.md`, `paper/RCFT_FREEZE_WELD.md`
+
+**README.md**: Comprehensive refinement with accurate, up-to-date stats:
+- Updated from 12 → 13 closure domains (added Everyday Physics)
+- Updated from 110+ → 120+ closure modules (actual count: 121 with inits)
+- Updated test count from 3,558 → 3,618 (90 test files)
+- Updated casepacks from 13 → 14
+- Updated schemas from 12 → 14
+- Updated integrity tracked files from 121 → 138
+- Added Standard Model modules: `neutrino_oscillation.py`, `pmns_mixing.py` (7 → 9 modules)
+- Added Astronomy module: `stellar_luminosity.py` (6 → 7 modules)
+- Added Everyday Physics domain section (5 modules: thermodynamics, optics, electromagnetism, wave phenomena, epistemic coherence)
+- Updated Papers section: 3 → 7 papers (added confinement_kernel, measurement_substrate, rcft_second_edition, RCFT_FREEZE_WELD)
+- Updated Bibliography count: 37 → 43 entries
+- All badges updated to v2.1.3
+
+**`.github/copilot-instructions.md`**: Synchronized with README updates:
+- Updated closure domains from 12 → 13 with everyday_physics entry
+- Updated Standard Model module table (added neutrino_oscillation, pmns_mixing)
+- Updated data artifact counts (contracts: 13, casepacks: 14, schemas: 14)
+- Updated papers table with all 7 papers
+- Updated bibliography count to 43
+- Updated test count to 3,618
+- Fixed integrity path reference (checksums.sha256 → sha256.txt)
+
+### Stats
+
+- **Tests**: 3,618 passing, 0 failures
+- **Test files**: 90
+- **Closure domains**: 13
+- **Closure modules**: 120+
+- **Casepacks**: 14
+- **Schemas**: 14
+- **Integrity**: 138 files checksummed
+- **Lint**: ruff clean, mypy clean
+- **Validation**: CONFORMANT
+
+---
+
 ## [2.1.2] - 2026-02-14
 
 ### Changed — Documentation Overhaul & Terminology Finalization

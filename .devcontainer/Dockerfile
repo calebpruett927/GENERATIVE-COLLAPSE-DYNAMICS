@@ -1,4 +1,4 @@
-# UMCP Development Container — v2.1.2
+# UMCP Development Container — v2.1.3
 # Python 3.12 on Debian Bookworm — matches CI (ubuntu-latest / Python 3.12).
 # Includes: LaTeX (RevTeX4-2 papers), system libs for scipy/numpy, git tooling.
 
@@ -63,4 +63,4 @@ WORKDIR /workspaces/UMCP-Metadata-Runnable-Code
 
 LABEL maintainer="Clement Paulus"
 LABEL description="UMCP development container — Python 3.12 + LaTeX + full toolchain"
-LABEL version="2.1.2"
+LABEL version="2.1.3"

@@ -322,7 +322,7 @@ The following connections identify where classical results emerge as **degenerat
 
 ### Test Suite
 
-The UMCP test suite includes 3,515+ tests validating return behavior:
+The UMCP test suite includes 3,618+ tests validating return behavior:
 
 ```bash
 # Run all tests

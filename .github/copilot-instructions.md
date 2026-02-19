@@ -220,7 +220,7 @@ If not built, all operations fall back to NumPy transparently. Same formulas, sa
 parameters — Tier-0 Protocol only (no Tier-1 symbols redefined). Build:
 `cd src/umcp_cpp && mkdir build && cd build && cmake .. && make`
 
-**Closure domains** (12 total, each in `closures/<domain>/`):
+**Closure domains** (13 total, each in `closures/<domain>/`):
 
 ```
 closures/
@@ -235,6 +235,7 @@ closures/
 ├── finance/                  # Portfolio continuity, market coherence
 ├── atomic_physics/           # 118 elements, periodic kernel, cross-scale, Tier-1 proof
 ├── materials_science/        # Element database (118 elements, 18 fields)
+├── everyday_physics/         # Thermodynamics, optics, electromagnetism, wave phenomena
 └── standard_model/           # Subatomic kernel (31 particles), 10 proven theorems
 ```
 
@@ -247,6 +248,8 @@ closures/
 | `cross_sections.py` | σ(e⁺e⁻→hadrons), R-ratio, point cross section | Drell-Yan |
 | `symmetry_breaking.py` | Higgs mechanism, VEV=246.22 GeV, Yukawa | EWSB mass generation |
 | `ckm_mixing.py` | CKM matrix, Wolfenstein parametrization, J_CP | λ=0.2257, A=0.814, ρ=0.135, η=0.349 |
+| `neutrino_oscillation.py` | Neutrino oscillation and mass mixing | Oscillation parameters |
+| `pmns_mixing.py` | PMNS matrix, leptonic mixing angles | Leptonic CP violation |
 | `subatomic_kernel.py` | 31 particles → 8-channel trace → kernel | 17 fundamental + 14 composite |
 | `particle_physics_formalism.py` | 10 proven theorems (74/2476 tests) | Duality exact to 0.0e+00 |
 
@@ -265,10 +268,10 @@ closures/
 | `zeeman_stark.py` | Zeeman and Stark effects | Field splitting |
 
 **Data artifacts** (not Python — never import these):
-- `contracts/*.yaml` — 15 versioned mathematical contracts (JSON Schema Draft 2020-12)
+- `contracts/*.yaml` — 13 versioned mathematical contracts (JSON Schema Draft 2020-12)
 - `closures/registry.yaml` — central registry; must list every closure used in a run
-- `casepacks/*/manifest.json` — 13 casepack manifests referencing contract, closures, expected outputs
-- `schemas/*.schema.json` — 12 JSON Schema Draft 2020-12 files validating all artifacts
+- `casepacks/*/manifest.json` — 14 casepack manifests referencing contract, closures, expected outputs
+- `schemas/*.schema.json` — 14 JSON Schema Draft 2020-12 files validating all artifacts
 - `canon/*.yaml` — 11 canonical anchor files (domain-specific reference points)
 - `ledger/return_log.csv` — append-only validation log
 
@@ -317,10 +320,14 @@ Published papers live in `paper/`. Current papers:
 | `generated_demo.tex` | Statistical Mechanics of the UMCP Budget Identity | 5 |
 | `tau_r_star_dynamics.tex` | τ_R* dynamics paper | — |
 | `standard_model_kernel.tex` | Particle Physics in the GCD Kernel: Ten Tier-2 Theorems | 5 |
+| `confinement_kernel.tex` | Confinement Kernel Analysis | — |
+| `measurement_substrate.tex` | Measurement Substrate Theory | — |
+| `rcft_second_edition.tex` | RCFT Second Edition: Foundations and Implications | — |
+| `RCFT_FREEZE_WELD.md` | RCFT Freeze–Weld Identity | — |
 
 All papers use RevTeX4-2 (`revtex4-2` document class) and share `Bibliography.bib`. Compile: `pdflatex → bibtex → pdflatex → pdflatex`.
 
-**Bibliography** (`paper/Bibliography.bib`): 30+ entries organized by section:
+**Bibliography** (`paper/Bibliography.bib`): 43 entries organized by section:
 - Standard Model: PDG 2024, Cabibbo 1963, Kobayashi-Maskawa 1973, Wolfenstein 1983, Jarlskog 1985, Gross-Wilczek 1973, Politzer 1973, Higgs 1964, Weizsäcker 1935, Bethe 1936
 - Canon anchors: paulus2025episteme (Zenodo), paulus2025physicscoherence (Zenodo), paulus2026umcpcasepack (Zenodo)
 - Core corpus: paulus2025umcp, paulus2025ucd, paulus2025cmp, paulus2025seams, paulus2025gor, paulus2025canonnote, paulus2026kinematics
@@ -333,13 +340,13 @@ All papers use RevTeX4-2 (`revtex4-2` document class) and share `Bibliography.bi
 
 ```bash
 pip install -e ".[all]"                     # Dev install (core + api + viz + dev tools)
-pytest                                       # 3,558 tests (growing), ~114s
+pytest                                       # 3,618 tests (growing)
 python scripts/update_integrity.py          # MUST run after changing any tracked file
 umcp validate .                             # Validate entire repo
 umcp validate casepacks/hello_world --strict # Validate casepack (strict = fail on warnings)
 ```
 
-**⚠️ `python scripts/update_integrity.py` is mandatory** after modifying any `src/umcp/*.py`, `contracts/*.yaml`, `closures/**`, `schemas/**`, or `scripts/*.py` file. It regenerates SHA256 checksums in `integrity/checksums.sha256`. CI will fail on mismatch.
+**⚠️ `python scripts/update_integrity.py` is mandatory** after modifying any `src/umcp/*.py`, `contracts/*.yaml`, `closures/**`, `schemas/**`, or `scripts/*.py` file. It regenerates SHA256 checksums in `integrity/sha256.txt`. CI will fail on mismatch.
 
 **CI pipeline** (`.github/workflows/validate.yml`): lint (ruff + mypy) → test (pytest) → validate (baseline + strict, both must return CONFORMANT).
 
@@ -394,7 +401,7 @@ umcp validate <target>
 
 ## Test Patterns
 
-**3,558 test cases** in `tests/`, numbered by tier and domain (`test_00_*` through `test_200_*`). Single `tests/conftest.py` provides:
+**3,618 test cases** in `tests/`, numbered by tier and domain (`test_00_*` through `test_200_*`). Single `tests/conftest.py` provides:
 - Frozen `RepoPaths` dataclass (session-scoped) with all critical paths
 - `@lru_cache` helpers: `_read_file()`, `_parse_json()`, `_parse_yaml()`, `_compile_schema()`
 - Convention: `test_<subject>_<behavior>()` for functions; `TestCLI*` classes with `subprocess.run` for CLI integration

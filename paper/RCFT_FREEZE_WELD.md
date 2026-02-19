@@ -4,7 +4,7 @@
 **Freeze Anchor**: *Recursive Collapse Field Theory (RCFT): Foundations, Derivations, and Implications for Quantum Structure* — May 16, 2025 (Academia.edu)
 **Weld Date**: February 18, 2026
 **Elapsed**: 278 days (9.1 months)
-**Protocol**: UMCP v2.1.2 / GCD Tier-1 / RCFT.INTSTACK.v1
+**Protocol**: UMCP v2.1.3 / GCD Tier-1 / RCFT.INTSTACK.v1
 **Verdict**: The seam closes. *Sutura clauditur.*
 
 ---
@@ -47,7 +47,7 @@ The original RCFT paper proposed a "formal, nonlinear framework for understandin
 
 3. **Proposed recursive proper time.** The integral $T_{\text{rec}}$ — cumulative destabilization history — anticipates the return-time machinery ($\tau_R$, $\tau_R^*$) that became central to the refined kernel.
 
-4. **Asserted recursive universality.** The claim that the same fieldequation governs all domains — from black holes to cognition — was audacious but structurally correct. The refined system proves it: same kernel, same identities, 13 domains, 3,616 tests.
+4. **Asserted recursive universality.** The claim that the same fieldequation governs all domains — from black holes to cognition — was audacious but structurally correct. The refined system proves it: same kernel, same identities, 13 domains, 3,618 tests.
 
 ### What the Original Paper Did Not Have
 
@@ -83,7 +83,7 @@ This is not a failure. The gesture is the necessary precursor to the weld. Witho
 | **Statement** | "The universe became itself through recursive collapse" | "Collapse is generative; only what returns is real" (*Collapsus generativus est; solum quod redit, reale est*) |
 | **Nature** | Ontological claim about the universe | Operational constraint on admissible claims |
 | **Verifiability** | Not testable | Testable: $\tau_R < \infty_{\text{rec}}$ under frozen contract |
-| **Scope** | Speculative universality | Proven across 13 domains, 3,616 tests |
+| **Scope** | Speculative universality | Proven across 13 domains, 3,618 tests |
 
 The refinement is not a change of meaning — it is a **sharpening**. The original axiom says collapse creates. The refined axiom adds: *and the creation must demonstrate return to be real*. The return condition is what makes the axiom operational rather than philosophical.
 
@@ -228,7 +228,7 @@ Using the five words of the prose interface:
 | "Collapse dominance" $D = \|\vartheta\|^2/|v|$ | Regime gates on $(\omega, F, S, C)$ with frozen thresholds | From continuous ratio to discrete classification |
 | "Recursive reentry" (qualitative) | $\tau_R$ computation with typed outcomes | From intuition to computable machinery |
 | "Symbolic attractors" (glyphs) | Attractor basin analysis with Lyapunov-like metrics | From narrative to geometry |
-| 7 assumptions, 0 tests | 46 lemmas, 24+ theorems, 3,616 tests | From assertion to proof |
+| 7 assumptions, 0 tests | 46 lemmas, 24+ theorems, 3,618 tests | From assertion to proof |
 | Single undifferentiated theory | Three-tier architecture (Tier-1/0/2) | From monolith to governed structure |
 
 #### Fidelity (*fidelitas*) — What Persisted
@@ -280,7 +280,7 @@ The original paper returns through three demonstrated mechanisms:
 | Metric | Value | Interpretation |
 |--------|-------|----------------|
 | Tier-1 identities | $F + \omega = 1$ exact, $IC \leq F$ 100%, $IC = \exp(\kappa)$ 98.6% | Structural skeleton holds |
-| Test suite | 3,616 tests, all passing | Computational verification complete |
+| Test suite | 3,618 tests, all passing | Computational verification complete |
 | Domain coverage | 13 domains, 108 closures | Recursive universality demonstrated |
 | Theorem inventory | 46 lemmas + 24 theorems | Mathematical infrastructure proven |
 | Seam width | $\text{tol}_{\text{seam}} = 0.005$ | Seam closes across all domains |
@@ -301,7 +301,7 @@ The original paper returns through three demonstrated mechanisms:
 | **Kernel invariants** | 0 | 8 (F, ω, S, C, κ, IC, τ_R, regime) | +8 |
 | **Lemmas** | 0 (qualitative "proofs") | 46 (exact bounds, verified) | +46 |
 | **Theorems** | 3 (narrative) | 24+ (computationally proven) | +24 |
-| **Tests** | 0 | 3,616 | +3,616 |
+| **Tests** | 0 | 3,618 | +3,618 |
 | **Domain closures** | 0 | 108 Python modules | +108 |
 | **Domains** | 0 (speculative: cosmology, cognition, QM, chemistry) | 13 (validated: GCD, RCFT, kinematics, Weyl, security, astronomy, nuclear, QM, finance, atomic, materials, SM, everyday) | +13 |
 | **Canon anchors** | 0 | 11 | +11 |
@@ -381,7 +381,7 @@ These losses are **generative**: what was lost to drift was replaced by what ret
 | $IC \leq F$ | ✓ 100% (146 experiments, 8 domains) |
 | $IC = \exp(\kappa)$ | ✓ 98.6% within 1% |
 | Regime gates frozen | ✓ ($\omega_s = 0.038$, $\omega_c = 0.30$) |
-| 3,616 tests passing | ✓ |
+| 3,618 tests passing | ✓ |
 | 13 domain closures validated | ✓ |
 | CONFORMANT (strict) | ✓ |
 | Ledger recording | ✓ (append-only) |
@@ -462,11 +462,11 @@ Mapping every named structure from the original paper to its refined equivalent:
 | Weld author | Clement Paulus (assisted by UMCP validation system) |
 | Weld date | February 18, 2026 |
 | Repository | github.com/UMCP-Metadata-Runnable-Code |
-| UMCP version | 2.1.2 |
+| UMCP version | 2.1.3 |
 | Python | 3.12.11 |
-| Test count | 3,616 |
+| Test count | 3,618 |
 | Validation verdict | CONFORMANT (strict) |
-| Integrity checksum count | 130 files |
+| Integrity checksum count | 138 files |
 | Contract | RCFT.INTSTACK.v1 |
 | Canon | UMCP.RCFT.v1 (rcft_anchors.yaml) |
 | Ledger | ledger/return_log.csv |

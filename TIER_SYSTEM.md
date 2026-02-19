@@ -17,7 +17,7 @@ The **UMCP tier system** has exactly three tiers. No half-tiers. No confusion.
 | **1** | **Immutable Invariants** | The structural identities of collapse: F + ω = 1, IC ≤ F, IC ≈ exp(κ). Discovered, not imposed. |
 | **2** | **Expansion Space** | Domain closures that map physics into the invariant structure. Validated through Tier-0 against Tier-1. |
 
-**Tier-1** is immutable because it describes the **structure of collapse itself** — not because someone chose convenient equations. F + ω = 1 is the structural fact that fidelity and drift are complements. IC ≤ F is the integrity bound — derived independently from Axiom-0 (the classical AM-GM inequality emerges as a degenerate limit when channel semantics, weights, and guard band are stripped). These hold across all experiments in 12 domains because the structure forces them.
+**Tier-1** is immutable because it describes the **structure of collapse itself** — not because someone chose convenient equations. F + ω = 1 is the structural fact that fidelity and drift are complements. IC ≤ F is the integrity bound — derived independently from Axiom-0 (the classical AM-GM inequality emerges as a degenerate limit when channel semantics, weights, and guard band are stripped). These hold across all experiments in 13 domains because the structure forces them.
 
 **Tier-0** is the protocol that makes Tier-1 actionable — regime gates, validator, diagnostics (kinematics, PHYS-04), seam calculus, contract enforcement, integrity verification. Everything that tests, confirms, and enforces. The seam is where consistency is verified: the same frozen rules must govern both sides of collapse-return.
 
@@ -54,9 +54,9 @@ Tier-2   EXPANSION SPACE
 
 ## Tier-1: Immutable Invariants
 
-**What it is**: The structural identities of collapse. These are constraints derived independently from Axiom-0 and verified across all experiments in 12 domains, finding they hold universally. They are not definitions we chose. They are what the structure forces.
+**What it is**: The structural identities of collapse. These are constraints derived independently from Axiom-0 and verified across all experiments in 13 domains, finding they hold universally. They are not definitions we chose. They are what the structure forces.
 
-### Structural Identities (0 violations across 3,515+ tests in 12 domains)
+### Structural Identities (0 violations across 3,618+ tests in 13 domains)
 
 | Identity | Structural Meaning |
 |----------|-------------------|
@@ -314,7 +314,7 @@ The field is required by `schemas/contract.schema.json` and `schemas/canon.ancho
 ## Implementation Status (v2.0.0)
 
 - ✅ **Tier-1**: Immutable invariants defined and verified
-  - Structural identities: F+ω=1, IC≤F — verified across all tests in 12 domains
+  - Structural identities: F+ω=1, IC≤F — verified across all tests in 13 domains
   - Reserved symbols: F, ω, S, C, κ, IC, τ_R
 
 - ✅ **Tier-0**: Full protocol support
@@ -325,7 +325,7 @@ The field is required by `schemas/contract.schema.json` and `schemas/canon.ancho
   - Seam structure defined; closures implemented
   - ⚠️ Automated weld PASS/FAIL computation not yet integrated into CLI
 
-- ✅ **Tier-2**: 12 domain expansions active
+- ✅ **Tier-2**: 13 domain expansions active
   - GCD, RCFT, Kinematics, Finance, Security, Astronomy
   - Nuclear, Quantum, Weyl, Atomic Physics, Materials Science, Standard Model
 

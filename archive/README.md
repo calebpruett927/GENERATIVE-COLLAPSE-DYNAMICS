@@ -8,7 +8,7 @@ history and can be restored with `git checkout <commit> -- <path>`.
 
 | Item | Active (root) | Archived |
 |------|---------------|----------|
-| Package version | v2.1.2 | v0.1.0 – v1.5.0 era artifacts |
+| Package version | v2.1.3 | v0.1.0 – v1.5.0 era artifacts |
 | Contract | UMA.INTSTACK.v1 (v1.0.0) | v1.0.1 (patch), v2 (draft, never adopted) |
 | Kinematics runs | RUN004 (frozen, in `runs/`) | RUN001–003 (superseded) |
 | Run generators | v5 (`scripts/`) | v1–v4 (`archive/scripts/`) |
@@ -42,4 +42,4 @@ git checkout <commit>^ -- scripts/generate_kin_runs_v4.py
 ## Date archived
 
 2026-02-12 — initial archive commit (v2.1.0 release).
-2026-02-19 — labels updated for v2.1.2 freeze.
+2026-02-19 — labels updated for v2.1.3 freeze.

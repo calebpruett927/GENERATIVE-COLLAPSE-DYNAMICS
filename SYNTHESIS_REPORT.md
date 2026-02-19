@@ -1,8 +1,8 @@
 # UMCP Synthesis Report: Confirmed Claims and Evidence
 
 **Repository**: `calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS`
-**Assessment Date**: 2026-02-13
-**Validator Version**: umcp-validator v2.1.1
+**Assessment Date**: 2026-02-19
+**Validator Version**: umcp-validator v2.1.3
 **Python**: 3.12.12 | **Commit**: `582026fe`
 
 ---
@@ -12,10 +12,10 @@
 | Metric | Value |
 |---|---|
 | **Overall Verdict** | **CONFORMANT** — 0 errors, 0 warnings |
-| **Test Suite** | **3,558 tests — ALL PASSED** (114s) |
-| **Integrity** | **121 files verified — 0 mismatches, 0 missing** |
-| **Casepacks Validated** | **13/13 CONFORMANT** + 1 repo-level |
-| **Domain Closures** | **12 domains, ~110 closure files** |
+| **Test Suite** | **3,618 tests — ALL PASSED** |
+| **Integrity** | **138 files verified — 0 mismatches, 0 missing** |
+| **Casepacks Validated** | **14/14 CONFORMANT** + 1 repo-level |
+| **Domain Closures** | **13 domains, ~120 closure files** |
 | **Tier-1 Proof** | **10,162 identity tests — 0 failures** |
 | **Standard Model Theorems** | **10/10 PROVEN — 74/74 subtests** |
 | **Total Python LOC** | **~127,833** across 153 files |
@@ -255,7 +255,7 @@ $$s = \Delta\kappa_\text{budget} - \Delta\kappa_\text{ledger}$$
 | Fleet distributed system | 2 | ~100 |
 | Dashboard | 2 | ~150 |
 | API | 3 | ~60 |
-| **Total** | **88** | **3,515** |
+| **Total** | **90** | **3,618** |
 
 ### Papers
 
@@ -358,4 +358,4 @@ Bibliography: 37+ entries (PDG 2024, Cabibbo 1963, Kobayashi-Maskawa 1973, Wolfe
 
 ---
 
-*Report generated via automated full-repo assessment: test suite (3,515/3,515 passed), repo validation (CONFORMANT), integrity check (121/121 OK), source analysis of all 12 domain closures, 10 Standard Model theorems, exhaustive Tier-1 proof, and cross-scale bridge analysis.*
+*Report generated via automated full-repo assessment: test suite (3,618/3,618 passed), repo validation (CONFORMANT), integrity check (138/138 OK), source analysis of all 13 domain closures, 10 Standard Model theorems, exhaustive Tier-1 proof, and cross-scale bridge analysis.*
