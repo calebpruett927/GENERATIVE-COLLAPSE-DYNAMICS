@@ -11,7 +11,7 @@ Usage:
   streamlit run src/umcp/dashboard/__init__.py
 
 Features:
-  - Real-time system health monitoring (36 pages)
+  - Real-time system health monitoring (40 pages)
   - Interactive ledger exploration with anomaly detection
   - Casepack browser with validation status
   - Regime phase space visualization with trajectories
@@ -39,6 +39,7 @@ Package structure:
   - pages_science.py: Cosmology, Astronomy, Nuclear, Quantum, Finance, RCFT, Materials Science, Security
   - pages_advanced.py: Precision, Geometry, Canon Explorer, Domain Overview
   - pages_diagnostic.py: τ_R* Diagnostic, Epistemic Classification, Insights Engine
+  - pages_exploration.py: Rosetta Translation, Orientation Protocol, Everyday Physics
 """
 # pyright: reportUnknownMemberType=false
 # pyright: reportUnknownVariableType=false
@@ -111,6 +112,11 @@ from umcp.dashboard.pages_diagnostic import (
     render_epistemic_page,
     render_insights_page,
     render_tau_r_star_page,
+)
+from umcp.dashboard.pages_exploration import (
+    render_everyday_physics_page,
+    render_orientation_page,
+    render_rosetta_page,
 )
 from umcp.dashboard.pages_interactive import (
     render_batch_validation_page,
@@ -188,6 +194,7 @@ __all__ = [
     "render_cosmology_page",
     "render_domain_overview_page",
     "render_epistemic_page",
+    "render_everyday_physics_page",
     "render_exports_page",
     "render_finance_page",
     "render_formula_builder_page",
@@ -205,12 +212,14 @@ __all__ = [
     "render_metrics_page",
     "render_notifications_page",
     "render_nuclear_page",
+    "render_orientation_page",
     "render_overview_page",
     "render_physics_interface_page",
     "render_precision_page",
     "render_quantum_page",
     "render_rcft_page",
     "render_regime_page",
+    "render_rosetta_page",
     "render_security_page",
     "render_standard_model_page",
     "render_tau_r_star_page",
@@ -321,9 +330,13 @@ def main() -> None:
         "Standard Model": ("🔬", render_standard_model_page),
         "Materials Science": ("🧱", render_materials_science_page),
         "Security": ("🛡️", render_security_page),
+        "Everyday Physics": ("🌡️", render_everyday_physics_page),
         "Physics": ("⚗️", render_physics_interface_page),
         "Kinematics": ("🎯", render_kinematics_interface_page),
         "Cosmology": ("🌌", render_cosmology_page),
+        # Exploration Pages
+        "Rosetta Translation": ("🌐", render_rosetta_page),
+        "Orientation Protocol": ("🧭", render_orientation_page),
         # Diagnostic Pages
         "τ_R* Diagnostic": ("🌡️", render_tau_r_star_page),
         "Epistemic": ("🧿", render_epistemic_page),
