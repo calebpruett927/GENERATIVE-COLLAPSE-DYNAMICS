@@ -14,6 +14,11 @@ Cross-references:
 from __future__ import annotations
 
 from closures.rcft.attractor_basin import compute_attractor_basin
+from closures.rcft.coherence_pipeline_closure import (
+    CoherenceDerivation,
+    derive_coherence,
+    verify_coherence_is_derived,
+)
 from closures.rcft.collapse_grammar import diagnose_grammar
 from closures.rcft.fractal_dimension import compute_fractal_dimension
 from closures.rcft.information_geometry import (
@@ -34,6 +39,7 @@ from closures.rcft.universality_class import (
 )
 
 __all__ = [
+    "CoherenceDerivation",
     "compute_attractor_basin",
     "compute_central_charge",
     "compute_critical_exponents",
@@ -43,10 +49,12 @@ __all__ = [
     "compute_partition_function",
     "compute_recursive_field",
     "compute_resonance_pattern",
+    "derive_coherence",
     "diagnose_grammar",
     "fisher_distance_1d",
     "fisher_distance_weighted",
     "fisher_geodesic",
+    "verify_coherence_is_derived",
     "verify_fano_fisher_duality",
     "verify_scaling_relations",
 ]

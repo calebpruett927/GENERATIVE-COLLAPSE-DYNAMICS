@@ -15,7 +15,7 @@
 
 This is not a simulation. It is a **metrological enforcement engine**: schema conformance, kernel identity verification, regime classification, and SHA-256 integrity checking, producing a `CONFORMANT` / `NONCONFORMANT` verdict for every run.
 
-**Python + C++ integration**: The full framework is written in Python with **13 physics domains**, **120+ closure modules**, and **4,144 tests**. An optional C++17 accelerator (`src/umcp_cpp/`) provides 50–80× speedup for the three hot paths — kernel computation, seam chain accumulation, and SHA-256 integrity — via a pybind11 zero-copy NumPy bridge. The Python wrapper (`umcp.accel`) auto-detects the compiled extension at import time; if it is not built, every call falls back transparently to the equivalent NumPy implementation. Same formulas, same frozen parameters, same results to machine precision — the C++ layer is Tier-0 Protocol only and redefines no Tier-1 symbols.
+**Python + C++ integration**: The full framework is written in Python with **13 physics domains**, **113 closure modules**, and **5,081 tests**. An optional C++17 accelerator (`src/umcp_cpp/`) provides 50–80× speedup for the three hot paths — kernel computation, seam chain accumulation, and SHA-256 integrity — via a pybind11 zero-copy NumPy bridge. The Python wrapper (`umcp.accel`) auto-detects the compiled extension at import time; if it is not built, every call falls back transparently to the equivalent NumPy implementation. Same formulas, same frozen parameters, same results to machine precision — the C++ layer is Tier-0 Protocol only and redefines no Tier-1 symbols.
 
 ---
 
@@ -409,7 +409,7 @@ umcp validate casepacks/hello_world --strict
 ### Run the test suite
 
 ```bash
-pytest                          # All 4,144 tests
+pytest                          # All 5,081 tests
 pytest -v --tb=short            # Verbose with short tracebacks
 pytest -n auto                  # Parallel execution
 ```
@@ -483,7 +483,7 @@ umcp integrity                             # Verify SHA-256 checksums
 umcp validate .                            # Full repo validation → CONFORMANT
 
 # 3. Run the test suite
-pytest -v --tb=short                       # 4,144 tests
+pytest -v --tb=short                       # 5,081 tests
 ```
 
 ### C++ Accelerator — Build & Verify
@@ -605,7 +605,7 @@ umcp validate <target>
 The GitHub Actions workflow (`.github/workflows/validate.yml`) enforces:
 
 1. **Lint** — `ruff format --check` + `ruff check` + `mypy`
-2. **Test** — Full pytest suite (4,144 tests)
+2. **Test** — Full pytest suite (5,081 tests)
 3. **Validate** — Baseline + strict validation (both must return CONFORMANT)
 
 ### Pre-Commit Protocol
@@ -623,26 +623,33 @@ This mirrors CI exactly: format → lint → type-check → integrity → test �
 
 ## Test Suite
 
-**4,144 tests** across **93 test files**, organized by tier and domain:
+**5,081 tests** across **103 test files**, organized by tier and domain:
 
 | Test Range | Domain | Tests |
 |------------|--------|------:|
 | `test_000–001` | Manifold bounds, invariant separation | 91 |
 | `test_00` | Schema validation | 3 |
-| `test_10` | Canon/contract/closure validation | 3 |
+| `test_10–25` | Canon, contract, casepack, semantic, CLI validation | 20 |
+| `test_30–51` | Semantic rules, casepack validation, CLI diff | 10 |
+| `test_70–97` | Contract closures, benchmarks, edge cases, logging, file refs | 66 |
 | `test_100–102` | GCD (canon, closures, contract) | 52 |
 | `test_110–115` | RCFT (canon, closures, contract, layering) | 97 |
 | `test_120` | Kinematics closures | 55 |
 | `test_130` | Kinematics audit spec | 35 |
 | `test_135` | Nuclear physics closures | 76 |
 | `test_140` | Weyl cosmology closures | 43 |
-| `test_145–147` | τ_R* diagnostics & dynamics | 136 |
-| `test_146` | Dashboard coverage | 144 |
-| `test_148–149` | Standard Model (subatomic kernel, formalism) | 319 |
-| `test_150–153` | Astronomy, quantum mechanics, materials | 600+ |
-| `test_154–159` | Advanced QM (TERS, atom-dot, muon-laser, double-slit) | 900+ |
-| `test_160` | Universal regime calibration | 252 |
-| `closures/` | Closure-specific tests | 27 |
+| `test_145–147` | τ_R* diagnostics (79), dashboard (144), dynamics (57) | 280 |
+| `test_148–149` | Standard Model (subatomic kernel, formalism, universality) | 108 |
+| `test_150–153` | Measurement engine, active matter, epistemic weld | 172 |
+| `test_154–159` | Advanced QM: TERS, atom-dot, muon-laser, double-slit, regime calibration | 963 |
+| `test_160` | Contract claims | 77 |
+| `test_170–177` | CLI subcommands, batch validate, τ_R sentinel, schema, lemmas, finance, public API | 177 |
+| `test_180–183` | Materials science, crystal, bioactive, photonic databases | 619 |
+| `test_190–195` | Atomic physics closures, scale ladder | 190 |
+| `test_200–201` | Fleet, recursive instantiation, neutrino oscillation | 182 |
+| `test_210–237` | Cross-domain, casepack roundtrip, registry sweep, domain unit tests | 882 |
+| `closures/` | Closure-specific tests (kinematics phase) | 27 |
+| Infrastructure | Kernel, seam, frozen contract, extensions, uncertainty, calculator, coverage, etc. | 510 |
 
 All tests pass. All validations return CONFORMANT.
 
@@ -705,7 +712,7 @@ The framework is anchored by peer-reviewed Zenodo publications covering the core
 ├── schemas/                   # 14 JSON Schema files
 ├── canon/                     # 11 canonical anchor files
 ├── casepacks/                 # 14 reproducible validation bundles
-├── tests/                     # 93 test files, 4144 tests
+├── tests/                     # 103 test files, 5081 tests
 ├── paper/                     # 6 LaTeX papers + 1 Markdown paper + Bibliography.bib
 ├── integrity/                 # SHA-256 checksums
 ├── ledger/                    # Append-only validation log

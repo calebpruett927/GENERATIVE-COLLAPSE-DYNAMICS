@@ -38,7 +38,7 @@ _HAS_BATCH_PROCESSOR = importlib.util.find_spec("umcp.compute_utils") is not Non
 
 
 def compute_fractal_dimension(
-    trajectory: np.ndarray, eps_values: np.ndarray = None, tol: float = 1e-6
+    trajectory: np.ndarray, eps_values: np.ndarray | None = None, tol: float = 1e-6
 ) -> dict[str, Any]:
     """
     Compute fractal dimension of a trajectory using box-counting method.

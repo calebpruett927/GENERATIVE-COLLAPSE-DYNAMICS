@@ -28,6 +28,9 @@ __all__ = [
     "VALIDATOR_NAME",
     "ClosureLoader",
     "ComputationMode",
+    "ContinuityLawSpec",
+    "ContinuityVerdict",
+    "EditionIdentity",
     "EditionTriad",
     "EmbeddingConfig",
     "EmbeddingSpec",
@@ -41,6 +44,7 @@ __all__ = [
     "OptimizedKernelComputer",
     "Regime",
     "RootFileValidator",
+    "SS1mReceipt",
     "SeamChainAccumulator",
     "TraceRow",
     "UMCPFiles",
@@ -48,16 +52,22 @@ __all__ = [
     "UniversalCalculator",
     "UniversalResult",
     "ValidationResult",
+    "WeldAnchor",
+    "WeldLineage",
     "__version__",
     "accel",
     "check_seam_pass",
     "classify_regime",
+    "compute_extended_triad",
     "compute_full",
     "compute_kernel",
     "compute_kernel_gradients",
     "compute_regime",
+    "compute_ss1m_receipt",
     "compute_triad",
     "compute_utils",
+    "continuity_law",
+    "create_weld",
     "diagnose_extended",
     "diagnose_thermodynamic",
     "diagnose_thermodynamic_batch",
@@ -78,7 +88,9 @@ __all__ = [
     "uncertainty",
     "universal_calculator",
     "validate",
+    "verify_continuity_law",
     "verify_triad",
+    "weld_lineage",
 ]
 
 __version__ = "2.1.3"
@@ -90,6 +102,7 @@ DEFAULT_TZ = "America/Chicago"
 from . import (
     accel,
     compute_utils,
+    continuity_law,
     frozen_contract,
     measurement_engine,
     ss1m_triad,
@@ -98,8 +111,10 @@ from . import (
     umcp_extensions,
     uncertainty,
     universal_calculator,
+    weld_lineage,
 )
 from .closures import ClosureLoader, get_closure_loader
+from .continuity_law import ContinuityLawSpec, ContinuityVerdict, verify_continuity_law
 from .file_refs import UMCPFiles, get_umcp_files
 from .frozen_contract import (
     DEFAULT_CONTRACT,
@@ -142,6 +157,15 @@ from .universal_calculator import (
     compute_regime,
 )
 from .validator import RootFileValidator, get_root_validator
+from .weld_lineage import (
+    EditionIdentity,
+    SS1mReceipt,
+    WeldAnchor,
+    WeldLineage,
+    compute_extended_triad,
+    compute_ss1m_receipt,
+    create_weld,
+)
 
 
 class ValidationResult:

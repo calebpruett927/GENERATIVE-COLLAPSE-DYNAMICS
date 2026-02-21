@@ -45,7 +45,7 @@ python scripts/pre_commit_protocol.py    # Full validation, must exit 0
 | Epistemic weld | `src/umcp/epistemic_weld.py` |
 | Closures (13 domains) | `closures/` |
 | Contracts | `contracts/*.yaml` |
-| Tests (4,144+) | `tests/` |
+| Tests (5,081) | `tests/` |
 | Orientation script | `scripts/orientation.py` |
 | Latin manifesto | `MANIFESTUM_LATINUM.md` |
 | Full AI instructions | `.github/copilot-instructions.md` |

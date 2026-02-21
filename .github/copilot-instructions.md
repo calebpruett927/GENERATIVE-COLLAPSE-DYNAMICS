@@ -1,6 +1,6 @@
 # Copilot Instructions for GENERATIVE-COLLAPSE-DYNAMICS
 
-**UMCP v2.1.3** · **4,144+ tests** · **13 domains** · **108 closure modules** · **46 lemmas** · **37 dashboard pages**
+**UMCP v2.1.3** · **5,081 tests** · **13 domains** · **113 closure modules** · **46 lemmas** · **37 dashboard pages**
 
 ## Foundational Principle — Read This First
 
@@ -414,7 +414,7 @@ All papers use RevTeX4-2 (`revtex4-2` document class) and share `Bibliography.bi
 
 ```bash
 pip install -e ".[all]"                     # Dev install (core + api + viz + dev tools)
-pytest                                       # 3,618 tests (pytest --collect-only to verify)
+pytest                                       # 5,081 tests (pytest --collect-only | grep "::" | wc -l to verify)
 python scripts/update_integrity.py          # MUST run after changing any tracked file
 umcp validate .                             # Validate entire repo
 umcp validate casepacks/hello_world --strict # Validate casepack (strict = fail on warnings)
@@ -476,12 +476,12 @@ umcp validate <target>
 
 ## Test Patterns
 
-**3,618 test cases** across **90 test files** in `tests/` (88 top-level `test_*.py` + 1 in `tests/closures/` + `conftest.py`), numbered by tier and domain (`test_000_*` through `test_201_*`). Single `tests/conftest.py` provides:
+**5,081 test cases** across **103 test files** in `tests/` (102 top-level `test_*.py` + 1 in `tests/closures/` + `conftest.py`), numbered by tier and domain (`test_000_*` through `test_237_*`). Single `tests/conftest.py` provides:
 - Frozen `RepoPaths` dataclass (session-scoped) with all critical paths
 - `@lru_cache` helpers: `_read_file()`, `_parse_json()`, `_parse_yaml()`, `_compile_schema()`
 - Convention: `test_<subject>_<behavior>()` for functions; `TestCLI*` classes with `subprocess.run` for CLI integration
 - Additional coverage: `test_fleet_worker.py` (Worker, WorkerPool, WorkerConfig), `test_insights.py` (PatternDatabase, InsightEngine)
-- Parametrized tests expand the 2,857 test functions to 3,618 collected items (verify: `pytest --collect-only | grep "::" | wc -l`)
+- Parametrized tests expand the collected items to 5,081 (verify: `pytest --collect-only | grep "::" | wc -l`)
 
 ### Test Distribution by Range
 
@@ -489,7 +489,9 @@ umcp validate <target>
 |------------|--------|------:|
 | `test_000–001` | Manifold bounds, invariant separation | 91 |
 | `test_00` | Schema validation | 3 |
-| `test_10` | Canon, contract, casepack, semantic, CLI validation | 55 |
+| `test_10–25` | Canon, contract, casepack, semantic, CLI validation | 20 |
+| `test_30–51` | Semantic rules, casepack validation, CLI diff | 10 |
+| `test_70–97` | Contract closures, benchmarks, edge cases, logging, file refs | 66 |
 | `test_100–102` | GCD (canon, closures, contract) | 52 |
 | `test_110–115` | RCFT (canon, closures, contract, layering) | 97 |
 | `test_120` | Kinematics closures | 55 |
@@ -502,12 +504,13 @@ umcp validate <target>
 | `test_154–159` | Advanced QM: TERS, atom-dot, muon-laser, double-slit, regime calibration | 963 |
 | `test_160` | Contract claims | 77 |
 | `test_170–177` | CLI subcommands, batch validate, τ_R sentinel, schema, lemmas, finance, public API | 177 |
-| `test_180` | Materials science closures | 150 |
+| `test_180–183` | Materials science, crystal, bioactive, photonic databases | 619 |
 | `test_190–195` | Atomic physics closures, scale ladder | 190 |
-| `test_200–201` | Fleet, recursive instantiation, neutrino oscillation | 187 |
-| `closures/` | Closure-specific tests (kinematics phase) | 58 |
-| Infrastructure | Kernel, seam, frozen contract, extensions, uncertainty, calculator, etc. | 801 |
-| **TOTAL** | | **3,618** |
+| `test_200–201` | Fleet, recursive instantiation, neutrino oscillation | 182 |
+| `test_210–237` | Cross-domain, casepack roundtrip, registry sweep, domain unit tests | 882 |
+| `closures/` | Closure-specific tests (kinematics phase) | 27 |
+| Infrastructure | Kernel, seam, frozen contract, extensions, uncertainty, calculator, coverage, etc. | 510 |
+| **TOTAL** | | **5,081** |
 
 ## Extension System
 

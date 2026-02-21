@@ -60,6 +60,9 @@ from closures.materials_science.particle_detector_database import (
     compute_scintillator_kernel,
 )
 from closures.materials_science.phase_transition import compute_phase_transition
+from closures.materials_science.photonic_materials_database import (
+    compute_photonic_kernel,
+)
 from closures.materials_science.surface_catalysis import compute_surface_catalysis
 
 __all__ = [
@@ -72,6 +75,7 @@ __all__ = [
     "compute_elastic_moduli",
     "compute_magnetic_properties",
     "compute_phase_transition",
+    "compute_photonic_kernel",
     "compute_scintillator_kernel",
     "compute_surface_catalysis",
 ]
