@@ -378,7 +378,7 @@ def get_particle(name: str) -> Particle:
     """Get a Standard Model particle by name."""
     key = name.lower()
     for pname, p in SM_CATALOG.items():
-        if pname == key or p.symbol.lower() == key:
+        if pname.lower() == key or p.symbol.lower() == key:
             return p
     msg = f"Unknown particle: {name}. Available: {list(SM_CATALOG.keys())}"
     raise KeyError(msg)
@@ -388,7 +388,7 @@ def list_particles(category: str | None = None) -> list[Particle]:
     """List all SM particles, optionally filtered by category."""
     if category is None:
         return list(SM_CATALOG.values())
-    return [p for p in SM_CATALOG.values() if p.category == category]
+    return [p for p in SM_CATALOG.values() if p.category.lower() == category.lower()]
 
 
 def particle_table() -> list[dict[str, Any]]:

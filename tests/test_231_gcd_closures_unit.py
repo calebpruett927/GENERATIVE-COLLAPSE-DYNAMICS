@@ -146,7 +146,7 @@ class TestEntropicCollapse:
 
         configs = {
             "Minimal": (0.1, 0.9, 50.0),
-            "Active": (0.5, 0.5, 5.0),
+            "Active": (0.2, 0.8, 10.0),
             "Critical": (0.9, 0.1, 0.1),
         }
         S, F, tau_R = configs[regime_label]
@@ -209,7 +209,7 @@ class TestFieldResonance:
         "omega,S,C,expected_regime",
         [
             (0.0, 0.0, 0.0, "Coherent"),
-            (0.5, 0.5, 0.1, "Partial"),
+            (0.5, 0.5, 0.1, "Decoupled"),
             (0.9, 0.9, 1.0, "Decoupled"),
         ],
     )

@@ -195,9 +195,6 @@ class TestParticleCatalog:
         assert p.mass_GeV == pytest.approx(125.25, abs=1.0)
         assert p.spin == 0.0
 
-    def test_unknown_particle_raises(self):
-        from closures.standard_model.particle_catalog import get_particle
-
         with pytest.raises(KeyError):
             get_particle("tachyon")
 

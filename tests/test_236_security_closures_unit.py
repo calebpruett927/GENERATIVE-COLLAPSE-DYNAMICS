@@ -436,7 +436,8 @@ class TestThreatClassifier:
                 "threat_type": cls.threat_type,
                 "confidence": cls.confidence,
                 "severity": cls.severity,
-            }
+                "t": 0,
+            },
         ]
         report = generate_threat_report(series)
         assert "overall_status" in report
