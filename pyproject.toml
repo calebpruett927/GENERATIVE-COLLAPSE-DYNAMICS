@@ -313,9 +313,9 @@ ignore_errors = true
 module = ["closures.*"]
 ignore_errors = true
 
-# Tests and examples: not library code, suppress strict annotations
+# Tests, scripts, and examples: not library code, suppress strict annotations
 [[tool.mypy.overrides]]
-module = ["tests.*", "examples.*"]
+module = ["tests.*", "examples.*", "scripts.*"]
 ignore_errors = true
 
 
