@@ -42,9 +42,12 @@ from closures.materials_science.band_structure import compute_band_structure
 from closures.materials_science.bcs_superconductivity import (
     compute_bcs_superconductivity,
 )
-from closures.materials_science.cohesive_energy import compute_cohesive_energy
 
 # ── Database modules ─────────────────────────────────────────────
+from closures.materials_science.bioactive_compounds_database import (
+    compute_bioactive_kernel,
+)
+from closures.materials_science.cohesive_energy import compute_cohesive_energy
 from closures.materials_science.crystal_morphology_database import (
     compute_crystal_kernel,
 )
@@ -62,6 +65,7 @@ from closures.materials_science.surface_catalysis import compute_surface_catalys
 __all__ = [
     "compute_band_structure",
     "compute_bcs_superconductivity",
+    "compute_bioactive_kernel",
     "compute_cohesive_energy",
     "compute_crystal_kernel",
     "compute_debye_thermal",

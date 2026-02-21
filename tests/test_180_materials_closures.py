@@ -121,10 +121,10 @@ class TestMaterialsImports:
         assert callable(fn)
 
     def test_all_exports(self) -> None:
-        """Module __all__ lists exactly the ten compute functions."""
+        """Module __all__ lists exactly the eleven compute functions."""
         import closures.materials_science as ms
 
-        assert len(ms.__all__) == 10
+        assert len(ms.__all__) == 11
         for name in ms.__all__:
             assert hasattr(ms, name)
 
