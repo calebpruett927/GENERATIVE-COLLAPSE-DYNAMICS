@@ -29,8 +29,6 @@ CLOSURES = ROOT / "closures"
 CONTRACTS = ROOT / "contracts"
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
-if str(CLOSURES) not in sys.path:
-    sys.path.insert(0, str(CLOSURES))
 
 # Frozen contract constants
 
@@ -62,7 +60,7 @@ class TestCrossSections:
 
     @pytest.fixture(autouse=True)
     def _import(self):
-        from standard_model.cross_sections import (
+        from closures.standard_model.cross_sections import (
             R_EXPERIMENTAL,
             CrossSectionResult,
             compute_cross_section,
@@ -123,7 +121,7 @@ class TestSymmetryBreaking:
 
     @pytest.fixture(autouse=True)
     def _import(self):
-        from standard_model.symmetry_breaking import (
+        from closures.standard_model.symmetry_breaking import (
             FERMION_MASSES,
             M_H_MEASURED,
             M_W_MEASURED,
@@ -203,7 +201,7 @@ class TestGapCaptureSS1M:
 
     @pytest.fixture(autouse=True)
     def _import(self):
-        from materials_science.gap_capture_ss1m import (
+        from closures.materials_science.gap_capture_ss1m import (
             CHANNEL_LABELS,
             SS1M,
             SeamReceipt,
@@ -282,7 +280,7 @@ class TestInformationGeometry:
 
     @pytest.fixture(autouse=True)
     def _import(self):
-        from rcft.information_geometry import (
+        from closures.rcft.information_geometry import (
             binary_entropy,
             compute_efficiency,
             compute_geodesic_budget_cost,
@@ -435,7 +433,7 @@ class TestWeylCosmology:
 
     @pytest.fixture(autouse=True)
     def _import(self):
-        from weyl.cosmology_background import (
+        from closures.weyl.cosmology_background import (
             BackgroundResult,
             CosmologyParams,
             D1_of_z,
@@ -517,7 +515,7 @@ class TestEnergyMechanics:
 
     @pytest.fixture(autouse=True)
     def _import(self):
-        from kinematics.energy_mechanics import (
+        from closures.kinematics.energy_mechanics import (
             compute_kinetic_energy,
             compute_mechanical_energy,
             compute_potential_energy,
