@@ -152,7 +152,7 @@ tier_1_invariants:
     - symbol: IC
       latex: IC
       description: Integrity-collapse measure
-      formula: IC = exp(kappa), IC ≤ F (AM-GM bound)
+      formula: IC = exp(kappa), IC ≤ F (integrity bound)
       domain: nuclear_physics
       unit: dimensionless
 
@@ -300,7 +300,7 @@ budget_identity_analog:
 
     (1) F_eff = 1 − ω_eff                 (fidelity-drift duality)
     (2) IC ≈ exp(κ)                        (integrity-collapse)
-    (3) IC ≤ F                             (AM-GM bound)
+    (3) IC ≤ F                             (integrity bound)
     (4) BE = a_V·A − a_S·A^(2/3) − ...    (SEMF mass formula)
     (5) Q_α = BE(d) + BE(He-4) − BE(p)    (alpha decay energy)
     (6) log₁₀(T½) = a/√Q_α + b            (Geiger-Nuttall scaling)

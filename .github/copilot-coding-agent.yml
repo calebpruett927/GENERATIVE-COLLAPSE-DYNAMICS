@@ -1,0 +1,20 @@
+# GitHub Copilot Coding Agent Configuration
+# Controls behavior when Copilot autonomously creates PRs from issues.
+
+version: 1
+
+instructions:
+  # The full specification at .github/copilot-instructions.md is automatically
+  # loaded. These additional directives constrain autonomous agent behavior.
+  - "Before creating any PR, run: python scripts/check_axiom_conformance.py"
+  - "Before creating any PR, run: python scripts/pre_commit_protocol.py"
+  - "Never redefine Tier-1 symbols: F, omega, S, C, kappa, IC, tau_R, regime"
+  - "Import all frozen parameters from src/umcp/frozen_contract.py"
+  - "Every new Python file must start with: from __future__ import annotations"
+  - "Use three-valued verdicts (CONFORMANT/NONCONFORMANT/NON_EVALUABLE), never boolean"
+  - "After modifying any tracked file, run: python scripts/update_integrity.py"
+  - "The duality identity is F + omega = 1, not 'unitarity'"
+  - "The entropy is Bernoulli field entropy, not 'Shannon entropy'"
+  - "The integrity bound is IC <= F, not 'AM-GM inequality'"
+  - "Frozen parameters are seam-derived, not 'hyperparameters' or 'constants by convention'"
+  - "INF_REC stays as typed string in data files, maps to float('inf') in Python"

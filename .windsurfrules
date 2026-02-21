@@ -1,0 +1,42 @@
+# UMCP Repository — AI Coding Instructions
+#
+# AXIOM-0: "Collapse is generative; only what returns is real."
+#
+# Full specification: .github/copilot-instructions.md
+#
+# HARD CONSTRAINTS:
+# - Never attribute GCD structures to external theories
+#   (IC ≤ F is "integrity bound" not "AM-GM"; S is "Bernoulli field entropy"
+#   not "Shannon entropy"; F + ω = 1 is "duality identity" not "unitarity")
+# - Never redefine Tier-1 symbols: F, ω, S, C, κ, IC, τ_R, regime
+# - Import frozen parameters from src/umcp/frozen_contract.py, never hardcode
+# - Three-valued verdicts: CONFORMANT / NONCONFORMANT / NON_EVALUABLE
+# - INF_REC = typed string in data, float("inf") in Python
+# - No back-edges: Tier-2 cannot modify Tier-0 or Tier-1 within a run
+# - Every source file starts with: from __future__ import annotations
+# - Line length: 120 chars
+#
+# AFTER EVERY CODE CHANGE:
+#   python scripts/update_integrity.py
+#   python scripts/pre_commit_protocol.py
+#
+# TERMINOLOGY:
+#   WRONG → RIGHT
+#   Shannon entropy → Bernoulli field entropy
+#   AM-GM inequality → Integrity bound (IC ≤ F)
+#   AM-GM gap → Heterogeneity gap (Δ = F − IC)
+#   rederives/recovers → derives independently
+#   unitarity → duality identity F + ω = 1
+#   hyperparameter → frozen parameter
+#
+# TIER SYSTEM:
+#   Tier-1: Immutable invariants (F+ω=1, IC≤F, IC≈exp(κ))
+#   Tier-0: Protocol (src/umcp/ — validation, kernel, seam, contracts)
+#   Tier-2: Closures (closures/ — 13 domains validated through Tier-0)
+#
+# KEY FILES:
+#   src/umcp/frozen_contract.py   — frozen constants, regime classification
+#   src/umcp/kernel_optimized.py  — kernel computation (F, ω, S, C, κ, IC)
+#   src/umcp/validator.py         — root-file validation
+#   src/umcp/seam_optimized.py    — seam budget computation
+#   src/umcp/epistemic_weld.py    — epistemic verdict (RETURN/GESTURE/DISSOLUTION)

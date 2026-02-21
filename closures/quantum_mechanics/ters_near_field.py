@@ -13,10 +13,10 @@ predicts the qualitative conclusions independently.
 
 Seven Theorems
 --------------
-T-TERS-1  Self/Cross Decomposition as AM-GM Gap
+T-TERS-1  Self/Cross Decomposition as Heterogeneity Gap
           The TERS intensity splits into self-terms (non-negative) and
           cross-terms (signed). Near-complete cancellation in gas phase
-          but incomplete on surface ↔ AM-GM gap Δ = F − IC.
+          but incomplete on surface ↔ heterogeneity gap Δ = F − IC.
 
 T-TERS-2  Screening-Induced Sign Reversal as Seam Event
           The amplitude A_zz changes sign gas→surface.  In the kernel,
@@ -739,19 +739,19 @@ class TheoremResult:
 
 
 # ═══════════════════════════════════════════════════════════════════
-# THEOREM T-TERS-1: SELF/CROSS DECOMPOSITION AS AM-GM GAP
+# THEOREM T-TERS-1: SELF/CROSS DECOMPOSITION AS HETEROGENEITY GAP
 # ═══════════════════════════════════════════════════════════════════
 
 
 def theorem_T_TERS_1_integrity_bound_decomposition() -> TheoremResult:
-    """T-TERS-1: Self/Cross Decomposition as AM-GM Gap.
+    """T-TERS-1: Self/Cross Decomposition as Heterogeneity Gap.
 
     STATEMENT:
       The TERS intensity decomposition I_zz = I_self + I_cross
       (Brezina et al. Eqs 3-5) is structurally identical to the
-      AM-GM gap Δ = F − IC in the GCD kernel. Near-complete
+      heterogeneity gap Δ = F − IC in the GCD kernel. Near-complete
       cancellation of self and cross terms in the gas phase corresponds
-      to a small AM-GM gap (homogeneous channels), while incomplete
+      to a small heterogeneity gap (homogeneous channels), while incomplete
       cancellation on the surface corresponds to a large gap
       (heterogeneous channels from screening).
 
@@ -782,7 +782,7 @@ def theorem_T_TERS_1_integrity_bound_decomposition() -> TheoremResult:
       Fig 4C of Brezina et al. shows I_self and I_cross for MgP A₂u.
       Gas phase: near-perfect cancellation (I_cross ≈ −I_self).
       Surface: I_cross shrinks → intensity peak at Mg appears.
-      The AM-GM gap measures exactly this: how far the geometric mean
+      The heterogeneity gap measures exactly this: how far the geometric mean
       (coherent product) falls below the arithmetic mean (incoherent sum).
     """
     tests_passed = 0
@@ -799,7 +799,7 @@ def theorem_T_TERS_1_integrity_bound_decomposition() -> TheoremResult:
     gap_gas = k_gas["F"] - k_gas["IC"]
     gap_surf = k_surf["F"] - k_surf["IC"]
 
-    # Test 1: Surface has larger AM-GM gap than gas phase
+    # Test 1: Surface has larger heterogeneity gap than gas phase
     tests_total += 1
     t1 = gap_surf > gap_gas
     if t1:
@@ -844,7 +844,7 @@ def theorem_T_TERS_1_integrity_bound_decomposition() -> TheoremResult:
     # Gas has self_fraction=0.50 (near-perfect cancellation: I_self ≈ |I_cross|)
     # Surface has self_fraction=0.55 (incomplete cancellation → net signal)
     # Higher self_fraction on surface = cross-terms partially disrupted
-    # by screening → larger AM-GM gap (more heterogeneity)
+    # by screening → larger heterogeneity gap (more heterogeneity)
     tests_total += 1
     self_frac_gas = float(c_gas[CHANNEL_LABELS.index("self_fraction")])
     self_frac_surf = float(c_surf[CHANNEL_LABELS.index("self_fraction")])
@@ -863,9 +863,9 @@ def theorem_T_TERS_1_integrity_bound_decomposition() -> TheoremResult:
     details["IC_leq_F_surf"] = k_surf["IC"] <= k_surf["F"]
 
     return TheoremResult(
-        name="T-TERS-1: Self/Cross Decomposition as AM-GM Gap",
+        name="T-TERS-1: Self/Cross Decomposition as Heterogeneity Gap",
         statement=(
-            "TERS self/cross cancellation maps to the AM-GM gap Δ = F − IC. "
+            "TERS self/cross cancellation maps to the heterogeneity gap Δ = F − IC. "
             "Surface screening increases channel heterogeneity, widening Δ "
             "and producing the observed intensity emergence."
         ),
@@ -1306,7 +1306,7 @@ def theorem_T_TERS_5_periodicity_consistency() -> TheoremResult:
     details["F_cluster"] = round(k_cluster["F"], 6)
     details["F_periodic"] = round(k_periodic["F"], 6)
 
-    # Test 4: AM-GM gap is larger for cluster (more heterogeneous)
+    # Test 4: Heterogeneity gap is larger for cluster (more heterogeneous)
     gap_cluster = k_cluster["F"] - k_cluster["IC"]
     gap_periodic = k_periodic["F"] - k_periodic["IC"]
     tests_total += 1
@@ -1627,7 +1627,7 @@ def validate_cross_theorem_consistency() -> TheoremResult:
           |Δκ_A2u| > |Δκ_B1g| > |Δκ_A2g| everywhere.
       (2) Fisher distance ordering matches Δκ ordering:
           d_F(A₂u) > d_F(B₁g) > d_F(A₂g).
-      (3) AM-GM gap consistency: gap_surf > gap_gas for all
+      (3) Heterogeneity gap consistency: gap_surf > gap_gas for all
           out-of-plane modes (screening always increases heterogeneity).
       (4) Self-fraction change is mode-dependent: largest for A₂u
           (out-of-plane screening disrupts gas-phase cancellation).
@@ -1689,7 +1689,7 @@ def validate_cross_theorem_consistency() -> TheoremResult:
         f"d_F(A2u)={modes_fisher['A2u']:.4f} > d_F(B1g)={modes_fisher['B1g']:.4f} > d_F(A2g)={modes_fisher['A2g']:.4f}"
     )
 
-    # Test 3: AM-GM gap increases gas→surface for screened mode (A₂u)
+    # Test 3: Heterogeneity gap increases gas→surface for screened mode (A₂u)
     gap_a2u_gas = kernels["A2u_gas"]["F"] - kernels["A2u_gas"]["IC"]
     gap_a2u_surf = kernels["A2u_surf"]["F"] - kernels["A2u_surf"]["IC"]
     tests_total += 1
@@ -1728,7 +1728,7 @@ def validate_cross_theorem_consistency() -> TheoremResult:
     return TheoremResult(
         name="Cross-Theorem Consistency Validation",
         statement=(
-            "Mode ordering (|Δκ| and d_F), AM-GM gap directionality, "
+            "Mode ordering (|Δκ| and d_F), heterogeneity gap directionality, "
             "self-fraction monotonicity, and budget sign are all "
             "mutually consistent across the seven theorems."
         ),
@@ -1776,7 +1776,7 @@ def uncertainty_propagation_analysis() -> TheoremResult:
       preserved.
 
     TESTED:
-      (1) AM-GM gap ordering (surf > gas) holds under ±σ perturbation
+      (1) Heterogeneity gap ordering (surf > gas) holds under ±σ perturbation
       (2) Δκ sign (surface < gas for A₂u) holds under ±σ perturbation
       (3) A₂u dominance (|Δκ_A2u| > in-plane modes) holds under ±σ
       (4) Periodicity ordering (periodic > cluster) holds under ±σ
@@ -1811,7 +1811,7 @@ def uncertainty_propagation_analysis() -> TheoremResult:
     N_TRIALS = 100
     MAX_VIOLATIONS = int(0.20 * N_TRIALS)  # 20 for N_TRIALS=100
 
-    # Test 1: AM-GM gap ordering surf > gas holds for A₂u under perturbation
+    # Test 1: Heterogeneity gap ordering surf > gas holds for A₂u under perturbation
     c_gas_base, _ = _mgp_gas_phase_A2u()
     c_surf_base, _ = _mgp_surface_A2u()
     gap_order_violations = 0
@@ -2401,7 +2401,7 @@ class PixelKernelMap:
     omega: np.ndarray
     kappa: np.ndarray
     IC: np.ndarray
-    delta: np.ndarray  # AM-GM gap Δ = F − IC
+    delta: np.ndarray  # Heterogeneity gap Δ = F − IC
     regime: np.ndarray  # string array of regime labels
     channels: np.ndarray  # (ny, nx, 8) raw channel arrays
 
@@ -2565,7 +2565,7 @@ class MCResult:
     kappa_mean: float
     kappa_std: float
     kappa_ci95: tuple[float, float]
-    delta_mean: float  # AM-GM gap
+    delta_mean: float  # Heterogeneity gap
     delta_std: float
     delta_ci95: tuple[float, float]
     integrity_bound_violation_rate: float  # fraction where IC > F
@@ -2706,7 +2706,7 @@ def mos2_data_driven_analysis() -> dict[str, Any]:
         "mc_integrity_bound_violation_rate": mc.integrity_bound_violation_rate,
         "conclusion": (
             "Pristine MoS₂ produces a spatially uniform kernel map with "
-            "negligible AM-GM gap variation, confirming that translational "
+            "negligible heterogeneity gap variation, confirming that translational "
             "symmetry implies kernel homogeneity. No sign reversal — "
             "consistent with the paper's finding that defects are required "
             "for TERS contrast."

@@ -14,6 +14,7 @@ from umcp.dashboard._deps import go, np, pd, st
 from umcp.dashboard._utils import (
     _ensure_closures_path,
 )
+from umcp.frozen_contract import EPSILON
 
 
 def render_cosmology_page() -> None:
@@ -2124,7 +2125,7 @@ def render_finance_page() -> None:
 
             c_arr = np.array(embedded.c, dtype=float)
             w_arr = np.array([0.30, 0.25, 0.25, 0.20], dtype=float)
-            kernel = compute_kernel_outputs(c_arr, w_arr, epsilon=1e-8)
+            kernel = compute_kernel_outputs(c_arr, w_arr, epsilon=EPSILON)
             f_val = kernel["F"]
             omega = kernel["omega"]
             kappa = kernel["kappa"]

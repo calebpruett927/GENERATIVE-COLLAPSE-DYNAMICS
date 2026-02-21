@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -30,7 +31,7 @@ LAYOUT_DEFAULTS = {
 }
 
 
-def styled(fig: go.Figure, **kw) -> go.Figure:
+def styled(fig: go.Figure, **kw: Any) -> go.Figure:
     fig.update_layout(**LAYOUT_DEFAULTS, **kw)
     fig.update_xaxes(gridcolor=GRID, zerolinecolor=GRID)
     fig.update_yaxes(gridcolor=GRID, zerolinecolor=GRID)
@@ -190,7 +191,7 @@ def gen_kernel_timeseries(df: pd.DataFrame) -> None:
 
 
 # ══════════════════════════════════════════════════════════════════
-# 3. AM-GM GAP ANALYSIS (F ≥ IC)
+# 3. HETEROGENEITY GAP ANALYSIS (F ≥ IC)
 # ══════════════════════════════════════════════════════════════════
 def gen_heterogeneity_gap(df: pd.DataFrame) -> None:
     sample = df.head(50).copy().reset_index(drop=True)
@@ -232,7 +233,7 @@ def gen_heterogeneity_gap(df: pd.DataFrame) -> None:
 
     styled(
         fig,
-        title="AM-GM Gap: F ≥ IC (Lemma 4 — equality iff homogeneous)",
+        title="Heterogeneity Gap: F ≥ IC (Lemma 4 — equality iff homogeneous)",
         xaxis_title="Run Index",
         yaxis_title="Value",
         width=900,
@@ -318,7 +319,7 @@ def gen_three_layer_geometry() -> None:
         shared_xaxes=True,
         subplot_titles=[
             "Layer 1 — State Space (ω, F)",
-            "Layer 2 — Projections (IC vs F, AM-GM Gap)",
+            "Layer 2 — Projections (IC vs F, Heterogeneity Gap)",
             "Layer 3 — Seam Graph (Regime Classification)",
         ],
         vertical_spacing=0.08,
@@ -351,7 +352,7 @@ def gen_three_layer_geometry() -> None:
     fig.add_hline(y=0.70, line_dash="dash", line_color=REGIME_COLORS["COLLAPSE"], row=1, col=1)
     fig.add_hline(y=0.30, line_dash="dash", line_color=REGIME_COLORS["COLLAPSE"], row=1, col=1)
 
-    # Layer 2: IC vs F (AM-GM gap)
+    # Layer 2: IC vs F (heterogeneity gap)
     fig.add_trace(
         go.Scatter(
             x=list(range(n)),

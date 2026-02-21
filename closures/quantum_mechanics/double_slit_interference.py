@@ -537,7 +537,7 @@ def theorem_T_DSE_1_tier1() -> TheoremResult:
         else:
             sd["IC_eq_exp_kappa_pass"] = False
 
-        # Test: IC ≤ F (AM-GM inequality)
+        # Test: IC ≤ F (integrity bound)
         n_tests += 1
         ic_le_f = k["IC"] <= k["F"] + 1e-10
         sd["IC_le_F"] = ic_le_f

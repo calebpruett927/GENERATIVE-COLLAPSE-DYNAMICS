@@ -45,6 +45,10 @@ jobs:
         run: |
           python scripts/repo_health_check.py
 
+      - name: Axiom conformance check
+        run: |
+          python scripts/check_axiom_conformance.py --fix-hint
+
   test:
     name: Run pytest suite
     runs-on: ubuntu-latest

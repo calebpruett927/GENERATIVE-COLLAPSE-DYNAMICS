@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# pyright: reportMissingImports=false
 """
 Benchmark: Python (NumPy) vs C++ accelerator.
 
@@ -27,7 +28,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
-from umcp.accel import (
+from umcp.accel import (  # type: ignore[import-not-found]  # sys.path resolved
     SeamChain,
     backend,
     classify_regime,
@@ -37,6 +38,7 @@ from umcp.accel import (
     hash_file,
     propagate_error,
 )
+from umcp.frozen_contract import EPSILON  # type: ignore[import-not-found]  # sys.path resolved
 
 # ───────────────────────────── Helpers ─────────────────────────────
 
@@ -72,7 +74,7 @@ def bench_kernel() -> None:
     _header("Kernel Computation")
 
     rng = np.random.default_rng(42)
-    epsilon = 1e-8
+    epsilon = EPSILON
 
     for n in [8, 64, 256, 1024]:
         c = np.clip(rng.uniform(0.1, 0.95, n), epsilon, 1.0 - epsilon)
@@ -121,7 +123,7 @@ def bench_kernel_batch() -> None:
     _header("Batch Kernel Computation")
 
     rng = np.random.default_rng(42)
-    epsilon = 1e-8
+    epsilon = EPSILON
 
     for T, n in [(100, 8), (1000, 8), (100, 64), (10000, 8)]:
         trace = np.clip(rng.uniform(0.1, 0.9, (T, n)), epsilon, 1.0 - epsilon)

@@ -36,7 +36,7 @@ T-ADOT-4  Activation Energy as κ Sensitivity
 
 T-ADOT-5  Extended Hubbard Heterogeneity
           The V/U ratio drives inter-channel heterogeneity.  Higher
-          V/U → larger AM-GM gap Δ = F − IC.  The nearest-neighbour
+          V/U → larger heterogeneity gap Δ = F − IC.  The nearest-neighbour
           Coulomb coupling acts as a secondary collapse driver.
 
 T-ADOT-6  Mott Gap as Seam Budget Ceiling
@@ -1035,7 +1035,7 @@ def theorem_T_ADOT_5_extended_hubbard() -> TheoremResult:
     STATEMENT:
       The V/U ratio (nearest-neighbour Coulomb / on-site) drives
       inter-channel heterogeneity in the trace vector.  Higher V/U
-      should correlate with a larger AM-GM gap Δ = F − IC among
+      should correlate with a larger heterogeneity gap Δ = F − IC among
       the metallic devices, where V becomes a secondary collapse
       driver beyond the primary U/t effect.
 
@@ -1048,7 +1048,7 @@ def theorem_T_ADOT_5_extended_hubbard() -> TheoremResult:
     TESTED:
       (1) V/U has variance > 0 across devices (genuine spread)
       (2) Channel c[4] varies across devices (not degenerate)
-      (3) Δ > 0 for all devices (AM-GM gap finite everywhere)
+      (3) Δ > 0 for all devices (heterogeneity gap finite everywhere)
       (4) The variance of the trace increases with V/U for the
           primary sequence
     """
@@ -1104,7 +1104,7 @@ def theorem_T_ADOT_5_extended_hubbard() -> TheoremResult:
     return TheoremResult(
         name="T-ADOT-5",
         statement="Extended Hubbard Heterogeneity: V/U drives channel variance "
-        "and AM-GM gap.  Non-local Coulomb = secondary collapse driver.",
+        "and heterogeneity gap.  Non-local Coulomb = secondary collapse driver.",
         n_tests=n_tests,
         n_passed=n_passed,
         n_failed=n_tests - n_passed,
@@ -1213,7 +1213,7 @@ def theorem_T_ADOT_7_cross_scale() -> TheoremResult:
 
     TESTED:
       (1) ⟨F⟩_metallic > ⟨F⟩_insulating (same as fundamental > composite)
-      (2) The AM-GM gap Δ increases with interaction at both scales
+      (2) The heterogeneity gap Δ increases with interaction at both scales
       (3) The ratio ⟨F⟩_metallic / ⟨F⟩_insulating > 1.1
       (4) IC drops more steeply than F with interaction (AM-GM amplification)
     """
@@ -1581,7 +1581,7 @@ def delta_over_F_analysis() -> dict[str, dict[str, float]]:
     Δ/F → 0 means IC ≈ F (channels are balanced, no collapse).
 
     This ratio is the fractional cost of channel imbalance:
-    how much of F is lost to the AM-GM gap.
+    how much of F is lost to the heterogeneity gap.
 
     Cross-domain finding: Device E (Δ/F=0.998) approaches the
     theoretical maximum, matching gluon and photon in the SM closure.

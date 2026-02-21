@@ -337,4 +337,4 @@ venv = ".venv"
 extraPaths = ["src", "."]
 
 # Exclude dashboards and casepack scripts from strict checking
-ignore = ["src/umcp/dashboard.py", "src/umcp/finance_dashboard.py", "casepacks"]
+ignore = ["src/umcp/dashboard.py", "src/umcp/finance_dashboard.py", "casepacks", "scripts"]

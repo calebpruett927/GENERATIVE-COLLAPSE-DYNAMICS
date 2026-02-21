@@ -50,3 +50,14 @@ repos:
   #         - types-PyYAML
   #         - types-jsonschema
   #       args: ["--config-file=pyproject.toml"]
+
+  # Axiom-0 conformance check (GCD terminology, symbol capture, frozen params)
+  - repo: local
+    hooks:
+      - id: axiom-conformance
+        name: Axiom-0 Conformance Check
+        entry: python scripts/check_axiom_conformance.py --fix-hint
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-commit]

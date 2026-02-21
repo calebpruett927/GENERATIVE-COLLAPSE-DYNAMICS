@@ -57,9 +57,11 @@ from pydantic import BaseModel, Field
 # Import UMCP core modules
 try:
     from . import __version__
+    from .frozen_contract import EPSILON
 except ImportError:
     # Fallback for direct execution
     __version__ = "2.0.0"
+    EPSILON = 1e-8
 
 # ============================================================================
 # Configuration
@@ -2884,7 +2886,7 @@ async def compute_finance_embed(
 
         coords = list(embedded.c)
         weights = [0.30, 0.25, 0.25, 0.20]
-        epsilon = 1e-8
+        epsilon = EPSILON
         kappa = sum(w * math.log(max(c, epsilon)) for w, c in zip(weights, coords, strict=False))
         omega = 1.0 - sum(w * c for w, c in zip(weights, coords, strict=False))
         result: dict[str, Any] = {

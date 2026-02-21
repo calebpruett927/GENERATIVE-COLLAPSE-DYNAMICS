@@ -726,6 +726,59 @@ def step_umcp_validate(ctx: RepoContext) -> StepResult:
     )
 
 
+def step_axiom_conformance(ctx: RepoContext) -> StepResult:
+    """Step 11: Axiom-0 conformance — terminology, symbol capture, frozen params.
+
+    Runs scripts/check_axiom_conformance.py to verify:
+    - T001: No external attribution (terminology enforcement)
+    - T002: No Tier-1 symbol capture in Tier-2 closures
+    - T003: No hardcoded frozen parameters
+    - T005: No prohibited terminology
+
+    Blocking: violations fail the commit. All legacy violations have been resolved.
+    """
+    t0 = time.monotonic()
+
+    script = ctx.scripts_dir / "check_axiom_conformance.py"
+    if not script.exists():
+        return StepResult(
+            name="axiom conformance",
+            status=StepStatus.WARN,
+            duration_s=time.monotonic() - t0,
+            message="check_axiom_conformance.py not found — skipped",
+        )
+
+    result = _run(
+        [ctx.python_exe, str(script)],
+        cwd=ctx.root,
+        timeout=60,
+    )
+
+    # Parse the summary line: "✓ AXIOM CONFORMANT ..." or "✗ NONCONFORMANT — N violations ..."
+    output = result.stdout.strip().splitlines()
+    summary = output[-1] if output else ""
+
+    if "AXIOM CONFORMANT" in summary or ("CONFORMANT" in summary and "NON" not in summary):
+        msg = summary.split("—")[-1].strip() if "—" in summary else "All files conformant"
+        status = StepStatus.PASS
+    else:
+        # Extract violation count
+        import re as _re
+
+        m = _re.search(r"(\d+)\s+violations?", summary)
+        count = int(m.group(1)) if m else 0
+        msg = f"{count} axiom violation(s) — run 'python scripts/check_axiom_conformance.py --fix-hint' for details"
+        status = StepStatus.FAIL
+
+    return StepResult(
+        name="axiom conformance",
+        status=status,
+        duration_s=time.monotonic() - t0,
+        message=msg,
+        blocking=True,
+    )
+
+
 # ── Protocol Runner ──────────────────────────────────────────────
 
 # Step registry: (display_label, function_key)
@@ -737,6 +790,7 @@ def step_umcp_validate(ctx: RepoContext) -> StepResult:
 #   8:   Update integrity checksums (after health fix so fixed files get hashed)
 #   9:   Pytest bounds
 #   10:  UMCP validate
+#   11:  Axiom-0 conformance (blocking)
 _STEP_REGISTRY: list[tuple[str, str]] = [
     ("Manifold Bounds", "bounds"),
     ("Ruff Format", "ruff_format"),
@@ -748,6 +802,7 @@ _STEP_REGISTRY: list[tuple[str, str]] = [
     ("Update Integrity", "integrity"),
     ("Pytest Bounds", "pytest"),
     ("UMCP Validate", "validate"),
+    ("Axiom Conformance", "axiom"),
 ]
 
 
@@ -774,6 +829,7 @@ def run_protocol(ctx: RepoContext, mode: str = "fix") -> ProtocolReport:
         "integrity": lambda: step_update_integrity(ctx),
         "pytest": lambda: step_pytest(ctx),
         "validate": lambda: step_umcp_validate(ctx),
+        "axiom": lambda: step_axiom_conformance(ctx),
     }
 
     total = len(_STEP_REGISTRY)

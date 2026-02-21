@@ -38,7 +38,7 @@ UMCP integration:
   Weights: w = [1/3, 1/3, 1/3]  (equal — no flavor is privileged)
   Guard band: ε = 10⁻⁶
 
-  F(L/E) = (1/3) Σ_β P(ν_α → ν_β)  → must = 1/3 by unitarity
+  F(L/E) = (1/3) Σ_β P(ν_α → ν_β)  → must = 1/3 by probability conservation
   IC(L/E) = [Π_β P(ν_α → ν_β)]^{1/3} → varies with L/E
   Δ(L/E) = F − IC  → heterogeneity gap: maximal at production, min at democratic mixing
   ω_eff computed from oscillation departure from vacuum expectation

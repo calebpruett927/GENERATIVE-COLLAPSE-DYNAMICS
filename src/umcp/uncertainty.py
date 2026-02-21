@@ -24,6 +24,8 @@ from typing import NamedTuple
 import numpy as np
 from numpy.typing import NDArray
 
+from umcp.frozen_contract import EPSILON
+
 
 class KernelGradients(NamedTuple):
     """Gradients of kernel invariants with respect to coordinates."""
@@ -269,5 +271,5 @@ if __name__ == "__main__":
     print()
 
     # Sensitivity bounds
-    epsilon = 1e-8
+    epsilon = EPSILON
     print(f"κ sensitivity bound (ε={epsilon}): {kappa_sensitivity_bound(w, epsilon):.2e}")

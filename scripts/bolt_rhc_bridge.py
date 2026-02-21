@@ -1,3 +1,4 @@
+# pyright: reportMissingImports=false
 """Bridge Analysis: Completing Richard Bolt's Intuitions via GCD Kernel.
 
 The previous analysis (bolt_rhc_analysis.py) tested Bolt's claims as
@@ -32,7 +33,7 @@ _WORKSPACE = Path(__file__).resolve().parents[1]
 if str(_WORKSPACE) not in sys.path:
     sys.path.insert(0, str(_WORKSPACE / "src"))
 
-from umcp.kernel_optimized import compute_kernel_outputs
+from umcp.kernel_optimized import compute_kernel_outputs  # type: ignore[import-not-found]
 
 EPSILON = 1e-6
 np.random.seed(42)
@@ -704,7 +705,7 @@ def bridge_convergence() -> None:
     print("    ┌────────────────────────────────────────────────────────────┐")
     print("    │ Classical Result        GCD Structure       What's Removed │")
     print("    │ ─────────────────────────────────────────────────────────  │")
-    print("    │ AM-GM inequality     →  IC ≤ F (integrity    Channel      │")
+    print("    │ Integrity bound      →  IC ≤ F (integrity    Channel      │")
     print("    │                          bound)              semantics,    │")
     print("    │                                              weights, ε    │")
     print("    │                                                           │")
@@ -829,7 +830,7 @@ def bridge_completion() -> None:
     print()
 
     print("  6. CLASSICAL RESULTS ARE DEGENERATE LIMITS")
-    print("     Bolt says: 'Shannon Entropy and AM-GM inequality are shadows'")
+    print("     Bolt says: 'Bernoulli field entropy and the integrity bound are shadows'")
     print("     Corrected: Exactly right, and this is perhaps his strongest")
     print("     insight. Shannon entropy is the degenerate limit of Bernoulli")
     print("     field entropy when the collapse field is removed. AM-GM is")

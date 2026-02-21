@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # pyright: reportArgumentType=false
+# pyright: reportReturnType=false
 """
 Gravitational Lensing & Dark Matter Accumulation Analysis
 
@@ -42,6 +43,7 @@ import json
 import sys
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 from scipy import optimize
@@ -59,7 +61,7 @@ from closures.weyl import (
 
 np.set_printoptions(precision=6, suppress=True)
 
-results: dict = {
+results: dict[str, Any] = {
     "timestamp": datetime.now(UTC).isoformat(),
     "title": "Gravitational Lensing & Dark Matter Accumulation via Modified Gravity",
     "hypothesis": (
@@ -110,7 +112,7 @@ _dm_hdr = '% "DM" that is MG'
 print(f"\n  {'z':>5}  {'Σ(z)':>8}  {'M_lens/M_true':>14}  {'f_gravity':>12}  {_dm_hdr:>20}")
 print("  " + "-" * 65)
 
-mass_bias_results: list = []
+mass_bias_results: list[dict[str, Any]] = []
 
 for z in z_eval:
     # Use standard model with paper's Σ₀ = 0.24
@@ -175,7 +177,7 @@ print("  than their true mass distribution.")
 
 
 # NFW convergence profile for cluster-scale halo
-def nfw_convergence_profile(r_Mpc: np.ndarray, M_vir: float, c: float, z_lens: float) -> np.ndarray:
+def nfw_convergence_profile(r_Mpc: np.ndarray, M_vir: float, c: float, z_lens: float) -> Any:
     """Simplified NFW convergence κ(r) for a halo at z_lens."""
     # Critical density today (simplified units)
     H0_s = PLANCK_2018.H_0 * 1e3 / 3.086e22  # H₀ in s⁻¹
@@ -219,7 +221,7 @@ def chi2_nfw_fit(c_fit: float) -> float:
     kappa_fit = nfw_convergence_profile(r_range, M_vir, c_fit, z_cluster)
     # Scale to match amplitude (mass degeneracy)
     scale = np.sum(kappa_MG * kappa_fit) / np.sum(kappa_fit**2)
-    return np.sum((kappa_MG - scale * kappa_fit) ** 2)
+    return float(np.sum((kappa_MG - scale * kappa_fit) ** 2))
 
 
 result = optimize.minimize_scalar(chi2_nfw_fit, bounds=(1, 20), method="bounded")
@@ -238,7 +240,7 @@ print("\n  Concentration bias across halo masses:")
 print(f"    {'log₁₀(M/M☉)':>14}  {'c_true':>8}  {'c_inferred':>12}  {'Bias':>8}")
 print("    " + "-" * 50)
 
-concentration_results: list = []
+concentration_results: list[dict[str, Any]] = []
 for log_M in [12.0, 13.0, 13.5, 14.0, 14.5, 15.0]:
     M = 10**log_M
     # Concentration-mass relation (Duffy+2008 approximation)
@@ -247,13 +249,13 @@ for log_M in [12.0, 13.0, 13.5, 14.0, 14.5, 15.0]:
     kappa_true = nfw_convergence_profile(r_range, M, c_dm, z_cluster)
     kappa_boosted = Sigma_cluster * kappa_true
 
-    def chi2_fit(c: float, _M: float = M, _kappa_boosted: object = kappa_boosted) -> float:
+    def chi2_fit(c: float, _M: float = M, _kappa_boosted: Any = kappa_boosted) -> float:
         kf = nfw_convergence_profile(r_range, _M, c, z_cluster)
         s = np.sum(_kappa_boosted * kf) / max(np.sum(kf**2), 1e-30)
-        return np.sum((_kappa_boosted - s * kf) ** 2)
+        return float(np.sum((_kappa_boosted - s * kf) ** 2))
 
     res = optimize.minimize_scalar(chi2_fit, bounds=(1, 30), method="bounded")
-    c_inf = float(res.x)  # type: ignore[union-attr]
+    c_inf = float(res.x)
     bias = (c_inf / c_dm - 1) * 100
 
     concentration_results.append(
@@ -299,7 +301,7 @@ k_scan = np.logspace(-3, 1, 100)
 print(f"\n  {'k_tr (h/Mpc)':>14}  {'Σ at k=0.01':>14}  {'Σ at k=0.1':>12}  {'Σ at k=1.0':>12}  {'Σ at k=10':>12}")
 print("  " + "-" * 70)
 
-scale_dep_results: list = []
+scale_dep_results: list[dict[str, Any]] = []
 for k_tr in k_transition_values:
     Sigma_0_paper = 0.24
     z_test = 0.5
@@ -307,7 +309,7 @@ for k_tr in k_transition_values:
     def Sigma_k(k: float, _z_test: float = z_test, _k_tr: float = k_tr, _Sigma_0_paper: float = Sigma_0_paper) -> float:
         g_z = Omega_Lambda_of_z(_z_test)
         h_k = np.exp(-((k / _k_tr) ** 2))
-        return 1.0 + _Sigma_0_paper * g_z * h_k
+        return float(1.0 + _Sigma_0_paper * g_z * h_k)
 
     S_001 = Sigma_k(0.01)
     S_01 = Sigma_k(0.1)
@@ -388,7 +390,7 @@ print("\n  Spherical collapse threshold δ_c and accretion enhancement:")
 print(f"    {'z':>5}  {'D₁(z)':>8}  {'Σ(z)':>8}  {'δ_c(GR)':>10}  {'δ_c(MG)':>10}  {'Accretion boost':>16}")
 print("    " + "-" * 65)
 
-accretion_results: list = []
+accretion_results: list[dict[str, Any]] = []
 
 for z in z_accretion:
     D1 = D1_of_z(z)
@@ -520,7 +522,7 @@ print("━" * 80)
 print("  If modified gravity explains part of 'dark matter', specific")
 print("  predictions follow that differ from pure dark matter models.")
 
-predictions: list = []
+predictions: list[dict[str, Any]] = []
 
 # Prediction 1: Lensing mass > dynamical mass
 print("\n  PREDICTION 1: Lensing mass exceeds dynamical mass")
@@ -675,10 +677,10 @@ print("\n  How Σ affects different dark matter probes:")
 print(f"    {'Probe':>30}  {'z_eff':>6}  {'k_eff':>8}  {'Σ_eff':>8}  {'DM bias':>10}")
 print("    " + "-" * 70)
 
-dm_budget: list = []
+dm_budget: list[dict[str, Any]] = []
 for probe, info in probes.items():
-    z_e = info["z_eff"]
-    k_e = info["k_eff"]
+    z_e = float(info["z_eff"])  # type: ignore[arg-type]
+    k_e = float(info["k_eff"])  # type: ignore[arg-type]
     if z_e > 10:
         S_eff = 1.0  # CMB era: GR holds
     else:
@@ -735,7 +737,7 @@ print("━" * 80)
 print("\n  Mapping modified gravity to UMCP's tripartite invariants:")
 print("\n  In standard UMCP:")
 print("    F (Fidelity) = 1 − ω = fraction of ideal signal retained")
-print("    IC (Information Content) ≤ F (AM-GM bound)")
+print("    IC (Information Content) ≤ F (integrity bound)")
 print("    Regime: STABLE → WATCH → COLLAPSE")
 print("\n  Cosmological realization:")
 print("    ω = |Σ₀| = drift from GR ideal")

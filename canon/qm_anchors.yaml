@@ -120,11 +120,11 @@ tier_1_invariants:
     - symbol: IC
       latex: IC
       description: Integrity-collapse measure
-      formula: IC = exp(kappa), IC ≤ F (AM-GM bound)
+      formula: IC = exp(kappa), IC ≤ F (integrity bound)
       domain: quantum_mechanics
       unit: dimensionless
       interpretation: |
-        Combined measure of measurement integrity. IC ≤ F by AM-GM.
+        Combined measure of measurement integrity. IC ≤ F (integrity bound).
         IC < 0.30 triggers critical overlay.
 
     # QM-specific
@@ -268,7 +268,7 @@ budget_identity_analog:
 
     (1) F = 1 - ω          (fidelity-drift duality)
     (2) IC ≈ exp(κ)         (integrity-collapse)
-    (3) IC ≤ F              (AM-GM bound)
+    (3) IC ≤ F              (integrity bound)
     (4) Σ P_i = 1           (Born normalization — probability conservation)
     (5) Δx·Δp ≥ ℏ/2        (Heisenberg — not an equality, a bound)
     (6) S_CHSH ≤ 2√2        (Tsirelson bound — quantum limit)

@@ -92,7 +92,7 @@ class GrammarEntropyResult(NamedTuple):
     """Entropy rate of the collapse grammar."""
 
     entropy_rate: float
-    """Collapse grammar entropy rate  h  in bits/step (Shannon entropy rate is the degenerate limit)."""
+    """Collapse grammar entropy rate  h  in bits/step (Bernoulli field entropy rate; classical Shannon rate is the degenerate limit)."""
     max_entropy: float
     """Maximum entropy  log₂(N_regimes)."""
     normalized_entropy: float

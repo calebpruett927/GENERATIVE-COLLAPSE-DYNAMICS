@@ -29,7 +29,7 @@ T22  Thermodynamic Efficiency Ratio
      η = 1 for geodesic (optimal recovery), η < 1 for suboptimal paths.
 
 Cross-references
-    Lemma 4   (AM-GM gap = Fisher Information)
+    Lemma 4   (heterogeneity gap = Fisher Information)
     Lemma 5   (S = ln 2 iff c = 1/2 — equator maximum entropy)
     Lemma 15  (Entropy-fidelity envelope S ≤ h(F))
     Lemma 41  (S + κ ≤ 0, equality at c = 1/2 — equator coupling)

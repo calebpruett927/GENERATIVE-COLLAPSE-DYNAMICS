@@ -449,7 +449,7 @@ def analyze_umcp_invariants(invariants_data: dict[str, Any]) -> None:
         ic_err = abs(ic - expected_ic)
         ic_exp_kappa_errors.append((t, ic_err, ic, expected_ic))
 
-        # Identity 3: IC ≤ F (AM-GM inequality)
+        # Identity 3: IC ≤ F (integrity bound)
         if ic > f_val + 1e-9 and f_val > 0:
             ic_le_f_violations.append((t, ic, f_val))
 
@@ -651,7 +651,7 @@ def main() -> None:
   │ Dark matter fractions        │ ~10-40 pp    │ Order-of-magnitude correct    │
   │ UMCP F = 1−ω identity       │ EXACT        │ Algebraic identity holds      │
   │ UMCP IC ≈ exp(κ)            │ EXACT        │ Logarithmic identity holds    │
-  │ UMCP IC ≤ F                 │ HOLDS        │ AM-GM inequality satisfied    │
+  │ UMCP IC ≤ F                 │ HOLDS        │ Integrity bound satisfied      │
   │ Phase classification         │ ~60-80%      │ Limited by MS-only model      │
   └──────────────────────────────┴──────────────┴──────────────────────────────┘
 """)

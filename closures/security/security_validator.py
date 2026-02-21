@@ -51,6 +51,7 @@ from closures.security.trust_fidelity import (
     compute_trust_fidelity,
 )
 from closures.security.trust_integrity import compute_trust_integrity
+from umcp.frozen_contract import EPSILON
 
 
 @dataclass
@@ -116,7 +117,7 @@ class SecurityValidator:
             "tol_seam": 0.005,
         }
 
-        self.epsilon = 1e-8
+        self.epsilon = EPSILON
 
     def compute_invariants(self, signals: np.ndarray, signal_history: np.ndarray | None = None) -> SecurityInvariants:
         """

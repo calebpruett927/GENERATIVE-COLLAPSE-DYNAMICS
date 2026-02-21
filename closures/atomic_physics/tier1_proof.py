@@ -124,7 +124,7 @@ def prove_identity_2_algebraic() -> None:
 
     This is not a physical law — it is a structural necessity of the
     kernel architecture. It holds for ANY positive coordinates with
-    ANY weights. The classical AM-GM inequality is the degenerate
+    ANY weights. The classical inequality is the degenerate
     limit — it emerges when the collapse field is removed.
     """
     print("IDENTITY 2: IC ≤ F (integrity bound, Lemma 4)")

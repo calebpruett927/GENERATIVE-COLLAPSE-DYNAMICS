@@ -577,7 +577,7 @@ def theorem_T_MLD_1_tier1() -> TheoremResult:
             n_passed += 1
         details[f"{s}_IC_exp_kappa_err"] = ic_exp
 
-        # Test: IC ≤ F (AM-GM inequality)
+        # Test: IC ≤ F (integrity bound)
         n_tests += 1
         if k["IC"] <= k["F"] + 1e-10:
             n_passed += 1
@@ -899,7 +899,7 @@ def theorem_T_MLD_7_interference_collapse() -> TheoremResult:
     increases (more interference) while Δ/F DECREASES (kernel becomes
     more balanced).  This is because the same parameters (higher ξ_e,
     N) that enable more interference also fill up more trace channels,
-    reducing the AM-GM gap.
+    reducing the heterogeneity gap.
     """
     kernels = all_scenario_kernels()
     n_tests = 0
@@ -950,7 +950,7 @@ def theorem_T_MLD_7_interference_collapse() -> TheoremResult:
         n_passed += 1
     details["S3_min_delta_F"] = delta_over_F[3] < min(delta_over_F[:3])
 
-    # Test: all Δ > 0 (AM-GM gap always positive)
+    # Test: all Δ > 0 (heterogeneity gap always positive)
     n_tests += 1
     all_positive = all(kernels[s]["delta"] > 0 for s in pert_seq)
     if all_positive:
