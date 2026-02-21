@@ -43,10 +43,18 @@ from closures.materials_science.bcs_superconductivity import (
     compute_bcs_superconductivity,
 )
 from closures.materials_science.cohesive_energy import compute_cohesive_energy
+
+# ── Database modules ─────────────────────────────────────────────
+from closures.materials_science.crystal_morphology_database import (
+    compute_crystal_kernel,
+)
 from closures.materials_science.debye_thermal import compute_debye_thermal
 from closures.materials_science.elastic_moduli import compute_elastic_moduli
 from closures.materials_science.magnetic_properties import (
     compute_magnetic_properties,
+)
+from closures.materials_science.particle_detector_database import (
+    compute_scintillator_kernel,
 )
 from closures.materials_science.phase_transition import compute_phase_transition
 from closures.materials_science.surface_catalysis import compute_surface_catalysis
@@ -55,9 +63,11 @@ __all__ = [
     "compute_band_structure",
     "compute_bcs_superconductivity",
     "compute_cohesive_energy",
+    "compute_crystal_kernel",
     "compute_debye_thermal",
     "compute_elastic_moduli",
     "compute_magnetic_properties",
     "compute_phase_transition",
+    "compute_scintillator_kernel",
     "compute_surface_catalysis",
 ]
