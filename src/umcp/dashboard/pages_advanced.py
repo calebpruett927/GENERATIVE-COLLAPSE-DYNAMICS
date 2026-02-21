@@ -1500,8 +1500,16 @@ def render_canon_explorer_page() -> None:
     canon_id = data.get("id", "")
     version = data.get("version", "")
     created = str(data.get("created", ""))
-    scope_data = data.get("scope", {})
-    tier_str = str(scope_data.get("tier", scope_data.get("hierarchy", "")))
+    scope_raw = data.get("scope", {})
+    # scope can be a string (description) or a dict with tier/hierarchy/description keys
+    if isinstance(scope_raw, dict):
+        scope_data: dict[str, Any] = scope_raw
+        tier_str = str(scope_data.get("tier", scope_data.get("hierarchy", "")))
+        scope_desc = scope_data.get("description", "")
+    else:
+        scope_data = {}
+        tier_str = ""
+        scope_desc = str(scope_raw) if scope_raw else ""
 
     # Root anchors.yaml uses umcp_canon as top-level
     if not canon_id and "umcp_canon" in data:
@@ -1510,25 +1518,30 @@ def render_canon_explorer_page() -> None:
         scope_str = root.get("scope", "")
         tier_str = scope_str if isinstance(scope_str, str) else str(scope_str)
 
+    # Detect tier from data if not found in scope
+    if not tier_str:
+        tier_val = data.get("tier", "")
+        tier_str = str(tier_val) if tier_val else ""
+
     if not canon_id:
         canon_id = selected.replace("_", ".").upper()
 
     tier_color = "#1976d2" if "1" in tier_str else "#388e3c" if "2" in tier_str else "#f57c00"
+    tier_label = f"Tier {tier_str}" if tier_str else "Canon"
     st.markdown(
         f"""<div style="padding:12px 16px; border-radius:8px; background:linear-gradient(135deg, #f8f9fa, #ffffff);
              border-left:4px solid {tier_color}; margin-bottom:16px;">
         <span style="font-size:1.2em; font-weight:bold;">{canon_id}</span>
         <span style="background:{tier_color}; color:white; padding:2px 8px; border-radius:4px;
-              font-size:0.8em; margin-left:8px;">Tier {tier_str}</span>
+              font-size:0.8em; margin-left:8px;">{tier_label}</span>
         <span style="color:#666; margin-left:12px;">v{version} · Created: {created}</span>
         </div>""",
         unsafe_allow_html=True,
     )
 
     # Show scope description
-    scope_desc = scope_data.get("description", "")
     if scope_desc:
-        st.info(scope_desc.strip())
+        st.info(str(scope_desc).strip())
 
     st.divider()
 
