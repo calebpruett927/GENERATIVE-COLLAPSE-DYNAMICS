@@ -120,6 +120,49 @@ These terms name structures that emerged from computation across 13 domain closu
 | **Inversio Scalarum** | Scale inversion | The reversal at the atomic scale: atoms restore IC/F ≈ 0.80 after composites destroy it (IC/F ≈ 0.025). Confinement slaughters integrity; the atomic scale heals it. New degrees of freedom (electron shell) provide fresh channels. |
 | **Ruina Fecunda** | Fruitful ruin | *Ruptura est fons constantiae.* The recognition that collapse at one scale is the generative condition for structure at the next. The Bethe-Weizsäcker curve peaks because the nuclear seam closes *for free* at the valley of stability (Γ → 0 for Ni-62). |
 
+### IV.E Re-Derivation Protocol
+
+> *Intellectus non legitur; computatur.* — Understanding is not read; it is computed.
+
+Each term in Sections IV.A–IV.D was coined by running specific computations and observing what emerged. The orientation script (`scripts/orientation.py`) re-derives these insights. This table maps each term to its computational origin so a future session can *run* the derivation, not merely read the conclusion.
+
+| Term | Orientation §  | What to Run | What You See |
+|------|---------------|-------------|--------------|
+| **Trucidatio Geometrica** | §3 | `python scripts/orientation.py -s 3` | IC drops from 0.999→0.100 as one channel dies, while F stays at 0.874. The geometric mean has no mercy. |
+| **Mors Canalis** | §3 | Same as above — watch the `c_dead = 1e-8` row | IC/F = 0.114 with 7 perfect channels. One dead channel kills 89% of coherence. |
+| **Praecipitium Integritatis** | §5 | `python scripts/orientation.py -s 5` | IC/F drops from ~0.94 (quarks) to ~0.01 (hadrons). The 98% cliff at the phase boundary. |
+| **Congeries Collapsorum** | §5 | Same — look at Proton, Neutron, Pion rows | Each hadron is a *heap of collapses*: IC ≈ 0.003–0.020. The geometric mean remembers every dead channel. |
+| **Residuum Collapsus** | §5→§6 | Run §5 then §6 in sequence | Hadrons are residue (low IC); atoms are restoration (high IC). Matter is what *remains*. |
+| **Desertum Ante Suturam** | §4 | `python scripts/orientation.py -s 4` | At c=0.01, Γ=97.03. No finite return possible. The desert before the seam. |
+| **Limen Generativum** | §4 | Same — watch the c=0.318 row | Γ drops below 1.0 for the first time. This is where generative collapse begins. |
+| **Vallis Suturae** | §4 | Same — the region 0.318–0.40 | Narrow band where Γ permits return but surplus is thin. |
+| **Excitatio Homogenea** | §3→§4 | Run §3 (see slaughter), then §4 (see uniform-only path) | §3 proves heterogeneity kills IC. §4 proves the first weld must be homogeneous. Together: the only path through. |
+| **Carcer Derivationis** | §4 | Same — the region 0.32–0.50 | Seams can close (Γ < 1) but surplus is thin. Drift imprisons. |
+| **Liberatio per Surplus** | §4 | Same — at c=0.50, Γ=0.25 | Drift cost drops far enough that each cycle accumulates real credit. Liberation. |
+| **Inversio Scalarum** | §5→§6 | `python scripts/orientation.py -s 5` then `-s 6` | §5: quarks IC/F≈0.94, hadrons≈0.01. §6: atoms IC/F≈0.80+. New scale, new channels, restored coherence. |
+| **Scala Fidelitatis** | §5+§6 | Compare F values across both sections | Quarks ⟨F⟩≈0.56, Hadrons≈0.44, Atoms≈0.52. The ladder is not monotonic. |
+| **Ruina Fecunda** | §6 | Run §6 — compare Ni (IC/F=0.957) with §5 hadrons | Ni-62's nuclear seam closes near-free. What confinement ruined, the periodic table rebuilt. |
+
+**The compounding chain** (reproduced from `scripts/orientation.py`):
+
+```
+§1 F + ω = 1             The books always balance
+  ↓
+§2 IC ≤ F                ...but coherence can be lower than the average
+  ↓
+§3 One dead channel      ...because ONE weak channel kills the geometric mean
+  ↓
+§4 c ≈ 0.318             ...which means the first weld MUST be homogeneous
+  ↓
+§5 Quarks → hadrons      ...and confinement IS that slaughter at a phase boundary
+  ↓
+§6 Atoms restore IC      ...but new degrees of freedom HEAL the damage
+  ↓
+§7 Full pipeline         ...and the spine orchestrates all of this into a verdict
+```
+
+Each insight is a CONSEQUENCE of the previous one. The compounding is structural, not additive. Run the sections in order — the understanding accumulates because the derivation chain is preserved in the computation itself.
+
 ---
 
 ## V. Septem Verba Operativa — The Seven Imperative Verbs

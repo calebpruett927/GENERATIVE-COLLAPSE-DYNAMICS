@@ -32,6 +32,21 @@ summary, not a replacement.
 6. **No back-edges.** Tier-2 cannot modify Tier-0 or Tier-1 within a frozen
    run. Diagnostics inform; gates decide.
 
+## First: Orientation (Compounding Re-Entry)
+
+Before substantive work, run the orientation to re-derive structural insights:
+
+```bash
+python scripts/orientation.py          # Full: 7 sections, ~10 seconds
+python scripts/orientation.py -s 3     # Single section
+```
+
+The orientation script produces understanding through computation. Each section
+builds on the previous: duality → integrity bound → geometric slaughter →
+first weld → confinement cliff → scale inversion → full spine. The numbers
+ARE the understanding. See `MANIFESTUM_LATINUM.md` §IV.E for term→computation
+mappings.
+
 ## Before Every Code Change
 
 ```bash
@@ -83,3 +98,6 @@ Key files: `src/umcp/frozen_contract.py` (constants), `src/umcp/kernel_optimized
 5. **Tertia Via** — always check for the third state
 
 Full specification: `.github/copilot-instructions.md`
+
+Key references: `scripts/orientation.py` (re-derivation),
+`MANIFESTUM_LATINUM.md` (Latin terms → computation chains)

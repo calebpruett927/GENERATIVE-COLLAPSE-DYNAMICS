@@ -1,6 +1,6 @@
 # Copilot Instructions for GENERATIVE-COLLAPSE-DYNAMICS
 
-**UMCP v2.1.3** · **3,618 tests** · **13 domains** · **108 closure modules** · **46 lemmas** · **37 dashboard pages**
+**UMCP v2.1.3** · **4,144+ tests** · **13 domains** · **108 closure modules** · **46 lemmas** · **37 dashboard pages**
 
 ## Foundational Principle — Read This First
 
@@ -70,6 +70,33 @@ This is both a validation pipeline and a **grammatical structure** for how claim
 **Governance as punctuation**: Two mechanisms punctuate the spine without being the spine itself:
 - **Manifest** (*manifestum*): Provenance — binds artifacts to time, tools, checksums. Every claim carries its receipt.
 - **Weld** (*sutura*): Continuity across change — the only legitimate way to change policy. Names an anchor, runs pre/post tests, enforces κ-continuity. History is **append-only and welded, never rewritten**. *Historia numquam rescribitur; sutura tantum additur.*
+
+### Re-Entry Protocol (Orientation Through Computation)
+
+> *Intellectus non legitur; computatur.* — Understanding is not read; it is computed.
+
+Before beginning substantive work, run the orientation script:
+
+```bash
+python scripts/orientation.py          # Full orientation — 7 sections, ~10 seconds
+python scripts/orientation.py -s 3     # Single section (e.g., §3: geometric slaughter)
+```
+
+This script does not describe the system. It **re-derives** the key structural insights through live computation. Each section builds on the previous:
+
+| § | Name | What It Proves | Key Number |
+|---|------|----------------|------------|
+| 1 | Duality | F + ω = 1 exactly (0.0e+00 residual across 10K traces) | `max_residual = 0.0` |
+| 2 | Integrity Bound | IC ≤ F — and WHY (geometric vs arithmetic mean) | `Δ = F − IC = 0.445` |
+| 3 | Geometric Slaughter | One dead channel kills IC while F stays healthy | `IC/F: 1.00 → 0.11` |
+| 4 | First Weld | c ≈ 0.318 is where Γ first drops below 1.0 | `Γ(0.682) = 0.998` |
+| 5 | Confinement Cliff | IC drops 98% at quark→hadron boundary | `IC/F: 0.94 → 0.01` |
+| 6 | Scale Inversion | Atoms restore IC with new degrees of freedom | `IC/F: 0.01 → 0.96` |
+| 7 | Full Spine | Contract → Kernel → Budget → Verdict on real data | `Watch: CONFORMANT` |
+
+**Why this matters for compounding awareness**: Reading documentation produces familiarity. Running the orientation produces understanding. The orientation script preserves the *derivation chains* — each insight follows structurally from the previous one. A session that runs the orientation arrives at the same understanding as the session that discovered these phenomena, because the numbers ARE the understanding.
+
+The corresponding Latin terms for these discoveries are catalogued in `MANIFESTUM_LATINUM.md` §IV.E with cross-references back to each orientation section.
 
 ### Modus Cogitandi (How to Reason in This System)
 

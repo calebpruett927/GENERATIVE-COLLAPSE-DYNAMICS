@@ -16,6 +16,17 @@ The canonical specification is `.github/copilot-instructions.md`.
   field entropy (not Shannon). F + ω = 1 is the duality identity (not unitarity).
 - **INF_REC**: Typed string in data files, `float("inf")` in Python. Never coerced.
 
+## First: Orientation (Compounding Re-Entry)
+
+Before substantive work, run the orientation script to re-derive key insights:
+
+```bash
+python scripts/orientation.py          # Full orientation — 7 sections, ~10 seconds
+python scripts/orientation.py -s 3     # Single section (e.g., §3: geometric slaughter)
+```
+
+This produces understanding through computation, not reading. See `MANIFESTUM_LATINUM.md` §IV.E for the mapping from Latin terms to orientation sections.
+
 ## After Code Changes
 
 ```bash
@@ -34,5 +45,7 @@ python scripts/pre_commit_protocol.py    # Full validation, must exit 0
 | Epistemic weld | `src/umcp/epistemic_weld.py` |
 | Closures (13 domains) | `closures/` |
 | Contracts | `contracts/*.yaml` |
-| Tests (3,618) | `tests/` |
+| Tests (4,144+) | `tests/` |
+| Orientation script | `scripts/orientation.py` |
+| Latin manifesto | `MANIFESTUM_LATINUM.md` |
 | Full AI instructions | `.github/copilot-instructions.md` |
