@@ -1,74 +1,126 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "schemas/closures_registry.schema.json",
-  "title": "UMCP Closures Registry",
-  "description": "Schema for the UMCP closure registry file",
+  "title": "UMCP Casepack Closures Registry",
+  "description": "Schema for casepack-level closure registries. Declares the closures used by a specific casepack, including base closures (gamma, DC_form, R_estimator, curvature_neighborhood), domain-specific closures, weld budget configuration, and validation rules.",
   "type": "object",
+  "required": ["schema"],
   "additionalProperties": false,
   "properties": {
-    "registry_id": {
+    "schema": {
+      "description": "Schema self-reference.",
       "type": "string",
-      "description": "Unique identifier for this registry"
+      "const": "schemas/closures_registry.schema.json"
     },
-    "version": {
-      "type": "string",
-      "description": "Registry version"
-    },
-    "description": {
-      "type": "string",
-      "description": "Human-readable description"
-    },
-    "entries": {
-      "type": "array",
-      "description": "List of closure definitions (preferred key)",
-      "items": {
-        "type": "object",
-        "required": ["closure_id", "version"],
-        "additionalProperties": true,
-        "properties": {
-          "closure_id": { "type": "string" },
-          "version": { "type": "string" },
-          "description": { "type": "string" },
-          "file": { "type": "string" },
-          "contract_ref": { "type": "string" },
-          "inputs": {
-            "type": "array",
-            "items": { "type": "object", "additionalProperties": true }
-          },
-          "outputs": {
-            "type": "array",
-            "items": { "type": "object", "additionalProperties": true }
+    "registry": { "$ref": "#/$defs/registry" }
+  },
+  "$defs": {
+    "registry": {
+      "type": "object",
+      "required": ["id", "closures"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 3
+        },
+        "version": { "type": "string" },
+        "description": { "type": "string" },
+        "contract": { "type": "string" },
+        "closures": {
+          "type": "object",
+          "required": ["gamma"],
+          "additionalProperties": {
+            "$ref": "#/$defs/closureEntry"
+          }
+        },
+        "base_closures": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/closureRef"
+          }
+        },
+        "weld_budget": { "$ref": "#/$defs/weldBudget" },
+        "validation": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "notes": { "type": "string" },
+        "extensions": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "patternProperties": {
+        "^.*_closures$": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/domainClosureEntry"
           }
         }
       }
     },
-    "closures": {
-      "type": "array",
-      "description": "List of closure definitions (legacy alias)",
-      "items": {
-        "type": "object",
-        "required": ["closure_id", "version"],
-        "additionalProperties": true,
-        "properties": {
-          "closure_id": { "type": "string" },
-          "version": { "type": "string" },
-          "description": { "type": "string" },
-          "file": { "type": "string" },
-          "contract_ref": { "type": "string" },
-          "inputs": {
-            "type": "array",
-            "items": { "type": "object", "additionalProperties": true }
-          },
-          "outputs": {
-            "type": "array",
-            "items": { "type": "object", "additionalProperties": true }
-          }
+    "closureEntry": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "id": { "type": "string" },
+        "description": { "type": "string" },
+        "formula": { "type": "string" },
+        "method": { "type": "string" },
+        "path": { "type": "string" },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "notes": { "type": "string" },
+        "radius": { "type": "string" }
+      }
+    },
+    "closureRef": {
+      "type": "object",
+      "required": ["path"],
+      "additionalProperties": true,
+      "properties": {
+        "path": { "type": "string", "minLength": 1 }
+      }
+    },
+    "domainClosureEntry": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "id": { "type": "string" },
+        "path": { "type": "string" },
+        "function": { "type": "string" },
+        "functions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "description": { "type": "string" },
+        "inputs": { "type": "array" },
+        "outputs": { "type": "array" },
+        "frozen_params": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "tie_breakers": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "weldBudget": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "formula": { "type": "string" },
+        "note": { "type": "string" },
+        "components": {
+          "type": "array",
+          "items": { "type": "string" }
         }
       }
     }
-  },
-  "anyOf": [
-    { "required": ["entries"] },
-    { "required": ["closures"] }
-  ]
+  }
 }

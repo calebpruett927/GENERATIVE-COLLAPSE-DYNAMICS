@@ -86,7 +86,7 @@
 					"schemas/manifest.schema.json": "casepacks/*/manifest.json",
 					"schemas/canon.anchors.schema.json": "canon/anchors.yaml",
 					"schemas/canon.domain_anchors.schema.json": "canon/*_anchors.yaml",
-					"schemas/closures.schema.json": "closures/**/*.yaml"
+					"schemas/closures.schema.json": "closures/*.yaml"
 				},
 				"yaml.format.enable": true,
 

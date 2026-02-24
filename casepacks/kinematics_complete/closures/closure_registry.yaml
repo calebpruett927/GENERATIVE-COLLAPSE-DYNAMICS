@@ -1,7 +1,7 @@
 # Kinematics CasePack - Closure Registry
 # Specifies which closures are used for this casepack
 
-schema: "schemas/closures.schema.json"
+schema: "schemas/closures_registry.schema.json"
 
 registry:
   id: "UMCP.CLOSURES.KINEMATICS.v1"

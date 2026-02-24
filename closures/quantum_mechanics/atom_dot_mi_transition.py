@@ -424,7 +424,7 @@ def verify_channel_independence() -> dict[str, Any]:
 
     # SVD rank
     _, svals, _ = np.linalg.svd(mat)
-    rank = int(np.sum(svals > 1e-10))
+    rank = int(np.count_nonzero(svals > 1e-10))
 
     return {
         "matrix_shape": mat.shape,

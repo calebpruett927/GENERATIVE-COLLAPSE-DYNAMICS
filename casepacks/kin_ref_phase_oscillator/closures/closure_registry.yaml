@@ -1,7 +1,7 @@
 # KIN.REF.PHASE Oscillator CasePack - Closure Registry
 # Specifies closures used for phase-anchor selection
 
-schema: "schemas/closures.schema.json"
+schema: "schemas/closures_registry.schema.json"
 
 registry:
   id: "UMCP.CLOSURES.KIN_REF_PHASE.v1"

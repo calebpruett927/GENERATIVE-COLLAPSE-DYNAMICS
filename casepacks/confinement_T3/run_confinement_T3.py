@@ -59,9 +59,16 @@ from closures.standard_model.subatomic_kernel import (  # noqa: E402
     normalize_composite,
     normalize_fundamental,
 )
-from umcp.kernel_optimized import (  # noqa: E402  # type: ignore[import-not-found]  # pyright: ignore[reportMissingModuleSource]
-    compute_kernel_outputs,
-)
+
+try:
+    from umcp.kernel_optimized import (
+        compute_kernel_outputs,
+    )
+except ImportError:
+    # Fallback: try from src.umcp
+    from src.umcp.kernel_optimized import (
+        compute_kernel_outputs,
+    )
 
 # ═══════════════════════════════════════════════════════════════
 # SECTION 1: CONTRACT LOADING
