@@ -1,0 +1,78 @@
+dependent_variables:
+- header:
+    name: 68% CL interval
+  values:
+  - errors:
+    - asymerror:
+        minus: -0.05189
+        plus: 0.05373
+      label: ''
+    value: 0.99957
+  - errors:
+    - asymerror:
+        minus: -0.11683
+        plus: 0.12072
+      label: ''
+    value: 0.99614
+  - errors:
+    - asymerror:
+        minus: -0.12953
+        plus: 0.1549
+      label: ''
+    value: 0.9506
+  - errors:
+    - asymerror:
+        minus: -0.00214
+        plus: 2.8624
+      label: ''
+    value: 0.00214
+  - errors:
+    - asymerror:
+        minus: -0.09026
+        plus: 0.09672
+      label: ''
+    value: 1.0472
+  - errors:
+    - asymerror:
+        minus: -0.05828
+        plus: 0.06149
+      label: ''
+    value: 1.0632
+  - errors:
+    - asymerror:
+        minus: -0.05529
+        plus: 0.05865
+      label: ''
+    value: 1.0184
+  - errors:
+    - asymerror:
+        minus: -0.36952
+        plus: 0.31056
+      label: ''
+    value: 1.388
+  - errors:
+    - asymerror:
+        minus: -0.0691
+        plus: 0.07308
+      label: ''
+    value: 0.93212
+  - errors:
+    - asymerror:
+        minus: -0.32795
+        plus: 0.27044
+      label: ''
+    value: 1.1476
+independent_variables:
+- header:
+    name: ''
+  values:
+  - value: $\kappa_{gZ}$
+  - value: $\lambda_{tg}$
+  - value: $\lambda_{bt}$
+  - value: $\lambda_{ct}$
+  - value: $\lambda_{Zg}$
+  - value: $\lambda_{WZ}$
+  - value: $\lambda_{\gamma Z}$
+  - value: $\lambda_{Z\gamma Z}$
+  - value: $\lambda_{\tau Z}$
+  - value: $\lambda_{\mu\tau}$

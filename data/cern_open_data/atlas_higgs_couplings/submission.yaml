@@ -1,0 +1,805 @@
+---
+name: "Figure 2a"
+location: Data from Figure 2a
+description:  Observed and predicted cross sections for different Higgs boson production processes, measured assuming SM values for the decay branching fractions. The lower panels show the ratios of the measured values to their SM predictions. The $p$-value for compatibility of the measurement and the SM prediction is 65%.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: figure_2a.yaml
+additional_resources:
+- {description: Figure 2a, location: fig_02a.png}
+- {description: Thumbnail for Figure 2a, location: thumb_fig_02a.png}
+
+---
+name: "Figure 2b"
+location: Data from Figure 2b
+description:   Observed and predicted branching fractions for different Higgs boson decay modes measured assuming SM values for the production cross sections. The lower panels show the ratios of the measured values to their SM predictions. The $p$-value for compatibility of the measurement and the SM prediction is 56%.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: [Higgs decay]}
+- {name: observables, values: [decay branching ratio]}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: [branching ratio]}
+data_file: figure_2b.yaml
+additional_resources:
+- {description: Figure 2b, location: fig_02b.png}
+- {description: Thumbnail for Figure 2b, location: thumb_fig_02b.png}
+
+---
+name: "Figure 3"
+location: Data from Figure 3
+description:  Ratio of observed rate to predicted SM event rate for different combinations of Higgs boson production and decay processes. The narrow grey bands indicate the theory uncertainties in the SM cross-section times the branching fraction predictions. The $p$-value for compatibility of the measurement and the SM prediction is 72%.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: figure_3.yaml
+additional_resources:
+- {description: Figure 3, location: fig_03.png}
+- {description: Thumbnail for Figure 3, location: thumb_fig_03.png}
+
+---
+name: "Figure 4"
+location: Data from Figure 4
+description:  Negative log-likelihood contours corresponding to 68% and 95% CL in the ($\kappa_{V}$, $\kappa_{F}$) plane obtained from a combined fit, assuming no contributions from invisible or undetected non-SM Higgs boson decays.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: Fig4.yaml
+additional_resources:
+- {description: Figure 4, location: fig_04.png}
+- {description: Thumbnail for Figure 4, location: thumb_fig_04.png}
+
+---
+name: 'Figure 5 without $\kappa_{c}$'
+location: Data from Figure 5
+description: Reduced coupling strength modifiers $\kappa_{F}\cdot m_{F}/\text{vev}$ for fermions ($F=t,\,b,\,\tau,\,\mu$) and $\sqrt{\kappa_{V}}\cdot m_{V}/\text{vev}$ for vector bosons as a function of their masses $m_{F}$ and $m_{V}$ with vev = 246 GeV. Fit scenario with $\kappa_{c}=\kappa_{t}$ (coloured circle markers) is shown. Loop-induced processes are assumed to have the SM structure, and Higgs boson decays to non-SM particles are not allowed. The $p$-value for compatibility of the combined measurement and the SM prediction is 56%. The lower panel shows the values of the coupling strength modifiers.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: figure_5_without_kc.yaml
+additional_resources:
+- {description: Figure 5, location: fig_05.png}
+- {description: Thumbnail for Figure 5, location: thumb_fig_05.png}
+
+---
+name: 'Figure 5 with $\kappa_{c}$'
+location: Data from Figure 5
+description: Reduced coupling strength modifiers $\kappa_{F}\cdot m_{F}/\text{vev}$ for fermions ($F=t,\,b,\,\tau,\,\mu$) and $\sqrt{\kappa_{V}}\cdot m_{V}/\text{vev}$ for vector bosons as a function of their masses $m_{F}$ and $m_{V}$ with vev = 246 GeV. Fit scenario with $\kappa_{c}$ left free-floating (grey cross markers) is shown. Loop-induced processes are assumed to have the SM structure, and Higgs boson decays to non-SM particles are not allowed. The $p$-value for compatibility of the combined measurement and the SM prediction is 65%. The lower panel shows the values of the coupling strength modifiers. The grey arrow points in the direction of the best-fit value and the grey uncertainty bar extends beyond the lower panel range.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: figure_5_with_kc.yaml
+additional_resources:
+- {description: Figure 5, location: fig_05.png}
+- {description: Thumbnail for Figure 5, location: thumb_fig_05.png}
+
+---
+name: 'Figure 6 $\kappa$'
+location: Data from Figure 6
+description: Reduced coupling strength modifiers and their uncertainties per particle type with effective photon, $Z\gamma$ and gluon couplings. The scenario where $B_{inv.}=B_{u.}=0$ is assumed is shown as solid lines. The $p$-value for compatibility with the SM prediction is 61% in this case. The scenario where $B_{inv.}$ and $B_{u.}$ are allowed to contribute to the total Higgs boson decay width while assuming that $\kappa_{V}\le1$ and $B_{u.}\ge0$ is shown as dashed lines.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: figure_6_kappa.yaml
+additional_resources:
+- {description: Figure 6, location: fig_06.png}
+- {description: Thumbnail for Figure 6, location: thumb_fig_06.png}
+
+---
+name: "Figure 6 BSM"
+location: Data from Figure 6
+description: Reduced coupling strength modifiers and their uncertainties per particle type with effective photon, $Z\gamma$ and gluon couplings. The scenario where $B_{inv.}$ and $B_{u.}$ are allowed to contribute to the total Higgs boson decay width while assuming that $\kappa_{V}\le1$ and $B_{u.}\ge0$ is shown as dashed lines. The lower panel shows the 95% CL upper limits on $B_{inv.}$ and $B_{u.}$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: figure_6_bsm.yaml
+additional_resources:
+- {description: Figure 6, location: fig_06.png}
+- {description: Thumbnail for Figure 6, location: thumb_fig_06.png}
+
+---
+name: "Figure 7"
+location: Data from Figure 7
+description: Observed and predicted Higgs boson production cross sections in different kinematic regions. The $p$-value for compatibility of the combined measurement and the SM prediction is 94%. Kinematic regions are defined separately for each production process, based on the jet multiplicity, the transverse momentum of the Higgs ($p_{T}^{H}$) and vector bosons ($p_{T}^{W}$ and $p_{T}^{Z}$) and the two-jet invariant mass ($m_{jj}$). The VH-enriched and VBF-enriched regions with the respective requirements of $m_{jj}\in[60, 120)$ GeV and $m_{jj}\notin[60, 120)$ GeV are enhanced in signal events from $VH$ and VBF productions, respectively.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: figure_7.yaml
+additional_resources:
+- {description: Figure 7, location: fig_07.png}
+- {description: Thumbnail for Figure 7, location: thumb_fig_07.png}
+
+---
+name: "Aux Figure 8 (Total)"
+location: Data from Auxiliary Figure 8
+description:  Observed variations of −2 ln $\Lambda(\mu)$ as a function of $\mu$ with all systematic uncertainties included.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig1.yaml
+additional_resources:
+- {description: Auxiliary Figure 8, location: figaux_01.png}
+- {description: Thumbnail for Auxiliary Figure 8 , location: thumb_figaux_01.png}
+
+---
+name: "Aux Figure 8 (Remove Background Theory)"
+location: Data from Auxiliary Figure 8
+description:  Observed variations of −2 ln $\Lambda(\mu)$ as a function of $\mu$ with with parameters describing theory uncertainties in background processes fixed to their best-fit values.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig1_2.yaml
+additional_resources:
+- {description: Auxiliary Figure 8, location: figaux_01.png}
+- {description: Thumbnail for Auxiliary Figure 8 , location: thumb_figaux_01.png}
+
+---
+name: "Aux Figure 8 (Remove Signal Theory)"
+location: Data from Auxiliary Figure 8
+description:  Observed variations of −2 ln $\Lambda(\mu)$ as a function of $\mu$ with parameters describing theory uncertainties in background and signal processes fixed to their best-fit values.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig1_3.yaml
+additional_resources:
+- {description: Auxiliary Figure 8, location: figaux_01.png}
+- {description: Thumbnail for Auxiliary Figure 8 , location: thumb_figaux_01.png}
+
+---
+name: "Aux Figure 8 (Statistical)"
+location: Data from Auxiliary Figure 8
+description:  Observed variations of −2 ln $\Lambda(\mu)$ as a function of $\mu$ with all systematic uncertainties fixed to their best-fit values.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig1_4.yaml
+additional_resources:
+- {description: Auxiliary Figure 8, location: figaux_01.png}
+- {description: Thumbnail for Auxiliary Figure 8 , location: thumb_figaux_01.png}
+---
+name: "Aux Figure 9"
+location: Data from Auxiliary Figure 9
+description: Cross sections for ggF, VBF, $WH$, $ZH$, $t\bar{t}H$ and $tH$ production modes. The cross sections are normalized to their SM predictions, measured assuming SM values for the decay branching fractions. The black error bars, blue boxes and yellow boxes show the total, systematic, and statistical uncertainties in the measurements, respectively. The gray bands indicate the theory uncertainties on the SM cross section predictions. The level of compatibility between the measurement and the SM prediction corresponds to a $p$-value of $p_{SM}=65\%$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: figure_9.yaml
+additional_resources:
+- {description: Auxiliary Figure 9, location: figaux_02.png}
+- {description: Thumbnail for Auxiliary Figure 9, location: thumb_figaux_02.png}
+
+---
+name: "Aux Figure 10a"
+location: Data from Auxiliary Figure 10a
+description:  Correlation matrix from the measurement of ggF, VBF, $WH$, $ZH$, $ttH$ and $tH$ production cross sections without theory uncertainties.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig3a.yaml
+additional_resources:
+- {description: Auxiliary Figure 10a, location: figaux_03a.png}
+- {description: Thumbnail for Auxiliary Figure 10a , location: thumb_figaux_03a.png}
+
+---
+name: "Aux Figure 10b"
+location: Data from Auxiliary Figure 10b
+description:  Correlation matrix from the measurement of ggF, VBF, $WH$, $ZH$, $ttH$ and $tH$ production cross sections with the theory uncertainties.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig3b.yaml
+additional_resources:
+- {description: Auxiliary Figure 10b, location: figaux_03b.png}
+- {description: Thumbnail for Auxiliary Figure 10b , location: thumb_figaux_03b.png}
+
+---
+name: "Aux Figure 11a"
+location: Data from Auxiliary Figure 11a
+description: Cross sections for ggF, VBF, $WH$, $ZH$, $t\bar{t}H+tH$ production modes, obtained without including the theory uncertainties on the predicted SM cross sections in the fit. The cross sections are normalized to their SM predictions, measured assuming SM values for the decay branching fractions. The black error bars, blue boxes and yellow boxes show the total, systematic, and statistical uncertainties in the measurements, respectively. The gray bands indicate the theory uncertainties on the SM cross section predictions. The level of compatibility between the measurement and the SM prediction corresponds to a $p$-value of $p_{SM}=89\%$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: figure_11a.yaml
+additional_resources:
+- {description: Auxiliary Figure 11a, location: figaux_04a.png}
+- {description: Thumbnail for Auxiliary Figure 11a, location: thumb_figaux_04a.png}
+
+---
+name: "Aux Figure 11b"
+location: Data from Auxiliary Figure 11b
+description:  Correlation matrix from the measurement of ggF, VBF, $WH$, $ZH$, $ttH+tH$ production cross sections without theory uncertainties.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig4b.yaml
+additional_resources:
+- {description: Auxiliary Figure 11b, location: figaux_04b.png}
+- {description: Thumbnail for Auxiliary Figure 11b, location: thumb_figaux_04b.png}
+
+---
+name: "Aux Figure 12"
+location: Data from Auxiliary Figure 12
+description:  Correlation matrix from the measurement of the branching fractions, assuming SM values for the decay production cross sections and no contributions from non-SM decays to the total Higgs boson decay width.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig5.yaml
+additional_resources:
+- {description: Auxiliary Figure 12, location: figaux_05.png}
+- {description: Thumbnail for Auxiliary Figure 12, location: thumb_figaux_05.png}
+
+---
+#name: "Aux Figure 6"
+#location: Data from Auxiliary Figure 6
+#description:  Cross sections times branching fraction for different production processes in each relevant decay mode, normalised to their SM predictions.
+#keywords: # used for searching, possibly multiple values for each keyword
+#- {name: reactions, values: []}
+#- {name: observables, values: []}
+#- {name: cmenergies, values: [13000.0]}
+#- {name: phrases, values: []}
+#data_file: AuxFig6.yaml
+#additional_resources:
+#- {description: Auxiliary Figure 6, location: figaux_06.png}
+#- {description: Thumbnail for Auxiliary Figure 6, location: thumb_figaux_06.png}
+#
+---
+name: "Aux Figure 14"
+location: Data from Auxiliary Figure 14
+description:  Correlation matrix from the measured values of the production cross sections times branching fractions of the Higgs boson, for the combinations in which sufficient sensitivity is provided by the input analyses.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig7.yaml
+additional_resources:
+- {description: Auxiliary Figure 14, location: figaux_07.png}
+- {description: Thumbnail for Auxiliary Figure 14, location: thumb_figaux_07.png}
+
+---
+name: "Aux Figure 15"
+location: Data from Auxiliary Figure 15
+description:  Observed correlation matrix from the fit of $\kappa_{V}$ and $\kappa_{F}$ coupling modifiers. No contributions from non-SM invisible and undetected Higgs boson decays are allowed, i.e. $B_{inv.}=B_{u.}=0$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig8.yaml
+additional_resources:
+- {description: Auxiliary Figure 15, location: figaux_08.png}
+- {description: Thumbnail for Auxiliary Figure 15, location: thumb_figaux_08.png}
+
+---
+name: "Aux Figure 16 (1)"
+location: Data from Auxiliary Figure 16
+description:  Negative log-likelihood contour corresponding to 68% CL in the ($\kappa_{V}$, $\kappa_{F}$) plane, corresponding to $H\to\gamma\gamma$ decay, obtained from a combined fit, assuming no contributions from invisible or undetected non-SM Higgs boson decays.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig15yy.yaml
+additional_resources:
+- {description: Auxiliary Figure 16, location: CVCF_perChannel.png}
+- {description: Thumbnail for Auxiliary Figure 16, location: thumb_CVCF_perChannel.png}
+
+---
+name: "Aux Figure 16 (2)"
+location: Data from Auxiliary Figure 16
+description:  Negative log-likelihood contour corresponding to 68% CL in the ($\kappa_{V}$, $\kappa_{F}$) plane, corresponding to $H\to ZZ$ decay, obtained from a combined fit, assuming no contributions from invisible or undetected non-SM Higgs boson decays.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig15ZZ.yaml
+additional_resources:
+- {description: Auxiliary Figure 16, location: CVCF_perChannel.png}
+- {description: Thumbnail for Auxiliary Figure 16, location: thumb_CVCF_perChannel.png}
+
+---
+name: "Aux Figure 16 (3)"
+location: Data from Auxiliary Figure 16
+description:  Negative log-likelihood contour corresponding to 68% CL in the ($\kappa_{V}$, $\kappa_{F}$) plane, corresponding to $H\to\tau\tau$ decay, obtained from a combined fit, assuming no contributions from invisible or undetected non-SM Higgs boson decays.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig15tautau.yaml
+additional_resources:
+- {description: Auxiliary Figure 16, location: CVCF_perChannel.png}
+- {description: Thumbnail for Auxiliary Figure 16, location: thumb_CVCF_perChannel.png}
+
+---
+name: "Aux Figure 16 (4)"
+location: Data from Auxiliary Figure 16
+description:  Negative log-likelihood contour corresponding to 68% CL in the ($\kappa_{V}$, $\kappa_{F}$) plane, corresponding to $H\to WW$ decay, obtained from a combined fit, assuming no contributions from invisible or undetected non-SM Higgs boson decays.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig15WW.yaml
+additional_resources:
+- {description: Auxiliary Figure 16, location: CVCF_perChannel.png}
+- {description: Thumbnail for Auxiliary Figure 16, location: thumb_CVCF_perChannel.png}
+
+---
+name: "Aux Figure 16 (5)"
+location: Data from Auxiliary Figure 16
+description:  Negative log-likelihood contour corresponding to 68% CL in the ($\kappa_{V}$, $\kappa_{F}$) plane, corresponding to $H\to bb$ decay, obtained from a combined fit, assuming no contributions from invisible or undetected non-SM Higgs boson decays.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig15bb.yaml
+additional_resources:
+- {description: Auxiliary Figure 16, location: CVCF_perChannel.png}
+- {description: Thumbnail for Auxiliary Figure 16, location: thumb_CVCF_perChannel.png}
+
+---
+name: "Aux Figure 17"
+location: Data from Auxiliary Figure 17
+description:  Observed correlation matrix from the fit of $\kappa_{Z}$, $\kappa_{W}$, $\kappa_{b}$, $\kappa_{t}$, $\kappa_{\tau}$ and $\kappa_{\mu}$ coupling modifiers with $\kappa_{c}$ = $\kappa_{t}$ in the fit. All fitted parameters are assumed to be positive. No contributions from non-SM invisible and undetected Higgs boson decays are allowed, i.e. $B_{inv.}=B_{u.}=0$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig9.yaml
+additional_resources:
+- {description: Auxiliary Figure 17, location: figaux_09.png}
+- {description: Thumbnail for Auxiliary Figure 17, location: thumb_figaux_09.png}
+
+---
+name: "Aux Figure 18"
+location: Data from Auxiliary Figure 18
+description:  Observed correlation matrix from the fit of the $\kappa_{Z}$, $\kappa_{W}$, $\kappa_{b}$, $\kappa_{t}$, $\kappa_{\tau}$, $\kappa_{\mu}$ and effective photon, $Z \gamma$ and gluon coupling modifiers. No contributions from non-SM invisible and undetected Higgs boson decays are allowed, i.e. $B_{inv.}=B_{u.}=0$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig10.yaml
+additional_resources:
+- {description: Auxiliary Figure 18, location: figaux_10.png}
+- {description: Thumbnail for Auxiliary Figure 18, location: thumb_figaux_10.png}
+
+---
+name: 'Aux Figure 19 $\kappa$'
+location: Data from Auxiliary Figure 19
+description: Coupling-strength modifiers and their uncertainties for the effective photon, $Z\gamma$ and gluon couplings as free parameters and all other coupling modifiers set to unity. The scenario where $B_{inv.}=B_{u.}=0$ is assumed is shown as solid lines. The $p$-value of the compatibility with the SM prediction is 63% in this case. The scenario where $B_{inv.}$ and $B_{u.}$ are allowed to contribute to the total Higgs width is shown as dashed lines, with the corresponding $p$-value of 49%. Both $B_{inv.}$ and $B_{u.}$ are allowed to take negative values in the latter case.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: figure_18_kappa.yaml
+additional_resources:
+- {description: Auxiliary Figure 19, location: figaux_11.png}
+- {description: Thumbnail for Auxiliary Figure 19, location: thumb_figaux_11.png}
+
+---
+name: 'Aux Figure 19 BSM'
+location: Data from Auxiliary Figure 19
+description: Coupling-strength modifiers and their uncertainties for the effective photon, $Z\gamma$ and gluon couplings as free parameters and all other coupling modifiers set to unity. The scenario where $B_{inv.}$ and $B_{u.}$ are allowed to contribute to the total Higgs width is shown as dashed lines, with the corresponding $p$-value of 49%. Both $B_{inv.}$ and $B_{u.}$ are allowed to take negative values. The lower pad shows the 95% CL upper limits on $B_{inv.}$ and $B_{u.}$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: figure_18_bsm.yaml
+additional_resources:
+- {description: Auxiliary Figure 19, location: figaux_11.png}
+- {description: Thumbnail for Auxiliary Figure 19, location: thumb_figaux_11.png}
+
+
+---
+name: "Aux Figure 20"
+location: Data from Auxiliary Figure 20
+description:  Negative log-likelihood contours corresponding to 68% and 95% CL in the ($\kappa_{g}$, $\kappa_{\gamma}$) plane obtained from a combined fit of ($\kappa_{g}$, $\kappa_{\gamma}$ and $\kappa_{Z\gamma}$) .
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig16.yaml
+additional_resources:
+- {description: Auxiliary Figure 20, location: NLL2D_kappa_CyCg.png}
+- {description: Thumbnail for Auxiliary Figure 20, location: thumb_NLL2D_kappa_CyCg.png}
+
+---
+name: "Aux Figure 21"
+location: Data from Auxiliary Figure 21
+description: Measured ratios of coupling modifiers. The red line indicates the SM value of unity for each parameter. The level of compatibility between the combined measurement and the SM prediction corresponds to a $p$-value of 71% with ten degrees of freedom.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: kappa_ratio.yaml
+additional_resources:
+- {description: Auxiliary Figure 21, location: RatioKappaModelSummary.png}
+- {description: Thumbnail for Auxiliary Figure 21, location: thumb_RatioKappaModelSummary.png}
+
+---
+name: "Aux Figure 22"
+location: Data from Auxiliary Figure 22
+description: Best-fit values and uncertainties for the cross sections in each measurement region, normalized to the SM predictions for the various parameters. The measurements assume SM branching fractions for all measured decays. The black error bars, blue boxes and yellow boxes show the total, systematic, and statistical uncertainties in the measurements, respectively. The gray bands show the theory uncertainties on the predictions. The level of compatibility between the combined measurement and the SM prediction corresponds to a $p$-value of 94%.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: figure_19.yaml
+additional_resources:
+- {description: Auxiliary Figure 12, location: figaux_12.png}
+- {description: Thumbnail for Auxiliary Figure 12, location: thumb_figaux_12.png}
+
+---
+name: "Aux Figure 23"
+location: Data from Auxiliary Figure 23
+description:  Correlation matrix for the measured values of the simplified template cross sections.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig13.yaml
+additional_resources:
+- {description: Auxiliary Figure 13, location: figaux_13.png}
+- {description: Thumbnail for Auxiliary Figure 13, location: thumb_figaux_13.png}
+
+---
+name: "Aux Figure 24a (Expected)"
+location: Data from Auxiliary Figure 24a (Expected)
+description: Expected negative log-likelihood scans as a function of $\kappa_{Z}$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig14a.yaml
+additional_resources:
+- {description: Auxiliary Figure 24a, location: figaux_14a.png}
+- {description: Thumbnail for Auxiliary Figure 24a, location: thumb_figaux_14a.png}
+
+---
+name: "Aux Figure 24a (Observed)"
+location: Data from Auxiliary Figure 24a (Observed)
+description: Observed negative log-likelihood scans as a function of $\kappa_{Z}$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig14a_2.yaml
+additional_resources:
+- {description: Auxiliary Figure 24a, location: figaux_14a.png}
+- {description: Thumbnail for Auxiliary Figure 24a, location: thumb_figaux_14a.png}
+
+---
+name: "Aux Figure 24b (Expected)"
+location: Data from Auxiliary Figure 24b (Expected)
+description:  Expected negative log-likelihood scans as a function of $\kappa_{W}$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig14b.yaml
+additional_resources:
+- {description: Auxiliary Figure 24b, location: figaux_14b.png}
+- {description: Thumbnail for Auxiliary Figure 24b, location: thumb_figaux_14b.png}
+
+---
+name: "Aux Figure 24b (Observed)"
+location: Data from Auxiliary Figure 24b (Observed)
+description:  Observed negative log-likelihood scans as a function of $\kappa_{W}$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig14b_2.yaml
+additional_resources:
+- {description: Auxiliary Figure 24b, location: figaux_14b.png}
+- {description: Thumbnail for Auxiliary Figure 24b, location: thumb_figaux_14b.png}
+---
+name: "Aux Figure 24c (Expected)"
+location: Data from Auxiliary Figure 24c (Expected)
+description: Expected negative log-likelihood scans as a function of $\kappa_{t}$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig14c.yaml
+additional_resources:
+- {description: Auxiliary Figure 24c, location: figaux_14c.png}
+- {description: Thumbnail for Auxiliary Figure 24c, location: thumb_figaux_14c.png}
+
+---
+name: "Aux Figure 24c (Observed)"
+location: Data from Auxiliary Figure 24c (Observed)
+description: Observed negative log-likelihood scans as a function of $\kappa_{t}$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig14c_2.yaml
+additional_resources:
+- {description: Auxiliary Figure 24c, location: figaux_14c.png}
+- {description: Thumbnail for Auxiliary Figure 24c, location: thumb_figaux_14c.png}
+---
+name: "Aux Figure 24d (Expected)"
+location: Data from Auxiliary Figure 24d (Expected)
+description: Expected negative log-likelihood scans as a function of $\kappa_{b}$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig14d.yaml
+additional_resources:
+- {description: Auxiliary Figure 24d, location: figaux_14d.png}
+- {description: Thumbnail for Auxiliary Figure 24d, location: thumb_figaux_14d.png}
+
+---
+name: "Aux Figure 24d (Observed)"
+location: Data from Auxiliary Figure 24d (Observed)
+description: Observed negative log-likelihood scans as a function of $\kappa_{b}$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig14d_2.yaml
+additional_resources:
+- {description: Auxiliary Figure 24d, location: figaux_14d.png}
+- {description: Thumbnail for Auxiliary Figure 24d, location: thumb_figaux_14d.png}
+---
+name: "Aux Figure 24e (Expected)"
+location: Data from Auxiliary Figure 24e (Expected)
+description:  Expected negative log-likelihood scans as a function of $\kappa_{\tau}$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig14e.yaml
+additional_resources:
+- {description: Auxiliary Figure 24e, location: figaux_14e.png}
+- {description: Thumbnail for Auxiliary Figure 24e, location: thumb_figaux_14e.png}
+
+---
+name: "Aux Figure 24e (Observed)"
+location: Data from Auxiliary Figure 24e (Observed)
+description:  Observed negative log-likelihood scans as a function of $\kappa_{\tau}$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig14e_2.yaml
+additional_resources:
+- {description: Auxiliary Figure 24e, location: figaux_14e.png}
+- {description: Thumbnail for Auxiliary Figure 24e, location: thumb_figaux_14e.png}
+---
+name: "Aux Figure 24f (Expected)"
+location: Data from Auxiliary Figure 24f (Expected)
+description:  Expected negative log-likelihood scans as a function of $\kappa_{\mu}$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig14f.yaml
+additional_resources:
+- {description: Auxiliary Figure 24f, location: figaux_14f.png}
+- {description: Thumbnail for Auxiliary Figure 24f, location: thumb_figaux_14f.png}
+
+---
+name: "Aux Figure 24f (Observed)"
+location: Data from Auxiliary Figure 24f (Observed)
+description:  Observed negative log-likelihood scans as a function of $\kappa_{\mu}$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig14f_2.yaml
+additional_resources:
+- {description: Auxiliary Figure 24f, location: figaux_14f.png}
+- {description: Thumbnail for Auxiliary Figure 24f, location: thumb_figaux_14f.png}
+---
+name: "Aux Figure 24g (Expected)"
+location: Data from Auxiliary Figure 24g (Expected)
+description:  Expected negative log-likelihood scans as a function of $\kappa_{g}$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig14g.yaml
+additional_resources:
+- {description: Auxiliary Figure 24g, location: figaux_14g.png}
+- {description: Thumbnail for Auxiliary Figure 24g, location: thumb_figaux_14g.png}
+
+---
+name: "Aux Figure 24g (Observed)"
+location: Data from Auxiliary Figure 24g (Observed)
+description:  Observed negative log-likelihood scans as a function of $\kappa_{g}$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig14g_2.yaml
+additional_resources:
+- {description: Auxiliary Figure 24g, location: figaux_14g.png}
+- {description: Thumbnail for Auxiliary Figure 24g, location: thumb_figaux_14g.png}
+---
+name: "Aux Figure 24h (Expected)"
+location: Data from Auxiliary Figure 24h (Expected)
+description:  Expected negative log-likelihood scans as a function of $\kappa_{\gamma}$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig14h.yaml
+additional_resources:
+- {description: Auxiliary Figure 24h, location: figaux_14h.png}
+- {description: Thumbnail for Auxiliary Figure 24h, location: thumb_figaux_14h.png}
+
+---
+name: "Aux Figure 24h (Observed)"
+location: Data from Auxiliary Figure 24h (Observed)
+description:  Observed negative log-likelihood scans as a function of $\kappa_{\gamma}$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig14h_2.yaml
+additional_resources:
+- {description: Auxiliary Figure 24h, location: figaux_14h.png}
+- {description: Thumbnail for Auxiliary Figure 24h, location: thumb_figaux_14h.png}
+---
+name: "Aux Figure 24i (Expected)"
+location: Data from Auxiliary Figure 24i (Expected)
+description:  Expected negative log-likelihood scans as a function of $\kappa_{Z\gamma}$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig14i.yaml
+additional_resources:
+- {description: Auxiliary Figure 24i, location: figaux_14i.png}
+- {description: Thumbnail for Auxiliary Figure 24i, location: thumb_figaux_14i.png}
+
+---
+name: "Aux Figure 24i (Observed)"
+location: Data from Auxiliary Figure 24i (Observed)
+description:  Observed negative log-likelihood scans as a function of $\kappa_{Z\gamma}$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig14i_2.yaml
+additional_resources:
+- {description: Auxiliary Figure 24i, location: figaux_14i.png}
+- {description: Thumbnail for Auxiliary Figure 24i, location: thumb_figaux_14i.png}
+---
+name: "Aux Figure 24j (Expected)"
+location: Data from Auxiliary Figure 24j (Expected)
+description:  Expected negative log-likelihood scans as a function of $B_{inv.}$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig14j.yaml
+additional_resources:
+- {description: Auxiliary Figure 24j, location: figaux_14j.png}
+- {description: Thumbnail for Auxiliary Figure 24j, location: thumb_figaux_14j.png}
+---
+name: "Aux Figure 24j (Observed)"
+location: Data from Auxiliary Figure 24j (Observed)
+description:  Observed negative log-likelihood scans as a function of $B_{inv.}$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig14j_2.yaml
+additional_resources:
+- {description: Auxiliary Figure 24j, location: figaux_14j.png}
+- {description: Thumbnail for Auxiliary Figure 24j, location: thumb_figaux_14j.png}
+
+---
+name: "Aux Figure 24k (Expected)"
+location: Data from Auxiliary Figure 24k (Expected)
+description:  Expected negative log-likelihood scans as a function of $B_{u.}$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig14k.yaml
+additional_resources:
+- {description: Auxiliary Figure 24k, location: figaux_14k.png}
+- {description: Thumbnail for Auxiliary Figure 24k, location: thumb_figaux_14k.png}
+
+---
+name: "Aux Figure 24k (Observed)"
+location: Data from Auxiliary Figure 24k (Observed)
+description:  Observed negative log-likelihood scans as a function of $B_{u.}$.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: AuxFig14k_2.yaml
+additional_resources:
+- {description: Auxiliary Figure 24k, location: figaux_14k.png}
+- {description: Thumbnail for Auxiliary Figure 24k, location: thumb_figaux_14k.png}
+
+
+
+
+
+
+---
+name: "STXS acceptances"
+location: Data from STXS acceptances
+description: The acceptances of STXS stage 1.2 kinematic regions in the Higgs boson production processes.
+keywords: # used for searching, possibly multiple values for each keyword
+- {name: reactions, values: []}
+- {name: observables, values: []}
+- {name: cmenergies, values: [13000.0]}
+- {name: phrases, values: []}
+data_file: stxs_acceptance.yaml
+---

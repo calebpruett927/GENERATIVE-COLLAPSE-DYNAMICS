@@ -1,0 +1,23 @@
+dependent_variables:
+- header:
+    name: Correlation
+  values:
+  - value: 1.0
+  - value: 0.39
+  - value: 0.39
+  - value: 1.0
+independent_variables:
+- header:
+    name: POI
+  values:
+  - value: $\kappa_{V}$
+  - value: $\kappa_{V}$
+  - value: $\kappa_{F}$
+  - value: $\kappa_{F}$
+- header:
+    name: POI
+  values:
+  - value: $\kappa_{V}$
+  - value: $\kappa_{F}$
+  - value: $\kappa_{V}$
+  - value: $\kappa_{F}$

@@ -1,0 +1,122 @@
+dependent_variables:
+- header:
+    name: Data
+  qualifiers:
+  - name: ''
+    value: Cross-section normalized to SM value
+  values:
+  - errors:
+    - asymerror:
+        minus: -0.06656
+        plus: 0.06973
+      label: Total
+    - asymerror:
+        minus: -0.040734
+        plus: 0.040963
+      label: Stat.
+    - asymerror:
+        minus: -0.05264
+        plus: 0.05643
+      label: Syst.
+    value: 1.0274
+  - errors:
+    - asymerror:
+        minus: -0.12483
+        plus: 0.13421
+      label: Total
+    - asymerror:
+        minus: -0.081376
+        plus: 0.082958
+      label: Stat.
+    - asymerror:
+        minus: -0.09466
+        plus: 0.1055
+      label: Syst.
+    value: 1.1071
+  - errors:
+    - asymerror:
+        minus: -0.21656
+        plus: 0.22785
+      label: Total
+    - asymerror:
+        minus: -0.16643
+        plus: 0.17034
+      label: Stat.
+    - asymerror:
+        minus: -0.13856
+        plus: 0.15133
+      label: Syst.
+    value: 1.1824
+  - errors:
+    - asymerror:
+        minus: -0.20665
+        plus: 0.22153
+      label: Total
+    - asymerror:
+        minus: -0.15869
+        plus: 0.16205
+      label: Stat.
+    - asymerror:
+        minus: -0.13237
+        plus: 0.15105
+      label: Syst.
+    value: 0.97009
+  - errors:
+    - asymerror:
+        minus: -0.1832
+        plus: 0.19625
+      label: Total
+    - asymerror:
+        minus: -0.13354
+        plus: 0.13648
+      label: Stat.
+    - asymerror:
+        minus: -0.12542
+        plus: 0.14102
+      label: Syst.
+    value: 0.97378
+- header:
+    name: SM
+  qualifiers:
+  - name: ''
+    value: Cross-section normalized to SM value
+  values:
+  - errors:
+    - asymerror:
+        minus: -0.058068
+        plus: 0.057518
+      label: ''
+    value: 1.0
+  - errors:
+    - asymerror:
+        minus: -0.019862
+        plus: 0.01962
+      label: ''
+    value: 1.0
+  - errors:
+    - asymerror:
+        minus: -0.020096
+        plus: 0.019585
+      label: ''
+    value: 1.0
+  - errors:
+    - asymerror:
+        minus: -0.03706
+        plus: 0.036858
+      label: ''
+    value: 1.0
+  - errors:
+    - asymerror:
+        minus: -0.087225
+        plus: 0.085993
+      label: ''
+    value: 1.0
+independent_variables:
+- header:
+    name: ''
+  values:
+  - value: ggF + $bbH$
+  - value: VBF
+  - value: $WH$
+  - value: $ZH$
+  - value: $ttH+tH$

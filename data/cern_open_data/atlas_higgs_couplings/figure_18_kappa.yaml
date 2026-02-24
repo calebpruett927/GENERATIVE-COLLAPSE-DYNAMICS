@@ -1,0 +1,56 @@
+dependent_variables:
+- header:
+    name: $B_{\text{inv.}}=B_{\text{u.}}=0$ ($p_{SM}=63\%$)
+  qualifiers:
+  - name: ''
+    value: 68% CL interval
+  values:
+  - errors:
+    - asymerror:
+        minus: -0.04782
+        plus: 0.05003
+      label: ''
+    value: 1.0153
+  - errors:
+    - asymerror:
+        minus: -0.04376
+        plus: 0.04512
+      label: ''
+    value: 1.022
+  - errors:
+    - asymerror:
+        minus: -0.37015
+        plus: 0.30641
+      label: ''
+    value: 1.4244
+- header:
+    name: $B_{\text{inv.}}$ and $B_{\text{u.}}$ are free parameters ($p_{SM}=49\%$)
+  qualifiers:
+  - name: ''
+    value: 68% CL interval
+  values:
+  - errors:
+    - asymerror:
+        minus: -0.06009
+        plus: 0.0641
+      label: ''
+    value: 0.99354
+  - errors:
+    - asymerror:
+        minus: -0.04452
+        plus: 0.04588
+      label: ''
+    value: 1.0162
+  - errors:
+    - asymerror:
+        minus: -0.36857
+        plus: 0.30548
+      label: ''
+    value: 1.4137
+independent_variables:
+- header:
+    name: ''
+  values:
+  - value: $\kappa_{g}$
+  - value: $\kappa_{\gamma}$
+  - value: $\kappa_{Z\gamma}$

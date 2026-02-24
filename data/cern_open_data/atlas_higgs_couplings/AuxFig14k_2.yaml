@@ -1,0 +1,78 @@
+independent_variables:
+- header: {name: '$B_{u.}$', units: ''}
+  values:
+  - {value: 0}
+  - {value: 9.95546e-09}
+  - {value: 0.0012}
+  - {value: 0.0024}
+  - {value: 0.0036}
+  - {value: 0.0048}
+  - {value: 0.006}
+  - {value: 0.0072}
+  - {value: 0.0084}
+  - {value: 0.0096}
+  - {value: 0.0108}
+  - {value: 0.012}
+  - {value: 0.0132}
+  - {value: 0.0144}
+  - {value: 0.0156}
+  - {value: 0.0168}
+  - {value: 0.018}
+  - {value: 0.024}
+  - {value: 0.03}
+  - {value: 0.048}
+  - {value: 0.06}
+  - {value: 0.066}
+  - {value: 0.072}
+  - {value: 0.078}
+  - {value: 0.084}
+  - {value: 0.09}
+  - {value: 0.096}
+  - {value: 0.102}
+  - {value: 0.108}
+  - {value: 0.114}
+  - {value: 0.12}
+  - {value: 0.126}
+  - {value: 0.138}
+  - {value: 0.144}
+  - {value: 0.15}
+dependent_variables:
+- header: {name: '-2 ln $\Lambda$', units: '' }
+  qualifiers:
+  - {name: SQRT(S), units: GeV, value: 13000}
+  values:
+  - {value: 6.05732e-06}
+  - {value: 0}
+  - {value: 0.0261758}
+  - {value: 0.0526244}
+  - {value: 0.0791791}
+  - {value: 0.106033}
+  - {value: 0.133091}
+  - {value: 0.160195}
+  - {value: 0.187654}
+  - {value: 0.215336}
+  - {value: 0.24327}
+  - {value: 0.27139}
+  - {value: 0.299765}
+  - {value: 0.328319}
+  - {value: 0.357167}
+  - {value: 0.386148}
+  - {value: 0.415357}
+  - {value: 0.563919}
+  - {value: 0.715}
+  - {value: 1.20777}
+  - {value: 1.56959}
+  - {value: 1.75032}
+  - {value: 1.94598}
+  - {value: 2.13988}
+  - {value: 2.34258}
+  - {value: 2.54971}
+  - {value: 2.76538}
+  - {value: 2.98494}
+  - {value: 3.21043}
+  - {value: 3.45001}
+  - {value: 3.6821}
+  - {value: 3.91898}
+  - {value: 4.42664}
+  - {value: 4.69027}
+  - {value: 4.96304}

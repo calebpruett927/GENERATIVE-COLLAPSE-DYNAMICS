@@ -1,0 +1,160 @@
+dependent_variables:
+- header:
+    name: Data
+  qualifiers:
+  - name: ''
+    units: pb
+    value: Cross section
+  values:
+  - errors:
+    - asymerror:
+        minus: -2.988
+        plus: 3.1223
+      label: Total uncertainty
+    - asymerror:
+        minus: -2.3623
+        plus: 2.5248
+      label: Syst. uncertainty
+    value: 45.92
+  - errors:
+    - asymerror:
+        minus: -0.43284
+        plus: 0.47095
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.32654
+        plus: 0.37054
+      label: Syst. uncertainty
+    value: 3.8562
+  - errors:
+    - asymerror:
+        minus: -0.26364
+        plus: 0.27684
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.16896
+        plus: 0.1843
+      label: Syst. uncertainty
+    value: 1.4081
+  - errors:
+    - asymerror:
+        minus: -0.16372
+        plus: 0.17615
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.10471
+        plus: 0.12031
+      label: Syst. uncertainty
+    value: 0.76578
+  - errors:
+    - asymerror:
+        minus: -0.11901
+        plus: 0.12212
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.082251
+        plus: 0.086565
+      label: Syst. uncertainty
+    value: 0.36966
+  - errors:
+    - asymerror:
+        minus: -0.31842
+        plus: 0.35929
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.17952
+        plus: 0.22395
+      label: Syst. uncertainty
+    value: 0.56063
+- header:
+    name: SM prediction
+  qualifiers:
+  - name: ''
+    units: pb
+    value: Cross section
+  values:
+  - errors:
+    - asymerror:
+        minus: -2.599
+        plus: 2.5744
+      label: ''
+    value: 44.757
+  - errors:
+    - asymerror:
+        minus: -0.069515
+        plus: 0.068668
+      label: ''
+    value: 3.4999
+  - errors:
+    - asymerror:
+        minus: -0.02443
+        plus: 0.02381
+      label: ''
+    value: 1.2157
+  - errors:
+    - asymerror:
+        minus: -0.029499
+        plus: 0.029338
+      label: ''
+    value: 0.79599
+  - errors:
+    - asymerror:
+        minus: -0.049832
+        plus: 0.049978
+      label: ''
+    value: 0.4998
+  - errors:
+    - asymerror:
+        minus: -0.010797
+        plus: 0.0053909
+      label: ''
+    value: 0.084769
+- header:
+    name: Ratio to SM
+  values:
+  - errors:
+    - asymerror:
+        minus: -0.06676
+        plus: 0.06976
+      label: ''
+    value: 1.026
+  - errors:
+    - asymerror:
+        minus: -0.12367
+        plus: 0.13456
+      label: ''
+    value: 1.1018
+  - errors:
+    - asymerror:
+        minus: -0.21686
+        plus: 0.22772
+      label: ''
+    value: 1.1583
+  - errors:
+    - asymerror:
+        minus: -0.20568
+        plus: 0.2213
+      label: ''
+    value: 0.96205
+  - errors:
+    - asymerror:
+        minus: -0.23811
+        plus: 0.24434
+      label: ''
+    value: 0.73963
+  - errors:
+    - asymerror:
+        minus: -3.7563
+        plus: 4.2384
+      label: ''
+    value: 6.6137
+independent_variables:
+- header:
+    name: Production process
+  values:
+  - value: ggF + $bbH$
+  - value: VBF
+  - value: $WH$
+  - value: $ZH$
+  - value: $ttH$
+  - value: $tH$

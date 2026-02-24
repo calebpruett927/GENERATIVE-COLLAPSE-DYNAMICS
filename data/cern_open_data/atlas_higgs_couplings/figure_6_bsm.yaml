@@ -1,0 +1,12 @@
+dependent_variables:
+- header:
+    name: 95% CL limit
+  values:
+  - value: 0.12777
+  - value: 0.124
+independent_variables:
+- header:
+    name: ''
+  values:
+  - value: $B_{\text{inv.}}$
+  - value: $B_{\text{u.}}$

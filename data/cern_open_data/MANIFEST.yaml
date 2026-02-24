@@ -1,0 +1,212 @@
+# CERN Open Data Archive — Provenance Manifest
+# Downloaded: 2026-02-22
+# License: CC0 1.0 Universal (all datasets)
+# Purpose: Observable particle behavior data for GCD kernel event-level analysis
+#
+# Axiom-0: Collapsus generativus est; solum quod redit, reale est.
+# These data test whether Tier-1 identities (F+ω=1, IC≤F, IC=exp(κ))
+# hold at the collision-event level, not just the static-particle level.
+
+archive_version: "1.0.0"
+retrieved: "2026-02-22T03:43:00Z"
+total_events: 1_178_244
+total_size_mb: 225
+
+datasets:
+  # ─── CMS Record 545: Derived Collision Data (2011, √s = 7 TeV) ──────
+  cms_dimuon:
+    source: "https://opendata.cern.ch/record/545"
+    experiment: "CMS"
+    doi: "10.7483/OPENDATA.CMS.CB8H.MFFA"
+    license: "CC0-1.0"
+    citation: >
+      McCauley, Thomas (2017). Datasets derived from the Run2011A
+      SingleElectron, SingleMu, DoubleElectron, and DoubleMu primary
+      datasets. CERN Open Data Portal.
+    energy_tev: 7
+    year: 2011
+    description: >
+      Real CMS collision data derived for education and outreach.
+      Contains dimuon spectra (J/ψ, Υ, Z peaks + continuum),
+      Z→ee, W→μν, W→eν events with full 4-momentum reconstruction.
+    files:
+      Dimuon_DoubleMu.csv:
+        events: 100000
+        columns: "Run,Event,type1,E1,px1,py1,pz1,pt1,eta1,phi1,Q1,type2,E2,px2,py2,pz2,pt2,eta2,phi2,Q2,M"
+        description: "Full dimuon spectrum 0.3–300 GeV: J/ψ (3.1), Υ (9.5), Z (91.2)"
+        sha256: "58caa45c580f8bcf4b457281c8525a56de0e0b8eb0e0b29e86a9b655a8e64d35"
+        size_mb: 14
+      Jpsimumu.csv:
+        events: 20000
+        columns: "Run,Event,type1,E1,px1,py1,pz1,pt1,eta1,phi1,Q1,type2,E2,px2,py2,pz2,pt2,eta2,phi2,Q2"
+        description: "J/ψ→μμ triggered events, M ∈ [2, 5] GeV"
+        sha256: "95bf87f7c14758b445d9cb76bc0111affc1ce70831453dde34f687310685e59f"
+        size_mb: 2.5
+      Ymumu.csv:
+        events: 20000
+        columns: "Run,Event,type1,E1,px1,py1,pz1,pt1,eta1,phi1,Q1,type2,E2,px2,py2,pz2,pt2,eta2,phi2,Q2"
+        description: "Υ→μμ triggered events, M ∈ [8, 12] GeV"
+        sha256: "b2757444c7339f8e43bda9b2f0066b821b20ab6038b9f188375b717f0fd4ea88"
+        size_mb: 2.5
+      Zmumu.csv:
+        events: 10000
+        columns: "Run,Event,pt1,eta1,phi1,Q1,dxy1,iso1,pt2,eta2,phi2,Q2,dxy2,iso2"
+        description: "Z→μμ events, M ∈ [60, 120] GeV, both pT > 20 GeV"
+        sha256: "7782778f8417d2c732f4a64efcbfceb6192c97c3bcfd21c0cf1322d38ed965d1"
+        size_mb: 0.9
+      Zee.csv:
+        events: 10000
+        columns: "Run,Event,pt1,eta1,phi1,Q1,type1,sigmaEtaEta1,HoverE1,isoTrack1,isoEcal1,isoHcal1,...(×2)"
+        description: "Z→ee events, M ∈ [60, 120] GeV, both pT > 25 GeV"
+        sha256: "ae6fbad67d78ffa71ac9044bcac69d1118a54d6e6c312e1ae234ac542c10c349"
+        size_mb: 1.4
+      Wmunu.csv:
+        events: 100000
+        columns: "Run,Event,pt,eta,phi,Q,chiSq,dxy,iso,MET,phiMET"
+        description: "W→μν candidates, single global muon pT > 25 GeV"
+        sha256: "8031d7f62935b75e02f066caf8d20e7661f98effe18dcc25b63c604bd158b04d"
+        size_mb: 7.6
+      Wenu.csv:
+        events: 100000
+        columns: "Run,Event,pt,eta,phi,Q,type,delEta,delPhi,sigmaEtaEta,HoverE,isoTrack,isoEcal,isoHcal,MET,phiMET"
+        description: "W→eν candidates, single electron pT > 25 GeV"
+        sha256: "03d32eaf82fc6821b9f45caec4394ce8de6007a38cf1b09c9eb57f87f8fcaf92"
+        size_mb: 9.5
+    gcd_relevance: >
+      Event-level kernel analysis: each dimuon event → trace vector
+      (pt_norm, eta_norm, M_norm, isolation, MET, charge) → compute F, IC, κ
+      per collision. Tests whether Tier-1 identities hold at event level.
+      Dimuon spectrum sweeps J/ψ→Υ→Z — tests kernel structure at resonances
+      vs continuum. This is the §6 hypothesis from CERN_HIGGS_RESEARCH.md.
+
+  # ─── ATLAS Higgs Coupling Map (Nature 2022, 13 TeV) ────────────────
+  atlas_higgs_couplings:
+    source: "https://www.hepdata.net/record/ins2104706"
+    experiment: "ATLAS"
+    doi: "10.17182/hepdata.130266.v1"
+    inspire_id: "ins2104706"
+    license: "CC0-1.0"
+    citation: >
+      Aad, Georges et al. (ATLAS Collaboration). "A detailed map of Higgs
+      boson interactions by the ATLAS experiment ten years after the
+      discovery." Nature 607 (2022) 52-59. arXiv:2207.00092.
+    energy_tev: 13
+    luminosity_fb: 139
+    description: >
+      Complete ATLAS Higgs coupling measurement from full Run 2 dataset.
+      58 YAML data tables: production cross-sections (ggF, VBF, WH, ZH,
+      ttH, tH), branching fractions (bb, WW, ττ, ZZ, γγ, Zγ, μμ),
+      coupling modifiers κ (W, Z, t, b, τ, μ, g, γ, Zγ), STXS bins,
+      and BSM interpretations. All with systematic + statistical
+      uncertainty decomposition.
+    key_files:
+      figure_2a.yaml: "Production cross-sections × BR (measured vs SM)"
+      figure_2b.yaml: "Decay branching fractions (7 channels)"
+      figure_6_kappa.yaml: "Coupling modifiers κ_i (Binv=Bu=0)"
+      kappa_ratio.yaml: "Coupling modifier ratios λ_ij"
+      figure_6_bsm.yaml: "Coupling modifiers (BSM model)"
+      figure_18_kappa.yaml: "2D likelihood κ_V vs κ_F"
+      figure_18_bsm.yaml: "2D likelihood BSM"
+      stxs_acceptance.yaml: "Simplified template cross-section bins"
+    key_measurements:
+      production_cross_sections_pb:
+        ggF_bbH: {measured: 45.92, sm: 44.757, ratio: 1.026}
+        VBF: {measured: 3.856, sm: 3.500, ratio: 1.102}
+        WH: {measured: 1.408, sm: 1.216, ratio: 1.158}
+        ZH: {measured: 0.766, sm: 0.796, ratio: 0.962}
+        ttH: {measured: 0.370, sm: 0.500, ratio: 0.740}
+        tH: {measured: 0.561, sm: 0.085, ratio: 6.614}
+      branching_fractions:
+        bb: {measured: 0.528, sm: 0.582}
+        WW: {measured: 0.257, sm: 0.214}
+        tautau: {measured: 0.060, sm: 0.063}
+        ZZ: {measured: 0.028, sm: 0.026}
+        gammagamma: {measured: 0.00247, sm: 0.00228}
+        Zgamma: {measured: 0.00324, sm: 0.00154}
+        mumu: {measured: 0.00026, sm: 0.00022}
+      coupling_modifiers_kappa:
+        kappa_W: {value: 1.054, unc_plus: 0.060, unc_minus: -0.059}
+        kappa_Z: {value: 0.993, unc_plus: 0.057, unc_minus: -0.057}
+        kappa_t: {value: 0.944, unc_plus: 0.111, unc_minus: -0.109}
+        kappa_b: {value: 0.892, unc_plus: 0.114, unc_minus: -0.107}
+        kappa_tau: {value: 0.929, unc_plus: 0.073, unc_minus: -0.070}
+        kappa_mu: {value: 1.063, unc_plus: 0.246, unc_minus: -0.304}
+        kappa_g: {value: 0.949, unc_plus: 0.073, unc_minus: -0.067}
+        kappa_gamma: {value: 1.009, unc_plus: 0.063, unc_minus: -0.061}
+        kappa_Zgamma: {value: 1.377, unc_plus: 0.310, unc_minus: -0.367}
+    gcd_relevance: >
+      Direct measured Higgs couplings replace PDG summary values in
+      CERN_HIGGS_RESEARCH.md analysis. Coupling modifiers κ_f map to
+      Yukawa values in symmetry_breaking.py. Uncertainties enable error
+      propagation through F, IC, κ kernel computation. The measured
+      branching fractions can be compared against the decay product
+      kernel invariants from §3 of CERN_HIGGS_RESEARCH.md.
+
+  # ─── ATLAS Higgs ML Challenge (Simulated H→ττ, 2014) ──────────────
+  atlas_higgs_ml:
+    source: "https://opendata.cern.ch/record/328"
+    experiment: "ATLAS"
+    doi: "10.7483/OPENDATA.ATLAS.ZBP2.M5T8"
+    license: "CC0-1.0"
+    citation: >
+      ATLAS collaboration (2014). Dataset from the ATLAS Higgs Boson
+      Machine Learning Challenge 2014. CERN Open Data Portal.
+    energy_tev: 8
+    year: 2012
+    description: >
+      818,238 simulated collision events from ATLAS full-detector
+      simulation. Signal: H→ττ (m_H = 125 GeV). Background: Z→ττ,
+      tt̄, W+jets. 30 physics features per event (13 DER + 17 PRI),
+      plus event weight and signal/background label.
+    files:
+      atlas-higgs-challenge-2014-v2.csv:
+        events: 818238
+        columns_count: 35
+        columns_primitive: >
+          PRI_tau_pt, PRI_tau_eta, PRI_tau_phi,
+          PRI_lep_pt, PRI_lep_eta, PRI_lep_phi,
+          PRI_met, PRI_met_phi, PRI_met_sumet,
+          PRI_jet_num, PRI_jet_leading_pt, PRI_jet_leading_eta,
+          PRI_jet_leading_phi, PRI_jet_subleading_pt,
+          PRI_jet_subleading_eta, PRI_jet_subleading_phi,
+          PRI_jet_all_pt
+        columns_derived: >
+          DER_mass_MMC, DER_mass_transverse_met_lep, DER_mass_vis,
+          DER_pt_h, DER_deltaeta_jet_jet, DER_mass_jet_jet,
+          DER_prodeta_jet_jet, DER_deltar_tau_lep, DER_pt_tot,
+          DER_sum_pt, DER_pt_ratio_lep_tau, DER_met_phi_centrality,
+          DER_lep_eta_centrality
+        columns_meta: "EventId, Weight, Label, KaggleSet, KaggleWeight"
+        missing_value: -999.0
+        sha256: "948bc6a393495d7f807627e6f2ddc358e325d2db8e03644d98011c7dc640d135"
+        size_mb: 187
+    gcd_relevance: >
+      Tests the §6 hypothesis: do Higgs signal events have different
+      kernel signatures than background? Each event's 30 features →
+      trace vector → kernel invariants (F, IC, κ). If signal events
+      cluster differently in (F, IC, Δ) space, the kernel describes
+      particle interactions, not just static properties. 818k events
+      provide statistical power for regime classification of collisions.
+
+# ─── Cross-references to existing repository infrastructure ───────────
+cross_references:
+  particle_catalog: "closures/standard_model/particle_catalog.py"
+  subatomic_kernel: "closures/standard_model/subatomic_kernel.py"
+  cross_sections: "closures/standard_model/cross_sections.py"
+  symmetry_breaking: "closures/standard_model/symmetry_breaking.py"
+  coupling_constants: "closures/standard_model/coupling_constants.py"
+  higgs_analysis: "CERN_HIGGS_RESEARCH.md"
+  experimental_probes: "scripts/run_experimental_probes.py"
+  negative_result: "NEGATIVE_RESULT_ANALYSIS.md"
+
+# ─── Gap analysis ────────────────────────────────────────────────────
+gaps_filled:
+  static_to_dynamic: >
+    Repository had 31 particles with static 8-channel traces.
+    Now has 1,178,244 collision events with per-event kinematics.
+  pdg_to_measured: >
+    Repository used PDG 2024 compiled values.
+    Now has direct ATLAS measurements with full uncertainty bands.
+  catalog_to_interaction: >
+    Repository analyzed what particles ARE (channel structure).
+    Now can analyze what they DO (collision dynamics).

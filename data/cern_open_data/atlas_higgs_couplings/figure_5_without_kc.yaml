@@ -1,0 +1,99 @@
+dependent_variables:
+- header:
+    name: Particle mass
+    units: GeV
+  values:
+  - value: 169.2
+  - value: 91.2
+  - value: 80.4
+  - value: 2.76
+  - value: 1.777
+  - value: 0.106
+- header:
+    name: $\kappa_{F}\frac{m_{F}}{\text{vev}}$ or $\sqrt{\kappa_{V}}\frac{m_{V}}{\text{vev}}$
+  values:
+  - errors:
+    - asymerror:
+        minus: -0.044749
+        plus: 0.047562
+      label: ''
+    value: 0.65217
+  - errors:
+    - asymerror:
+        minus: -0.0096165
+        plus: 0.011317
+      label: ''
+    value: 0.36887
+  - errors:
+    - asymerror:
+        minus: -0.0083982
+        plus: 0.0085385
+      label: ''
+    value: 0.33018
+  - errors:
+    - asymerror:
+        minus: -0.001203
+        plus: 0.0012668
+      label: ''
+    value: 0.010066
+  - errors:
+    - asymerror:
+        minus: -0.00051136
+        plus: 0.00053353
+      label: ''
+    value: 0.0067617
+  - errors:
+    - asymerror:
+        minus: -0.00013219
+        plus: 0.00010719
+      label: ''
+    value: 0.00046095
+- header:
+    name: $\kappa_{F}$ or $\kappa_{V}$
+  values:
+  - errors:
+    - asymerror:
+        minus: -0.06506
+        plus: 0.06915
+      label: ''
+    value: 0.94819
+  - errors:
+    - asymerror:
+        minus: -0.05214
+        plus: 0.06136
+      label: ''
+    value: 0.99
+  - errors:
+    - asymerror:
+        minus: -0.05087
+        plus: 0.05172
+      label: ''
+    value: 1.0206
+  - errors:
+    - asymerror:
+        minus: -0.10722
+        plus: 0.11291
+      label: ''
+    value: 0.89723
+  - errors:
+    - asymerror:
+        minus: -0.07079
+        plus: 0.07386
+      label: ''
+    value: 0.93606
+  - errors:
+    - asymerror:
+        minus: -0.30679
+        plus: 0.24877
+      label: ''
+    value: 1.0697
+independent_variables:
+- header:
+    name: ''
+  values:
+  - value: $\kappa_{t}$
+  - value: $\kappa_{Z}$
+  - value: $\kappa_{W}$
+  - value: $\kappa_{b}$
+  - value: $\kappa_{\tau}$
+  - value: $\kappa_{\mu}$

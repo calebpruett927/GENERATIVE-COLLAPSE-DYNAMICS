@@ -1,0 +1,86 @@
+dependent_variables:
+- header:
+    name: Correlation
+  values:
+  - value: 1.0
+  - value: -0.09
+  - value: -0.03
+  - value: -0.02
+  - value: 0.04
+  - value: -0.09
+  - value: 1.0
+  - value: 0.02
+  - value: 0.01
+  - value: 0.02
+  - value: -0.03
+  - value: 0.02
+  - value: 1.0
+  - value: -0.06
+  - value: -0.0
+  - value: -0.02
+  - value: 0.01
+  - value: -0.06
+  - value: 1.0
+  - value: 0.0
+  - value: 0.04
+  - value: 0.02
+  - value: -0.0
+  - value: 0.0
+  - value: 1.0
+independent_variables:
+- header:
+    name: POI
+  values:
+  - value: $\sigma_{ggF}$
+  - value: $\sigma_{ggF}$
+  - value: $\sigma_{ggF}$
+  - value: $\sigma_{ggF}$
+  - value: $\sigma_{ggF}$
+  - value: $\sigma_{VBF}$
+  - value: $\sigma_{VBF}$
+  - value: $\sigma_{VBF}$
+  - value: $\sigma_{VBF}$
+  - value: $\sigma_{VBF}$
+  - value: $\sigma_{WH}$
+  - value: $\sigma_{WH}$
+  - value: $\sigma_{WH}$
+  - value: $\sigma_{WH}$
+  - value: $\sigma_{WH}$
+  - value: $\sigma_{ZH}$
+  - value: $\sigma_{ZH}$
+  - value: $\sigma_{ZH}$
+  - value: $\sigma_{ZH}$
+  - value: $\sigma_{ZH}$
+  - value: $\sigma_{ttH+tH}$
+  - value: $\sigma_{ttH+tH}$
+  - value: $\sigma_{ttH+tH}$
+  - value: $\sigma_{ttH+tH}$
+  - value: $\sigma_{ttH+tH}$
+- header:
+    name: POI
+  values:
+  - value: $\sigma_{ggF}$
+  - value: $\sigma_{VBF}$
+  - value: $\sigma_{WH}$
+  - value: $\sigma_{ZH}$
+  - value: $\sigma_{ttH+tH}$
+  - value: $\sigma_{ggF}$
+  - value: $\sigma_{VBF}$
+  - value: $\sigma_{WH}$
+  - value: $\sigma_{ZH}$
+  - value: $\sigma_{ttH+tH}$
+  - value: $\sigma_{ggF}$
+  - value: $\sigma_{VBF}$
+  - value: $\sigma_{WH}$
+  - value: $\sigma_{ZH}$
+  - value: $\sigma_{ttH+tH}$
+  - value: $\sigma_{ggF}$
+  - value: $\sigma_{VBF}$
+  - value: $\sigma_{WH}$
+  - value: $\sigma_{ZH}$
+  - value: $\sigma_{ttH+tH}$
+  - value: $\sigma_{ggF}$
+  - value: $\sigma_{VBF}$
+  - value: $\sigma_{WH}$
+  - value: $\sigma_{ZH}$
+  - value: $\sigma_{ttH+tH}$

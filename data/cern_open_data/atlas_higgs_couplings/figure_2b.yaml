@@ -1,0 +1,181 @@
+dependent_variables:
+- header:
+    name: Data
+  qualifiers:
+  - name: ''
+    value: Branching fraction
+  values:
+  - errors:
+    - asymerror:
+        minus: -0.080792
+        plus: 0.084693
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.059032
+        plus: 0.06377
+      label: Syst. uncertainty
+    value: 0.52834
+  - errors:
+    - asymerror:
+        minus: -0.024126
+        plus: 0.025613
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.021364
+        plus: 0.022997
+      label: Syst. uncertainty
+    value: 0.25718
+  - errors:
+    - asymerror:
+        minus: -0.007118
+        plus: 0.007654
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.005645
+        plus: 0.006271
+      label: Syst. uncertainty
+    value: 0.060139
+  - errors:
+    - asymerror:
+        minus: -0.002643
+        plus: 0.002846
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.001411
+        plus: 0.001637
+      label: Syst. uncertainty
+    value: 0.027505
+  - errors:
+    - asymerror:
+        minus: -0.000203
+        plus: 0.000216
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.000147
+        plus: 0.000163
+      label: Syst. uncertainty
+    value: 0.00247
+  - errors:
+    - asymerror:
+        minus: -0.001459
+        plus: 0.001516
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.000514
+        plus: 0.000595
+      label: Syst. uncertainty
+    value: 0.003235
+  - errors:
+    - asymerror:
+        minus: -0.000131
+        plus: 0.000134
+      label: Total uncertainty
+    - asymerror:
+        minus: -2.6e-05
+        plus: 3.4e-05
+      label: Syst. uncertainty
+    value: 0.000263
+- header:
+    name: SM prediction
+  qualifiers:
+  - name: ''
+    value: Branching fraction
+  values:
+  - errors:
+    - asymerror:
+        minus: -0.010064
+        plus: 0.0099
+      label: ''
+    value: 0.5809
+  - errors:
+    - asymerror:
+        minus: -0.004626
+        plus: 0.004649
+      label: ''
+    value: 0.2152
+  - errors:
+    - asymerror:
+        minus: -0.001445
+        plus: 0.001457
+      label: ''
+    value: 0.06256
+  - errors:
+    - asymerror:
+        minus: -0.000568
+        plus: 0.000571
+      label: ''
+    value: 0.02641
+  - errors:
+    - asymerror:
+        minus: -6.4e-05
+        plus: 6.6e-05
+      label: ''
+    value: 0.00227
+  - errors:
+    - asymerror:
+        minus: -0.000106
+        plus: 0.000105
+      label: ''
+    value: 0.001541
+  - errors:
+    - asymerror:
+        minus: -5.0e-06
+        plus: 5.0e-06
+      label: ''
+    value: 0.000217
+- header:
+    name: Ratio to SM
+  values:
+  - errors:
+    - asymerror:
+        minus: -0.13908
+        plus: 0.1458
+      label: ''
+    value: 0.90952
+  - errors:
+    - asymerror:
+        minus: -0.11211
+        plus: 0.11902
+      label: ''
+    value: 1.1951
+  - errors:
+    - asymerror:
+        minus: -0.11378
+        plus: 0.12234
+      label: ''
+    value: 0.9613
+  - errors:
+    - asymerror:
+        minus: -0.10007
+        plus: 0.10774
+      label: ''
+    value: 1.0415
+  - errors:
+    - asymerror:
+        minus: -0.089531
+        plus: 0.095217
+      label: ''
+    value: 1.0883
+  - errors:
+    - asymerror:
+        minus: -0.94682
+        plus: 0.98358
+      label: ''
+    value: 2.0991
+  - errors:
+    - asymerror:
+        minus: -0.60331
+        plus: 0.6178
+      label: ''
+    value: 1.2135
+independent_variables:
+- header:
+    name: Decay mode
+  values:
+  - value: $bb$
+  - value: $WW$
+  - value: $\tau\tau$
+  - value: $ZZ$
+  - value: $\gamma\gamma$
+  - value: $Z\gamma$
+  - value: $\mu\mu$

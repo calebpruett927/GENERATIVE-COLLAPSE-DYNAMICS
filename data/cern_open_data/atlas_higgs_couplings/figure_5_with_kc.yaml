@@ -1,0 +1,113 @@
+dependent_variables:
+- header:
+    name: Particle mass
+    units: GeV
+  values:
+  - value: 169.2
+  - value: 91.2
+  - value: 80.4
+  - value: 2.76
+  - value: 1.777
+  - value: 0.62
+  - value: 0.106
+- header:
+    name: $\kappa_{F}\frac{m_{F}}{\text{vev}}$ or $\sqrt{\kappa_{V}}\frac{m_{V}}{\text{vev}}$
+  values:
+  - errors:
+    - asymerror:
+        minus: -0.043834
+        plus: 0.091457
+      label: ''
+    value: 0.6429
+  - errors:
+    - asymerror:
+        minus: -0.010414
+        plus: 0.02297
+      label: ''
+    value: 0.3676
+  - errors:
+    - asymerror:
+        minus: -0.0084516
+        plus: 0.020974
+      label: ''
+    value: 0.32847
+  - errors:
+    - asymerror:
+        minus: -0.0011785
+        plus: 0.001626
+      label: ''
+    value: 0.010001
+  - errors:
+    - asymerror:
+        minus: -0.00051049
+        plus: 0.00091934
+      label: ''
+    value: 0.0066577
+  - errors:
+    - asymerror:
+        minus: -7.8508e-05
+        plus: 0.0076218
+      label: ''
+    value: 7.8508e-05
+  - errors:
+    - asymerror:
+        minus: -0.00013039
+        plus: 0.00011547
+      label: ''
+    value: 0.00045528
+- header:
+    name: $\kappa_{F}$ or $\kappa_{V}$
+  values:
+  - errors:
+    - asymerror:
+        minus: -0.06373
+        plus: 0.13297
+      label: ''
+    value: 0.93472
+  - errors:
+    - asymerror:
+        minus: -0.05666
+        plus: 0.12497
+      label: ''
+    value: 0.9832
+  - errors:
+    - asymerror:
+        minus: -0.05146
+        plus: 0.12771
+      label: ''
+    value: 1.0101
+  - errors:
+    - asymerror:
+        minus: -0.10504
+        plus: 0.14493
+      label: ''
+    value: 0.89139
+  - errors:
+    - asymerror:
+        minus: -0.07067
+        plus: 0.12727
+      label: ''
+    value: 0.92166
+  - errors:
+    - asymerror:
+        minus: -0.03115
+        plus: 3.0241
+      label: ''
+    value: 0.03115
+  - errors:
+    - asymerror:
+        minus: -0.30261
+        plus: 0.26797
+      label: ''
+    value: 1.0566
+independent_variables:
+- header:
+    name: ''
+  values:
+  - value: $\kappa_{t}$
+  - value: $\kappa_{Z}$
+  - value: $\kappa_{W}$
+  - value: $\kappa_{b}$
+  - value: $\kappa_{\tau}$
+  - value: $\kappa_{c}$
+  - value: $\kappa_{\mu}$

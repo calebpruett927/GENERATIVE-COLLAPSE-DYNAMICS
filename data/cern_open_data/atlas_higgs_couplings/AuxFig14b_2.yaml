@@ -1,0 +1,62 @@
+independent_variables:
+- header: {name: $\kappa_W$, units: ''}
+  values:
+  - {value: 0.92}
+  - {value: 0.925}
+  - {value: 0.93}
+  - {value: 0.935}
+  - {value: 0.94}
+  - {value: 0.945}
+  - {value: 0.95}
+  - {value: 0.955}
+  - {value: 0.96}
+  - {value: 0.965}
+  - {value: 0.97}
+  - {value: 0.975}
+  - {value: 0.98}
+  - {value: 0.985}
+  - {value: 0.986}
+  - {value: 0.987}
+  - {value: 0.988}
+  - {value: 0.989}
+  - {value: 0.99}
+  - {value: 0.991}
+  - {value: 0.993}
+  - {value: 0.995}
+  - {value: 0.996}
+  - {value: 0.997}
+  - {value: 0.998}
+  - {value: 0.999}
+  - {value: 1}
+dependent_variables:
+- header: {name: '-2 ln $\Lambda$', units: '' }
+  qualifiers:
+  - {name: SQRT(S), units: GeV, value: 13000}
+  values:
+  - {value: 4.9212}
+  - {value: 4.51726}
+  - {value: 4.12648}
+  - {value: 3.7488}
+  - {value: 3.38403}
+  - {value: 3.03264}
+  - {value: 2.69577}
+  - {value: 2.3692}
+  - {value: 2.05548}
+  - {value: 1.75684}
+  - {value: 1.46835}
+  - {value: 1.19239}
+  - {value: 0.929236}
+  - {value: 0.67942}
+  - {value: 0.628492}
+  - {value: 0.58283}
+  - {value: 0.533852}
+  - {value: 0.483885}
+  - {value: 0.440069}
+  - {value: 0.393152}
+  - {value: 0.300571}
+  - {value: 0.213914}
+  - {value: 0.170537}
+  - {value: 0.12688}
+  - {value: 0.0838377}
+  - {value: 0.0415538}
+  - {value: 0}

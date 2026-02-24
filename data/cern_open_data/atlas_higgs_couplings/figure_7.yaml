@@ -1,0 +1,631 @@
+dependent_variables:
+- header:
+    name: Data
+    units: pb
+  values:
+  - errors:
+    - asymerror:
+        minus: -1.2563
+        plus: 1.3239
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.5653
+        plus: 0.65134
+      label: Syst. uncertainty
+    value: 5.7766
+  - errors:
+    - asymerror:
+        minus: -2.5574
+        plus: 2.6764
+      label: Total uncertainty
+    - asymerror:
+        minus: -1.8108
+        plus: 1.9618
+      label: Syst. uncertainty
+    value: 25.371
+  - errors:
+    - asymerror:
+        minus: -1.7263
+        plus: 1.7493
+      label: Total uncertainty
+    - asymerror:
+        minus: -1.0949
+        plus: 1.1203
+      label: Syst. uncertainty
+    value: 5.2197
+  - errors:
+    - asymerror:
+        minus: -1.1411
+        plus: 1.1803
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.61491
+        plus: 0.69672
+      label: Syst. uncertainty
+    value: 5.4966
+  - errors:
+    - asymerror:
+        minus: -0.29051
+        plus: 0.29896
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.14029
+        plus: 0.16217
+      label: Syst. uncertainty
+    value: 0.73148
+  - errors:
+    - asymerror:
+        minus: -1.3899
+        plus: 1.4074
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.71096
+        plus: 0.73432
+      label: Syst. uncertainty
+    value: 1.1669
+  - errors:
+    - asymerror:
+        minus: -0.40437
+        plus: 0.41604
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.17453
+        plus: 0.19406
+      label: Syst. uncertainty
+    value: 0.87116
+  - errors:
+    - asymerror:
+        minus: -0.71537
+        plus: 0.72015
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.34319
+        plus: 0.34237
+      label: Syst. uncertainty
+    value: 0.92136
+  - errors:
+    - asymerror:
+        minus: -0.15061
+        plus: 0.16068
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.08488
+        plus: 0.10033
+      label: Syst. uncertainty
+    value: 0.65679
+  - errors:
+    - asymerror:
+        minus: -0.047312
+        plus: 0.050352
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.016782
+        plus: 0.020238
+      label: Syst. uncertainty
+    value: 0.075616
+  - errors:
+    - asymerror:
+        minus: -0.020308
+        plus: 0.024424
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.005013
+        plus: 0.007644
+      label: Syst. uncertainty
+    value: 0.035957
+  - errors:
+    - asymerror:
+        minus: -1.8399
+        plus: 2.0169
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.56393
+        plus: 0.61634
+      label: Syst. uncertainty
+    value: 0.62471
+  - errors:
+    - asymerror:
+        minus: -0.24071
+        plus: 0.25622
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.10602
+        plus: 0.11943
+      label: Syst. uncertainty
+    value: 0.33501
+  - errors:
+    - asymerror:
+        minus: -1.0235
+        plus: 1.0739
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.4173
+        plus: 0.46768
+      label: Syst. uncertainty
+    value: 1.8053
+  - errors:
+    - asymerror:
+        minus: -0.23507
+        plus: 0.26369
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.098187
+        plus: 0.13492
+      label: Syst. uncertainty
+    value: 0.4938
+  - errors:
+    - asymerror:
+        minus: -0.12302
+        plus: 0.13519
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.051545
+        plus: 0.064073
+      label: Syst. uncertainty
+    value: 0.2982
+  - errors:
+    - asymerror:
+        minus: -0.10103
+        plus: 0.11219
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.041419
+        plus: 0.053677
+      label: Syst. uncertainty
+    value: 0.29631
+  - errors:
+    - asymerror:
+        minus: -0.073107
+        plus: 0.079129
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.03284
+        plus: 0.039129
+      label: Syst. uncertainty
+    value: 0.26356
+  - errors:
+    - asymerror:
+        minus: -0.045302
+        plus: 0.052592
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.011744
+        plus: 0.015403
+      label: Syst. uncertainty
+    value: 0.040843
+  - errors:
+    - asymerror:
+        minus: -0.020837
+        plus: 0.021987
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.009238
+        plus: 0.01046
+      label: Syst. uncertainty
+    value: 0.085974
+  - errors:
+    - asymerror:
+        minus: -0.26676
+        plus: 0.2976
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.038241
+        plus: 0.055726
+      label: Syst. uncertainty
+    value: 0.69714
+  - errors:
+    - asymerror:
+        minus: -0.078375
+        plus: 0.11014
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.008715
+        plus: 0.015257
+      label: Syst. uncertainty
+    value: 0.05151
+  - errors:
+    - asymerror:
+        minus: -0.017778
+        plus: 0.018463
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.012056
+        plus: 0.012695
+      label: Syst. uncertainty
+    value: 0.039087
+  - errors:
+    - asymerror:
+        minus: -0.003765
+        plus: 0.003995
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.00173
+        plus: 0.001918
+      label: Syst. uncertainty
+    value: 0.011158
+  - errors:
+    - asymerror:
+        minus: -0.001777
+        plus: 0.001973
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.000867
+        plus: 0.001053
+      label: Syst. uncertainty
+    value: 0.003296
+  - errors:
+    - asymerror:
+        minus: -0.11061
+        plus: 0.11479
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.073357
+        plus: 0.077172
+      label: Syst. uncertainty
+    value: 0.077246
+  - errors:
+    - asymerror:
+        minus: -0.010228
+        plus: 0.010939
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.005784
+        plus: 0.006672
+      label: Syst. uncertainty
+    value: 0.034895
+  - errors:
+    - asymerror:
+        minus: -0.002693
+        plus: 0.002875
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.001227
+        plus: 0.001344
+      label: Syst. uncertainty
+    value: 0.007364
+  - errors:
+    - asymerror:
+        minus: -0.001084
+        plus: 0.001173
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.00064
+        plus: 0.000669
+      label: Syst. uncertainty
+    value: 0.000386
+  - errors:
+    - asymerror:
+        minus: -0.078445
+        plus: 0.091959
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.027344
+        plus: 0.04031
+      label: Syst. uncertainty
+    value: 0.091032
+  - errors:
+    - asymerror:
+        minus: -0.086623
+        plus: 0.10009
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.037008
+        plus: 0.050638
+      label: Syst. uncertainty
+    value: 0.13211
+  - errors:
+    - asymerror:
+        minus: -0.056203
+        plus: 0.064109
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.026621
+        plus: 0.034585
+      label: Syst. uncertainty
+    value: 0.050436
+  - errors:
+    - asymerror:
+        minus: -0.026824
+        plus: 0.029868
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.012232
+        plus: 0.014859
+      label: Syst. uncertainty
+    value: 0.051505
+  - errors:
+    - asymerror:
+        minus: -0.011198
+        plus: 0.011768
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.005936
+        plus: 0.00626
+      label: Syst. uncertainty
+    value: 0.004699
+  - errors:
+    - asymerror:
+        minus: -0.007521
+        plus: 0.008077
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.005293
+        plus: 0.005353
+      label: Syst. uncertainty
+    value: 0.000322
+  - errors:
+    - asymerror:
+        minus: -0.32032
+        plus: 0.37004
+      label: Total uncertainty
+    - asymerror:
+        minus: -0.14584
+        plus: 0.19451
+      label: Syst. uncertainty
+    value: 0.528
+- header:
+    name: SM prediction
+    units: pb
+  values:
+  - errors:
+    - asymerror:
+        minus: -0.86332
+        plus: 0.86568
+      label: ''
+    value: 6.6369
+  - errors:
+    - asymerror:
+        minus: -1.5246
+        plus: 1.5133
+      label: ''
+    value: 20.642
+  - errors:
+    - asymerror:
+        minus: -0.88617
+        plus: 0.88446
+      label: ''
+    value: 6.5013
+  - errors:
+    - asymerror:
+        minus: -0.61985
+        plus: 0.61952
+      label: ''
+    value: 4.5031
+  - errors:
+    - asymerror:
+        minus: -0.12883
+        plus: 0.1289
+      label: ''
+    value: 0.74708
+  - errors:
+    - asymerror:
+        minus: -0.62036
+        plus: 0.62014
+      label: ''
+    value: 2.9636
+  - errors:
+    - asymerror:
+        minus: -0.21533
+        plus: 0.21541
+      label: ''
+    value: 0.94321
+  - errors:
+    - asymerror:
+        minus: -0.20739
+        plus: 0.20742
+      label: ''
+    value: 0.87751
+  - errors:
+    - asymerror:
+        minus: -0.10257
+        plus: 0.10267
+      label: ''
+    value: 0.45825
+  - errors:
+    - asymerror:
+        minus: -0.026835
+        plus: 0.026867
+      label: ''
+    value: 0.10632
+  - errors:
+    - asymerror:
+        minus: -0.00521
+        plus: 0.005217
+      label: ''
+    value: 0.017974
+  - errors:
+    - asymerror:
+        minus: -0.058765
+        plus: 0.058334
+      label: ''
+    value: 2.1627
+  - errors:
+    - asymerror:
+        minus: -0.016415
+        plus: 0.016275
+      label: ''
+    value: 0.51001
+  - errors:
+    - asymerror:
+        minus: -0.018805
+        plus: 0.018611
+      label: ''
+    value: 0.7353
+  - errors:
+    - asymerror:
+        minus: -0.013266
+        plus: 0.013167
+      label: ''
+    value: 0.53542
+  - errors:
+    - asymerror:
+        minus: -0.006917
+        plus: 0.006869
+      label: ''
+    value: 0.25616
+  - errors:
+    - asymerror:
+        minus: -0.005913
+        plus: 0.00587
+      label: ''
+    value: 0.2241
+  - errors:
+    - asymerror:
+        minus: -0.006319
+        plus: 0.006288
+      label: ''
+    value: 0.2158
+  - errors:
+    - asymerror:
+        minus: -0.001723
+        plus: 0.001711
+      label: ''
+    value: 0.073727
+  - errors:
+    - asymerror:
+        minus: -0.001945
+        plus: 0.001943
+      label: ''
+    value: 0.07315
+  - errors:
+    - asymerror:
+        minus: -0.00769
+        plus: 0.007632
+      label: ''
+    value: 0.21512
+  - errors:
+    - asymerror:
+        minus: -0.005243
+        plus: 0.005207
+      label: ''
+    value: 0.13442
+  - errors:
+    - asymerror:
+        minus: -0.001683
+        plus: 0.001671
+      label: ''
+    value: 0.041173
+  - errors:
+    - asymerror:
+        minus: -0.000442
+        plus: 0.00044
+      label: ''
+    value: 0.010044
+  - errors:
+    - asymerror:
+        minus: -0.000107
+        plus: 0.000107
+      label: ''
+    value: 0.002138
+  - errors:
+    - asymerror:
+        minus: -0.007351
+        plus: 0.007313
+      label: ''
+    value: 0.19847
+  - errors:
+    - asymerror:
+        minus: -0.004015
+        plus: 0.004013
+      label: ''
+    value: 0.032226
+  - errors:
+    - asymerror:
+        minus: -0.000798
+        plus: 0.000797
+      label: ''
+    value: 0.007155
+  - errors:
+    - asymerror:
+        minus: -9.7e-05
+        plus: 9.7e-05
+      label: ''
+    value: 0.001256
+  - errors:
+    - asymerror:
+        minus: -0.015866
+        plus: 0.015886
+      label: ''
+    value: 0.1182
+  - errors:
+    - asymerror:
+        minus: -0.019611
+        plus: 0.019652
+      label: ''
+    value: 0.17811
+  - errors:
+    - asymerror:
+        minus: -0.015455
+        plus: 0.015486
+      label: ''
+    value: 0.12645
+  - errors:
+    - asymerror:
+        minus: -0.007465
+        plus: 0.00748
+      label: ''
+    value: 0.052623
+  - errors:
+    - asymerror:
+        minus: -0.003075
+        plus: 0.003082
+      label: ''
+    value: 0.01903
+  - errors:
+    - asymerror:
+        minus: -0.000979
+        plus: 0.000982
+      label: ''
+    value: 0.005378
+  - errors:
+    - asymerror:
+        minus: -0.010797
+        plus: 0.005391
+      label: ''
+    value: 0.084769
+independent_variables:
+- header:
+    name: ''
+  values:
+  - value: $gg\to H$, 0-jet, $p_{T}^{H} < 10$ GeV
+  - value: $gg\to H$, 0-jet, $10 \leq p_{T}^{H} < 200$ GeV
+  - value: $gg\to H$, 1-jet, $p_{T}^{H} < 60$ GeV
+  - value: $gg\to H$, 1-jet, $60 \leq p_{T}^{H} < 120$ GeV
+  - value: $gg\to H$, 1-jet, $120 \leq p_{T}^{H} < 200$ GeV
+  - value: $gg\to H$, $\geq$ 2-jet, $m_{jj} < 350$ GeV, $p_{T}^{H} < 120$ GeV
+  - value: $gg\to H$, $\geq$ 2-jet, $m_{jj} < 350$ GeV, $120 \leq p_{T}^{H} < 200$
+      GeV
+  - value: $gg\to H$, $\geq$ 2-jet, $m_{jj} \geq 350$ GeV, $p_{T}^{H} < 200$ GeV
+  - value: $gg\to H$, $200 \leq p_{T}^{H} < 300$ GeV
+  - value: $gg\to H$, $300 \leq p_{T}^{H} < 450$ GeV
+  - value: $gg\to H$, $p_{T}^{H} \geq 450$ GeV
+  - value: $qq\to Hqq$, $\leq$ 1-jet
+  - value: $qq\to Hqq$, $\geq$ 2-jet, $m_{jj} < 350$ GeV, $VH$-enriched
+  - value: $qq\to Hqq$, $\geq$ 2-jet, $m_{jj} < 350$ GeV, $VBF$-enriched
+  - value: $qq\to Hqq$, $\geq$ 2-jet, $350 \leq m_{jj} < 700$ GeV, $p_{T}^{H} < 200$
+      GeV
+  - value: $qq\to Hqq$, $\geq$ 2-jet, $700 \leq m_{jj} < 1000$ GeV, $p_{T}^{H} < 200$
+      GeV
+  - value: $qq\to Hqq$, $\geq$ 2-jet, $1000 \leq m_{jj} < 1500$ GeV, $p_{T}^{H} <
+      200$ GeV
+  - value: $qq\to Hqq$, $\geq$ 2-jet, $m_{jj} \geq 1500$ GeV, $p_{T}^{H} < 200$ GeV
+  - value: $qq\to Hqq$, $\geq$ 2-jet, $350 \leq m_{jj} < 1000$ GeV, $p_{T}^{H} \geq
+      200$ GeV
+  - value: $qq\to Hqq$, $\geq$ 2-jet, $m_{jj} \geq 1000$ GeV, $p_{T}^{H} \geq 200$
+      GeV
+  - value: $qq\to Hl\nu$, $p_{T}^{V} < 75$ GeV
+  - value: $qq\to Hl\nu$, $75 \leq p_{T}^{V} < 150$ GeV
+  - value: $qq\to Hl\nu$, $150 \leq p_{T}^{V} < 250$ GeV
+  - value: $qq\to Hl\nu$, $250 \leq p_{T}^{V} < 400$ GeV
+  - value: $qq\to Hl\nu$, $p_{T}^{V} \geq 400$ GeV
+  - value: $gg/qq\to Hll$, $p_{T}^{V} < 150$ GeV
+  - value: $gg/qq\to Hll$, $150 \leq p_{T}^{V} < 250$ GeV
+  - value: $gg/qq\to Hll$, $250 \leq p_{T}^{V} < 400$ GeV
+  - value: $gg/qq\to Hll$, $p_{T}^{V} \geq 400$ GeV
+  - value: $t\bar{t}H$, $p_{T}^{H} < 60$ GeV
+  - value: $t\bar{t}H$, $60 \leq p_{T}^{H} < 120$ GeV
+  - value: $t\bar{t}H$, $120 \leq p_{T}^{H} < 200$ GeV
+  - value: $t\bar{t}H$, $200 \leq p_{T}^{H} < 300$ GeV
+  - value: $t\bar{t}H$, $300 \leq p_{T}^{H} < 450$ GeV
+  - value: $t\bar{t}H$, $p_{T}^{H} \geq 450$ GeV
+  - value: $tH$

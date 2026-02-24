@@ -1,0 +1,4 @@
+# Large CERN Open Data files — download via scripts/download_cern_data.sh
+# Keep MANIFEST.yaml and YAML tables in git; exclude large CSVs
+atlas_higgs_ml/atlas-higgs-challenge-2014-v2.csv
+cms_dimuon/*.csv

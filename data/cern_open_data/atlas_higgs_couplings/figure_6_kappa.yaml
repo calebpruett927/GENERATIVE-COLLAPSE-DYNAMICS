@@ -1,0 +1,134 @@
+dependent_variables:
+- header:
+    name: $B_{\text{inv.}}=B_{\text{u.}}=0$
+  qualifiers:
+  - name: ''
+    value: 68% CL interval
+  values:
+  - errors:
+    - asymerror:
+        minus: -0.05652
+        plus: 0.05676
+      label: ''
+    value: 0.99252
+  - errors:
+    - asymerror:
+        minus: -0.05938
+        plus: 0.05963
+      label: ''
+    value: 1.0544
+  - errors:
+    - asymerror:
+        minus: -0.10907
+        plus: 0.11139
+      label: ''
+    value: 0.94394
+  - errors:
+    - asymerror:
+        minus: -0.10709
+        plus: 0.11399
+      label: ''
+    value: 0.89158
+  - errors:
+    - asymerror:
+        minus: -0.07012
+        plus: 0.07302
+      label: ''
+    value: 0.92927
+  - errors:
+    - asymerror:
+        minus: -0.30367
+        plus: 0.24601
+      label: ''
+    value: 1.0629
+  - errors:
+    - asymerror:
+        minus: -0.0668
+        plus: 0.07273
+      label: ''
+    value: 0.94913
+  - errors:
+    - asymerror:
+        minus: -0.06103
+        plus: 0.06324
+      label: ''
+    value: 1.0094
+  - errors:
+    - asymerror:
+        minus: -0.36723
+        plus: 0.30964
+      label: ''
+    value: 1.3766
+- header:
+    name: $B_{\text{inv.}}$ free, $B_{\text{u.}}\ge0$, $\kappa_{V}\le1$
+  qualifiers:
+  - name: ''
+    value: 68% CL interval
+  values:
+  - errors:
+    - asymerror:
+        minus: -0.05074
+        plus: 0.02497
+      label: ''
+    value: 0.97503
+  - errors:
+    - asymerror:
+        minus: -0.02134
+        plus: 0.0
+      label: ''
+    value: 1.0
+  - errors:
+    - asymerror:
+        minus: -0.10904
+        plus: 0.11108
+      label: ''
+    value: 0.93723
+  - errors:
+    - asymerror:
+        minus: -0.08095
+        plus: 0.08544
+      label: ''
+    value: 0.81941
+  - errors:
+    - asymerror:
+        minus: -0.06296
+        plus: 0.06569
+      label: ''
+    value: 0.91166
+  - errors:
+    - asymerror:
+        minus: -0.29844
+        plus: 0.23352
+      label: ''
+    value: 1.0397
+  - errors:
+    - asymerror:
+        minus: -0.064
+        plus: 0.06919
+      label: ''
+    value: 0.94092
+  - errors:
+    - asymerror:
+        minus: -0.05011
+        plus: 0.05281
+      label: ''
+    value: 0.98367
+  - errors:
+    - asymerror:
+        minus: -0.35961
+        plus: 0.29344
+      label: ''
+    value: 1.3515
+independent_variables:
+- header:
+    name: ''
+  values:
+  - value: $\kappa_{Z}$
+  - value: $\kappa_{W}$
+  - value: $\kappa_{t}$
+  - value: $\kappa_{b}$
+  - value: $\kappa_{\tau}$
+  - value: $\kappa_{\mu}$
+  - value: $\kappa_{g}$
+  - value: $\kappa_{\gamma}$
+  - value: $\kappa_{Z\gamma}$
