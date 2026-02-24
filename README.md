@@ -5,17 +5,18 @@
 [![C++17](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](src/umcp_cpp/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![UMCP v2.1.3](https://img.shields.io/badge/UMCP-v2.1.3-orange.svg)](pyproject.toml)
-[![Tests: 5,073](https://img.shields.io/badge/tests-5,073-brightgreen.svg)](tests/)
+[![Tests: 5,127](https://img.shields.io/badge/tests-5%2C127-brightgreen.svg)](tests/)
 [![Domains: 13](https://img.shields.io/badge/domains-13-blueviolet.svg)](closures/)
-[![Closures: 120+](https://img.shields.io/badge/closures-120%2B-informational.svg)](closures/)
+[![Closures: 114](https://img.shields.io/badge/closures-114-informational.svg)](closures/)
+[![Theorems: 24](https://img.shields.io/badge/theorems-24_proven-ff69b4.svg)](closures/)
 
 > **Core Axiom**: *"Collapse is generative; only what returns is real."*
 
-**Universal Measurement Contract Protocol (UMCP)** is a production-grade, contract-first validation framework that verifies reproducible computational workflows against mathematical contracts. It implements **Generative Collapse Dynamics (GCD)** and **Recursive Collapse Field Theory (RCFT)** — a unified measurement theory where every claim must demonstrate return through collapse under frozen evaluation rules.
+**Universal Measurement Contract Protocol (UMCP)** is a contract-first validation framework that verifies reproducible computational workflows against mathematical contracts. It implements **Generative Collapse Dynamics (GCD)** and **Recursive Collapse Field Theory (RCFT)** — a unified measurement theory where every claim must demonstrate return through collapse under frozen evaluation rules.
 
-This is not a simulation. It is a **metrological enforcement engine**: schema conformance, kernel identity verification, regime classification, and SHA-256 integrity checking, producing a `CONFORMANT` / `NONCONFORMANT` verdict for every run.
+This is not a simulation. It is a **metrological enforcement engine**: schema conformance, kernel identity verification, regime classification, and SHA-256 integrity checking — producing a three-valued `CONFORMANT` / `NONCONFORMANT` / `NON_EVALUABLE` verdict for every run.
 
-**Python + C++ integration**: The full framework is written in Python with **13 physics domains**, **113 closure modules**, and **5,081 tests**. An optional C++17 accelerator (`src/umcp_cpp/`) provides 50–80× speedup for the three hot paths — kernel computation, seam chain accumulation, and SHA-256 integrity — via a pybind11 zero-copy NumPy bridge. The Python wrapper (`umcp.accel`) auto-detects the compiled extension at import time; if it is not built, every call falls back transparently to the equivalent NumPy implementation. Same formulas, same frozen parameters, same results to machine precision — the C++ layer is Tier-0 Protocol only and redefines no Tier-1 symbols.
+**Python + C++ integration**: The framework is written in Python with **13 physics domains**, **114 closure modules**, **24 proven theorems** (241 computational subtests), and **5,127 tests**. An optional C++17 accelerator (`src/umcp_cpp/`) provides 50–80× speedup for three hot paths — kernel computation, seam chain accumulation, and SHA-256 integrity — via a pybind11 zero-copy NumPy bridge. The Python wrapper (`umcp.accel`) auto-detects the compiled extension at import time; if unavailable, every call falls back transparently to the equivalent NumPy implementation. Same formulas, same frozen parameters, same results to machine precision — the C++ layer is Tier-0 Protocol only and redefines no Tier-1 symbols.
 
 ---
 
@@ -24,7 +25,7 @@ This is not a simulation. It is a **metrological enforcement engine**: schema co
 - [Core Concepts](#core-concepts)
 - [At a Glance](#at-a-glance)
 - [Architecture](#architecture)
-- [Closure Domains (12 Physics Domains)](#closure-domains)
+- [Closure Domains (13 Physics Domains)](#closure-domains)
 - [The Kernel](#the-kernel)
 - [Originality & Terminology](#originality--terminology)
 - [Installation](#installation)
@@ -138,7 +139,7 @@ src/umcp/
 │   ├── cache.py              # Content-addressable artifact cache
 │   └── tenant.py             # Multi-tenant isolation, quotas, namespaces
 ├── accel.py                  # C++ accelerator wrapper (auto-fallback to NumPy)
-├── dashboard/                # Modular Streamlit dashboard (33 pages)
+├── dashboard/                # Modular Streamlit dashboard
 └── api_umcp.py               # FastAPI REST extension (Pydantic models)
 
 src/umcp_cpp/                   # Optional C++ accelerator (Tier-0 Protocol)
@@ -159,20 +160,20 @@ src/umcp_cpp/                   # Optional C++ accelerator (Tier-0 Protocol)
 | **Schemas** | 14 | `schemas/*.schema.json` | JSON Schema files validating all artifacts |
 | **Canon Anchors** | 11 | `canon/*.yaml` | Domain-specific canonical reference points |
 | **Casepacks** | 14 | `casepacks/` | Reproducible validation bundles |
-| **Closure Domains** | 13 | `closures/*/` | Physics domain closure packages (120+ modules) |
+| **Closure Domains** | 13 | `closures/*/` | Physics domain closure packages (114 modules) |
 | **Closure Registry** | 1 | `closures/registry.yaml` | Central listing of all closures |
 | **Validator Rules** | 1 | `validator_rules.yaml` | Semantic rule definitions (E101, W201, ...) |
-| **Integrity** | 1 | `integrity/sha256.txt` | SHA-256 checksums for 138 tracked files |
+| **Integrity** | 1 | `integrity/sha256.txt` | SHA-256 checksums for all tracked files |
 
 ---
 
 ## Closure Domains
 
-UMCP validates physics across **13 domains** with **120+ closure modules**, each encoding real-world measurements into the 8-channel kernel trace:
+UMCP validates physics across **13 domains** with **114 closure modules**, each encoding real-world measurements into the 8-channel kernel trace:
 
 ### Standard Model — 9 modules
 
-The crown jewel: 31 particles mapped through the GCD kernel with **10 proven theorems** (74/74 subtests at machine precision).
+The crown jewel: 31 particles mapped through the GCD kernel with **10 proven theorems** (74/74 subtests at machine precision). Part of a **24-theorem corpus** across three formalisms (10 SM + 7 kernel structural + 7 universal regime calibration), all proven with 241 total computational subtests.
 
 | Module | What It Encodes |
 |--------|----------------|
@@ -222,7 +223,7 @@ The crown jewel: 31 particles mapped through the GCD kernel with **10 proven the
 
 **Key discovery (double slit)**: Wave and particle are *both channel-deficient extremes*. The kernel-optimal state is partial measurement (V=0.70, D=0.71) where all channels are alive — the **complementarity cliff** (>5× IC gap).
 
-### Materials Science — 10 modules
+### Materials Science — 14 modules
 
 | Module | What It Encodes |
 |--------|----------------|
@@ -241,9 +242,9 @@ The crown jewel: 31 particles mapped through the GCD kernel with **10 proven the
 
 Alpha decay, fission, shell structure, decay chains, and Bethe-Weizsäcker binding energy for all nuclides.
 
-### RCFT (Recursive Collapse Field Theory) — 8 modules
+### RCFT (Recursive Collapse Field Theory) — 9 modules
 
-Attractor basins, fractal dimension, collapse grammar, information geometry, universality class assignment, and active matter dynamics.
+Attractor basins, fractal dimension, collapse grammar, information geometry, universality class assignment, active matter dynamics, and RCFT field diagnostics.
 
 ### Astronomy — 7 modules
 
@@ -257,23 +258,23 @@ Linear and rotational kinematics, energy mechanics, momentum dynamics, phase spa
 
 Modified gravity, Limber integrals, boost factors, sigma evolution, cosmology background, and Weyl transfer functions.
 
-### GCD (Generative Collapse Dynamics) — 6 modules
+### GCD (Generative Collapse Dynamics) — 7 modules
 
-Energy potential, entropic collapse, field resonance, generative flux, momentum flux, and universal regime calibration (12 scenarios, 7 theorems, 252 tests).
+Energy potential, entropic collapse, field resonance, generative flux, momentum flux, universal regime calibration (12 scenarios, 7 theorems, 94 subtests), and **kernel structural theorems** (7 theorems, 73 subtests): dimensionality fragility, positional democracy, weight hierarchy, monitoring paradox, approximation boundary, U-curve of degradation, and p=3 unification.
 
-### Finance & Security — 16+ modules
+### Finance & Security — 16 modules
 
-Portfolio continuity, market coherence, anomaly return, threat classification, trust fidelity, behavior profiling, and privacy auditing.
+Portfolio continuity, market coherence, anomaly return, threat classification, trust fidelity, behavioral profiling, privacy auditing, and risk-regime mapping.
 
 ### Everyday Physics — 5 modules
 
-Bridging particle physics to daily experience: thermodynamics, optics, electromagnetism, wave phenomena, and epistemic coherence. Demonstrates that the same minimal structure (F + ω = 1, IC ≤ F, IC = exp(κ)) governs macroscopic phenomena.
+Thermodynamics, optics, electromagnetism, wave phenomena, and epistemic coherence. Demonstrates that the same minimal structure (F + ω = 1, IC ≤ F, IC = exp(κ)) governs macroscopic phenomena.
 
 ---
 
 ## The Kernel
 
-At the mathematical core of GCD is the **kernel** — a function that maps any set of measurable channels to a fixed set of invariants:
+At the mathematical core of GCD is the **kernel** — a function mapping any set of measurable channels to a fixed set of invariants:
 
 ### Trace Vector
 
@@ -318,7 +319,7 @@ The gap Δ = F − IC is the central diagnostic. It measures **channel heterogen
 
 ## Originality & Terminology
 
-This system is **original**. It does not borrow from, extend, or reinterpret existing frameworks. Classical results emerge as **degenerate limits** when degrees of freedom are removed from the GCD kernel. The arrow of derivation runs **from the axiom to the classical result**, never the reverse.
+This system is **original**. Classical results emerge as **degenerate limits** when degrees of freedom are removed from the GCD kernel. The arrow of derivation runs **from the axiom to the classical result**, never the reverse.
 
 | GCD Structure | Classical Degenerate Limit |
 |---------------|---------------------------|
@@ -409,7 +410,7 @@ umcp validate casepacks/hello_world --strict
 ### Run the test suite
 
 ```bash
-pytest                          # All 5,081 tests
+pytest                          # All 5,127 tests
 pytest -v --tb=short            # Verbose with short tracebacks
 pytest -n auto                  # Parallel execution
 ```
@@ -433,7 +434,7 @@ Or start manually:
 streamlit run src/umcp/dashboard/__init__.py --server.port 8501 --server.headless true
 ```
 
-The dashboard provides **33 interactive pages** across all 13 domains:
+The dashboard provides interactive pages across all 13 domains:
 Kernel Explorer, Regime Map, Seam Budget, τ_R* Phase Diagram,
 Astronomy, Nuclear Physics, Quantum Mechanics, Finance, RCFT,
 Atomic Physics, Standard Model, Materials Science, Security, and more.
@@ -483,7 +484,7 @@ umcp integrity                             # Verify SHA-256 checksums
 umcp validate .                            # Full repo validation → CONFORMANT
 
 # 3. Run the test suite
-pytest -v --tb=short                       # 5,081 tests
+pytest -v --tb=short                       # 5,127 tests
 ```
 
 ### C++ Accelerator — Build & Verify
@@ -510,7 +511,7 @@ cd src/umcp_cpp/build && ctest --output-on-failure && cd ../../..
 # FastAPI REST server (http://localhost:8000)
 umcp-api                                   # Or: uvicorn umcp.api_umcp:app --reload --port 8000
 
-# Streamlit dashboard (http://localhost:8501, 33 pages)
+# Streamlit dashboard (http://localhost:8501)
 umcp-dashboard                             # Or: streamlit run src/umcp/dashboard/__init__.py --server.port 8501
 
 # Start/stop dashboard via helper scripts
@@ -605,7 +606,7 @@ umcp validate <target>
 The GitHub Actions workflow (`.github/workflows/validate.yml`) enforces:
 
 1. **Lint** — `ruff format --check` + `ruff check` + `mypy`
-2. **Test** — Full pytest suite (5,081 tests)
+2. **Test** — Full pytest suite (5,127 tests)
 3. **Validate** — Baseline + strict validation (both must return CONFORMANT)
 
 ### Pre-Commit Protocol
@@ -623,7 +624,7 @@ This mirrors CI exactly: format → lint → type-check → integrity → test �
 
 ## Test Suite
 
-**5,081 tests** across **103 test files**, organized by tier and domain:
+**5,127 tests** across **105 test files**, organized by tier and domain:
 
 | Test Range | Domain | Tests |
 |------------|--------|------:|
@@ -648,6 +649,7 @@ This mirrors CI exactly: format → lint → type-check → integrity → test �
 | `test_190–195` | Atomic physics closures, scale ladder | 190 |
 | `test_200–201` | Fleet, recursive instantiation, neutrino oscillation | 182 |
 | `test_210–237` | Cross-domain, casepack roundtrip, registry sweep, domain unit tests | 882 |
+| `test_238` | Kernel structural theorems (T-KS-1 through T-KS-7) | 47 |
 | `closures/` | Closure-specific tests (kinematics phase) | 27 |
 | Infrastructure | Kernel, seam, frozen contract, extensions, uncertainty, calculator, coverage, etc. | 510 |
 
@@ -673,7 +675,7 @@ All papers use RevTeX4-2 (LaTeX) or Markdown. Build LaTeX: `pdflatex → bibtex 
 
 ### Zenodo Publications (9 DOIs)
 
-The framework is anchored by peer-reviewed Zenodo publications covering the core theory, physics coherence proofs, casepack specifications, and domain applications. Bibliography: `paper/Bibliography.bib` (40+ entries total, including PDG 2024, foundational QFT papers, and classical references).
+The framework is anchored by peer-reviewed Zenodo publications covering the core theory, physics coherence proofs, casepack specifications, and domain applications. Bibliography: `paper/Bibliography.bib` (58 entries, including PDG 2024, foundational QFT papers, and classical references).
 
 ### Key DOIs
 
@@ -694,8 +696,8 @@ The framework is anchored by peer-reviewed Zenodo publications covering the core
 │   ├── tau_r_star.py          # Thermodynamic diagnostic
 │   ├── epistemic_weld.py      # Epistemic cost tracking
 │   ├── fleet/                 # Distributed validation
-│   └── dashboard/             # Streamlit dashboard (33 pages)
-├── closures/                  # 13 physics domains, 120+ modules
+│   └── dashboard/             # Modular Streamlit dashboard
+├── closures/                  # 13 physics domains, 114 modules
 │   ├── standard_model/        # 31 particles, 10 theorems
 │   ├── atomic_physics/        # 118 elements, Tier-1 proof
 │   ├── quantum_mechanics/     # Double slit, entanglement, tunneling
@@ -703,7 +705,7 @@ The framework is anchored by peer-reviewed Zenodo publications covering the core
 │   ├── materials_science/     # 118 elements × 18 fields
 │   ├── astronomy/             # Stellar evolution, HR diagram
 │   ├── kinematics/            # Motion analysis, phase space
-│   ├── gcd/                   # Core dynamics, field resonance
+│   ├── gcd/                   # Core dynamics, 7 kernel structural theorems
 │   ├── rcft/                  # Fractal dimension, attractors
 │   ├── weyl/                  # Modified gravity, cosmology
 │   ├── everyday_physics/      # Thermodynamics, optics, electromagnetism
@@ -712,7 +714,7 @@ The framework is anchored by peer-reviewed Zenodo publications covering the core
 ├── schemas/                   # 14 JSON Schema files
 ├── canon/                     # 11 canonical anchor files
 ├── casepacks/                 # 14 reproducible validation bundles
-├── tests/                     # 103 test files, 5081 tests
+├── tests/                     # 105 test files, 5,127 tests
 ├── paper/                     # 6 LaTeX papers + 1 Markdown paper + Bibliography.bib
 ├── integrity/                 # SHA-256 checksums
 ├── ledger/                    # Append-only validation log
@@ -819,21 +821,29 @@ Kernel fidelity increases with scale resolution: composite(0.444) < atomic(0.516
 
 ## Key Discoveries
 
-Across 13 physics domains, the kernel reveals universal patterns:
+Across 13 physics domains and 24 proven theorems, the kernel reveals universal patterns:
 
 1. **Confinement is a cliff**: IC drops 98.1% at the quark→hadron boundary — confinement is visible as geometric-mean collapse in the kernel trace
 
 2. **The complementarity cliff**: Wave and particle are both channel-deficient extremes; the kernel-optimal state is partial measurement where all 8 channels are alive (>5× IC gap)
 
-3. **Universal collapse floor**: κ < −2 ↔ IC < 0.15 across all domains — a universal threshold where information integrity is lost
+3. **Universal collapse floor**: κ < −2 ↔ IC < 0.15 across all domains — a universal threshold below which information integrity is lost
 
-4. **Heterogeneity gap as universal diagnostic**: Δ = F − IC measures channel spread; maximum Δ comes from asymmetry (one dead channel among many alive), not from maximum overall degradation
+4. **Heterogeneity gap as universal diagnostic**: Δ = F − IC measures channel spread; maximum Δ arises from asymmetry (one dead channel among many alive), not from uniform degradation
 
 5. **Generation monotonicity**: Gen1(0.576) < Gen2(0.620) < Gen3(0.649) in both quarks and leptons — heavier generations carry more kernel fidelity
 
-6. **50× charge suppression**: Neutral particles have IC near ε (guard band) because the charge channel destroys the geometric mean
+6. **50× charge suppression**: Neutral particles have IC near ε because the charge channel destroys the geometric mean
 
 7. **Cross-scale universality**: composite(0.444) < atom(0.516) < fundamental(0.558) — kernel fidelity increases with scale resolution
+
+8. **Dimensionality fragility**: ICₑₑₑₑ = ε^(1/n) · c₀^((n−1)/n) — a 4-channel domain is 10× more fragile than an 8-channel domain to a single dead channel (T-KS-1)
+
+9. **Positional democracy of slaughter**: IC drop is constant (±2%) regardless of which channel dies, while F drop is proportional to the killed channel’s value — IC is democratic, F is aristocratic (T-KS-2)
+
+10. **Monitoring paradox**: Γ(ω) = ω³/(1−ω+ε) creates an 893,000× cost ratio between near-death and stable observation — systems most in need of monitoring are structurally the most expensive to observe (T-KS-4)
+
+11. **U-curve of degradation**: Partial collapse (≈ n/2 dead channels) is structurally worse than total collapse; both endpoints are homogeneous and coherent, the interior is maximally incoherent (T-KS-6)
 
 ---
 
