@@ -1,13 +1,13 @@
 {
-  "run_id": "FREEZE-v2.1.3-20260219",
-  "frozen_utc": "2026-02-19T00:42:09.608930+00:00",
+  "run_id": "AUTOFIX-20260226-044824",
+  "frozen_utc": "2026-02-26T04:48:25.053973+00:00",
   "hashes": {
     "embedding.yaml": "86f42b77b79c202ed59628fdeb99c6629a051e395a3b9e9357f2b2cd05feca3f",
     "return.yaml": "65adf659cad908a210311882d888b32bb8a2d7afcf91b01f192f29e5e45b23a7",
     "contract.yaml": "7e3970cea147c08df2df7b37b6dbcd604f05bb7e34bce626d3c1f613160dc667",
     "weights.csv": "2993167e163c4f31db682b50b61b08d5b2ddf0e681cbe5b7500581a56c3e6b2e",
     "observables.yaml": "2b036d4e7bf88f566841df9b047c4f82fa92ce2f9a75152c8d8cad7316afe17d",
-    "closures/registry.yaml": "76a583542f5f645eba758ab7699a6a2c73adb6135ff2fd931aeb05e5efa320de"
+    "closures/registry.yaml": "f73230c75266b09a9e68109348c4ba9e3d02e449b703d7ff2f03a363a25820bd"
   },
   "files_frozen": [
     "embedding.yaml",

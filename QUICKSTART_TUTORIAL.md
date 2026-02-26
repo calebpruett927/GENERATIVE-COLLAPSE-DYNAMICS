@@ -298,7 +298,7 @@ configuration needed. See [src/umcp_cpp/README.md](src/umcp_cpp/README.md) for d
 
 - **GitHub Issues**: [Report bugs or request features](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/issues)
 - **Documentation**: Browse the 164 `.md` files in the repository
-- **Tests**: See `tests/` for 4,144 examples of API usage
+- **Tests**: See `tests/` for 5,247 examples of API usage
 - **Examples**: All casepacks in `casepacks/` are fully documented
 
 **Happy validating! 🎯**
