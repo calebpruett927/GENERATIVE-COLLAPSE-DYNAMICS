@@ -1,0 +1,6 @@
+organism,genetic_diversity,morphological_fitness,reproductive_success,metabolic_efficiency,immune_competence,environmental_breadth,behavioral_complexity,lineage_persistence
+Escherichia coli,0.92,0.15,0.95,0.80,0.10,0.85,0.05,0.90
+Drosophila melanogaster,0.75,0.50,0.90,0.60,0.35,0.45,0.25,0.30
+Quercus (oak),0.70,0.60,0.75,0.72,0.30,0.55,0.03,0.45
+Latimeria (coelacanth),0.25,0.55,0.30,0.50,0.50,0.15,0.20,0.90
+Homo sapiens,0.45,0.80,0.70,0.60,0.75,0.95,0.98,0.001

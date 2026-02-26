@@ -1,0 +1,100 @@
+{
+  "schema": "schemas/invariants.schema.json",
+  "format": "tier1_invariants",
+  "contract_id": "UMA.INTSTACK.v1",
+  "closure_registry_id": "UMCP.CLOSURES.EVO.v1",
+  "canon": {
+    "pre_doi": "10.5281/zenodo.17756705",
+    "post_doi": "10.5281/zenodo.18072852",
+    "weld_id": "W-2026-02-26-EVO-KERNEL",
+    "timezone": "UTC"
+  },
+  "rows": [
+    {
+      "t": 0,
+      "omega": 0.41,
+      "F": 0.59,
+      "S": 0.333973,
+      "C": 0.765376,
+      "kappa": -0.977642,
+      "IC": 0.376197,
+      "tau_R": "INF_REC",
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": false
+      },
+      "kernel_optional": {
+        "IC_min": 0.2
+      }
+    },
+    {
+      "t": 1,
+      "omega": 0.4875,
+      "F": 0.5125,
+      "S": 0.595295,
+      "C": 0.423527,
+      "kappa": -0.754452,
+      "IC": 0.470268,
+      "tau_R": "INF_REC",
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": false
+      },
+      "kernel_optional": {
+        "IC_min": 0.2
+      }
+    },
+    {
+      "t": 2,
+      "omega": 0.4875,
+      "F": 0.5125,
+      "S": 0.570131,
+      "C": 0.461275,
+      "kappa": -0.948820,
+      "IC": 0.387198,
+      "tau_R": "INF_REC",
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": false
+      },
+      "kernel_optional": {
+        "IC_min": 0.2
+      }
+    },
+    {
+      "t": 3,
+      "omega": 0.58125,
+      "F": 0.41875,
+      "S": 0.561978,
+      "C": 0.460808,
+      "kappa": -1.023290,
+      "IC": 0.359411,
+      "tau_R": "INF_REC",
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": false
+      },
+      "kernel_optional": {
+        "IC_min": 0.15
+      }
+    },
+    {
+      "t": 4,
+      "omega": 0.346125,
+      "F": 0.653875,
+      "S": 0.417402,
+      "C": 0.590542,
+      "kappa": -1.144511,
+      "IC": 0.318380,
+      "tau_R": "INF_REC",
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": true
+      },
+      "kernel_optional": {
+        "IC_min": 0.001
+      }
+    }
+  ],
+  "notes": "5 representative organisms (E.coli, Drosophila, Quercus, Latimeria, Homo sapiens). All in Collapse regime — reflects genuine channel heterogeneity, not system failure. Row order: t=0 E.coli, t=1 Drosophila, t=2 Quercus, t=3 Latimeria (coelacanth), t=4 Homo sapiens. tau_R = INF_REC: no return-time measurement for static organism snapshots."
+}

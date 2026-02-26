@@ -1,7 +1,7 @@
 schema: "schemas/closures_registry.schema.json"
 
 registry:
-  id: "kin_ref_phase_oscillator.closures"
+  id: "evolution_kernel.closures"
 
   closures:
     gamma:
@@ -13,4 +13,4 @@ registry:
     curvature_neighborhood:
       path: "closures/curvature_neighborhood.default.v1.yaml"
 
-  notes: "KIN.REF.PHASE oscillator closures referencing base UMCP closure definitions. Domain-specific phase-anchor selection in casepacks/kin_ref_phase_oscillator/closures/kin_ref_phase.py."
+  notes: "Evolution domain closures referencing base UMCP closure definitions. Domain-specific computation in closures/evolution/evolution_kernel.py (40 organisms × 8 channels) and closures/evolution/recursive_evolution.py (5 scales + 5 mass extinctions)."

@@ -634,20 +634,31 @@ ORGANISMS: tuple[Organism, ...] = (
         0.90,
         0.02,
     ),
+    # NOTE on lineage_persistence = 0.001:
+    # Homo sapiens is ~300 kyr old vs ~3.8 Gyr for bacteria → geological persistence ≈ 0.
+    # Cultural knowledge accumulation (~300 kyr) functions as an adaptive persistence
+    # mechanism, but the GCD kernel measures DEMONSTRATED return (geological track
+    # record), not potential. τ_R is measured, not assumed (Continuitas non narratur:
+    # mensuratur). Whether cultural persistence should constitute a separate channel
+    # or modify this one is an open modeling question — but under Axiom-0, only what
+    # has actually returned counts. The species hasn't yet proved multi-Myr persistence.
+    # This puts Homo sapiens in Collapse regime (ω ≈ 0.346), which is structurally
+    # honest: our IC is dragged down by recency. Whether we are a weld or a gestus
+    # is the defining question. See recursive_evolution.py for the full discussion.
     Organism(
         "Homo sapiens",
         "Eukarya",
         "Animalia",
         "Mammalia",
         "extant",
-        0.45,
-        0.80,
-        0.70,
-        0.60,
-        0.75,
-        0.95,
-        0.98,
-        0.001,
+        0.45,  # genetic_diversity: moderate (recent bottleneck ~70 ka)
+        0.80,  # morphological_fitness: high (bipedal, dexterous, large brain)
+        0.70,  # reproductive_success: moderate (low fecundity, high investment)
+        0.60,  # metabolic_efficiency: moderate (high BMR, inefficient thermoregulation)
+        0.75,  # immune_competence: high (adaptive + innate, but autoimmune burden)
+        0.95,  # environmental_breadth: near-maximal (all continents, all biomes)
+        0.98,  # behavioral_complexity: near-maximal (language, culture, technology)
+        0.001,  # lineage_persistence: minimal (demonstrated geological return ≈ 0)
     ),
     # ── EXTINCT LINEAGES (τ_R = ∞_rec — no return) ───────────────
     Organism(

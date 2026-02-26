@@ -745,6 +745,33 @@ registry:
         cross_references:
           - "closures/evolution/evolution_kernel.py"
           - "closures/rcft/recursive_field.py"
+      - name: "axiom0_instantiation_map"
+        path: "closures/evolution/axiom0_instantiation_map.py"
+        description: "20 evolutionary phenomena as three-state collapse-return cycles (pre → nadir → return). Each phenomenon maps to 8 channels with predicted and computed generativity. 15/20 generative, 5 gestus."
+        contract: "UMA.INTSTACK.v1"
+        inputs: ["name", "category", "pre_channels", "post_channels", "return_channels", "predicted_generative"]
+        outputs: ["pre_F", "pre_IC", "post_F", "post_IC", "ret_F", "ret_IC", "is_generative", "has_gestus"]
+        frozen_params:
+          epsilon: 1.0e-8
+          n_phenomena: 20
+          n_states_per: 3
+        cross_references:
+          - "closures/evolution/evolution_kernel.py"
+          - "closures/evolution/deep_implications.py"
+      - name: "deep_implications"
+        path: "closures/evolution/deep_implications.py"
+        description: "8 GCD-to-evolution identity mappings, 8 deep case studies (24 kernel states), Fisher information link (Δ ≈ Var(c)/2c̄), and 5 testable predictions with falsification criteria."
+        contract: "UMA.INTSTACK.v1"
+        inputs: ["identity_map", "case_studies", "predictions"]
+        outputs: ["identity_correspondences", "case_generativity", "fisher_delta", "fisher_approx", "prediction_status"]
+        frozen_params:
+          epsilon: 1.0e-8
+          n_identity_maps: 8
+          n_case_studies: 8
+          n_predictions: 5
+        cross_references:
+          - "closures/evolution/evolution_kernel.py"
+          - "closures/evolution/axiom0_instantiation_map.py"
 
     unified:
       - name: "unified_minimal_structure"

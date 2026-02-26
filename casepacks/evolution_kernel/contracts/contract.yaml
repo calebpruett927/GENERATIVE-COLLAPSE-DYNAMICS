@@ -3,14 +3,14 @@ schema: "schemas/contract.schema.json"
 contract:
   id: "UMA.INTSTACK.v1"
   version: "1.0.0"
-  timezone: "America/Chicago"
-  address: "GCD Complete Test Case"
-  frozen_at: "2026-01-20T00:00:00-06:00"
+  timezone: "UTC"
+  address: "Evolution Kernel — 5 Representative Organisms"
+  frozen_at: "2026-02-26T00:00:00Z"
 
   canon:
     pre_doi: "10.5281/zenodo.17756705"
     post_doi: "10.5281/zenodo.18072852"
-    weld_id: "W-2025-12-31-PHYS-COHERENCE"
+    weld_id: "W-2026-02-26-EVO-KERNEL"
 
   embedding:
     interval: [0.0, 1.0]
@@ -34,8 +34,8 @@ contract:
     weights_policy: "nonnegative_sum_to_one"
 
     frozen_parameters:
-      a: 0
-      b: 10
+      a: 0.0
+      b: 1.0
       face: "pre_clip"
       epsilon: 1.0e-8
       p: 3
@@ -60,4 +60,8 @@ contract:
     no_return_no_credit: true
     oor_handling: "clip_and_flag"
 
-  notes: "GCD complete test case contract snapshot."
+  notes: >
+    Evolution domain casepack contract. 8-channel organism traces
+    with values pre-normalized to [0,1]. Validates Tier-1 kernel
+    identities (F+ω=1, IC≤F, IC=exp(κ)) across representative
+    organisms spanning the tree of life.

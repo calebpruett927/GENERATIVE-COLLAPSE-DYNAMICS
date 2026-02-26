@@ -204,7 +204,7 @@ PHENOMENA: tuple[EvolutionaryPhenomenon, ...] = (
         pre_channels=(0.90, 0.30, 0.95, 0.80, 0.85, 0.50, 0.20, 0.80),
         post_channels=(0.15, 0.60, 0.20, 0.50, 0.30, 0.35, 0.40, 0.25),
         return_channels=(0.05, 0.95, 0.10, 0.85, 0.80, 0.70, 0.75, 0.85),
-        predicted_generative=True,
+        predicted_generative=False,  # IC_ret < IC_pre: independence channels collapse permanently
         has_gestus=True,  # Free-living alpha-proteobacterium lineage → ∞_rec
     ),
     EvolutionaryPhenomenon(
@@ -289,7 +289,7 @@ PHENOMENA: tuple[EvolutionaryPhenomenon, ...] = (
         pre_channels=(0.80, 0.70, 0.75, 0.65, 0.60, 0.50, 0.55, 0.90),
         post_channels=(0.02, 0.001, 0.001, 0.001, 0.80, 0.30, 0.95, 0.98),
         return_channels=(0.75, 0.85, 0.70, 0.70, 0.50, 0.55, 0.45, 0.85),
-        predicted_generative=True,
+        predicted_generative=False,  # IC_ret < IC_pre: germination restores but does not exceed
         has_gestus=True,  # Seeds that never germinate = ∞_rec
     ),
     # ── POPULATION LEVEL ──────────────────────────────────────────
@@ -346,7 +346,7 @@ PHENOMENA: tuple[EvolutionaryPhenomenon, ...] = (
         pre_channels=(0.85, 0.80, 0.75, 0.70, 0.90, 0.70, 0.65, 0.60),
         post_channels=(0.05, 0.10, 0.08, 0.30, 0.20, 0.15, 0.01, 0.40),
         return_channels=(0.50, 0.40, 0.45, 0.60, 0.55, 0.50, 0.20, 0.80),
-        predicted_generative=True,
+        predicted_generative=False,  # IC_ret < IC_pre: diversity loss is permanent
         has_gestus=True,  # Many bottlenecked populations go extinct
     ),
     EvolutionaryPhenomenon(
@@ -492,7 +492,7 @@ PHENOMENA: tuple[EvolutionaryPhenomenon, ...] = (
         pre_channels=(0.85, 0.40, 0.30, 0.10, 0.15, 0.30, 0.90, 0.50),
         post_channels=(0.01, 0.90, 0.85, 0.80, 0.20, 0.15, 0.05, 0.60),
         return_channels=(0.01, 0.50, 0.40, 0.40, 0.85, 0.80, 0.05, 0.70),
-        predicted_generative=True,
+        predicted_generative=False,  # IC_ret < IC_pre: gene_flow channel permanently collapsed
         has_gestus=True,  # Island endemics are first to go when invaded
     ),
     # ── ECOSYSTEM LEVEL ───────────────────────────────────────────

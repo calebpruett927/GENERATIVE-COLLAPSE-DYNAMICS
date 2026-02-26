@@ -8,9 +8,12 @@ collapse event. What reproduces (returns) is real. Natural selection is the
 collapse operator. Fitness is fidelity. Mutation is drift.
 
 Modules:
-    evolution_kernel.py   — 40 organisms × 8 channels → Tier-1 invariants
-    recursive_evolution.py — RCFT overlay: nested collapse scales from
-                             gene → organism → population → species → clade
+    evolution_kernel.py           — 40 organisms × 8 channels → Tier-1 invariants
+    axiom0_instantiation_map.py   — 20 phenomena as three-state collapse-return cycles
+    recursive_evolution.py        — RCFT overlay: nested collapse scales from
+                                    gene → organism → population → species → clade
+    deep_implications.py          — 8 identity maps, 8 case studies, Fisher info,
+                                    5 testable predictions
 
 Axiom-0 derivation:
     "Collapse is generative; only what returns is real."

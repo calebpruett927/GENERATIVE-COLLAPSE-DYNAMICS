@@ -1,0 +1,29 @@
+{
+  "schema": "schemas/manifest.schema.json",
+  "casepack": {
+    "id": "evolution_kernel",
+    "version": "1.0.0",
+    "title": "Evolution Kernel — 5 Representative Organisms (Tier-2)",
+    "description": "Evolution domain closure demonstrating GCD kernel applied to 5 representative organisms across the tree of life. Verifies Tier-1 identities (F+ω=1, IC≤F, IC=exp(κ)) and regime classification for organisms spanning bacteria to humans.",
+    "created_utc": "2026-02-26T00:00:00Z",
+    "timezone": "UTC",
+    "authors": ["Clement Paulus"]
+  },
+  "refs": {
+    "canon_anchors": { "path": "canon/evo_anchors.yaml" },
+    "contract": { "id": "UMA.INTSTACK.v1", "path": "contracts/UMA.INTSTACK.v1.yaml" },
+    "closures_registry": { "id": "UMCP.CLOSURES.EVO.v1", "path": "closures/registry.yaml" }
+  },
+  "artifacts": {
+    "raw_measurements": {
+      "path": "raw_measurements.csv",
+      "format": "csv"
+    },
+    "expected": {
+      "invariants_json": { "path": "expected/invariants.json" }
+    }
+  },
+  "run_intent": {
+    "notes": "This CasePack exercises the evolution domain closure with 5 organisms: E. coli (prokaryote anchor), Drosophila (invertebrate model), Quercus (plant), Latimeria (living fossil), Homo sapiens (behavioral complexity extreme). All 5 demonstrate F+ω=1 by construction, IC≤F (integrity bound), and IC=exp(κ) (log-integritas). All 5 are classified Collapse regime due to channel heterogeneity — this is structurally honest, not failure."
+  }
+}

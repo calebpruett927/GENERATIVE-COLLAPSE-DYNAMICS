@@ -1,0 +1,241 @@
+# canon/evo_anchors.yaml
+# Evolution Canon Anchors — UMCP.CANON.EVO.v1
+# Cross-references: contracts/UMA.INTSTACK.v1.yaml, closures/evolution/
+schema: canon.domain_anchors.schema.json
+id: "UMCP.CANON.EVO.v1"
+version: "1.0.0"
+domain: "Evolution (Recursive Collapse-Return Dynamics of Life)"
+hierarchy: "GCD > EVO (Tier-2)"
+description: >
+  Canon anchors for the evolution domain closure.
+  Maps biological evolution to GCD Tier-1 invariants through 40 organisms
+  across the tree of life, 20 evolutionary phenomena as collapse-return
+  cycles, 5 nested recursive scales (Gene → Clade), and 5 mass extinctions.
+  Demonstrates that evolution IS recursive collapse-return: natural selection
+  is the collapse operator, fitness is fidelity, mutation is drift.
+
+axioms:
+  - id: "AX-EVO0"
+    name: "Evolutionary Duality"
+    statement: >
+      Natural selection partitions the reproductive budget exhaustively:
+      what selection retains (F) + what it removes (ω) = 1.
+      Fisher's Fundamental Theorem [Fisher 1930] is the population genetics
+      expression of the duality identity. No third reservoir exists.
+    frozen: true
+
+  - id: "AX-EVO1"
+    name: "Geometric Slaughter (Purifying Selection)"
+    statement: >
+      IC ≤ F: organism coherence (geometric mean fitness across traits)
+      cannot exceed mean trait fitness (arithmetic mean). One near-zero
+      channel drives IC toward ε regardless of other channels. This IS
+      purifying selection — one lethal trait kills the lineage even if
+      all other traits are excellent. The Dodo exemplifies this:
+      environmental_breadth → ε → geometric slaughter → τ_R = ∞_rec.
+    frozen: true
+
+  - id: "AX-EVO2"
+    name: "Scale-Invariant Kernel"
+    statement: >
+      The same GCD kernel (F, ω, S, C, κ, IC) applies identically at
+      Gene, Organism, Population, Species, and Clade scales. Collapse
+      at one scale generates the signal for the next. IC degrades from
+      Gene (0.694) → Clade (0.469) as channel heterogeneity increases
+      with each level of organization.
+    frozen: true
+
+  - id: "AX-EVO3"
+    name: "Mass Extinction as Collapse-Return"
+    statement: >
+      Every mass extinction is a collapse event with measurable IC cliff.
+      The End-Permian (252 Ma) produced an 80.1% IC drop — near-total
+      geometric slaughter. Recovery radiations (the return) generate
+      novel morphological disparity exceeding pre-extinction levels
+      [Erwin 2001, Sepkoski 1984]. Ruptura est fons constantiae.
+    frozen: true
+
+  - id: "AX-EVO4"
+    name: "Extinction as τ_R = ∞_rec"
+    statement: >
+      An extinct lineage has τ_R = ∞_rec — permanent detention with
+      no return. The lineage is a gestus, not a sutura. Extinct species
+      (Trilobita, Dodo, T. rex) carry zero budget credit. Whether Homo
+      sapiens achieves finite τ_R is the open question of the domain.
+    frozen: true
+
+symbols:
+  - name: "omega_eff"
+    tier: 1
+    definition: "drift = 1 − F = selection cost + mutation load"
+  - name: "F_eff"
+    tier: 1
+    definition: "fidelity = mean trait fitness across 8 channels"
+  - name: "S"
+    tier: 1
+    definition: "Bernoulli field entropy of the organism trace"
+  - name: "C"
+    tier: 1
+    definition: "curvature = channel heterogeneity / coupling"
+  - name: "IC"
+    tier: 1
+    definition: "integrity composite = geometric mean fitness = exp(κ)"
+  - name: "delta"
+    tier: 1
+    definition: "heterogeneity gap Δ = F − IC (evolutionary fragility)"
+  - name: "genetic_diversity"
+    tier: 2
+    definition: "Population genetic diversity (heterozygosity proxy)"
+  - name: "morphological_fitness"
+    tier: 2
+    definition: "Body plan complexity and adaptation score"
+  - name: "reproductive_success"
+    tier: 2
+    definition: "Normalized fecundity × offspring survival"
+  - name: "metabolic_efficiency"
+    tier: 2
+    definition: "Energy conversion optimization"
+  - name: "immune_competence"
+    tier: 2
+    definition: "Pathogen resistance breadth / defense systems"
+  - name: "environmental_breadth"
+    tier: 2
+    definition: "Niche width / habitat generalism"
+  - name: "behavioral_complexity"
+    tier: 2
+    definition: "Behavioral repertoire richness"
+  - name: "lineage_persistence"
+    tier: 2
+    definition: "Geological duration normalized to max known (~3.8 Gyr)"
+
+regime_gates:
+  organism:
+    Stable: "ω < 0.038 AND F > 0.90 AND S < 0.15 AND C < 0.14"
+    Watch: "intermediate (Stable gates not all satisfied, ω < 0.30)"
+    Collapse: "ω ≥ 0.30"
+
+  evolutionary_strategy:
+    Robust_Generalist: "F ≥ 0.65, Δ < 0.15"
+    Adapted_Specialist: "F ≥ 0.55, Δ ≥ 0.15, C < 0.30"
+    Resilient_Ancient: "F < 0.55, Δ < 0.10, IC > 0.30"
+    Vulnerable_Specialist: "F ≥ 0.45, Δ ≥ 0.20"
+    Minimal_Viable: "low F, low IC"
+
+  phenomenon:
+    Generative: "IC_return > IC_pre (collapse was net-positive)"
+    Non_Generative: "IC_return ≤ IC_pre (permanent channel loss)"
+    Gestus: "τ_R = ∞_rec for some lineages"
+
+anchors:
+  organisms:
+    - name: "Escherichia coli"
+      role: "Prokaryote anchor — high genetic diversity, high persistence"
+      F_range: [0.45, 0.55]
+      regime: Watch
+      strategy: Adapted_Specialist
+
+    - name: "Coelacanth (Latimeria)"
+      role: "Living fossil anchor — uniform mediocrity, high persistence"
+      F_range: [0.35, 0.45]
+      regime: Collapse
+      strategy: Resilient_Ancient
+
+    - name: "Homo sapiens"
+      role: "Behavioral complexity anchor — extreme breadth, minimal persistence"
+      F_range: [0.58, 0.68]
+      regime: Collapse
+      strategy: Vulnerable_Specialist
+      note: >
+        lineage_persistence = 0.001 (demonstrated geological return ≈ 0).
+        Cultural persistence is not counted under Axiom-0: only what has
+        actually returned counts. Whether Homo sapiens is a weld or a
+        gestus is the open question.
+
+    - name: "Dodo (Raphus cucullatus)"
+      role: "Geometric slaughter anchor — one dead channel kills IC"
+      F_range: [0.18, 0.28]
+      regime: Collapse
+      strategy: Minimal_Viable
+      note: "environmental_breadth → ε → trucidatio geometrica → τ_R = ∞_rec"
+
+  phenomena:
+    - name: "Origin of Life"
+      role: "Maximum generative collapse — prebiotic → self-replicating"
+      category: Molecular
+      generative: true
+
+    - name: "Endosymbiosis (Mitochondria)"
+      role: "Non-generative collapse — independence permanently lost"
+      category: Cellular
+      generative: false
+      note: "IC_return < IC_pre: metabolic_independence → ε is permanent"
+
+    - name: "End-Permian Extinction"
+      role: "Maximum IC cliff — 80.1% drop, near-total biosphere collapse"
+      category: Biosphere
+      generative: true
+      note: "96% species loss but Mesozoic radiation exceeds pre-extinction levels"
+
+    - name: "K-Pg Extinction → Mammalian Radiation"
+      role: "Collapse enabling mammalian diversification"
+      category: Biosphere
+      generative: true
+
+    - name: "Cancer (Cellular Defection)"
+      role: "Anti-proof — F optimization without IC → systemic collapse"
+      category: Cellular
+      generative: false
+      note: "Predicted non-generative. Cancer IS what happens when arithmetic fitness divorces geometric integrity."
+
+  mass_extinctions:
+    - name: "End-Ordovician"
+      age_mya: 445
+      species_loss_pct: 85
+    - name: "Late Devonian"
+      age_mya: 375
+      species_loss_pct: 75
+    - name: "End-Permian"
+      age_mya: 252
+      species_loss_pct: 96
+    - name: "End-Triassic"
+      age_mya: 201
+      species_loss_pct: 80
+    - name: "End-Cretaceous (K-Pg)"
+      age_mya: 66
+      species_loss_pct: 76
+
+constants:
+  n_organisms: {value: 40, description: "Organisms in the evolution kernel catalog"}
+  n_channels: {value: 8, description: "Trace vector dimensionality"}
+  n_phenomena: {value: 20, description: "Evolutionary phenomena in axiom0 map"}
+  n_scales: {value: 5, description: "Recursive evolutionary scales (Gene → Clade)"}
+  n_extinctions: {value: 5, description: "Mass extinctions modeled"}
+  epsilon: {value: 1.0e-8, source: "frozen_contract.EPSILON"}
+
+citations:
+  - "Fisher 1930 — Fundamental Theorem of Natural Selection"
+  - "Wright 1932 — Adaptive landscape, genetic drift"
+  - "Kimura 1968 — Neutral theory of molecular evolution"
+  - "Raup 1986 — Mass extinction kill curves"
+  - "Sepkoski 1984 — Post-extinction diversity exceeds pre-extinction"
+  - "Jablonski 1986 — Geographic range predicts mass extinction survival"
+  - "Erwin 2001 — Recovery from mass extinctions generates novel disparity"
+  - "Maynard Smith 1978 — Twofold cost of sex"
+  - "Hamilton 1980 — Red Queen hypothesis for maintenance of sex"
+  - "Van Valen 1973 — Red Queen: constant extinction probability per lineage"
+  - "Eigen 1971 — Error threshold for replication fidelity"
+  - "Lane & Martin 2010 — Endosymbiosis as singular enabling event"
+  - "Knoll & Nowak 2017 — Timeline of evolutionary transitions"
+  - "Gould & Eldredge 1977 — Punctuated equilibria"
+  - "Szathmáry & Maynard Smith 1995 — Major evolutionary transitions"
+  - "Lenski et al. 2015 — LTEE (60,000+ generations E. coli)"
+  - "Luria & Delbrück 1943 — Fluctuation test"
+  - "Nei & Kumar 2000 — Molecular clock"
+  - "Alroy 2008 — Post-extinction origination rates exceed pre-extinction"
+  - "Barnosky et al. 2011 — Sixth mass extinction comparison"
+
+closures:
+  - evolution_kernel
+  - axiom0_instantiation_map
+  - deep_implications
+  - recursive_evolution
