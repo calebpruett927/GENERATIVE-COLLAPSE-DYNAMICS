@@ -6,8 +6,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![UMCP v2.1.3](https://img.shields.io/badge/UMCP-v2.1.3-orange.svg)](pyproject.toml)
 [![Tests: 5,127](https://img.shields.io/badge/tests-5%2C127-brightgreen.svg)](tests/)
-[![Domains: 13](https://img.shields.io/badge/domains-13-blueviolet.svg)](closures/)
-[![Closures: 114](https://img.shields.io/badge/closures-114-informational.svg)](closures/)
+[![Domains: 14](https://img.shields.io/badge/domains-14-blueviolet.svg)](closures/)
+[![Closures: 118](https://img.shields.io/badge/closures-118-informational.svg)](closures/)
 [![Theorems: 24](https://img.shields.io/badge/theorems-24_proven-ff69b4.svg)](closures/)
 
 > **Core Axiom**: *"Collapse is generative; only what returns is real."*
@@ -16,7 +16,7 @@
 
 This is not a simulation. It is a **metrological enforcement engine**: schema conformance, kernel identity verification, regime classification, and SHA-256 integrity checking — producing a three-valued `CONFORMANT` / `NONCONFORMANT` / `NON_EVALUABLE` verdict for every run.
 
-**Python + C++ integration**: The framework is written in Python with **13 physics domains**, **114 closure modules**, **24 proven theorems** (241 computational subtests), and **5,127 tests**. An optional C++17 accelerator (`src/umcp_cpp/`) provides 50–80× speedup for three hot paths — kernel computation, seam chain accumulation, and SHA-256 integrity — via a pybind11 zero-copy NumPy bridge. The Python wrapper (`umcp.accel`) auto-detects the compiled extension at import time; if unavailable, every call falls back transparently to the equivalent NumPy implementation. Same formulas, same frozen parameters, same results to machine precision — the C++ layer is Tier-0 Protocol only and redefines no Tier-1 symbols.
+**Python + C++ integration**: The framework is written in Python with **14 domains**, **118 closure modules**, **24 proven theorems** (241 computational subtests), and **5,127 tests**. An optional C++17 accelerator (`src/umcp_cpp/`) provides 50–80× speedup for three hot paths — kernel computation, seam chain accumulation, and SHA-256 integrity — via a pybind11 zero-copy NumPy bridge. The Python wrapper (`umcp.accel`) auto-detects the compiled extension at import time; if unavailable, every call falls back transparently to the equivalent NumPy implementation. Same formulas, same frozen parameters, same results to machine precision — the C++ layer is Tier-0 Protocol only and redefines no Tier-1 symbols.
 
 ---
 
@@ -160,7 +160,7 @@ src/umcp_cpp/                   # Optional C++ accelerator (Tier-0 Protocol)
 | **Schemas** | 14 | `schemas/*.schema.json` | JSON Schema files validating all artifacts |
 | **Canon Anchors** | 11 | `canon/*.yaml` | Domain-specific canonical reference points |
 | **Casepacks** | 14 | `casepacks/` | Reproducible validation bundles |
-| **Closure Domains** | 13 | `closures/*/` | Physics domain closure packages (114 modules) |
+| **Closure Domains** | 14 | `closures/*/` | Domain closure packages (118 modules) |
 | **Closure Registry** | 1 | `closures/registry.yaml` | Central listing of all closures |
 | **Validator Rules** | 1 | `validator_rules.yaml` | Semantic rule definitions (E101, W201, ...) |
 | **Integrity** | 1 | `integrity/sha256.txt` | SHA-256 checksums for all tracked files |
@@ -169,7 +169,7 @@ src/umcp_cpp/                   # Optional C++ accelerator (Tier-0 Protocol)
 
 ## Closure Domains
 
-UMCP validates physics across **13 domains** with **114 closure modules**, each encoding real-world measurements into the 8-channel kernel trace:
+UMCP validates across **14 domains** with **118 closure modules**, each encoding real-world measurements into the 8-channel kernel trace:
 
 ### Standard Model — 9 modules
 
@@ -265,6 +265,19 @@ Energy potential, entropic collapse, field resonance, generative flux, momentum 
 ### Finance & Security — 16 modules
 
 Portfolio continuity, market coherence, anomaly return, threat classification, trust fidelity, behavioral profiling, privacy auditing, and risk-regime mapping.
+
+### Evolution — 4 modules
+
+40 organisms across the tree of life, 5 recursive scales, 20 evolutionary phenomena as collapse-return cycles, and deep implications with 20 cited sources (Fisher 1930 – Barnosky 2011).
+
+| Module | What It Encodes |
+|--------|----------------|
+| `evolution_kernel.py` | 40 organisms × 8 channels (genetic diversity → lineage persistence) |
+| `recursive_evolution.py` | 5 nested scales (Gene → Clade) + 5 mass extinction collapse-return events |
+| `axiom0_instantiation_map.py` | 20 phenomena × 3 states = 60 kernel states — Axiom-0 instantiation |
+| `deep_implications.py` | 8 identity mappings, 8 deep case studies, 5 testable predictions, Fisher Information connection |
+
+**Key discoveries**: Evolution is the only domain at 12/12 semantic depth (every Axiom-0 concept maps precisely). IC degrades Gene (0.694) → Clade (0.469) across recursive scales. End-Permian IC dropped 80.1% then recovered generatively. Geometric slaughter = mechanism of extinction: one failed channel kills IC regardless of mean fitness. Heterogeneity gap Δ ≈ Var(c)/(2c̄) maps precisely to Fisher Information of the channel pattern. 15/20 phenomena are generative (IC_return > IC_pre). Cancer is the anti-proof: cells maximizing individual F while destroying organism IC. Homo sapiens Δ ≈ 0.34 — structurally the most vulnerable extant large mammal. Zero fitted parameters — same frozen contract as Standard Model and atomic closures.
 
 ### Everyday Physics — 5 modules
 
@@ -697,12 +710,13 @@ The framework is anchored by peer-reviewed Zenodo publications covering the core
 │   ├── epistemic_weld.py      # Epistemic cost tracking
 │   ├── fleet/                 # Distributed validation
 │   └── dashboard/             # Modular Streamlit dashboard
-├── closures/                  # 13 physics domains, 114 modules
+├── closures/                  # 14 domains, 118 modules
 │   ├── standard_model/        # 31 particles, 10 theorems
 │   ├── atomic_physics/        # 118 elements, Tier-1 proof
 │   ├── quantum_mechanics/     # Double slit, entanglement, tunneling
 │   ├── nuclear_physics/       # Binding energy, decay chains
 │   ├── materials_science/     # 118 elements × 18 fields
+│   ├── evolution/             # 40 organisms, 20 phenomena, 60 kernel states
 │   ├── astronomy/             # Stellar evolution, HR diagram
 │   ├── kinematics/            # Motion analysis, phase space
 │   ├── gcd/                   # Core dynamics, 7 kernel structural theorems
@@ -844,6 +858,10 @@ Across 13 physics domains and 24 proven theorems, the kernel reveals universal p
 10. **Monitoring paradox**: Γ(ω) = ω³/(1−ω+ε) creates an 893,000× cost ratio between near-death and stable observation — systems most in need of monitoring are structurally the most expensive to observe (T-KS-4)
 
 11. **U-curve of degradation**: Partial collapse (≈ n/2 dead channels) is structurally worse than total collapse; both endpoints are homogeneous and coherent, the interior is maximally incoherent (T-KS-6)
+
+12. **Evolution as Axiom-0 instantiation**: Every major evolutionary phenomenon — mass extinctions, endosymbiosis, metamorphosis, immune response, speciation — follows the same collapse-return structure. 15/20 phenomena are generative (IC_return > IC_pre). Largest collapses produce the most generative returns (ρ = −0.648, p = 0.002). Evolution is the only domain at 12/12 semantic depth.
+
+13. **Geometric slaughter as extinction mechanism**: One near-zero channel kills IC regardless of mean fitness F. Maps precisely to Raup (1986) and Jablonski (1986): extinction is caused by single-stressor events, and mass extinctions reverse selectivity from F to IC. The heterogeneity gap Δ = F − IC ≈ Var(c)/(2c̄) is the Fisher Information of channel heterogeneity.
 
 ---
 
