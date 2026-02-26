@@ -719,6 +719,33 @@ registry:
           - "closures/quantum_mechanics/wavefunction_collapse.py"
           - "closures/quantum_mechanics/double_slit_interference.py"
 
+    evolution:
+      - name: "evolution_kernel"
+        path: "closures/evolution/evolution_kernel.py"
+        description: "40 organisms across tree of life mapped to 8-channel trace → Tier-1 invariants. Demonstrates geometric slaughter, specialist/generalist split, and living fossil persistence."
+        contract: "UMA.INTSTACK.v1"
+        inputs: ["name", "kingdom", "genetic_diversity", "morphological_fitness", "reproductive_success", "metabolic_efficiency", "immune_competence", "environmental_breadth", "behavioral_complexity", "lineage_persistence"]
+        outputs: ["F", "omega", "IC", "kappa", "S", "C", "gap", "regime", "strategy"]
+        frozen_params:
+          epsilon: 1.0e-8
+          n_channels: 8
+        cross_references:
+          - "closures/atomic_physics/periodic_kernel.py"
+          - "closures/standard_model/subatomic_kernel.py"
+      - name: "recursive_evolution"
+        path: "closures/evolution/recursive_evolution.py"
+        description: "RCFT overlay: 5 nested evolutionary scales (Gene → Clade) + 5 mass extinctions as collapse-return events. Scale-invariant kernel with IC degradation across levels."
+        contract: "UMA.INTSTACK.v1"
+        inputs: ["scale_name", "level", "channels", "mass_extinction_pre", "mass_extinction_post"]
+        outputs: ["F", "omega", "IC", "kappa", "S", "C", "gap", "regime", "gamma_omega", "D_C", "seam_budget"]
+        frozen_params:
+          epsilon: 1.0e-8
+          n_scales: 5
+          n_extinctions: 5
+        cross_references:
+          - "closures/evolution/evolution_kernel.py"
+          - "closures/rcft/recursive_field.py"
+
     unified:
       - name: "unified_minimal_structure"
         path: "closures/unified_minimal_structure.py"
