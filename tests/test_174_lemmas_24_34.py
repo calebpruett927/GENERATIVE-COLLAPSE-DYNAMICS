@@ -654,7 +654,7 @@ class TestLemma32_TemporalCoarseGraining:
                 coarse_c = np.clip(coarse_c, EPSILON, 1 - EPSILON)
                 ko_coarse = compute_kernel(coarse_c, w, tau_R=1.0, epsilon=EPSILON)
                 max_err = max(max_err, abs(ko_coarse.kappa - avg_fine_kappa))
-            errors_by_M[M] = max_err
+            errors_by_M[M] = float(max_err)
 
         # Monotonicity: smaller M should give smaller error (approximately)
         assert errors_by_M[2] <= errors_by_M[10] + 0.01, (
