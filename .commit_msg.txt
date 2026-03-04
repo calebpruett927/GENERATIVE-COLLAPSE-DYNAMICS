@@ -1,0 +1,23 @@
+Add cross-domain bridge diagnostics: 28 identities discovered
+
+Two new diagnostic scripts that analyze the repository knowledge
+as a unified whole, discovering cross-domain bridging equations.
+
+Phase 1 (12 identities B1-B12): Pythagorean duality, integrity bound,
+composition law, Fisher volume, budget conservation, self-duality max,
+cubic trapping, curvature decomposition, low-rank closures (5->4 dims),
+geodesic partition, cost elasticity, IC democracy.
+
+Phase 2 (8 identities D1-D8): Fisher flatness, f in Fisher coords,
+kappa as log-sine, n=2 determinancy, p=3 Cardano, composition
+invariance, regime partition (63/24/12%), dimension collapse (R8->R4).
+
+Key discoveries:
+- F+omega=1 is the Pythagorean theorem in Fisher coordinates
+- The Bernoulli manifold is FLAT in Fisher coordinates
+- p=3 is the unique exponent where omega_trap is a Cardano root
+- IC<=F is the solvability condition for trace recovery
+- 5 closure diagnostics span only 4 effective dimensions
+- Regime boundaries partition Fisher space: 63/24/12 percent
+
+All 28 identities verified to machine precision. 5247 tests pass.
