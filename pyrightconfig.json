@@ -1,0 +1,11 @@
+{
+  "pythonVersion": "3.12",
+  "pythonPlatform": "Linux",
+  "reportMissingImports": "warning",
+  "reportMissingModuleSource": "none",
+  "extraPaths": [
+    "src",
+    "closures",
+    "scripts"
+  ]
+}
