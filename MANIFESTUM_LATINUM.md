@@ -530,6 +530,7 @@ The five words translate across lenses. Meanings are invariant; dialect changes.
 | **Phaenomenologia** | Perceived shift | Stable features | Distress / bias / effort | Coping / repair |
 | **Historia** | Periodization | Continuity / endurance | Rupture / confound | Restitution / reconciliation |
 | **Politica** | Regime shift | Compliance / mandate | Friction / cost / externality | Reinstatement / acceptance |
+| **Semiotica** | Sign drift — departure from referent | Ground persistence — convention that survived | Translation friction — meaning loss across contexts | Interpretant closure — sign chain returns to grounded meaning |
 
 **Integritas** is never asserted in the Rosetta — it is read holistically per lens from the reconciled ledger and stance. I = e^κ provides unitless multiplicative comparability across seams.
 

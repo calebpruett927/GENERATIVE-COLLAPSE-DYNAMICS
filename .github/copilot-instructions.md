@@ -630,6 +630,8 @@ Extensions use `typing.Protocol` (`ExtensionProtocol` requiring `name`, `version
 | Contract format | `contracts/UMA.INTSTACK.v1.yaml` |
 | Semantic rules | `validator_rules.yaml` |
 | Canonical anchors | `canon/` (12 domain anchor files) |
+| Semiotic convergence | `SEMIOTIC_CONVERGENCE.md` (GCD as semiotic system, Peirce correspondence) |
+| Semiotic kernel | `closures/dynamic_semiotics/semiotic_kernel.py` (30 sign systems, 8-channel trace) |
 
 ## Decision-Making Framework (Binding on ALL Contributions)
 
@@ -741,6 +743,7 @@ The five words (Drift, Fidelity, Roughness, Return, Integrity) map across **lens
 | **Phenomenology** | Perceived shift | Stable features | Distress / bias / effort | Coping / repair that holds |
 | **History** | Periodization (what shifted) | Continuity (what endures) | Rupture / confound | Restitution / reconciliation |
 | **Policy** | Regime shift | Compliance / mandate persistence | Friction / cost / externality | Reinstatement / acceptance |
+| **Semiotics** | Sign drift — departure from referent | Ground persistence — convention that survived | Translation friction — meaning loss across contexts | Interpretant closure — sign chain returns to grounded meaning |
 
 **Integrity** is never asserted in the Rosetta; it is read holistically per lens from the reconciled ledger and stance. This is what makes cross-domain synthesis mechanical — the prose maps through the Rosetta, while I = e^κ provides unitless multiplicative comparability across seams.
 

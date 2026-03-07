@@ -83,6 +83,13 @@ ROSETTA_LENSES: dict[str, dict[str, str]] = {
         "Return": "Incident recovery — system returns to trusted baseline",
         "Integrity": "Derived from reconciled ledger — end-to-end trust coherence",
     },
+    "Semiotics": {
+        "Drift": "Sign drift — departure of sign from referent stability",
+        "Fidelity": "Ground persistence — the convention base that survived",
+        "Roughness": "Translation friction — meaning loss across interpretive contexts",
+        "Return": "Interpretant closure — the sign chain returns to grounded meaning",
+        "Integrity": "Derived from reconciled ledger — semiotic coherence across channels",
+    },
 }
 
 # Latin terms mapped to the five words
