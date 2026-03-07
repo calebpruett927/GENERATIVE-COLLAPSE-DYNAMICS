@@ -598,14 +598,13 @@ def step_repo_health(ctx: RepoContext, mode: str) -> StepResult:
     if scripts_dir not in sys.path:
         sys.path.insert(0, scripts_dir)
 
+    synced = 0
     try:
         from repo_health_check import run_health_check, sync_version  # type: ignore[import-not-found]
 
         # Always sync version first (proactive, not reactive)
         if mode == "fix":
             synced = sync_version(ctx.root, quiet=True)
-        else:
-            synced = 0
 
         # Run the full health check (with fix in fix mode)
         health_report = run_health_check(ctx.root, fix=(mode == "fix"))
@@ -662,7 +661,7 @@ def step_repo_health(ctx: RepoContext, mode: str) -> StepResult:
         status=status,
         duration_s=time.monotonic() - t0,
         message=msg,
-        fixed_count=synced if "synced" in dir() else 0,
+        fixed_count=synced,
         blocking=True,  # Errors block; warnings don't (status=WARN passes)
     )
 
@@ -679,8 +678,8 @@ def step_umcp_validate(ctx: RepoContext) -> StepResult:
     error_count = 0
 
     # Try Python API first — avoids subprocess overhead, uses repo context directly
+    orig_path = sys.path[:]
     try:
-        orig_path = sys.path[:]
         sys.path.insert(0, str(ctx.src_dir))
         from umcp import validate  # type: ignore[import-not-found]
 
@@ -690,7 +689,7 @@ def step_umcp_validate(ctx: RepoContext) -> StepResult:
         error_count = vr.error_count
         sys.path[:] = orig_path
     except Exception:
-        sys.path[:] = orig_path if "orig_path" in dir() else sys.path
+        sys.path[:] = orig_path
         # Fallback to CLI subprocess
         result = _run(["umcp", "validate", "."], cwd=ctx.root, timeout=120)
         stdout = result.stdout

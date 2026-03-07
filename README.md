@@ -5,10 +5,10 @@
 [![C++17](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](src/umcp_cpp/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![UMCP v2.1.5](https://img.shields.io/badge/UMCP-v2.1.5-orange.svg)](pyproject.toml)
-[![Tests: 5,903](https://img.shields.io/badge/tests-5%2C903-brightgreen.svg)](tests/)
-[![Domains: 16](https://img.shields.io/badge/domains-16-blueviolet.svg)](closures/)
-[![Closures: 124](https://img.shields.io/badge/closures-124-informational.svg)](closures/)
-[![Theorems: 24](https://img.shields.io/badge/theorems-24_proven-ff69b4.svg)](closures/)
+[![Tests: 6,306](https://img.shields.io/badge/tests-6%2C306-brightgreen.svg)](tests/)
+[![Domains: 17](https://img.shields.io/badge/domains-17-blueviolet.svg)](closures/)
+[![Closures: 126](https://img.shields.io/badge/closures-126-informational.svg)](closures/)
+[![Theorems: 38](https://img.shields.io/badge/theorems-38_proven-ff69b4.svg)](closures/)
 [![Identities: 28](https://img.shields.io/badge/identities-28_verified-9cf.svg)](scripts/)
 
 > **Core Axiom**: *"Collapse is generative; only what returns is real."*
@@ -765,6 +765,7 @@ This mirrors CI exactly: format → lint → type-check → integrity → test �
 
 ---
 
+
 ## Test Suite
 
 **6,306 tests** across **112 test files**, organized by tier and domain:
@@ -802,6 +803,19 @@ This mirrors CI exactly: format → lint → type-check → integrity → test �
 | Infrastructure | Kernel, seam, frozen contract, extensions, uncertainty, calculator, coverage, etc. | 510 |
 
 All tests pass. All validations return CONFORMANT.
+
+---
+
+### Recent Kernel Closure Synthesis: Particle Matter Map
+
+**Unified cross-scale kernel analysis** was added in `closures/standard_model/particle_matter_map.py`, resolving 19 code issues and optimizing channel mapping. The corresponding test suite (`tests/test_246_particle_matter_map.py`) now passes 102/102 tests, confirming:
+
+- **Nuclear coherence and IC trajectory**: The kernel captures phase boundaries and heterogeneity gap (Δ = F − IC) across nuclear, atomic, and subatomic domains.
+- **Structural theorems**: All kernel identities (F + ω = 1, IC ≤ F, IC = exp(κ)) are verified to machine precision.
+- **Phase boundary detection**: Collapse regime transitions are correctly classified, with return and fidelity tracked across all channels.
+- **Integrity manifest**: SHA-256 checksums updated; repository is fully CONFORMANT.
+
+This synthesis demonstrates the generative return principle: collapse is measured, return is validated, and integrity is derived from the reconciled ledger. The new closure and test suite extend the Standard Model kernel, providing a robust cross-scale mapping and audit trail.
 
 ---
 

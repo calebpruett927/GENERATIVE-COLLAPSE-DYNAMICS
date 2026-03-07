@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GCD Scale Ladder — 11 Rungs of Measurement Across 61 Orders of Magnitude</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: #0d1117;
+    color: #c9d1d9;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem;
+  }
+  h1 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #e6edf3;
+    margin-bottom: 0.3rem;
+    text-align: center;
+    letter-spacing: 0.02em;
+  }
+  .subtitle {
+    font-size: 0.95rem;
+    color: #8b949e;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-style: italic;
+  }
+  .axiom {
+    font-size: 0.85rem;
+    color: #7ee787;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-style: italic;
+  }
+  #diagram-container {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+  .mermaid {
+    width: 100%;
+  }
+  .mermaid svg {
+    max-width: 100%;
+    height: auto;
+  }
+  .controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  button {
+    background: #238636;
+    color: #fff;
+    border: 1px solid #2ea043;
+    padding: 0.6rem 1.4rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.15s;
+  }
+  button:hover { background: #2ea043; }
+  button.secondary {
+    background: #21262d;
+    border-color: #30363d;
+  }
+  button.secondary:hover { background: #30363d; }
+  .legend {
+    max-width: 900px;
+    width: 100%;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .legend h2 {
+    font-size: 1.1rem;
+    color: #e6edf3;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #30363d;
+    padding-bottom: 0.5rem;
+  }
+  .legend table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+  .legend th {
+    text-align: left;
+    color: #8b949e;
+    padding: 0.4rem 0.6rem;
+    border-bottom: 1px solid #30363d;
+    font-weight: 500;
+  }
+  .legend td {
+    padding: 0.4rem 0.6rem;
+    border-bottom: 1px solid #21262d;
+  }
+  .legend td:first-child { font-weight: 600; }
+  .swatch {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+  .pillar-box {
+    max-width: 900px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .pillar-card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 1.2rem;
+    text-align: center;
+  }
+  .pillar-card h3 {
+    color: #79c0ff;
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+  }
+  .pillar-card .formula {
+    font-family: 'Cambria Math', 'Latin Modern Math', Georgia, serif;
+    font-size: 1.3rem;
+    color: #e6edf3;
+    margin: 0.5rem 0;
+  }
+  .pillar-card .detail {
+    font-size: 0.8rem;
+    color: #8b949e;
+  }
+  .footer {
+    font-size: 0.75rem;
+    color: #484f58;
+    text-align: center;
+    margin-top: 1rem;
+  }
+  @media print {
+    body { background: #fff; color: #1f2328; padding: 1rem; }
+    .controls { display: none; }
+    .legend, .pillar-card { background: #f6f8fa; border-color: #d0d7de; }
+    .legend h2, .pillar-card h3 { color: #1f2328; }
+    .legend th { color: #656d76; }
+    .pillar-card .formula { color: #1f2328; }
+    h1 { color: #1f2328; }
+    .subtitle, .pillar-card .detail { color: #656d76; }
+    .axiom { color: #1a7f37; }
+    .footer { color: #656d76; }
+  }
+</style>
+</head>
+<body>
+
+<h1>GCD Scale Ladder</h1>
+<div class="subtitle">11 Rungs of Measurement Across 61 Orders of Magnitude &middot; 406 Objects &middot; 0 Tier-1 Violations</div>
+<div class="axiom">"Collapse is generative; only what returns is real." &mdash; Axiom-0</div>
+
+<div class="controls">
+  <button onclick="downloadSVG()">&#11015; Download SVG</button>
+  <button class="secondary" onclick="downloadPNG()">&#11015; Download PNG</button>
+  <button class="secondary" onclick="window.print()">&#128424; Print / PDF</button>
+</div>
+
+<div id="diagram-container">
+<pre class="mermaid">
+graph TB
+    classDef planck fill:#1a1a2e,color:#e0e0ff,stroke:#7b68ee,stroke-width:2px
+    classDef subatomic fill:#16213e,color:#e0e0ff,stroke:#4fc3f7,stroke-width:2px
+    classDef nuclear fill:#0f3460,color:#e0e0ff,stroke:#29b6f6,stroke-width:2px
+    classDef atomic fill:#1a237e,color:#e0e0ff,stroke:#42a5f5,stroke-width:2px
+    classDef molecular fill:#004d40,color:#e0ffec,stroke:#26a69a,stroke-width:2px
+    classDef cellular fill:#1b5e20,color:#e0ffe0,stroke:#66bb6a,stroke-width:2px
+    classDef everyday fill:#e65100,color:#fff3e0,stroke:#ff9800,stroke-width:2px
+    classDef geological fill:#bf360c,color:#fbe9e7,stroke:#ff5722,stroke-width:2px
+    classDef stellar fill:#880e4f,color:#fce4ec,stroke:#e91e63,stroke-width:2px
+    classDef galactic fill:#4a148c,color:#f3e5f5,stroke:#ab47bc,stroke-width:2px
+    classDef cosmic fill:#311b92,color:#ede7f6,stroke:#7e57c2,stroke-width:2px
+
+    R10["<b>10 · COSMOLOGICAL</b><br/>10²⁶ m · 6 epochs<br/>⟨F⟩ = 0.597 · Δ = 0.492<br/><i>Dark energy dominates gap</i>"]:::cosmic
+    R9["<b>9 · GALACTIC</b><br/>10²¹ m · 12 galaxies<br/>⟨F⟩ = 0.636 · IC/F = 60.3%<br/><i>Highest fidelity scale</i>"]:::galactic
+    R8["<b>8 · STELLAR</b><br/>10¹⁰ m · 16 stars<br/>⟨F⟩ = 0.370 · IC/F = 35.4%<br/><i>HR diagram span</i>"]:::stellar
+    R7["<b>7 · GEOLOGICAL</b><br/>10⁶ m · 14 planets<br/>⟨F⟩ = 0.289 · 71% IC &lt; 0.01<br/><i>Coherence minimum of reality</i>"]:::geological
+    R6["<b>6 · EVERYDAY</b><br/>10⁰ m · 84 systems<br/>⟨F⟩ = 0.380 · IC/F = 51.3%<br/><i>Thermal · EM · Optics · Waves</i>"]:::everyday
+    R5["<b>5 · CELLULAR</b><br/>10⁻⁵ m · 12 cells<br/>⟨F⟩ = 0.432 · IC/F = 43.4%<br/><i>Trade coherence for function</i>"]:::cellular
+    R4["<b>4 · MOLECULAR</b><br/>10⁻⁹ m · 20 molecules<br/>⟨F⟩ = 0.306 · IC/F = 42.6%<br/><i>Bond type · Polarity · MW</i>"]:::molecular
+    R3["<b>3 · ATOMIC</b><br/>10⁻¹⁰ m · 118 elements<br/>⟨F⟩ = 0.308 · Δ = 0.201<br/><i>Periodic table kernel</i>"]:::atomic
+    R2["<b>2 · NUCLEAR</b><br/>10⁻¹⁵ m · 92 nuclei<br/>⟨F⟩ = 0.490 · IC/F = 72.6%<br/><i>Most coherent — strong force</i>"]:::nuclear
+    R1["<b>1 · SUBATOMIC</b><br/>10⁻¹⁸ m · 31 particles<br/>⟨F⟩ = 0.507 · IC/F = 36.2%<br/><i>Quarks · Leptons · Bosons</i>"]:::subatomic
+    R0["<b>0 · PLANCK</b><br/>10⁻³⁵ m<br/>⟨F⟩ = 0.029<br/><i>Floor of measurability</i>"]:::planck
+
+    R10 -->|"cosmological expansion"| R9
+    R9 -->|"gravitational assembly"| R8
+    R8 -->|"stellar nucleosynthesis"| R7
+    R7 -->|"accretion & differentiation"| R6
+    R6 -->|"thermodynamic processes"| R5
+    R5 -->|"self-replication & metabolism"| R4
+    R4 -->|"chemical bonding"| R3
+    R3 -->|"electron shell filling"| R2
+    R2 -->|"strong force binding"| R1
+    R1 -->|"quantum field excitation"| R0
+</pre>
+</div>
+
+<div class="pillar-box">
+  <div class="pillar-card">
+    <h3>PILLAR 1 &mdash; Duality Identity</h3>
+    <div class="formula">F + &omega; = 1</div>
+    <div class="detail">Exact at all 406 objects<br/>max residual: 0.0e+00</div>
+  </div>
+  <div class="pillar-card">
+    <h3>PILLAR 2 &mdash; Integrity Bound</h3>
+    <div class="formula">IC &le; F</div>
+    <div class="detail">Solvability condition<br/>100% across 11 rungs</div>
+  </div>
+  <div class="pillar-card">
+    <h3>PILLAR 3 &mdash; Exponential Bridge</h3>
+    <div class="formula">IC = e<sup>&kappa;</sup></div>
+    <div class="detail">Log-integrity relation<br/>Links additive &harr; multiplicative</div>
+  </div>
+</div>
+
+<div class="legend">
+  <h2>Scale Ladder Reference</h2>
+  <table>
+    <tr><th>Rung</th><th>Scale</th><th>Objects</th><th>&langle;F&rangle;</th><th>IC/F</th><th>Key Insight</th></tr>
+    <tr><td><span class="swatch" style="background:#311b92"></span>10</td><td>Cosmological (10²⁶ m)</td><td>6 epochs</td><td>0.597</td><td>—</td><td>Largest heterogeneity gap (&Delta; = 0.492) — dark energy</td></tr>
+    <tr><td><span class="swatch" style="background:#4a148c"></span>9</td><td>Galactic (10²¹ m)</td><td>12 galaxies</td><td>0.636</td><td>60.3%</td><td>Highest fidelity of any scale</td></tr>
+    <tr><td><span class="swatch" style="background:#880e4f"></span>8</td><td>Stellar (10¹⁰ m)</td><td>16 stars</td><td>0.370</td><td>35.4%</td><td>HR diagram span, red dwarfs to hypergiants</td></tr>
+    <tr><td><span class="swatch" style="background:#bf360c"></span>7</td><td>Geological (10⁶ m)</td><td>14 planets</td><td>0.289</td><td>&lt;1%</td><td>Coherence minimum — 71% have IC &lt; 0.01</td></tr>
+    <tr><td><span class="swatch" style="background:#e65100"></span>6</td><td>Everyday (10⁰ m)</td><td>84 systems</td><td>0.380</td><td>51.3%</td><td>Thermal, EM, optics, wave phenomena</td></tr>
+    <tr><td><span class="swatch" style="background:#1b5e20"></span>5</td><td>Cellular (10⁻⁵ m)</td><td>12 cells</td><td>0.432</td><td>43.4%</td><td>Trade coherence for functional diversity</td></tr>
+    <tr><td><span class="swatch" style="background:#004d40"></span>4</td><td>Molecular (10⁻⁹ m)</td><td>20 molecules</td><td>0.306</td><td>42.6%</td><td>Bond type, polarity, molecular weight</td></tr>
+    <tr><td><span class="swatch" style="background:#1a237e"></span>3</td><td>Atomic (10⁻¹⁰ m)</td><td>118 elements</td><td>0.308</td><td>—</td><td>Full periodic table, &Delta; = 0.201</td></tr>
+    <tr><td><span class="swatch" style="background:#0f3460"></span>2</td><td>Nuclear (10⁻¹⁵ m)</td><td>92 nuclei</td><td>0.490</td><td>72.6%</td><td>Most coherent scale — strong force balances channels</td></tr>
+    <tr><td><span class="swatch" style="background:#16213e"></span>1</td><td>Subatomic (10⁻¹⁸ m)</td><td>31 particles</td><td>0.507</td><td>36.2%</td><td>17 fundamental + 14 composite particles</td></tr>
+    <tr><td><span class="swatch" style="background:#1a1a2e"></span>0</td><td>Planck (10⁻³⁵ m)</td><td>—</td><td>0.029</td><td>—</td><td>Floor of measurability, limit structure</td></tr>
+  </table>
+</div>
+
+<div class="legend">
+  <h2>Regime Partition (406 Objects)</h2>
+  <table>
+    <tr><th>Regime</th><th>Condition</th><th>Count</th><th>%</th></tr>
+    <tr><td>Watch</td><td>&omega; &lt; 0.30 &and; gates partially met</td><td>10</td><td>2.5%</td></tr>
+    <tr><td>Collapse</td><td>&omega; &ge; 0.30</td><td>396</td><td>97.5%</td></tr>
+    <tr><td colspan="4" style="color:#8b949e;font-size:0.8rem;padding-top:0.8rem">
+      Watch-regime objects span 6 scales: Cartwheel galaxy (F=0.861), Jupiter (F=0.744), HeNe Laser (F=0.812), Lead-265 (F=0.758)
+    </td></tr>
+  </table>
+</div>
+
+<div class="footer">
+  Generative Collapse Dynamics &middot; UMCP v2.1.5 &middot; Clement Paulus &middot; 2025–2026<br/>
+  <em>Scala naturae non narratur: mensuratur.</em> — The ladder of nature is not narrated: it is measured.
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    themeVariables: {
+      darkMode: true,
+      background: '#0d1117',
+      primaryColor: '#238636',
+      lineColor: '#8b949e',
+      textColor: '#c9d1d9',
+      fontSize: '14px'
+    },
+    flowchart: {
+      htmlLabels: true,
+      curve: 'basis',
+      rankSpacing: 60,
+      nodeSpacing: 30
+    }
+  });
+
+  function getSVGElement() {
+    return document.querySelector('#diagram-container svg');
+  }
+
+  function downloadSVG() {
+    const svg = getSVGElement();
+    if (!svg) { alert('Diagram not yet rendered. Please wait.'); return; }
+    const clone = svg.cloneNode(true);
+    clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    // Inline styles for portability
+    const style = document.createElementNS('http://www.w3.org/2000/svg', 'style');
+    style.textContent = `
+      .node rect, .node polygon { rx: 8; ry: 8; }
+      text { font-family: 'Segoe UI', system-ui, sans-serif; }
+    `;
+    clone.insertBefore(style, clone.firstChild);
+    const blob = new Blob([new XMLSerializer().serializeToString(clone)], {type: 'image/svg+xml'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'gcd_scale_ladder.svg';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
+  function downloadPNG() {
+    const svg = getSVGElement();
+    if (!svg) { alert('Diagram not yet rendered. Please wait.'); return; }
+    const bbox = svg.getBoundingClientRect();
+    const scale = 3; // 3x for high-res
+    const canvas = document.createElement('canvas');
+    canvas.width = bbox.width * scale;
+    canvas.height = bbox.height * scale;
+    const ctx = canvas.getContext('2d');
+    ctx.scale(scale, scale);
+    ctx.fillStyle = '#0d1117';
+    ctx.fillRect(0, 0, bbox.width, bbox.height);
+
+    const clone = svg.cloneNode(true);
+    clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    clone.setAttribute('width', bbox.width);
+    clone.setAttribute('height', bbox.height);
+    const data = new XMLSerializer().serializeToString(clone);
+    const img = new Image();
+    img.onload = function() {
+      ctx.drawImage(img, 0, 0, bbox.width, bbox.height);
+      const a = document.createElement('a');
+      a.href = canvas.toDataURL('image/png');
+      a.download = 'gcd_scale_ladder.png';
+      a.click();
+    };
+    img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(data)));
+  }
+</script>
+
+</body>
+</html>
