@@ -1,6 +1,6 @@
 # Copilot Instructions for GENERATIVE-COLLAPSE-DYNAMICS
 
-**UMCP v2.1.5** · **6,593 tests** · **17 domains** · **127 closure modules** · **46 lemmas** · **28 structural identities** · **50 dashboard pages**
+**UMCP v2.1.5** · **6,756 tests** · **17 domains** · **128 closure modules** · **56 lemmas** · **28 structural identities** · **50 dashboard pages**
 
 ## Foundational Principle — Read This First
 
@@ -405,6 +405,8 @@ closures/
 | `pmns_mixing.py` | PMNS matrix, leptonic mixing angles | Leptonic CP violation |
 | `subatomic_kernel.py` | 31 particles → 8-channel trace → kernel | 17 fundamental + 14 composite |
 | `particle_physics_formalism.py` | 10 proven theorems (74/74 subtests) | Duality exact to 0.0e+00 |
+| `matter_genesis.py` | Particle→atom→mass narrative, 10 theorems (T-MG-1–10) | 99 entities, 7 acts, 5 phase boundaries |
+| `particle_matter_map.py` | 6-scale cross-scale kernel analysis | 8 matter ladder theorems |
 
 **Atomic Physics closures** (`closures/atomic_physics/`):
 
@@ -495,7 +497,7 @@ All papers use RevTeX4-2 (`revtex4-2` document class) and share `Bibliography.bi
 
 ```bash
 pip install -e ".[all]"                     # Dev install (core + api + viz + dev tools)
-pytest                                       # 6,593 tests (pytest --collect-only | grep "::" | wc -l to verify)
+pytest                                       # 6,756 tests (pytest --collect-only | grep "::" | wc -l to verify)
 python scripts/update_integrity.py          # MUST run after changing any tracked file
 umcp validate .                             # Validate entire repo
 umcp validate casepacks/hello_world --strict # Validate casepack (strict = fail on warnings)
@@ -561,12 +563,12 @@ umcp validate <target>
 
 ## Test Patterns
 
-**6,593 test cases** across **114 test files** in `tests/` (113 top-level `test_*.py` + 1 in `tests/closures/` + `conftest.py`), numbered by tier and domain (`test_000_*` through `test_247_*`). Single `tests/conftest.py` provides:
+**6,756 test cases** across **115 test files** in `tests/` (114 top-level `test_*.py` + 1 in `tests/closures/` + `conftest.py`), numbered by tier and domain (`test_000_*` through `test_248_*`). Single `tests/conftest.py` provides:
 - Frozen `RepoPaths` dataclass (session-scoped) with all critical paths
 - `@lru_cache` helpers: `_read_file()`, `_parse_json()`, `_parse_yaml()`, `_compile_schema()`
 - Convention: `test_<subject>_<behavior>()` for functions; `TestCLI*` classes with `subprocess.run` for CLI integration
 - Additional coverage: `test_fleet_worker.py` (Worker, WorkerPool, WorkerConfig), `test_insights.py` (PatternDatabase, InsightEngine)
-- Parametrized tests expand the collected items to 6,593 (verify: `pytest --collect-only | grep "::" | wc -l`)
+- Parametrized tests expand the collected items to 6,756 (verify: `pytest --collect-only | grep "::" | wc -l`)
 
 ### Test Distribution by Range
 
@@ -601,9 +603,10 @@ umcp validate <target>
 | `test_245` | FQHE bilayer graphene (Kim et al. 2026) | 349 |
 | `test_246` | Particle matter map (cross-scale kernel) | 102 |
 | `test_247` | Quincke rollers (magnetic active matter) | 185 |
+| `test_248` | Matter genesis (particle→atom→mass narrative) | 163 |
 | `closures/` | Closure-specific tests (kinematics phase) | 27 |
 | Infrastructure | Kernel, seam, frozen contract, extensions, uncertainty, calculator, coverage, etc. | 510 |
-| **TOTAL** | | **6,593** |
+| **TOTAL** | | **6,756** |
 
 ## Extension System
 
@@ -627,6 +630,7 @@ Extensions use `typing.Protocol` (`ExtensionProtocol` requiring `name`, `version
 | Dashboard pages | `src/umcp/dashboard/` (50 modular pages) |
 | Subatomic particles | `closures/standard_model/subatomic_kernel.py` (31 particles, 8-channel trace) |
 | SM 10 theorems | `closures/standard_model/particle_physics_formalism.py` (74/74 subtests) |
+| Matter genesis | `closures/standard_model/matter_genesis.py` (99 entities, 10 theorems, 7 acts) |
 | CKM mixing | `closures/standard_model/ckm_mixing.py` (Wolfenstein, Jarlskog) |
 | Running couplings | `closures/standard_model/coupling_constants.py` (α_s, α_em RGE) |
 | EWSB / Higgs | `closures/standard_model/symmetry_breaking.py` (VEV, Yukawa) |

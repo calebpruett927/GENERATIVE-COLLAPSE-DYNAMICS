@@ -17,7 +17,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "umcp"
 version = "2.1.5"
-description = "Universal Measurement Contract Protocol (UMCP): Production-grade contract-first validation framework with GCD and RCFT. Core Axiom: Collapse is generative; only what returns is real. 15 physics domains, 121 closures, 5326 tests."
+description = "Universal Measurement Contract Protocol (UMCP): Production-grade contract-first validation framework with GCD and RCFT. Core Axiom: Collapse is generative; only what returns is real. 17 domains, 128 closures, 6756 tests."
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"

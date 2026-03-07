@@ -5,10 +5,10 @@
 [![C++17](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](src/umcp_cpp/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![UMCP v2.1.5](https://img.shields.io/badge/UMCP-v2.1.5-orange.svg)](pyproject.toml)
-[![Tests: 6,593](https://img.shields.io/badge/tests-6%2C593-brightgreen.svg)](tests/)
+[![Tests: 6,756](https://img.shields.io/badge/tests-6%2C756-brightgreen.svg)](tests/)
 [![Domains: 17](https://img.shields.io/badge/domains-17-blueviolet.svg)](closures/)
-[![Closures: 127](https://img.shields.io/badge/closures-127-informational.svg)](closures/)
-[![Theorems: 46](https://img.shields.io/badge/theorems-46_proven-ff69b4.svg)](closures/)
+[![Closures: 128](https://img.shields.io/badge/closures-128-informational.svg)](closures/)
+[![Theorems: 56](https://img.shields.io/badge/theorems-56_proven-ff69b4.svg)](closures/)
 [![Identities: 28](https://img.shields.io/badge/identities-28_verified-9cf.svg)](scripts/)
 
 > **Core Axiom**: *"Collapse is generative; only what returns is real."*
@@ -17,7 +17,7 @@
 
 This is not a simulation. It is a **metrological enforcement engine**: schema conformance, kernel identity verification, regime classification, and SHA-256 integrity checking — producing a three-valued `CONFORMANT` / `NONCONFORMANT` / `NON_EVALUABLE` verdict for every run.
 
-**Python + C++ integration**: The framework is written in Python with **17 domains**, **127 closure modules**, **46 proven theorems**, and **6,593 tests**. An optional C++17 accelerator (`src/umcp_cpp/`) provides 50–80× speedup for three hot paths — kernel computation, seam chain accumulation, and SHA-256 integrity — via a pybind11 zero-copy NumPy bridge. The Python wrapper (`umcp.accel`) auto-detects the compiled extension at import time; if unavailable, every call falls back transparently to the equivalent NumPy implementation. Same formulas, same frozen parameters, same results to machine precision — the C++ layer is Tier-0 Protocol only and redefines no Tier-1 symbols.
+**Python + C++ integration**: The framework is written in Python with **17 domains**, **128 closure modules**, **56 proven theorems**, and **6,756 tests**. An optional C++17 accelerator (`src/umcp_cpp/`) provides 50–80× speedup for three hot paths — kernel computation, seam chain accumulation, and SHA-256 integrity — via a pybind11 zero-copy NumPy bridge. The Python wrapper (`umcp.accel`) auto-detects the compiled extension at import time; if unavailable, every call falls back transparently to the equivalent NumPy implementation. Same formulas, same frozen parameters, same results to machine precision — the C++ layer is Tier-0 Protocol only and redefines no Tier-1 symbols.
 
 ---
 
@@ -567,7 +567,7 @@ umcp validate casepacks/hello_world --strict
 ### Run the test suite
 
 ```bash
-pytest                           # All 6,593 tests
+pytest                           # All 6,756 tests
 pytest -v --tb=short            # Verbose with short tracebacks
 pytest -n auto                  # Parallel execution
 ```
@@ -631,7 +631,7 @@ umcp integrity                             # Verify SHA-256 checksums
 umcp validate .                            # Full repo validation → CONFORMANT
 
 # 3. Run the test suite
-pytest -v --tb=short                       # 6,593 tests
+pytest -v --tb=short                       # 6,756 tests
 ```
 
 ### C++ Accelerator — Build & Verify
@@ -749,7 +749,7 @@ umcp validate <target>
 The GitHub Actions workflow (`.github/workflows/validate.yml`) enforces:
 
 1. **Lint** — `ruff format --check` + `ruff check` + `mypy`
-2. **Test** — Full pytest suite (6,593 tests, 114 test files)
+2. **Test** — Full pytest suite (6,756 tests, 115 test files)
 3. **Validate** — Baseline + strict validation (both must return CONFORMANT)
 
 ### Pre-Commit Protocol
@@ -768,7 +768,7 @@ This mirrors CI exactly: format → lint → type-check → integrity → test �
 
 ## Test Suite
 
-**6,593 tests** across **114 test files**, organized by tier and domain:
+**6,756 tests** across **115 test files**, organized by tier and domain:
 
 | Test Range | Domain | Tests |
 |------------|--------|------:|
@@ -801,6 +801,7 @@ This mirrors CI exactly: format → lint → type-check → integrity → test �
 | `test_245` | FQHE bilayer graphene (Kim et al. 2026) | 349 |
 | `test_246` | Particle matter map (cross-scale kernel) | 102 |
 | `test_247` | Quincke rollers (magnetic active matter) | 185 |
+| `test_248` | Matter genesis (particle→atom→mass narrative) | 163 |
 | `closures/` | Closure-specific tests (kinematics phase) | 27 |
 | Infrastructure | Kernel, seam, frozen contract, extensions, uncertainty, calculator, coverage, etc. | 510 |
 
@@ -832,6 +833,20 @@ This synthesis demonstrates the generative return principle: collapse is measure
 - **Scale positioning**: Quincke rollers (1–100 μm) bridge the mesoscopic gap between atomic and everyday physics scales in the GCD scale ladder.
 
 This closure extends RCFT into active matter — systems driven far from equilibrium by external fields — validating that the kernel captures emergent order even in dissipative, non-equilibrium collective dynamics.
+
+---
+
+### Recent Kernel Closure Synthesis: Matter Genesis
+
+**A formalized narrative of how particles build atoms and create mass** was added in `closures/standard_model/matter_genesis.py`, tracing the complete six-scale matter ladder through the GCD kernel. The test suite (`tests/test_248_matter_genesis.py`) passes 163/163 tests, confirming:
+
+- **7 Acts of matter**: The Cast (17 fundamental particles) → Confinement (14 composites) → Nuclear Furnace (22 nuclei) → Electronic Shell (15 atoms) → Chemical Bond (15 molecules) → Bulk Emergence (16 materials) → The Mass Question (9 mass origins).
+- **10 genesis theorems proven (T-MG-1 through T-MG-10)**: Higgs mass generation (Yukawa coupling), color confinement cost (4 channels destroyed), binding mass deficit (BE/A), proton-neutron duality (trace separation predicts β-decay), shell closure stability (magic nuclei as IC attractors), electron configuration order (Aufbau → block-dependent IC with d > f > p > s), covalent bond coherence (molecular IC > atomic IC), mass hierarchy bridge (99% of visible mass from nuclear binding), material property ladder (bulk properties trace to atomic IC), and universal Tier-1 (all identities hold at every scale — zero exceptions across 99 entities).
+- **5 phase boundaries**: Confinement, NuclearBinding, ElectronicShell, ChemicalBond, BulkAggregation — each with explicit channels that die, survive, or emerge.
+- **9 mass origin breakdowns**: From single particles (up quark: 99.5% Higgs, 0.5% QCD) to composite systems (proton: 1% Higgs, 99% QCD) to bulk matter (70 kg human: 99.99% nuclear binding energy).
+- **Heterogeneity gap Δ = F − IC**: Tracks exactly how structural information is destroyed and recreated at each phase boundary, confirming that collapse is generative at every stage.
+
+This synthesis demonstrates the full reach of the return axiom: from quarks to bulk matter, every phase transition is a collapse that generates new structure. The kernel captures the entire story with zero Tier-1 violations.
 
 ---
 
@@ -875,7 +890,7 @@ The framework is anchored by peer-reviewed Zenodo publications covering the core
 │   ├── epistemic_weld.py      # Epistemic cost tracking
 │   ├── fleet/                 # Distributed validation
 │   └── dashboard/             # Modular Streamlit dashboard
-├── closures/                  # 17 domains, 126 modules
+├── closures/                  # 17 domains, 128 modules
 │   ├── standard_model/        # 31 particles, 10 theorems
 │   ├── atomic_physics/        # 118 elements, Tier-1 proof
 │   ├── quantum_mechanics/     # Double slit, entanglement, tunneling, QDM, FQHE
@@ -896,7 +911,7 @@ The framework is anchored by peer-reviewed Zenodo publications covering the core
 ├── schemas/                   # 14 JSON Schema files
 ├── canon/                     # 14 canonical anchor files
 ├── casepacks/                 # 15 reproducible validation bundles
-├── tests/                     # 114 test files, 6,593 tests
+├── tests/                     # 115 test files, 6,756 tests
 ├── paper/                     # 6 LaTeX papers + 1 Markdown paper + Bibliography.bib
 ├── integrity/                 # SHA-256 checksums
 ├── ledger/                    # Append-only validation log

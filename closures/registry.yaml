@@ -622,6 +622,24 @@ registry:
           dm2_32: 2.507e-3
         cross_references:
           - "closures/standard_model/ckm_mixing.py"
+      - name: "matter_genesis"
+        path: "closures/standard_model/matter_genesis.py"
+        description: "Particle→atom→mass narrative: 99 entities across 7 acts, 5 phase boundaries, 10 genesis theorems"
+        contract: "SM.INTSTACK.v1"
+        inputs: ["particle_catalog", "nuclide_data", "atomic_data", "molecular_data", "bulk_data"]
+        outputs: ["acts_i_vi", "transitions", "mass_origins", "theorems", "narrative", "tier1_violations"]
+        frozen_params:
+          epsilon: 1.0e-8
+          vev_gev: 246.22
+        cross_references:
+          - "closures/standard_model/particle_catalog.py"
+          - "closures/standard_model/subatomic_kernel.py"
+          - "closures/standard_model/particle_physics_formalism.py"
+          - "closures/standard_model/symmetry_breaking.py"
+          - "closures/standard_model/particle_matter_map.py"
+          - "closures/nuclear_physics/nuclide_binding.py"
+          - "closures/atomic_physics/periodic_kernel.py"
+          - "closures/atomic_physics/cross_scale_kernel.py"
 
     materials_science:
       - name: "cohesive_energy"
