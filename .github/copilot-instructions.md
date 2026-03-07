@@ -1,6 +1,6 @@
 # Copilot Instructions for GENERATIVE-COLLAPSE-DYNAMICS
 
-**UMCP v2.1.5** · **5,903 tests** · **16 domains** · **124 closure modules** · **46 lemmas** · **28 structural identities** · **50 dashboard pages**
+**UMCP v2.1.5** · **6,306 tests** · **17 domains** · **126 closure modules** · **46 lemmas** · **28 structural identities** · **50 dashboard pages**
 
 ## Foundational Principle — Read This First
 
@@ -369,7 +369,7 @@ If not built, all operations fall back to NumPy transparently. Same formulas, sa
 parameters — Tier-0 Protocol only (no Tier-1 symbols redefined). Build:
 `cd src/umcp_cpp && mkdir build && cd build && cmake .. && make`
 
-**Closure domains** (16 total, each in `closures/<domain>/`):
+**Closure domains** (17 total, each in `closures/<domain>/`):
 
 ```
 closures/
@@ -380,13 +380,14 @@ closures/
 ├── security/                 # Input validation, audit
 ├── astronomy/                # Stellar classification, HR diagram
 ├── nuclear_physics/          # Binding energy, decay chains
-├── quantum_mechanics/        # Wavefunction, entanglement
+├── quantum_mechanics/        # Wavefunction, entanglement, QDM, FQHE
 ├── finance/                  # Portfolio continuity, market coherence
 ├── atomic_physics/           # 118 elements, periodic kernel, cross-scale, Tier-1 proof
 ├── materials_science/        # Element database (118 elements, 18 fields)
 ├── everyday_physics/         # Thermodynamics, optics, electromagnetism, wave phenomena
 ├── evolution/                # 40 organisms, 10-channel brain kernel, 20 species comparative neuroscience
 ├── dynamic_semiotics/        # 30 sign systems, 8-channel semiotic kernel (see SEMIOTIC_CONVERGENCE.md)
+├── consciousness_coherence/  # 20 systems, coherence kernel, 7 theorems (T-CC-1 through T-CC-7)
 ├── continuity_theory/        # Continuity law closures
 └── standard_model/           # Subatomic kernel (31 particles), 10 proven theorems
 ```
@@ -494,7 +495,7 @@ All papers use RevTeX4-2 (`revtex4-2` document class) and share `Bibliography.bi
 
 ```bash
 pip install -e ".[all]"                     # Dev install (core + api + viz + dev tools)
-pytest                                       # 5,903 tests (pytest --collect-only | grep "::" | wc -l to verify)
+pytest                                       # 6,306 tests (pytest --collect-only | grep "::" | wc -l to verify)
 python scripts/update_integrity.py          # MUST run after changing any tracked file
 umcp validate .                             # Validate entire repo
 umcp validate casepacks/hello_world --strict # Validate casepack (strict = fail on warnings)
@@ -560,12 +561,12 @@ umcp validate <target>
 
 ## Test Patterns
 
-**5,903 test cases** across **109 test files** in `tests/` (108 top-level `test_*.py` + 1 in `tests/closures/` + `conftest.py`), numbered by tier and domain (`test_000_*` through `test_243_*`). Single `tests/conftest.py` provides:
+**6,306 test cases** across **112 test files** in `tests/` (111 top-level `test_*.py` + 1 in `tests/closures/` + `conftest.py`), numbered by tier and domain (`test_000_*` through `test_245_*`). Single `tests/conftest.py` provides:
 - Frozen `RepoPaths` dataclass (session-scoped) with all critical paths
 - `@lru_cache` helpers: `_read_file()`, `_parse_json()`, `_parse_yaml()`, `_compile_schema()`
 - Convention: `test_<subject>_<behavior>()` for functions; `TestCLI*` classes with `subprocess.run` for CLI integration
 - Additional coverage: `test_fleet_worker.py` (Worker, WorkerPool, WorkerConfig), `test_insights.py` (PatternDatabase, InsightEngine)
-- Parametrized tests expand the collected items to 5,903 (verify: `pytest --collect-only | grep "::" | wc -l`)
+- Parametrized tests expand the collected items to 6,306 (verify: `pytest --collect-only | grep "::" | wc -l`)
 
 ### Test Distribution by Range
 
@@ -596,9 +597,11 @@ umcp validate <target>
 | `test_239` | Dynamic semiotics closures | 70 |
 | `test_242` | Consciousness coherence, Butzbach embedding | 262 |
 | `test_243` | Quantum dimer model (Yan et al. 2022) | 315 |
+| `test_244` | Consciousness theorems (T-CC-1 through T-CC-7) | 54 |
+| `test_245` | FQHE bilayer graphene (Kim et al. 2026) | 349 |
 | `closures/` | Closure-specific tests (kinematics phase) | 27 |
 | Infrastructure | Kernel, seam, frozen contract, extensions, uncertainty, calculator, coverage, etc. | 510 |
-| **TOTAL** | | **5,903** |
+| **TOTAL** | | **6,306** |
 
 ## Extension System
 

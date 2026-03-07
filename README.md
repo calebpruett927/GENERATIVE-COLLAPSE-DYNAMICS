@@ -17,7 +17,7 @@
 
 This is not a simulation. It is a **metrological enforcement engine**: schema conformance, kernel identity verification, regime classification, and SHA-256 integrity checking — producing a three-valued `CONFORMANT` / `NONCONFORMANT` / `NON_EVALUABLE` verdict for every run.
 
-**Python + C++ integration**: The framework is written in Python with **16 domains**, **124 closure modules**, **24 proven theorems** (241 computational subtests), and **5,903 tests**. An optional C++17 accelerator (`src/umcp_cpp/`) provides 50–80× speedup for three hot paths — kernel computation, seam chain accumulation, and SHA-256 integrity — via a pybind11 zero-copy NumPy bridge. The Python wrapper (`umcp.accel`) auto-detects the compiled extension at import time; if unavailable, every call falls back transparently to the equivalent NumPy implementation. Same formulas, same frozen parameters, same results to machine precision — the C++ layer is Tier-0 Protocol only and redefines no Tier-1 symbols.
+**Python + C++ integration**: The framework is written in Python with **17 domains**, **126 closure modules**, **38 proven theorems**, and **6,306 tests**. An optional C++17 accelerator (`src/umcp_cpp/`) provides 50–80× speedup for three hot paths — kernel computation, seam chain accumulation, and SHA-256 integrity — via a pybind11 zero-copy NumPy bridge. The Python wrapper (`umcp.accel`) auto-detects the compiled extension at import time; if unavailable, every call falls back transparently to the equivalent NumPy implementation. Same formulas, same frozen parameters, same results to machine precision — the C++ layer is Tier-0 Protocol only and redefines no Tier-1 symbols.
 
 ---
 
@@ -631,7 +631,7 @@ umcp integrity                             # Verify SHA-256 checksums
 umcp validate .                            # Full repo validation → CONFORMANT
 
 # 3. Run the test suite
-pytest -v --tb=short                       # 5,903 tests
+pytest -v --tb=short                       # 6,306 tests
 ```
 
 ### C++ Accelerator — Build & Verify
@@ -749,7 +749,7 @@ umcp validate <target>
 The GitHub Actions workflow (`.github/workflows/validate.yml`) enforces:
 
 1. **Lint** — `ruff format --check` + `ruff check` + `mypy`
-2. **Test** — Full pytest suite (5,903 tests, 109 test files)
+2. **Test** — Full pytest suite (6,306 tests, 112 test files)
 3. **Validate** — Baseline + strict validation (both must return CONFORMANT)
 
 ### Pre-Commit Protocol
@@ -767,7 +767,7 @@ This mirrors CI exactly: format → lint → type-check → integrity → test �
 
 ## Test Suite
 
-**5,903 tests** across **109 test files**, organized by tier and domain:
+**6,306 tests** across **112 test files**, organized by tier and domain:
 
 | Test Range | Domain | Tests |
 |------------|--------|------:|
@@ -796,6 +796,8 @@ This mirrors CI exactly: format → lint → type-check → integrity → test �
 | `test_239` | Dynamic semiotics closures | 70 |
 | `test_242` | Consciousness coherence, Butzbach embedding | 262 |
 | `test_243` | Quantum dimer model (Yan et al. 2022) | 315 |
+| `test_244` | Consciousness theorems (T-CC-1 through T-CC-7) | 54 |
+| `test_245` | FQHE bilayer graphene (Kim et al. 2026) | 349 |
 | `closures/` | Closure-specific tests (kinematics phase) | 27 |
 | Infrastructure | Kernel, seam, frozen contract, extensions, uncertainty, calculator, coverage, etc. | 510 |
 
@@ -843,10 +845,10 @@ The framework is anchored by peer-reviewed Zenodo publications covering the core
 │   ├── epistemic_weld.py      # Epistemic cost tracking
 │   ├── fleet/                 # Distributed validation
 │   └── dashboard/             # Modular Streamlit dashboard
-├── closures/                  # 16 domains, 122 modules
+├── closures/                  # 17 domains, 126 modules
 │   ├── standard_model/        # 31 particles, 10 theorems
 │   ├── atomic_physics/        # 118 elements, Tier-1 proof
-│   ├── quantum_mechanics/     # Double slit, entanglement, tunneling
+│   ├── quantum_mechanics/     # Double slit, entanglement, tunneling, QDM, FQHE
 │   ├── nuclear_physics/       # Binding energy, decay chains
 │   ├── materials_science/     # 118 elements × 18 fields
 │   ├── evolution/             # 40 organisms, 20 species brain kernel, 60 kernel states
@@ -857,13 +859,14 @@ The framework is anchored by peer-reviewed Zenodo publications covering the core
 │   ├── weyl/                  # Modified gravity, cosmology
 │   ├── everyday_physics/      # Thermodynamics, optics, electromagnetism
 │   ├── dynamic_semiotics/     # 30 sign systems, semiotic kernel
+│   ├── consciousness_coherence/ # 20 systems, coherence kernel, 7 theorems
 │   ├── continuity_theory/     # Continuity law closures
 │   └── finance/ & security/   # Applied domains
 ├── contracts/                 # 13 mathematical contracts (YAML)
 ├── schemas/                   # 14 JSON Schema files
 ├── canon/                     # 14 canonical anchor files
 ├── casepacks/                 # 15 reproducible validation bundles
-├── tests/                     # 109 test files, 5,903 tests
+├── tests/                     # 112 test files, 6,306 tests
 ├── paper/                     # 6 LaTeX papers + 1 Markdown paper + Bibliography.bib
 ├── integrity/                 # SHA-256 checksums
 ├── ledger/                    # Append-only validation log
@@ -992,7 +995,7 @@ python scripts/cross_domain_bridge_phase2.py # 8 identities (D1-D8): deep struct
 | 5 | **4-dimensional closure algebra** — 5 diagnostics span 4 effective dimensions | Half the degrees of freedom are constrained by the kernel |
 | 6 | **Stability is rare** — Collapse 63% / Watch 24% / Stable 12.5% of Fisher space | Return from collapse to stability is the exception, not the norm |
 
-### Across 16 Physics Domains and 24 Proven Theorems
+### Across 17 Physics Domains and 38 Proven Theorems
 
 1. **Confinement is a cliff**: IC drops 98.1% at the quark→hadron boundary — confinement is visible as geometric-mean collapse in the kernel trace
 
