@@ -71,6 +71,11 @@ registry:
         description: "Active matter frictional cooling: 4D Ψ-embedding, corrected regime analysis (Antonov et al. 2025)"
         inputs: ["velocities", "phase_boundaries"]
         outputs: ["phases", "fisher_distances", "path_efficiency", "universality", "grammar", "corrected_thresholds"]
+      - name: "quincke_rollers"
+        path: "closures/rcft/quincke_rollers.py"
+        description: "Magnetic Quincke rollers: 8D Ψ-embedding, 12 experimental states, 8 structural theorems (Garza et al., Science Advances 2023)"
+        inputs: ["quincke_config"]
+        outputs: ["kernel_results", "theorems", "nano_connections", "scale_position", "summary"]
     optimizations:
       - name: "tau_R_optimized"
         path: "src/umcp/tau_R_optimized.py"

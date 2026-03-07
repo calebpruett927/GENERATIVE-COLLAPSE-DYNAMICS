@@ -1,13 +1,13 @@
 {
-  "run_id": "AUTOFIX-20260307-061229",
-  "frozen_utc": "2026-03-07T06:12:29.721022+00:00",
+  "run_id": "AUTOFIX-20260307-221307",
+  "frozen_utc": "2026-03-07T22:13:07.525036+00:00",
   "hashes": {
     "embedding.yaml": "86f42b77b79c202ed59628fdeb99c6629a051e395a3b9e9357f2b2cd05feca3f",
     "return.yaml": "65adf659cad908a210311882d888b32bb8a2d7afcf91b01f192f29e5e45b23a7",
     "contract.yaml": "7e3970cea147c08df2df7b37b6dbcd604f05bb7e34bce626d3c1f613160dc667",
     "weights.csv": "2993167e163c4f31db682b50b61b08d5b2ddf0e681cbe5b7500581a56c3e6b2e",
     "observables.yaml": "2b036d4e7bf88f566841df9b047c4f82fa92ce2f9a75152c8d8cad7316afe17d",
-    "closures/registry.yaml": "99c94e8639c38f0e6a68b2b6b30465c807c5a345e6f17fd818ff062b25354a6a"
+    "closures/registry.yaml": "da59d88647f9a6b3661bdb993a66251623e9dd1083f2f292ae666d2082b7d871"
   },
   "files_frozen": [
     "embedding.yaml",
