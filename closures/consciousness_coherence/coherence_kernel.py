@@ -795,12 +795,12 @@ def compute_structural_analysis(
     # Correlation: does ξ_J proximity predict IC?
     xi_vals = [r.xi_j_diagnostic for r in results]
     ic_vals = [r.IC for r in results]
-    xi_ic_corr = float(spearmanr(xi_vals, ic_vals)[0]) if len(set(xi_vals)) > 1 else 0.0 # type: ignore
+    xi_ic_corr = float(spearmanr(xi_vals, ic_vals)[0]) if len(set(xi_vals)) > 1 else 0.0  # type: ignore
 
     # Correlation: does recursive depth predict return?
     rec_vals = [r.trace_vector[1] for r in results]  # recursive_depth
     ret_vals = [r.trace_vector[2] for r in results]  # return_fidelity
-    rec_ret_corr = float(spearmanr(rec_vals, ret_vals)[0]) if len(set(rec_vals)) > 1 else 0.0 # type: ignore
+    rec_ret_corr = float(spearmanr(rec_vals, ret_vals)[0]) if len(set(rec_vals)) > 1 else 0.0  # type: ignore
 
     return CoherenceStructuralAnalysis(
         n_systems=len(results),
