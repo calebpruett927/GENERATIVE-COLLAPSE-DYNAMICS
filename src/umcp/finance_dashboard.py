@@ -46,7 +46,7 @@ except ImportError:
     np = None  # type: ignore[assignment]
     pd = None
     go = None
-    st = None  # type: ignore[assignment]
+    st = None  # type: ignore[assignment,unused-ignore]
     make_subplots = None
 
 
