@@ -182,6 +182,165 @@ class ScaleLadder:
 
 
 # ═══════════════════════════════════════════════════════════════════
+# NOISE BUDGET — Per-Scale Noise Classification
+# ═══════════════════════════════════════════════════════════════════
+
+# Physical noise types by scale (Tier-2 closure: domain interpretation
+# of the Bernoulli variance c(1-c) at each rung).
+_NOISE_TYPES: dict[str, str] = {
+    "Planck": "Quantum vacuum",
+    "Subatomic": "Quantum partition",
+    "Nuclear": "Nuclear shot",
+    "Atomic": "Shell partition",
+    "Molecular": "Thermal (bond)",
+    "Cellular": "1/f (biological)",
+    "Everyday": "Thermal/Johnson",
+    "Geological": "1/f (geophysical)",
+    "Stellar": "Shot (thermonuclear)",
+    "Galactic": "1/f (stochastic)",
+    "Cosmological": "Cosmic variance",
+}
+
+
+@dataclass(frozen=True)
+class NoiseBudgetEntry:
+    """Noise budget for one rung: Bernoulli variance as measurement noise.
+
+    The heterogeneity gap Δ = F − IC is the noise budget at each scale:
+    how much the per-channel Bernoulli variance c(1-c) destroys
+    multiplicative coherence. The Fisher metric g_F = 1/(c(1-c))
+    measures the precision cost of that noise.
+    """
+
+    rung_number: int
+    rung_name: str
+    mean_c: float  # Mean channel value across all objects/channels
+    bernoulli_var: float  # c(1-c) at mean_c
+    fisher_metric: float  # g_F = 1/(c(1-c))
+    bernoulli_regime: str  # "Poisson-like" / "Symmetric" / "Near-unity"
+    noise_type: str  # Physical noise classification (scale-dependent)
+    mean_gap: float  # ⟨Δ⟩ — the noise budget at this scale
+    mean_F: float
+    mean_IC: float
+    coherence_efficiency: float  # IC/F as percentage
+
+
+def _classify_bernoulli_regime(mean_c: float) -> str:
+    """Classify the Bernoulli regime from the mean channel value.
+
+    From KERNEL_SPECIFICATION.md §5.3a:
+      c < 0.25:  Poisson-like (shot noise, rare events)
+      0.25–0.75: Symmetric Bernoulli (thermal noise, max variance)
+      c > 0.75:  Near-unity (high-fidelity)
+    """
+    if mean_c < 0.25:
+        return "Poisson-like"
+    if mean_c <= 0.75:
+        return "Symmetric"
+    return "Near-unity"
+
+
+def compute_noise_budget(ladder: ScaleLadder) -> list[NoiseBudgetEntry]:
+    """Compute the noise budget for each rung of the scale ladder.
+
+    For each rung:
+    - Collects all channel values from every object's trace vector
+    - Computes mean channel value ⟨c⟩
+    - Derives Bernoulli variance c(1-c) and Fisher metric g_F = 1/(c(1-c))
+    - Classifies the Bernoulli regime (Poisson-like / Symmetric / Near-unity)
+    - Maps to the physical noise type (Tier-2: scale-dependent interpretation)
+    - Reports ⟨Δ⟩ = ⟨F − IC⟩ as the noise budget
+    """
+    entries = []
+    for rung in ladder.rungs:
+        # Collect all channel values from all objects' trace vectors
+        all_channels: list[float] = []
+        for obj in rung.objects:
+            all_channels.extend(obj.trace)
+
+        mean_c = sum(all_channels) / len(all_channels) if all_channels else 0.5
+
+        # Bernoulli variance and Fisher metric
+        c_clamped = max(EPSILON, min(1.0 - EPSILON, mean_c))
+        bvar = c_clamped * (1.0 - c_clamped)
+        g_F = 1.0 / bvar
+
+        # Regime and noise type
+        regime = _classify_bernoulli_regime(c_clamped)
+        noise_type = _NOISE_TYPES.get(rung.name, "Unclassified")
+
+        # Coherence efficiency
+        eff = (rung.mean_IC / rung.mean_F * 100) if rung.mean_F > EPSILON else 0.0
+
+        entries.append(
+            NoiseBudgetEntry(
+                rung_number=rung.number,
+                rung_name=rung.name,
+                mean_c=round(mean_c, 4),
+                bernoulli_var=round(bvar, 4),
+                fisher_metric=round(g_F, 2),
+                bernoulli_regime=regime,
+                noise_type=noise_type,
+                mean_gap=round(rung.mean_gap, 4),
+                mean_F=round(rung.mean_F, 4),
+                mean_IC=round(rung.mean_IC, 4),
+                coherence_efficiency=round(eff, 1),
+            )
+        )
+
+    return entries
+
+
+def display_noise_budget(entries: list[NoiseBudgetEntry]) -> None:
+    """Display the noise budget table for all rungs."""
+    print()
+    hdr = "NOISE BUDGET — Bernoulli Variance as Measurement Noise"
+    lat = "Variatio Bernoulli est sonus mensurae."
+    trans = "(The Bernoulli variance is the noise of measurement.)"
+    print("╔" + "═" * 97 + "╗")
+    print(f"║  {hdr:<95}║")
+    print(f"║  {lat:<95}║")
+    print(f"║  {trans:<95}║")
+    print("╚" + "═" * 97 + "╝")
+
+    print(
+        f"\n  {'#':<3} {'Rung':<14} {'⟨c⟩':>5} {'c(1-c)':>7} {'g_F':>7} "
+        f"{'Regime':<14} {'Noise Type':<22} {'⟨Δ⟩':>6} {'IC/F':>6}"
+    )
+    print("  " + "─" * 95)
+
+    for e in entries:
+        print(
+            f"  {e.rung_number:<3d} {e.rung_name:<14} {e.mean_c:>5.3f} {e.bernoulli_var:>7.4f} "
+            f"{e.fisher_metric:>7.1f} {e.bernoulli_regime:<14} {e.noise_type:<22} "
+            f"{e.mean_gap:>6.3f} {e.coherence_efficiency:>5.1f}%"
+        )
+
+    # Summary
+    poisson = [e for e in entries if e.bernoulli_regime == "Poisson-like"]
+    symmetric = [e for e in entries if e.bernoulli_regime == "Symmetric"]
+
+    print()
+    print("  KEY FINDINGS:")
+    if poisson:
+        names = ", ".join(e.rung_name for e in poisson)
+        print(f"  • Poisson-like regime (⟨c⟩ < 0.25): {names}")
+        print("    → Shot/quantum noise dominates; Fisher metric g_F > 16")
+    if symmetric:
+        names = ", ".join(e.rung_name for e in symmetric)
+        print(f"  • Symmetric regime (0.25 ≤ ⟨c⟩ ≤ 0.75): {names}")
+        print("    → Thermal/Johnson noise dominates; g_F near minimum (4)")
+
+    print()
+    print("  The heterogeneity gap Δ = F − IC is the noise budget at each scale:")
+    print("  it measures how much Bernoulli variance c(1−c) destroys multiplicative")
+    print("  coherence. The Fisher metric g_F = 1/[c(1−c)] is the precision cost.")
+    print("  Reality distinguishes itself from noise because g_F → ∞ at the")
+    print("  boundaries (c → 0, c → 1) where collapse is certain.")
+    print()
+
+
+# ═══════════════════════════════════════════════════════════════════
 # KERNEL HELPERS
 # ═══════════════════════════════════════════════════════════════════
 
@@ -1632,7 +1791,12 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Scale Ladder — From Minimal to Universal")
     parser.add_argument("--verbose", "-v", action="store_true", help="Show per-object details")
+    parser.add_argument("--noise", "-n", action="store_true", help="Show noise budget analysis")
     args = parser.parse_args()
 
     ladder = build_scale_ladder()
     display_ladder(ladder, verbose=args.verbose)
+
+    if args.noise:
+        budget = compute_noise_budget(ladder)
+        display_noise_budget(budget)

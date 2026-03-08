@@ -647,27 +647,79 @@ fail for the same structural reason.
 The scale ladder reveals that coherence does not increase with
 complexity, size, or energy:
 
-\begin{table}[!htb]
+\begin{table*}[!htb]
 \caption{\label{tab:coherence-ratio}Coherence efficiency
-$\IC/F$ by scale.}
+$\IC/F$ and noise budget $\langle\Delta\rangle$ by scale, with
+the Bernoulli regime and dominant physical noise type at each rung.
+The per-channel noise is the Bernoulli variance $c(1{-}c)$;
+the Fisher metric $\gF = 1/[c(1{-}c)]$ is the precision cost.}
 \begin{ruledtabular}
-\begin{tabular}{lcccc}
-Scale & $\langle F \rangle$ & $\langle \IC \rangle$ & $\IC/F$ & $\langle \Delta \rangle$ \\
+\begin{tabular}{lccccccl}
+Scale & $\langle c \rangle$ & $c(1{-}c)$ & $\gF$ &
+  $\langle F \rangle$ & $\IC/F$ & $\langle \Delta \rangle$ &
+  Noise type \\
 \hline
-Planck & 0.030 & 0.000 & 0.0\% & 0.030 \\
-Subatomic & 0.510 & 0.180 & 35.3\% & 0.320 \\
-Nuclear & 0.490 & 0.360 & \textbf{72.6\%} & 0.130 \\
-Geological & 0.290 & 0.130 & 44.8\% & 0.160 \\
-Galactic & 0.636 & 0.280 & 44.0\% & 0.356 \\
-Cosmological & 0.600 & 0.100 & 17.6\% & 0.490 \\
+Planck       & 0.029 & 0.028 & 36.1 & 0.030 &   0.0\% & 0.030 & Quantum vacuum \\
+Subatomic    & 0.500 & 0.250 &  4.0 & 0.510 &  36.2\% & 0.323 & Quantum partition \\
+Nuclear      & 0.489 & 0.250 &  4.0 & 0.490 & \textbf{72.6\%} & 0.134 & Nuclear shot \\
+Atomic       & 0.308 & 0.213 &  4.7 & 0.308 &  34.7\% & 0.201 & Shell partition \\
+Molecular    & 0.306 & 0.213 &  4.7 & 0.306 &  42.6\% & 0.176 & Thermal (bond) \\
+Cellular     & 0.432 & 0.245 &  4.1 & 0.432 &  43.4\% & 0.245 & $1/f$ (biological) \\
+Everyday     & 0.380 & 0.236 &  4.2 & 0.380 &  51.3\% & 0.185 & Thermal/Johnson \\
+Geological   & 0.289 & 0.205 &  4.9 & 0.290 &  45.1\% & 0.158 & $1/f$ (geophysical) \\
+Stellar      & 0.370 & 0.233 &  4.3 & 0.370 &  35.4\% & 0.239 & Shot (thermonuclear) \\
+Galactic     & 0.636 & 0.232 &  4.3 & 0.636 &  60.3\% & 0.252 & $1/f$ (stochastic) \\
+Cosmological & 0.597 & 0.241 &  4.2 & 0.600 &  17.6\% & 0.492 & Cosmic variance \\
 \end{tabular}
 \end{ruledtabular}
-\end{table}
+\end{table*}
 
 Nuclear structures are the most coherence-efficient in existence.
 Cosmological structures are the least.  Galactic scales have the
 highest mean fidelity but only moderate coherence efficiency.
 Coherence is a function of \emph{channel balance}, not of scale.
+
+\subsection{The Noise Structure of Measurement}\label{sec:noise-structure}
+
+The expanded Table~\ref{tab:coherence-ratio} reveals a further
+structural fact: reality distinguishes itself from noise because the
+Fisher metric $\gF(c) = 1/[c(1{-}c)]$ assigns infinite precision to
+the boundaries ($c \to 0$, $c \to 1$) where collapse is certain, and
+finite precision --- minimum $\gF = 4$ at $c = 1/2$ --- to the
+interior where uncertainty is maximal.
+
+The Bernoulli variance $c(1{-}c)$ is the per-channel noise.  It is
+not a nuisance to be subtracted but a \emph{structural component} of
+measurement: the noise IS the interior of the Bernoulli manifold.
+The heterogeneity gap $\Delta = F - \IC$ is then the
+\emph{noise budget} at each scale --- it measures how much
+per-channel variance destroys multiplicative coherence.
+
+Two regimes emerge from the data:
+\begin{itemize}
+\item \textbf{Poisson-like} ($\langle c \rangle < 0.25$):  Only the
+  Planck rung occupies this regime.  The Fisher metric is elevated
+  ($\gF = 36.1$), reflecting that near-boundary channels carry high
+  precision but are fragile --- one dead channel is instantly
+  detectable.  This is the regime of shot noise and quantum
+  vacuum fluctuations.
+
+\item \textbf{Symmetric Bernoulli} ($0.25 \leq \langle c \rangle
+  \leq 0.75$):  All other rungs.  The Fisher metric clusters near
+  its minimum ($\gF \approx 4$--$5$), reflecting maximum per-channel
+  variance.  This is the regime of thermal (Johnson--Nyquist) noise,
+  $1/f$ noise, and partition fluctuations.  The physical mechanism
+  changes with scale --- Johnson noise at the everyday scale,
+  thermonuclear shot noise in stellar interiors, cosmic variance at
+  the horizon --- but the Bernoulli geometry is identical.
+\end{itemize}
+
+The measurement substrate is therefore simultaneously a measurement
+geometry \emph{and} a noise geometry.  The Fano-Fisher duality
+$h''(c) = -\gF(c)$ (Eq.~\ref{eq:fano-fisher}) ties the curvature of
+entropy to the curvature of distinguishability, and the noise budget
+$\Delta$ measures how the interplay between these two curvatures
+determines coherence at each scale.
 
 % ============================================================
 \section{Evidence That Every Component Is Load-Bearing}
@@ -1036,6 +1088,14 @@ Combining the evidence of the preceding sections:
 \item The heterogeneity gap functions as a universal diagnostic
   across all tested scales and domains
   (\S\ref{sec:universal-diagnostic}).
+
+\item The noise budget $\langle\Delta\rangle$ at each scale
+  is governed by the Bernoulli variance $c(1{-}c)$ and
+  the Fisher metric $\gF = 1/[c(1{-}c)]$, which assign
+  infinite precision to the boundaries and minimum precision
+  to the equator --- reality distinguishes itself from noise
+  because the geometry makes boundaries infinitely
+  distinguishable (\S\ref{sec:noise-structure}).
 
 \item Every architectural component is load-bearing
   (\S\ref{sec:load-bearing}).

@@ -1193,7 +1193,7 @@ Each kernel identity is derived from Axiom-0 through the Bernoulli embedding. Th
 
 **Classical principle**: Kubo (1966) proved that for a linear system near thermal equilibrium, the response function (dissipation) is determined by the correlation function of spontaneous fluctuations — no free parameters. The fluctuation-dissipation theorem (FDT) requires three restrictions: linearity, equilibrium, and a correlation-function description.
 
-**UMCP version**: The duality identity F + ω = 1 holds *algebraically* for all trace vectors — no linearity, no equilibrium, no restriction to correlation functions. What is preserved (F) and what departs (ω) are exact complements by construction. Restrict the duality identity to linear response of a system near thermal equilibrium described by correlation functions, and Kubo's FDT emerges as the degenerate limit. The kernel version is **unconditional** — the same identity holds for arbitrary channel heterogeneity, far-from-equilibrium dynamics, and nonlinear systems where the FDT breaks down. 100.0% exact across all domains.
+**UMCP version**: The duality identity F + ω = 1 holds _algebraically_ for all trace vectors — no linearity, no equilibrium, no restriction to correlation functions. What is preserved (F) and what departs (ω) are exact complements by construction. Restrict the duality identity to linear response of a system near thermal equilibrium described by correlation functions, and Kubo's FDT emerges as the degenerate limit. The kernel version is **unconditional** — the same identity holds for arbitrary channel heterogeneity, far-from-equilibrium dynamics, and nonlinear systems where the FDT breaks down. 100.0% exact across all domains.
 
 #### IC = exp(κ) contains the exponential map as a degenerate limit
 
@@ -1243,9 +1243,9 @@ This is the central measurement principle. The arithmetic mean $F = \Sigma w_i c
 
 This is geometric slaughter (§3 of orientation), and it has a precise physical analog: **noise measurements reveal structure invisible to mean measurements.**
 
-- **de-Picciotto et al. (1997)**: Mean electrical current through a $\nu = 1/3$ quantum Hall constriction cannot distinguish $e/3$ charge quanta from $e$ — the current is continuous. Shot noise power $S_I = 2e^* I$ reveals $e^* = e/3$ directly, because the noise depends on the *discreteness* of charge carriers. The mean hides; the fluctuation reveals. This is the experimental realization of geometric slaughter (see T-FQHE-2).
+- **de-Picciotto et al. (1997)**: Mean electrical current through a $\nu = 1/3$ quantum Hall constriction cannot distinguish $e/3$ charge quanta from $e$ — the current is continuous. Shot noise power $S_I = 2e^* I$ reveals $e^* = e/3$ directly, because the noise depends on the _discreteness_ of charge carriers. The mean hides; the fluctuation reveals. This is the experimental realization of geometric slaughter (see T-FQHE-2).
 
-- **Benz et al. (2024)**: Johnson noise power $S_V = 4k_B T R$ now *defines* the kelvin in the revised SI. Temperature is measured through noise — the fluctuation IS the primary observable, not a contaminant.
+- **Benz et al. (2024)**: Johnson noise power $S_V = 4k_B T R$ now _defines_ the kelvin in the revised SI. Temperature is measured through noise — the fluctuation IS the primary observable, not a contaminant.
 
 - **Spietz et al. (2006)**: Shot noise at finite bias measures effective electron temperature without any external thermometer. The noise is the thermometer.
 

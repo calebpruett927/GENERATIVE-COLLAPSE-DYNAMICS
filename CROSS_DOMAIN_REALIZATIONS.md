@@ -430,6 +430,33 @@ The unifying structure is the Bernoulli partition c(1−c): maximum noise at c =
 
 **The kernel captures the abstract structure. The physical noise models are degenerate limits when specific constraints (linearity, equilibrium, charge quantization) are imposed.** This is why the same kernel organizes quarks, atoms, galaxies, and laboratory noise measurements — it operates at the level of the Bernoulli partition, which is prior to any specific physical noise mechanism.
 
+#### Noise Budget Per Scale (Computed)
+
+The scale ladder instantiates this concretely. At each rung, ⟨c⟩ determines the Bernoulli regime, c(1−c) is the per-channel noise, g_F = 1/(c(1−c)) is the precision cost, and ⟨Δ⟩ = ⟨F − IC⟩ is the noise budget:
+
+| Rung | Scale | ⟨c⟩ | c(1−c) | g_F | Regime | Noise Type | ⟨Δ⟩ | IC/F |
+|------|-------|------|--------|-----|--------|------------|------|------|
+| 0 | Planck | 0.029 | 0.028 | 36.1 | Poisson-like | Quantum vacuum | 0.030 | 0.0% |
+| 1 | Subatomic | 0.500 | 0.250 | 4.0 | Symmetric | Quantum partition | 0.323 | 36.2% |
+| 2 | Nuclear | 0.489 | 0.250 | 4.0 | Symmetric | Nuclear shot | 0.134 | **72.6%** |
+| 3 | Atomic | 0.308 | 0.213 | 4.7 | Symmetric | Shell partition | 0.201 | 34.7% |
+| 4 | Molecular | 0.306 | 0.213 | 4.7 | Symmetric | Thermal (bond) | 0.176 | 42.6% |
+| 5 | Cellular | 0.432 | 0.245 | 4.1 | Symmetric | 1/f (biological) | 0.245 | 43.4% |
+| 6 | Everyday | 0.380 | 0.236 | 4.2 | Symmetric | Thermal/Johnson | 0.185 | 51.3% |
+| 7 | Geological | 0.289 | 0.205 | 4.9 | Symmetric | 1/f (geophysical) | 0.158 | 45.1% |
+| 8 | Stellar | 0.370 | 0.233 | 4.3 | Symmetric | Shot (thermonuclear) | 0.239 | 35.4% |
+| 9 | Galactic | 0.636 | 0.232 | 4.3 | Symmetric | 1/f (stochastic) | 0.252 | 60.3% |
+| 10 | Cosmological | 0.597 | 0.241 | 4.2 | Symmetric | Cosmic variance | 0.492 | 17.6% |
+
+**Key findings**:
+
+- **Only Planck is Poisson-like** (⟨c⟩ < 0.25). The Fisher metric is 9× above its minimum, reflecting that near-boundary channels carry high precision but are fragile. This is why the Planck scale is the floor of measurability — it is where shot noise dominates and coherence is impossible.
+- **All other scales are in the symmetric Bernoulli regime** (g_F ≈ 4–5). The physical noise mechanism changes — Johnson noise at everyday scale, thermonuclear shot noise in stellar interiors, cosmic variance at the horizon — but the Bernoulli geometry is identical.
+- **Nuclear is the most noise-resistant** (IC/F = 72.6%). Binding energy channels are well-balanced, producing the smallest noise budget.
+- **Cosmological is the least noise-resistant** (IC/F = 17.6%). Dark energy acts as a near-dead channel, destroying geometric integrity at the largest scale.
+
+Reproducibility: `python -c "from closures.scale_ladder import build_scale_ladder, compute_noise_budget, display_noise_budget; l = build_scale_ladder(); display_noise_budget(compute_noise_budget(l))"`
+
 *Sonus non est error; sonus est intellectus.*
 *(Noise is not the error; noise is the understanding.)*
 
@@ -446,6 +473,10 @@ The unifying structure is the Bernoulli partition c(1−c): maximum noise at c =
 | Duality F + ω = 1 | Exact (0.0e+00 residual) |
 | Integrity bound IC ≤ F | 100% verified |
 | Cross-domain realizations | 17 |
+| Noise budget rungs | 11 (Planck → Cosmological) |
+| Poisson-like rungs | 1 (Planck only) |
+| Best noise resistance | Nuclear (IC/F = 72.6%) |
+| Worst noise resistance | Cosmological (IC/F = 17.6%) |
 | Highest IC/F (scale) | Atoms (0.784) |
 | Lowest IC/F (scale) | Hadrons (0.022) |
 | Highest IC/F (block) | d-block (0.887) |

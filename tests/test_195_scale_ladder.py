@@ -339,3 +339,88 @@ class TestPillarResults:
 
     def test_dynamic_range_oom(self, ladder: ScaleLadder) -> None:
         assert ladder.pillar_results["dynamic_range_OOM"] == 61
+
+
+# ═══════════════════════════════════════════════════════════════════
+# NOISE BUDGET TESTS
+# ═══════════════════════════════════════════════════════════════════
+
+
+class TestNoiseBudget:
+    """Verify the noise budget computation across all rungs."""
+
+    @pytest.fixture(scope="class")
+    def budget(self, ladder: ScaleLadder) -> list:
+        from closures.scale_ladder import compute_noise_budget
+
+        return compute_noise_budget(ladder)
+
+    def test_eleven_entries(self, budget: list) -> None:
+        assert len(budget) == 11
+
+    def test_rung_numbers_sequential(self, budget: list) -> None:
+        for i, entry in enumerate(budget):
+            assert entry.rung_number == i
+
+    def test_bernoulli_variance_formula(self, budget: list) -> None:
+        """c(1-c) matches mean_c computation."""
+        for e in budget:
+            c = max(1e-8, min(1.0 - 1e-8, e.mean_c))
+            expected = c * (1.0 - c)
+            assert abs(e.bernoulli_var - round(expected, 4)) < 1e-4
+
+    def test_fisher_metric_formula(self, budget: list) -> None:
+        """g_F = 1/(c(1-c))."""
+        for e in budget:
+            c = max(1e-8, min(1.0 - 1e-8, e.mean_c))
+            expected = 1.0 / (c * (1.0 - c))
+            assert abs(e.fisher_metric - round(expected, 2)) < 0.1
+
+    def test_planck_poisson_regime(self, budget: list) -> None:
+        """Planck rung is in the Poisson-like regime (⟨c⟩ < 0.25)."""
+        planck = budget[0]
+        assert planck.rung_name == "Planck"
+        assert planck.bernoulli_regime == "Poisson-like"
+        assert planck.mean_c < 0.25
+
+    def test_planck_high_fisher(self, budget: list) -> None:
+        """Fisher metric is elevated at Planck (g_F > 16)."""
+        assert budget[0].fisher_metric > 16.0
+
+    def test_subatomic_symmetric(self, budget: list) -> None:
+        """Subatomic rung is in the symmetric regime."""
+        sub = budget[1]
+        assert sub.bernoulli_regime == "Symmetric"
+
+    def test_nuclear_best_efficiency(self, budget: list) -> None:
+        """Nuclear has the highest coherence efficiency."""
+        nuc = next(e for e in budget if e.rung_name == "Nuclear")
+        others = [e for e in budget if e.rung_name != "Nuclear"]
+        assert nuc.coherence_efficiency > max(o.coherence_efficiency for o in others)
+
+    def test_all_noise_types_assigned(self, budget: list) -> None:
+        """Every rung has a physical noise type."""
+        for e in budget:
+            assert e.noise_type != "Unclassified"
+
+    def test_coherence_efficiency_range(self, budget: list) -> None:
+        """Coherence efficiency is in [0, 100]%."""
+        for e in budget:
+            assert 0.0 <= e.coherence_efficiency <= 100.0
+
+    def test_gap_equals_f_minus_ic(self, budget: list) -> None:
+        """⟨Δ⟩ ≈ ⟨F⟩ - ⟨IC⟩."""
+        for e in budget:
+            expected = round(e.mean_F - e.mean_IC, 4)
+            assert abs(e.mean_gap - expected) < 0.002
+
+    def test_display_runs(self, budget: list) -> None:
+        """display_noise_budget runs without error."""
+        from closures.scale_ladder import display_noise_budget
+
+        display_noise_budget(budget)
+
+    def test_frozen_dataclass(self, budget: list) -> None:
+        """NoiseBudgetEntry is immutable."""
+        with pytest.raises(AttributeError):
+            budget[0].mean_c = 0.999  # type: ignore[misc]
