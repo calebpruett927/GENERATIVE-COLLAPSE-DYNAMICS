@@ -8,7 +8,7 @@ The canonical specification is `.github/copilot-instructions.md`.
 ## Binding Rules
 
 - **Single axiom**: Everything derives from Axiom-0. No external theory imports.
-- **Three tiers**: Tier-1 (immutable invariants), Tier-0 (protocol), Tier-2 (closures).
+- **Three tiers**: Tier-1 (the kernel function and its provable properties), Tier-0 (protocol: code that implements + interprets the kernel), Tier-2 (domain closures: channel selection + entity catalogs).
 - **Reserved symbols**: F, ω, S, C, κ, IC, τ_R, regime — never redefine.
 - **Frozen parameters**: Import from `src/umcp/frozen_contract.py`, never hardcode.
 - **Three-valued verdicts**: CONFORMANT / NONCONFORMANT / NON_EVALUABLE — never boolean.

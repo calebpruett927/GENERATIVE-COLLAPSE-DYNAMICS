@@ -13,36 +13,69 @@ The **UMCP tier system** has exactly three tiers. No half-tiers. No confusion.
 
 | Tier | Name | Role |
 |------|------|------|
-| **0** | **Protocol** | The validation machinery: regime gates, contracts, schemas, diagnostics, seam calculus, SHA256 integrity, three-valued verdicts |
-| **1** | **Immutable Invariants** | The structural identities of collapse: F + ω = 1, IC ≤ F, IC ≈ exp(κ). Discovered, not imposed. |
-| **2** | **Expansion Space** | Domain closures that map physics into the invariant structure. Validated through Tier-0 against Tier-1. |
+| **1** | **The Kernel** | The mathematical function K: [0,1]ⁿ × Δⁿ → (F, ω, S, C, κ, IC), its six definitions, their provable identities (F + ω = 1, IC ≤ F, IC = exp(κ)), and the 46 lemmas, 28 structural identities, and 5 structural constants that follow. Domain-independent. Immutable. |
+| **0** | **Protocol** | The operational machinery that implements and interprets the Tier-1 kernel: embedding raw data into [0,1]ⁿ, computing the kernel function, applying regime gates, running seam calculus, enforcing contracts/schemas/SHA-256 integrity, and issuing three-valued verdicts. |
+| **2** | **Expansion Space** | Domain closures that choose which real-world quantities become the trace vector c ∈ [0,1]ⁿ and weights w ∈ Δⁿ. Channel selection, entity catalogs, normalization, and domain-specific theorems. Validated through Tier-0 against Tier-1. |
 
-**Tier-1** is immutable because it describes the **structure of collapse itself** — not because someone chose convenient equations. F + ω = 1 is the structural fact that fidelity and drift are complements. IC ≤ F is the integrity bound — derived independently from Axiom-0 (the classical AM-GM inequality emerges as a degenerate limit when channel semantics, weights, and guard band are stripped). These hold across all experiments in 15 domains because the structure forces them.
+**An important distinction**: The kernel has three aspects that must not be conflated:
 
-**Tier-0** is the protocol that makes Tier-1 actionable — regime gates, validator, diagnostics (kinematics, PHYS-04), seam calculus, contract enforcement, integrity verification. Everything that tests, confirms, and enforces. The seam is where consistency is verified: the same frozen rules must govern both sides of collapse-return.
+1. **The function** (Tier-1) — the six formulas (F = Σ wᵢcᵢ, ω = 1−F, S, C, κ, IC = exp(κ)) and everything provable about them (identities, lemmas, structural constants like c* = 0.7822). This is the mathematical object. It is domain-independent and immutable.
+2. **The implementation** (Tier-0) — the code in `kernel_optimized.py` that evaluates the Tier-1 formulas, plus the embedding that maps raw data into the kernel's input space, the regime gates that interpret its output, and the seam calculus that tracks continuity. This is the operational machinery.
+3. **The inputs** (Tier-2) — the choice of which real-world quantities become channels, how they are normalized, and what entities are measured. This is the domain closure.
 
-**Tier-2** is the space where expansions live with validity checks. Domain closures map raw measurements into the Tier-1 invariants. Every expansion is validated *through* Tier-0 *against* Tier-1.
+The identities (F + ω = 1, IC ≤ F) are not separate objects that sit beside the kernel at Tier-1. They are **theorems about the kernel function** — properties that follow from the six definitions. They serve as test oracles: if the Tier-0 code ever returns F + ω ≠ 1, the code is wrong, not the identity.
 
 ---
 
 ## The Stack
 
 ```
-Tier-1   IMMUTABLE INVARIANTS
-         F + ω = 1  |  IC ≤ F  |  IC ≈ exp(κ)
-         Structure of collapse. Discovered, not imposed.
-         ──────────────────────────────────────────────────
+Tier-1   THE KERNEL (mathematical object)
+         ┌─────────────────────────────────────────────────┐
+         │ DEFINITIONS:                                     │
+         │   F = Σ wᵢcᵢ     ω = 1-F     S = Bernoulli(c,w)│
+         │   C = σ(c)/0.5   κ = Σ wᵢ ln cᵢ   IC = exp(κ) │
+         │                                                  │
+         │ IDENTITIES (theorems about the definitions):     │
+         │   F + ω = 1    IC ≤ F    IC = exp(κ)            │
+         │                                                  │
+         │ STRUCTURAL CONSTANTS (derived, not chosen):      │
+         │   c* = 0.7822   c_trap = 0.3178   ε = 10⁻⁸     │
+         │                                                  │
+         │ 46 LEMMAS · 28 IDENTITIES · 8 EQUATIONS         │
+         │ (all properties of this one function)            │
+         └─────────────────────────────────────────────────┘
+         Immutable. Domain-independent. Mathematically complete.
+         ──────────────────────────────────────────────────────
 
-Tier-0   PROTOCOL
-         Regime gates, validator, diagnostics, seam calculus,
-         contracts, schemas, SHA256 integrity, verdicts.
-         Makes Tier-1 actionable. Tests everything.
-         ──────────────────────────────────────────────────
+Tier-0   PROTOCOL (operational machinery)
+         ┌─────────────────────────────────────────────────┐
+         │ INPUT:  Embedding x(t) → c ∈ [0,1]ⁿ           │
+         │         Weight assignment w ∈ Δⁿ                │
+         │         ε-clamp, face policy, normalization     │
+         │                                                  │
+         │ COMPUTE: Run the Tier-1 kernel on (c, w)        │
+         │          (kernel_optimized.py implements Tier-1  │
+         │           formulas — the code is Tier-0,        │
+         │           what it computes is Tier-1)            │
+         │                                                  │
+         │ INTERPRET: Regime gates on (ω, F, S, C)         │
+         │            Seam calculus: Γ, D_C, Δκ, residual  │
+         │            Verdict: CONFORMANT / NON / NON_EVAL │
+         │            SHA-256, schemas, contracts           │
+         └─────────────────────────────────────────────────┘
+         Frozen per run. Makes Tier-1 computable and auditable.
+         ──────────────────────────────────────────────────────
 
-Tier-2   EXPANSION SPACE
-         Domain closures: NUC, QM, ASTRO, FIN, SEC, WEYL, ...
-         Map physics into invariant structure.
-         Validated through Tier-0 against Tier-1.
+Tier-2   EXPANSION SPACE (domain closures)
+         ┌─────────────────────────────────────────────────┐
+         │ CHANNEL SELECTION: Which quantities become c     │
+         │ ENTITY CATALOGS: Which objects are measured      │
+         │ NORMALIZATION: How raw values map to [0,1]       │
+         │ DOMAIN THEOREMS: Interpreting kernel outputs     │
+         │   in domain-specific language                    │
+         └─────────────────────────────────────────────────┘
+         Freely extensible. Validated through Tier-0 against Tier-1.
          ✗ NO FEEDBACK to Tier-1 or Tier-0 within a frozen run
 ```
 
@@ -52,17 +85,30 @@ Tier-2   EXPANSION SPACE
 
 ---
 
-## Tier-1: Immutable Invariants
+## Tier-1: The Kernel
 
-**What it is**: The structural identities of collapse. These are constraints derived independently from Axiom-0 and verified across all experiments in 15 domains, finding they hold universally. They are not definitions we chose. They are what the structure forces.
+**What it is**: The kernel is the mathematical function K: [0,1]ⁿ × Δⁿ → (F, ω, S, C, κ, IC). It takes a trace vector c ∈ [0,1]ⁿ and a weight vector w ∈ Δⁿ (the probability simplex) and produces six invariants. The six formulas define the function. The identities are theorems about it. The 46 lemmas, 28 structural identities, 8 equations, and 5 structural constants are all properties of this one mathematical object.
 
-### Structural Identities (0 violations across 5,326 tests in 15 domains)
+Tier-1 is the kernel function *and everything provable about it*. The identities are not separate objects floating above the kernel — they are consequences of the definitions. F + ω = 1 is a theorem about F(c,w) = Σ wᵢcᵢ and ω = 1 − F. IC ≤ F is a theorem about the relationship between the weighted geometric and arithmetic means. They cannot exist without the definitions that produce them.
 
-| Identity | Structural Meaning |
-|----------|-------------------|
-| **F = 1 − ω** | Fidelity and drift are complements — what isn't lost to drift IS fidelity. No third option. |
-| **IC ≤ F** | Coherence cannot exceed fidelity (integrity bound). A system cannot be more coherent than it is faithful. |
-| **IC ≈ exp(κ)** | Coherence tracks log-integrity exponentially. |
+### The Six Definitions
+
+| Symbol | Formula | What It Computes |
+|--------|---------|------------------|
+| **F** | F = Σ wᵢcᵢ | Weighted arithmetic mean of the trace (fidelity) |
+| **ω** | ω = 1 − F | Complement of fidelity (drift) |
+| **S** | S = −Σ wᵢ[cᵢ ln(cᵢ) + (1−cᵢ)ln(1−cᵢ)] | Weighted Bernoulli field entropy |
+| **C** | C = stddev(cᵢ) / 0.5 | Normalized standard deviation (curvature proxy) |
+| **κ** | κ = Σ wᵢ ln(cᵢ,ε) | Weighted log-sum, ε-clamped (log-integrity) |
+| **IC** | IC = exp(κ) | Weighted geometric mean (integrity composite) |
+
+### Identities (theorems about the definitions — 0 violations across 10,162 tests in 17 domains)
+
+| Identity | Why It Holds | Structural Meaning |
+|----------|-------------|-------------------|
+| **F + ω = 1** | By definition: ω := 1 − F | Fidelity and drift are exhaustive complements. No third bucket. |
+| **IC ≤ F** | Geometric mean ≤ arithmetic mean (the integrity bound) | Coherence cannot exceed fidelity. Heterogeneity always costs. |
+| **IC = exp(κ)** | By definition: κ := Σ wᵢ ln cᵢ, IC := exp(κ) | Log-integrity and multiplicative coherence are the same invariant in different coordinates. |
 
 ### Reserved Symbols (Immutable Meanings)
 
@@ -77,18 +123,35 @@ Tier-2   EXPANSION SPACE
 | **τ_R** | Return time | Re-entry delay to D_θ | ℕ∪{∞_rec} | How long until the system returns to its domain |
 | **regime** | Regime label | Gates on (ω,F,S,C) | {Stable, Watch, Collapse} | Which structural phase the system occupies |
 
-### What Tier-1 Is NOT
+### Structural Constants (derived from the kernel, not chosen)
 
-- **Not "the math we picked"**: The identities describe structure discovered across domains, not equations selected for convenience.
-- **Not computation**: Computation is Tier-0's job. Tier-1 is the structure that computation must find.
-- **Not a model of the world**: Tier-1 makes no domain claims. It says fidelity and drift are complements; it does not say what fidelity *means* for a nuclide versus a star versus a market. That meaning-mapping is Tier-2.
-- **Not "constants"**: The frozen parameters (ε, p, α, λ, tol_seam) are not constant because someone chose them arbitrarily. They are **consistent** across the seam — the same rules on both sides of collapse-return. Freezing is a seam demand, not a design preference.
+| Constant | Value | How It Arises |
+|----------|-------|---------------|
+| **c*** | 0.7822 | Unique fixed point of σ(1/c) — maximizes S + κ per channel |
+| **c_trap** | 0.3178 | Cardano root of x³ + x − 1 = 0 — Γ(ω) = 1 threshold |
+| **ε** | 10⁻⁸ | Guard band where the pole at ω = 1 does not affect measurement to machine precision |
+| **p** | 3 | Unique integer yielding closed-form ω_trap |
+| **tol_seam** | 0.005 | Width where IC ≤ F holds at 100% across all domains |
+
+### What Tier-1 Is and Is NOT
+
+- **IS the kernel function**: The six formulas define a mathematical function on [0,1]ⁿ × Δⁿ. This function, and all its provable properties, is Tier-1.
+- **IS the identities**: F + ω = 1, IC ≤ F, IC = exp(κ) are theorems *about* the kernel function. They are part of Tier-1 because they cannot exist without the definitions that produce them.
+- **IS the lemmas and structural constants**: The 46 lemmas, 28 identities, c* = 0.7822, c_trap = 0.3178 — all properties of the same function.
+- **NOT computation**: The *code* that evaluates the formulas is Tier-0. The *formulas themselves* are Tier-1. `kernel_optimized.py` is a Tier-0 implementation of the Tier-1 function.
+- **NOT a model of the world**: Tier-1 makes no domain claims. It says "given trace c and weights w, F = Σ wᵢcᵢ." It does not say what those channels *mean* for a nuclide versus a star. Meaning-mapping is Tier-2.
+- **NOT "constants we chose"**: The frozen parameters are **consistent** across the seam — the same rules on both sides of collapse-return. They are discovered by the mathematics, not prescribed by convention.
 
 ---
 
 ## Tier-0: Protocol
 
-**What it is**: Everything that makes Tier-1 actionable and testable. The protocol includes the validator, regime gates, diagnostics, seam calculus, contract enforcement, schema validation, and SHA256 integrity checks. Tier-0 produces the bounded trace Ψ(t), computes the Tier-1 invariants, and issues verdicts.
+**What it is**: Everything that makes the Tier-1 kernel function computable, testable, and auditable. Tier-0 includes two distinct roles:
+
+1. **Implementation of the kernel**: The code in `kernel_optimized.py` that evaluates the Tier-1 formulas F = Σ wᵢcᵢ, κ = Σ wᵢ ln cᵢ, etc. The code is Tier-0 (protocol); what it computes is Tier-1 (the function). If the code ever disagrees with the identities, the code is wrong — the identities are the test oracle.
+2. **Interpretation of the output**: Everything that acts on the kernel's output — regime gates (translating continuous invariants into discrete labels), seam calculus (tracking continuity), contracts, schemas, SHA-256 integrity, and three-valued verdicts.
+
+Tier-0 also handles the *input side*: embedding raw measurements x(t) into the trace vector Ψ(t) ∈ [0,1]ⁿ, assigning weights, and applying clipping/normalization policies.
 
 ### Protocol Functions
 
@@ -177,9 +240,11 @@ Tier-0 (frozen before compute):
 
 ## Tier-2: Expansion Space
 
-**What it is**: The space where domain expansions live with validity checks. Domain closures map raw measurements (binding energies, particle masses, stellar luminosities, market returns, decay half-lives) into the Tier-1 invariant structure. Every expansion is validated through Tier-0 against Tier-1.
+**What it is**: The space where domain-specific **input choices** are made. The kernel function (Tier-1) takes c ∈ [0,1]ⁿ and w ∈ Δⁿ — it does not know or care what those channels represent. Tier-2 is where the decision is made to encode a proton as c = [0.49, 0.75, 0.67, 0.0, 0.75, 0.0, 1.0, 0.33] with channels [mass_log, spin, charge, color, T3, L, B, generation]. That encoding — which quantities become channels, how they are normalized, which entities are measured — is the domain closure.
 
-Tier-2 answers: **What fraction of each domain's configuration space has reached the Tier-1 fixed point?**
+Tier-2 answers: **What real-world quantities feed the kernel, and what do the kernel's outputs mean in domain-specific terms?**
+
+The 42 proven theorems (SM T1–T10, MG T1–T10, KS T1–T7, CC T1–T7, PM T1–T8) are Tier-2 because they depend on domain-specific channel choices. "IC drops 98% at the quark-hadron boundary" is true given the 8-channel SM encoding — but the theorem requires that specific channel selection to state. The kernel computation it relies on is Tier-1; the channel choice that makes it about confinement is Tier-2.
 
 ### Current Domain Expansions
 
@@ -313,8 +378,10 @@ The field is required by `schemas/contract.schema.json` and `schemas/canon.ancho
 
 ## Implementation Status (v2.0.0)
 
-- ✅ **Tier-1**: Immutable invariants defined and verified
-  - Structural identities: F+ω=1, IC≤F — verified across all tests in 15 domains
+- ✅ **Tier-1**: The kernel function defined, verified, and mathematically complete
+  - Six definitions: F, ω, S, C, κ, IC — defining the kernel K: [0,1]ⁿ × Δⁿ → ℝ⁶
+  - Three identities (theorems): F+ω=1, IC≤F, IC=exp(κ) — verified across 10,162 tests in 17 domains
+  - 46 lemmas, 28 structural identities, 5 structural constants (c*, c_trap, ε, p, tol_seam)
   - Reserved symbols: F, ω, S, C, κ, IC, τ_R
 
 - ✅ **Tier-0**: Full protocol support
@@ -325,10 +392,10 @@ The field is required by `schemas/contract.schema.json` and `schemas/canon.ancho
   - Seam structure defined; closures implemented
   - ⚠️ Automated weld PASS/FAIL computation not yet integrated into CLI
 
-- ✅ **Tier-2**: 15 domain expansions active
+- ✅ **Tier-2**: 17 domain expansions active (511 entities, 42 theorems)
   - GCD, RCFT, Kinematics, Finance, Security, Astronomy
   - Nuclear, Quantum, Weyl, Atomic Physics, Materials Science, Standard Model
-  - Everyday Physics, Evolution, Dynamic Semiotics
+  - Everyday Physics, Evolution, Dynamic Semiotics, Consciousness Coherence, Continuity Theory
 
 ---
 

@@ -1,8 +1,10 @@
 """
-Optimized Kernel Computation Module
+Optimized Kernel Computation Module (Tier-0 implementation of the Tier-1 kernel)
 
-Implements computational optimizations from docs/COMPUTATIONAL_OPTIMIZATIONS.md
-based on formal lemmas in KERNEL_SPECIFICATION.md.
+This module implements the Tier-1 kernel function K: [0,1]ⁿ × Δⁿ → (F, ω, S, C, κ, IC).
+The six formulas and their identities (F + ω = 1, IC ≤ F, IC = exp(κ)) are Tier-1 — the
+mathematical object. This code is Tier-0 — the protocol that evaluates those formulas.
+If the code ever disagrees with the identities, the code is wrong.
 
 Key optimizations:
 - OPT-1: Homogeneity detection (Lemmas 4, 10, 15)
@@ -13,7 +15,7 @@ Key optimizations:
 
 Interconnections:
 - Used by: validator.py, scripts/update_integrity.py
-- Implements: KERNEL_SPECIFICATION.md formal definitions
+- Implements: KERNEL_SPECIFICATION.md formal definitions (Tier-1 function)
 - Validates: AXIOM-0 return principle via range checks
 - Documentation: docs/COMPUTATIONAL_OPTIMIZATIONS.md
 """

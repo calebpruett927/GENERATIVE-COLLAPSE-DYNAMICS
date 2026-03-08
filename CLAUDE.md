@@ -16,8 +16,10 @@ summary, not a replacement.
    results are degenerate limits — the arrow runs FROM Axiom-0 TO them.
 
 2. **Never redefine Tier-1 symbols.** F, ω, S, C, κ, IC, τ_R, regime are
-   reserved and immutable within a run. Any Tier-2 code that redefines them
-   is automatic nonconformance (*captura symbolorum*).
+   reserved and immutable within a run. These are the kernel function
+   K: [0,1]ⁿ × Δⁿ → (F, ω, S, C, κ, IC) and its provable properties.
+   Any Tier-2 code that redefines them is automatic nonconformance
+   (*captura symbolorum*).
 
 3. **Frozen parameters come from `frozen_contract.py`**, never hardcoded.
    ε=1e-8, p=3, α=1.0, λ=0.2, tol_seam=0.005. These are seam-derived,
@@ -69,9 +71,14 @@ python scripts/pre_commit_protocol.py       # Full 11-step protocol, must exit 0
 
 ## Project Structure
 
-- **Tier-1** (Immutable): F+ω=1, IC≤F, IC≈exp(κ) — structural identities
-- **Tier-0** (Protocol): `src/umcp/` — validation, kernel, seam, contracts
-- **Tier-2** (Expansion): `closures/` — 16 domain closures validated through Tier-0
+- **Tier-1** (The Kernel): K: [0,1]ⁿ × Δⁿ → (F, ω, S, C, κ, IC) — the mathematical
+  function plus its identities (F+ω=1, IC≤F, IC=exp(κ)), 46 lemmas, 28 structural
+  identities, and structural constants (c*=0.7822, c_trap=0.3178)
+- **Tier-0** (Protocol): `src/umcp/` — code implementing the kernel + embedding,
+  regime gates, seam calculus, validation, contracts. The code is Tier-0;
+  what it computes is Tier-1.
+- **Tier-2** (Expansion): `closures/` — 17 domain closures that choose which
+  real-world quantities become channels. Validated through Tier-0 against Tier-1.
 
 Key files: `src/umcp/frozen_contract.py` (constants), `src/umcp/kernel_optimized.py`
 (kernel), `src/umcp/validator.py` (validation), `src/umcp/epistemic_weld.py`

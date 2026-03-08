@@ -232,11 +232,15 @@ The UMCP tier system has exactly three tiers. No half-tiers. No confusion. Every
 
 | Tier | Name | Role | Mutable? |
 |------|------|------|----------|
-| **1** | **Immutable Invariants** | Structural identities of collapse: F + ω = 1, IC ≤ F, IC ≈ exp(κ). Discovered, not imposed. | NEVER within a run. Promotion only through seam weld across runs. |
-| **0** | **Protocol** | Validation machinery: regime gates, contracts, schemas, diagnostics, seam calculus, SHA256 integrity, three-valued verdicts. Makes Tier-1 actionable. | Configuration frozen per run. |
-| **2** | **Expansion Space** | Domain closures mapping physics into invariant structure. Validated through Tier-0 against Tier-1. | Freely extensible; validated before trust. |
+| **1** | **The Kernel** | The mathematical function K: [0,1]ⁿ × Δⁿ → (F, ω, S, C, κ, IC). Six definitions, their provable identities (F + ω = 1, IC ≤ F, IC = exp(κ)), and the 46 lemmas, 28 structural identities, and 5 structural constants that follow. Domain-independent. | NEVER within a run. Promotion only through seam weld across runs. |
+| **0** | **Protocol** | Operational machinery: embedding raw data into [0,1]ⁿ, computing the Tier-1 kernel (code implements formulas), regime gates, seam calculus, contracts, schemas, SHA-256, three-valued verdicts. The code is Tier-0; what it computes is Tier-1. | Configuration frozen per run. |
+| **2** | **Expansion Space** | Domain closures that choose which real-world quantities become the trace vector c and weights w. Channel selection, entity catalogs, normalization, domain-specific theorems. Validated through Tier-0 against Tier-1. | Freely extensible; validated before trust. |
 
-### Tier-1 Reserved Symbols (IMMUTABLE — Never Redefine)
+**Key distinction**: The kernel has three aspects: (1) the *function* (Tier-1) — the six formulas and everything provable about them; (2) the *implementation* (Tier-0) — the code that evaluates those formulas plus the embedding, gates, and seam; (3) the *inputs* (Tier-2) — the choice of which real-world quantities become channels. The identities are not separate objects beside the kernel — they are *theorems about the kernel function*.
+
+### Tier-1 Reserved Symbols (IMMUTABLE — The Kernel Function)
+
+These six formulas define the kernel K: [0,1]ⁿ × Δⁿ → (F, ω, S, C, κ, IC). The identities (F + ω = 1, IC ≤ F) are theorems about this function. The 46 lemmas, 28 identities, and structural constants (c* = 0.7822, c_trap = 0.3178) are further properties of the same mathematical object.
 
 | Symbol | Name | Formula | Range | Structural Role |
 |--------|------|---------|-------|-----------------|
