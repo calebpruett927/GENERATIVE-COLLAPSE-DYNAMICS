@@ -38,6 +38,7 @@ pytestmark = pytest.mark.skipif(not FASTAPI_AVAILABLE, reason="fastapi not insta
 @pytest.fixture
 def client():
     """Create test client for API."""
+    assert app is not None and TestClient is not None
     return TestClient(app)
 
 

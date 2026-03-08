@@ -747,15 +747,18 @@ async def query_insights(
 ) -> list[dict[str, Any]]:
     """Query insights with optional filters."""
     try:
-        from .insights import InsightEngine
+        from .insights import InsightEngine, InsightSeverity, PatternType
     except ImportError as e:
         raise HTTPException(status_code=500, detail="Insights module not available") from e
+
+    sev_val = InsightSeverity(severity) if severity is not None else None
+    pt_val = PatternType(pattern_type) if pattern_type is not None else None
 
     engine = InsightEngine(load_canon=False, load_db=True)
     entries = engine.db.query(
         domain=domain,
-        severity=severity,
-        pattern_type=pattern_type,
+        severity=sev_val,
+        pattern_type=pt_val,
     )
     return [e.to_dict() for e in entries]
 
