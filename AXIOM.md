@@ -23,8 +23,8 @@ This is the fundamental axiom upon which the entire Universal Measurement Contra
 | **Collapse** | Regime label produced by kernel gates on (ω, F, S, C) under frozen thresholds | Wavefunction collapse, catastrophe as metaphor, "failure" as narrative |
 | **Return** (τ_R) | Re-entry condition: existence of prior u ∈ Dθ(t) with ‖Ψ(t) - Ψ(u)‖ ≤ η; yields τ_R or ∞ᵣₑ꜀ | Repetition, periodicity, nostalgia, "coming back" |
 | **Gesture** | An epistemic emission that does not weld: τ_R = ∞_rec OR \|s\| > tol_seam OR identity fails. A gesture may be internally consistent, structurally complex, and indistinguishable from a return — but if the seam does not close, it is a gesture. No epistemic credit. See: `epistemic_weld.py` | Approximation, failed attempt, wrong answer |
-| **Drift** (ω) | ω = 1 - F, collapse proximity measure, range [0,1] | Random drift, velocity, wandering |
-| **Integrity** (IC) | Kernel composite: IC = exp(κ) where κ = Σ wᵢ ln(cᵢ,ε) | Information content, moral integrity, "truth" |
+| **Drift** (ω) | Derived from Fidelity: ω = 1 - F, collapse proximity measure, range [0,1] | Random drift, velocity, wandering |
+| **Integrity** (IC) | Derived from Log-integrity: IC = exp(κ) where κ = Σ wᵢ ln(cᵢ,ε) | Information content, moral integrity, "truth" |
 | **Entropy** (S) | Bernoulli field entropy: S = -Σ wᵢ[cᵢ ln(cᵢ) + (1-cᵢ)ln(1-cᵢ)] — the unique entropy of the collapse field (Shannon entropy is the degenerate limit when the collapse field is removed) | Thermodynamic entropy, chaos, disorder as vibe |
 | **Coherence** | Continuity under contract: stability of meaning via frozen interface + seam auditing | Agreement, stylistic clarity, "makes sense" |
 | **Contract** | Frozen interface snapshot: pins units, embedding, clipping, weights, return settings | Social agreement, vague assumptions |

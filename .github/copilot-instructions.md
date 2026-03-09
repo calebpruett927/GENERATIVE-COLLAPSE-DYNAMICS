@@ -232,26 +232,28 @@ The UMCP tier system has exactly three tiers. No half-tiers. No confusion. Every
 
 | Tier | Name | Role | Mutable? |
 |------|------|------|----------|
-| **1** | **The Kernel** | The mathematical function K: [0,1]ⁿ × Δⁿ → (F, ω, S, C, κ, IC). Six definitions, their provable identities (F + ω = 1, IC ≤ F, IC = exp(κ)), and the 46 lemmas, 28 structural identities, and 5 structural constants that follow. Domain-independent. | NEVER within a run. Promotion only through seam weld across runs. |
+| **1** | **The Kernel** | The mathematical function K: [0,1]ⁿ × Δⁿ → (F, ω, S, C, κ, IC). Four primitive equations (F, κ, S, C) and two derived values (ω = 1−F, IC = exp(κ)), their provable identities (F + ω = 1, IC ≤ F, IC = exp(κ)), and the 46 lemmas, 28 structural identities, and 5 structural constants that follow. Domain-independent. | NEVER within a run. Promotion only through seam weld across runs. |
 | **0** | **Protocol** | Operational machinery: embedding raw data into [0,1]ⁿ, computing the Tier-1 kernel (code implements formulas), regime gates, seam calculus, contracts, schemas, SHA-256, three-valued verdicts. The code is Tier-0; what it computes is Tier-1. | Configuration frozen per run. |
 | **2** | **Expansion Space** | Domain closures that choose which real-world quantities become the trace vector c and weights w. Channel selection, entity catalogs, normalization, domain-specific theorems. Validated through Tier-0 against Tier-1. | Freely extensible; validated before trust. |
 
-**Key distinction**: The kernel has three aspects: (1) the *function* (Tier-1) — the six formulas and everything provable about them; (2) the *implementation* (Tier-0) — the code that evaluates those formulas plus the embedding, gates, and seam; (3) the *inputs* (Tier-2) — the choice of which real-world quantities become channels. The identities are not separate objects beside the kernel — they are *theorems about the kernel function*.
+**Key distinction**: The kernel has three aspects: (1) the *function* (Tier-1) — four primitive equations (F, κ, S, C) and two derived values (ω = 1−F, IC = exp(κ)), plus everything provable about them; (2) the *implementation* (Tier-0) — the code that evaluates those formulas plus the embedding, gates, and seam; (3) the *inputs* (Tier-2) — the choice of which real-world quantities become channels. The identities are not separate objects beside the kernel — they are *theorems about the kernel function*. The derived values (ω, IC) remain Tier-1 — they are outputs of the kernel function and appear in the immutable identities, not Tier-0 diagnostics.
 
 ### Tier-1 Reserved Symbols (IMMUTABLE — The Kernel Function)
 
-These six formulas define the kernel K: [0,1]ⁿ × Δⁿ → (F, ω, S, C, κ, IC). The identities (F + ω = 1, IC ≤ F) are theorems about this function. The 46 lemmas, 28 identities, and structural constants (c* = 0.7822, c_trap = 0.3178) are further properties of the same mathematical object.
+The kernel K: [0,1]ⁿ × Δⁿ → (F, ω, S, C, κ, IC) has four primitive equations and two derived values. All six outputs are Tier-1. The identities (F + ω = 1, IC ≤ F) are theorems about this function. The 46 lemmas, 28 identities, and structural constants (c* = 0.7822, c_trap = 0.3178) are further properties of the same mathematical object.
 
-| Symbol | Name | Formula | Range | Structural Role |
-|--------|------|---------|-------|-----------------|
-| **F** | Fidelity | F = Σ wᵢcᵢ | [0,1] | How much survives collapse |
-| **ω** | Drift | ω = 1 − F | [0,1] | How much is lost to collapse |
-| **S** | Entropy | S = −Σ wᵢ[cᵢ ln(cᵢ) + (1−cᵢ)ln(1−cᵢ)] | ≥0 | Bernoulli field entropy (Shannon entropy is the degenerate limit) |
-| **C** | Curvature | C = stddev(cᵢ)/0.5 | [0,1] | Coupling to uncontrolled degrees of freedom |
-| **κ** | Log-integrity | κ = Σ wᵢ ln(cᵢ,ε) | ≤0 | Logarithmic fidelity (sensitivity-aware) |
-| **IC** | Integrity composite | IC = exp(κ) | (0,1] | Multiplicative coherence |
-| **τ_R** | Return time | Re-entry delay to D_θ | ℕ∪{∞_rec} | How long until the system returns |
-| **regime** | Regime label | Gates on (ω,F,S,C) | {Stable, Watch, Collapse} | Which structural phase the system occupies |
+| Symbol | Name | Formula | Range | Status | Structural Role |
+|--------|------|---------|-------|--------|-----------------|
+| **F** | Fidelity | F = Σ wᵢcᵢ | [0,1] | **Primitive** | How much survives collapse |
+| **κ** | Log-integrity | κ = Σ wᵢ ln(cᵢ,ε) | ≤0 | **Primitive** | Logarithmic fidelity (sensitivity-aware) |
+| **S** | Entropy | S = −Σ wᵢ[cᵢ ln(cᵢ) + (1−cᵢ)ln(1−cᵢ)] | ≥0 | **Primitive** | Bernoulli field entropy (Shannon entropy is the degenerate limit) |
+| **C** | Curvature | C = stddev(cᵢ)/0.5 | [0,1] | **Primitive** | Coupling to uncontrolled degrees of freedom |
+| **ω** | Drift | ω = 1 − F | [0,1] | Derived (from F) | How much is lost to collapse |
+| **IC** | Integrity composite | IC = exp(κ) | (0,1] | Derived (from κ) | Multiplicative coherence |
+| **τ_R** | Return time | Re-entry delay to D_θ | ℕ∪{∞_rec} | — | How long until the system returns |
+| **regime** | Regime label | Gates on (ω,F,S,C) | {Stable, Watch, Collapse} | — | Which structural phase the system occupies |
+
+**ω and IC remain Tier-1, not diagnostics.** They appear in the immutable identities (F+ω=1, IC≤F). Diagnostics are Tier-0 *interpretations* (regime labels, seam PASS/FAIL). ω and IC are Tier-1 *outputs* that the diagnostics consume.
 
 **Any Tier-2 code that redefines F, ω, S, C, κ, IC, τ_R, or regime is automatic nonconformance (symbol capture).** *— Captura symbolorum est non-conformitas ipsa.*
 
