@@ -75,6 +75,8 @@ python scripts/pre_commit_protocol.py       # Full 11-step protocol, must exit 0
   function plus its identities (F+ω=1, IC≤F, IC=exp(κ), S≈f(F,C)), 46 lemmas, 29
   structural identities, and structural constants (c*=0.7822, c_trap=0.3178).
   3 effective degrees of freedom (F, κ, C) — S is asymptotically determined by F and C.
+  Rank classification: Rank-1 (homogeneous, 1 DOF), Rank-2 (2-channel, 2 DOF),
+  Rank-3 (general, 3 DOF). Rank is measured, not chosen. See KERNEL_SPECIFICATION.md §4c.
 - **Tier-0** (Protocol): `src/umcp/` — code implementing the kernel + embedding,
   regime gates, seam calculus, validation, contracts. The code is Tier-0;
   what it computes is Tier-1.

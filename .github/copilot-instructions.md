@@ -154,6 +154,18 @@ The entire system can be grasped through **one axiom, one spine, five words, six
 
 These four constraints reduce 6 kernel outputs to **3 effective degrees of freedom**: F, κ, C.
 
+**RANK CLASSIFICATION** (structural dimensionality of the trace vector):
+
+Rank is a property of the trace vector — measured, not chosen (*gradus non eligitur; mensuratur*).
+
+| Rank | DOF | Condition | Key Property | Generic? |
+|:----:|:---:|-----------|--------------|:--------:|
+| **1** | 1 | All cᵢ = c₀ (homogeneous) | IC = F, C = 0, Δ = 0 | Rare |
+| **2** | 2 | Effective 2-channel structure | C = g(F, κ) determined | Special |
+| **3** | 3 | General heterogeneous (n ≥ 3) | F, κ, C mutually independent | Generic |
+
+Rank-1 ⊂ Rank-2 ⊂ Rank-3. Almost all real-world systems are rank-3. Full formalization: [KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md) §4c (Definitions 16–19).
+
 **THREE REGIMES** (derived from gates, never asserted):
 
 | Regime | Condition | Fisher Space % |

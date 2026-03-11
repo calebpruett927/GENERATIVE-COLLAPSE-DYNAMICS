@@ -157,6 +157,22 @@ Why these three and not others:
 
 This theorem is a provable property of the kernel function (Identity #29). Verification: `python scripts/unified_geometry.py` §1.
 
+### Rank Sub-Classification (Degenerate Cases)
+
+The maximum rank is 3 (the general case). Special trace structures yield degenerate ranks where fewer than 3 DOF are independent. The rank is a **property of the trace vector**, not a parameter — it is measured, not chosen (*gradus non eligitur; mensuratur*).
+
+| Rank | DOF | Condition | IC = F? | C determined by (F, κ)? |
+|:----:|:---:|-----------|:-------:|:-----------------------:|
+| **1** | 1 | All channels equal (cᵢ = c₀) | Yes | Yes (C = 0) |
+| **2** | 2 | Effective 2-channel structure | No | Yes |
+| **3** | 3 | General heterogeneous (n ≥ 3, non-trivial) | No | No |
+
+- **Rank-1** (homogeneous): F alone determines everything. IC = F, C = 0, Δ = 0. The *baseline* — thermodynamic equilibrium of the kernel.
+- **Rank-2** (binary differentiation): F and κ suffice. C is algebraically determined from them. The 2-channel solvability condition c₁,₂ = F ± √(F² − IC²) applies exactly.
+- **Rank-3** (structured heterogeneity): F, κ, and C are mutually independent. The *distribution* of channel values matters, not just their mean and product. This is where confinement cliffs, scale inversions, and cross-domain bridges live.
+
+Rank-1 ⊂ Rank-2 ⊂ Rank-3 (strict hierarchy under constraint count). Almost all real-world systems with n ≥ 3 channels are rank-3. Full definitions with conditions, examples, and transition rules: see [KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md) §4c.
+
 ### The Three Agents (structural reading of the three DOF)
 
 The three degrees of freedom map to three epistemic roles — three "agents" that partition the full space of what the kernel measures:
