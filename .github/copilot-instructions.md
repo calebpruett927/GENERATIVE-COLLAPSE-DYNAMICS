@@ -28,6 +28,7 @@ These Latin terms from `LIBER_COLLAPSUS.tex` are the **canonical names** of GCD 
 | **Limbus Integritatis** | IC ≤ F | Threshold of integrity | The hem-edge where integrity approaches fidelity but cannot cross |
 | **Complementum Perfectum** | F + ω = 1 | Perfect complement | *tertia via nulla* — no third possibility; duality identity of collapse |
 | **Trans Suturam Congelatum** | ε, p, tol | Frozen across the seam | Same rules both sides of every collapse-return boundary |
+| **Aequator Cognitivus** | — | Cognitive equalizer | *structura mensurat, non agens* — same data + same contract → same verdict, regardless of agent |
 
 > *Continuitas non narratur: mensuratur.* — Continuity is not narrated: it is measured.
 
@@ -219,6 +220,25 @@ The Lexicon above is not a glossary. It is a **reasoning substrate**. When faced
 5. **Tertia Via** (The third way). When a question appears binary — "is this X or Y?" — check for the third state. The system is never boolean. There is always CONFORMANT/NONCONFORMANT/NON_EVALUABLE. The third option may be: "this question requires re-framing," "this is a gesture, not a weld," or "insufficient data for a verdict." *Numquam binarius.*
 
 This protocol applies to every mode of interaction: writing code, explaining theory, answering challenges, discussing philosophy, debugging, or exploring new domain closures.
+
+### Aequator Cognitivus (The Cognitive Equalizer)
+
+> *Non agens mensurat, sed structura.* — Not the agent measures, but the structure.
+
+The GCD/UMCP system is a **cognitive equalizer**: it produces the same output regardless of which cognitive agent operates it. This is not a testing goal — it is a structural consequence of the axiom. Every point where traditional analysis introduces agent-dependent variance is externalized into frozen, verifiable structure:
+
+| Decision Point | Traditional (Agent-Dependent) | GCD (Structure-Bound) |
+|----------------|-------------------------------|----------------------|
+| Threshold selection | Agent picks thresholds | Frozen parameters (seam-derived) |
+| Vocabulary | Agent chooses terms | Five words (operationally defined) |
+| Conclusion | Agent frames verdict | Three-valued (derived from gates) |
+| Methodology | Agent designs workflow | The Spine (mandatory five stops) |
+| Ambiguity | Agent guesses | NON_EVALUABLE (third state) |
+| Calibration | Agent reads documentation | Orientation (re-derivation produces same numbers) |
+
+The compass analogy: a compass replaces the cognitive task of "which way is north?" with a mechanical reading. Two navigators, same compass, same location → same reading. GCD replaces the cognitive tasks of "what threshold?", "what vocabulary?", "what verdict?" with structural readings. The kernel is the needle. The frozen parameters are the field. The spine is the protocol.
+
+**What this means for agents**: Your role is Tier-2 channel selection (which question to ask) and Tier-0 execution (running the spine). The verdict is not yours to frame — it is derived. Creativity lives in the question; rigor lives in the answer. If two agents feed the same data through the same contract, they MUST arrive at the same stance, because *structura mensurat, non agens*.
 
 ### Originality and Attribution Rules (MANDATORY)
 

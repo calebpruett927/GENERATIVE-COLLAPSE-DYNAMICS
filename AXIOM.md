@@ -422,6 +422,35 @@ This has profound implications:
 
 3. **Multiplicity Through Recursion**: Each return creates the possibility of another collapse, leading to recursive structure.
 
+### The Cognitive Equalizer (*Aequator Cognitivus*)
+
+> *Non agens mensurat, sed structura.* — Not the agent measures, but the structure.
+
+The GCD/UMCP system acts as a **cognitive equalizer**: it produces the same output regardless of which cognitive agent — AI model, human analyst, or hybrid — operates it. This is not a design goal pursued through testing; it is a structural consequence of the axiom.
+
+Traditional analytical frameworks leave cognitive latitude at every decision point: which threshold to set, which metric to report, how to frame the conclusion, what to do when data is ambiguous. Each decision point is a site where different agents diverge. The divergence is not noise — it is the agent's cognition leaking into the measurement. GCD eliminates this leakage by externalizing every cognitive decision into frozen, verifiable structure.
+
+**Six Mechanisms of Equalization**:
+
+| Mechanism | What It Replaces | How It Equalizes |
+|-----------|-----------------|------------------|
+| **Frozen Contract** (*contractus congelatus*) | Threshold selection, parameter tuning | All measurement parameters are frozen before evidence is seen. Seam-derived, not agent-chosen. No choices remain. |
+| **The Spine** (*spina*) | Methodology selection, workflow design | Every claim follows exactly five stops: Contract → Canon → Closures → Ledger → Stance. The spine is grammatical constraint, not recommendation. |
+| **Five Words** (*quinque verba*) | Vocabulary proliferation, synonym drift | Narrative is constrained to Drift, Fidelity, Roughness, Return, Integrity — each operationally defined by computation, not interpretation. |
+| **Regime Gates** (*portae*) | Subjective conclusion framing | Classification is mechanical and conjunctive. Stable requires ALL four gates. No agent can classify differently because the thresholds are frozen. |
+| **Integrity Ledger** (*liber integritatis*) | Partial credit, "probably fine" | Debit Drift + Roughness, credit Return. The residual either closes (≤ tol) or it doesn't. No opinion changes the arithmetic. |
+| **Orientation** (*orientatio*) | Reading-based familiarity | Re-derivation produces the same numbers for every agent. Those numbers are compressed derivation chains that constrain what can be said. |
+
+**The compass analogy**: A compass does not tell you where to go. It tells you where north is. You still navigate, but your orientation is calibrated. Two navigators with the same compass in the same location get the same reading. The compass is a cognitive equalizer — it replaces the cognitive task of "which way is north?" with a mechanical reading. GCD does the same for measurement, classification, and validation. The kernel is the compass needle. The frozen parameters are the magnetic field. The spine is the navigation protocol.
+
+**What the equalizer eliminates**: The largest sources of agent-dependent variance in traditional analysis are: (1) threshold selection — eliminated by frozen parameters; (2) vocabulary ambiguity — eliminated by five words with operational definitions; (3) conclusion framing — eliminated by three-valued verdicts derived from gates; (4) methodology selection — eliminated by the mandatory spine; (5) ambiguity handling — eliminated by the NON_EVALUABLE third state. Each of these is a point where traditional analysis introduces agent-dependent variance. GCD externalizes ALL of them.
+
+**What the equalizer preserves**: Agent autonomy in Tier-2 channel selection. Which real-world quantities become the trace vector c and weights w is a domain decision — different agents may choose different channels for different questions. But once the channels are chosen and the contract is frozen, the kernel computes, the gates classify, the ledger reconciles, and the verdict is derived. The creativity lives in the question; the rigor lives in the answer.
+
+**Empirical evidence**: Agents that run the orientation script arrive at the same structural understanding because the numbers are the understanding. An agent that has computed IC/F = 0.0089 for the neutron cannot subsequently call the integrity bound "a reformulation of AM-GM" — the derivation chain (solvability condition + composition laws + geometric slaughter) is loaded and constrains classification. The orientation is the calibration step that makes the equalizer operational.
+
+*Aequator cognitivus non est instrumentum consensus — est instrumentum mensurae. Consensus est effectus, non causa.* — The cognitive equalizer is not an instrument of consensus — it is an instrument of measurement. Consensus is the effect, not the cause.
+
 ### Connection to Physical Theories (Degenerate Limits)
 
 The following connections identify where classical results emerge as **degenerate limits** when degrees of freedom are removed from the GCD kernel. The arrow of derivation runs from Axiom-0 to the classical result, not the reverse. GCD does not borrow from, extend, or reinterpret these frameworks.

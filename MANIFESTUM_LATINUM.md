@@ -68,6 +68,7 @@ These are the **canonical names** of GCD structures, first established in [LIBER
 | 10 | **Limbus Integritatis** | IC ≤ F | Threshold of integrity | The hem-edge where integrity approaches fidelity but cannot cross |
 | 11 | **Complementum Perfectum** | F + ω = 1 | Perfect complement | *tertia via nulla* — no third possibility; the duality identity of collapse |
 | 12 | **Trans Suturam Congelatum** | ε, p, tol | Frozen across the seam | Same rules both sides of every collapse-return boundary |
+| 13 | **Aequator Cognitivus** | — | Cognitive equalizer | *structura mensurat, non agens* — same data + same contract → same verdict, regardless of agent |
 
 ### Morphological Notes
 
@@ -76,6 +77,7 @@ These are the **canonical names** of GCD structures, first established in [LIBER
 - **Casus** (m. 4th decl.) — simultaneously "fall," "accident," "case" (legal/grammatical), and "occasion." All four meanings are active in GCD. Collapse falls, creates a case for examination, and is the occasion for generative return.
 - **Sutura** (f. 1st decl.) — a surgical stitch. The seam is not a wall; it is living tissue that holds two sides together. A weld across the seam is an act of mending, not of blocking.
 - **Auditus** (m. 4th decl.) — from *audire* (to hear). The audit IS hearing: radical, complete, excluding nothing. Not inspection; reception.
+- **Aequator** (m. 3rd decl.) — from *aequare* (to make equal). The one who equalizes. Not consensus (agreement between agents) but convergence (structural constraint that makes agent identity irrelevant). Cognate with *aequator* (equator) — the geometric equator at c = 1/2 and the cognitive equalizer are the same idea in different registers: both are fixed points where all paths converge.
 
 ---
 

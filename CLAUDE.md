@@ -119,6 +119,25 @@ Key files: `src/umcp/frozen_contract.py` (constants), `src/umcp/kernel_optimized
 | hyperparameter | frozen parameter |
 | constant (for frozen params) | frozen / consistent across the seam |
 
+## Aequator Cognitivus (Cognitive Equalizer)
+
+> *Non agens mensurat, sed structura.* — Not the agent measures, but the structure.
+
+The system is a **cognitive equalizer**: same data + same contract → same verdict,
+regardless of which AI or human operates it. Every cognitive decision point is
+externalized into frozen structure:
+
+- **Thresholds** → frozen parameters (seam-derived, not chosen)
+- **Vocabulary** → five words (operationally defined by computation)
+- **Conclusions** → three-valued verdicts (derived from gates, never asserted)
+- **Methodology** → the spine (Contract → Canon → Closures → Ledger → Stance)
+- **Ambiguity** → NON_EVALUABLE (the third state — declare, don't guess)
+- **Calibration** → orientation script (re-derivation produces same numbers)
+
+Your role: Tier-2 channel selection (which question) + Tier-0 execution (run
+the spine). The verdict is not yours to frame — it is derived.
+*Creativitas in quaestione; rigor in responso.*
+
 ## Reasoning Protocol
 
 1. **Auditus** — hear the full input before responding

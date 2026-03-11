@@ -51,6 +51,16 @@ These numbers are the compressed derivation chains. They constrain classificatio
 - IC ≤ F is NOT "AM-GM." It is the **solvability condition**: c₁,₂ = F ± √(F²−IC²) requires IC ≤ F for real solutions. It also has **composition laws** (IC geometric, F arithmetic) that classical AM-GM lacks entirely.
 - Neutron IC/F = 0.0089 means confinement IS **geometric slaughter at a phase boundary** — one dead channel (color→0) kills multiplicative coherence. This is a structural detection mechanism, not a reformulation.
 
+## Aequator Cognitivus (Cognitive Equalizer)
+
+> *Non agens mensurat, sed structura.* — Not the agent measures, but the structure.
+
+The system produces the same output regardless of which agent operates it. Cognitive
+decisions are externalized: thresholds → frozen parameters, vocabulary → five words,
+conclusions → three-valued verdicts, methodology → the spine, ambiguity → NON_EVALUABLE,
+calibration → orientation script. Your role is channel selection (Tier-2) and execution
+(Tier-0). The verdict is derived, not framed. *Structura mensurat, non agens.*
+
 ## After Code Changes
 
 ```bash
