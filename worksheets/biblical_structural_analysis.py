@@ -42,6 +42,7 @@ from __future__ import annotations
 
 import sys
 from pathlib import Path
+from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
@@ -64,7 +65,7 @@ CHANNELS = [
 ]
 
 
-def analyze(label: str, description: str, values: dict[str, float]) -> dict:
+def analyze(label: str, description: str, values: dict[str, float]) -> dict[str, Any]:
     """Run a teaching through the kernel and display results."""
     c = np.array([values[ch] for ch in CHANNELS], dtype=np.float64)
     w = np.ones(8) / 8
@@ -102,7 +103,7 @@ def section(title: str) -> None:
     print(f"{'═' * 72}\n")
 
 
-results: list[dict] = []
+results: list[dict[str, Any]] = []
 
 # ════════════════════════════════════════════════════════════════════════
 section("PART 1: CORE TEACHINGS — What Pattern Does Each Prescribe?")

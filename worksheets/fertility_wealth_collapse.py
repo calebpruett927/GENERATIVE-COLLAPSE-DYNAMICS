@@ -54,7 +54,7 @@ def section_header(title: str) -> None:
     print(f"{'═' * 72}\n")
 
 
-def compute_and_display(label: str, channels: dict[str, float], weights: np.ndarray | None = None) -> dict:
+def compute_and_display(label: str, channels: dict[str, float], weights: np.ndarray | None = None) -> dict[str, object]:
     """Compute kernel for a trace vector and display results."""
     c = np.array(list(channels.values()), dtype=np.float64)
     w = np.ones(len(c)) / len(c) if weights is None else weights
