@@ -94,7 +94,8 @@ The operational whitepaper~\cite{umcpmetadatarepo} specifies
 explains \emph{why} and \emph{how}: why the axiom forces a
 Bernoulli embedding and how raw observables are mapped into it;
 why the embedding yields exactly six kernel outputs with three
-effective degrees of freedom and how each is computed; why the
+effective degrees of freedom (two exact algebraic constraints,
+one asymptotic) and how each is computed; why the
 frozen parameters are the unique values where validation seams
 close and how they are discovered; why classical results appear
 as degenerate limits and how the kernel's additional structure
@@ -626,6 +627,10 @@ identity network.
 \label{thm:dof}
 The six kernel outputs $(F, \omega, S, C, \kappa, \IC)$ possess
 only three effective degrees of freedom: $F$, $\kappa$, and $C$.
+Two constraints ($\omega = 1 - F$, $\IC = e^\kappa$) are exact
+algebraic identities; the third ($S \approx f(F, C)$) is an
+asymptotic statistical relation that tightens with channel
+count~$n$.
 \end{theorem}
 
 \begin{proof}
@@ -1193,6 +1198,30 @@ return credit is not proportional to the actual integrity
 improvement.  A weld \regime{PASS} requires the budget and
 ledger to agree within tolerance---demonstrated re-entry must
 match the accounting.
+
+\begin{remark}[Return-rate calibration]
+\label{rem:calibration}
+The return rate $R$ is not a universal constant; it is a
+\emph{closure-declared parameter} that each domain calibrates so
+that the $\kappa$-space credit $R \cdot \tR$ is commensurate with
+the actual integrity change $\Delta\kappa_{\mathrm{ledger}}$.
+The \regime{FAIL} above is pedagogically intentional: it
+demonstrates what happens when $R$ is left at the uncalibrated
+unit default ($R = 1$).  To obtain a \regime{PASS}, the closure
+must set $R$ so that $R \cdot \tR \approx
+\Delta\kappa_{\mathrm{ledger}} + (D_\omega + D_C)$.
+
+\medskip\noindent\textbf{Calibrated example.}
+With $R = 0.132$ (calibrated to the $\kappa$-scale of this
+trace): $\Delta\kappa_{\mathrm{budget}} = 0.132 \times 3
+- (0.024 + 0.302) = 0.396 - 0.326 = 0.070$; residual
+$s = 0.070 - 0.069 = 0.001$.  Since
+$|s| = 0.001 < \tolseam = 0.005$, this weld \regime{PASS}es.
+The uncalibrated example fails because $R = 1$ assigns three
+full units of $\kappa$-credit for a transition that changes
+$\kappa$ by only $0.069$---a 39-fold mismatch.  The seam
+enforces proportionality: credit must match demonstrated change.
+\end{remark}
 
 
 % ============================================================
@@ -1906,52 +1935,8 @@ surface expression varies across intellectual fields.  The Rosetta
 maps each word to the dialect of a given \emph{lens} without
 changing the underlying operational meaning.
 
-\begin{center}
-{\scriptsize\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}lllllll@{}}
-\toprule
-Lens & Drift & Fidelity & Roughness & Return & \multicolumn{2}{l}{Integrity} \\
-\midrule
-Epistem. &
-  Belief chg. &
-  Warrant &
-  Friction &
-  Re-entry &
-  \multicolumn{2}{l}{\emph{(ledger)}} \\
-Ontology &
-  State trans. &
-  Conserved &
-  Seams &
-  Coherence &
-  \multicolumn{2}{l}{\emph{(ledger)}} \\
-Phenom. &
-  Shift &
-  Stable feat. &
-  Distress &
-  Repair &
-  \multicolumn{2}{l}{\emph{(ledger)}} \\
-History &
-  Period. &
-  Continuity &
-  Rupture &
-  Reconcil. &
-  \multicolumn{2}{l}{\emph{(ledger)}} \\
-Policy &
-  Reg.\ shift &
-  Mandate &
-  Friction &
-  Reinstate. &
-  \multicolumn{2}{l}{\emph{(ledger)}} \\
-Semiotics &
-  Sign drift &
-  Ground &
-  Tr.\ loss &
-  Interp.\ cl. &
-  \multicolumn{2}{l}{\emph{(ledger)}} \\
-\bottomrule
-\end{tabular*}}
-\end{center}
-
-\noindent Integrity is never asserted within the Rosetta; it is
+The full Rosetta table is given in Fig.~\ref{fig:rosetta}.
+Integrity is never asserted within the Rosetta; it is
 read from the reconciled ledger.  This is what makes cross-domain
 synthesis mechanical rather than interpretive: the prose maps
 through the Rosetta in the chosen lens, while $I = e^\kappa$
@@ -2815,6 +2800,66 @@ The integrity bound $\IC \leq F$ is a \emph{solvability
 condition}---it guarantees that the kernel's inverse problem
 has real solutions---not merely an algebraic inequality.}
 \label{fig:solvability}
+\end{figure*}
+
+% -------------------------------------------------------------
+% Figure 7: The Rosetta — Cross-Domain Translation Table
+% -------------------------------------------------------------
+\begin{figure*}[t!]
+\centering
+\begin{tabular}{@{}llllll@{}}
+\toprule
+\textbf{Lens} & \textbf{Drift} & \textbf{Fidelity} & \textbf{Roughness} & \textbf{Return} & \textbf{Integrity} \\
+\midrule
+Epistemology &
+  Change in belief/evidence &
+  Retained warrant &
+  Inference friction &
+  Justified re-entry &
+  \emph{(read from ledger)} \\[3pt]
+Ontology &
+  State transition &
+  Conserved properties &
+  Heterogeneity/seams &
+  Restored coherence &
+  \emph{(read from ledger)} \\[3pt]
+Phenomenology &
+  Perceived shift &
+  Stable features &
+  Distress/bias/effort &
+  Coping/repair &
+  \emph{(read from ledger)} \\[3pt]
+History &
+  Periodization &
+  Continuity &
+  Rupture/confound &
+  Reconciliation &
+  \emph{(read from ledger)} \\[3pt]
+Policy &
+  Regime shift &
+  Mandate persistence &
+  Friction/cost &
+  Reinstatement &
+  \emph{(read from ledger)} \\[3pt]
+Semiotics &
+  Sign drift &
+  Ground persistence &
+  Translation friction &
+  Interpretant closure &
+  \emph{(read from ledger)} \\
+\bottomrule
+\end{tabular}
+\caption{The Rosetta: cross-domain translation of the five
+words.  Each row is a \emph{lens}---an intellectual field
+whose dialect is mapped to the fixed operational definitions
+without altering them.  Integrity is never asserted within
+the Rosetta; it is read from the reconciled ledger and
+stance.  This is what makes cross-domain synthesis
+mechanical: the prose maps through the Rosetta, while
+$I = e^\kappa$ provides unitless multiplicative comparability
+across seams.  See \S\ref{sec:canon} for the four-step
+translation protocol.}
+\label{fig:rosetta}
 \end{figure*}
 
 \clearpage
