@@ -934,7 +934,7 @@ The framework is anchored by peer-reviewed Zenodo publications covering the core
 | Document | Purpose |
 |----------|---------|
 | [AXIOM.md](AXIOM.md) | **Start here.** The foundational axiom, 44 structural identities, and why this system is original |
-| [LIBER_COLLAPSUS.md](LIBER_COLLAPSUS.md) | *Liber Universalis de Collapsus Mathematica* — the Tier-1 Latin foundation text |
+| [LIBER_COLLAPSUS.tex](LIBER_COLLAPSUS.tex) | *Liber Universalis de Collapsus Mathematica* — the Tier-1 Latin foundation text |
 | [MANIFESTUM_LATINUM.md](MANIFESTUM_LATINUM.md) | Latin manifesto: complete lexicon, seven verbs, eight typed patterns, twenty maxims |
 | [TIER_SYSTEM.md](TIER_SYSTEM.md) | The three-tier architecture: Immutable Invariants → Protocol → Expansion Space |
 | [KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md) | Complete kernel mathematics, 46 lemmas, and degenerate-limit proofs |
