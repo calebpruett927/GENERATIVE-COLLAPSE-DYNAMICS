@@ -1,0 +1,1981 @@
+[
+  {
+    "name": "\u00a71: Registry Overview",
+    "description": "Global metrics across all theorems",
+    "findings": [
+      "225 theorems across 20 domains",
+      "219 PROVEN (97.3%), 5 FALSIFIED (2.2%)",
+      "3831 total subtests, 3808.0 passed (99.4%)",
+      "Mean tests/theorem: 17.0, median: 5"
+    ],
+    "data": {
+      "n_theorems": 225,
+      "n_proven": 219,
+      "n_falsified": 5,
+      "n_errors": 0,
+      "n_domains": 20,
+      "total_tests": 3831,
+      "total_pass": 3808.0,
+      "proof_rate": 0.9733,
+      "domains": [
+        "astronomy",
+        "atomic_physics",
+        "awareness_cognition",
+        "clinical_neuroscience",
+        "consciousness_coherence",
+        "continuity_theory",
+        "dynamic_semiotics",
+        "everyday_physics",
+        "evolution",
+        "finance",
+        "gcd",
+        "kinematics",
+        "materials_science",
+        "nuclear_physics",
+        "quantum_mechanics",
+        "rcft",
+        "spacetime_memory",
+        "standard_model",
+        "unified_minimal_structure",
+        "weyl"
+      ]
+    }
+  },
+  {
+    "name": "\u00a72: Archetype Taxonomy",
+    "description": "What kinds of theorems exist",
+    "findings": [
+      "domain_specific                 64 ( 28.4%)  [63/64 proven]",
+      "regime_classification           43 ( 19.1%)  [41/43 proven]",
+      "ordering_hierarchy              33 ( 14.7%)  [33/33 proven]",
+      "identity_verification           23 ( 10.2%)  [23/23 proven]",
+      "extremal_entity                 16 (  7.1%)  [15/16 proven]",
+      "correlation_structure           14 (  6.2%)  [13/14 proven]",
+      "phase_transition                10 (  4.4%)  [10/10 proven]",
+      "geometric_slaughter              8 (  3.6%)  [7/8 proven]",
+      "coverage_completeness            7 (  3.1%)  [7/7 proven]",
+      "composition                      4 (  1.8%)  [4/4 proven]",
+      "cross_scale                      3 (  1.3%)  [3/3 proven]",
+      "",
+      "Top-3 archetypes (domain_specific, regime_classification, ordering_hierarchy) account for 62% of all theorems"
+    ],
+    "data": {
+      "archetype_counts": {
+        "domain_specific": 64,
+        "ordering_hierarchy": 33,
+        "phase_transition": 10,
+        "regime_classification": 43,
+        "identity_verification": 23,
+        "geometric_slaughter": 8,
+        "correlation_structure": 14,
+        "cross_scale": 3,
+        "coverage_completeness": 7,
+        "extremal_entity": 16,
+        "composition": 4
+      },
+      "archetype_proven": {
+        "domain_specific": 63,
+        "ordering_hierarchy": 33,
+        "phase_transition": 10,
+        "regime_classification": 41,
+        "identity_verification": 23,
+        "geometric_slaughter": 7,
+        "correlation_structure": 13,
+        "cross_scale": 3,
+        "coverage_completeness": 7,
+        "extremal_entity": 15,
+        "composition": 4
+      }
+    }
+  },
+  {
+    "name": "\u00a73: Cross-Domain Structural Twins",
+    "description": "Theorems with identical proof structures across different domains",
+    "findings": [
+      "39 structural twin groups found",
+      "",
+      "Largest twin families (same archetype + same test count, multiple domains):",
+      "  [domain_specific] n_tests=4: 18 theorems across atomic_physics, continuity_theory, dynamic_semiotics, finance, materials_science",
+      "  [domain_specific] n_tests=3: 14 theorems across astronomy, everyday_physics, kinematics, rcft, spacetime_memory",
+      "  [domain_specific] n_tests=5: 10 theorems across atomic_physics, awareness_cognition, clinical_neuroscience, kinematics, quantum_mechanics",
+      "  [ordering_hierarchy] n_tests=3: 9 theorems across astronomy, everyday_physics, evolution, materials_science, spacetime_memory",
+      "  [ordering_hierarchy] n_tests=4: 9 theorems across continuity_theory, dynamic_semiotics, everyday_physics, evolution, materials_science",
+      "  [ordering_hierarchy] n_tests=5: 8 theorems across awareness_cognition, clinical_neuroscience, consciousness_coherence, finance, quantum_mechanics",
+      "  [regime_classification] n_tests=5: 8 theorems across atomic_physics, awareness_cognition, consciousness_coherence, gcd, materials_science",
+      "  [domain_specific] n_tests=6: 7 theorems across awareness_cognition, everyday_physics, gcd, quantum_mechanics, unified_minimal_structure",
+      "  [regime_classification] n_tests=3: 7 theorems across everyday_physics, evolution, rcft, spacetime_memory, weyl",
+      "  [extremal_entity] n_tests=3: 6 theorems across astronomy, everyday_physics, evolution, rcft",
+      "",
+      "Statement-level semantic clusters:",
+      "  geometric_slaughter: 6 theorems across 6 domains (clinical_neuroscience, continuity_theory, everyday_physics, evolution, gcd, quantum_mechanics...)",
+      "  regime_classification: 13 theorems across 8 domains (astronomy, awareness_cognition, consciousness_coherence, evolution, materials_science, nuclear_physics...)",
+      "  tier1_identity: 23 theorems across 15 domains (astronomy, clinical_neuroscience, consciousness_coherence, continuity_theory, dynamic_semiotics, everyday_physics...)"
+    ],
+    "data": {
+      "twin_groups": [
+        {
+          "archetype": "correlation_structure",
+          "n_tests": 3,
+          "n_theorems": 3,
+          "domains": [
+            "astronomy",
+            "dynamic_semiotics"
+          ],
+          "tags": [
+            "T-AS-6",
+            "T-AS-7",
+            "T-S-8"
+          ]
+        },
+        {
+          "archetype": "correlation_structure",
+          "n_tests": 4,
+          "n_theorems": 4,
+          "domains": [
+            "dynamic_semiotics",
+            "finance"
+          ],
+          "tags": [
+            "T-F-4",
+            "T-F-9",
+            "T-S-2",
+            "T-S-3"
+          ]
+        },
+        {
+          "archetype": "correlation_structure",
+          "n_tests": 5,
+          "n_theorems": 2,
+          "domains": [
+            "awareness_cognition",
+            "consciousness_coherence"
+          ],
+          "tags": [
+            "T-CC-1",
+            "T-AW-1"
+          ]
+        },
+        {
+          "archetype": "correlation_structure",
+          "n_tests": 6,
+          "n_theorems": 3,
+          "domains": [
+            "consciousness_coherence",
+            "quantum_mechanics",
+            "standard_model"
+          ],
+          "tags": [
+            "T10",
+            "T-CC-10",
+            "T-MLD-7"
+          ]
+        },
+        {
+          "archetype": "correlation_structure",
+          "n_tests": 11,
+          "n_theorems": 2,
+          "domains": [
+            "everyday_physics",
+            "quantum_mechanics"
+          ],
+          "tags": [
+            "T-EC-2",
+            "T-DSE-2"
+          ]
+        },
+        {
+          "archetype": "coverage_completeness",
+          "n_tests": 3,
+          "n_theorems": 2,
+          "domains": [
+            "rcft",
+            "weyl"
+          ],
+          "tags": [
+            "T-RC-8",
+            "T-WL-9"
+          ]
+        },
+        {
+          "archetype": "coverage_completeness",
+          "n_tests": 5,
+          "n_theorems": 3,
+          "domains": [
+            "astronomy",
+            "evolution",
+            "rcft"
+          ],
+          "tags": [
+            "T-AS-10",
+            "T-EV-10",
+            "T-RC-10"
+          ]
+        },
+        {
+          "archetype": "domain_specific",
+          "n_tests": 3,
+          "n_theorems": 14,
+          "domains": [
+            "astronomy",
+            "everyday_physics",
+            "kinematics",
+            "rcft",
+            "spacetime_memory",
+            "weyl"
+          ],
+          "tags": [
+            "T-AS-5",
+            "T-EP-4",
+            "T-RC-4",
+            "T-RC-5",
+            "T-RC-6",
+            "T-WL-10",
+            "T-WL-4",
+            "T-WL-5",
+            "T-WL-6",
+            "T-WL-8",
+            "T-KN-6",
+            "T-ST-2",
+            "T-ST-4",
+            "T-ST-9"
+          ]
+        },
+        {
+          "archetype": "domain_specific",
+          "n_tests": 4,
+          "n_theorems": 18,
+          "domains": [
+            "atomic_physics",
+            "continuity_theory",
+            "dynamic_semiotics",
+            "finance",
+            "materials_science",
+            "quantum_mechanics",
+            "spacetime_memory",
+            "unified_minimal_structure"
+          ],
+          "tags": [
+            "T-F-3",
+            "T-MS-4",
+            "T-ST-3",
+            "T-ST-6",
+            "T-ST-7",
+            "T-S-5",
+            "T-S-6",
+            "T-CT-5",
+            "T-CT-6",
+            "T-TERS-6",
+            "T-ADOT-3",
+            "T-ADOT-4",
+            "T-ADOT-6",
+            "T11",
+            "T14",
+            "T16",
+            "T19",
+            "T20"
+          ]
+        },
+        {
+          "archetype": "domain_specific",
+          "n_tests": 5,
+          "n_theorems": 10,
+          "domains": [
+            "atomic_physics",
+            "awareness_cognition",
+            "clinical_neuroscience",
+            "kinematics",
+            "quantum_mechanics",
+            "standard_model"
+          ],
+          "tags": [
+            "T5",
+            "T7",
+            "T8",
+            "T-CN-7",
+            "T-CN-8",
+            "T-KN-1",
+            "T-AW-4",
+            "T-TERS-2",
+            "T-TERS-7",
+            "T13"
+          ]
+        },
+        {
+          "archetype": "domain_specific",
+          "n_tests": 6,
+          "n_theorems": 7,
+          "domains": [
+            "awareness_cognition",
+            "everyday_physics",
+            "gcd",
+            "quantum_mechanics",
+            "unified_minimal_structure"
+          ],
+          "tags": [
+            "T-KS-4",
+            "T-EC-7",
+            "T-AW-10",
+            "T-AW-3",
+            "T-DSE-6",
+            "T-MLD-6",
+            "T17"
+          ]
+        },
+        {
+          "archetype": "domain_specific",
+          "n_tests": 7,
+          "n_theorems": 3,
+          "domains": [
+            "kinematics",
+            "quantum_mechanics"
+          ],
+          "tags": [
+            "T-KN-4",
+            "T-KN-3",
+            "T-DSE-7"
+          ]
+        },
+        {
+          "archetype": "domain_specific",
+          "n_tests": 8,
+          "n_theorems": 2,
+          "domains": [
+            "everyday_physics",
+            "standard_model"
+          ],
+          "tags": [
+            "T11",
+            "T-EC-5"
+          ]
+        },
+        {
+          "archetype": "domain_specific",
+          "n_tests": 10,
+          "n_theorems": 2,
+          "domains": [
+            "everyday_physics",
+            "kinematics"
+          ],
+          "tags": [
+            "T-EC-6",
+            "T-KN-2"
+          ]
+        },
+        {
+          "archetype": "domain_specific",
+          "n_tests": 12,
+          "n_theorems": 2,
+          "domains": [
+            "gcd",
+            "standard_model"
+          ],
+          "tags": [
+            "T-KS-2",
+            "T1"
+          ]
+        },
+        {
+          "archetype": "extremal_entity",
+          "n_tests": 3,
+          "n_theorems": 6,
+          "domains": [
+            "astronomy",
+            "everyday_physics",
+            "evolution",
+            "rcft"
+          ],
+          "tags": [
+            "T-AS-3",
+            "T-AS-4",
+            "T-EP-8",
+            "T-EP-9",
+            "T-EV-9",
+            "T-RC-3"
+          ]
+        },
+        {
+          "archetype": "extremal_entity",
+          "n_tests": 5,
+          "n_theorems": 5,
+          "domains": [
+            "clinical_neuroscience",
+            "materials_science",
+            "nuclear_physics",
+            "quantum_mechanics"
+          ],
+          "tags": [
+            "T-NP-5",
+            "T-MS-10",
+            "T-CN-3",
+            "T-MLD-3",
+            "T-MLD-5"
+          ]
+        },
+        {
+          "archetype": "extremal_entity",
+          "n_tests": 6,
+          "n_theorems": 3,
+          "domains": [
+            "clinical_neuroscience",
+            "consciousness_coherence",
+            "quantum_mechanics"
+          ],
+          "tags": [
+            "T-CC-6",
+            "T-CN-10",
+            "T-MLD-4"
+          ]
+        },
+        {
+          "archetype": "geometric_slaughter",
+          "n_tests": 4,
+          "n_theorems": 3,
+          "domains": [
+            "continuity_theory",
+            "everyday_physics",
+            "evolution"
+          ],
+          "tags": [
+            "T-EP-2",
+            "T-EV-8",
+            "T-CT-4"
+          ]
+        },
+        {
+          "archetype": "geometric_slaughter",
+          "n_tests": 6,
+          "n_theorems": 2,
+          "domains": [
+            "consciousness_coherence",
+            "quantum_mechanics"
+          ],
+          "tags": [
+            "T-CC-4",
+            "T-DSE-5"
+          ]
+        },
+        {
+          "archetype": "identity_verification",
+          "n_tests": 3,
+          "n_theorems": 3,
+          "domains": [
+            "astronomy",
+            "materials_science",
+            "rcft"
+          ],
+          "tags": [
+            "T-AS-8",
+            "T-MS-8",
+            "T-RC-9"
+          ]
+        },
+        {
+          "archetype": "identity_verification",
+          "n_tests": 6,
+          "n_theorems": 2,
+          "domains": [
+            "clinical_neuroscience",
+            "spacetime_memory"
+          ],
+          "tags": [
+            "T-CN-5",
+            "T-ST-10"
+          ]
+        },
+        {
+          "archetype": "identity_verification",
+          "n_tests": 36,
+          "n_theorems": 2,
+          "domains": [
+            "gcd",
+            "rcft"
+          ],
+          "tags": [
+            "T-URC-1",
+            "T-RC-1"
+          ]
+        },
+        {
+          "archetype": "identity_verification",
+          "n_tests": 60,
+          "n_theorems": 2,
+          "domains": [
+            "consciousness_coherence",
+            "continuity_theory"
+          ],
+          "tags": [
+            "T-CC-8",
+            "T-CT-1"
+          ]
+        },
+        {
+          "archetype": "identity_verification",
+          "n_tests": 90,
+          "n_theorems": 2,
+          "domains": [
+            "dynamic_semiotics",
+            "finance"
+          ],
+          "tags": [
+            "T-F-1",
+            "T-S-1"
+          ]
+        },
+        {
+          "archetype": "ordering_hierarchy",
+          "n_tests": 3,
+          "n_theorems": 9,
+          "domains": [
+            "astronomy",
+            "everyday_physics",
+            "evolution",
+            "materials_science",
+            "spacetime_memory",
+            "weyl"
+          ],
+          "tags": [
+            "T-AS-9",
+            "T-EP-5",
+            "T-MS-5",
+            "T-EV-5",
+            "T-EV-7",
+            "T-WL-1",
+            "T-WL-2",
+            "T-WL-3",
+            "T-ST-5"
+          ]
+        },
+        {
+          "archetype": "ordering_hierarchy",
+          "n_tests": 4,
+          "n_theorems": 9,
+          "domains": [
+            "continuity_theory",
+            "dynamic_semiotics",
+            "everyday_physics",
+            "evolution",
+            "materials_science",
+            "quantum_mechanics",
+            "spacetime_memory"
+          ],
+          "tags": [
+            "T-EP-3",
+            "T-MS-3",
+            "T-EV-4",
+            "T-EV-6",
+            "T-ST-1",
+            "T-S-10",
+            "T-S-9",
+            "T-CT-8",
+            "T-ADOT-2"
+          ]
+        },
+        {
+          "archetype": "ordering_hierarchy",
+          "n_tests": 5,
+          "n_theorems": 8,
+          "domains": [
+            "awareness_cognition",
+            "clinical_neuroscience",
+            "consciousness_coherence",
+            "finance",
+            "quantum_mechanics",
+            "standard_model"
+          ],
+          "tags": [
+            "T2",
+            "T4",
+            "T12",
+            "T-F-5",
+            "T-CC-7",
+            "T-CN-1",
+            "T-AW-6",
+            "T-MLD-2"
+          ]
+        },
+        {
+          "archetype": "ordering_hierarchy",
+          "n_tests": 6,
+          "n_theorems": 4,
+          "domains": [
+            "awareness_cognition",
+            "clinical_neuroscience",
+            "kinematics",
+            "quantum_mechanics"
+          ],
+          "tags": [
+            "T-CN-9",
+            "T-KN-5",
+            "T-AW-9",
+            "T-ADOT-1"
+          ]
+        },
+        {
+          "archetype": "phase_transition",
+          "n_tests": 4,
+          "n_theorems": 2,
+          "domains": [
+            "gcd",
+            "quantum_mechanics"
+          ],
+          "tags": [
+            "T-KS-5",
+            "T-ADOT-7"
+          ]
+        },
+        {
+          "archetype": "phase_transition",
+          "n_tests": 5,
+          "n_theorems": 3,
+          "domains": [
+            "awareness_cognition",
+            "quantum_mechanics"
+          ],
+          "tags": [
+            "T-AW-5",
+            "T-AW-8",
+            "T-TERS-5"
+          ]
+        },
+        {
+          "archetype": "phase_transition",
+          "n_tests": 6,
+          "n_theorems": 2,
+          "domains": [
+            "quantum_mechanics",
+            "standard_model"
+          ],
+          "tags": [
+            "T9",
+            "T-DSE-3"
+          ]
+        },
+        {
+          "archetype": "regime_classification",
+          "n_tests": 3,
+          "n_theorems": 7,
+          "domains": [
+            "everyday_physics",
+            "evolution",
+            "rcft",
+            "spacetime_memory",
+            "weyl"
+          ],
+          "tags": [
+            "T-EP-10",
+            "T-EP-6",
+            "T-EV-2",
+            "T-RC-2",
+            "T-RC-7",
+            "T-WL-7",
+            "T-ST-8"
+          ]
+        },
+        {
+          "archetype": "regime_classification",
+          "n_tests": 4,
+          "n_theorems": 6,
+          "domains": [
+            "atomic_physics",
+            "continuity_theory",
+            "evolution",
+            "quantum_mechanics"
+          ],
+          "tags": [
+            "T-EV-3",
+            "T-CT-7",
+            "T-TERS-3",
+            "T-TERS-4",
+            "T-ADOT-5",
+            "T15"
+          ]
+        },
+        {
+          "archetype": "regime_classification",
+          "n_tests": 5,
+          "n_theorems": 8,
+          "domains": [
+            "atomic_physics",
+            "awareness_cognition",
+            "consciousness_coherence",
+            "gcd",
+            "materials_science",
+            "nuclear_physics"
+          ],
+          "tags": [
+            "T-URC-5",
+            "T-CC-2",
+            "T-CC-3",
+            "T-NP-10",
+            "T-NP-4",
+            "T-MS-2",
+            "T-AW-2",
+            "T12"
+          ]
+        },
+        {
+          "archetype": "regime_classification",
+          "n_tests": 6,
+          "n_theorems": 6,
+          "domains": [
+            "clinical_neuroscience",
+            "consciousness_coherence",
+            "gcd",
+            "kinematics",
+            "nuclear_physics"
+          ],
+          "tags": [
+            "T-URC-3",
+            "T-CC-5",
+            "T-NP-2",
+            "T-CN-4",
+            "T-CN-6",
+            "T-KN-7"
+          ]
+        },
+        {
+          "archetype": "regime_classification",
+          "n_tests": 7,
+          "n_theorems": 4,
+          "domains": [
+            "dynamic_semiotics",
+            "finance",
+            "gcd",
+            "unified_minimal_structure"
+          ],
+          "tags": [
+            "T-KS-7",
+            "T-F-6",
+            "T-S-7",
+            "T23"
+          ]
+        },
+        {
+          "archetype": "regime_classification",
+          "n_tests": 8,
+          "n_theorems": 3,
+          "domains": [
+            "finance",
+            "gcd",
+            "nuclear_physics"
+          ],
+          "tags": [
+            "T-KS-6",
+            "T-F-10",
+            "T-NP-3"
+          ]
+        },
+        {
+          "archetype": "regime_classification",
+          "n_tests": 12,
+          "n_theorems": 2,
+          "domains": [
+            "everyday_physics",
+            "gcd"
+          ],
+          "tags": [
+            "T-URC-7",
+            "T-EC-3"
+          ]
+        }
+      ],
+      "statement_clusters": {
+        "tier1_identity": [
+          "T-URC-1",
+          "T8",
+          "T-AS-1",
+          "T-AS-8",
+          "T-F-1",
+          "T-CC-8",
+          "T-NP-1",
+          "T-NP-6",
+          "T-NP-8",
+          "T-NP-9",
+          "T-EP-1",
+          "T-EC-1",
+          "T-MS-1",
+          "T-MS-8",
+          "T-EV-1",
+          "T-RC-1",
+          "T-RC-9",
+          "T-CN-5",
+          "T-S-1",
+          "T-CT-1",
+          "T-DSE-1",
+          "T-MLD-1",
+          "T18"
+        ],
+        "geometric_slaughter": [
+          "T-URC-4",
+          "T-EP-2",
+          "T-EV-8",
+          "T-CN-2",
+          "T-CT-4",
+          "T-DSE-5"
+        ],
+        "regime_classification": [
+          "T-AS-2",
+          "T-CC-2",
+          "T-CC-3",
+          "T-CC-5",
+          "T-NP-10",
+          "T-NP-2",
+          "T-NP-3",
+          "T-MS-2",
+          "T-EV-2",
+          "T-EV-3",
+          "T-AW-2",
+          "T-TERS-4",
+          "T22"
+        ]
+      }
+    }
+  },
+  {
+    "name": "\u00a74: First-Theorem Invariant",
+    "description": "Does every domain bootstrap with identity verification?",
+    "findings": [
+      "First-theorem identity bootstrap: 9/20 domains (45%)",
+      "",
+      "Domains where first theorem is NOT identity verification:",
+      "  atomic_physics (T11: domain_specific)",
+      "  awareness_cognition (T-AW-1: correlation_structure)",
+      "  clinical_neuroscience (T-CN-1: ordering_hierarchy)",
+      "  consciousness_coherence (T-CC-1: correlation_structure)",
+      "  gcd (T-KS-1: domain_specific)",
+      "  kinematics (T-KN-1: domain_specific)",
+      "  quantum_mechanics (T-ADOT-1: ordering_hierarchy)",
+      "  spacetime_memory (T-ST-1: ordering_hierarchy)",
+      "  standard_model (T1: domain_specific)",
+      "  unified_minimal_structure (T17: domain_specific)",
+      "  weyl (T-WL-1: ordering_hierarchy)",
+      "",
+      "Identity-verification test counts: min=3, max=354, mean=52"
+    ],
+    "data": {
+      "first_theorems": [
+        {
+          "domain": "astronomy",
+          "tag": "T-AS-1",
+          "archetype": "identity_verification",
+          "is_identity_check": true,
+          "n_tests": 18
+        },
+        {
+          "domain": "atomic_physics",
+          "tag": "T11",
+          "archetype": "domain_specific",
+          "is_identity_check": false,
+          "n_tests": 4
+        },
+        {
+          "domain": "awareness_cognition",
+          "tag": "T-AW-1",
+          "archetype": "correlation_structure",
+          "is_identity_check": false,
+          "n_tests": 5
+        },
+        {
+          "domain": "clinical_neuroscience",
+          "tag": "T-CN-1",
+          "archetype": "ordering_hierarchy",
+          "is_identity_check": false,
+          "n_tests": 5
+        },
+        {
+          "domain": "consciousness_coherence",
+          "tag": "T-CC-1",
+          "archetype": "correlation_structure",
+          "is_identity_check": false,
+          "n_tests": 5
+        },
+        {
+          "domain": "continuity_theory",
+          "tag": "T-CT-1",
+          "archetype": "identity_verification",
+          "is_identity_check": true,
+          "n_tests": 60
+        },
+        {
+          "domain": "dynamic_semiotics",
+          "tag": "T-S-1",
+          "archetype": "identity_verification",
+          "is_identity_check": true,
+          "n_tests": 90
+        },
+        {
+          "domain": "everyday_physics",
+          "tag": "T-EC-1",
+          "archetype": "identity_verification",
+          "is_identity_check": true,
+          "n_tests": 39
+        },
+        {
+          "domain": "evolution",
+          "tag": "T-EV-1",
+          "archetype": "identity_verification",
+          "is_identity_check": true,
+          "n_tests": 120
+        },
+        {
+          "domain": "finance",
+          "tag": "T-F-1",
+          "archetype": "identity_verification",
+          "is_identity_check": true,
+          "n_tests": 90
+        },
+        {
+          "domain": "gcd",
+          "tag": "T-KS-1",
+          "archetype": "domain_specific",
+          "is_identity_check": false,
+          "n_tests": 16
+        },
+        {
+          "domain": "kinematics",
+          "tag": "T-KN-1",
+          "archetype": "domain_specific",
+          "is_identity_check": false,
+          "n_tests": 5
+        },
+        {
+          "domain": "materials_science",
+          "tag": "T-MS-1",
+          "archetype": "identity_verification",
+          "is_identity_check": true,
+          "n_tests": 153
+        },
+        {
+          "domain": "nuclear_physics",
+          "tag": "T-NP-1",
+          "archetype": "identity_verification",
+          "is_identity_check": true,
+          "n_tests": 354
+        },
+        {
+          "domain": "quantum_mechanics",
+          "tag": "T-ADOT-1",
+          "archetype": "ordering_hierarchy",
+          "is_identity_check": false,
+          "n_tests": 6
+        },
+        {
+          "domain": "rcft",
+          "tag": "T-RC-1",
+          "archetype": "identity_verification",
+          "is_identity_check": true,
+          "n_tests": 36
+        },
+        {
+          "domain": "spacetime_memory",
+          "tag": "T-ST-1",
+          "archetype": "ordering_hierarchy",
+          "is_identity_check": false,
+          "n_tests": 4
+        },
+        {
+          "domain": "standard_model",
+          "tag": "T1",
+          "archetype": "domain_specific",
+          "is_identity_check": false,
+          "n_tests": 12
+        },
+        {
+          "domain": "unified_minimal_structure",
+          "tag": "T17",
+          "archetype": "domain_specific",
+          "is_identity_check": false,
+          "n_tests": 6
+        },
+        {
+          "domain": "weyl",
+          "tag": "T-WL-1",
+          "archetype": "ordering_hierarchy",
+          "is_identity_check": false,
+          "n_tests": 3
+        }
+      ],
+      "identity_first_pct": 45.0
+    }
+  },
+  {
+    "name": "\u00a75: Geometric Slaughter Map",
+    "description": "Where IC destruction from dead channels appears across domains",
+    "findings": [
+      "Geometric slaughter detected in 8 domains:",
+      "  clinical_neuroscience          T-CN-2",
+      "  consciousness_coherence        T-CC-4",
+      "  continuity_theory              T-CT-4",
+      "  everyday_physics               T-EP-2",
+      "  evolution                      T-EV-8",
+      "  finance                        T-F-7",
+      "  gcd                            T-URC-4",
+      "  quantum_mechanics              T-DSE-5",
+      "",
+      "Domains WITHOUT explicit slaughter theorems (12): astronomy, atomic_physics, awareness_cognition, dynamic_semiotics, kinematics, materials_science, nuclear_physics, rcft...",
+      "",
+      "Structural insight: Geometric slaughter is the mechanism that connects IC \u2264 F (integrity bound) to observable phenomena. A single dead channel (c_k \u2192 \u03b5) collapses IC via exp(w_k\u00b7ln(\u03b5)) while F barely moves."
+    ],
+    "data": {
+      "n_slaughter_theorems": 8,
+      "domains_with_slaughter": [
+        "clinical_neuroscience",
+        "consciousness_coherence",
+        "continuity_theory",
+        "everyday_physics",
+        "evolution",
+        "finance",
+        "gcd",
+        "quantum_mechanics"
+      ],
+      "tags": [
+        "T-URC-4",
+        "T-F-7",
+        "T-CC-4",
+        "T-EP-2",
+        "T-EV-8",
+        "T-CN-2",
+        "T-CT-4",
+        "T-DSE-5"
+      ]
+    }
+  },
+  {
+    "name": "\u00a76: Regime Distribution Landscape",
+    "description": "What regimes dominate each domain",
+    "findings": [
+      "43 regime-classification theorems across 20 domains",
+      "",
+      "Domains with regime theorems:",
+      "  astronomy                      1 theorems: T-AS-2",
+      "  atomic_physics                 2 theorems: T12, T15",
+      "  awareness_cognition            1 theorems: T-AW-2",
+      "  clinical_neuroscience          2 theorems: T-CN-4, T-CN-6",
+      "  consciousness_coherence        3 theorems: T-CC-2, T-CC-3, T-CC-5",
+      "  continuity_theory              1 theorems: T-CT-7",
+      "  dynamic_semiotics              1 theorems: T-S-7",
+      "  everyday_physics               3 theorems: T-EP-10, T-EP-6, T-EC-3",
+      "  evolution                      2 theorems: T-EV-2, T-EV-3",
+      "  finance                        3 theorems: T-F-10, T-F-2, T-F-6",
+      "  gcd                            7 theorems: T-KS-6, T-KS-7, T-URC-2, T-URC-3, T-URC-5, T-URC-6, T-URC-7",
+      "  kinematics                     2 theorems: T-KN-8, T-KN-7",
+      "  materials_science              1 theorems: T-MS-2",
+      "  nuclear_physics                4 theorems: T-NP-10, T-NP-2, T-NP-3, T-NP-4",
+      "  quantum_mechanics              3 theorems: T-TERS-3, T-TERS-4, T-ADOT-5",
+      "  rcft                           2 theorems: T-RC-2, T-RC-7",
+      "  spacetime_memory               1 theorems: T-ST-8",
+      "  standard_model                 1 theorems: T3",
+      "  unified_minimal_structure      2 theorems: T22, T23",
+      "  weyl                           1 theorems: T-WL-7",
+      "",
+      "Domains proving universal Collapse: astronomy, everyday_physics, evolution, materials_science",
+      "",
+      "Structural pattern: Regime classification is the MOST COMMON archetype (43 theorems, 19.1%). This reflects 87.5% of the Fisher manifold being outside Stable \u2014 regime detection is the primary structural task."
+    ],
+    "data": {
+      "regime_entries_by_domain": {
+        "gcd": [
+          "T-KS-6",
+          "T-KS-7",
+          "T-URC-2",
+          "T-URC-3",
+          "T-URC-5",
+          "T-URC-6",
+          "T-URC-7"
+        ],
+        "standard_model": [
+          "T3"
+        ],
+        "astronomy": [
+          "T-AS-2"
+        ],
+        "finance": [
+          "T-F-10",
+          "T-F-2",
+          "T-F-6"
+        ],
+        "consciousness_coherence": [
+          "T-CC-2",
+          "T-CC-3",
+          "T-CC-5"
+        ],
+        "nuclear_physics": [
+          "T-NP-10",
+          "T-NP-2",
+          "T-NP-3",
+          "T-NP-4"
+        ],
+        "everyday_physics": [
+          "T-EP-10",
+          "T-EP-6",
+          "T-EC-3"
+        ],
+        "materials_science": [
+          "T-MS-2"
+        ],
+        "evolution": [
+          "T-EV-2",
+          "T-EV-3"
+        ],
+        "rcft": [
+          "T-RC-2",
+          "T-RC-7"
+        ],
+        "weyl": [
+          "T-WL-7"
+        ],
+        "clinical_neuroscience": [
+          "T-CN-4",
+          "T-CN-6"
+        ],
+        "kinematics": [
+          "T-KN-8",
+          "T-KN-7"
+        ],
+        "awareness_cognition": [
+          "T-AW-2"
+        ],
+        "spacetime_memory": [
+          "T-ST-8"
+        ],
+        "dynamic_semiotics": [
+          "T-S-7"
+        ],
+        "continuity_theory": [
+          "T-CT-7"
+        ],
+        "quantum_mechanics": [
+          "T-TERS-3",
+          "T-TERS-4",
+          "T-ADOT-5"
+        ],
+        "atomic_physics": [
+          "T12",
+          "T15"
+        ],
+        "unified_minimal_structure": [
+          "T22",
+          "T23"
+        ]
+      }
+    }
+  },
+  {
+    "name": "\u00a77: Falsification Forensics",
+    "description": "What breaks and why",
+    "findings": [
+      "5 FALSIFIED theorems found:",
+      "",
+      "  finance: 5 falsified",
+      "",
+      "Detailed breakdown:",
+      "\n  T-F-10 (finance): 6/8 (75%)",
+      "    Name: T-F-10: Contagion as Correlated Channel Collapse",
+      "    Statement: Collapsed entities share weakest channels from {debt, cashflow, regulatory}",
+      "    Archetype: regime_classification",
+      "    Enron (pre-collapse)_weakest: regulatory_compliance",
+      "    Lehman Brothers (2008)_weakest: debt_coverage",
+      "    SVB (pre-collapse 2023)_weakest: cashflow_stability",
+      "    Enron (pre-collapse)_weakest_val: 0.05",
+      "    Lehman Brothers (2008)_weakest_val: 0.05",
+      "\n  T-F-2 (finance): 4/9 (44%)",
+      "    Name: T-F-2: Systemic Collapse Detection",
+      "    Statement: Collapsed entities have \u0394 in top quartile and \u03c9 \u2265 0.20",
+      "    Archetype: regime_classification",
+      "    Enron (pre-collapse)_delta: 0.1356156360568008",
+      "    Enron (pre-collapse)_regime: Collapse",
+      "    Enron (pre-collapse)_IC_F: 0.6232898998422199",
+      "    Lehman Brothers (2008)_delta: 0.11047855375598234",
+      "    Lehman Brothers (2008)_regime: Collapse",
+      "\n  T-F-7 (finance): 7/19 (37%)",
+      "    Name: T-F-7: Geometric Slaughter in Finance",
+      "    Statement: Entities with any channel < 0.10 have IC/F < 0.50",
+      "    Archetype: geometric_slaughter",
+      "    Tesla Inc._IC_F: 0.6276609559134974",
+      "    Tesla Inc._min_ch: 0.01",
+      "    Tesla Inc._weakest: dividend_continuity",
+      "    Berkshire Hathaway_IC_F: 0.6489834644142419",
+      "    Berkshire Hathaway_min_ch: 0.01",
+      "\n  T-F-8 (finance): 5/7 (71%)",
+      "    Name: T-F-8: Safe Haven Stability",
+      "    Statement: Safe haven assets have lowest \u0394 and highest IC/F ratio",
+      "    Archetype: extremal_entity",
+      "    mean_delta_safe_haven: 0.020482278296637957",
+      "    mean_delta_other: 0.07960416806769038",
+      "    US 10Y Treasury_IC_F: 0.9635204491250565",
+      "    US Federal Reserve_IC_F: 0.9733491098816743",
+      "    Norwegian Sovereign Wealth Fund_IC_F: 0.9907921226187048",
+      "\n  T-F-9 (finance): 2/4 (50%)",
+      "    Name: T-F-9: Growth-Stability Tradeoff",
+      "    Statement: Revenue growth and volatility control inversely correlated; high growth \u2192 high C, S",
+      "    Archetype: correlation_structure",
+      "    corr_growth_vol: -0.4190252225266508",
+      "    mean_C_high_growth: 0.603495865605576",
+      "    mean_C_low_growth: 0.41435845472111216",
+      "    mean_S_high_growth: 0.42370231375505796",
+      "    mean_S_low_growth: 0.4858709408186875",
+      "",
+      "Falsified archetypes: regime_classification(2), geometric_slaughter(1), extremal_entity(1), correlation_structure(1)",
+      "",
+      "DIAGNOSIS: All falsifications concentrated in 'finance'. This suggests the finance entity catalog has channel definitions that don't fully match the theorem expectations \u2014 a Tier-2 calibration issue, not a Tier-1 violation."
+    ],
+    "data": {
+      "n_falsified": 5,
+      "by_domain": {
+        "finance": 5
+      },
+      "by_archetype": {
+        "regime_classification": 2,
+        "geometric_slaughter": 1,
+        "extremal_entity": 1,
+        "correlation_structure": 1
+      },
+      "tags": [
+        "T-F-10",
+        "T-F-2",
+        "T-F-7",
+        "T-F-8",
+        "T-F-9"
+      ]
+    }
+  },
+  {
+    "name": "\u00a78: Test Density Spectrum",
+    "description": "Subtest count distribution across theorems",
+    "findings": [
+      "Test density: min=0, Q1=4, median=5, Q3=7, max=777",
+      "Total subtests: 3831 across 225 theorems",
+      "Mean: 17.0 tests/theorem",
+      "",
+      "Distribution:",
+      "         1-5:  136 ( 60.4%) \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588",
+      "        6-10:   53 ( 23.6%) \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588",
+      "       11-25:   20 (  8.9%) \u2588\u2588\u2588",
+      "       26-50:    3 (  1.3%) ",
+      "      51-100:    6 (  2.7%) \u2588",
+      "     101-200:    3 (  1.3%) ",
+      "     201-500:    3 (  1.3%) ",
+      "        500+:    1 (  0.4%) ",
+      "",
+      "Sparsest: prove_all_theorems (spacetime_memory): 0 tests",
+      "Densest:  T18 (unified_minimal_structure): 777 tests",
+      "",
+      "Top-10 highest-density theorems:",
+      "  T18          unified_minimal_structure    777 tests (identity_verification)",
+      "  T-NP-1       nuclear_physics              354 tests (identity_verification)",
+      "  T22          unified_minimal_structure    267 tests (regime_classification)",
+      "  T-EP-1       everyday_physics             252 tests (identity_verification)",
+      "  T-MS-1       materials_science            153 tests (identity_verification)",
+      "  T-EV-1       evolution                    120 tests (identity_verification)",
+      "  T-NP-8       nuclear_physics              106 tests (identity_verification)",
+      "  T-CT-2       continuity_theory            100 tests (domain_specific)",
+      "  T-F-1        finance                       90 tests (identity_verification)",
+      "  T-S-1        dynamic_semiotics             90 tests (identity_verification)",
+      "",
+      "Dynamic range: 777\u00d7 (from 0 to 777 tests per theorem)"
+    ],
+    "data": {
+      "quartiles": [
+        0,
+        4,
+        5,
+        7,
+        777
+      ],
+      "buckets": {
+        "1-5": 136,
+        "6-10": 53,
+        "11-25": 20,
+        "26-50": 3,
+        "51-100": 6,
+        "101-200": 3,
+        "201-500": 3,
+        "500+": 1
+      },
+      "total_tests": 3831
+    }
+  },
+  {
+    "name": "\u00a79: Identity Verification Network",
+    "description": "Which Tier-1 identities are proven in which domains",
+    "findings": [
+      "Identity verification network (domains \u00d7 identities):",
+      "",
+      "Domain                            F+\u03c9=1     IC\u2264F  IC=exp(\u03ba)",
+      "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500",
+      "  astronomy                           2        1          1",
+      "  atomic_physics                      0        0          0",
+      "  awareness_cognition                 0        0          0",
+      "  clinical_neuroscience               1        1          1",
+      "  consciousness_coherence             0        0          0",
+      "  continuity_theory                   1        1          1",
+      "  dynamic_semiotics                   1        1          1",
+      "  everyday_physics                    2        2          1",
+      "  evolution                           1        1          1",
+      "  finance                             1        1          1",
+      "  gcd                                 1        1          1",
+      "  kinematics                          0        0          0",
+      "  materials_science                   2        2          1",
+      "  nuclear_physics                     3        2          2",
+      "  quantum_mechanics                   2        3          2",
+      "  rcft                                2        1          1",
+      "  spacetime_memory                    1        1          1",
+      "  standard_model                      2        0          0",
+      "  unified_minimal_structure           2        1          1",
+      "  weyl                                0        0          0",
+      "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500",
+      "  TOTAL                              24       19         16",
+      "",
+      "Domains verifying all 3 identities: 14/20",
+      "  astronomy, clinical_neuroscience, continuity_theory, dynamic_semiotics, everyday_physics, evolution, finance, gcd, materials_science, nuclear_physics, quantum_mechanics, rcft, spacetime_memory, unified_minimal_structure",
+      "Domains with no explicit identity verification: atomic_physics, awareness_cognition, consciousness_coherence, kinematics, weyl"
+    ],
+    "data": {
+      "coverage": {
+        "astronomy": {
+          "F+\u03c9=1": 2,
+          "IC\u2264F": 1,
+          "IC=exp(\u03ba)": 1
+        },
+        "atomic_physics": {
+          "F+\u03c9=1": 0,
+          "IC\u2264F": 0,
+          "IC=exp(\u03ba)": 0
+        },
+        "awareness_cognition": {
+          "F+\u03c9=1": 0,
+          "IC\u2264F": 0,
+          "IC=exp(\u03ba)": 0
+        },
+        "clinical_neuroscience": {
+          "F+\u03c9=1": 1,
+          "IC\u2264F": 1,
+          "IC=exp(\u03ba)": 1
+        },
+        "consciousness_coherence": {
+          "F+\u03c9=1": 0,
+          "IC\u2264F": 0,
+          "IC=exp(\u03ba)": 0
+        },
+        "continuity_theory": {
+          "F+\u03c9=1": 1,
+          "IC\u2264F": 1,
+          "IC=exp(\u03ba)": 1
+        },
+        "dynamic_semiotics": {
+          "F+\u03c9=1": 1,
+          "IC\u2264F": 1,
+          "IC=exp(\u03ba)": 1
+        },
+        "everyday_physics": {
+          "F+\u03c9=1": 2,
+          "IC\u2264F": 2,
+          "IC=exp(\u03ba)": 1
+        },
+        "evolution": {
+          "F+\u03c9=1": 1,
+          "IC\u2264F": 1,
+          "IC=exp(\u03ba)": 1
+        },
+        "finance": {
+          "F+\u03c9=1": 1,
+          "IC\u2264F": 1,
+          "IC=exp(\u03ba)": 1
+        },
+        "gcd": {
+          "F+\u03c9=1": 1,
+          "IC\u2264F": 1,
+          "IC=exp(\u03ba)": 1
+        },
+        "kinematics": {
+          "F+\u03c9=1": 0,
+          "IC\u2264F": 0,
+          "IC=exp(\u03ba)": 0
+        },
+        "materials_science": {
+          "F+\u03c9=1": 2,
+          "IC\u2264F": 2,
+          "IC=exp(\u03ba)": 1
+        },
+        "nuclear_physics": {
+          "F+\u03c9=1": 3,
+          "IC\u2264F": 2,
+          "IC=exp(\u03ba)": 2
+        },
+        "quantum_mechanics": {
+          "F+\u03c9=1": 2,
+          "IC\u2264F": 3,
+          "IC=exp(\u03ba)": 2
+        },
+        "rcft": {
+          "F+\u03c9=1": 2,
+          "IC\u2264F": 1,
+          "IC=exp(\u03ba)": 1
+        },
+        "spacetime_memory": {
+          "F+\u03c9=1": 1,
+          "IC\u2264F": 1,
+          "IC=exp(\u03ba)": 1
+        },
+        "standard_model": {
+          "F+\u03c9=1": 2,
+          "IC\u2264F": 0,
+          "IC=exp(\u03ba)": 0
+        },
+        "unified_minimal_structure": {
+          "F+\u03c9=1": 2,
+          "IC\u2264F": 1,
+          "IC=exp(\u03ba)": 1
+        },
+        "weyl": {
+          "F+\u03c9=1": 0,
+          "IC\u2264F": 0,
+          "IC=exp(\u03ba)": 0
+        }
+      },
+      "global_counts": {
+        "F+\u03c9=1": 24,
+        "IC\u2264F": 19,
+        "IC=exp(\u03ba)": 16
+      }
+    }
+  },
+  {
+    "name": "\u00a710: Archetype Signatures per Domain",
+    "description": "Domain fingerprints based on theorem archetype distribution",
+    "findings": [
+      "Domain archetype fingerprints (columns = archetype counts):",
+      "",
+      "Domain                        CO  CS  CC  XS  DS  EE  GS  ID  OH  PT  RC",
+      "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500",
+      "  astronomy                    0   2   1   0   1   2   0   2   1   0   1  (10)",
+      "  atomic_physics               0   0   0   0   4   0   0   0   0   0   2  (6)",
+      "  awareness_cognition          0   1   0   0   3   0   0   0   3   2   1  (10)",
+      "  clinical_neuroscience        0   0   0   0   2   2   1   1   2   0   2  (10)",
+      "  consciousness_coherence      0   2   0   0   1   1   1   1   1   0   3  (10)",
+      "  continuity_theory            3   0   0   0   3   0   1   1   1   0   1  (10)",
+      "  dynamic_semiotics            0   3   0   0   2   1   0   1   2   0   1  (10)",
+      "  everyday_physics             0   1   0   1   4   2   1   2   3   0   3  (17)",
+      "  evolution                    0   0   1   0   0   1   1   1   4   0   2  (10)",
+      "  finance                      0   2   0   0   1   1   1   1   1   0   3  (10)",
+      "  gcd                          0   0   0   0   3   0   1   1   1   1   7  (14)",
+      "  kinematics                   0   0   0   0   6   0   0   0   1   1   2  (10)",
+      "  materials_science            0   0   2   1   1   1   0   2   2   0   1  (10)",
+      "  nuclear_physics              0   0   0   0   0   1   0   4   0   1   4  (10)",
+      "  quantum_mechanics            1   2   0   0   9   3   1   2   3   4   3  (28)",
+      "  rcft                         0   0   2   0   3   1   0   2   0   0   2  (10)",
+      "  spacetime_memory             0   0   0   0   7   0   0   1   2   0   1  (11)",
+      "  standard_model               0   1   0   1   5   0   0   0   3   1   1  (12)",
+      "  unified_minimal_structure    0   0   0   0   4   0   0   1   0   0   2  (7)",
+      "  weyl                         0   0   1   0   5   0   0   0   3   0   1  (10)",
+      "",
+      "Most similar domain pairs (Jaccard similarity):",
+      "  consciousness_coherence   <-> finance                    J=1.000",
+      "  everyday_physics          <-> finance                    J=0.875",
+      "  consciousness_coherence   <-> everyday_physics           J=0.875",
+      "  dynamic_semiotics         <-> finance                    J=0.857",
+      "  consciousness_coherence   <-> dynamic_semiotics          J=0.857",
+      "  clinical_neuroscience     <-> finance                    J=0.857",
+      "  clinical_neuroscience     <-> consciousness_coherence    J=0.857",
+      "  astronomy                 <-> dynamic_semiotics          J=0.857",
+      "",
+      "Most dissimilar domain pairs:",
+      "  atomic_physics            <-> nuclear_physics            J=0.200",
+      "  nuclear_physics           <-> weyl                       J=0.143",
+      "  atomic_physics            <-> evolution                  J=0.143"
+    ],
+    "data": {
+      "matrix": {
+        "astronomy": {
+          "composition": 0,
+          "correlation_structure": 2,
+          "coverage_completeness": 1,
+          "cross_scale": 0,
+          "domain_specific": 1,
+          "extremal_entity": 2,
+          "geometric_slaughter": 0,
+          "identity_verification": 2,
+          "ordering_hierarchy": 1,
+          "phase_transition": 0,
+          "regime_classification": 1
+        },
+        "atomic_physics": {
+          "composition": 0,
+          "correlation_structure": 0,
+          "coverage_completeness": 0,
+          "cross_scale": 0,
+          "domain_specific": 4,
+          "extremal_entity": 0,
+          "geometric_slaughter": 0,
+          "identity_verification": 0,
+          "ordering_hierarchy": 0,
+          "phase_transition": 0,
+          "regime_classification": 2
+        },
+        "awareness_cognition": {
+          "composition": 0,
+          "correlation_structure": 1,
+          "coverage_completeness": 0,
+          "cross_scale": 0,
+          "domain_specific": 3,
+          "extremal_entity": 0,
+          "geometric_slaughter": 0,
+          "identity_verification": 0,
+          "ordering_hierarchy": 3,
+          "phase_transition": 2,
+          "regime_classification": 1
+        },
+        "clinical_neuroscience": {
+          "composition": 0,
+          "correlation_structure": 0,
+          "coverage_completeness": 0,
+          "cross_scale": 0,
+          "domain_specific": 2,
+          "extremal_entity": 2,
+          "geometric_slaughter": 1,
+          "identity_verification": 1,
+          "ordering_hierarchy": 2,
+          "phase_transition": 0,
+          "regime_classification": 2
+        },
+        "consciousness_coherence": {
+          "composition": 0,
+          "correlation_structure": 2,
+          "coverage_completeness": 0,
+          "cross_scale": 0,
+          "domain_specific": 1,
+          "extremal_entity": 1,
+          "geometric_slaughter": 1,
+          "identity_verification": 1,
+          "ordering_hierarchy": 1,
+          "phase_transition": 0,
+          "regime_classification": 3
+        },
+        "continuity_theory": {
+          "composition": 3,
+          "correlation_structure": 0,
+          "coverage_completeness": 0,
+          "cross_scale": 0,
+          "domain_specific": 3,
+          "extremal_entity": 0,
+          "geometric_slaughter": 1,
+          "identity_verification": 1,
+          "ordering_hierarchy": 1,
+          "phase_transition": 0,
+          "regime_classification": 1
+        },
+        "dynamic_semiotics": {
+          "composition": 0,
+          "correlation_structure": 3,
+          "coverage_completeness": 0,
+          "cross_scale": 0,
+          "domain_specific": 2,
+          "extremal_entity": 1,
+          "geometric_slaughter": 0,
+          "identity_verification": 1,
+          "ordering_hierarchy": 2,
+          "phase_transition": 0,
+          "regime_classification": 1
+        },
+        "everyday_physics": {
+          "composition": 0,
+          "correlation_structure": 1,
+          "coverage_completeness": 0,
+          "cross_scale": 1,
+          "domain_specific": 4,
+          "extremal_entity": 2,
+          "geometric_slaughter": 1,
+          "identity_verification": 2,
+          "ordering_hierarchy": 3,
+          "phase_transition": 0,
+          "regime_classification": 3
+        },
+        "evolution": {
+          "composition": 0,
+          "correlation_structure": 0,
+          "coverage_completeness": 1,
+          "cross_scale": 0,
+          "domain_specific": 0,
+          "extremal_entity": 1,
+          "geometric_slaughter": 1,
+          "identity_verification": 1,
+          "ordering_hierarchy": 4,
+          "phase_transition": 0,
+          "regime_classification": 2
+        },
+        "finance": {
+          "composition": 0,
+          "correlation_structure": 2,
+          "coverage_completeness": 0,
+          "cross_scale": 0,
+          "domain_specific": 1,
+          "extremal_entity": 1,
+          "geometric_slaughter": 1,
+          "identity_verification": 1,
+          "ordering_hierarchy": 1,
+          "phase_transition": 0,
+          "regime_classification": 3
+        },
+        "gcd": {
+          "composition": 0,
+          "correlation_structure": 0,
+          "coverage_completeness": 0,
+          "cross_scale": 0,
+          "domain_specific": 3,
+          "extremal_entity": 0,
+          "geometric_slaughter": 1,
+          "identity_verification": 1,
+          "ordering_hierarchy": 1,
+          "phase_transition": 1,
+          "regime_classification": 7
+        },
+        "kinematics": {
+          "composition": 0,
+          "correlation_structure": 0,
+          "coverage_completeness": 0,
+          "cross_scale": 0,
+          "domain_specific": 6,
+          "extremal_entity": 0,
+          "geometric_slaughter": 0,
+          "identity_verification": 0,
+          "ordering_hierarchy": 1,
+          "phase_transition": 1,
+          "regime_classification": 2
+        },
+        "materials_science": {
+          "composition": 0,
+          "correlation_structure": 0,
+          "coverage_completeness": 2,
+          "cross_scale": 1,
+          "domain_specific": 1,
+          "extremal_entity": 1,
+          "geometric_slaughter": 0,
+          "identity_verification": 2,
+          "ordering_hierarchy": 2,
+          "phase_transition": 0,
+          "regime_classification": 1
+        },
+        "nuclear_physics": {
+          "composition": 0,
+          "correlation_structure": 0,
+          "coverage_completeness": 0,
+          "cross_scale": 0,
+          "domain_specific": 0,
+          "extremal_entity": 1,
+          "geometric_slaughter": 0,
+          "identity_verification": 4,
+          "ordering_hierarchy": 0,
+          "phase_transition": 1,
+          "regime_classification": 4
+        },
+        "quantum_mechanics": {
+          "composition": 1,
+          "correlation_structure": 2,
+          "coverage_completeness": 0,
+          "cross_scale": 0,
+          "domain_specific": 9,
+          "extremal_entity": 3,
+          "geometric_slaughter": 1,
+          "identity_verification": 2,
+          "ordering_hierarchy": 3,
+          "phase_transition": 4,
+          "regime_classification": 3
+        },
+        "rcft": {
+          "composition": 0,
+          "correlation_structure": 0,
+          "coverage_completeness": 2,
+          "cross_scale": 0,
+          "domain_specific": 3,
+          "extremal_entity": 1,
+          "geometric_slaughter": 0,
+          "identity_verification": 2,
+          "ordering_hierarchy": 0,
+          "phase_transition": 0,
+          "regime_classification": 2
+        },
+        "spacetime_memory": {
+          "composition": 0,
+          "correlation_structure": 0,
+          "coverage_completeness": 0,
+          "cross_scale": 0,
+          "domain_specific": 7,
+          "extremal_entity": 0,
+          "geometric_slaughter": 0,
+          "identity_verification": 1,
+          "ordering_hierarchy": 2,
+          "phase_transition": 0,
+          "regime_classification": 1
+        },
+        "standard_model": {
+          "composition": 0,
+          "correlation_structure": 1,
+          "coverage_completeness": 0,
+          "cross_scale": 1,
+          "domain_specific": 5,
+          "extremal_entity": 0,
+          "geometric_slaughter": 0,
+          "identity_verification": 0,
+          "ordering_hierarchy": 3,
+          "phase_transition": 1,
+          "regime_classification": 1
+        },
+        "unified_minimal_structure": {
+          "composition": 0,
+          "correlation_structure": 0,
+          "coverage_completeness": 0,
+          "cross_scale": 0,
+          "domain_specific": 4,
+          "extremal_entity": 0,
+          "geometric_slaughter": 0,
+          "identity_verification": 1,
+          "ordering_hierarchy": 0,
+          "phase_transition": 0,
+          "regime_classification": 2
+        },
+        "weyl": {
+          "composition": 0,
+          "correlation_structure": 0,
+          "coverage_completeness": 1,
+          "cross_scale": 0,
+          "domain_specific": 5,
+          "extremal_entity": 0,
+          "geometric_slaughter": 0,
+          "identity_verification": 0,
+          "ordering_hierarchy": 3,
+          "phase_transition": 0,
+          "regime_classification": 1
+        }
+      },
+      "similarities_top": [
+        [
+          1.0,
+          "consciousness_coherence",
+          "finance"
+        ],
+        [
+          0.875,
+          "everyday_physics",
+          "finance"
+        ],
+        [
+          0.875,
+          "consciousness_coherence",
+          "everyday_physics"
+        ],
+        [
+          0.8571428571428571,
+          "dynamic_semiotics",
+          "finance"
+        ],
+        [
+          0.8571428571428571,
+          "consciousness_coherence",
+          "dynamic_semiotics"
+        ],
+        [
+          0.8571428571428571,
+          "clinical_neuroscience",
+          "finance"
+        ],
+        [
+          0.8571428571428571,
+          "clinical_neuroscience",
+          "consciousness_coherence"
+        ],
+        [
+          0.8571428571428571,
+          "astronomy",
+          "dynamic_semiotics"
+        ],
+        [
+          0.8333333333333334,
+          "awareness_cognition",
+          "standard_model"
+        ],
+        [
+          0.8,
+          "awareness_cognition",
+          "kinematics"
+        ]
+      ]
+    }
+  },
+  {
+    "name": "\u00a711: Emergent Structural Laws",
+    "description": "Universal patterns that hold across all or most domains",
+    "findings": [
+      "Law 1: Identity Bootstrap Law \u2717 BROKEN",
+      "  Every domain contains at least one identity-verification theorem",
+      "  Coverage: 15/20",
+      "  Exceptions: atomic_physics, awareness_cognition, kinematics, standard_model, weyl",
+      "",
+      "Law 2: Regime Ubiquity Law \u2713 HOLDS",
+      "  Every domain contains at least one regime-classification theorem",
+      "  Coverage: 20/20",
+      "",
+      "Law 3: Universal Provability Law \u2717 BROKEN",
+      "  Every domain achieves \u226590% proof rate",
+      "  Coverage: 19/20",
+      "  Exceptions: finance (50%)",
+      "",
+      "Law 4: Hierarchy Prevalence Law \u2713 HOLDS",
+      "  Ordering/hierarchy theorems appear in \u226550% of domains",
+      "  Coverage: 16/20",
+      "",
+      "Law 5: Entity-Density Scaling Law \u2014",
+      "  Domains with more entities produce exponentially more subtests",
+      "    unified_minimal_structure: 1074 tests",
+      "    nuclear_physics: 585 tests",
+      "    everyday_physics: 376 tests",
+      "    continuity_theory: 207 tests",
+      "    materials_science: 193 tests",
+      "",
+      "Law 6: Archetype Diversity Minimum \u2014",
+      "  Every domain exhibits \u22652 distinct archetype(s)",
+      "",
+      "Law 7: Binary Verdict Law \u2014",
+      "  Theorems tend to either fully prove or clearly fail \u2014 few are close calls",
+      "",
+      "Law 8: Archetype Co-occurrence Law \u2014",
+      "  Certain archetype pairs always appear together",
+      "    domain_specific+regime_classification: in 18/20 domains",
+      "    ordering_hierarchy+regime_classification: in 16/20 domains",
+      "    domain_specific+ordering_hierarchy: in 15/20 domains",
+      "    identity_verification+regime_classification: in 15/20 domains",
+      "    domain_specific+identity_verification: in 13/20 domains",
+      ""
+    ],
+    "data": {
+      "laws": [
+        {
+          "name": "Identity Bootstrap Law",
+          "statement": "Every domain contains at least one identity-verification theorem",
+          "coverage": 15,
+          "total": 20,
+          "holds": false,
+          "exceptions": [
+            "atomic_physics",
+            "awareness_cognition",
+            "kinematics",
+            "standard_model",
+            "weyl"
+          ]
+        },
+        {
+          "name": "Regime Ubiquity Law",
+          "statement": "Every domain contains at least one regime-classification theorem",
+          "coverage": 20,
+          "total": 20,
+          "holds": true,
+          "exceptions": []
+        },
+        {
+          "name": "Universal Provability Law",
+          "statement": "Every domain achieves \u226590% proof rate",
+          "coverage": 19,
+          "total": 20,
+          "holds": false,
+          "exceptions": [
+            "finance (50%)"
+          ]
+        },
+        {
+          "name": "Hierarchy Prevalence Law",
+          "statement": "Ordering/hierarchy theorems appear in \u226550% of domains",
+          "coverage": 16,
+          "total": 20,
+          "holds": true
+        },
+        {
+          "name": "Entity-Density Scaling Law",
+          "statement": "Domains with more entities produce exponentially more subtests",
+          "top_5": [
+            [
+              "unified_minimal_structure",
+              1074
+            ],
+            [
+              "nuclear_physics",
+              585
+            ],
+            [
+              "everyday_physics",
+              376
+            ],
+            [
+              "continuity_theory",
+              207
+            ],
+            [
+              "materials_science",
+              193
+            ]
+          ],
+          "ratio": 5.564766839378239
+        },
+        {
+          "name": "Archetype Diversity Minimum",
+          "statement": "Every domain exhibits \u22652 distinct archetype(s)",
+          "min": 2,
+          "max": 9,
+          "distribution": {
+            "astronomy": 7,
+            "atomic_physics": 2,
+            "awareness_cognition": 5,
+            "clinical_neuroscience": 6,
+            "consciousness_coherence": 7,
+            "continuity_theory": 6,
+            "dynamic_semiotics": 6,
+            "everyday_physics": 8,
+            "evolution": 6,
+            "finance": 7,
+            "gcd": 6,
+            "kinematics": 4,
+            "materials_science": 7,
+            "nuclear_physics": 4,
+            "quantum_mechanics": 9,
+            "rcft": 5,
+            "spacetime_memory": 4,
+            "standard_model": 6,
+            "unified_minimal_structure": 3,
+            "weyl": 4
+          }
+        },
+        {
+          "name": "Binary Verdict Law",
+          "statement": "Theorems tend to either fully prove or clearly fail \u2014 few are close calls",
+          "n_perfect": 219,
+          "n_imperfect": 5,
+          "perfect_pct": 97.33333333333334
+        },
+        {
+          "name": "Archetype Co-occurrence Law",
+          "statement": "Certain archetype pairs always appear together",
+          "top_pairs": [
+            [
+              "domain_specific+regime_classification",
+              18
+            ],
+            [
+              "ordering_hierarchy+regime_classification",
+              16
+            ],
+            [
+              "domain_specific+ordering_hierarchy",
+              15
+            ],
+            [
+              "identity_verification+regime_classification",
+              15
+            ],
+            [
+              "domain_specific+identity_verification",
+              13
+            ]
+          ]
+        }
+      ]
+    }
+  }
+]
