@@ -108,6 +108,7 @@ _THEOREM_SOURCES: list[tuple[str, str]] = [
     ("closures.quantum_mechanics.muon_laser_decay", "quantum_mechanics"),
     ("closures.atomic_physics.recursive_instantiation", "atomic_physics"),
     ("closures.unified_minimal_structure", "unified_minimal_structure"),
+    ("closures.standard_model.sm_extended_theorems", "standard_model"),
 ]
 
 
