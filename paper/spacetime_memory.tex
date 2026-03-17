@@ -100,9 +100,11 @@ accumulation pattern is triple: space accumulates as iterated
 $|\kappa|$ (mass is accumulated well depth), time emerges from
 the rate and cost of return cycles ($c_1 / \Gam'$), and memory
 accumulates as well geometry shaped by repeated traversal.
-Ten Tier-2 theorems, verified by 175~automated tests
-(0~failures), formalize these three modes of accumulation and
-the cross-scale pattern they produce.
+Ten theorems --- five mathematical properties of the budget
+function~$\Gam$, five encoding-dependent structural
+observations --- formalize these three modes, verified by
+37~theorem sub-tests and 138~additional implementation tests
+(175~total, 0~failures).
 \end{abstract}
 
 \keywords{generative collapse dynamics; structural diagnostics;
@@ -212,8 +214,8 @@ Section~\ref{sec:subatomic} gives us the gap $\Delta$;
 Section~\ref{sec:nuclear} shows the gap closes at phase
 boundaries; Section~\ref{sec:cosmos} reveals the gap as a
 geometric classifier (lensing morphology);
-Section~\ref{sec:biology} shows the pattern is predictive;
-Section~\ref{sec:memory} derives clinical consequences from
+Section~\ref{sec:biology} tests the pattern's consistency;
+Section~\ref{sec:memory} explores clinical consequences from
 the accumulated geometry.  Each section retroactively
 deepens every previous one.  But this compounding is an
 enrichment, not a gate: any single section, read with the
@@ -653,12 +655,16 @@ $\IC/F = 0.898$.  Its three alpha clusters produce a
 moderately homogeneous structure: high enough to sustain
 complex bonding, heterogeneous enough to permit the
 chemical flexibility that organic molecules require.
-At the biological scale, the question of why life is
-carbon-based has a structural answer:
-carbon sits exactly where coherence is high enough for
-stability but the gap $\Delta = 0.073$ is wide enough
-for combinatorial diversity.  It is neither iron (too
-tightly bound) nor helium (too symmetric to branch).
+When encoded through the kernel, carbon occupies an
+intermediate position: its gap $\Delta = 0.073$ is larger
+than iron's ($0.036$) and smaller than helium's ($0.064$).
+This reflects, rather than explains, carbon's chemical
+versatility --- the channel values were assigned from
+prior knowledge of carbon chemistry (tetravalent bonding,
+orbital energetics), so the kernel's output is a
+diagnostic re-description of properties already known,
+not an independent structural answer to why life is
+carbon-based.
 
 The mechanism is clear: nuclear binding creates new channels
 of coherence (shell filling, pairing, trajectory closure at
@@ -1233,35 +1239,43 @@ $\omega \in [0.01, 0.99]$, $C \in [0, 1]$ returns exactly~0
 at all 10,000 points.  (3/3 sub-tests.)
 \end{remark}
 
-Table~\ref{tab:translation} summarizes the complete GR--GCD
-correspondence.
+Table~\ref{tab:translation} lists qualitative correspondences
+between GR concepts and budget-surface quantities.  These are
+\emph{vocabulary mappings}, not derivations: the budget surface
+has qualitative features (monotonic gradient, convexity, a pole)
+that parallel features of gravitational potentials, but the
+budget surface does not produce Einstein's field equations, and
+the GR concepts listed have operational, experimentally confirmed
+definitions that the budget surface does not replicate.
 
 \begin{table}[htbp]
-\caption{\label{tab:translation}Diagnostic correspondences
-between general relativity and GCD budget-surface quantities
-(structural parallels, not derivations).}
+\caption{\label{tab:translation}Qualitative correspondences
+between general relativity and GCD budget-surface quantities.
+These are vocabulary mappings that highlight shared qualitative
+features, not claims of physical equivalence.}
 \begin{ruledtabular}
 \begin{tabular}{ll}
-GR Concept & GCD Budget-Surface Quantity \\
+GR Concept & Budget-Surface Analog \\
 \hline
-Mass & Accumulated $|\kappa|$ from iterations \\
-Curvature & Extrinsic curvature of $z(\omega, C)$ \\
+Gravitational binding & Accumulated $|\kappa|$ from iterations \\
+Spatial curvature & Extrinsic curvature of $z(\omega, C)$ \\
 Geodesic & Least-budget path (min-$\Gam$ trajectory) \\
-Event horizon & $\omega \to 1$ pole ($\Gam \to \infty$) \\
-Graviton & Minimum $|\Delta\kappa|$ deposit \\
-Time dilation & $\tR$ increases near wells \\
-Tidal force & $\dd^2\Gam/\dd\omega^2$ \\
-Einstein ring & Closed deflection orbit \\
-Lensing shape & Controlled by $\Delta = F - \IC$ \\
+Cost divergence & $\omega \to 1$ pole ($\Gam \to \infty$) \\
+Minimum deposit & Minimum $|\Delta\kappa|$ per iteration \\
+Cost increase near wells & $\tR$ increases near wells \\
+Gradient steepening & $\dd^2\Gam/\dd\omega^2$ \\
+Closed deflection & Closed deflection orbit \\
+Deflection asymmetry & Controlled by $\Delta = F - \IC$ \\
 \end{tabular}
 \end{ruledtabular}
 \end{table}
 
 As $\omega \to 1$, the denominator $1 - \omega + \eps \to \eps$
-and $\Gam \to 1/\eps = 10^8$.  This pole is the budget-surface
-analogue of the Schwarzschild singularity: the cost of return
-becomes effectively infinite.  The guard band $\eps$ prevents
-a true divergence, analogous to Planck-scale regularization.
+and $\Gam \to 1/\eps = 10^8$.  This pole means the cost of
+return diverges --- a property of the rational function
+$\omega^3/(1 - \omega + \eps)$, not a model of any physical
+singularity.  The guard band $\eps$ prevents a true
+divergence at the computational level.
 
 
 % ============================================================
@@ -1270,29 +1284,33 @@ a true divergence, analogous to Planck-scale regularization.
 
 The same kernel that classifies subatomic particles and
 stellar objects now turns to the living body.  The Diagnostic
-Key (Sec.~\ref{sec:key}) predicts what the data will show:
+Key (Sec.~\ref{sec:key}) implies a structural expectation:
 periodic oscillators with reliable return should have high
 $\IC/F$ (the two-step pattern: periodicity provides the
 degrees of freedom that close the gap); composites should
 exceed their components (as nuclear binding exceeds hadron
 coherence, Table~\ref{tab:nuclear}).
 
-\textbf{Test the prediction before seeing the data.}
+\textbf{What the Diagnostic Key implies.}
 The reader can verify that the Diagnostic Key's structural
 logic, applied to the encoding of Table~\ref{tab:channels},
-predicts the hierarchy before consulting
+implies the hierarchy before consulting
 Table~\ref{tab:biological}.
 The heart is a periodic oscillator with
-reliable return --- should its $\IC/F$ be closer to the
-neutron star's $0.998$ (Table~\ref{tab:stellar},
-Diagnostic Key item~7) or the dust lane's $0.773$
-(Table~\ref{tab:cosmic})?  The cortex assembles from
+reliable return --- the Key implies its $\IC/F$ should be
+closer to the neutron star's $0.998$ (Table~\ref{tab:stellar},
+Diagnostic Key item~7) than the dust lane's $0.773$
+(Table~\ref{tab:cosmic}).  The cortex assembles from
 individual neurons, as a galaxy cluster assembles from
-individual stars --- should its $\IC/F$ be higher or
-lower than the single neuron's?  The two-step pattern
-predicts ``closer to the neutron star'' and ``higher
+individual stars --- the Key implies its $\IC/F$ should be
+higher than the single neuron's.  The two-step pattern
+implies ``closer to the neutron star'' and ``higher
 than the single neuron'': periodic oscillators have high
-$\IC/F$; composites exceed their components.  Let us check.
+$\IC/F$; composites exceed their components.
+Note that this is a \emph{retroduction}: the encoding was
+designed with knowledge of these systems, so the structural
+expectation is a consistency check, not a blind prediction.
+Let us check.
 
 Four biological systems --- the neuron, the
 cortical network, the cardiac rhythm, and the immune response
@@ -1410,20 +1428,20 @@ phase boundary between physics and biology.  Only the channel
 encoding changes --- and the structure that survives collapse
 is measured identically.
 
-\textbf{Predictions confirmed.}
+\textbf{Consistency confirmed.}
 The heart's $\IC/F = 0.949$ sits between the pulsar
 ($0.995$) and the neutron star ($0.998$): periodic
 oscillators cluster together across twenty orders of
 magnitude.  The cortical network's $\IC/F = 0.974$ exceeds
 the single neuron's $0.933$, just as the galaxy cluster
 ($0.991$) exceeds individual stellar objects.  The structural
-pattern predicted the data.  This is not a post-hoc
-observation --- the reader was invited to make the
-prediction before seeing the table.  The structural
-prediction matched the data --- the pattern generalizes
-independently of domain expertise.  The same diagnostic
-intuition is powerful enough to derive a clinical diagnosis
-from first principles (Sec.~\ref{sec:memory}).
+expectation matched the data.  This is a consistency
+check, not a blind prediction --- the encoding was
+designed with knowledge of these systems (see
+Remark~\ref{rem:encoding}).  What is noteworthy is that
+the \emph{same} structural logic (periodic oscillators
+cluster high, composites exceed components) applies
+across domains without domain-specific tuning.
 
 
 % ============================================================
@@ -1440,21 +1458,23 @@ which fragments specific channels while leaving others
 vivid --- should produce the same diagnostic signature
 as physical confinement.
 
-\textbf{Derive the signature before seeing the data.}
-The Diagnostic Key provides everything needed.  Construct
-the PTSD prediction:
+\textbf{What the Diagnostic Key implies.}
+The Diagnostic Key provides enough structure to derive
+expectations --- noting that these are retroductions
+(the encoding was chosen with clinical knowledge), not
+blind predictions:
 \begin{enumerate}
 \item PTSD fragments specific channels while leaving others
-  vivid.  This is heterogeneous --- predict $\Delta > 0.10$.
-\item Avoidance prevents narrative completion --- predict
+  vivid.  This is heterogeneous --- expect $\Delta > 0.10$.
+\item Avoidance prevents narrative completion --- expect
   trajectory closure $c_5 \approx 0.1$.
 \item Intrusion-numbing asymmetry violates tidal symmetry ---
-  predict $c_4 < 0.25$.
+  expect $c_4 < 0.25$.
 \item The gap size places it in thin-arc lensing
   (Theorem~\ref{thm:T7}).
 \item The structural parallel is to confined quarks inside
   hadrons (the proton's $\IC/F = 0.718$,
-  Table~\ref{tab:subatomic}): predict $\IC/F \approx
+  Table~\ref{tab:subatomic}): expect $\IC/F \approx
   0.72$--$0.76$.
 \end{enumerate}
 Compare this derivation against Table~\ref{tab:cognitive}.
@@ -1568,6 +1588,30 @@ What cannot close & quark orbits & narrative arc \\
 \end{ruledtabular}
 \end{table}
 
+\begin{remark}[Sensitivity of the Confinement Cliff]
+\label{rem:sensitivity}
+The PTSD classification as a ``confinement cliff'' depends on
+the trajectory-closure channel value $c_5 = 0.10$.  If $c_5$
+is perturbed:
+\begin{itemize}
+\item $c_5 = 0.10$ (baseline): $\IC/F = 0.760$, $\Delta = 0.115$
+  --- confinement cliff, thin-arc lensing.
+\item $c_5 = 0.30$: $\IC/F = 0.823$, $\Delta = 0.085$
+  --- moderate depression, thick-arc lensing.
+\item $c_5 = 0.50$: $\IC/F = 0.873$, $\Delta = 0.061$
+  --- mild gap, thick-arc lensing.
+\item $c_5 = 0.70$: $\IC/F = 0.916$, $\Delta = 0.041$
+  --- approaching healthy range.
+\end{itemize}
+The cliff classification ($\IC/F < 0.80$, thin-arc) holds for
+$c_5 \lesssim 0.20$.  Above $c_5 = 0.30$, the parallel to
+the proton dissolves: the system transitions from thin arc
+to thick arc, and the $\IC/F$ drop is a gentle slope
+rather than a cliff.  The clinical literature on PTSD
+supports $c_5 < 0.20$ (severe narrative fragmentation),
+but the classification's encoding-dependence is real.
+\end{remark}
+
 The proton's quarks cannot close trajectories because
 confinement prevents free propagation.  The PTSD patient's
 memories cannot close trajectories because avoidance prevents
@@ -1629,28 +1673,35 @@ accurate reading of the system's temporal structure:
 time, as measured by $\mathcal{T} = c_1/\Gam'$,
 moves differently in a fragmented well.
 
-\textbf{Clinical consequence arising from pure geometry.}
-The therapeutic protocol writes itself from the
-mathematics: restore $c_5$ (trajectory closure) through
+\textbf{Clinical consequence as diagnostic re-description.}
+The kernel identifies which channels are low:
+restore $c_5$ (trajectory closure) through
 narrative completion --- prolonged exposure therapy;
 restore $c_4$ (tidal symmetry) through grounding techniques
 that equilibrate intrusion and numbing; restore $c_1$
 (return rate) through graduated re-entry and
-desensitization.  The \emph{order} matters: the budget
+desensitization.  However, this is a re-description of
+clinical knowledge already encoded in the channel values,
+not a derivation from the mathematics: avoidance was
+encoded as low $c_5$, so the kernel's recommendation to
+``restore $c_5$'' restates the encoding.
+What the kernel adds is the \emph{budget context}: the
 gradient $\Gam'(\omega)$ at the trauma's $\omega = 0.519$
 is $11\times$ stronger than at the healthy memory's
-$\omega = 0.219$, so recovery must proceed by small steps
-down the budget surface, closing channels one at a time
-rather than all at once --- exactly as nuclear binding
-replaces dead hadron channels incrementally through shell
-filling and pairing.
+$\omega = 0.219$, suggesting that recovery should proceed
+by small steps down the budget surface, closing channels
+one at a time rather than all at once --- a structural
+rationale for graduated exposure that parallels how
+nuclear binding replaces dead hadron channels incrementally
+through shell filling and pairing.
 
 The diagnostic toolkit has accumulated its final register:
 arithmetic (the gap), dynamics (slaughter and recovery),
-geometry (lensing and gravity), prediction (biology confirmed
-structural expectations), and now \emph{consequence} ---
-the mathematics tells a clinician which channels are dead
-and in what order they should be restored.  Each register
+geometry (lensing and gravity), consistency (biology
+confirmed structural expectations), and now
+\emph{re-description} --- the kernel identifies which
+channels are dead and provides a cost-based rationale
+for the order of restoration.  Each register
 enriches all the others.
 
 \textbf{The black hole parallel.}
@@ -1795,6 +1846,29 @@ density before structure can nucleate.
 \section{The Unification}\label{sec:unification}
 % ============================================================
 
+\begin{remark}[Theorem Classification]
+\label{rem:theorem_classes}
+The ten theorems fall into two classes:
+\begin{itemize}
+\item \textbf{Mathematical} (properties of $\Gam(\omega) =
+  \omega^3/(1 - \omega + \eps)$, holding for any input):
+  T-ST-1 (gradient positive), T-ST-2 (gradient increasing),
+  T-ST-3 (cubic onset), T-ST-5 (gradient depends on $\omega$
+  alone), T-ST-9 (intrinsic flatness $K = 0$).
+\item \textbf{Encoding-dependent} (structural observations
+  that depend on the channel values assigned to the
+  40~entities): T-ST-4 (time dilation), T-ST-6 (memory wells),
+  T-ST-7 (lensing classification), T-ST-8 (arrow of time),
+  T-ST-10 (cross-scale consistency).
+\end{itemize}
+The mathematical theorems verify calculus properties of a
+rational function.  The encoding-dependent theorems document
+patterns that emerge from the specific channel assignments
+in the entity catalog.  Different encodings of the same
+phenomena could produce different patterns
+(Remark~\ref{rem:encoding}, Remark~\ref{rem:sensitivity}).
+\end{remark}
+
 \begin{theorem}[T-ST-10: Cross-Scale Consistency]
 \label{thm:T10}
 All 40~entities in all 9~categories obey the three Tier-1
@@ -1810,14 +1884,15 @@ All 9~categories are represented and non-empty.
 \end{theorem}
 
 \begin{remark}
-The universality is not a claim that quarks and memories
+The consistency is not a claim that quarks and memories
 ``are the same.''  It is the observation that a consistent
 encoding scheme, when processed through the kernel, produces
 the same diagnostic pattern at every scale: geometric
 slaughter at phase boundaries followed by recovery through
 new degrees of freedom.  The three algebraic identities are
-structural constraints that hold for \emph{any} input in
-$[0,1]^n$ --- they are mathematical, not empirical.  What is
+mathematical constraints that hold for \emph{any} input in
+$[0,1]^n$ --- they must hold, by construction (see
+Remark~\ref{rem:theorem_classes}).  What is
 empirical is the encoding: the channel values assigned from
 domain-specific observables.  The significant finding is not
 that the identities hold (they must) but that the
@@ -1997,7 +2072,7 @@ for r in results:
 Output: 10/10~PROVEN, 37/37 sub-tests, 0~failures.  The
 full test suite (\texttt{pytest
 tests/test\_253\_spacetime\_memory\_theorems.py -v})
-runs 129~tests in $< 300$~ms with zero failures.
+runs 175~tests in $< 300$~ms with zero failures.
 
 The theorem suite is structured as follows.  Each theorem
 object specifies its name, statement, and a list of
@@ -2008,6 +2083,16 @@ the Remarks throughout this paper (e.g., ``4/4 sub-tests''
 for Theorem~\ref{thm:T1}) correspond exactly to the
 programmatic sub-tests in the harness.  No theorem is
 accepted on the basis of spot-checks or manual verification.
+
+\textbf{Test count breakdown.}
+Of the 175~tests, 37 are theorem sub-tests (the direct
+verifications reported in the Remarks above).  The remaining
+138 are infrastructure tests: entity completeness, channel
+bounds, schema validation, category coverage, and
+reproducibility checks.  These validate the implementation,
+not the physics claims --- they ensure that the catalog is
+correctly formed so that the theorem sub-tests can be
+trusted.
 
 The entity catalog is defined in
 \texttt{spacetime\_kernel.py}, where each entity's 8-channel
@@ -2200,8 +2285,8 @@ collapse-return leaves a structural residue that the kernel
 reads as $F$, $\IC$, and $\Delta$.
 
 That progression of understanding --- from arithmetic, to
-dynamics, to geometry, to prediction, to clinical
-consequence --- is the enrichment that linear reading adds.
+dynamics, to geometry, to consistency checks, to clinical
+re-description --- is the enrichment that linear reading adds.
 But the paper can also be entered at any section: the
 Diagnostic Key (Sec.~\ref{sec:key}) is the fixed lens
 through which every scale passes, and the same two-step
