@@ -17,8 +17,8 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "umcp"
 version = "2.2.2"
-description = "Universal Measurement Contract Protocol (UMCP): Production-grade contract-first validation framework with GCD and RCFT. Core Axiom: Collapse is generative; only what returns is real. 20 domains, 174 closures, 8397 tests."
-readme = "README.md"
+description = "Contract-first validation framework for reproducible computational workflows. Six kernel invariants, 20 scientific domains, three-valued verdicts."
+readme = "README_PYPI.md"
 requires-python = ">=3.11"
 license = "MIT"
 
@@ -26,17 +26,37 @@ authors = [
   { name = "Clement Paulus" }
 ]
 
-keywords = ["UMCP", "GCD", "RCFT", "contract-first", "validation", "reproducibility", "casepacks", "fractal", "recursive-field"]
+keywords = [
+  "validation",
+  "reproducibility",
+  "scientific-computing",
+  "measurement",
+  "contract-first",
+  "kernel",
+  "data-quality",
+  "integrity",
+  "physics",
+  "computational-science",
+  "UMCP",
+  "GCD",
+]
 
 classifiers = [
   "Development Status :: 4 - Beta",
   "Intended Audience :: Science/Research",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Typing :: Typed",
   "Topic :: Scientific/Engineering",
+  "Topic :: Scientific/Engineering :: Mathematics",
+  "Topic :: Scientific/Engineering :: Physics",
+  "Topic :: Scientific/Engineering :: Information Analysis",
   "Topic :: Software Development :: Quality Assurance",
-  "Topic :: System :: Monitoring"
+  "Topic :: Software Development :: Testing",
 ]
 
 # Core runtime dependencies for validation engine
@@ -136,8 +156,10 @@ all = [
 Homepage = "https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS"
 Repository = "https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS"
 Documentation = "https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/blob/main/README.md"
-Issues = "https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/issues"
+"Bug Tracker" = "https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/issues"
 Changelog = "https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/blob/main/CHANGELOG.md"
+"Quick Start" = "https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/blob/main/QUICKSTART_TUTORIAL.md"
+Download = "https://pypi.org/project/umcp/#files"
 
 [project.scripts]
 umcp = "umcp.cli:main"

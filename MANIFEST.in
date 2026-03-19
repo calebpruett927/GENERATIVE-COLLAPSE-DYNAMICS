@@ -3,7 +3,7 @@
 # Without this, pip install won't ship contracts, schemas, closures, or canon.
 
 # Core documentation
-include README.md LICENSE CHANGELOG.md CONTRIBUTING.md CODE_OF_CONDUCT.md
+include README.md README_PYPI.md LICENSE CHANGELOG.md CONTRIBUTING.md CODE_OF_CONDUCT.md
 include QUICKSTART_TUTORIAL.md AXIOM.md TIER_SYSTEM.md CATALOGUE.md
 include KERNEL_SPECIFICATION.md GLOSSARY.md PROTOCOL_REFERENCE.md
 include KINEMATICS_SPECIFICATION.md KINEMATICS_MATHEMATICS.md
