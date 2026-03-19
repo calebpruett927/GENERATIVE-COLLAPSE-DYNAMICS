@@ -9,7 +9,7 @@ assignees: ''
 
 ## Environment
 
-- **UMCP Version**: <!-- e.g., 2.2.2 — run `python -c "import umcp; print(umcp.__version__)"` -->
+- **UMCP Version**: <!-- e.g., 2.2.3 — run `python -c "import umcp; print(umcp.__version__)"` -->
 - **Python Version**: <!-- e.g., 3.12.1 -->
 - **OS**: <!-- e.g., Ubuntu 24.04, macOS 15, Windows 11 -->
 - **Install method**: <!-- pip install umcp / pip install -e ".[all]" / other -->

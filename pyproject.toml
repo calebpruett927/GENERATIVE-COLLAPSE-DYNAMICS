@@ -16,7 +16,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "umcp"
-version = "2.2.2"
+version = "2.2.3"
 description = "Contract-first validation framework for reproducible computational workflows. Six kernel invariants, 20 scientific domains, three-valued verdicts."
 readme = "README_PYPI.md"
 requires-python = ">=3.11"

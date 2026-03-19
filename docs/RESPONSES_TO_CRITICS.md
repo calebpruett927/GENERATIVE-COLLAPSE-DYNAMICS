@@ -165,7 +165,7 @@ does not close: outbound cost exceeds return credit by 2.004 in κ-space.
 This is not a borderline case. It is not a marginal tension requiring
 interpretive judgment. It is a massive nonconformance.
 
-To put this in perspective, across the 15 domain closures in the v2.2.2
+To put this in perspective, across the 15 domain closures in the v2.2.3
 release line (astronomy, atomic physics, everyday physics, finance, GCD,
 kinematics, materials science, nuclear physics, quantum mechanics, RCFT,
 security, standard model, Weyl cosmology), seam residuals that pass

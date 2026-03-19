@@ -1,7 +1,7 @@
 name: publish
 
 # Triggered when a version tag (v*) is pushed
-# Example: git tag v2.2.2 && git push origin v2.2.2
+# Example: git tag v2.2.3 && git push origin v2.2.3
 
 on:
   push:

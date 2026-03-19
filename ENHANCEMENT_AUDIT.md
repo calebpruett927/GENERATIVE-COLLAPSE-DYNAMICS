@@ -103,7 +103,7 @@ mention it either.
 
 Line 1290: `**Current Version**: UMCP v2.0.0 (as of UMCP Manuscript v1.0.0, §8)`
 
-The repository is v2.2.2. The spec's version line is out of date.
+The repository is v2.2.3. The spec's version line is out of date.
 
 ### 3b. Debugging Section References "Lemmas 1-34" Instead of 1-46
 
@@ -120,7 +120,7 @@ integrated.
 
 ### Fix Plan
 
-- [ ] Update KERNEL_SPECIFICATION.md version to v2.2.2
+- [ ] Update KERNEL_SPECIFICATION.md version to v2.2.3
 - [ ] Change "Lemmas 1-34" to "Lemmas 1-46" on line 1269
 - [ ] Consider merging synthesis sections or cross-referencing them
 
@@ -257,7 +257,7 @@ No fix needed but worth documenting explicitly that "minimum" means
 5. Add tests for Lemma 32 (temporal coarse-graining)
 
 ### Priority 3 (Document Consistency)
-6. Update KERNEL_SPECIFICATION.md version to v2.2.2
+6. Update KERNEL_SPECIFICATION.md version to v2.2.3
 7. Update "Lemmas 1-34" → "Lemmas 1-46" in debugging section
 8. Rationalize SYMBOL_INDEX.md "Tier 1.5" designations
 

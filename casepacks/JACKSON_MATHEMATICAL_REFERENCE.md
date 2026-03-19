@@ -2,7 +2,7 @@
 
 > **For**: Jackson (author of RIP v1 and RICP v2.0)
 > **Purpose**: Authoritative reference for finalizing papers — every formula, every number, every rule
-> **Generated**: 2026-03-09 by UMCP v2.2.2 kernel
+> **Generated**: 2026-03-09 by UMCP v2.2.3 kernel
 > **Status**: All values computed, all identities verified to machine precision
 
 ---
@@ -696,7 +696,7 @@ One-page summary of every computed value for quick reference.
 
 | Field | Value |
 |:------|:------|
-| Framework | UMCP v2.2.2 / GCD |
+| Framework | UMCP v2.2.3 / GCD |
 | Contract | UMA.INTSTACK.v1 |
 | Kernel | $K: [0,1]^8 \times \Delta^8 \to (F, \omega, S, C, \kappa, IC)$ |
 | Guard band | $\varepsilon = 10^{-8}$ (frozen) |

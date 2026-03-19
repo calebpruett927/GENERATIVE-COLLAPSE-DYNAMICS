@@ -73,5 +73,5 @@ python -m umcp validate casepacks/consciousness_kappa_72
 ## Attribution
 
 Trace vectors derived from Jackson's RIP level descriptions.
-Kernel computation by UMCP v2.2.2. All invariants are Tier-1 outputs —
+Kernel computation by UMCP v2.2.3. All invariants are Tier-1 outputs —
 derived, not asserted.

@@ -1563,7 +1563,7 @@ If a computed run violates the bounds in Lemmas 1-46, the implementation is almo
 - Changes to default conventions (ε, normalization constants, domain generators) require **closure declarations**
 - Implementation changes that preserve mathematical definitions do not require versioning (but must pass conformance tests)
 
-**Current Version**: UMCP v2.2.2
+**Current Version**: UMCP v2.2.3
 
 ---
 

@@ -1,5 +1,5 @@
 """
-UMCP REST API — FastAPI Communication Extension (v2.2.2)
+UMCP REST API — FastAPI Communication Extension (v2.2.3)
 
 Provides HTTP endpoints for remote validation, kernel computation,
 ledger access, cross-domain analysis, and domain-specific closure
@@ -81,7 +81,7 @@ try:
     from .frozen_contract import classify_regime as _fc_classify_regime
 except ImportError:
     # Fallback for direct execution
-    __version__ = "2.2.2"
+    __version__ = "2.2.3"
     EPSILON = 1e-8
     P_EXPONENT = 3
     ALPHA = 1.0
