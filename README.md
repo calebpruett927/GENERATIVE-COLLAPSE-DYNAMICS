@@ -4,7 +4,7 @@
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
 [![C++17](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](src/umcp_cpp/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![UMCP v2.1.5](https://img.shields.io/badge/UMCP-v2.1.5-orange.svg)](pyproject.toml)
+[![UMCP v2.2.0](https://img.shields.io/badge/UMCP-v2.2.0-orange.svg)](pyproject.toml)
 [![Tests: 8,397](https://img.shields.io/badge/tests-8%2C397-brightgreen.svg)](tests/)
 [![Domains: 20](https://img.shields.io/badge/domains-20-blueviolet.svg)](closures/)
 [![Closures: 174](https://img.shields.io/badge/closures-174-informational.svg)](closures/)

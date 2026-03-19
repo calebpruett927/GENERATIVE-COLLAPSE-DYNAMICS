@@ -4,7 +4,7 @@
 
 **Date**: 2025-07-25
 **Domain**: Clinical Neuroscience (Tier-2 Closure)
-**Framework**: UMCP v2.1.5 / GCD Kernel K: [0,1]^10 × Δ^10 → (F, ω, S, C, κ, IC)
+**Framework**: UMCP v2.2.0 / GCD Kernel K: [0,1]^10 × Δ^10 → (F, ω, S, C, κ, IC)
 **Derivation Chain**: Axiom-0 → frozen_contract → kernel_optimized → neurocognitive_kernel → neurocognitive_theorems
 
 ---

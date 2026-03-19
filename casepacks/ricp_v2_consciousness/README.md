@@ -139,5 +139,5 @@ See `casepacks/JACKSON_TIER2_DIAGNOSTIC.md` for the side-by-side comparison.
 ## Attribution
 
 Trace vectors derived from Jackson's RICP v2.0 level descriptions.
-Kernel computation by UMCP v2.1.5. All invariants are Tier-1 outputs —
+Kernel computation by UMCP v2.2.0. All invariants are Tier-1 outputs —
 derived, not asserted.

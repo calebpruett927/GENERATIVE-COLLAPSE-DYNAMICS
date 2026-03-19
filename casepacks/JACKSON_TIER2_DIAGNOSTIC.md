@@ -345,7 +345,7 @@ All Tier-1 identities are verified to machine precision across both casepacks:
 | Frozen: p | 3 |
 | Frozen: α | 1.0 |
 | Frozen: tol_seam | 0.005 |
-| Validator | umcp-validator v2.1.5 |
+| Validator | umcp-validator v2.2.0 |
 | Canon pre-DOI | 10.5281/zenodo.17756705 |
 | Canon post-DOI | 10.5281/zenodo.18072852 |
 | Casepacks | `casepacks/consciousness_kappa_72/`, `casepacks/ricp_v2_consciousness/` |

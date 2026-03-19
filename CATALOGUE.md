@@ -2,7 +2,7 @@
 
 > *Omnia numerantur; nihil latet.* — Everything is counted; nothing is hidden.
 
-**Version**: UMCP v2.1.5 · **Last updated**: 2025-07-26
+**Version**: UMCP v2.2.0 · **Last updated**: 2026-03-19
 
 This document is the **single authoritative index** of every named symbol, constant, identity, lemma, definition, theorem, class, schema, contract, and structural concept in the GENERATIVE-COLLAPSE-DYNAMICS repository. Each entry carries:
 

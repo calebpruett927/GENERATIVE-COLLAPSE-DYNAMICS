@@ -1,6 +1,6 @@
-v2.1.5
+v2.2.0
 commit: latest
 author: Clement Paulus <calebpruett003@gmail.com>
-date: 2026-03-04 00:00:00 +0000
+date: 2026-03-19 00:00:00 +0000
 branch: HEAD -> main
-message: release: v2.1.5 — Version bump for PyPI publish, skip-existing safety net
+message: release: v2.2.0 — Identity reclassification, theorem expansion, hash-chain ledger

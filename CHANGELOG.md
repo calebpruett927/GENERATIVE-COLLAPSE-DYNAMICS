@@ -5,6 +5,40 @@ All notable changes to the UMCP validator and repository will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2026-03-19
+
+### Added — Identity Reclassification, Theorem Expansion, Hash-Chain Ledger
+
+**Identity Reclassification** (44 structural identities):
+Restructured from series-based (E/B/D/N) to derivation-distance from Axiom-0:
+- Level A (7): Foundation — 1 step from K (*ligat* — binds)
+- Level B (15): Structure — 2 steps (*format* — shapes)
+- Level C (11): Skeleton — 3 steps (*invenit* — discovers)
+- Level D (11): Convergence — 4 steps (*componit* — composes)
+- New §1.15 Derivation Tree in CATALOGUE.md with legacy cross-reference table
+
+**Theorem Coverage Expansion**:
+- All 20 domains now have ≥10 theorems (247 total proven theorems)
+- Theorem registry and deep structural pattern analysis (`scripts/theorem_registry.py`)
+- SM extended theorems T13–T27 (PMNS, CKM, Yukawa, coupling unification)
+
+**New Domain Content**:
+- Long-Period Radio Transient closure (9 sources, 10 theorems T-LPT-1–T-LPT-10)
+- Brain kernel: 10-channel neuroscience kernel across 20 species
+- Clinical neuroscience, spacetime memory additions
+- Cross-domain bridge diagnostics: 28 identities discovered
+
+**Infrastructure**:
+- Hash-chain ledger: tamper-evident audit trail for validation log
+- Kernel instantiation script for live re-derivation
+- 151 commits since v2.1.5
+
+### Fixed
+
+- Recursive instantiation tests updated for 10 theorems (43 subtests)
+- 14 type errors resolved across codebase
+- Finance theorem thresholds recentered for 8-channel kernel arithmetic
+
 ## [2.1.5] - 2026-03-04
 
 ### Fixed

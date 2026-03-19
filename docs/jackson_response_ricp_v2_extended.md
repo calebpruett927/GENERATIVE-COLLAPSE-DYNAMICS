@@ -205,4 +205,4 @@ Clement
 
 ---
 
-*All computations verified against GCD kernel v2.1.5 using frozen parameters from `frozen_contract.py`: ε = 10⁻⁸, p = 3, α = 1.0, tol_seam = 0.005. Verdicts computed from `casepacks/JACKSON_CLAIMS_FORMALIZATION.md` (claim-by-claim assessment), `casepacks/JACKSON_TIER2_DIAGNOSTIC.md` (v1 vs v2 comparison), and `casepacks/JACKSON_MATHEMATICAL_REFERENCE.md` (complete mathematical reference). Awareness-cognition kernel paper: `paper/awareness_cognition_kernel.tex` (16 pages, 10 theorems, 55/55 subtests).*
+*All computations verified against GCD kernel v2.2.0 using frozen parameters from `frozen_contract.py`: ε = 10⁻⁸, p = 3, α = 1.0, tol_seam = 0.005. Verdicts computed from `casepacks/JACKSON_CLAIMS_FORMALIZATION.md` (claim-by-claim assessment), `casepacks/JACKSON_TIER2_DIAGNOSTIC.md` (v1 vs v2 comparison), and `casepacks/JACKSON_MATHEMATICAL_REFERENCE.md` (complete mathematical reference). Awareness-cognition kernel paper: `paper/awareness_cognition_kernel.tex` (16 pages, 10 theorems, 55/55 subtests).*
