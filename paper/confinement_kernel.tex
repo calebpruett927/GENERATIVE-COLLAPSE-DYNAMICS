@@ -3,45 +3,34 @@
 %  A Measurable Structural Signature of Quark Binding
 %  in the Generative-Collapse Kernel
 %
-%  Engine : XeLaTeX  (fontspec requires XeTeX or LuaTeX)
-%  Compile: xelatex → bibtex → xelatex → xelatex
+%  Compile: pdflatex → bibtex → pdflatex → pdflatex
 %  SS1m proof-battery receipt v2 — self-documenting integrity HUD
 % ============================================================
 
-\documentclass[11pt,a4paper]{article}
+\documentclass[
+  aps,
+  prd,
+  twocolumn,
+  superscriptaddress,
+  nofootinbib,
+  floatfix
+]{revtex4-2}
 
-% ── engine guard ──────────────────────────────────────────────
-\usepackage{iftex}
-\RequireXeTeX   % fail-fast if compiled with pdflatex
-
-% ── fonts ─────────────────────────────────────────────────────
-\usepackage{fontspec}
-\setmainfont{TeX Gyre Termes}
-\setsansfont{TeX Gyre Heros}
-\setmonofont{TeX Gyre Cursor}
-
-% ── geometry & columns ────────────────────────────────────────
-\usepackage[
-  margin=2.2cm,
-  top=2.8cm,
-  bottom=2.8cm,
-  headheight=14pt
-]{geometry}
-
-% ── mathematics ───────────────────────────────────────────────
-\usepackage{amsmath,amssymb,amsthm}
+% ── packages ──────────────────────────────────────────────────
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
 \usepackage{bm}
-
-% ── tables & figures ──────────────────────────────────────────
 \usepackage{booktabs}
 \usepackage{multirow}
-\usepackage{graphicx}
 \usepackage{float}
-\usepackage{caption}
-\captionsetup{font=small,labelfont=bf,skip=6pt}
+\usepackage{xfrac}
+\usepackage{enumitem}
+\usepackage{array}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 
 % ── colour palette ────────────────────────────────────────────
 \usepackage{xcolor}
+\definecolor{linkblue}{HTML}{337799}
 \definecolor{CanonLink}{HTML}{337799}
 \definecolor{TierOneGold}{HTML}{B8860B}
 \definecolor{WeldGreen}{HTML}{2E8B57}
@@ -53,14 +42,9 @@
 % ── hyperlinks ────────────────────────────────────────────────
 \usepackage[
   colorlinks=true,
-  linkcolor=CanonLink,
-  citecolor=CanonLink,
-  urlcolor=CanonLink,
-  bookmarksnumbered=true,
-  pdfauthor={Clement Paulus},
-  pdftitle={Confinement as Integrity Collapse},
-  pdfsubject={GCD Kernel — Theorem T3},
-  pdfkeywords={confinement, integrity composite, GCD kernel, channel death, quark binding}
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue
 ]{hyperref}
 
 % ── boxes & drawing ───────────────────────────────────────────
@@ -69,27 +53,11 @@
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,positioning,calc}
 \usepackage{pgfplots}
-\pgfplotsset{compat=newest}
-
-% ── header / footer HUD ──────────────────────────────────────
-\usepackage{fancyhdr}
-\usepackage{lastpage}
-\pagestyle{fancy}
-\fancyhf{}
+\pgfplotsset{compat=1.17}
 
 % ── xfp for computed diagnostics ─────────────────────────────
 \usepackage{xfp}
-
-% ── unicode safety ────────────────────────────────────────────
-\usepackage{newunicodechar}
-\newunicodechar{ω}{\ensuremath{\omega}}
-\newunicodechar{κ}{\ensuremath{\kappa}}
-\newunicodechar{τ}{\ensuremath{\tau}}
-\newunicodechar{ε}{\ensuremath{\varepsilon}}
-\newunicodechar{Γ}{\ensuremath{\Gamma}}
-\newunicodechar{Ψ}{\ensuremath{\Psi}}
-\newunicodechar{Δ}{\ensuremath{\Delta}}
-\newunicodechar{Σ}{\ensuremath{\Sigma}}
+\usepackage{lastpage}
 
 % ════════════════════════════════════════════════════════════
 %  SS1m PROOF-BATTERY RECEIPT — v2 (self-documenting integrity)
@@ -106,10 +74,9 @@
 %
 \newcommand{\WeldID}{SS1m-CONFINE-T3-2025}
 \newcommand{\RevisionDate}{2025-07-11}
-\newcommand{\WeldStatus}{\textcolor{WeldGreen}{\textbf{PROOF BATTERY CLOSED}}}
+\newcommand{\WeldStatus}{\textcolor{WeldGreen}{\textbf{CLOSED}}}
 
 % ── EID counters (author-frozen per revision) ────────────────
-\newcommand{\EIDpages}{\pageref{LastPage}}
 \newcommand{\EIDsections}{16}
 \newcommand{\EIDequations}{18}
 \newcommand{\EIDtables}{10}
@@ -121,64 +88,40 @@
 \newcommand{\EIDreferences}{12}
 \newcommand{\EIDdomains}{1}
 
-% ── Header ────────────────────────────────────────────────────
-\fancyhead[L]{\small\textcolor{HUDGray}{\WeldID}}
-\fancyhead[C]{\small\textcolor{HUDGray}{Confinement as Integrity Collapse}}
-\fancyhead[R]{\small\textcolor{HUDGray}{\RevisionDate}}
-\renewcommand{\headrulewidth}{0.4pt}
-
-% ── Footer HUD ────────────────────────────────────────────────
-\fancyfoot[L]{\footnotesize\textcolor{HUDGray}{%
-  \WeldStatus\enspace|\enspace
-  Eq:\,\EIDequations\enspace
-  Tbl:\,\EIDtables\enspace
-  Thm:\,\EIDtheorems\enspace
-  Pred:\,\EIDpredictions\enspace
-  Sub:\,\EIDsubtests}}
-\fancyfoot[C]{\footnotesize\textcolor{HUDGray}{%
-  Page \thepage\ of \EIDpages}}
-\fancyfoot[R]{\footnotesize\textcolor{HUDGray}{%
-  Ref:\,\EIDreferences\enspace
-  Cl:\,\EIDclaims\enspace
-  §:\,\EIDsections}}
-\renewcommand{\footrulewidth}{0.4pt}
-
 % ── theorem environments ─────────────────────────────────────
-\theoremstyle{plain}
+\newtheorem*{axiom}{The Axiom}
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{proposition}[theorem]{Proposition}
-
-\theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
+\newtheorem{identity}[theorem]{Identity}
 \newtheorem{claim}{Claim}
-
-\theoremstyle{remark}
 \newtheorem{remark}{Remark}
 
 % ── UMCP macros ───────────────────────────────────────────────
-\newcommand{\tR}{\tau_{\!R}^{*}}
+\newcommand{\tR}{\tau_{\!R}}
+\newcommand{\tRS}{\tau_{\!R}^{*}}
 \newcommand{\Gam}{\Gamma}
 \newcommand{\eps}{\varepsilon}
+\newcommand{\IR}{\infty_{\mathrm{rec}}}
 \newcommand{\tolseam}{\mathrm{tol}_{\mathrm{seam}}}
 \newcommand{\dd}{\mathrm{d}}
+\newcommand{\Res}{\mathrm{Res}}
 \newcommand{\beq}{\begin{equation}}
 \newcommand{\eeq}{\end{equation}}
 \newcommand{\INF}{\texttt{INF\_REC}}
-\newcommand{\regime}[1]{\textsc{#1}}
+\newcommand{\regime}[1]{\textrm{\upshape\scshape#1}}
 \newcommand{\conform}{\regime{conformant}}
+\newcommand{\nonconform}{\regime{nonconformant}}
 \newcommand{\tvec}{\mathbf{c}}
 \newcommand{\wvec}{\mathbf{w}}
 \newcommand{\GM}{\mathrm{GM}}
 \newcommand{\AM}{\mathrm{AM}}
 \newcommand{\IC}{\mathrm{IC}}
+\newcommand{\gF}{g_{\!F}}
+\newcommand{\RunID}{\mathrm{RunID}}
 \newcommand{\LQCD}{\Lambda_{\mathrm{QCD}}}
-
-% ── section formatting ────────────────────────────────────────
-\usepackage{titlesec}
-\titleformat{\section}{\large\bfseries}{\thesection.}{0.5em}{}
-\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection.}{0.5em}{}
 
 % ── tcolorbox styles ─────────────────────────────────────────
 \newtcolorbox{axiombox}{
@@ -206,29 +149,18 @@
 \begin{document}
 % ============================================================
 
-% ── title block ───────────────────────────────────────────────
-\begin{center}
-  {\LARGE\bfseries Confinement as Integrity Collapse}\\[6pt]
-  {\large A Measurable Structural Signature of Quark Binding\\
-   in the Generative-Collapse Kernel}\\[14pt]
-  {\normalsize
-    Clement Paulus\textsuperscript{1}\enspace
-    Clement Paulus\textsuperscript{2}}\\[4pt]
-  {\small\itshape
-    \textsuperscript{1}UMCP Reference Implementation, GitHub\\
-    \textsuperscript{2}GCD/UMCP Theoretical Framework}\\[4pt]
-  {\small \RevisionDate\enspace·\enspace\WeldID}
-\end{center}
+\title{Confinement as Integrity Collapse:
+\texorpdfstring{\\}{: }A Measurable Structural Signature of Quark Binding
+in the Generative-Collapse Kernel}
 
-\vspace{4pt}
+\author{Clement Paulus}
+\affiliation{UMCP Reference Implementation, GitHub}
+\affiliation{GCD/UMCP Theoretical Framework}
+
+\date{\RevisionDate\enspace\textperiodcentered\enspace\WeldID}
 
 % ── abstract ──────────────────────────────────────────────────
-\begin{tcolorbox}[
-  colback=PreambleBox, colframe=CanonLink,
-  title=Abstract, fonttitle=\bfseries\small,
-  boxrule=0.8pt, arc=2pt, left=8pt, right=8pt
-]
-\small
+\begin{abstract}
 We present a quantitative, domain-independent structural
 signature of quark confinement derived from the Generative
 Collapse Dynamics (GCD) kernel.  Without reference to the
@@ -262,9 +194,9 @@ real''), and provides a measurable, falsifiable, computable
 signature of confinement that does not require solving the
 Yang-Mills mass gap problem.  All computations are reproducible
 via the open-source reference implementation.
-\end{tcolorbox}
+\end{abstract}
 
-\vspace{6pt}
+\maketitle
 
 % ============================================================
 \section{Introduction}\label{sec:intro}
@@ -381,24 +313,24 @@ $\sum w_i = 1$, and guard band $\eps > 0$.
 
 \begin{definition}[Kernel Invariants]\label{def:invariants}
 Given $(\tvec, \wvec, \eps)$, the kernel computes:
-\begin{align}
+\begin{alignat}{2}
   F   &= \sum_{i=1}^n w_i\, c_i
-    && \text{(fidelity)} \label{eq:F} \\
+    &\;& \text{(fidelity)} \label{eq:F} \\
   \omega &= 1 - F
     && \text{(drift)} \label{eq:omega} \\
   \kappa &= \sum_{i=1}^n w_i \ln c_i
     && \text{(log-integrity)} \label{eq:kappa} \\
   \IC &= \exp(\kappa) = \prod_{i=1}^n c_i^{w_i}
-    && \text{(integrity composite)} \label{eq:IC} \\
-  S &= -\!\sum_{i=1}^n w_i\bigl[c_i \ln c_i
+    && \text{(int.\ composite)} \label{eq:IC} \\
+  S &= -\!\sum_i w_i\bigl[c_i \ln c_i
     + (1{-}c_i)\ln(1{-}c_i)\bigr]
     && \text{(entropy)} \label{eq:S}
-\end{align}
+\end{alignat}
 with structural identities:
-\begin{align}
-  F + \omega &= 1 && \text{(duality identity)} \label{eq:duality} \\
+\begin{alignat}{2}
+  F + \omega &= 1 &\;& \text{(duality identity)} \label{eq:duality} \\
   \IC &\leq F && \text{(integrity bound)} \label{eq:bound}
-\end{align}
+\end{alignat}
 The heterogeneity gap is $\Delta = F - \IC \geq 0$.
 \end{definition}
 
@@ -482,19 +414,19 @@ constants, all frozen per run:
 \texttt{subatomic\_kernel.py}).  These define the exact mapping
 from physical observables to $c_i \in [\eps, 1{-}\eps]$.}
 \label{tab:normalization}
-\centering\small
+\centering\footnotesize
 \begin{tabular}{@{}lll@{}}
 \toprule
 \textbf{Constant} & \textbf{Value} & \textbf{Used In} \\
 \midrule
-$m_{\rm floor}$   & $10^{-11}$ GeV  & mass\_log: $\log_{10}(m/m_{\rm floor})$ \\
-$m_{\rm ceil}$    & $200.0$ GeV     & mass\_log: $/\log_{10}(m_{\rm ceil}/m_{\rm floor})$ \\
-$\tau_{\rm Planck}$  & $5.391 \times 10^{-44}$ s & stability: $\log_{10}(\tau/\tau_{\rm Planck})$ \\
-$\tau_{\rm universe}$ & $4.35 \times 10^{17}$ s & stability: $/\log_{10}(\tau_{\rm universe}/\tau_{\rm Planck})$ \\
-$Y_{\rm max}$     & $\max_i |Y_i/2|$ over 17~SM particles & hypercharge normalization \\
-$\log_2(9)$       & $\approx 3.17$  & color\_dof: $\log_2(N_c+1)/\log_2(9)$ \\
+$m_{\rm floor}$   & $10^{-11}$\,GeV  & mass\_log \\
+$m_{\rm ceil}$    & $200.0$\,GeV     & mass\_log \\
+$\tau_{\rm Pl}$   & $5.39{\times}10^{-44}$\,s & stability \\
+$\tau_{\rm univ}$ & $4.35{\times}10^{17}$\,s & stability \\
+$Y_{\rm max}$     & $\max|Y_i/2|$   & hypercharge \\
+$\log_2(9)$       & ${\approx}\,3.17$& color\_dof \\
 \midrule
-$\eps$ (this paper) & $10^{-6}$ & Guard band (robustness: $10^{-2}$ to $10^{-12}$) \\
+$\eps$ (paper)    & $10^{-6}$        & guard band \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -619,7 +551,7 @@ channels are relatively uniform.
 Table~\ref{tab:hadrons} shows the kernel invariants for all 14
 hadrons.
 
-\begin{table}[H]
+\begin{table*}
 \caption{Kernel invariants for 14 composite hadrons.
 Column $n_\eps$ counts channels clamped to $\eps = 10^{-6}$.
 \textcolor{CliffRed}{Every hadron has $\IC < 0.029$}, below the
@@ -652,7 +584,7 @@ $D^0$           & $c\bar{u}$               & Meson  & 0.317 & 0.0025 & $-5.99$ &
   & \textbf{0.433} & & \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
 The contrast is stark:
 $\langle \IC \rangle_{\rm quarks} = 0.581$,
@@ -1255,10 +1187,10 @@ Reference implementation:
   colback=white, colframe=WeldGreen,
   title={\small SS1m Proof-Battery Receipt — \WeldID},
   fonttitle=\bfseries\small,
-  boxrule=1pt, arc=2pt, left=6pt, right=6pt
+  boxrule=1pt, arc=2pt, left=4pt, right=4pt
 ]
-\footnotesize
-\begin{tabular}{@{}ll@{\qquad}ll@{}}
+\scriptsize
+\begin{tabular}{@{}ll@{\,}ll@{}}
 \textbf{Status}: & \WeldStatus &
   \textbf{Revision}: & \RevisionDate \\
 \textbf{Sections}: & \EIDsections &
@@ -1270,7 +1202,7 @@ Reference implementation:
 \textbf{Sub-tests}: & \EIDsubtests &
   \textbf{References}: & \EIDreferences \\
 \textbf{Domains}: & \EIDdomains &
-  \textbf{Pages}: & \EIDpages \\
+  \textbf{Pages}: & \pageref{LastPage} \\
 \end{tabular}\\[4pt]
 \textbf{Verdict}: Theorem~T3 proven 19/19.
 Guard band invariant across $\eps\in[10^{-12}, 10^{-2}]$.

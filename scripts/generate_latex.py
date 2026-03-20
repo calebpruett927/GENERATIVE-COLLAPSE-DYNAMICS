@@ -1034,7 +1034,7 @@ def _cmd_demo(args: argparse.Namespace) -> int:
             AuthorSpec(
                 name="Caleb Pruett",
                 affiliation="UMCP Reference Implementation, GitHub",
-                email="caleb@umcp.dev",
+                email="clementpaulus9@gmail.com",
             ),
             AuthorSpec(
                 name="Clement Paulus",

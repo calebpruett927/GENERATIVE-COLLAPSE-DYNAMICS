@@ -20,10 +20,6 @@
   longbibliography
 ]{revtex4-2}
 
-% ── Font: Palatino (Latin serif, T1 encoding) ──
-\usepackage[T1]{fontenc}
-\usepackage{mathpazo}     % Palatino text + math (Latin serif)
-
 % ── Mathematics ──
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{mathtools}
@@ -33,8 +29,10 @@
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{array}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 \usepackage{longtable}
 \usepackage{enumitem}
+\usepackage{xfrac}
 \usepackage{xurl}      % better URL line-breaking
 
 % ── Graphics and hyperlinks ──
@@ -49,26 +47,30 @@
 ]{hyperref}
 
 % ── theorem environments ──
+\newtheorem*{axiom}{The Axiom}
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{definition}[theorem]{Definition}
-\newtheorem{axiom}{Axiom}
+\newtheorem{identity}[theorem]{Identity}
 \newtheorem{remark}{Remark}
 
 % ── UMCP / GCD macros ──
 \newcommand{\tR}{\tau_{\!R}}
+\newcommand{\tRS}{\tau_{\!R}^{*}}
 \newcommand{\tRstar}{\tau_{\!R}^{*}}
 \newcommand{\Gam}{\Gamma}
 \newcommand{\eps}{\varepsilon}
+\newcommand{\IR}{\infty_{\mathrm{rec}}}
 \newcommand{\tolseam}{\mathrm{tol}_{\mathrm{seam}}}
 \newcommand{\dd}{\mathrm{d}}
+\newcommand{\Res}{\mathrm{Res}}
 \newcommand{\beq}{\begin{equation}}
 \newcommand{\eeq}{\end{equation}}
 \newcommand{\INF}{\texttt{INF\_REC}}
 \newcommand{\OOR}{\texttt{OOR}}
-\newcommand{\regime}[1]{\textnormal{\textsc{#1}}}
+\newcommand{\regime}[1]{\textrm{\upshape\scshape#1}}
 \newcommand{\conform}{\regime{conformant}}
 \newcommand{\nonconform}{\regime{nonconformant}}
 \newcommand{\tvec}{\mathbf{c}}
@@ -76,6 +78,8 @@
 \newcommand{\GM}{\mathrm{GM}}
 \newcommand{\AM}{\mathrm{AM}}
 \newcommand{\IC}{\mathrm{IC}}
+\newcommand{\gF}{g_{\!F}}
+\newcommand{\RunID}{\mathrm{RunID}}
 \newcommand{\Fid}{F}
 \newcommand{\Drft}{\omega}
 \newcommand{\Ent}{S}

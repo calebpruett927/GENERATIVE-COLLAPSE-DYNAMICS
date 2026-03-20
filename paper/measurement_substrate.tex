@@ -15,7 +15,7 @@
 ]{revtex4-2}
 
 % ── packages ──
-\usepackage{amsmath,amssymb,amsthm}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{graphicx}
 \usepackage{xcolor}
 \definecolor{linkblue}{HTML}{337799}
@@ -25,13 +25,17 @@
 \usepackage{multirow}
 \usepackage{xfrac}
 \usepackage{enumitem}
+\usepackage{array}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 
 % ── theorem environments ──
+\newtheorem*{axiom}{The Axiom}
 \newtheorem{theorem}{Theorem}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{identity}[theorem]{Identity}
 \newtheorem{remark}{Remark}
 
 % ── UMCP macros ──
@@ -46,13 +50,14 @@
 \newcommand{\beq}{\begin{equation}}
 \newcommand{\eeq}{\end{equation}}
 \newcommand{\INF}{\texttt{INF\_REC}}
-\newcommand{\regime}[1]{\textsc{#1}}
+\newcommand{\regime}[1]{\textrm{\upshape\scshape#1}}
 \newcommand{\conform}{\regime{conformant}}
 \newcommand{\nonconform}{\regime{nonconformant}}
 \newcommand{\tvec}{\mathbf{c}}
 \newcommand{\wvec}{\mathbf{w}}
 \newcommand{\IC}{\mathrm{IC}}
 \newcommand{\gF}{g_{\!F}}
+\newcommand{\RunID}{\mathrm{RunID}}
 
 \begin{document}
 
@@ -333,8 +338,8 @@ structural weakness---a property we call \emph{geometric slaughter}.
 The kernel outputs partition the state space into three regimes via
 conjunctive gates on the frozen thresholds:
 \begin{alignat}{2}
-  &\text{Stable:} &\quad& \omega < 0.038 \;\wedge\; F > 0.90
-    \;\wedge\; S < 0.15 \;\wedge\; C < 0.14, \notag\\
+  &\text{Stable:} &\quad& \omega < 0.038 \;\wedge\; F > 0.90 \notag\\
+    &&& \;\wedge\; S < 0.15 \;\wedge\; C < 0.14, \notag\\
   &\text{Collapse:} && \omega \geq 0.30, \label{eq:regimes}\\
   &\text{Watch:} && \text{otherwise}. \notag
 \end{alignat}

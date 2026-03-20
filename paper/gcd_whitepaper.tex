@@ -1,104 +1,89 @@
-% !TEX TS-program = xelatex
-% Compile: xelatex gcd_whitepaper.tex
+% Compile: pdflatex → bibtex → pdflatex → pdflatex
 
-\documentclass[11pt]{article}
+\documentclass[
+  aps,
+  prd,
+  preprint,
+  superscriptaddress,
+  nofootinbib,
+  floatfix
+]{revtex4-2}
 
-% -------------------------
-% Page + typography
-% -------------------------
-\usepackage[margin=1in]{geometry}
-\usepackage{microtype}
-\usepackage{fontspec}
-\usepackage{amsmath,mathtools}
-\usepackage{unicode-math}
-
-% Font strategy:
-% Prefer TeX Gyre Termes family (Times-like, stable).
-% Fall back to Libertinus if Termes Math is not available.
-\setmainfont{TeX Gyre Termes}
-\setsansfont{TeX Gyre Heros}
-\IfFontExistsTF{TeX Gyre Termes Math}{
-  \setmathfont{TeX Gyre Termes Math}
-}{
-  \setmainfont{Libertinus Serif}
-  \setsansfont{Libertinus Sans}
-  \setmonofont{Libertinus Mono}
-  \setmathfont{Libertinus Math}
-}
-% Vector / bold symbols (unicode-math native)
-\newcommand{\vct}[1]{\symbf{#1}}   % preferred
-\newcommand{\bm}[1]{\symbf{#1}}    % compatibility alias for legacy \bm usage
-% -------------------------
-% Math
-% -------------------------
-
-\usepackage{amsthm}
-
-
-% -------------------------
-% Tables / lists
-% -------------------------
+% ── packages ──
+\usepackage[utf8]{inputenc}
+\usepackage{newunicodechar}
+\newunicodechar{→}{$\rightarrow$}
+\newunicodechar{─}{-}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{bm}
 \usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{xfrac}
 \usepackage{enumitem}
 \setlist[itemize]{topsep=3pt,itemsep=2pt,parsep=0pt,leftmargin=*}
 \setlist[enumerate]{topsep=3pt,itemsep=2pt,parsep=0pt,leftmargin=*}
+\usepackage{array}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 \usepackage{url}
-% Optional but very useful for whitepapers with notes under tables:
 \usepackage{threeparttable}
 
-% -------------------------
-% Color + hyperlinks (UMCP house color)
-% -------------------------
+% ── Graphics and hyperlinks ──
 \usepackage{xcolor}
-\definecolor{umcpblue}{HTML}{337799}
-
-\usepackage{hyperref}
-\hypersetup{
-  pdftitle={Generative Collapse Dynamics (UMCP/GCD): Enabling Cross-Domain Comparability with Contract-Frozen Kernel Invariants and Typed Return},
-  pdfauthor={Clement Paulus},
+\definecolor{linkblue}{HTML}{337799}
+\usepackage[
   colorlinks=true,
-  linkcolor=umcpblue,
-  citecolor=umcpblue,
-  urlcolor=umcpblue
-}
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue
+]{hyperref}
 
-% -------------------------
-% Notation helpers (Tier-1 objects only)
-% -------------------------
+% ── Notation helpers (Tier-1 objects only) ──
 \DeclareMathOperator{\clip}{clip}
 \DeclareMathOperator{\std}{std}
 
-% Typed tokens / invariants
-\newcommand{\Rinf}{\infty_{\mathrm{rec}}}     % typed no-return sentinel (math)
-\newcommand{\INFREC}{\texttt{INF\_REC}}       % typed no-return sentinel (text)
+% ── UMCP macros ──
+\newcommand{\tR}{\tau_{\!R}}
+\newcommand{\tRS}{\tau_{\!R}^{*}}
+\newcommand{\Gam}{\Gamma}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\IR}{\infty_{\mathrm{rec}}}
+\newcommand{\Rinf}{\infty_{\mathrm{rec}}}
+\newcommand{\tolseam}{\mathrm{tol}_{\mathrm{seam}}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\Res}{\mathrm{Res}}
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+\newcommand{\INF}{\texttt{INF\_REC}}
+\emergencystretch=3em
+\newcommand{\INFREC}{\texttt{INF\_REC}}
+\newcommand{\regime}[1]{\textrm{\upshape\scshape#1}}
+\newcommand{\conform}{\regime{conformant}}
+\newcommand{\nonconform}{\regime{nonconformant}}
+\newcommand{\tvec}{\mathbf{c}}
+\newcommand{\wvec}{\mathbf{w}}
+\newcommand{\GM}{\mathrm{GM}}
+\newcommand{\AM}{\mathrm{AM}}
 \newcommand{\IC}{\mathrm{IC}}
+\newcommand{\gF}{g_{\!F}}
+\newcommand{\RunID}{\mathrm{RunID}}
 \newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
 
 % Protocol-token formatting
 \newcommand{\typed}[1]{\texttt{#1}}
-% Paper DOI (Zenodo deposit for this whitepaper)
-\newcommand{\PaperDOI}{10.5281/zenodo.18819238}
-% -------------------------
-% Theorem-like statements
-% (Use these for Tier-1 identities / kernel invariants only.)
-% -------------------------
-\theoremstyle{plain}
-\newtheorem{identity}{Identity}
-\newtheorem{proposition}{Proposition}
 
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}
-
-\theoremstyle{remark}
+% ── theorem environments ──
+\newtheorem*{axiom}{The Axiom}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{identity}[theorem]{Identity}
 \newtheorem{remark}{Remark}
 
-\newtheoremstyle{axiomstyle}{6pt}{6pt}{\itshape}{}{\bfseries}{.}{.5em}{}
-\theoremstyle{axiomstyle}
-\newtheorem*{axiom}{Axiom}
-
-% -------------------------
-% Document identifiers (fill once, then freeze)
-% -------------------------
+% ── Document identifiers (fill once, then freeze) ──
+\newcommand{\PaperDOI}{10.5281/zenodo.18819238}
 \newcommand{\ValidatorLine}{v2.2.4}
 \newcommand{\ReleaseMonth}{March 2026}
 \newcommand{\Timezone}{America/Chicago}
@@ -108,11 +93,11 @@
 \newcommand{\CanonPRE}{10.5281/zenodo.17756705}
 \newcommand{\CanonPOST}{10.5281/zenodo.18072852}
 
-% Repository identifiers (primary = release line; commit optional)
+% Repository identifiers
 \newcommand{\RepoURL}{https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS}
 \newcommand{\RepoRelease}{v2.2.4}
-\newcommand{\RepoCommit}{}          % set to specific commit hash for audit-grade          % optional: set to e.g. 3b9a739
-\newcommand{\RepoZenodo}{10.5281/zenodo.18616616}          % optional: Zenodo *software* DOI if minted
+\newcommand{\RepoCommit}{}
+\newcommand{\RepoZenodo}{10.5281/zenodo.18616616}
 
 % Print optional fields only when provided
 \newcommand{\RepoCommitLine}{%
@@ -121,44 +106,25 @@
 \newcommand{\RepoZenodoLine}{%
   \ifx\RepoZenodo\empty\else\; (Zenodo software DOI: \href{https://doi.org/\RepoZenodo}{10.5281/zenodo.18616616})\fi}
 
-\title{\textbf{Generative Collapse Dynamics (UMCP/GCD):}\\
-Enabling Cross-Domain Comparability via Contract-Frozen Kernel Invariants and Typed Return\\[0.35em]
-\large Whitepaper — release line \typed{\RepoRelease}\ (\ReleaseMonth)}
-
-\author{Clement Paulus\\
-\small ORCID: \href{https://orcid.org/0009-0000-6069-8234}{0009-0000-6069-8234}}
-
-\date{\small TZ: \Timezone\\
-\small Paper DOI: \href{https://doi.org/\PaperDOI}{\PaperDOI}\\
-\small Canon (context): \href{https://doi.org/\CanonPRE}{\CanonPRE} (PRE) $\,\cdot\,$ \href{https://doi.org/\CanonPOST}{\CanonPOST} (POST)\\
-\small Weld-ID (context): \WeldID\\
-\small Repo: \href{\RepoURL}{GCD} \; (release line: \typed{\RepoRelease})\RepoCommitLine\RepoZenodoLine}
-
 \begin{document}
-\maketitle
-% -------------------------
-% Jurisdiction / Tier discipline (place immediately after \maketitle)
-% -------------------------
-\noindent\textbf{Jurisdiction / Tier discipline.}
-This whitepaper operates under the UMCP contract-first rule: the Tier-1 ledger
-$\{\omega, F, S, C, \tau_R, \kappa, \IC\}$ is computed \emph{only} by the kernel on the bounded trace
-$\Psi(t)\in[0,1]^n$ under the active frozen contract, and these symbols are reserved (no redefinition
-by prose, domain semantics, or overlays).
-Tier-0 specifies the measurable interface—observables $x(t)$, adapter $N_K$, bounds/OOR and missingness policy,
-and return settings $(\norm{\cdot},\eta,D_\theta)$—and therefore defines the object being measured.
-Tier-2 objects (scores, labels, narratives, auxiliary diagnostics) may be introduced only as diagnostics and must not be used as
-regime or weld gates unless promoted through an explicit seam, a new frozen run, and a recorded weld decision.
-Segments with $\tau_R=\Rinf$ are \emph{typed} as censored for return credit under the default rule-set (no return observed under the contract),
-and must be treated as such in any continuity accounting.
-\par\vspace{0.75em}
 
-% -------------------------
-% Abstract
-% -------------------------
+\title{Generative Collapse Dynamics (UMCP/GCD):
+\texorpdfstring{\\}{: }Enabling Cross-Domain Comparability via Contract-Frozen
+Kernel Invariants and Typed Return}
+
+\author{Clement Paulus}
+\affiliation{UMCP Reference Implementation, GitHub}
+\email{clementpaulus9@gmail.com}
+
+\date{\WeldID\enspace\textperiodcentered\enspace
+\Timezone\\
+DOI: \href{https://doi.org/\PaperDOI}{\PaperDOI}}
+
+
 \begin{abstract}
 Generative Collapse Dynamics (GCD) is a contract-first measurement discipline governed by a single admissibility axiom:
 \emph{collapse is generative; only what returns through collapse is real}.
-In UMCP terms, “real” is not metaphysical; it is an audit rule: a claim receives epistemic credit only if
+In UMCP terms, ``real'' is not metaphysical; it is an audit rule: a claim receives epistemic credit only if
 (i) it is evaluated on a declared bounded trace $\Psi(t)\in[0,1]^n$ produced by a declared adapter $N_K$ from observables $x(t)$,
 and (ii) it exhibits finite re-entry time $\tau_R(t)$ under the same frozen evaluation rules across the collapse/return boundary.
 We formalize the Tier-1 kernel ledger $\{\omega,F,S,C,\kappa,\IC\}$ and the typed return output $\tau_R$,
@@ -173,6 +139,23 @@ Finally, we record the scale-ladder summary (406 objects across 11 rungs) as a c
 under a single kernel, and summarize the 38 structural identities and 46 lemmas verified to machine precision.
 \end{abstract}
 
+\maketitle
+% -------------------------
+% Jurisdiction / Tier discipline (place immediately after \maketitle)
+% -------------------------
+\noindent\textbf{Jurisdiction / Tier discipline.}
+This whitepaper operates under the UMCP contract-first rule: the Tier-1 ledger
+$\{\omega, F, S, C, \tau_R, \kappa, \IC\}$ is computed \emph{only} by the kernel on the bounded trace
+$\Psi(t)\in[0,1]^n$ under the active frozen contract, and these symbols are reserved (no redefinition
+by prose, domain semantics, or overlays).
+Tier-0 specifies the measurable interface---observables $x(t)$, adapter $N_K$, bounds/OOR and missingness policy,
+and return settings $(\norm{\cdot},\eta,D_\theta)$---and therefore defines the object being measured.
+Tier-2 objects (scores, labels, narratives, auxiliary diagnostics) may be introduced only as diagnostics and must not be used as
+regime or weld gates unless promoted through an explicit seam, a new frozen run, and a recorded weld decision.
+Segments with $\tau_R=\Rinf$ are \emph{typed} as censored for return credit under the default rule-set (no return observed under the contract),
+and must be treated as such in any continuity accounting.
+\par\vspace{0.75em}
+
 % -------------------------
 % Scope and non-negotiables
 % -------------------------
@@ -185,7 +168,7 @@ under a single kernel, and summarize the 38 structural identities and 46 lemmas 
   \item \textbf{Structural-change rule.}
   Any change to the embedding $N_K$; the return neighborhood generator $D_\theta$; the metric $\norm{\cdot}$; tolerance $\eta$;
   weights $\bm{w}$; clipping level $\varepsilon$; or any closure entering seam accounting constitutes a structural change.
-  Continuity claims across structural change require an explicit seam specification and (if adopted as “the same object”) a weld.
+  Continuity claims across structural change require an explicit seam specification and (if adopted as ``the same object'') a weld.
 \end{enumerate}
 \subsection{Run identity and freeze statement}
 \label{subsec:runid}
@@ -256,7 +239,7 @@ Absent an explicit declaration, the default assumption is \emph{no assumption}: 
 
 \paragraph{Weights and evaluation interface.}
 While $\bm{w}$ is a kernel input, the choice of weights is part of the evaluation interface and must be frozen
-together with the adapter. The statement “$\Psi(t)\in[0,1]^n$” is incomplete without both the channel map and
+together with the adapter. The statement ``$\Psi(t)\in[0,1]^n$'' is incomplete without both the channel map and
 $\bm{w}$, because the kernel is a weighted functional on $\Psi_\varepsilon(t)$.
 
 \paragraph{Log-safety and boundary honesty.}
@@ -264,8 +247,8 @@ Fix $\varepsilon\in(0,\tfrac12)$ by the frozen contract and define componentwise
 \begin{equation}
   \Psi_\varepsilon(t)\coloneqq \clip\bigl(\Psi(t),\varepsilon,1-\varepsilon\bigr).
 \end{equation}
-All log-domain quantities—specifically $\kappa(t)=\sum_i w_i\ln(c_{i,\varepsilon}(t))$ and
-$\IC(t)=\exp(\kappa(t))$—are computed on $\Psi_\varepsilon(t)$.
+All log-domain quantities---specifically $\kappa(t)=\sum_i w_i\ln(c_{i,\varepsilon}(t))$ and
+$\IC(t)=\exp(\kappa(t))$---are computed on $\Psi_\varepsilon(t)$.
 Boundary operations are not silent conveniences: every OOR correction and every $\varepsilon$-induced substitution
 must be recorded in the run log. Silent boundary substitution is nonconformant under the contract because it changes
 $\IC$ and $\kappa$ while denying provenance.
@@ -437,15 +420,16 @@ where seams close consistently across all domain closures.
 
 \subsection{Frozen contract parameters}
 \begin{center}
+\small
 \begin{tabular}{@{}llll@{}}
 \toprule
 Parameter & Value & Symbol & Role \\
 \midrule
-Guard band & $10^{-8}$ & $\varepsilon$ & Pole guard at $\omega=1$; log-stability \\
-Drift cost exponent & $3$ & $p$ & Unique integer: $\omega_{\mathrm{trap}}$ is Cardano root of $x^3+x-1=0$ \\
-Curvature coefficient & $1.0$ & $\alpha$ & Unit coupling: $D_C = \alpha\cdot C$ \\
-Seam tolerance & $0.005$ & $\mathrm{tol}_{\mathrm{seam}}$ & Width where $\IC\le F$ holds at 100\% across all 16 domains \\
-Normalization domain & $[0,1]$ & $[a,b]$ & Bounded trace domain \\
+Guard band & $10^{-8}$ & $\varepsilon$ & Pole guard; log-stability \\
+Drift exponent & $3$ & $p$ & Cardano root: $x^3{+}x{-}1{=}0$ \\
+Curvature coeff.\ & $1.0$ & $\alpha$ & $D_C = \alpha\cdot C$ \\
+Seam tolerance & $0.005$ & $\tolseam$ & $\IC{\le}F$ at 100\% (16 domains) \\
+Domain & $[0,1]$ & $[a,b]$ & Bounded trace domain \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -623,9 +607,10 @@ in any seam or continuity accounting, and must be treated as censored rather tha
 % -------------------------
 % Diagnostics from the invariant ledger (Tier-2; non-gating)
 % -------------------------
-\section{Diagnostics from the invariant ledger (Tier-2; non-gating)}
+\section{Diagnostics from the invariant ledger}
 \label{sec:diagnostics}
 
+\noindent\textit{Tier-2; non-gating.}
 This section defines Tier-2 diagnostics constructed from the Tier-1 ledger.
 They are permitted as \emph{descriptive} quantities (ranking, visualization, clustering, annotation),
 but they are \emph{not} regime or weld gates unless explicitly promoted through a declared seam and a new frozen run.
@@ -687,16 +672,17 @@ When $F(t)>0$, define the coherence-efficiency ratio
 \noindent\textbf{Operational meaning.}
 $\rho(t)$ measures how much of the arithmetic mean survives multiplicatively under the frozen weights.
 At fixed $F(t)$, smaller $\rho(t)$ indicates stronger bottlenecking by one (or several) weak channels.
-When reporting $\rho$, always report alongside $\Delta$ (or $\IC$) so that “efficiency loss” is not confused with low fidelity.
+When reporting $\rho$, always report alongside $\Delta$ (or $\IC$) so that ``efficiency loss'' is not confused with low fidelity.
 
 \subsection{Regimes from the four-gate criterion}
 The \ValidatorLine\ release line uses the conjunctive four-gate regime classification defined in \S\ref{sec:regime}.
 The active gates are:
-\begin{equation}
-\text{Stable: }\omega<0.038 \wedge F>0.90 \wedge S<0.15 \wedge C<0.14;\quad
-\text{Watch: }0.038\le\omega<0.30;\quad
-\text{Collapse: }\omega\ge0.30.
-\end{equation}
+\begin{align}
+\text{Stable:}\;& \omega<0.038 \;\wedge\; F>0.90 \notag\\
+  &\;\wedge\; S<0.15 \;\wedge\; C<0.14, \notag\\
+\text{Watch:}\;& 0.038\le\omega<0.30, \notag\\
+\text{Collapse:}\;& \omega\ge0.30.
+\end{align}
 These gates are frozen per run and sourced from the active contract.
 Any modification to the gate thresholds constitutes a structural change requiring a seam declaration.
 % -------------------------
@@ -724,7 +710,7 @@ Tier-2 diagnostics $(\Delta,\rho)$, not to the native physical units of the sour
   A set of 31 Standard Model particles and 118 chemical elements is reported to satisfy the Tier-1 identities
   (Complementarity, Exponentiation, Integrity bound) with zero violations under the active adapters.
   \item \textbf{Generation monotonicity (integrity ordering).}
-  “Generation monotonicity” is reported as a strict ordering in integrity-derived quantities across fermion generations,
+  ``Generation monotonicity'' is reported as a strict ordering in integrity-derived quantities across fermion generations,
   expressed as a decrease in $\IC$ (and typically $\rho$) from first- to third-generation particles.
   \item \textbf{Integrity cliff at the quark$\to$hadron boundary.}
   A sharp discontinuity is reported at the quark$\to$hadron transition, expressed as an abrupt drop in $\IC$ and/or $\rho$,
@@ -741,7 +727,7 @@ They do not require (and do not imply) any claim about domain-native units beyon
 \noindent\textbf{Reported patterns.}
 \begin{itemize}[leftmargin=1.6em]
   \item \textbf{Complementarity cliff (channel co-failure).}
-  A “complementarity cliff” is reported when wave- and particle-proxy channels simultaneously approach the guard band.
+  A ``complementarity cliff'' is reported when wave- and particle-proxy channels simultaneously approach the guard band.
   The kernel signature is:
   (i) $F$ remains nonzero (the mean does not vanish),
   (ii) $\IC$ collapses toward the guard band (multiplicative failure), hence $\Delta$ spikes,
@@ -752,7 +738,7 @@ They do not require (and do not imply) any claim about domain-native units beyon
 \end{itemize}
 
 \noindent\textbf{Kernel meaning.}
-The “cliff” language denotes a regime where a small subset of channels becomes bottlenecking.
+The ``cliff'' language denotes a regime where a small subset of channels becomes bottlenecking.
 In kernel terms, the arithmetic aggregate can remain stable while the multiplicative aggregate collapses.
 
 \subsection{Nuclear, RCFT, cosmology (reported)}
@@ -761,7 +747,7 @@ In kernel terms, the arithmetic aggregate can remain stable while the multiplica
 \noindent\textbf{Reported patterns.}
 \begin{itemize}[leftmargin=1.6em]
   \item \textbf{Critical points as dispersion maxima (nuclear / RCFT).}
-  In nuclear closures and RCFT closures, “critical points” are reported as local maxima in $\Delta$ (imbalance) and/or $C$
+  In nuclear closures and RCFT closures, ``critical points'' are reported as local maxima in $\Delta$ (imbalance) and/or $C$
   (dispersion), often coincident with increased entropy $S$ and elevated drift $\omega$.
   \item \textbf{Cosmological heterogeneity (near-zero channel suppression).}
   Cosmological closures are reported to exhibit persistent heterogeneity: one or more near-zero channels suppress $\IC$
@@ -770,7 +756,7 @@ In kernel terms, the arithmetic aggregate can remain stable while the multiplica
 
 \noindent\textbf{Kernel meaning.}
 These reports describe the same mechanism: multiplicative suppression by weak channels in an otherwise moderate mean.
-In cosmology, the claim is not “the universe is low-fidelity,” but “coherence is bottlenecked by one or more channels.”
+In cosmology, the claim is not ``the universe is low-fidelity,'' but ``coherence is bottlenecked by one or more channels.''
 
 \subsection{Finance, evolution, everyday systems (reported)}
 \label{subsec:finance_evolution_everyday}
@@ -781,7 +767,7 @@ In cosmology, the claim is not “the universe is low-fidelity,” but “cohere
   Systemic stress is reported as spikes in $\Delta$ (weak-channel suppression of $\IC$) and drops in $\rho$,
   with $\omega$ typically increasing as coherence degrades.
   \item \textbf{Evolution: anti-proof configurations and human heterogeneity.}
-  Cancer is reported as an “anti-proof” configuration: local channel fidelity can remain high while organism-level $\IC$
+  Cancer is reported as an ``anti-proof'' configuration: local channel fidelity can remain high while organism-level $\IC$
   collapses (large $\Delta$, low $\rho$). Humans are reported with $\Delta\approx 0.34$ under the relevant adapter.
   \item \textbf{Everyday physics: identity preservation under macroscopic adapters.}
   Macroscopic systems (thermodynamics, optics, electromagnetism) are reported to satisfy the Tier-1 identities under their
@@ -929,9 +915,12 @@ of the framework or its domain closures.
 \subsection{Confinement-scale inversion universality}
 \label{pred:confinement}
 
-The Standard Model closure documents an ``IC cliff''---a 98\% drop in $\IC$ at the quark$\to$hadron boundary---followed
-by $\IC$ recovery at the atomic scale when new measurable channels (electronic, bulk) are added to the adapter.
-GCD predicts this cliff-and-recovery pattern is \emph{universal for confinement boundaries}:
+The Standard Model closure documents an ``IC cliff''---a
+98\% drop in $\IC$ at the quark$\to$hadron boundary---followed
+by $\IC$ recovery at the atomic scale when new measurable
+channels (electronic, bulk) are added to the adapter.
+GCD predicts this cliff-and-recovery pattern is
+\emph{universal for confinement boundaries}:
 \begin{enumerate}[leftmargin=2.2em]
   \item At any boundary where constituent degrees of freedom become confined (inaccessible to the adapter),
   $\IC$ will collapse while $F$ may remain moderate, producing a spike in $\Delta$.
@@ -940,17 +929,26 @@ GCD predicts this cliff-and-recovery pattern is \emph{universal for confinement 
   \item The recovery magnitude scales as $(n_{\mathrm{new}}/n_{\mathrm{total}})^{1/n_{\mathrm{total}}}$
   to leading order in the geometric mean.
 \end{enumerate}
-\textbf{Test.} Build adapters for transitions not yet in the closure set---atom$\to$molecule,
-molecule$\to$crystal, neuron$\to$circuit---and verify whether the cliff-recovery pattern and its scaling hold.
-Failure to observe the cliff at a genuine confinement boundary would falsify the prediction.
+\textbf{Test.} Build adapters for transitions not yet
+in the closure set---atom${\to}$molecule,
+molecule${\to}$crystal,
+neuron${\to}$circuit---and
+verify whether the cliff-recovery pattern and
+its scaling hold.
+Failure to observe the cliff at a genuine confinement
+boundary would falsify the prediction.
 
 \subsection{$c^*$ clustering in persistent systems}
 \label{pred:cstar}
 
-The logistic self-dual fixed point $c^*\approx 0.7822$ maximizes $S+\kappa$ per channel.
-GCD predicts that systems which persist over evolutionary, geological, or operational timescales---i.e., systems
-that \emph{return} ($\tau_R \neq \Rinf$)---will exhibit mean channel values that cluster near $c^*$.
-Systems far from $c^*$ should either drift toward it over time or fail to return.
+The logistic self-dual fixed point $c^*\approx 0.7822$
+maximizes $S+\kappa$ per channel.
+GCD predicts that systems which persist over evolutionary,
+geological, or operational timescales---i.e., systems
+that \emph{return} ($\tau_R \neq \Rinf$)---will exhibit mean
+channel values that cluster near~$c^*$.
+Systems far from $c^*$ should either drift toward it over
+time or fail to return.
 
 \textbf{Test.} Across all 16 domain closures, compute the mean channel value $\bar{c}$ for objects classified
 as Stable (all four gates satisfied) versus Collapse ($\omega\ge 0.30$).
@@ -1018,18 +1016,24 @@ scripts in the repository.
 
 \subsection*{Whitepaper citation (Zenodo; fixed artifact)}
 \noindent\textbf{Preferred.}
-C.~Paulus, \emph{Generative Collapse Dynamics (UMCP/GCD): Kernel invariants, return typing, and cross-domain diagnostics},
-Zenodo, \ReleaseMonth. DOI: \href{https://doi.org/\PaperDOI}{\PaperDOI}.
+C.~Paulus, \emph{Generative Collapse Dynamics
+(UMCP/GCD): Kernel invariants, return typing, and
+cross-domain diagnostics},
+Zenodo, \ReleaseMonth.
+DOI: \href{https://doi.org/\PaperDOI}{\PaperDOI}.
 
 \subsection*{Repository citation (GitHub; release line primary, commit optional)}
 \noindent\textbf{Primary (release line).}
-Generative Collapse Dynamics (UMCP/GCD). Validator line \typed{\RepoRelease} (\ReleaseMonth).
-Repository: \url{\RepoURL}. MIT License.
+Generative Collapse Dynamics (UMCP/GCD).
+Validator line \typed{\RepoRelease}
+(\ReleaseMonth). Repository:\\
+\url{\RepoURL}. MIT License.
 
 \medskip
 \noindent\textbf{Preferred (release line + immutable pointer).}
-Generative Collapse Dynamics (UMCP/GCD). Validator line \typed{\RepoRelease} (\ReleaseMonth).
-Repository:\\
+Generative Collapse Dynamics (UMCP/GCD).
+Validator line \typed{\RepoRelease}
+(\ReleaseMonth). Repository:\\
 \url{\RepoURL}. MIT License.
 \ifx\RepoCommit\empty\relax
 \emph{Add the commit hash for audit-grade reproducibility.}
@@ -1038,9 +1042,11 @@ Commit: \texttt{\RepoCommit}.
 \fi
 
 \subsection*{Canon anchors (context)}
-\noindent PRE: \href{https://doi.org/\CanonPRE}{\CanonPRE}. \quad
-POST: \href{https://doi.org/\CanonPOST}{\CanonPOST}. \quad
-These anchors define the contract-first invariant skeleton and continuity-law context for the present release line.
+\noindent
+PRE: \href{https://doi.org/\CanonPRE}{\CanonPRE}.\\[2pt]
+POST: \href{https://doi.org/\CanonPOST}{\CanonPOST}.\\[2pt]
+These anchors define the contract-first invariant skeleton
+and continuity-law context for the present release line.
 
 \subsection*{Endnote (admissibility stance; non-gating)}
 \noindent Axiom-0 is enforced as an admissibility rule: if return is not observed under the active contract, the system is typed as
@@ -1055,29 +1061,77 @@ evaluated under a weld decision.
 \section*{Acknowledgements}
 \addcontentsline{toc}{section}{Acknowledgements}
 
-This whitepaper is a release-line report of the \textit{Generative Collapse Dynamics (UMCP/GCD)} reference implementation and its validator suite: every identity claim, invariant definition, regime label, and reported cross-domain summary in the present document is intended to be reproducible as a literal proof or computed artifact from the repository under the pinned release line/commit (\cite{umcpmetadatarepo}; see also the runnable CasePack, \cite{paulus2026umcpcasepack}).
+This whitepaper is a release-line report of the
+\textit{Generative Collapse Dynamics (UMCP/GCD)} reference
+implementation and its validator suite: every identity claim,
+invariant definition, regime label, and reported cross-domain
+summary in the present document is intended to be reproducible
+as a literal proof or computed artifact from the repository
+under the pinned release
+line/commit~(\cite{umcpmetadatarepo}; see also the runnable
+CasePack,~\cite{paulus2026umcpcasepack}).
 
-Archival support and fixed-artifact citation are provided via Zenodo, with canon anchoring through the PRE/POST works that define the invariant skeleton and weld/continuity context (\cite{paulus2025episteme,paulus2025physicscoherence}). Additional practitioner-facing consolidation and audit discipline are carried by the broader toolkit/protocol manuscripts in the corpus (\cite{paulus2025toolkit,paulus2025umcp,paulus2025cmp,paulus2025canonnote}).
+Archival support and fixed-artifact citation are provided via
+Zenodo, with canon anchoring through the PRE/POST works that
+define the invariant skeleton and weld/continuity
+context~(\cite{paulus2025episteme,paulus2025physicscoherence}).
+Additional practitioner-facing consolidation and audit
+discipline are carried by the broader toolkit/protocol
+manuscripts in the
+corpus~(\cite{paulus2025toolkit,paulus2025umcp,paulus2025cmp,paulus2025canonnote}).
 
 
 \section*{Lineage and provenance}
 \addcontentsline{toc}{section}{Lineage and provenance}
 
 \paragraph{Canon anchors (PRE\,$\rightarrow$\,POST).}
-The UMCP/GCD invariant skeleton and the continuity-law stance used here are canon-anchored by \textit{The Episteme of Return} (PRE) and \textit{The Physics of Coherence: Recursive Collapse \& Continuity Laws} (POST) (\cite{paulus2025episteme,paulus2025physicscoherence}). These anchors fix the contract-first posture (bounded trace, frozen closures, typed censoring of no-return) and constrain continuity claims across structural change to explicit seam/weld bookkeeping.
+The UMCP/GCD invariant skeleton and the continuity-law
+stance used here are canon-anchored by \textit{The Episteme
+of Return}~(PRE) and \textit{The Physics of Coherence:
+Recursive Collapse \& Continuity Laws}~(POST)
+(\cite{paulus2025episteme,paulus2025physicscoherence}).
+These anchors fix the contract-first posture (bounded trace,
+frozen closures, typed censoring of no-return) and constrain
+continuity claims across structural change to explicit
+seam/weld bookkeeping.
 
 \paragraph{Protocol lineage (contract-first measurement).}
-The measurement discipline underlying the present release line proceeds from the contract-first method texts in the corpus: the Universal Measurement Contract Protocol, the Collapse Metric Protocol, and the canon/provenance bookkeeping note (\cite{paulus2025umcp,paulus2025cmp,paulus2025canonnote}). Seam admissibility and continuity geometry are treated as explicit objects (not implicit assumptions) in the seam taxonomy work (\cite{paulus2025seams}).
+The measurement discipline underlying the present release
+line proceeds from the contract-first method texts in the
+corpus: the Universal Measurement Contract Protocol, the
+Collapse Metric Protocol, and the canon/provenance
+bookkeeping note
+(\cite{paulus2025umcp,paulus2025cmp,paulus2025canonnote}).
+Seam admissibility and continuity geometry are treated as
+explicit objects (not implicit assumptions) in the seam
+taxonomy work~(\cite{paulus2025seams}).
 
 \paragraph{Runnable proofs and reproducibility.}
-All results reported in this whitepaper are claims about what the reference implementation computes and what its validator suite proves under the declared adapter and frozen RunID: in particular,
-(i) Tier-1 quantities are computed as explicit functions on the bounded trace under the active contract,
-(ii) Tier-2 diagnostics are explicitly non-gating and cannot overwrite Tier-1 symbols, and
-(iii) any change converting typed no-return to return is treated as a structural seam requiring an explicit weld decision.
-The repository is therefore the primary proof substrate for the present document (\cite{umcpmetadatarepo}), and the UMCP CasePack provides runnable audit examples in a fixed publication form (\cite{paulus2026umcpcasepack}).
+All results reported in this whitepaper are claims about
+what the reference implementation computes and what its
+validator suite proves under the declared adapter and
+frozen RunID: in particular,
+(i)~Tier-1 quantities are computed as explicit functions on
+the bounded trace under the active contract,
+(ii)~Tier-2 diagnostics are explicitly non-gating and cannot
+overwrite Tier-1 symbols, and
+(iii)~any change converting typed no-return to return is
+treated as a structural seam requiring an explicit weld
+decision.
+The repository is therefore the primary proof substrate for
+the present
+document~(\cite{umcpmetadatarepo}), and the UMCP CasePack
+provides runnable audit examples in a fixed publication
+form~(\cite{paulus2026umcpcasepack}).
 
 \paragraph{Cross-domain audit lineage (context, not a substitution for the kernel).}
-Where the paper reports cross-domain patterns, those statements are summaries of computed outputs expressed in kernel terms, not imported domain-native theory. The broader audit series and calibration notes provide additional context for how UMCP/GCD is applied across domains while preserving contract discipline (\cite{paulus2025procurement,paulus2025hawking,paulus2025isinganyon,paulus2025activematter,paulus2025toolkit}).
+Where the paper reports cross-domain patterns, those
+statements are summaries of computed outputs expressed in
+kernel terms, not imported domain-native theory. The broader
+audit series and calibration notes provide additional context
+for how UMCP/GCD is applied across domains while preserving
+contract
+discipline~(\cite{paulus2025procurement,paulus2025hawking,paulus2025isinganyon,paulus2025activematter,paulus2025toolkit}).
 
 % End of drop-in sections.
 \clearpage

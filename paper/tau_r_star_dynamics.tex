@@ -20,24 +20,32 @@
 ]{revtex4-2}
 
 % ── packages ──
-\usepackage{amsmath,amssymb,amsthm}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{graphicx}
-\usepackage{hyperref}
 \usepackage{xcolor}
+\definecolor{linkblue}{HTML}{337799}
+\usepackage[colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue]{hyperref}
 \usepackage{bm}
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{xfrac}
+\usepackage{enumitem}
+\usepackage{array}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 
 % ── theorem environments ──
+\newtheorem*{axiom}{The Axiom}
 \newtheorem{theorem}{Theorem}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{identity}[theorem]{Identity}
 \newtheorem{remark}{Remark}
 
-% ── shortcuts ──
-\newcommand{\tR}{\tau_{\!R}^{*}}
+% ── UMCP macros ──
+\newcommand{\tR}{\tau_{\!R}}
+\newcommand{\tRS}{\tau_{\!R}^{*}}
 \newcommand{\Gam}{\Gamma}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\IR}{\infty_{\mathrm{rec}}}
@@ -47,6 +55,14 @@
 \newcommand{\beq}{\begin{equation}}
 \newcommand{\eeq}{\end{equation}}
 \newcommand{\INF}{\texttt{INF\_REC}}
+\newcommand{\regime}[1]{\textrm{\upshape\scshape#1}}
+\newcommand{\conform}{\regime{conformant}}
+\newcommand{\nonconform}{\regime{nonconformant}}
+\newcommand{\tvec}{\mathbf{c}}
+\newcommand{\wvec}{\mathbf{w}}
+\newcommand{\IC}{\mathrm{IC}}
+\newcommand{\gF}{g_{\!F}}
+\newcommand{\RunID}{\mathrm{RunID}}
 
 \begin{document}
 
@@ -56,11 +72,8 @@ Pole Structure, Metastability, Separability,\\
 and a Universal Scaling Law}
 
 \author{Clement Paulus}
-\email{clement@umcp.dev}
+\email{clementpaulus9@gmail.com}
 \affiliation{UMCP Reference Implementation, GitHub}
-
-\author{Clement Paulus}
-\affiliation{UMCP / GCD / RCFT Canon}
 
 \date{\today}
 
@@ -437,6 +450,9 @@ $\omega\sim\beta^{-1/p}$.  Setting $u=\beta^{1/p}\omega$,
   = \beta^{-1/p}\,
     \frac{\int_0^\infty u\,e^{-u^p}\dd u}
          {\int_0^\infty e^{-u^p}\dd u}
+\]
+\[
+  \phantom{\langle\omega\rangle}
   = \beta^{-1/p}\,
     \frac{\tfrac{1}{p}\,\Gam_E(\tfrac{2}{p})}
          {\tfrac{1}{p}\,\Gam_E(\tfrac{1}{p})},

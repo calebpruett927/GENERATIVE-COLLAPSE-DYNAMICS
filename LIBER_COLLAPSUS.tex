@@ -1,25 +1,18 @@
-% !TeX program = xelatex
+% Compile: pdflatex → pdflatex
 \documentclass[12pt,letterpaper]{article}
 
 % =========================================================
-% Fonts (XeLaTeX)
+% Fonts (pdflatex)
 % =========================================================
-\usepackage{fontspec}
-\defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
-\setmainfont{Libertinus Serif}
-\setsansfont{Libertinus Sans}
-\setmonofont{Libertinus Mono}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
 \usepackage{mathtools} % loads amsmath
 \usepackage{amssymb} % for \varnothing
 
-
-
 % =========================================================
-% Language (optional)
-% If Latin hyphenation is missing on your system, switch to english.
+% Language — Latin hyphenation via babel
 % =========================================================
-\usepackage{polyglossia}
-\setdefaultlanguage{latin}
+\usepackage[latin]{babel}
 
 % =========================================================
 % Page layout (ONE COLUMN, normal margins)
@@ -61,6 +54,33 @@
 
 \newcommand{\IC}{\mathrm{IC}}
 \newcommand{\Rec}{\mathrm{rec}}
+
+% =========================================================
+% Colour and hyperlinks (corpus standard)
+% =========================================================
+\usepackage{xcolor}
+\definecolor{linkblue}{HTML}{337799}
+\usepackage[colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue]{hyperref}
+
+% =========================================================
+% UMCP macros (corpus standard)
+% =========================================================
+\newcommand{\tR}{\tau_{\!R}}
+\newcommand{\tRS}{\tau_{\!R}^{*}}
+\newcommand{\Gam}{\Gamma}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\IR}{\infty_{\mathrm{rec}}}
+\newcommand{\tolseam}{\mathrm{tol}_{\mathrm{seam}}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+\newcommand{\INF}{\texttt{INF\_REC}}
+\newcommand{\regime}[1]{\textrm{\upshape\scshape#1}}
+\newcommand{\conform}{\regime{conformant}}
+\newcommand{\nonconform}{\regime{nonconformant}}
+\newcommand{\tvec}{\mathbf{c}}
+\newcommand{\wvec}{\mathbf{w}}
+\newcommand{\gF}{g_{\!F}}
 
 % =========================================================
 % Title

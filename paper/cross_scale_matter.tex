@@ -15,35 +15,49 @@
 ]{revtex4-2}
 
 % ── packages ──
-\usepackage{amsmath,amssymb,amsthm}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{graphicx}
-\usepackage{hyperref}
 \usepackage{xcolor}
+\definecolor{linkblue}{HTML}{337799}
+\usepackage[colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue]{hyperref}
 \usepackage{bm}
 \usepackage{booktabs}
 \usepackage{multirow}
+\usepackage{xfrac}
+\usepackage{enumitem}
+\usepackage{array}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 
 % ── theorem environments ──
+\newtheorem*{axiom}{The Axiom}
 \newtheorem{theorem}{Theorem}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{identity}[theorem]{Identity}
 \newtheorem{remark}{Remark}
 
 % ── UMCP macros ──
-\newcommand{\tR}{\tau_{\!R}^{*}}
+\newcommand{\tR}{\tau_{\!R}}
+\newcommand{\tRS}{\tau_{\!R}^{*}}
 \newcommand{\Gam}{\Gamma}
 \newcommand{\eps}{\varepsilon}
+\newcommand{\IR}{\infty_{\mathrm{rec}}}
 \newcommand{\tolseam}{\mathrm{tol}_{\mathrm{seam}}}
 \newcommand{\dd}{\mathrm{d}}
+\newcommand{\Res}{\mathrm{Res}}
 \newcommand{\beq}{\begin{equation}}
 \newcommand{\eeq}{\end{equation}}
 \newcommand{\INF}{\texttt{INF\_REC}}
-\newcommand{\regime}[1]{\textsc{#1}}
+\newcommand{\regime}[1]{\textrm{\upshape\scshape#1}}
 \newcommand{\conform}{\regime{conformant}}
+\newcommand{\nonconform}{\regime{nonconformant}}
 \newcommand{\tvec}{\mathbf{c}}
 \newcommand{\wvec}{\mathbf{w}}
 \newcommand{\IC}{\mathrm{IC}}
+\newcommand{\gF}{g_{\!F}}
+\newcommand{\RunID}{\mathrm{RunID}}
 
 \begin{document}
 
@@ -54,7 +68,7 @@
 From Quarks to Bulk via Five Phase Boundaries}
 
 \author{Clement Paulus}
-\email{clement@umcp.dev}
+\email{clementpaulus9@gmail.com}
 \affiliation{UMCP Reference Implementation, GitHub}
 
 \date{\today}
@@ -364,13 +378,13 @@ cluster, while insulators scatter.
 
 The full $\IC$~trajectory across the six scales is:
 
-\beq\label{eq:trajectory}
+\begin{multline}\label{eq:trajectory}
   0.270 \xrightarrow{\div 99\%} 0.004
   \xrightarrow{\times 128} 0.480
-  \xrightarrow{} 0.292
+  \xrightarrow{} 0.292 \\
   \xrightarrow{} 0.132
   \xrightarrow{} 0.123\,.
-\eeq
+\end{multline}
 
 \begin{theorem}[T-PM-7: Scale Non-Monotonicity]
 \label{thm:nonmono}

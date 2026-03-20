@@ -15,37 +15,51 @@
 ]{revtex4-2}
 
 % ── packages ──
-\usepackage{amsmath,amssymb,amsthm}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{graphicx}
-\usepackage{hyperref}
 \usepackage{xcolor}
+\definecolor{linkblue}{HTML}{337799}
+\usepackage[colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue]{hyperref}
 \usepackage{bm}
 \usepackage{booktabs}
 \usepackage{multirow}
+\usepackage{xfrac}
+\usepackage{enumitem}
+\usepackage{array}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 
 % ── theorem environments ──
+\newtheorem*{axiom}{The Axiom}
 \newtheorem{theorem}{Theorem}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{identity}[theorem]{Identity}
 \newtheorem{remark}{Remark}
 
 % ── UMCP macros ──
-\newcommand{\tR}{\tau_{\!R}^{*}}
+\newcommand{\tR}{\tau_{\!R}}
+\newcommand{\tRS}{\tau_{\!R}^{*}}
 \newcommand{\Gam}{\Gamma}
 \newcommand{\eps}{\varepsilon}
+\newcommand{\IR}{\infty_{\mathrm{rec}}}
 \newcommand{\tolseam}{\mathrm{tol}_{\mathrm{seam}}}
 \newcommand{\dd}{\mathrm{d}}
+\newcommand{\Res}{\mathrm{Res}}
 \newcommand{\beq}{\begin{equation}}
 \newcommand{\eeq}{\end{equation}}
 \newcommand{\INF}{\texttt{INF\_REC}}
-\newcommand{\regime}[1]{\textsc{#1}}
+\newcommand{\regime}[1]{\textrm{\upshape\scshape#1}}
 \newcommand{\conform}{\regime{conformant}}
+\newcommand{\nonconform}{\regime{nonconformant}}
 \newcommand{\tvec}{\mathbf{c}}
 \newcommand{\wvec}{\mathbf{w}}
 \newcommand{\GM}{\mathrm{GM}}
 \newcommand{\AM}{\mathrm{AM}}
 \newcommand{\IC}{\mathrm{IC}}
+\newcommand{\gF}{g_{\!F}}
+\newcommand{\RunID}{\mathrm{RunID}}
 
 \begin{document}
 
@@ -56,11 +70,8 @@
 Ten Tier-2 Theorems from the Standard Model}
 
 \author{Clement Paulus}
-\email{clement@umcp.dev}
+\email{clementpaulus9@gmail.com}
 \affiliation{UMCP Reference Implementation, GitHub}
-
-\author{Clement Paulus}
-\affiliation{UMCP / GCD / RCFT Canon}
 
 \date{\today}
 

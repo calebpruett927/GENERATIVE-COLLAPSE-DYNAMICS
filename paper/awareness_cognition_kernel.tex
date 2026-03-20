@@ -15,7 +15,7 @@
 ]{revtex4-2}
 
 % ── packages ──
-\usepackage{amsmath,amssymb,amsthm}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{graphicx}
 \usepackage{xcolor}
 \definecolor{linkblue}{HTML}{337799}
@@ -23,31 +23,43 @@
 \usepackage{bm}
 \usepackage{booktabs}
 \usepackage{multirow}
-\usepackage[expansion=false]{microtype}
+\usepackage{xfrac}
+\usepackage{enumitem}
+\usepackage{array}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 
 % ── theorem environments ──
+\newtheorem*{axiom}{The Axiom}
 \newtheorem{theorem}{Theorem}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{identity}[theorem]{Identity}
 \newtheorem{remark}{Remark}
 
 % ── UMCP macros ──
-\newcommand{\tR}{\tau_{\!R}^{*}}
+\newcommand{\tR}{\tau_{\!R}}
+\newcommand{\tRS}{\tau_{\!R}^{*}}
 \newcommand{\Gam}{\Gamma}
 \newcommand{\eps}{\varepsilon}
+\newcommand{\IR}{\infty_{\mathrm{rec}}}
 \newcommand{\tolseam}{\mathrm{tol}_{\mathrm{seam}}}
 \newcommand{\dd}{\mathrm{d}}
+\newcommand{\Res}{\mathrm{Res}}
 \newcommand{\beq}{\begin{equation}}
 \newcommand{\eeq}{\end{equation}}
 \newcommand{\INF}{\texttt{INF\_REC}}
-\newcommand{\regime}[1]{\textsc{#1}}
+\newcommand{\regime}[1]{\textrm{\upshape\scshape#1}}
 \newcommand{\conform}{\regime{conformant}}
+\newcommand{\nonconform}{\regime{nonconformant}}
 \newcommand{\tvec}{\mathbf{c}}
 \newcommand{\wvec}{\mathbf{w}}
 \newcommand{\GM}{\mathrm{GM}}
 \newcommand{\AM}{\mathrm{AM}}
 \newcommand{\IC}{\mathrm{IC}}
+\newcommand{\gF}{g_{\!F}}
+\newcommand{\RunID}{\mathrm{RunID}}
 
 % ── awareness-cognition macros ──
 \newcommand{\Aw}{\overline{A}_{\!w}}
@@ -1093,26 +1105,26 @@ strategy with their kernel diagnostics.
 in kernel space.  $\eta = \IC/F$ is coupling efficiency;
 $\Delta = F - \IC$ is the heterogeneity gap.}
 \begin{ruledtabular}
-\begin{tabular}{llcccc}
-Strategy & Organism & gap & $F$ & $\eta$ & $\Delta$ \\
+\begin{tabular}{llcccr}
+Strat.\ & Organism & gap & $F$ & $\eta$ & $\Delta$ \\
 \hline
-\multirow{4}{*}{APTITUDE+}
-  & \textit{E.~coli}    & $-0.646$ & 0.333 & 0.221 & 0.259 \\
-  & Mantis shrimp       & $-0.590$ & 0.335 & 0.385 & 0.206 \\
-  & Fruit fly            & $-0.558$ & 0.321 & 0.401 & 0.192 \\
-  & Dog                  & $-0.290$ & 0.415 & 0.842 & 0.066 \\
+\multirow{4}{*}{\rotatebox{90}{\scriptsize APT+}}
+  & \textit{E.~coli}    & $-0.65$ & 0.33 & 0.22 & 0.26 \\
+  & Mantis shrimp       & $-0.59$ & 0.34 & 0.39 & 0.21 \\
+  & Fruit fly            & $-0.56$ & 0.32 & 0.40 & 0.19 \\
+  & Dog                  & $-0.29$ & 0.42 & 0.84 & 0.07 \\
 \hline
-\multirow{5}{*}{GENERALIST}
-  & Dolphin     & $+0.010$ & 0.515 & 0.890 & 0.057 \\
-  & Elephant    & $+0.070$ & 0.435 & 0.877 & 0.054 \\
-  & African grey & $-0.090$ & 0.395 & 0.955 & 0.018 \\
-  & Gorilla     & $+0.130$ & 0.425 & 0.921 & 0.034 \\
+\multirow{4}{*}{\rotatebox{90}{\scriptsize GEN}}
+  & Dolphin     & $+0.01$ & 0.52 & 0.89 & 0.06 \\
+  & Elephant    & $+0.07$ & 0.44 & 0.88 & 0.05 \\
+  & Afr.\ grey  & $-0.09$ & 0.40 & 0.96 & 0.02 \\
+  & Gorilla     & $+0.13$ & 0.43 & 0.92 & 0.03 \\
 \hline
-\multirow{4}{*}{AWARENESS+}
-  & Chimpanzee  & $+0.248$ & 0.486 & 0.902 & 0.048 \\
-  & Human adult & $+0.606$ & 0.637 & 0.826 & 0.111 \\
-  & Human elderly~85 & $+0.624$ & 0.522 & 0.767 & 0.121 \\
-  & Human meditator & $+0.566$ & 0.617 & 0.835 & 0.102 \\
+\multirow{4}{*}{\rotatebox{90}{\scriptsize AWR+}}
+  & Chimpanzee  & $+0.25$ & 0.49 & 0.90 & 0.05 \\
+  & Human adult & $+0.61$ & 0.64 & 0.83 & 0.11 \\
+  & Human~85    & $+0.62$ & 0.52 & 0.77 & 0.12 \\
+  & Hum.\ medit.\ & $+0.57$ & 0.62 & 0.84 & 0.10 \\
 \end{tabular}
 \end{ruledtabular}
 \end{table}
@@ -1471,18 +1483,18 @@ subgroup means.  $n_{\mathrm{Stable}}$: number of entities
 reaching Stable regime.}
 \begin{ruledtabular}
 \begin{tabular}{lcccc}
-Partition & Channels & $\rho(\bar{A}_w, \bar{A}_p)$
-  & $n_{\mathrm{Stable}}$ & $\langle\eta\rangle$ \\
+Partition & Channels & $\rho$
+  & $n_{\mathrm{St}}$ & $\langle\eta\rangle$ \\
 \hline
-$3\!+\!7$ (core awareness) & \{0,1,3\}+\{2,4--9\}
+$3{+}7$ (core) & \{0,1,3\}+\{2,4--9\}
   & $-0.68$ & 0 & 0.79 \\
-$4\!+\!6$ (drop social) & \{0--3\}+\{4--9\}
+$4{+}6$        & \{0--3\}+\{4--9\}
   & $-0.70$ & 0 & 0.81 \\
-$5\!+\!5$ (canonical) & \{0--4\}+\{5--9\}
+$5{+}5$ (canon) & \{0--4\}+\{5--9\}
   & $-0.71$ & 0 & 0.83 \\
-$6\!+\!4$ (add sensory) & \{0--5\}+\{6--9\}
+$6{+}4$        & \{0--5\}+\{6--9\}
   & $-0.65$ & 0 & 0.85 \\
-$7\!+\!3$ (add motor) & \{0--6\}+\{7--9\}
+$7{+}3$        & \{0--6\}+\{7--9\}
   & $-0.59$ & 0 & 0.88 \\
 \end{tabular}
 \end{ruledtabular}

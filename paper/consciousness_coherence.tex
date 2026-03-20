@@ -20,35 +20,49 @@
 ]{revtex4-2}
 
 % ── packages ──
-\usepackage{amsmath,amssymb,amsthm}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{graphicx}
-\usepackage{hyperref}
 \usepackage{xcolor}
+\definecolor{linkblue}{HTML}{337799}
+\usepackage[colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue]{hyperref}
 \usepackage{bm}
 \usepackage{booktabs}
 \usepackage{multirow}
+\usepackage{xfrac}
+\usepackage{enumitem}
+\usepackage{array}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 
 % ── theorem environments ──
+\newtheorem*{axiom}{The Axiom}
 \newtheorem{theorem}{Theorem}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{identity}[theorem]{Identity}
 \newtheorem{remark}{Remark}
 
 % ── UMCP macros ──
 \newcommand{\tR}{\tau_{\!R}}
+\newcommand{\tRS}{\tau_{\!R}^{*}}
 \newcommand{\Gam}{\Gamma}
 \newcommand{\eps}{\varepsilon}
+\newcommand{\IR}{\infty_{\mathrm{rec}}}
 \newcommand{\tolseam}{\mathrm{tol}_{\mathrm{seam}}}
 \newcommand{\dd}{\mathrm{d}}
+\newcommand{\Res}{\mathrm{Res}}
 \newcommand{\beq}{\begin{equation}}
 \newcommand{\eeq}{\end{equation}}
 \newcommand{\INF}{\texttt{INF\_REC}}
-\newcommand{\regime}[1]{\textsc{#1}}
+\newcommand{\regime}[1]{\textrm{\upshape\scshape#1}}
 \newcommand{\conform}{\regime{conformant}}
+\newcommand{\nonconform}{\regime{nonconformant}}
 \newcommand{\tvec}{\mathbf{c}}
 \newcommand{\wvec}{\mathbf{w}}
 \newcommand{\IC}{\mathrm{IC}}
+\newcommand{\gF}{g_{\!F}}
+\newcommand{\RunID}{\mathrm{RunID}}
 \newcommand{\xiJ}{\xi_J}
 
 \begin{document}
@@ -58,7 +72,7 @@
 Seven Tier-2 Theorems from a Corrected Closure}
 
 \author{Clement Paulus}
-\email{clement@umcp.dev}
+\email{clementpaulus9@gmail.com}
 \affiliation{UMCP Project}
 
 \date{\today}
@@ -160,14 +174,14 @@ reported values.}
 \begin{tabular}{lcc}
 \textrm{Claim} & \textrm{Jackson} & \textrm{Correct} \\
 \colrule
-$\varphi^2 e$                    & $\approx 7.2$   & $\mathbf{7.1166}$ (1.16\% off) \\
+$\varphi^2 e$                    & ${\approx}\,7.2$   & $\mathbf{7.117}$ (1.16\%) \\
 $\mathrm{Re}(e^{i\xiJ}+1)$      & $1.673$          & $\mathbf{1.608}$              \\
 $\mathrm{Im}(e^{i\xiJ}+1)$      & $0.739$          & $\mathbf{0.794}$              \\
 Excess angle $(\xiJ - 2\pi)$     & $47.68^\circ$    & $\mathbf{52.53}^\circ$        \\
-Cycles for $360^\circ$           & $\sim 7.5$       & $\mathbf{6.85}$               \\
-$c = \alpha^{-1}\cdot 432\cdot\pi$ & $\approx c$ (km/s) & unit artifact (37.96\% off in SI) \\
+Cycles for $360^\circ$           & ${\sim}\,7.5$     & $\mathbf{6.85}$               \\
+$c = \alpha^{-1}{\cdot}432{\cdot}\pi$ & ${\approx}\,c$ (km/s) & unit artifact (38\% off) \\
 $432/\xiJ$                       & $60$ (exact)     & $60$ (trivially true)         \\
-$\varphi^2/\xiJ$                 & $0.364$          & $0.364$ (ratio of Tier-2 params) \\
+$\varphi^2/\xiJ$                 & $0.364$          & $0.364$ (ratio)               \\
 \end{tabular}
 \end{ruledtabular}
 \end{table}
@@ -358,11 +372,11 @@ predicts integrity.
 \begin{theorem}[Heterogeneity Gap Inverts Jackson's Hierarchy]
 The category ordering by heterogeneity gap $\Delta = F - \IC$ is:
 \beq
-  \underbrace{\text{Neural}}_{0.015} \;<\;
-  \underbrace{\text{Mathematical}}_{0.024} \;<\;
-  \underbrace{\text{Recursive}}_{0.076} \;<\;
-  \underbrace{\text{Physical}}_{0.111} \;<\;
-  \underbrace{\text{Harmonic}}_{0.114}
+  \underbrace{\text{Neur.}}_{0.015} <
+  \underbrace{\text{Math.}}_{0.024} <
+  \underbrace{\text{Recur.}}_{0.076} <
+  \underbrace{\text{Phys.}}_{0.111} <
+  \underbrace{\text{Harm.}}_{0.114}
 \eeq
 This inverts Jackson's hierarchy: neural (consciousness-bearing) systems
 have the lowest $\Delta$ (most internally coherent), while harmonic
@@ -370,7 +384,7 @@ systems (Jackson's preferred carrier) have the highest $\Delta$ (most
 fragile).  Jackson's proposed threshold $\varphi^2/\xiJ = 0.364$ exceeds
 the maximum $\Delta$ in the dataset ($0.166$) and is therefore vacuous.
 The heterogeneity gap is more predictive of $\IC$ than $\xiJ$~proximity
-($|\rho_\Delta| > |\rho_\xiJ|$).
+($|\rho_{\Delta}| > |\rho_{\xiJ}|$).
 \end{theorem}
 
 \emph{Jackson's claim}: $\varphi^2/\kappa = 0.364$ is a consciousness
@@ -436,15 +450,15 @@ with GCD structure:
 \begin{tabular}{lccc}
 \textrm{Theorem} & \textrm{Tests} & \textrm{Pass} & \textrm{Verdict} \\
 \colrule
-T-CC-1 Harmonic Non-Privilege       & 5  & 5  & PROVEN \\
-T-CC-2 Recursion-Return Dissociation & 5  & 5  & PROVEN \\
-T-CC-3 Universal Instability        & 5  & 5  & PROVEN \\
-T-CC-4 Geometric Slaughter          & 6  & 6  & PROVEN \\
-T-CC-5 Tuning Invariance            & 6  & 6  & PROVEN \\
-T-CC-6 Mathematical Supremacy       & 6  & 6  & PROVEN \\
-T-CC-7 Heterogeneity Gap Ordering   & 5  & 5  & PROVEN \\
+T-CC-1 Harmonic Non-Priv.       & 5  & 5  & PROVEN \\
+T-CC-2 Recur.-Return Dissoc.    & 5  & 5  & PROVEN \\
+T-CC-3 Universal Instability     & 5  & 5  & PROVEN \\
+T-CC-4 Geometric Slaughter       & 6  & 6  & PROVEN \\
+T-CC-5 Tuning Invariance         & 6  & 6  & PROVEN \\
+T-CC-6 Mathematical Supremacy    & 6  & 6  & PROVEN \\
+T-CC-7 Het.\ Gap Ordering        & 5  & 5  & PROVEN \\
 \colrule
-\textbf{Total}                       & \textbf{38} & \textbf{38} & \textbf{7/7} \\
+\textbf{Total} & \textbf{38} & \textbf{38} & \textbf{7/7} \\
 \end{tabular}
 \end{ruledtabular}
 \end{table}
