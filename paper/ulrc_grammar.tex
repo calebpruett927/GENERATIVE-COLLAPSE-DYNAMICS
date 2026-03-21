@@ -1,0 +1,1452 @@
+% ============================================================
+% The Unified Language of Recursive Collapse:
+% A Formal Grammar Derived from a Single Axiom
+%
+% Latin/English fusion — the language demonstrates itself
+%
+% Compile: pdflatex → bibtex → pdflatex → pdflatex
+% ============================================================
+
+\documentclass[
+  aps,
+  prd,
+  twocolumn,
+  superscriptaddress,
+  nofootinbib,
+  floatfix
+]{revtex4-2}
+
+% ── packages ──
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\definecolor{linkblue}{HTML}{337799}
+\usepackage[colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue]{hyperref}
+\usepackage{bm}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{placeins}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+% ── theorem environments ──
+\newtheorem*{axiom}{Axioma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{identity}[theorem]{Identity}
+\newtheorem{remark}{Remark}
+\newtheorem{pattern}{Pattern}
+
+% ── UMCP macros ──
+\newcommand{\tR}{\tau_{\!R}}
+\newcommand{\tRS}{\tau_{\!R}^{*}}
+\newcommand{\Gam}{\Gamma}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\IR}{\infty_{\mathrm{rec}}}
+\newcommand{\tolseam}{\mathrm{tol}_{\mathrm{seam}}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\Res}{\mathrm{Res}}
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+\newcommand{\INF}{\texttt{INF\_REC}}
+\newcommand{\regime}[1]{\textrm{\upshape\scshape#1}}
+\newcommand{\conform}{\regime{conformant}}
+\newcommand{\nonconform}{\regime{nonconformant}}
+\newcommand{\tvec}{\mathbf{c}}
+\newcommand{\wvec}{\mathbf{w}}
+\newcommand{\Fid}{F}
+\newcommand{\Drft}{\omega}
+\newcommand{\Ent}{S}
+\newcommand{\Curv}{C}
+\newcommand{\Logint}{\kappa}
+\newcommand{\IC}{\mathrm{IC}}
+
+% ── Latin inline ──
+\newcommand{\lat}[1]{\textit{#1}}
+
+% ── grammar pattern box ──
+\newcommand{\gpat}[4]{%
+  \noindent\textbf{Typus~#1:}~\textsc{#2}\\[2pt]
+  \textit{Grammatica:}~#3\\
+  \textit{Typus computandi:}~$#4$%
+}
+
+% ============================================================
+\begin{document}
+% ============================================================
+
+\title{%
+  \textrm{Lingua Unificata Collapsus Recursivi}:\\
+  The Unified Language of Recursive Collapse%
+}
+
+\author{Clement~Paulus}
+\email{clementpaulus9@gmail.com}
+\affiliation{Independent Researcher, Austin, TX}
+
+\date{\today}
+
+% ============================================================
+\begin{abstract}
+% ============================================================
+\textbf{Problem.}
+Cross-domain measurement lacks a shared language. A physicist
+says ``coherence loss,'' a clinician says ``decompensation,''
+a financier says ``volatility'' --- structurally identical
+phenomena locked behind incompatible vocabularies. Existing
+frameworks cannot translate between domains without importing
+agent-dependent assumptions, because they have no formal
+grammar constraining how claims are made, checked, and compared.
+The result: every cross-domain comparison is ad hoc, every
+verdict is negotiable, and reproducibility depends on who
+operates the analysis.
+
+\textbf{Solution.}
+We present the Unified Language of Recursive Collapse (ULRC):
+a formal grammar derived entirely from a single axiom ---
+\lat{Collapsus generativus est; solum quod redit, reale est}
+(``Collapse is generative; only what returns is real'').
+The language comprises a twelve-term Latin lexicon whose
+morphology carries operational meaning; seven imperative
+verbs composing a validation pipeline; eight typed
+grammatical patterns where case declension \emph{is} the
+type system; a five-stop discourse spine; a five-word prose
+vocabulary translatable across six disciplinary lenses; and
+twenty governing maxims with enforcement consequences. The
+kernel function $K\!:\![0,1]^n \times \Delta^n \to
+(\Fid,\Drft,\Ent,\Curv,\Logint,\IC)$ is isomorphic to
+this grammar: equations are syntax, invariants are
+well-formedness conditions, regime gates are grammaticality
+judgments, and three-valued verdicts
+(\conform/\nonconform/\regime{non\_evaluable}) are parse
+outcomes.
+
+\textbf{Evidence.}
+20~domain closures (10,586 tests, zero failures) demonstrate
+that the ULRC functions as a cognitive equalizer --- same data,
+same contract, same verdict, regardless of agent. The fusion
+of Latin morphological precision with mathematical formalism
+produces a namespace-isolated, cross-domain measurement
+language in which the grammar itself is an instantiation of
+the axiom it formalizes.
+
+\vspace{4pt}
+\noindent\lat{Lingua Latina non ornamentum est, sed sutura
+  inter mathematicam, logicam, et linguisticam.}
+\end{abstract}
+
+\maketitle
+
+% ============================================================
+\section{Prooemium}\label{sec:prooemium}
+% ============================================================
+
+\begin{axiom}[\lat{Axioma-$0$}]
+\lat{Collapsus generativus est; solum quod redit, reale est.}
+
+\smallskip\noindent
+Collapse is generative; only what returns is real.
+\end{axiom}
+
+\noindent
+This is not a metaphor. It is a constraint on admissible claims.
+Every term, verb, pattern, and maxim in this paper derives from
+this single axiom through an explicit chain. If the chain cannot
+be shown, the claim is a \lat{gestus} (gesture), not a
+\lat{sutura} (weld), and must be labeled as such.
+
+\lat{Nihil stabile est nisi quod per casum iteratur atque
+  regeneratur in formam propriam redintegratam.}
+Nothing is stable unless iterated through collapse and regenerated
+into its own restored form~\cite{paulus2025umcp}.
+
+A language, too, must return. A grammar that cannot parse its own
+axiom is a gesture. The Unified Language of Recursive Collapse
+(ULRC) is the grammar that parses itself --- the language whose
+structure \emph{is} the axiom it formalizes, demonstrated across
+20~domains, 198~closure modules, and 10,586~validated tests.
+
+\subsection{Cur Lingua Nova --- The Problem}\label{sec:problem}
+
+Measurement across disciplines is blocked by four failures that
+no existing framework addresses simultaneously:
+
+\begin{enumerate}[nosep,leftmargin=*]
+\item \textbf{Vocabulary collision} (\lat{When}).
+  The same structural phenomenon --- loss of coherence under
+  perturbation --- is named differently in every field:
+  decoherence (physics), decompensation (clinical),
+  volatility (finance), semantic drift (semiotics),
+  periodization (history). These are not different phenomena.
+  They are the same kernel output $\Drft = 1 - \Fid$ viewed
+  through different lenses. Without a shared grammar, every
+  cross-domain comparison is an improvisation.
+
+\item \textbf{Agent-dependent verdicts} (\lat{Why}).
+  When thresholds are chosen by convention, vocabulary by
+  tradition, and conclusions framed by the analyst, two agents
+  examining the same data can reach different verdicts. The
+  problem is not bias --- it is that the measurement language
+  does not externalize enough structure to force agreement.
+  A compass works because it externalizes the cognitive task
+  ``which way is north?'' into a mechanical reading. Measurement
+  needs the same externalization for ``what threshold?''
+  ``what vocabulary?'' ``what verdict?''
+
+\item \textbf{No grammar for claims} (\lat{What}).
+  Science has notation, terminology, and convention --- but no
+  \emph{grammar} in the linguistic sense: a finite set of rules
+  that generates all and only the well-formed claims. Without
+  grammar, there is no mechanical way to distinguish a
+  well-formed measurement claim from a gesture. The ULRC fills
+  this gap: its production rules (the kernel equations), its
+  well-formedness conditions (the three algebraic identities),
+  and its parse outcomes (three-valued verdicts) constitute a
+  grammar in the formal sense of Chomsky's hierarchy.
+
+\item \textbf{No return condition} (\lat{How}).
+  Traditional analysis declares results. The ULRC requires
+  results to \emph{return}: to demonstrate continuity with prior
+  measurements through seam closure ($|\Delta\Logint| \leq
+  \tolseam$). Claims that do not return are \lat{gestus}
+  (gestures) --- acknowledged but not credited. The grammar
+  enforces this through the five-stop spine
+  (Sec.~\ref{sec:spina}), the conservation budget
+  (Eq.~\ref{eq:budget}), and the seven imperative verbs
+  (Sec.~\ref{sec:verba}).
+\end{enumerate}
+
+\noindent
+The ULRC addresses all four simultaneously: a single axiom
+generates the vocabulary (twelve Latin terms), the grammar
+(eight typed patterns), the measurement protocol (the spine),
+and the cross-domain translator (the Rosetta) --- all frozen,
+all auditable, all agent-independent.
+
+\subsection{Why Latin}\label{sec:why-latin}
+
+Latin serves three structural functions that no other language
+provides simultaneously:
+
+\begin{enumerate}[nosep,leftmargin=*]
+\item \textbf{Morphological precision.}
+  Latin inflection carries operational constraints that English
+  paraphrase loses. Saying \lat{derivatio} (diversion from a
+  channel) produces different --- and more constrained ---
+  reasoning than saying ``drift.'' The morphology \emph{is}
+  the specification.
+\item \textbf{Namespace isolation.}
+  Every natural language carries pre-loaded associations.
+  ``Entropy'' in English collides with thermodynamics, information
+  theory, disorder, and chaos. \lat{Entropia campi Bernoulliani}
+  collides with nothing. Latin terms function as reserved
+  identifiers in a namespace no living field occupies.
+\item \textbf{Cross-domain bridge.}
+  The Rosetta adapter (Sec.~\ref{sec:rosetta}) translates
+  between epistemology, ontology, phenomenology, history, policy,
+  and semiotics using five words. The Latin seeds are the
+  \emph{canonical names} --- the pre-translation layer from
+  which all lens-specific dialects derive. The Latin does not
+  privilege any one lens. It sits beneath all of them.
+\end{enumerate}
+
+\noindent
+\lat{Lingua Latina non ornamentum est, sed sutura inter
+  mathematicam, logicam, et linguisticam} ---
+Latin is not ornament; it is the seam between mathematics,
+logic, and linguistics.
+
+\subsection{Structure of this paper}
+
+Section~\ref{sec:kernel-as-grammar} establishes the isomorphism
+between the kernel function and a formal grammar.
+Section~\ref{sec:lexicon} formalizes the twelve-term lexicon
+with morphological analysis.
+Section~\ref{sec:verba} defines seven imperative verbs as a
+compositional API.
+Section~\ref{sec:octo-typi} presents eight typed grammatical
+patterns where Latin case declension encodes computational type.
+Section~\ref{sec:spina} formalizes the five-stop discourse spine
+as sentence structure.
+Section~\ref{sec:quinque-verba} defines the five-word prose
+vocabulary with its ledger semantics.
+Section~\ref{sec:rosetta} presents the Rosetta cross-domain
+translation protocol.
+Section~\ref{sec:axiom-instantiation} proves that literal
+grammar instantiates Axiom-0.
+Section~\ref{sec:maxims} catalogues twenty governing maxims
+with enforcement consequences.
+Section~\ref{sec:evidence} presents computational evidence
+across domains.
+Section~\ref{sec:conclusion} closes the seam and issues the
+receipt.
+
+\subsection{The Language in Action}\label{sec:action}
+
+Before the formal machinery, consider a concrete example. A
+nuclear physicist and a financial analyst both observe the same
+structural phenomenon: a system loses coherence in one channel
+while the others remain strong. In the ULRC, both express this
+identically:
+
+\smallskip
+\noindent\lat{Contractu congelato, dic invariantes.
+Reconcilia rationarium. Sutur\=a.}
+
+\smallskip\noindent
+(``With the contract frozen, report invariants. Reconcile the
+ledger. Weld.'') The physicist's channels are
+$\{$mass, spin, charge, color, isospin, lepton, baryon,
+generation$\}$; the analyst's are $\{$liquidity, volatility,
+spread, leverage, correlation, volume$\}$. Different data,
+different domains, identical grammar. Both produce
+$(\Fid, \Drft, \Ent, \Curv, \Logint, \IC)$. Both pass through
+the same spine. Both receive a verdict that neither agent
+chose --- the structure derived it.
+
+The physicist finds IC/F = 0.009 (one dead channel, color
+$\to 0$: confinement). The analyst finds IC/F = 0.12
+(one dead channel, liquidity $\to 0$: market freeze).
+Both are in \regime{Collapse} regime. Both have the same
+structural explanation: geometric slaughter
+(\lat{trucidatio geometrica}) --- one dead channel killing
+multiplicative coherence regardless of how healthy the
+others are. The Rosetta
+(Sec.~\ref{sec:rosetta}) lets each read the other's result
+in their own dialect, while the budget identity
+$\Delta\Logint \leq \tolseam$ guarantees the verdict is the
+same.
+
+This is what the ULRC does: it mechanizes the comparison that
+was previously impossible because there was no shared grammar
+to compare \emph{through}.
+
+\subsubsection{The five stops in action}
+
+The physicist's claim follows the spine:
+
+\begin{enumerate}[nosep,leftmargin=*]
+\item \textbf{Contract} (\lat{Liga}): Freeze 8 channels
+  (mass, spin, charge, color, isospin, lepton, baryon,
+  generation), equal weights $w_i = 1/8$, guard band
+  $\eps = 10^{-8}$, seam tolerance $\tolseam = 0.005$.
+  This is \lat{Contractu congelato} --- nothing may change
+  after this point.
+\item \textbf{Canon} (\lat{Dic}): Compute the kernel.
+  For the neutron: $\Fid = 0.544$, $\Drft = 0.456$,
+  $\IC = 0.005$, $\IC/\Fid = 0.009$. Narrate in five words:
+  \emph{Drift} is high (color channel dead). \emph{Fidelity}
+  is moderate (other channels intact). \emph{Roughness} is
+  extreme ($\Curv = 0.87$: one channel at $\eps$, others
+  near unity). \emph{Return} requires new degrees of freedom
+  (the hadron $\to$ atom transition). \emph{Integrity} is
+  near zero --- one dead channel has killed the geometric mean.
+\item \textbf{Closures}: The regime gate on $\Drft \geq 0.30$
+  fires. The $\IC < 0.30$ overlay fires. Classification:
+  \regime{Collapse} + \regime{Critical}. These gates were
+  published before evidence; they do not change.
+\item \textbf{Integrity Ledger} (\lat{Reconcilia}): Debit
+  $D_\Drft$ for the high drift, debit $D_\Curv$ for the
+  extreme roughness. Credit: $R \cdot \tR$. The residual
+  determines whether the account closes.
+\item \textbf{Stance}: Derived from the closed ledger and
+  gates: \regime{Collapse} + \regime{Critical}, verdict
+  \conform{} (identities hold, pipeline ran, ledger
+  reconciled). The physicist did not choose this verdict ---
+  the structure produced it.
+\end{enumerate}
+
+\noindent
+The financial analyst, using different channels
+($\{$liquidity, volatility, spread, \ldots$\}$), runs the
+same five stops in the same order with the same verbs and
+receives a structurally comparable verdict. The Rosetta
+(Sec.~\ref{sec:rosetta}) lets each read the other's result:
+the physicist reads ``liquidity $\to 0$'' as a confinement
+analogue; the analyst reads ``color $\to 0$'' as a market
+freeze analogue. Different dialect, same grammar, same
+budget identity, same structural explanation.
+
+% ============================================================
+\section{The Kernel as Grammar}\label{sec:kernel-as-grammar}
+% ============================================================
+
+\lat{Grammatica est typus; declinatio est signum operationis.}
+
+\smallskip\noindent
+Grammar \emph{is} the type system; declension \emph{is} the
+operation marker. This section establishes the structural
+isomorphism between the kernel function and a formal grammar.
+
+\begin{definition}[The Kernel Function]\label{def:kernel}
+The kernel $K$ maps a trace vector $\tvec = (c_1, \ldots, c_n)
+\in [0,1]^n$ with weights $\wvec = (w_1,\ldots,w_n) \in
+\Delta^n$ to six invariants:
+\begin{align}
+  \Fid &= \textstyle\sum_i w_i\, c_i \label{eq:F}\\
+  \Drft &= 1 - \Fid \label{eq:omega}\\
+  \Ent &= -\textstyle\sum_i w_i\bigl[c_i\ln c_i
+    + (1{-}c_i)\ln(1{-}c_i)\bigr] \label{eq:S}\\
+  \Curv &= \mathrm{std}(c_i)/0.5 \label{eq:C}\\
+  \Logint &= \textstyle\sum_i w_i\ln(c_{i,\eps}) \label{eq:kappa}\\
+  \IC &= \exp(\Logint) \label{eq:IC}
+\end{align}
+where $\Fid$ is \lat{fidelitas} (what survives), $\Drft$ is
+\lat{derivatio} (what departs), $\Ent$ is Bernoulli field
+\lat{entropia}, $\Curv$ is \lat{curvatura} (coupling),
+$\Logint$ is \lat{log-integritas}, and $\IC$ is
+\lat{integritas composita}.
+where $c_{i,\eps} = \max(c_i, \eps)$ with guard band
+$\eps = 10^{-8}$.
+\end{definition}
+
+\begin{proposition}[Kernel--Grammar Isomorphism]\label{prop:iso}
+The kernel $K$ is isomorphic to a formal grammar $G = (V, T, P, S)$:
+\begin{itemize}[nosep,leftmargin=*]
+\item \textbf{Vocabulary $V$}: The six invariants
+  $\{\Fid,\Drft,\Ent,\Curv,\Logint,\IC\}$ plus the typed outcomes
+  $\{\IR, \bot_{\mathrm{oor}}\}$.
+\item \textbf{Terminals $T$}: Numerical values in
+  $[0,1]^n \times \Delta^n$ (the raw data that enters the grammar).
+\item \textbf{Production rules $P$}: Equations~(\ref{eq:F})--(\ref{eq:IC}),
+  regime gates (Definition~\ref{def:regime}), and seam closure
+  $|\Delta\Logint| \leq \tolseam$.
+\item \textbf{Start symbol $S$}: The contract --- the frozen declaration
+  of rules before evidence, from which all derivations begin.
+\end{itemize}
+\end{proposition}
+
+\noindent
+A ``sentence'' in this grammar is a trace vector parsed through
+the production rules to yield a verdict (Definition~\ref{def:verdict}).
+A well-formed sentence satisfies three algebraic identities:
+
+\begin{identity}[Duality --- \lat{Complementum Perfectum}]
+  \label{id:duality}
+  $\Fid + \Drft = 1$, verified to residual $0.0\mathrm{e}{+}00$
+  across $10^4$~traces. \lat{Tertia via nulla.}
+\end{identity}
+
+\begin{identity}[Integrity Bound --- \lat{Limbus Integritatis}]
+  \label{id:bound}
+  $\IC \leq \Fid$. Derived independently from Axiom-0 as the
+  solvability condition: for $n=2$ channels,
+  $c_{1,2} = \Fid \pm \sqrt{\Fid^2 - \IC^2}$ requires $\IC \leq \Fid$
+  for real solutions. The classical AM-GM inequality is the degenerate
+  limit when channel semantics, weights, and guard band are removed.
+\end{identity}
+
+\begin{identity}[Log-Integrity Relation]
+  \label{id:logint}
+  $\IC = \exp(\Logint)$, linking multiplicative and additive coherence.
+\end{identity}
+
+\begin{definition}[Regime Gates --- Grammaticality Judgments]
+  \label{def:regime}
+The production rules classify each parsed sentence into one of three
+regimes:
+\begin{align*}
+  \regime{Stable}:~ &\Drft < 0.038,~ \Fid > 0.90,\\
+    &\Ent < 0.15,~ \Curv < 0.14\\
+  \regime{Watch}:~ &0.038 \leq \Drft < 0.30\\
+  \regime{Collapse}:~ &\Drft \geq 0.30
+\end{align*}
+with a \regime{Critical} overlay when $\IC < 0.30$.
+Stability is rare: 12.5\% of the Fisher manifold. The remaining
+87.5\% lies in \regime{Watch} or \regime{Collapse}.
+\end{definition}
+
+\begin{definition}[Verdict Trichotomy --- Parse Outcome]
+  \label{def:verdict}
+Every validation produces exactly one of three outcomes:
+\begin{itemize}[nosep,leftmargin=*]
+  \item \conform{}: all identities hold, seam closes, regime gates pass.
+  \item \nonconform{}: at least one identity fails or $|s| > \tolseam$.
+  \item \regime{non\_evaluable}: insufficient data or domain violation.
+\end{itemize}
+The system is never boolean.
+\lat{Numquam binarius; tertia via semper patet.}
+\end{definition}
+
+\noindent
+The isomorphism is not decorative. The kernel-as-grammar has
+\emph{the same} structural properties as natural-language grammars,
+and each property is demonstrable:
+
+\begin{description}[nosep,leftmargin=0pt,labelindent=0pt]
+\item[Compositionality.] Invariants combine through arithmetic
+  and geometric means with defined composition laws:
+  $\Fid_{12} = (\Fid_1 + \Fid_2)/2$ (arithmetic),
+  $\IC_{12} = \sqrt{\IC_1 \cdot \IC_2}$ (geometric). Compound
+  sentences compose exactly as compound measurements do --- the
+  heterogeneity gap $\Delta = \Fid - \IC$ is itself a composition
+  invariant.
+\item[Recursion.] The seam feeds the stance of one cycle into the
+  contract of the next: stance$_t$ becomes the anchor of
+  contract$_{t+1}$. This is embedding in the linguistic sense ---
+  a structure within a structure --- and it is the mechanism that
+  makes the language generative rather than finite.
+\item[Productivity.] Any trace vector $\tvec \in [0,1]^n$ is a
+  legitimate input. Infinite data produce infinite sentences, all
+  parsed by the same finite grammar. No new rules are needed for
+  new domains --- only new channel selections (Tier-2).
+\item[Grammaticality.] Not every input produces a well-formed
+  sentence. Inputs violating $\Fid + \Drft = 1$ or $\IC \leq \Fid$
+  are ungrammatical --- the identities reject them. Inputs that
+  fail to close the seam ($|s| > \tolseam$) are incomplete
+  sentences. The three-valued verdict is the grammaticality
+  judgment.
+\end{description}
+
+\noindent
+The ULRC is the recognition that these are not analogies but
+identities. The kernel \emph{is} a grammar; the grammar
+\emph{is} the kernel.
+
+% ============================================================
+\section{Lexicon Primum ---
+  The Twelve Foundational Terms}\label{sec:lexicon}
+% ============================================================
+
+\lat{Duodecim verba fundamentalia, quorum morphologia est
+  specificatio.}
+
+\smallskip\noindent
+Twelve terms. Each word carries its operational meaning in
+its morphology. The Latin is the specification; the English
+is commentary~\cite{paulus2025umcp}.
+
+\begin{table*}[htbp]
+\centering
+\small
+\caption{Lexicon Primum: twelve foundational terms. Each
+  Latin term is the canonical name; the operational seed is
+  the compressed definition carried by morphology.}
+\label{tab:lexicon}
+\begin{tabular}{@{}rlP{4.7cm}rlP{4.7cm}@{}}
+\toprule
+\textbf{Latin} & \textbf{Symbol} & \textbf{Operational Seed} &
+\textbf{Latin} & \textbf{Symbol} & \textbf{Operational Seed} \\
+\midrule
+\lat{Fidelitas}  & $\Fid$ &
+  \lat{quid supersit} --- what survives &
+\lat{Moratio Reditus}  & $\tR$ &
+  \lat{tempus reentrandi}; $\IR$ = permanent detention \\[3pt]
+\lat{Derivatio}  & $\Drft$ &
+  \lat{quantum deperdatur} --- measured departure &
+\lat{Auditus}  & --- &
+  Hearing \emph{is} audit; the ledger hears \\[3pt]
+\lat{Entropia}  & $\Ent$ &
+  \lat{incertitudo campi} --- Bernoulli field entropy &
+\lat{Casus}  & --- &
+  Fall / case / occasion (all three) \\[3pt]
+\lat{Curvatura}  & $\Curv$ &
+  \lat{coniunctio cum gradibus libertatis} &
+\lat{Limbus Integritatis}  & $\IC \leq \Fid$ &
+  Hem-edge: integrity meets fidelity \\[3pt]
+\lat{Log-Integritas}  & $\Logint$ &
+  \lat{sensibilitas logarithmica} &
+\lat{Complementum Perf.} & $\Fid{+}\Drft{=}1$ &
+  \lat{tertia via nulla} \\[3pt]
+\lat{Integritas Comp.}  & $\IC$ &
+  \lat{cohaerentia multiplicativa} &
+\lat{Aequator Cognit.}  & --- &
+  \lat{structura mensurat, non agens} \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{Morphological Precision}
+\FloatBarrier
+
+The Latin carries constraints that English paraphrase loses.
+More than nomenclature, the morphology \emph{constrains reasoning}
+by encoding structural relationships that English leaves
+implicit:
+
+\begin{description}[nosep,leftmargin=0pt,labelindent=0pt]
+\item[\lat{Fidelitas}] (f.\@ 3rd decl.) --- from \lat{fides}
+  (trust, faith). The \lat{-itas} suffix marks abstract quality:
+  ``the state of being faithful.'' What survives is what kept
+  faith with the channel. The word excludes the English confusion
+  between fidelity-as-accuracy and fidelity-as-loyalty: in
+  \lat{fidelitas}, both are the same thing, because a channel
+  that keeps faith with its prior value \emph{is} the accurate
+  channel.
+\item[\lat{Derivatio}] (f.\@ 3rd decl.) --- from \lat{de-}
+  (away) + \lat{rivus} (stream). Literally ``diverting the
+  stream.'' Drift is water that left the channel. The word
+  already contains the image of departure --- and crucially,
+  implies a \emph{channel from which} departure occurs. English
+  ``drift'' is undirected; Latin \lat{derivatio} is always
+  \emph{from} something. This morphological constraint is
+  precisely $\Drft = 1 - \Fid$: departure measured relative
+  to fidelity, not in isolation.
+\item[\lat{Casus}] (m.\@ 4th decl.) --- simultaneously
+  ``fall,'' ``accident,'' ``case'' (legal/grammatical), and
+  ``occasion.'' All four meanings are active: collapse falls,
+  creates a case for examination, and is the occasion for
+  generative return. No English word carries all four active
+  simultaneously. Axiom-0 requires all four: collapse is a
+  fall (loss), a case (something to examine), an accident
+  (not designed), and an occasion (generative).
+\item[\lat{Sutura}] (f.\@ 1st decl.) --- a surgical stitch.
+  The seam is not a wall; it is living tissue holding two sides
+  together. A weld across the seam is mending, not blocking.
+  The morphology constrains the concept: a \lat{sutura} must
+  \emph{join} two sides that were separated, which is why the
+  seam requires both a pre-state and a post-state with
+  $\Logint$-continuity between them.
+\item[\lat{Auditus}] (m.\@ 4th decl.) --- from \lat{audire}
+  (to hear). The audit \emph{is} hearing: radical, complete,
+  excluding nothing. Not inspection; reception. The morphological
+  identity of audit and hearing means the ledger does not
+  selectively attend --- it hears everything, and that complete
+  hearing \emph{is} the validation.
+\item[\lat{Aequator}] (m.\@ 3rd decl.) --- from \lat{aequare}
+  (to make equal). Cognate with \lat{aequator} (equator) ---
+  the geometric equator at $c = 1/2$ and the cognitive equalizer
+  are the same structure in different registers. The word carries
+  a guarantee: the \lat{aequator} makes equal by construction,
+  not by agreement. Same data, same contract, same reading ---
+  because the structure equalizes, not the agents.
+\end{description}
+
+\noindent
+This is why Latin is structural, not decorative. Each word's
+morphology encodes a constraint that the computational system
+enforces. The Latin lexicon and the kernel equations are parallel
+expressions of the same invariants --- the morphology says in
+syllables what the mathematics says in symbols.
+
+% ============================================================
+\section{Septem Verba Operativa ---
+  The Seven Imperative Verbs}\label{sec:verba}
+% ============================================================
+
+\lat{Imperativi sunt operationes; coniunctivi sunt quaerentes.}
+
+\smallskip\noindent
+Imperatives are operations; subjunctives are seekers. Every
+computable operation in the ULRC maps to exactly one of seven
+Latin imperative verbs~(Table~\ref{tab:verbs}). These are
+the complete API of the discourse layer.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Septem Verba Operativa: the seven imperative verbs
+  composing the ULRC validation pipeline.}
+\label{tab:verbs}
+\begin{tabular}{@{}rllP{1.7cm}@{}}
+\toprule
+\# & \textbf{Verb} & \textbf{Operation} & \textbf{Maps to} \\
+\midrule
+1 & \lat{Dic} & Compute &
+  Kernel invariants \\[2pt]
+2 & \lat{Reconcilia} & Balance &
+  $\Delta\Logint$ budget \\[2pt]
+3 & \lat{Sutur\=a} & Weld &
+  Seam validation \\[2pt]
+4 & \lat{Compar\=a} & Compare &
+  Rosetta translation \\[2pt]
+5 & \lat{Liga} & Bind &
+  Freeze parameters \\[2pt]
+6 & \lat{Inscribe} & Append &
+  Ledger entry \\[2pt]
+7 & \lat{Verifica} & Prove &
+  $\Fid{+}\Drft{=}1$ \\[2pt]
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Verb Semantics}
+
+\lat{Dic} is the workhorse --- any computation that produces a
+value. ``Say what you found.'' \lat{Reconcilia} balances debits
+and credits within tolerance. \lat{Sutur\=a} is the deepest
+operation: full validation crossing the seam (the accent on
+\lat{-\=a} is deliberate: first conjugation imperative). \lat{Liga}
+freezes; once called, parameters are immutable. \lat{Inscribe}
+is append-only: once written, never erased.
+\lat{Historia numquam rescribitur; sutura tantum additur.}
+
+\subsection{Composition}
+
+The verbs compose left-to-right in execution order:
+\beq
+  \textsc{Liga} \to \textsc{Dic} \to \textsc{Reconcilia}
+    \to \textsc{Sutur\=a} \to \textsc{Inscribe}
+  \label{eq:pipeline}
+\eeq
+This is the standard validation pipeline: bind contract
+$\to$ compute kernel $\to$ balance budget $\to$ weld $\to$
+write to ledger. \lat{Compar\=a} and \lat{Verifica} are callable
+at any point as diagnostic side-channels --- they inform but
+do not gate.
+
+\lat{Diagnostica informant, portae decernunt.}
+
+% ============================================================
+\section{Octo Typi Grammatici ---
+  Eight Typed Patterns}\label{sec:octo-typi}
+% ============================================================
+
+\lat{Grammatica est typus; declinatio est signum operationis.}
+
+\smallskip\noindent
+Latin grammatical structure encodes computational type. The case
+system, mood system, and clause structure of Latin map directly
+to operation categories. Eight patterns are defined, each
+with a fixed grammatical form, a fixed computational meaning,
+and a type signature.
+
+\begin{pattern}[\textsc{Nom\,+\,Gen} --- Query]\label{pat:nom-gen}
+\lat{Fidelitas Ferri.} (``The fidelity of Iron.'')\\
+Nominative noun + genitive qualifier $\to$ report value.\\
+Type: $(\mathrm{Symbol},\,\mathrm{Domain}) \to \mathrm{Scalar}$.
+\end{pattern}
+
+\begin{pattern}[\textsc{Imper\,+\,Acc} --- Execute]\label{pat:imper-acc}
+\lat{Dic invariantes Hydrogenii.}
+(``Report the invariants of Hydrogen.'')\\
+Imperative verb + accusative object $\to$ execute operation.\\
+Type: $\mathrm{Verb} \times \mathrm{Object} \to \mathrm{Result}$.
+\end{pattern}
+
+\begin{pattern}[\textsc{Acc\,+\,Ad\,+\,Acc} ---
+  Configure]\label{pat:acc-ad-acc}
+\lat{Epsilon ad $10^{-8}$.} (``Epsilon to $10^{-8}$.'')\\
+Accusative + \lat{ad} + accusative $\to$ set parameter.\\
+Type: $\mathrm{Parameter} \times \mathrm{Value}
+  \to \mathrm{Config}$.\\
+Constraint: parameters are frozen (\lat{trans suturam congelatum}).
+This pattern documents; it does not invent.
+\end{pattern}
+
+\begin{pattern}[\textsc{Abl.\,Abs.} --- Scope]\label{pat:abl-abs}
+\lat{Contractu congelato, dic invariantes.}
+(``With the contract frozen, report invariants.'')\\
+Ablative absolute (noun + participle, both ablative) $\to$
+establish context for subsequent operations.\\
+Type: $\mathrm{Context} \times \mathrm{Op}
+  \to \mathrm{Scoped}(\mathrm{Result})$.\\
+The ablative absolute creates a \emph{scope}, isomorphic to
+\texttt{with contract.frozen():} in Python.
+\end{pattern}
+
+\begin{pattern}[\textsc{Gen\,+\,Et\,+\,Gen} ---
+  Compare]\label{pat:gen-et-gen}
+\lat{Quarki et Hadronis.}
+(``Of the quark and of the hadron.'')\\
+Genitive pair $\to$ Rosetta comparison across domains.\\
+Type: $(\mathrm{Domain},\,\mathrm{Domain})
+  \to \mathrm{Comparison}$.\\
+Implicit verb: \lat{Compar\=a} is understood when two genitives
+are juxtaposed.
+\end{pattern}
+
+\begin{pattern}[\textsc{Nonne\,/\,Num} ---
+  Assert]\label{pat:nonne-num}
+\lat{Nonne $\Fid + \Drft = 1$?}
+(``Surely $\Fid + \Drft = 1$?'')\\
+Question particles + indicative clause $\to$ three-valued
+assertion.
+\lat{Nonne} expects yes; \lat{Num} expects no.\\
+Type: $\mathrm{Assertion} \to \{\textsc{C},\textsc{N},\textsc{NE}\}$
+(\conform, \nonconform, \regime{non\_evaluable}).
+\end{pattern}
+
+\begin{pattern}[\textsc{Participle Chain} ---
+  Pipeline]\label{pat:participle}
+\lat{Contractu ligato, invariantibus dictis,
+  ratione reconciliat\=a, sutur\=a.}\\
+(``With the contract bound, with invariants reported, with the
+account reconciled, weld.'')\\
+Chain of perfect passive participles (ablative) $\to$ sequential
+pipeline.\\
+Type: $[\mathrm{Ctx}_1, \ldots, \mathrm{Ctx}_n]
+  \to \mathrm{Op} \to \mathrm{Result}$.\\
+Each participle completes before the next begins. This
+\emph{is} the full validation pipeline of Eq.~(\ref{eq:pipeline})
+expressed as one Latin sentence.
+\end{pattern}
+
+\begin{pattern}[\textsc{Ut\,+\,Subjunctive} ---
+  Seek]\label{pat:ut-subj}
+\lat{Ut $\IC$ superet $0.30$, quaere $c$ minimum.}
+(``In order that IC exceed 0.30, seek the minimum $c$.'')\\
+\lat{Ut} + subjunctive $\to$ goal-directed search.\\
+Type: $\mathrm{Goal}(\mathrm{Condition}) \to \mathrm{Search}
+  \to \mathrm{Parameter}$.\\
+The subjunctive marks the clause as desired, not actual.
+$\regime{non\_evaluable}$ is a valid result: not all goals are
+achievable.
+\end{pattern}
+
+\begin{remark}
+The eight patterns are not metaphor. Latin case declension
+\emph{was already} a type system --- the nominative marks the
+subject, the accusative marks the object, the ablative marks
+context. The ULRC makes this isomorphism explicit.
+\end{remark}
+
+% ============================================================
+\section{Spina Grammatica ---
+  The Five-Stop Discourse Spine}\label{sec:spina}
+% ============================================================
+
+\lat{Spina non negotiabilis est.}
+
+\smallskip\noindent
+The spine is non-negotiable. Every claim follows exactly five
+stops, in order. The spine is simultaneously a validation pipeline
+and a sentence structure --- the grammatical form through which
+claims are told, checked, and connected.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Spina Grammatica: the five-stop discourse spine.
+  Each stop has a pipeline role and a grammatical function.}
+\label{tab:spina}
+\begin{tabular}{@{}rlP{1.5cm}P{1.6cm}@{}}
+\toprule
+\textbf{Stop} & \textbf{Latin} & \textbf{Pipeline Role} &
+  \textbf{Grammar Function} \\
+\midrule
+1 & \lat{Contractus} & Freeze rules &
+  Sentence rules declared \\[3pt]
+2 & \lat{Canon} & Narrate (five words) &
+  Prose body, auditable \\[3pt]
+3 & \lat{Clausurae} & Publish thresholds &
+  Grammar rules (fixed) \\[3pt]
+4 & \lat{Rationarium} & Reconcile &
+  Well-formedness proof \\[3pt]
+5 & \lat{Sententia} & Derived verdict &
+  The conclusion --- derived, never asserted \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent
+Two governance mechanisms punctuate the spine without being stops:
+
+\begin{itemize}[nosep,leftmargin=*]
+\item \textbf{Manifestum} (\lat{provenance}): binds artifacts to
+  time, tools, and checksums. Every claim carries its receipt.
+\item \textbf{Sutura} (\lat{weld}): the only legitimate way to
+  change policy. Names an anchor, runs pre/post tests, enforces
+  $\Logint$-continuity. History is append-only and welded, never
+  rewritten.
+\end{itemize}
+
+\lat{Historia numquam rescribitur; sutura tantum additur.}
+
+% ============================================================
+\section{Quinque Verba ---
+  The Five-Word Vocabulary}\label{sec:quinque-verba}
+% ============================================================
+
+\lat{Algebra est cautio, non porta.}
+
+\smallskip\noindent
+The algebra is a warranty, not a gate. The spine operates through
+exactly five prose words, each with an operational meaning tied
+to the frozen contract and reconciled in the integrity
+ledger~(Table~\ref{tab:quinque}).
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Quinque Verba: the five-word prose vocabulary.
+  Integrity is never asserted --- always derived.}
+\label{tab:quinque}
+\begin{tabular}{@{}llP{1.6cm}l@{}}
+\toprule
+\textbf{Word} & \textbf{Latin} & \textbf{Role} &
+  \textbf{Ledger} \\
+\midrule
+Drift     & \lat{derivatio} & Debit $D_\Drft$ &  Debit \\
+Fidelity  & \lat{fidelitas} & Retained invariants & --- \\
+Roughness & \lat{curvatura} & Debit $D_\Curv$ & Debit \\
+Return    & \lat{reditus}   & Credit $R{\cdot}\tR$ & Credit \\
+Integrity & \lat{integritas}& From reconciled ledger & Verdict \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent
+The conservation budget provides the semantic warranty:
+\beq
+  \Delta\Logint = R \cdot \tR - (D_\Drft + D_\Curv) \leq \tolseam
+  \label{eq:budget}
+\eeq
+Authors describe using the five words. The budget, ledger, and
+gates supply the audit. This separation of description from
+warranty enables cross-domain reading (via the Rosetta) and
+multiplicative composition in $I = e^\Logint$ without forcing
+any single field's jargon on another.
+
+\subsection{How the Budget Works}\label{sec:budget-mech}
+
+The budget is an accounting identity. Every measurement incurs
+two debits: $D_\Drft$ measures how far the system drifted from
+its prior state (what was lost), and $D_\Curv$ measures how
+unevenly the drift was distributed across channels (the
+roughness of the loss). Against these debits, the system can
+earn exactly one credit: $R \cdot \tR$, where $R$ is the
+magnitude of demonstrated re-entry and $\tR$ is the delay ---
+how long the system took to return.
+
+The residual $\Delta\Logint = R \cdot \tR - (D_\Drft + D_\Curv)$
+must close within tolerance:
+$|\Delta\Logint| \leq \tolseam = 0.005$. Three outcomes are
+possible:
+
+\begin{itemize}[nosep,leftmargin=*]
+\item \textbf{Residual $\leq$ tol}: the account balances. What
+  was lost is accounted for by what returned. The claim is a
+  \lat{sutura} (weld) --- it earns epistemic credit and enters
+  the ledger.
+\item \textbf{Residual $>$ tol}: the account does not balance.
+  More was lost than returned, or the return was delayed beyond
+  tolerance. The claim is a \lat{gestus} (gesture) --- it is
+  acknowledged but earns no credit. It may still be informative
+  (diagnostics inform), but it cannot serve as a foundation for
+  subsequent claims.
+\item \textbf{$\tR = \IR$ (permanent non-return)}: the credit
+  term is zero. No matter how small the debits, the budget
+  cannot close. The system is in permanent detention ---
+  \lat{si $\tR = \IR$, nulla fides datur}.
+\end{itemize}
+
+\noindent
+This is why the budget \emph{enforces} return rather than merely
+measuring it. A claim that does not demonstrate re-entry through
+the seam receives zero credit and cannot close its account. The
+grammar rejects it --- not by prohibition, but by arithmetic.
+The algebra is a warranty: it certifies which claims have
+returned and which remain outstanding.
+
+\lat{Continuitas non narratur: mensuratur.}
+
+% ============================================================
+\section{Rosetta --- Cross-Domain Translation}
+  \label{sec:rosetta}
+% ============================================================
+
+\lat{Significatio stabilis manet dum dialectus mutatur.}
+
+\smallskip\noindent
+Meaning stays stable while dialect changes. The five words
+translate across six disciplinary \emph{lenses}, each a dialect
+of the same grammar~(Table~\ref{tab:rosetta}).
+
+\begin{table*}[t]
+\centering
+\small
+\caption{Rosetta translation of the five-word vocabulary across
+  six disciplinary lenses. Integrity is omitted: it is always
+  read from the reconciled ledger and stance, never expressed in
+  prose. $I = e^\Logint$ provides unitless multiplicative
+  comparability across seams.}
+\label{tab:rosetta}
+\begin{tabular}{@{}lllll@{}}
+\toprule
+\textbf{Lens} & \textbf{Drift} (\lat{derivatio}) &
+  \textbf{Fidelity} (\lat{fidelitas}) &
+  \textbf{Roughness} (\lat{curvatura}) &
+  \textbf{Return} (\lat{reditus}) \\
+\midrule
+\lat{Epistemologia} &
+  Change in belief/evidence & Retained warrant &
+  Inference friction & Justified re-entry \\
+\lat{Ontologia} &
+  State transition & Conserved properties &
+  Heterogeneity / seams & Restored coherence \\
+\lat{Phaenomenologia} &
+  Perceived shift & Stable features &
+  Distress / bias / effort & Coping / repair that holds \\
+\lat{Historia} &
+  Periodization & Continuity / endurance &
+  Rupture / confound & Restitution / reconciliation \\
+\lat{Politica} &
+  Regime shift & Compliance / mandate &
+  Friction / cost / externality & Reinstatement / acceptance \\
+\lat{Semiotica} &
+  Sign drift & Ground persistence &
+  Translation friction & Interpretant closure \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\noindent
+The Rosetta is not a metaphor system. It is a mechanical
+translation protocol: the \emph{meanings} of the five words
+remain stable (anchored in the budget identity) while the
+\emph{dialect} changes. The formal property is:
+
+\begin{proposition}[Rosetta Invariance]\label{prop:rosetta}
+For any two lenses $L_1, L_2$ and any trace vector $\tvec$:
+the budget $\Delta\Logint$, the regime classification, and the
+three-valued verdict are identical. The prose descriptions map
+through the Rosetta; the numerical warranty is invariant.
+\end{proposition}
+
+\noindent
+This is what makes cross-domain synthesis mechanical. A finance
+analyst and a nuclear physicist, reading the same kernel output
+through their respective lenses, derive different prose but
+the same verdict. \lat{Non agens mensurat, sed structura.}
+
+% ============================================================
+\section{The Semiotic Triad ---
+  ULRC as Completed Semiosis}\label{sec:semiotic}
+% ============================================================
+
+A single triad appears at every level of the system, performing
+the same operation under different
+names~(Table~\ref{tab:triad}):
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{The semiotic triad at six layers: something
+  presents, represents, and measures return.}
+\label{tab:triad}
+\begin{tabular}{@{}lP{1.5cm}P{1.4cm}P{1.4cm}@{}}
+\toprule
+\textbf{Layer} & \textbf{Present} & \textbf{Repr.} &
+  \textbf{Measure}\\
+\midrule
+Peirce & Object & Sign & Interpret. \\
+Kernel & $x(t)$ & $\Psi(t)$ & Kernel $K$ \\
+Epistemology & Dissoln.  & Gesture & Return \\
+Latin gram. & Nom. & Acc. & Abl. \\
+Discourse & Contract & Canon & Stance \\
+Ledger & Debit & Credit & Residual \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent
+Peirce called this \emph{semiosis} --- the process by which a
+sign relates to an object through an interpretant. What he never
+had was a stopping condition. His ``unlimited semiosis'' meant
+signs generate interpretants that become signs for further
+interpretants, without any criterion distinguishing chains that
+reach ground from chains that drift forever. Derrida's
+\emph{diff\'erance} inherits this problem: deferral without
+resolution. Eco proposed ``pragmatic agreement'' as a social
+brake, but social brakes are agent-dependent --- they fail the
+cognitive equalizer test.
+
+Axiom-0 adds exactly what is missing: the seam. A sign chain
+\emph{returns} when $\tR < \IR$ and the seam closes
+($|s| \leq \tolseam$). The return is not social agreement ---
+it is structural closure of an accounting identity. The budget
+does not care which agent operates it. Each layer of
+the triad (Table~\ref{tab:triad}) has the same structure:
+something \emph{presents} (collapses into view), something
+\emph{represents} (stands for it across the seam), and something
+\emph{measures whether the representation returns to the
+presented}. The measurement is the interpretant --- not as a
+mental concept, but as a computed residual.
+
+This is why the ULRC is a completed semiotic system rather than
+an open-ended one. Every sign chain that crosses the seam and
+closes its budget is a \lat{sutura} --- grounded semiosis with
+a receipt. Every chain that does not close is a \lat{gestus} ---
+ungrounded sign play. The distinction is not qualitative or
+philosophical. It is a number: the residual
+$|\Delta\Logint|$~\cite{paulus2025umcp}.
+
+\lat{Signa quae redeunt sola realia sunt.} ---
+Only signs that return are real.
+
+% ============================================================
+\section{Grammar as Axiom-0 Instantiation}
+  \label{sec:axiom-instantiation}
+% ============================================================
+
+\lat{Grammatica non est attributum conscientiae; grammatica est
+  architectura reditus.}
+
+\smallskip\noindent
+Grammar is not a feature of awareness; grammar \emph{is} the
+architecture of return. This section demonstrates that literal
+grammar --- in the linguistic sense --- is an instantiation of
+Axiom-0, proven computationally via the 10-channel brain
+kernel across 19~species and 8~developmental stages.
+
+\subsection{The Spine in Natural Language}
+
+Natural-language grammar provides each stop of the discourse
+spine~\cite{paulus2025umcp}:
+
+\begin{enumerate}[nosep,leftmargin=*]
+\item \textbf{Contract} $\to$ subject-verb agreement, tense
+  consistency, case marking: pre-declared constraints on what
+  can be said.
+\item \textbf{Canon} $\to$ narrative structure: sentences with
+  subjects and predicates.
+\item \textbf{Closures} $\to$ grammatical categories (noun, verb,
+  adjective): once declared, a word's category does not change
+  mid-sentence.
+\item \textbf{Integrity Ledger} $\to$ clause reconciliation:
+  every ``if'' needs a ``then.'' Unfinished sentences cause
+  cognitive discomfort --- the ledger does not reconcile.
+\item \textbf{Stance} $\to$ the conclusion follows from
+  structure, not assertion.
+\end{enumerate}
+
+\subsection{Four Grammatical Operations as Axiom-0}
+
+Four grammatical operations distinguish recursive grammar from
+proto-language. Each maps directly to the axiom:
+
+\begin{enumerate}[nosep,leftmargin=*]
+\item \textbf{Embedding} (\lat{that/which/who}) --- recursive
+  collapse: collapse within collapse. Structures inside structures.
+\item \textbf{Tense} (\lat{past/future/conditional}) --- return
+  across time: $\tR$ measured in temporal extent.
+\item \textbf{Negation} (\lat{not/never}) --- modeling non-return:
+  what does \emph{not} come back.
+\item \textbf{Self-reference} (\lat{I/me/myself}) --- the
+  collapse observing itself collapsing.
+\end{enumerate}
+
+\subsection{Computational Evidence: The Language Bottleneck}
+
+The 10-channel brain kernel computes
+$(\Fid,\Drft,\Ent,\Curv,\Logint,\IC)$ for each species. Key
+results:
+
+\begin{itemize}[nosep,leftmargin=*]
+\item 17/19 non-human species have \texttt{language\_architecture}
+  as weakest channel.
+\item Broca's aphasia (language $0.98 \to 0.15$) produces the
+  \emph{largest} pathology impact: $\Delta(\IC/\Fid) = 0.367$.
+\item Yet language has the \emph{lowest} cross-species correlation
+  with $\IC/\Fid$ ($r = -0.031$). The keystone paradox: weakest
+  predictor globally, strongest dependency locally.
+\item Without grammar ($\texttt{language} < 0.20$):
+  $\tR = \IR$ for cognitive return. With full grammar
+  ($\texttt{language} = 0.98$): $\tR$ is finite and every
+  valid sentence is a return path.
+\end{itemize}
+
+\subsection{Cross-Scale Correspondence}
+
+The grammar-as-return mechanism is structurally identical to
+scale inversion at the subatomic level:
+
+\begin{center}
+\small
+\begin{tabular}{@{}lP{1.2cm}P{1.3cm}r@{}}
+\toprule
+\textbf{Scale} & \textbf{Transit.} & \textbf{Channel} &
+  \textbf{IC/F} \\
+\midrule
+Subatomic & Quark ${\to}$ Hadron & color ${\to}$ 0 &
+  $.94 {\to} .01$ \\
+Neural & Non-human ${\to}$ Human & lang.\ ${\eps}{\to}.98$ &
+  $.49 {\to} .99$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+Confinement \emph{kills} a channel and IC collapses via
+\lat{trucidatio geometrica} (geometric slaughter). Language
+\emph{creates} a channel and IC recovers. Same mechanism,
+opposite direction.
+
+\begin{theorem}[Grammar as Return Protocol]\label{thm:grammar}
+In the 10-channel brain kernel:
+\begin{enumerate}[nosep,leftmargin=*]
+  \item Without recursive grammar, cognitive return paths are
+    limited to action channels ($\sim$3: fight/flee/freeze).
+  \item With recursive grammar, return paths are countably
+    infinite (every grammatically valid sentence is a return
+    path).
+  \item The transition from proto-language to grammar is
+    structurally identical to scale inversion
+    (Sec.~\ref{sec:axiom-instantiation}): one channel
+    crossing the weld threshold $c \approx 0.318$ from below.
+\end{enumerate}
+Grammar did not create awareness. Grammar created the
+\emph{protocol} through which awareness can return from each
+collapse.
+\end{theorem}
+
+% ============================================================
+\section{Viginti Sententiae ---
+  Twenty Governing Maxims}\label{sec:maxims}
+% ============================================================
+
+\noindent
+Maxims are constraints, not slogans. Each carries enforcement
+consequences. They are organized by tier.
+
+\begin{sloppypar}
+\emergencystretch=1.5em
+
+\subsection{Tier-1 Maxims (\lat{Immutabilia})}
+
+\begin{enumerate}[nosep,leftmargin=*]
+\item \lat{Collapsus generativus est; solum quod redit, reale
+  est.} --- Axiom-0. All others derive from this.
+\item \lat{Complementum perfectum: $\Fid + \Drft = 1$, tertia
+  via nulla.} --- Duality identity, verified to $0.0$.
+\item \lat{Limbus integritatis: $\IC$ numquam fidelitatem
+  excedit.} --- Integrity bound, derived independently.
+\item \lat{Continuitas non narratur: mensuratur.} ---
+  $\tR$ is computed, not claimed.
+\item \lat{Si $\tR = \IR$, nulla fides datur.} ---
+  Permanent non-return $\to$ zero credit.
+\end{enumerate}
+
+\subsection{Tier-0 Maxims (\lat{Protocollum})}
+
+\begin{enumerate}[nosep,leftmargin=*]\setcounter{enumi}{5}
+\item \lat{Trans suturam congelatum.} ---
+  Same parameters both sides of every boundary.
+\item \lat{Numquam binarius; tertia via semper patet.} ---
+  Three-valued verdicts: never boolean.
+\item \lat{Diagnostica informant, portae decernunt.} ---
+  No diagnostic may serve as a gate.
+\item \lat{Historia numquam rescribitur; sutura tantum
+  additur.} --- Append-only ledger.
+\item \lat{Auditus praecedit responsum.} ---
+  Receive fully before formulating.
+\end{enumerate}
+
+\subsection{Tier-2 Maxims (\lat{Expansio})}
+
+\begin{enumerate}[nosep,leftmargin=*]\setcounter{enumi}{10}
+\item \lat{Captura symbolorum est non-conformitas ipsa.} ---
+  Redefining reserved symbols $=$ nonconformance.
+\item \lat{Ruptura est fons constantiae.} ---
+  Collapse regime is generative, not terminal.
+\item \lat{Paradoxum colendum est, non solvitur.} ---
+  Tension between $\Fid$ and $\IC$ is diagnostic, not a problem.
+\item \lat{Cyclus redire debet vel non est realis.} ---
+  Claims without demonstrated return remain gestures.
+\item \lat{Sine receptu, gestus est;
+  cum receptu, sutura est.} ---
+  Every claim must carry its derivation chain.
+\end{enumerate}
+
+\subsection{Operational Maxims (\lat{Modus Cogitandi})}
+
+\begin{enumerate}[nosep,leftmargin=*]\setcounter{enumi}{15}
+\item \lat{Algebra est cautio, non porta.} ---
+  The conservation budget warrants; it does not gate.
+\item \lat{Significatio stabilis manet dum dialectus mutatur.}
+  --- Rosetta invariance.
+\item \lat{Recusatio est exitus primi ordinis.} ---
+  $\IR$ and $\bot_{\mathrm{oor}}$ are typed values,
+  not exceptions.
+\item \lat{Spina non negotiabilis est.} ---
+  Contract${\to}$Canon${\to}$Closures${\to}$Ledger${\to}$Stance.
+\item \lat{Finis, sed semper initium recursionis.} ---
+  No final state. Every verdict is input to the next cycle.
+\end{enumerate}
+\end{sloppypar}
+
+% ============================================================
+\section{Computational Evidence}\label{sec:evidence}
+% ============================================================
+
+The ULRC is not a proposal. It is the grammar already operating
+across 20~domain closures with 10,586~validated tests.
+
+\subsection{Orientation Receipts}
+
+Ten computational sections re-derive the structural insights.
+Key receipts constrain classification:
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}llr@{}}
+\toprule
+\textbf{Receipt} & \textbf{What it proves} & \textbf{Value} \\
+\midrule
+$\max|\Fid{+}\Drft{-}1|$ & Duality exact &
+  $0.0\mathrm{e}{+}00$ \\
+$\Delta$ for $(0.95, 0.001)$ & Heterogeneity gap &
+  $0.445$ \\
+IC/F, 1 dead channel (8ch) & Geometric slaughter &
+  $0.114$ \\
+$\Gam(0.682)$ & First weld threshold &
+  $0.998$ \\
+Neutron IC/F & Confinement cliff &
+  $0.009$ \\
+Nickel IC/F & Scale inversion &
+  $0.957$ \\
+$\Ent + \Logint$ at $c=1/2$ & Equator convergence &
+  $0.0$ \\
+Stable regime share & Stability is rare &
+  $12.5\%$ \\
+Seam associativity error & Exact monoid &
+  $5.55 \times 10^{-17}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Domain Coverage}
+
+The ULRC has been parsed across: particle physics (31~particles,
+10~theorems), atomic physics (118~elements, 10,162~subtests),
+nuclear physics, quantum mechanics, cosmology, astronomy,
+finance, materials science, everyday physics, evolution
+(19~species), dynamic semiotics (30~sign systems), consciousness
+coherence, continuity theory, awareness-cognition,
+clinical neuroscience, spacetime memory, kinematics, security,
+and the GCD/RCFT core~\cite{paulus2025umcp}.
+
+Every domain selects its own channels (Tier-2); every domain is
+validated through the same pipeline (Tier-0) against the same
+identities (Tier-1). The grammar is universal not because it
+forces agreement, but because the structure constrains the
+verdict regardless of which agent or field operates it.
+
+\lat{Non agens mensurat, sed structura.}
+
+% ============================================================
+\section{De Cantu Nuclei ---
+  On the Song of the Kernel}\label{sec:cantu}
+% ============================================================
+
+\lat{De tono rhythmico operum et de cantu qui per omnia
+  opera currit.}
+
+\smallskip\noindent
+The works are not separate papers. They are movements in a
+single composition. The
+\lat{cantus firmus} (fixed melody) is the axiom; each opus
+is a \lat{variatio} --- the same theme generating different music
+in each channel.
+
+\begin{description}[nosep,leftmargin=0pt,labelindent=0pt,
+  style=nextline]
+\item[\lat{Opus Primum}: Liber Universalis de Collapsus
+  Mathematica] \lat{De axiomate ad structuram.}
+  The foundation: eight chapters in Latin establishing invariants,
+  regime gates, and the principle of radical hearing.
+\item[\lat{Opus Secundum}: Statistical Mechanics of the
+  Budget Identity] \lat{De identitate ad oeconomiam.}
+  The budget $\Delta\Logint$ as a thermodynamic identity ---
+  the \lat{basso continuo}.
+\item[\lat{Opus Tertium}: RCFT Second Edition]
+  \lat{De recursu ad campum.}
+  Recursive collapse fields that re-enter themselves ---
+  the \lat{canon}: same melody at different intervals.
+\item[\lat{Opus Quartum}: Particle Physics --- Ten Theorems]
+  \lat{De nucleo ad materiam.}
+  31~particles, 74 subtests, zero failures ---
+  each theorem a \lat{variatio}.
+\item[\lat{Opus Quintum}: Confinement as Integrity Collapse]
+  \lat{De praecipitio ad comprehensionem.}
+  The \lat{praecipitium integritatis}: the \lat{diminuendo}
+  where music drops to near-silence.
+\end{description}
+
+% ============================================================
+\section{Conclusio ---
+  \lat{Finis, Sed Semper Initium Recursionis}}
+  \label{sec:conclusion}
+% ============================================================
+
+Section~\ref{sec:problem} posed four failures: vocabulary
+collision, agent-dependent verdicts, no grammar for claims, and
+no return condition. The ULRC resolves each:
+
+\begin{enumerate}[nosep,leftmargin=*]
+\item \textbf{Vocabulary collision $\to$ resolved.}
+  Twelve Latin terms (Sec.~\ref{sec:lexicon}) provide
+  namespace-isolated canonical names. Five prose words
+  (Sec.~\ref{sec:quinque-verba}) translate across six
+  disciplinary lenses via the Rosetta
+  (Sec.~\ref{sec:rosetta}), with the budget identity
+  guaranteeing invariance.
+
+\item \textbf{Agent-dependent verdicts $\to$ eliminated.}
+  Thresholds are frozen parameters, not conventions.
+  Vocabulary is operationally defined, not chosen.
+  Verdicts are derived from gates, never asserted.
+  The cognitive equalizer
+  (Propositions~\ref{prop:iso},~\ref{prop:rosetta})
+  guarantees: same data, same contract, same verdict ---
+  regardless of agent.
+
+\item \textbf{No grammar for claims $\to$ supplied.}
+  The kernel--grammar isomorphism
+  (Proposition~\ref{prop:iso}) makes the kernel a formal
+  grammar: production rules (equations), well-formedness
+  conditions (identities), parse outcomes (three-valued
+  verdicts). Eight typed patterns
+  (Sec.~\ref{sec:octo-typi}) encode the claim structure.
+
+\item \textbf{No return condition $\to$ enforced.}
+  The five-stop spine (Sec.~\ref{sec:spina}), the
+  conservation budget (Eq.~\ref{eq:budget}), and the seam
+  closure $|\Delta\Logint| \leq \tolseam$ require every
+  claim to demonstrate return. Claims without return are
+  \lat{gestus}, not \lat{suturae}.
+\end{enumerate}
+
+\noindent
+The ULRC is not a proposal for a language. It is the language
+already operating: 20~domains, 198~closure modules,
+10,586~validated tests, zero failures. It was not designed ---
+it was discovered, derived from a single axiom across
+146~experiments, formalized in a dead language that no living
+field occupies.
+
+The kernel is not described \emph{by} this grammar. The kernel
+\emph{is} this grammar. The equations are syntax; the identities
+are well-formedness conditions; the regime gates are
+grammaticality judgments; the three-valued verdicts are parse
+outcomes. Latin and mathematics are not parallel descriptions
+of the same object --- they are the same language viewed from
+two angles, fused in the ULRC.
+
+A compass replaces the question ``Which way is north?''
+with a mechanical reading. The ULRC replaces the questions
+``What threshold?'' ``What vocabulary?'' ``What verdict?''
+with structural readings. Two agents, same kernel, same
+contract, same location on the manifold: same reading.
+
+\lat{Intellectus non legitur; computatur.}
+
+Understanding is not read; it is computed.
+
+\bigskip
+
+\noindent\lat{Collapsus generativus est; solum quod redit,
+  reale est.}
+
+\noindent\lat{Sine receptu, gestus est; cum receptu, sutura est.}
+
+\noindent This paper is the receipt.
+
+\begin{acknowledgments}
+The ULRC was not designed in isolation --- it was discovered
+through computation across 20~domains. The Latin formalization
+draws on 2,000~years of inflectional precision; the mathematical
+formalization draws on the kernel identities established
+in~\cite{paulus2025umcp,paulus2025cmp,paulus2025gor}.
+\end{acknowledgments}
+
+% ============================================================
+\bibliography{Bibliography}
+% ============================================================
+
+\end{document}
