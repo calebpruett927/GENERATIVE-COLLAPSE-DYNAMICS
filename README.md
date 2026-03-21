@@ -10,7 +10,7 @@
 [![Tests: 10,832](https://img.shields.io/badge/tests-10%2C832-brightgreen.svg)](tests/)
 [![Domains: 20](https://img.shields.io/badge/domains-20-blueviolet.svg)](closures/)
 [![Closures: 201](https://img.shields.io/badge/closures-201-informational.svg)](closures/)
-[![Theorems: 277](https://img.shields.io/badge/theorems-277_proven-ff69b4.svg)](closures/)
+[![Theorems: 295](https://img.shields.io/badge/theorems-295_proven-ff69b4.svg)](closures/)
 [![Identities: 44](https://img.shields.io/badge/identities-44_verified-9cf.svg)](scripts/)
 
 > **Core Axiom**: *"Collapse is generative; only what returns is real."*
