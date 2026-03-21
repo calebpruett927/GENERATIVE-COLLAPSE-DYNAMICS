@@ -1,7 +1,7 @@
 #
 # UMCP runnable + publication-grade repo configuration.
 # - build system (setuptools)
-# - project metadata
+# - project metadatarun
 # - runtime deps (minimal)
 # - dev/test deps
 # - pytest config
