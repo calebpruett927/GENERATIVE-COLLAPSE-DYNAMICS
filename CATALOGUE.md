@@ -91,8 +91,11 @@ This document is the **single authoritative index** of every named symbol, const
     - [3.16 Weyl Cosmology](#316-weyl-cosmology)
     - [3.17 Materials Science](#317-materials-science)
     - [3.18 Continuity Theory](#318-continuity-theory)
+      - [Budget Geometry Theorems (T-BG-1 through T-BG-6)](#budget-geometry-theorems-t-bg-1-through-t-bg-6)
     - [3.19 Clinical Neuroscience](#319-clinical-neuroscience)
     - [3.20 Spacetime Memory](#320-spacetime-memory)
+      - [Gravitational Phenomena Theorems (T-GP-1 through T-GP-6)](#gravitational-phenomena-theorems-t-gp-1-through-t-gp-6)
+      - [Temporal Topology Theorems (T-TT-1 through T-TT-6)](#temporal-topology-theorems-t-tt-1-through-t-tt-6)
   - [Cross-References](#cross-references)
     - [4.1 Lineage Chains](#41-lineage-chains)
     - [4.2 Cross-Tier Dependencies](#42-cross-tier-dependencies)
@@ -1222,6 +1225,23 @@ Cosmological transfer functions. Classes: `LimberRegime`, `GGLResult`, `WeylRegi
 
 Butzbach scalar continuity coefficient embedded as degenerate kernel case. Demonstrates what the kernel cannot detect without channel decomposition. Classes: `ProtocolDeclaration`, `ContinuityTrial`. Foundational/comparative role.
 
+#### Budget Geometry Theorems (T-BG-1 through T-BG-6)
+
+**Entities**: 12 budget surface locations · **Channels (8)**: budget surface geometry channels
+
+| Tag | ID | Name |
+|-----|-----|------|
+| `T2-BG-1` | T-BG-1 | Flat Plain Highest F |
+| `T2-BG-2` | T-BG-2 | Gaussian Flatness Universal |
+| `T2-BG-3` | T-BG-3 | F Monotonic Flat→Ramp→Wall |
+| `T2-BG-4` | T-BG-4 | Equator Max Agent Balance |
+| `T2-BG-5` | T-BG-5 | Pole/Singularity Max ω |
+| `T2-BG-6` | T-BG-6 | Gap Monotonic by Terrain |
+
+**Source**: `closures/continuity_theory/budget_geometry.py`
+**Lineage**: AXIOM-0 → frozen_contract → kernel_optimized → budget_geometry
+**Key insight**: Flat plain entities have highest F — gentle slope preserves coherence; heterogeneity gap increases from flat_plain to wall — divergent geometry at high ω
+
 ---
 
 ### 3.19 Clinical Neuroscience
@@ -1279,6 +1299,40 @@ Butzbach scalar continuity coefficient embedded as degenerate kernel case. Demon
 **Source**: `closures/spacetime_memory/spacetime_kernel.py`, `closures/spacetime_memory/spacetime_theorems.py`
 **Lineage**: AXIOM-0 → frozen_contract → kernel_optimized → spacetime_kernel → spacetime_theorems
 **Key insight**: GR translation — mass as accumulated |κ|, curvature as budget surface geometry, geodesic as least-budget path, event horizon as ω=1 pole
+
+#### Gravitational Phenomena Theorems (T-GP-1 through T-GP-6)
+
+**Entities**: 12 gravitational systems · **Channels (8)**: gravitational phenomena channels
+
+| Tag | ID | Name |
+|-----|-----|------|
+| `T2-GP-1` | T-GP-1 | Strong Field Highest ω |
+| `T2-GP-2` | T-GP-2 | κ Always Negative |
+| `T2-GP-3` | T-GP-3 | Weak Field Highest F |
+| `T2-GP-4` | T-GP-4 | Event Horizon Lowest IC |
+| `T2-GP-5` | T-GP-5 | Lensing Uniformity→Gap |
+| `T2-GP-6` | T-GP-6 | Range Coverage Universal |
+
+**Source**: `closures/spacetime_memory/gravitational_phenomena.py`
+**Lineage**: AXIOM-0 → frozen_contract → kernel_optimized → gravitational_phenomena
+**Key insight**: Strong field entities have highest ω — extreme gravity approaches budget pole; κ < 0 universally — gravity is always attractive
+
+#### Temporal Topology Theorems (T-TT-1 through T-TT-6)
+
+**Entities**: 12 collapse-return circulations · **Channels (8)**: temporal topology channels
+
+| Tag | ID | Name |
+|-----|-----|------|
+| `T2-TT-1` | T-TT-1 | Arrow of Time Asymmetry |
+| `T2-TT-2` | T-TT-2 | Near-Horizon Max ω |
+| `T2-TT-3` | T-TT-3 | Stagnation Highest F |
+| `T2-TT-4` | T-TT-4 | Descent F Monotonic |
+| `T2-TT-5` | T-TT-5 | Equatorial Max Proximity |
+| `T2-TT-6` | T-TT-6 | All Loops Nonzero |
+
+**Source**: `closures/spacetime_memory/temporal_topology.py`
+**Lineage**: AXIOM-0 → frozen_contract → kernel_optimized → temporal_topology
+**Key insight**: Descent coherence exceeds ascent coherence — arrow of time is structural; all entities have nonzero loop completeness — time is cyclic, not linear
 
 ---
 
@@ -1362,14 +1416,14 @@ Def-11               →   T0-SeamAccum               →   T2-ST-9 (Intrinsic f
 | | |
 | **Tier-2** | |
 | Domain closures | 20 |
-| Closure source files | ~137 |
-| Named theorems (T-XX-N format) | 153 |
+| Closure source files | ~140 |
+| Named theorems (T-XX-N format) | 171 |
 | Distinct trace vector specs | 17 |
 | Total channels across specs | ~143 |
 | Entity catalogs | 10 (≈565 entities total) |
-| **Tier-2 total** | **~327** |
+| **Tier-2 total** | **~348** |
 | | |
-| **GRAND TOTAL** | **~598 tagged objects** |
+| **GRAND TOTAL** | **~619 tagged objects** |
 
 ---
 

@@ -954,6 +954,26 @@ registry:
           epsilon: 1.0e-8
           n_channels: 8
           n_systems: 20
+      - name: "budget_geometry"
+        path: "closures/continuity_theory/budget_geometry.py"
+        description: "Budget geometry closure: 12 entities × 8 channels. Formalizes the budget surface z = Γ(ω) + αC as the arena of return: rank-3 invariance, developable horn (K = 0), three agents, metric singularity at ω → 1, and extrinsic curvature peak. 6 theorems (T-BG-1 through T-BG-6)."
+        contract: "UMA.INTSTACK.v1"
+        inputs: ["budget_surface_profiles"]
+        outputs: ["F", "omega", "S", "C", "kappa", "IC", "regime"]
+        channels:
+          - "slope_gentleness"
+          - "surface_traversability"
+          - "curvature_moderation"
+          - "metric_regularity"
+          - "return_accessibility"
+          - "gaussian_flatness"
+          - "agent_balance"
+          - "developability"
+        frozen_params:
+          epsilon: 1.0e-8
+          n_channels: 8
+          n_entities: 12
+          n_theorems: 6
 
     consciousness_coherence:
       - name: "coherence_kernel"
@@ -1012,6 +1032,46 @@ registry:
           - "scripts/budget_surface_geometry.py"
           - "scripts/unified_geometry.py"
           - "src/umcp/kernel_optimized.py"
+      - name: "gravitational_phenomena"
+        path: "closures/spacetime_memory/gravitational_phenomena.py"
+        description: "Gravitational phenomena closure: 12 entities × 8 channels. Formalizes gravity as budget gradient, always-attractive κ, cubic suppression, time dilation, tidal forces, infinite range, and gravitational lensing. 6 theorems (T-GP-1 through T-GP-6)."
+        contract: "UMA.INTSTACK.v1"
+        inputs: ["gravitational_system_profiles"]
+        outputs: ["F", "omega", "S", "C", "kappa", "IC", "regime"]
+        channels:
+          - "structural_persistence"
+          - "temporal_coherence"
+          - "spatial_regularity"
+          - "tidal_tolerance"
+          - "information_escape"
+          - "measurement_access"
+          - "geometric_uniformity"
+          - "range_coverage"
+        frozen_params:
+          epsilon: 1.0e-8
+          n_channels: 8
+          n_entities: 12
+          n_theorems: 6
+      - name: "temporal_topology"
+        path: "closures/spacetime_memory/temporal_topology.py"
+        description: "Temporal topology closure: 12 entities × 8 channels. Formalizes time as poloidal circulation on a torus (Dungey cycle), asymmetric descent/ascent (arrow of time), winding numbers, toroidal drift, and vortex structure. 6 theorems (T-TT-1 through T-TT-6)."
+        contract: "UMA.INTSTACK.v1"
+        inputs: ["temporal_circulation_profiles"]
+        outputs: ["F", "omega", "S", "C", "kappa", "IC", "regime"]
+        channels:
+          - "loop_completeness"
+          - "descent_coherence"
+          - "ascent_coherence"
+          - "cost_awareness"
+          - "cycle_regularity"
+          - "drift_stability"
+          - "equator_proximity"
+          - "poloidal_closure"
+        frozen_params:
+          epsilon: 1.0e-8
+          n_channels: 8
+          n_entities: 12
+          n_theorems: 6
 
     clinical_neuroscience:
       - name: "neurocognitive_kernel"
@@ -1181,8 +1241,8 @@ extensions:
     continuity_theory:
       archetype: kernel-centric
       channels: 8
-      entities: 32
-      theorems: 18
+      entities: 44
+      theorems: 24
       tier1_bootstrap: true
       theorem_prefix: "CT"
     awareness_cognition:
@@ -1210,8 +1270,8 @@ extensions:
     spacetime_memory:
       archetype: kernel-centric
       channels: 8
-      entities: 52
-      theorems: 16
+      entities: 76
+      theorems: 28
       tier1_bootstrap: false
       theorem_prefix: "TST"
       note: "Backward-compatible aliases retained for prove_theorem_TST* names"

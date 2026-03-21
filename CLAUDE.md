@@ -109,7 +109,7 @@ Key files: `src/umcp/frozen_contract.py` (constants), `src/umcp/kernel_optimized
 (epistemology), `src/umcp/seam_optimized.py` (seam budget).
 
 **Lookup any symbol, lemma, identity, theorem, or tag**: `CATALOGUE.md` — the
-master index of all ~598 formal objects organized by tier with full definitions
+master index of all ~616 formal objects organized by tier with full definitions
 and lineage chains. Consult this FIRST when encountering unfamiliar terms.
 
 ## Terminology
@@ -156,7 +156,7 @@ Full specification: `.github/copilot-instructions.md`
 Key references: `scripts/orientation.py` (re-derivation),
 `MANIFESTUM_LATINUM.md` (Latin terms → computation chains),
 `SEMIOTIC_CONVERGENCE.md` (GCD as semiotic system, Peirce correspondence),
-`CATALOGUE.md` (master index — all ~598 tagged formal objects with tier + lineage)
+`CATALOGUE.md` (master index — all ~616 tagged formal objects with tier + lineage)
 
 ## The Spine (Instant Orientation)
 

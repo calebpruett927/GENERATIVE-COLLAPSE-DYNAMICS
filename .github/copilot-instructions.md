@@ -1,6 +1,6 @@
 # Copilot Instructions for GENERATIVE-COLLAPSE-DYNAMICS
 
-**UMCP v2.2.4** · **10,586 tests** · **20 domains** · **198 closure modules** · **46 lemmas** · **44 structural identities** · **46 dashboard pages**
+**UMCP v2.2.4** · **10,832 tests** · **20 domains** · **201 closure modules** · **46 lemmas** · **44 structural identities** · **46 dashboard pages**
 
 ## Foundational Principle — Read This First
 
@@ -10,7 +10,7 @@
 
 This is not a metaphor. It is a constraint on admissible claims. Every decision, description, comment, docstring, and code change in this repository must be consistent with this axiom. The Latin formulation is the primary seed — it carries the axiom's morphological, syntactic, and etymological layers simultaneously. If you are uncertain whether something aligns with AXIOM-0, defer to the operational definitions in `AXIOM.md` and the tier structure in `TIER_SYSTEM.md`.
 
-**When you encounter any symbol, lemma, identity, theorem, class, or concept you need to look up**: Consult `CATALOGUE.md` — the master index of all ~598 tagged formal objects in the repository, organized by tier, with full definitions and lineage chains. Every tag (e.g., `K-F`, `L-12`, `I-A2`, `T2-PP-3`) resolves to exactly one definition. This eliminates searching across files — the catalogue IS the lookup table.
+**When you encounter any symbol, lemma, identity, theorem, class, or concept you need to look up**: Consult `CATALOGUE.md` — the master index of all ~616 tagged formal objects in the repository, organized by tier, with full definitions and lineage chains. Every tag (e.g., `K-F`, `L-12`, `I-A2`, `T2-PP-3`) resolves to exactly one definition. This eliminates searching across files — the catalogue IS the lookup table.
 
 ### Lexicon Latinum (Generative Reference)
 
@@ -444,11 +444,11 @@ closures/
 ├── evolution/                # 40 organisms, 10-channel brain kernel, 20 species comparative neuroscience
 ├── dynamic_semiotics/        # 30 sign systems, 8-channel semiotic kernel, media coherence, computational semiotics
 ├── consciousness_coherence/  # 20 systems, coherence kernel, 7 theorems, altered states (15 states, 6 theorems), neural correlates
-├── continuity_theory/        # Continuity law closures, topological persistence (12 spaces, 6 theorems), organizational resilience
+├── continuity_theory/        # Continuity law closures, topological persistence (12 spaces, 6 theorems), organizational resilience, budget geometry (12 entities, 6 theorems)
 ├── awareness_cognition/      # 5+5 channel awareness-aptitude kernel, 10 theorems, attention mechanisms
 ├── standard_model/           # Subatomic kernel (31 particles), 27 proven theorems
 ├── clinical_neuroscience/    # 10-channel cortical kernel, neurotransmitter systems (15 entities, 6 theorems), developmental neuroscience
-└── spacetime_memory/         # 40 entities, budget-surface kernel, gravitational wave memory (12 entities, 6 theorems), cosmological memory
+└── spacetime_memory/         # 40 entities, budget-surface kernel, gravitational wave memory (12 entities, 6 theorems), cosmological memory, gravitational phenomena (12 entities, 6 theorems), temporal topology (12 entities, 6 theorems)
 ```
 
 **Standard Model closures** (`closures/standard_model/`):
@@ -559,7 +559,7 @@ All papers use RevTeX4-2 (`revtex4-2` document class) and share `Bibliography.bi
 
 ```bash
 pip install -e ".[all]"                     # Dev install (core + api + viz + dev tools)
-pytest                                       # 10,586 tests (pytest --collect-only | grep ":" | wc -l to verify)
+pytest                                       # 10,832 tests (pytest --collect-only | grep ":" | wc -l to verify)
 python scripts/update_integrity.py          # MUST run after changing any tracked file
 umcp validate .                             # Validate entire repo
 umcp validate casepacks/hello_world --strict # Validate casepack (strict = fail on warnings)
@@ -625,12 +625,12 @@ umcp validate <target>
 
 ## Test Patterns
 
-**10,586 test cases** across **150 test files** in `tests/` (149 top-level `test_*.py` + 1 in `tests/closures/` + `conftest.py`), numbered by tier and domain (`test_000_*` through `test_278_*`). Single `tests/conftest.py` provides:
+**10,832 test cases** across **153 test files** in `tests/` (152 top-level `test_*.py` + 1 in `tests/closures/` + `conftest.py`), numbered by tier and domain (`test_000_*` through `test_281_*`). Single `tests/conftest.py` provides:
 - Frozen `RepoPaths` dataclass (session-scoped) with all critical paths
 - `@lru_cache` helpers: `_read_file()`, `_parse_json()`, `_parse_yaml()`, `_compile_schema()`
 - Convention: `test_<subject>_<behavior>()` for functions; `TestCLI*` classes with `subprocess.run` for CLI integration
 - Additional coverage: `test_fleet_worker.py` (Worker, WorkerPool, WorkerConfig), `test_insights.py` (PatternDatabase, InsightEngine)
-- Parametrized tests expand the collected items to 10,586 (verify: `pytest --collect-only | grep "::" | wc -l`)
+- Parametrized tests expand the collected items to 10,832 (verify: `pytest --collect-only | grep "::" | wc -l`)
 
 ### Test Distribution by Range
 
@@ -696,9 +696,12 @@ umcp validate <target>
 | `test_276` | Organizational resilience (12 entities, 6 theorems T-OR-1–T-OR-6) | 82 |
 | `test_277` | Cosmological memory (12 entities, 6 theorems T-CM-1–T-CM-6) | 82 |
 | `test_278` | Developmental neuroscience (12 entities, 6 theorems T-DN-1–T-DN-6) | 82 |
+| `test_279` | Gravitational phenomena (spacetime memory, 12 entities, 6 theorems) | 82 |
+| `test_280` | Temporal topology (spacetime memory, 12 entities, 6 theorems) | 82 |
+| `test_281` | Budget geometry (continuity theory, 12 entities, 6 theorems) | 82 |
 | `closures/` | Closure-specific tests (kinematics phase) | 27 |
 | Infrastructure | Kernel, seam, frozen contract, extensions, uncertainty, calculator, coverage, etc. | 1,386 |
-| **TOTAL** | | **10,586** |
+| **TOTAL** | | **10,832** |
 
 ## Extension System
 

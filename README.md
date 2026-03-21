@@ -7,9 +7,9 @@
 [![C++17](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](src/umcp_cpp/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![UMCP v2.2.4](https://img.shields.io/badge/UMCP-v2.2.4-orange.svg)](pyproject.toml)
-[![Tests: 10,586](https://img.shields.io/badge/tests-10%2C586-brightgreen.svg)](tests/)
+[![Tests: 10,832](https://img.shields.io/badge/tests-10%2C832-brightgreen.svg)](tests/)
 [![Domains: 20](https://img.shields.io/badge/domains-20-blueviolet.svg)](closures/)
-[![Closures: 198](https://img.shields.io/badge/closures-198-informational.svg)](closures/)
+[![Closures: 201](https://img.shields.io/badge/closures-201-informational.svg)](closures/)
 [![Theorems: 277](https://img.shields.io/badge/theorems-277_proven-ff69b4.svg)](closures/)
 [![Identities: 44](https://img.shields.io/badge/identities-44_verified-9cf.svg)](scripts/)
 
@@ -19,7 +19,7 @@
 
 This is not a simulation. It is a **metrological enforcement engine**: schema conformance, kernel identity verification, regime classification, and SHA-256 integrity checking — producing a three-valued `CONFORMANT` / `NONCONFORMANT` / `NON_EVALUABLE` verdict for every run.
 
-**Python + C++ integration**: The framework is written in Python with **20 domains**, **198 closure modules**, **277 proven theorems**, and **10,586 tests**. An optional C++17 accelerator (`src/umcp_cpp/`) provides 50–80× speedup for three hot paths — kernel computation, seam chain accumulation, and SHA-256 integrity — via a pybind11 zero-copy NumPy bridge. The Python wrapper (`umcp.accel`) auto-detects the compiled extension at import time; if unavailable, every call falls back transparently to the equivalent NumPy implementation. Same formulas, same frozen parameters, same results to machine precision — the C++ layer is Tier-0 Protocol only and redefines no Tier-1 symbols.
+**Python + C++ integration**: The framework is written in Python with **20 domains**, **201 closure modules**, **295 proven theorems**, and **10,832 tests**. An optional C++17 accelerator (`src/umcp_cpp/`) provides 50–80× speedup for three hot paths — kernel computation, seam chain accumulation, and SHA-256 integrity — via a pybind11 zero-copy NumPy bridge. The Python wrapper (`umcp.accel`) auto-detects the compiled extension at import time; if unavailable, every call falls back transparently to the equivalent NumPy implementation. Same formulas, same frozen parameters, same results to machine precision — the C++ layer is Tier-0 Protocol only and redefines no Tier-1 symbols.
 
 ---
 
@@ -129,7 +129,7 @@ Every claim, measurement, validation, and narrative in UMCP follows exactly **fi
 
 ### The Three-Tier Stack
 
-Tier-1 (44 structural identities, 46 lemmas, 277 proven theorems) → Tier-0 (10,586 tests, 198 closure modules, C++17 accelerator) → Tier-2 (20 domains from particle physics to consciousness). One-way dependency. No back-edges within a frozen run.
+Tier-1 (44 structural identities, 46 lemmas, 295 proven theorems) → Tier-0 (10,832 tests, 201 closure modules, C++17 accelerator) → Tier-2 (20 domains from particle physics to consciousness). One-way dependency. No back-edges within a frozen run.
 
 <p align="center">
   <img src="images/10_tier_architecture.png" alt="Three-Tier Architecture: Tier-1 (Kernel) → Tier-0 (Protocol) → Tier-2 (Domains)" width="88%">
@@ -293,7 +293,7 @@ src/umcp_cpp/                   # Optional C++ accelerator (Tier-0 Protocol)
 
 ## Closure Domains
 
-UMCP validates across **20 domains** with **198 closure modules**, each encoding real-world measurements into the 8-channel kernel trace:
+UMCP validates across **20 domains** with **201 closure modules**, each encoding real-world measurements into the 8-channel kernel trace:
 
 ### Standard Model — 12 modules
 
@@ -453,12 +453,13 @@ Thermodynamics, optics, electromagnetism, wave phenomena, epistemic coherence, a
 
 **Key discoveries**: Awareness and aptitude anti-correlate across phylogeny (T-AW-1). Zero organisms reach Stable regime — universal instability (T-AW-2). Aptitude channels control IC for aware organisms via geometric slaughter (T-AW-3). Same kernel signature as SM confinement T3 — cross-domain isomorphism (T-AW-5). Human development trajectory: F peaks at adult, declines in elderly (T-AW-7).
 
-### Continuity Theory — 2 modules
+### Continuity Theory — 3 modules
 
 | Module | What It Encodes |
 |--------|----------------|
 | `butzbach_embedding.py` | Continuity law closures and Butzbach embedding |
 | `topological_persistence.py` | 12 topological spaces (sphere to Menger sponge), 6 theorems T-TP-1–T-TP-6 |
+| `budget_geometry.py` | 12 budget-geometric configurations, 6 theorems T-BG-1–T-BG-6 |
 
 ---
 
@@ -632,7 +633,7 @@ umcp validate casepacks/hello_world --strict
 ### Run the test suite
 
 ```bash
-pytest                            # All 10,586 tests
+pytest                            # All 10,832 tests
 pytest -v --tb=short            # Verbose with short tracebacks
 pytest -n auto                  # Parallel execution
 ```
@@ -814,7 +815,7 @@ umcp validate <target>
 The GitHub Actions workflow (`.github/workflows/validate.yml`) enforces:
 
 1. **Lint** — `ruff format --check` + `ruff check` + `mypy`
-2. **Test** — Full pytest suite (10,586 tests, 150 test files)
+2. **Test** — Full pytest suite (10,832 tests, 153 test files)
 3. **Validate** — Baseline + strict validation (both must return CONFORMANT)
 
 ### Pre-Commit Protocol
@@ -833,7 +834,7 @@ This mirrors CI exactly: format → lint → type-check → integrity → test �
 
 ## Test Suite
 
-**10,586 tests** across **150 test files**, organized by tier and domain:
+**10,832 tests** across **153 test files**, organized by tier and domain:
 
 | Test Range | Domain | Tests |
 |------------|--------|------:|
@@ -897,6 +898,9 @@ This mirrors CI exactly: format → lint → type-check → integrity → test �
 | `test_276` | Organizational resilience (12 entities, 6 theorems T-OR-1–T-OR-6) | 82 |
 | `test_277` | Cosmological memory (12 entities, 6 theorems T-CM-1–T-CM-6) | 82 |
 | `test_278` | Developmental neuroscience (12 entities, 6 theorems T-DN-1–T-DN-6) | 82 |
+| `test_279` | Gravitational phenomena (spacetime memory, 12 entities, 6 theorems) | 82 |
+| `test_280` | Temporal topology (spacetime memory, 12 entities, 6 theorems) | 82 |
+| `test_281` | Budget geometry (continuity theory, 12 entities, 6 theorems) | 82 |
 | `closures/` | Closure-specific tests (kinematics phase) | 27 |
 | Infrastructure | Kernel, seam, frozen contract, extensions, uncertainty, calculator, coverage, API, insights | 1,386 |
 
@@ -965,14 +969,14 @@ The framework is anchored by peer-reviewed Zenodo publications covering the core
 │   ├── consciousness_coherence/ # 20 systems, coherence kernel, 7 theorems, altered states, neural correlates
 │   ├── awareness_cognition/  # 34 organisms, 5+5 channels, 10 theorems, attention mechanisms
 │   ├── clinical_neuroscience/ # 10-channel cortical kernel, neurotransmitter systems, developmental neuroscience
-│   ├── spacetime_memory/      # 40 entities, budget-surface kernel, gravitational wave memory, cosmological memory
-│   ├── continuity_theory/     # Continuity law closures, topological persistence, organizational resilience
+│   ├── spacetime_memory/      # 40 entities, budget-surface kernel, gravitational wave memory, cosmological memory, gravitational phenomena, temporal topology
+│   ├── continuity_theory/     # Continuity law closures, topological persistence, organizational resilience, budget geometry
 │   └── finance/ & security/   # Applied domains
 ├── contracts/                 # 21 mathematical contracts (YAML)
 ├── schemas/                   # 17 JSON Schema files
 ├── canon/                     # 21 canonical anchor files
 ├── casepacks/                 # 28 reproducible validation bundles
-├── tests/                     # 150 test files, 10,586 tests
+├── tests/                     # 153 test files, 10,832 tests
 ├── paper/                     # 10 LaTeX papers + 2 Markdown papers + Bibliography.bib (159 entries)
 ├── integrity/                 # SHA-256 checksums
 ├── ledger/                    # Append-only validation log
