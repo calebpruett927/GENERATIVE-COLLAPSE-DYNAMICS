@@ -173,7 +173,7 @@ Rank is a property of the trace vector — measured, not chosen (*gradus non eli
 | **2** | 2 | Effective 2-channel structure | C = g(F, κ) determined | Special |
 | **3** | 3 | General heterogeneous (n ≥ 3) | F, κ, C mutually independent | Generic |
 
-Rank-1 ⊂ Rank-2 ⊂ Rank-3. Almost all real-world systems are rank-3. Full formalization: [KERNEL_SPECIFICATION.md](../KERNEL_SPECIFICATION.md) §4c (Definitions 16–19).
+Rank-1 ⊂ Rank-2 ⊂ Rank-3. Almost all real-world systems are rank-3. Full formalization: `KERNEL_SPECIFICATION.md` §4c (Definitions 16–19).
 
 **THREE REGIMES** (derived from gates, never asserted):
 

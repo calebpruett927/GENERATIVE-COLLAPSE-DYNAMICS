@@ -2187,35 +2187,23 @@ async def get_sm_particles(
     """
     _METRICS["kernel_computations"] += 1
     try:
-        import numpy as np
+        from closures.standard_model.subatomic_kernel import compute_all
 
-        from closures.standard_model.subatomic_kernel import (
-            COMPOSITE_PARTICLES,
-            PARTICLES,
-            build_trace,
-        )
-
-        from .kernel_optimized import OptimizedKernelComputer
-
-        kernel = OptimizedKernelComputer(epsilon=EPSILON)
+        all_results = compute_all()
         results = []
-        for name, pdata in {**PARTICLES, **COMPOSITE_PARTICLES}.items():
-            c, w = build_trace(pdata)
-            c_arr = np.clip(np.array(c), EPSILON, 1 - EPSILON)
-            w_arr = np.array(w)
-            out = kernel.compute(c_arr, w_arr)
+        for r in all_results:
             results.append(
                 {
-                    "name": name,
-                    "type": "fundamental" if name in PARTICLES else "composite",
-                    "mass_gev": pdata.get("mass_gev", pdata.get("mass_GeV")),
-                    "spin": pdata.get("spin"),
-                    "charge": pdata.get("charge"),
-                    "F": round(float(out.F), 6),
-                    "omega": round(float(out.omega), 6),
-                    "IC": round(float(out.IC), 6),
-                    "heterogeneity_gap": round(float(out.heterogeneity_gap), 6),
-                    "regime": out.regime,
+                    "name": r.name,
+                    "type": r.particle_type,
+                    "mass_gev": r.mass_GeV,
+                    "spin": r.spin,
+                    "charge": r.charge_e,
+                    "F": round(float(r.F), 6),
+                    "omega": round(float(r.omega), 6),
+                    "IC": round(float(r.IC), 6),
+                    "heterogeneity_gap": round(float(r.heterogeneity_gap), 6),
+                    "regime": r.regime,
                 }
             )
 
@@ -2348,32 +2336,23 @@ async def get_atomic_elements(
     properties. Tier-1 proof: 10,162 tests, 0 failures.
     """
     try:
-        import numpy as np
+        from closures.atomic_physics.periodic_kernel import batch_compute_all
 
-        from closures.atomic_physics.periodic_kernel import ELEMENT_DATA, build_element_trace
-
-        from .kernel_optimized import OptimizedKernelComputer
-
-        kernel = OptimizedKernelComputer(epsilon=EPSILON)
+        all_results = batch_compute_all()
         elements = []
-        for z in range(Z_min, min(Z_max + 1, 119)):
-            if z not in ELEMENT_DATA:
+        for r in all_results:
+            if not (Z_min <= r.Z <= Z_max):
                 continue
-            edata = ELEMENT_DATA[z]
-            c, w = build_element_trace(edata)
-            c_arr = np.clip(np.array(c), EPSILON, 1 - EPSILON)
-            w_arr = np.array(w)
-            out = kernel.compute(c_arr, w_arr)
             elements.append(
                 {
-                    "Z": z,
-                    "symbol": edata.get("symbol", f"E{z}"),
-                    "name": edata.get("name", f"Element {z}"),
-                    "F": round(float(out.F), 6),
-                    "omega": round(float(out.omega), 6),
-                    "IC": round(float(out.IC), 6),
-                    "heterogeneity_gap": round(float(out.heterogeneity_gap), 6),
-                    "regime": out.regime,
+                    "Z": r.Z,
+                    "symbol": r.symbol,
+                    "name": r.name,
+                    "F": round(float(r.F), 6),
+                    "omega": round(float(r.omega), 6),
+                    "IC": round(float(r.IC), 6),
+                    "heterogeneity_gap": round(float(r.heterogeneity_gap), 6),
+                    "regime": r.regime,
                 }
             )
 
@@ -2403,28 +2382,20 @@ async def get_evolution_organisms(
     measuring neural complexity, sensory range, learning capacity, etc.
     """
     try:
-        import numpy as np
+        from closures.evolution.evolution_kernel import compute_all_organisms
 
-        from closures.evolution.evolution_kernel import ORGANISMS, build_organism_trace
-
-        from .kernel_optimized import OptimizedKernelComputer
-
-        kernel = OptimizedKernelComputer(epsilon=EPSILON)
+        all_results = compute_all_organisms()
         results = []
-        for name, odata in ORGANISMS.items():
-            c, w = build_organism_trace(odata)
-            c_arr = np.clip(np.array(c), EPSILON, 1 - EPSILON)
-            w_arr = np.array(w)
-            out = kernel.compute(c_arr, w_arr)
+        for r in all_results:
             results.append(
                 {
-                    "name": name,
-                    "kingdom": odata.get("kingdom", "unknown"),
-                    "F": round(float(out.F), 6),
-                    "omega": round(float(out.omega), 6),
-                    "IC": round(float(out.IC), 6),
-                    "heterogeneity_gap": round(float(out.heterogeneity_gap), 6),
-                    "regime": out.regime,
+                    "name": r.name,
+                    "kingdom": r.kingdom,
+                    "F": round(float(r.F), 6),
+                    "omega": round(float(r.omega), 6),
+                    "IC": round(float(r.IC), 6),
+                    "heterogeneity_gap": round(float(r.heterogeneity_gap), 6),
+                    "regime": r.regime,
                 }
             )
 
@@ -3437,7 +3408,7 @@ async def list_canon_anchors(
         try:
             with open(yf) as f:
                 data = yaml_mod.safe_load(f)
-            if not data:
+            if not data or not isinstance(data, dict):
                 continue
             meta = data.get("metadata", data.get("canon", {}))
             results.append(
