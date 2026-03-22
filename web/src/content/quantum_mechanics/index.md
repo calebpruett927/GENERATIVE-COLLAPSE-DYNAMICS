@@ -67,14 +67,16 @@ icon: activity
 
 ### quantum_mechanics_complete
 
-- **Contract**: ``
+Comprehensive quantum mechanics casepack covering 6 subdomains: wavefunction collapse (Born rule), entanglement (Bell-CHSH), quantum tunneling, harmonic oscillator, spin measurement (Zeeman/Larmor), and Heisenberg uncertainty. Contains 30 experiments spanning the foundational pillars of QM, each mapped to UMCP invariants through the GCD framework. Wavefunction collapse is the literal archetype of Generative Collapse Dynamics.
+
+- **Contract**: `QM.INTSTACK.v1`
 - **Path**: `casepacks/quantum_mechanics_complete`
-- **Status**: unknown
+- **Status**: validated
 
 ## Validation Ledger Summary
 
-- **Total entries**: 9669
-- **CONFORMANT**: 9669
+- **Total entries**: 9670
+- **CONFORMANT**: 9670
 - **Conformance rate**: 100.0%
 
 ## The Spine

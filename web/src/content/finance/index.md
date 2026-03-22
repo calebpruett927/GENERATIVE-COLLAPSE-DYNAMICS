@@ -74,14 +74,16 @@ icon: trending-up
 
 ### finance_continuity
 
-- **Contract**: ``
+Validates month-over-month financial continuity using UMCP kernel invariants. Embeds revenue, expenses, margin, and cash flow as [0,1]^4 coordinates. Seam accounting certifies financial health returns through reporting collapse.
+
+- **Contract**: `FINANCE.INTSTACK.v1`
 - **Path**: `casepacks/finance_continuity`
-- **Status**: unknown
+- **Status**: validated
 
 ## Validation Ledger Summary
 
-- **Total entries**: 9669
-- **CONFORMANT**: 9669
+- **Total entries**: 9670
+- **CONFORMANT**: 9670
 - **Conformance rate**: 100.0%
 
 ## The Spine

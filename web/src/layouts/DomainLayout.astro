@@ -44,6 +44,13 @@ const regimeBadge = regimeColors[regime] || regimeColors['UNKNOWN'];
       <span>Domain: <code class="text-kernel-300">{domain}</code></span>
       <span>Lens: <code class="text-kernel-300">{lens}</code></span>
     </div>
+
+    <!-- Sub-page navigation -->
+    <nav class="flex gap-3 mt-5 pt-4 border-t border-kernel-800 text-sm">
+      <a href={`/${domain}/contract`} class="px-3 py-1 rounded bg-kernel-800 text-kernel-300 hover:bg-kernel-700 hover:text-kernel-100 transition-colors">Contract</a>
+      <a href={`/${domain}/theorems`} class="px-3 py-1 rounded bg-kernel-800 text-kernel-300 hover:bg-kernel-700 hover:text-kernel-100 transition-colors">Theorems</a>
+      <a href={`/${domain}/entities`} class="px-3 py-1 rounded bg-kernel-800 text-kernel-300 hover:bg-kernel-700 hover:text-kernel-100 transition-colors">Entities</a>
+    </nav>
   </div>
 
   <!-- Rendered markdown content -->

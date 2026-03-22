@@ -64,14 +64,16 @@ icon: telescope
 
 ### astronomy_complete
 
-- **Contract**: ``
+Comprehensive astronomy casepack covering 6 subdomains: stellar luminosity (Stefan-Boltzmann, mass-luminosity), spectral analysis (Wien, Planck, B-V calibration), distance ladder (parallax, distance modulus, Hubble flow), orbital mechanics (Kepler's third law), gravitational dynamics (virial theorem, rotation curves, dark matter), and stellar evolution (main-sequence lifetime, HR diagram classification). 28 objects spanning spectral types O through M, white dwarfs, giants, supergiants, planetary orbits, and galaxy-scale dynamics.
+
+- **Contract**: `ASTRO.INTSTACK.v1`
 - **Path**: `casepacks/astronomy_complete`
-- **Status**: unknown
+- **Status**: validated
 
 ## Validation Ledger Summary
 
-- **Total entries**: 9669
-- **CONFORMANT**: 9669
+- **Total entries**: 9670
+- **CONFORMANT**: 9670
 - **Conformance rate**: 100.0%
 
 ## The Spine

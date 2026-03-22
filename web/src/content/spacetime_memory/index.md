@@ -81,14 +81,16 @@ icon: orbit
 
 ### spacetime_memory_entities
 
-- **Contract**: ``
+Spacetime memory domain closure demonstrating GCD kernel applied to 3 entities spanning stellar, cognitive, and diffuse categories. 8-channel trace (coherence_persistence, cycle_return_rate, well_depth_norm, gradient_strength, tidal_symmetry, trajectory_closure, circulation_area, heterogeneity_profile) with equal weights. Neutron star (Watch — highest F in catalog, near-homogeneous channels), Healthy memory (Watch — cognitive cross-domain bridge), Intergalactic medium (deep Collapse — diffuse system with dead channels).
+
+- **Contract**: `ST.INTSTACK.v1`
 - **Path**: `casepacks/spacetime_memory_entities`
-- **Status**: unknown
+- **Status**: validated
 
 ## Validation Ledger Summary
 
-- **Total entries**: 9669
-- **CONFORMANT**: 9669
+- **Total entries**: 9670
+- **CONFORMANT**: 9670
 - **Conformance rate**: 100.0%
 
 ## The Spine

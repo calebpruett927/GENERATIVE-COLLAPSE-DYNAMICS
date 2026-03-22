@@ -27,13 +27,24 @@ from __future__ import annotations
 
 from umcp.hcg.builder import build_site
 from umcp.hcg.domain_config import DomainConfig, get_domain_config, list_domains
-from umcp.hcg.extractor import SiteData, extract_domain_data
+from umcp.hcg.extractor import (
+    EntityInfo,
+    SiteData,
+    TheoremInfo,
+    extract_domain_data,
+    scan_closure_entities,
+    scan_closure_theorems,
+)
 
 __all__ = [
     "DomainConfig",
+    "EntityInfo",
     "SiteData",
+    "TheoremInfo",
     "build_site",
     "extract_domain_data",
     "get_domain_config",
     "list_domains",
+    "scan_closure_entities",
+    "scan_closure_theorems",
 ]

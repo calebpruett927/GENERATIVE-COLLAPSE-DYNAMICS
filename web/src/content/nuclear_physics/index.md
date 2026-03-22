@@ -61,10 +61,20 @@ icon: zap
 - `shell_structure`
 - `trinity_blast_wave`
 
+## Casepacks
+
+### nuclear_chain
+
+Nuclear physics casepack covering 6 subdomains: nuclide binding (SEMF), alpha decay (Geiger-Nuttall), decay chains (U-238 series), fissility (Bohr-Wheeler), shell structure (magic numbers), and double-sided collapse (iron peak convergence). Contains 30 experiments spanning the periodic table from H-1 to Og-294, with the U-238 decay chain as paradigm case. All frozen choices per expert review: mean lifetime τ=T½/ln(2), Ni-62 peak at 8.7945 MeV/nucleon, Geiger-Nuttall scaling.
+
+- **Contract**: `NUC.INTSTACK.v1`
+- **Path**: `casepacks/nuclear_chain`
+- **Status**: validated
+
 ## Validation Ledger Summary
 
-- **Total entries**: 9669
-- **CONFORMANT**: 9669
+- **Total entries**: 9670
+- **CONFORMANT**: 9670
 - **Conformance rate**: 100.0%
 
 ## The Spine

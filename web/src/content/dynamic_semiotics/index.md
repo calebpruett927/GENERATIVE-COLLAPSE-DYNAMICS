@@ -58,10 +58,20 @@ icon: message-circle
 - `semiotic_kernel`
 - `semiotic_theorems`
 
+## Casepacks
+
+### semiotics_kernel
+
+Dynamic semiotics domain closure demonstrating GCD kernel applied to 3 sign systems. 8-channel semiotic trace with equal weights. Shows living language (Watch), dead language (Collapse from dead community channels), and formal notation (near-Stable, highest fidelity).
+
+- **Contract**: `SEM.INTSTACK.v1`
+- **Path**: `casepacks/semiotics_kernel`
+- **Status**: validated
+
 ## Validation Ledger Summary
 
-- **Total entries**: 9669
-- **CONFORMANT**: 9669
+- **Total entries**: 9670
+- **CONFORMANT**: 9670
 - **Conformance rate**: 100.0%
 
 ## The Spine

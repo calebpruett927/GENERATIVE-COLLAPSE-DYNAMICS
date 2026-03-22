@@ -59,14 +59,16 @@ icon: globe
 
 ### weyl_des_y3
 
-- **Contract**: ``
+Modified gravity testing using DES Y3 MAGLIM data via Weyl evolution and hJ proxy. Source: doi:10.1038/s41467-024-53363-6
+
+- **Contract**: `WEYL.INTSTACK.v1`
 - **Path**: `casepacks/weyl_des_y3`
-- **Status**: unknown
+- **Status**: validated
 
 ## Validation Ledger Summary
 
-- **Total entries**: 9669
-- **CONFORMANT**: 9669
+- **Total entries**: 9670
+- **CONFORMANT**: 9670
 - **Conformance rate**: 100.0%
 
 ## The Spine

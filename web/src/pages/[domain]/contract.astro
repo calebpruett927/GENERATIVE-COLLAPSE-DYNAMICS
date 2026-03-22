@@ -1,0 +1,27 @@
+---
+/**
+ * Dynamic route for contract pages.
+ * Route: /<domain>/contract/
+ */
+import { getCollection, render } from 'astro:content';
+import SubpageLayout from '../../layouts/SubpageLayout.astro';
+
+export async function getStaticPaths() {
+  const contracts = await getCollection('contracts');
+  return contracts.map((entry) => {
+    // Entry id from glob is like "finance/contract"
+    const domain = entry.id.split('/')[0];
+    return {
+      params: { domain },
+      props: { entry, domain },
+    };
+  });
+}
+
+const { entry, domain } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<SubpageLayout frontmatter={{ ...entry.data, domain, pageType: 'contract' }}>
+  <Content />
+</SubpageLayout>

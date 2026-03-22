@@ -85,14 +85,16 @@ icon: shield
 
 ### security_validation
 
-- **Contract**: ``
+UMCP-based security validation demonstrating 'What Returns Through Collapse Is Real' applied to security domain (anti-virus, anti-scam, identity, privacy).
+
+- **Contract**: `UMA.INTSTACK.v1`
 - **Path**: `casepacks/security_validation`
-- **Status**: unknown
+- **Status**: validated
 
 ## Validation Ledger Summary
 
-- **Total entries**: 9669
-- **CONFORMANT**: 9669
+- **Total entries**: 9670
+- **CONFORMANT**: 9670
 - **Conformance rate**: 100.0%
 
 ## The Spine

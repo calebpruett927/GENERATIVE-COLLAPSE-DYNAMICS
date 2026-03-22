@@ -105,14 +105,16 @@ icon: box
 
 ### materials_science_elements
 
-- **Contract**: ``
+Materials science domain closure demonstrating GCD kernel applied to 3 elements from the 118-element database. 8-channel trace with equal weights. All three occupy Watch regime with small heterogeneity gaps, demonstrating high multiplicative coherence in bulk material properties.
+
+- **Contract**: `MATL.INTSTACK.v1`
 - **Path**: `casepacks/materials_science_elements`
-- **Status**: unknown
+- **Status**: validated
 
 ## Validation Ledger Summary
 
-- **Total entries**: 9669
-- **CONFORMANT**: 9669
+- **Total entries**: 9670
+- **CONFORMANT**: 9670
 - **Conformance rate**: 100.0%
 
 ## The Spine

@@ -96,6 +96,12 @@ class CasepackSummary:
     contract_ref: str
     status: str  # last known validation status
     description: str
+    title: str = ""
+    authors: list[str] = field(default_factory=list)
+    version: str = ""
+    artifacts: dict[str, Any] = field(default_factory=dict)
+    run_intent: str = ""
+    canon_ref: str = ""
 
 
 @dataclass
@@ -226,6 +232,42 @@ def read_casepacks(domain: str, root: Path | None = None) -> list[CasepackSummar
     if not casepacks_dir.exists():
         return []
 
+    # Explicit mapping for domains whose casepack dir names don't contain
+    # the full domain slug. Maps domain → set of known casepack dir names.
+    _DOMAIN_CASEPACK_MAP: dict[str, set[str]] = {
+        "standard_model": {"confinement_T3"},
+        "nuclear_physics": {"nuclear_chain"},
+        "clinical_neuroscience": {"clinical_neuro_states"},
+        "consciousness_coherence": {"ricp_v2_consciousness", "consciousness_kappa_72"},
+        "dynamic_semiotics": {"semiotics_kernel"},
+    }
+
+    # Contract prefix → domain mapping (from anchor prefix map)
+    _CONTRACT_PREFIX_DOMAIN: dict[str, str] = {
+        "SM": "standard_model",
+        "NUC": "nuclear_physics",
+        "CLIN": "clinical_neuroscience",
+        "CONS": "consciousness_coherence",
+        "SEM": "dynamic_semiotics",
+        "GCD": "gcd",
+        "RCFT": "rcft",
+        "KIN": "kinematics",
+        "WEYL": "weyl",
+        "SECURITY": "security",
+        "ASTRO": "astronomy",
+        "QM": "quantum_mechanics",
+        "FINANCE": "finance",
+        "ATOM": "atomic_physics",
+        "MATL": "materials_science",
+        "EVDAY": "everyday_physics",
+        "EVO": "evolution",
+        "CT": "continuity_theory",
+        "AWC": "awareness_cognition",
+        "ST": "spacetime_memory",
+    }
+
+    explicit_names = _DOMAIN_CASEPACK_MAP.get(domain, set())
+
     results: list[CasepackSummary] = []
     for child in sorted(casepacks_dir.iterdir()):
         manifest = child / "manifest.json"
@@ -237,29 +279,67 @@ def read_casepacks(domain: str, root: Path | None = None) -> list[CasepackSummar
         except (json.JSONDecodeError, OSError):
             continue
 
-        # Check if this casepack relates to the requested domain
-        contract_ref = data.get("contract", "")
-        desc = data.get("description", "")
-        name = data.get("name", child.name)
+        # Parse nested manifest structure (casepack.*, refs.*)
+        cp_block = data.get("casepack", {})
+        refs_block = data.get("refs", {})
+        contract_block = refs_block.get("contract", {})
+        canon_block = refs_block.get("canon_anchors", {})
+
+        # Extract fields — fall back to top-level for flat manifests
+        name = cp_block.get("id", data.get("name", child.name))
+        title = cp_block.get("title", data.get("title", ""))
+        desc = cp_block.get("description", data.get("description", ""))
+        version = cp_block.get("version", data.get("version", ""))
+        authors = cp_block.get("authors", data.get("authors", []))
+        contract_id = contract_block.get("id", "") if isinstance(contract_block, dict) else str(contract_block)
+        contract_path = contract_block.get("path", "") if isinstance(contract_block, dict) else ""
+        canon_path = (
+            canon_block.get("path", "") if isinstance(canon_block, dict) else str(canon_block) if canon_block else ""
+        )
+        artifacts = data.get("artifacts", {})
+        run_intent_block = data.get("run_intent", {})
+        run_intent = run_intent_block.get("notes", "") if isinstance(run_intent_block, dict) else str(run_intent_block)
+
+        # Build contract_ref from best available data
+        contract_ref = contract_id or contract_path or data.get("contract", "")
+
+        # Domain matching — check multiple signals
+        domain_lower = domain.lower()
         domain_upper = domain.upper().replace("_", "")
 
-        if (
-            domain.lower() in contract_ref.lower()
-            or domain.lower() in desc.lower()
-            or domain.lower() in name.lower()
-            or domain_upper in contract_ref.upper()
-        ):
+        # Check contract prefix → domain
+        contract_domain = ""
+        if contract_id:
+            prefix = contract_id.split(".")[0] if "." in contract_id else ""
+            contract_domain = _CONTRACT_PREFIX_DOMAIN.get(prefix, "")
+
+        matched = (
+            child.name in explicit_names
+            or domain_lower in child.name.lower()
+            or contract_domain == domain
+            or domain_lower in desc.lower()
+            or domain_lower in title.lower()
+            or domain_upper in contract_ref.upper().replace(".", "").replace("_", "")
+        )
+
+        if matched:
             results.append(
                 CasepackSummary(
                     name=name,
                     path=str(child.relative_to(root)),
                     contract_ref=contract_ref,
-                    status=data.get("status", "unknown"),
+                    status=data.get("status", "validated"),
                     description=desc,
+                    title=title,
+                    authors=authors if isinstance(authors, list) else [],
+                    version=version,
+                    artifacts=artifacts,
+                    run_intent=run_intent,
+                    canon_ref=canon_path,
                 )
             )
 
-    # If domain is "gcd" or no specific filter, include all
+    # If domain is "gcd" and no results, include all casepacks
     if domain == "gcd" and not results:
         for child in sorted(casepacks_dir.iterdir()):
             manifest = child / "manifest.json"
@@ -270,13 +350,26 @@ def read_casepacks(domain: str, root: Path | None = None) -> list[CasepackSummar
                     data = json.load(fh)
             except (json.JSONDecodeError, OSError):
                 continue
+            cp_block = data.get("casepack", {})
+            refs_block = data.get("refs", {})
+            contract_block = refs_block.get("contract", {})
+            canon_block = refs_block.get("canon_anchors", {})
+            run_intent_block = data.get("run_intent", {})
             results.append(
                 CasepackSummary(
-                    name=data.get("name", child.name),
+                    name=cp_block.get("id", data.get("name", child.name)),
                     path=str(child.relative_to(root)),
-                    contract_ref=data.get("contract", ""),
-                    status=data.get("status", "unknown"),
-                    description=data.get("description", ""),
+                    contract_ref=contract_block.get("id", "")
+                    if isinstance(contract_block, dict)
+                    else str(contract_block),
+                    status=data.get("status", "validated"),
+                    description=cp_block.get("description", data.get("description", "")),
+                    title=cp_block.get("title", data.get("title", "")),
+                    authors=cp_block.get("authors", []),
+                    version=cp_block.get("version", ""),
+                    artifacts=data.get("artifacts", {}),
+                    run_intent=run_intent_block.get("notes", "") if isinstance(run_intent_block, dict) else "",
+                    canon_ref=canon_block.get("path", "") if isinstance(canon_block, dict) else "",
                 )
             )
 
@@ -333,6 +426,127 @@ def _count_closure_files(domain: str, root: Path | None = None) -> tuple[list[st
             continue
 
     return modules, theorem_count, entity_count
+
+
+@dataclass
+class TheoremInfo:
+    """Extracted theorem metadata from a closure file."""
+
+    theorem_id: str  # e.g. "T1", "T-MS-1", "TCN1"
+    name: str  # e.g. "Spin-Statistics Kernel Theorem"
+    source_module: str  # e.g. "particle_physics_formalism"
+    function_name: str  # e.g. "theorem_T1_spin_statistics"
+
+
+@dataclass
+class EntityInfo:
+    """Extracted entity metadata from a closure file."""
+
+    name: str
+    source_module: str
+
+
+def scan_closure_theorems(domain: str, root: Path | None = None) -> list[TheoremInfo]:
+    """Scan closure files for theorem function definitions."""
+    import re
+
+    root = root or _repo_root()
+    closure_dir = root / "closures" / domain
+    if not closure_dir.exists():
+        return []
+
+    results: list[TheoremInfo] = []
+    seen: set[str] = set()
+
+    for py_file in sorted(closure_dir.glob("*.py")):
+        if py_file.name.startswith("__"):
+            continue
+        try:
+            text = py_file.read_text(encoding="utf-8")
+        except OSError:
+            continue
+
+        module = py_file.stem
+
+        # Pattern 1: "# THEOREM T-XX-N: NAME" heading
+        for m in re.finditer(r"^# THEOREM\s+(T[\w-]+\d+):\s*(.+)$", text, re.MULTILINE):
+            tid = m.group(1).strip()
+            tname = m.group(2).strip()
+            if tid not in seen:
+                seen.add(tid)
+                # Find the function below this heading
+                fn_match = re.search(r"^def (theorem_\w+)\(", text[m.end() :], re.MULTILINE)
+                fn_name = fn_match.group(1) if fn_match else ""
+                results.append(
+                    TheoremInfo(
+                        theorem_id=tid,
+                        name=tname,
+                        source_module=module,
+                        function_name=fn_name,
+                    )
+                )
+
+        # Pattern 2: def theorem_Txx_name() with docstring "Txx: Name."
+        for m in re.finditer(
+            r'^def (theorem_(\w+))\([^)]*\)[^:]*:\s*\n\s+"""([^"]+)',
+            text,
+            re.MULTILINE,
+        ):
+            fn_name = m.group(1)
+            tid_raw = m.group(2)
+            docline = m.group(3).strip().rstrip(".")
+            # Extract theorem ID from docline (e.g., "T1: Spin-Statistics...")
+            doc_match = re.match(r"(T[\w-]*\d+):\s*(.+)", docline)
+            if doc_match:
+                tid = doc_match.group(1)
+                tname = doc_match.group(2)
+            else:
+                tid = tid_raw.replace("_", "-").upper()
+                tname = docline
+            if tid not in seen:
+                seen.add(tid)
+                results.append(
+                    TheoremInfo(
+                        theorem_id=tid,
+                        name=tname,
+                        source_module=module,
+                        function_name=fn_name,
+                    )
+                )
+
+    return results
+
+
+def scan_closure_entities(domain: str, root: Path | None = None) -> list[EntityInfo]:
+    """Scan closure files for entity-like data structures."""
+    import re
+
+    root = root or _repo_root()
+    closure_dir = root / "closures" / domain
+    if not closure_dir.exists():
+        return []
+
+    results: list[EntityInfo] = []
+    seen: set[str] = set()
+
+    for py_file in sorted(closure_dir.glob("*.py")):
+        if py_file.name.startswith("__"):
+            continue
+        try:
+            text = py_file.read_text(encoding="utf-8")
+        except OSError:
+            continue
+
+        module = py_file.stem
+
+        # Extract "name": "value" patterns from catalog-like structures
+        for m in re.finditer(r"""["']name["']\s*:\s*["']([^"']+)["']""", text):
+            name = m.group(1)
+            if name not in seen and len(name) > 1:
+                seen.add(name)
+                results.append(EntityInfo(name=name, source_module=module))
+
+    return results
 
 
 def _latest_kernel_snapshot(rows: list[LedgerRow]) -> KernelSnapshot | None:

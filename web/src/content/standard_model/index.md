@@ -62,10 +62,20 @@ icon: atom
 - `subatomic_kernel`
 - `symmetry_breaking`
 
+## Casepacks
+
+### confinement_T3
+
+Complete reproducibility bundle for the confinement paper. Contains PDG-2024 raw particle data (17 fundamental + 14 composite), 8-channel trace vectors, kernel invariant computation, guard band robustness analysis, and exotic hadron verification. All frozen parameters sourced from SM.INTSTACK.v1.yaml. One-command rerun: python run_confinement_T3.py
+
+- **Contract**: `SM.INTSTACK.v1`
+- **Path**: `casepacks/confinement_T3`
+- **Status**: validated
+
 ## Validation Ledger Summary
 
-- **Total entries**: 9669
-- **CONFORMANT**: 9669
+- **Total entries**: 9670
+- **CONFORMANT**: 9670
 - **Conformance rate**: 100.0%
 
 ## The Spine

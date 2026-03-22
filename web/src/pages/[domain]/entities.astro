@@ -1,0 +1,26 @@
+---
+/**
+ * Dynamic route for entity catalog pages.
+ * Route: /<domain>/entities/
+ */
+import { getCollection, render } from 'astro:content';
+import SubpageLayout from '../../layouts/SubpageLayout.astro';
+
+export async function getStaticPaths() {
+  const entities = await getCollection('entities');
+  return entities.map((entry) => {
+    const domain = entry.id.split('/')[0];
+    return {
+      params: { domain },
+      props: { entry, domain },
+    };
+  });
+}
+
+const { entry, domain } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<SubpageLayout frontmatter={{ ...entry.data, domain, pageType: 'entities' }}>
+  <Content />
+</SubpageLayout>

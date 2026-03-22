@@ -19,12 +19,12 @@
   ],
   "theorem_count": 44,
   "entity_count": 14,
-  "casepack_count": 0,
-  "ledger_total": 9669,
-  "ledger_conformant": 9669,
+  "casepack_count": 1,
+  "ledger_total": 9670,
+  "ledger_conformant": 9670,
   "metadata": {
     "domain_count": 20,
-    "total_ledger_rows": 9669,
-    "conformant_count": 9669
+    "total_ledger_rows": 9670,
+    "conformant_count": 9670
   }
 }

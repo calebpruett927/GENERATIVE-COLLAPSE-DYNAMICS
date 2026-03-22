@@ -87,10 +87,20 @@ icon: heart-pulse
 - `neurotransmitter_systems`
 - `sleep_neurophysiology`
 
+## Casepacks
+
+### clinical_neuro_states
+
+Clinical neuroscience domain closure demonstrating GCD kernel applied to 3 consciousness states. 10-channel trace (4 cortical + 2 structural + 2 metabolic + 2 systemic) with equal weights. Healthy waking, deep coma, and psychedelic states classified through frozen regime gates.
+
+- **Contract**: `CLIN.INTSTACK.v1`
+- **Path**: `casepacks/clinical_neuro_states`
+- **Status**: validated
+
 ## Validation Ledger Summary
 
-- **Total entries**: 9669
-- **CONFORMANT**: 9669
+- **Total entries**: 9670
+- **CONFORMANT**: 9670
 - **Conformance rate**: 100.0%
 
 ## The Spine

@@ -64,14 +64,16 @@ icon: layers
 
 ### rcft_complete
 
-- **Contract**: ``
+Complete RCFT Tier-2 example with zero entropy state and all GCD + RCFT closures
+
+- **Contract**: `RCFT.INTSTACK.v1`
 - **Path**: `casepacks/rcft_complete`
-- **Status**: unknown
+- **Status**: validated
 
 ## Validation Ledger Summary
 
-- **Total entries**: 9669
-- **CONFORMANT**: 9669
+- **Total entries**: 9670
+- **CONFORMANT**: 9670
 - **Conformance rate**: 100.0%
 
 ## The Spine
