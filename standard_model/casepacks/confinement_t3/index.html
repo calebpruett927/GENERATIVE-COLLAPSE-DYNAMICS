@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-37fxchfa style="--primaryColor: #0f172a;--accentColor: #f59e0b;"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Complete reproducibility bundle for the confinement paper. Contains PDG-2024 raw particle data (17 fundamental + 14 composite), 8-channel trace vectors, kernel invariant computation, guard band robustness analysis, and exotic hadron verification. All frozen parameters sourced from SM.INTSTACK.v1.yaml. One-command rerun: python run_confinement_T3.py"><link rel="icon" type="image/svg+xml" href="/GENERATIVE-COLLAPSE-DYNAMICS/favicon.svg"><title>Confinement as Integrity Collapse — Theorem T3 (19/19 Sub-Tests) — GCD Kernel</title><link rel="stylesheet" href="/GENERATIVE-COLLAPSE-DYNAMICS/_astro/_slug_.CC-ETPNw.css">
+<style>:root{--color-primary: var(--primaryColor);--color-accent: var(--accentColor)}
+</style></head> <body class="bg-kernel-950 text-kernel-100 min-h-screen" data-astro-cid-37fxchfa style="--primaryColor: #0f172a;--accentColor: #f59e0b;"> <!-- Navigation --> <nav class="border-b border-kernel-800 px-6 py-3" data-astro-cid-37fxchfa style="--primaryColor: #0f172a;--accentColor: #f59e0b;"> <div class="max-w-6xl mx-auto flex items-center justify-between" data-astro-cid-37fxchfa style="--primaryColor: #0f172a;--accentColor: #f59e0b;"> <a href="/GENERATIVE-COLLAPSE-DYNAMICS/" class="text-lg font-bold tracking-tight" data-astro-cid-37fxchfa style="--primaryColor: #0f172a;--accentColor: #f59e0b;">
+GCD<span class="text-kernel-400" data-astro-cid-37fxchfa style="--primaryColor: #0f172a;--accentColor: #f59e0b;">·</span>Kernel
+</a> <div class="flex gap-4 text-sm text-kernel-400" data-astro-cid-37fxchfa style="--primaryColor: #0f172a;--accentColor: #f59e0b;"> <a href="/GENERATIVE-COLLAPSE-DYNAMICS/" class="hover:text-kernel-100 transition" data-astro-cid-37fxchfa style="--primaryColor: #0f172a;--accentColor: #f59e0b;">Network</a> <a href="/GENERATIVE-COLLAPSE-DYNAMICS/gcd/" class="hover:text-kernel-100 transition" data-astro-cid-37fxchfa style="--primaryColor: #0f172a;--accentColor: #f59e0b;">Axiom</a> <a href="https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS" class="hover:text-kernel-100 transition" target="_blank" rel="noopener" data-astro-cid-37fxchfa style="--primaryColor: #0f172a;--accentColor: #f59e0b;">
+GitHub
+</a> </div> </div> </nav> <!-- Main content --> <main class="max-w-4xl mx-auto px-6 py-10" data-astro-cid-37fxchfa style="--primaryColor: #0f172a;--accentColor: #f59e0b;">  <div class="mb-8"> <a href=".." class="text-sm text-kernel-500 hover:text-kernel-300">← Back to domain</a> </div> <article class="prose prose-invert prose-sm max-w-none
+    prose-headings:font-bold
+    prose-code:text-kernel-300 prose-code:bg-kernel-800 prose-code:px-1 prose-code:rounded
+    prose-strong:text-kernel-100">  <h1 id="confinement-as-integrity-collapse--theorem-t3-1919-sub-tests">Confinement as Integrity Collapse — Theorem T3 (19/19 Sub-Tests)</h1>
+<p>Complete reproducibility bundle for the confinement paper. Contains PDG-2024 raw particle data (17 fundamental + 14 composite), 8-channel trace vectors, kernel invariant computation, guard band robustness analysis, and exotic hadron verification. All frozen parameters sourced from SM.INTSTACK.v1.yaml. One-command rerun: python run_confinement_T3.py</p>
+<h2 id="details">Details</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td><strong>Casepack ID</strong></td><td><code>confinement_T3</code></td></tr><tr><td><strong>Version</strong></td><td>1.0.0</td></tr><tr><td><strong>Contract</strong></td><td><code>SM.INTSTACK.v1</code></td></tr><tr><td><strong>Status</strong></td><td>validated</td></tr><tr><td><strong>Path</strong></td><td><code>casepacks/confinement_T3</code></td></tr><tr><td><strong>Canon Anchors</strong></td><td><code>canon/sm_anchors.yaml</code></td></tr></tbody></table>
+<h2 id="authors">Authors</h2>
+<ul>
+<li>Caleb Pruett</li>
+<li>Clement Paulus</li>
+</ul>
+<h2 id="artifacts">Artifacts</h2>
+<ul>
+<li><strong>raw_measurements</strong>: <code>raw_particles.csv</code> (csv)</li>
+<li><strong>expected</strong>:
+<ul>
+<li><strong>invariants_json</strong>: <code>expected/kernel_invariants.json</code></li>
+<li><strong>trace_vectors_json</strong>: <code>expected/trace_vectors.json</code></li>
+<li><strong>theorem_T3_json</strong>: <code>expected/theorem_T3.json</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="run-intent">Run Intent</h2>
+<p>Entrypoint: python run_confinement_T3.py — Computes 8-channel kernel invariants for 31 SM particles, verifies Theorem T3 (19/19 sub-tests: universal suppression IC_h &#x3C; IC_q^min, 98.1% collapse, 10.8x gap amplification, baryon/meson ordering, F non-annihilation), guard band robustness across eps in [1e-12, 1e-2], and exotic hadron predictions (6/6 LHCb-confirmed). All frozen parameters from SM.INTSTACK.v1.yaml.</p>
+<hr>
+<p><em>Generated by the Headless Contract Gateway (HCG) · UMCP v2.2.5</em></p>  </article>  </main> <!-- Footer --> <footer class="border-t border-kernel-800 px-6 py-6 mt-20" data-astro-cid-37fxchfa style="--primaryColor: #0f172a;--accentColor: #f59e0b;"> <div class="max-w-6xl mx-auto text-center text-xs text-kernel-500" data-astro-cid-37fxchfa style="--primaryColor: #0f172a;--accentColor: #f59e0b;"> <p data-astro-cid-37fxchfa style="--primaryColor: #0f172a;--accentColor: #f59e0b;"><em data-astro-cid-37fxchfa style="--primaryColor: #0f172a;--accentColor: #f59e0b;">Collapsus generativus est; solum quod redit, reale est.</em></p> <p class="mt-1" data-astro-cid-37fxchfa style="--primaryColor: #0f172a;--accentColor: #f59e0b;">
+Headless Contract Gateway · UMCP v2.2.5 ·
+<a href="https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS" class="underline hover:text-kernel-300" target="_blank" rel="noopener" data-astro-cid-37fxchfa style="--primaryColor: #0f172a;--accentColor: #f59e0b;">
+Source
+</a> </p> </div> </footer> </body></html>
