@@ -1,0 +1,1380 @@
+---
+/**
+ * Structure Explorer — Interactive GCD Kernel Research Tool
+ *
+ * Five analysis modes:
+ *   1. Kernel Compute — standard trace → invariants
+ *   2. Sensitivity Sweep — vary one channel, chart all outputs
+ *   3. Phase Diagram — locate current point in regime space
+ *   4. Identity Lab — deep identity verification + S+κ curves
+ *   5. Seam Budget — full debit/credit breakdown + Γ(ω) chart
+ *
+ * All computation runs client-side via the TypeScript kernel.
+ */
+---
+
+<div id="structure-explorer" class="space-y-6">
+
+  <!-- ═══════ Mode Selector ═══════ -->
+  <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-5">
+    <div class="flex flex-wrap gap-2" id="mode-tabs">
+      <button data-mode="compute" class="mode-tab active px-4 py-2 rounded-lg text-sm font-semibold transition">
+        <span class="mr-1">◉</span> Kernel Compute
+      </button>
+      <button data-mode="sweep" class="mode-tab px-4 py-2 rounded-lg text-sm font-semibold transition">
+        <span class="mr-1">〰</span> Sensitivity Sweep
+      </button>
+      <button data-mode="phase" class="mode-tab px-4 py-2 rounded-lg text-sm font-semibold transition">
+        <span class="mr-1">◧</span> Phase Diagram
+      </button>
+      <button data-mode="identity" class="mode-tab px-4 py-2 rounded-lg text-sm font-semibold transition">
+        <span class="mr-1">≡</span> Identity Lab
+      </button>
+      <button data-mode="seam" class="mode-tab px-4 py-2 rounded-lg text-sm font-semibold transition">
+        <span class="mr-1">⊢</span> Seam Budget
+      </button>
+    </div>
+    <!-- Mode description -->
+    <div id="mode-description" class="mt-3 text-sm text-kernel-400 border-t border-kernel-800 pt-3"></div>
+  </div>
+
+  <!-- ═══════ Guidance Panel ═══════ -->
+  <div id="guidance-panel" class="bg-gradient-to-r from-kernel-900 to-kernel-950 border border-kernel-700 rounded-xl p-5">
+    <h3 class="text-sm font-bold text-amber-400/80 uppercase tracking-wider mb-2">What to look for</h3>
+    <div id="guidance-content" class="text-sm text-kernel-300 space-y-1"></div>
+  </div>
+
+  <!-- ═══════ Preset Selector ═══════ -->
+  <div class="bg-kernel-900/60 border border-kernel-700 rounded-xl p-4">
+    <div class="flex items-center justify-between mb-2">
+      <label class="text-sm text-kernel-300 font-medium">Presets — load a canonical trace vector</label>
+      <span class="text-xs text-kernel-600" id="active-preset-label">Custom</span>
+    </div>
+    <div id="preset-buttons" class="flex flex-wrap gap-2"></div>
+  </div>
+
+  <!-- ═══════ Input Panel ═══════ -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4" id="input-section">
+    <!-- Channels -->
+    <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-4">
+      <div class="flex justify-between items-center mb-3">
+        <label class="text-sm text-kernel-300 font-medium">
+          Channels c<sub>i</sub> ∈ [0, 1]
+          <span class="text-kernel-600 text-xs ml-1">— each measures one degree of freedom</span>
+        </label>
+        <div class="flex gap-2">
+          <button id="btn-add-ch" class="text-xs px-2 py-1 bg-kernel-800 text-kernel-300 rounded hover:bg-kernel-700 transition">+ Channel</button>
+          <button id="btn-rm-ch" class="text-xs px-2 py-1 bg-kernel-800 text-kernel-300 rounded hover:bg-kernel-700 transition">− Remove</button>
+        </div>
+      </div>
+      <div id="channel-inputs" class="space-y-2"></div>
+      <!-- Channel bar chart -->
+      <div class="mt-3 border-t border-kernel-800 pt-3">
+        <canvas id="channel-bar-canvas" height="80" class="w-full rounded" style="cursor:default;"></canvas>
+      </div>
+    </div>
+    <!-- Weights -->
+    <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-4">
+      <div class="flex justify-between items-center mb-3">
+        <label class="text-sm text-kernel-300 font-medium">
+          Weights w<sub>i</sub> ∈ Δ<sup>n</sup>
+          <span class="text-kernel-600 text-xs ml-1">— must sum to 1 (simplex)</span>
+        </label>
+        <button id="btn-uniform" class="text-xs px-2 py-1 bg-kernel-800 text-kernel-300 rounded hover:bg-kernel-700 transition">Uniform</button>
+      </div>
+      <div id="weight-inputs" class="space-y-2"></div>
+      <div id="weight-sum" class="text-xs text-kernel-500 mt-2">Σw = 1.000</div>
+    </div>
+  </div>
+
+  <!-- ═══════ Sweep Controls (mode=sweep only) ═══════ -->
+  <div id="sweep-controls" class="hidden bg-kernel-900 border border-amber-800/40 rounded-xl p-4">
+    <h3 class="text-sm font-bold text-amber-400/80 uppercase tracking-wider mb-3">Sweep Configuration</h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div>
+        <label class="text-xs text-kernel-500">Channel to sweep</label>
+        <select id="sweep-channel" class="w-full mt-1 px-2 py-1.5 bg-kernel-800 border border-kernel-600 rounded text-kernel-200 text-sm"></select>
+      </div>
+      <div>
+        <label class="text-xs text-kernel-500">Metric focus</label>
+        <select id="sweep-metric" class="w-full mt-1 px-2 py-1.5 bg-kernel-800 border border-kernel-600 rounded text-kernel-200 text-sm">
+          <option value="all" selected>All invariants</option>
+          <option value="F">F (Fidelity)</option>
+          <option value="IC">IC (Integrity)</option>
+          <option value="delta">Δ (Heterogeneity gap)</option>
+          <option value="S">S (Entropy)</option>
+        </select>
+      </div>
+      <div>
+        <label class="text-xs text-kernel-500">Resolution</label>
+        <select id="sweep-resolution" class="w-full mt-1 px-2 py-1.5 bg-kernel-800 border border-kernel-600 rounded text-kernel-200 text-sm">
+          <option value="100">100 points</option>
+          <option value="200" selected>200 points</option>
+          <option value="400">400 points (slower)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ Heatmap Controls (mode=phase only) ═══════ -->
+  <div id="phase-controls" class="hidden bg-kernel-900 border border-purple-800/40 rounded-xl p-4">
+    <h3 class="text-sm font-bold text-purple-400/80 uppercase tracking-wider mb-3">Phase Diagram Configuration</h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div>
+        <label class="text-xs text-kernel-500">X-axis channel</label>
+        <select id="phase-ch1" class="w-full mt-1 px-2 py-1.5 bg-kernel-800 border border-kernel-600 rounded text-kernel-200 text-sm"></select>
+      </div>
+      <div>
+        <label class="text-xs text-kernel-500">Y-axis channel</label>
+        <select id="phase-ch2" class="w-full mt-1 px-2 py-1.5 bg-kernel-800 border border-kernel-600 rounded text-kernel-200 text-sm"></select>
+      </div>
+      <div>
+        <label class="text-xs text-kernel-500">Color metric</label>
+        <select id="phase-metric" class="w-full mt-1 px-2 py-1.5 bg-kernel-800 border border-kernel-600 rounded text-kernel-200 text-sm">
+          <option value="IC" selected>IC (Integrity)</option>
+          <option value="F">F (Fidelity)</option>
+          <option value="delta">Δ (Gap)</option>
+          <option value="S">S (Entropy)</option>
+          <option value="omega">ω (Drift)</option>
+          <option value="C">C (Curvature)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ Seam Controls (mode=seam only) ═══════ -->
+  <div id="seam-controls" class="hidden bg-kernel-900 border border-cyan-800/40 rounded-xl p-4">
+    <h3 class="text-sm font-bold text-cyan-400/80 uppercase tracking-wider mb-3">Seam Budget Parameters</h3>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div>
+        <label class="text-xs text-kernel-500">Return rate (R)</label>
+        <input id="seam-R" type="number" value="1.0" step="0.1" min="0" max="10"
+          class="w-full mt-1 px-2 py-1.5 bg-kernel-800 border border-kernel-600 rounded text-kernel-200 text-sm" />
+      </div>
+      <div>
+        <label class="text-xs text-kernel-500">Return time (τ<sub>R</sub>)</label>
+        <input id="seam-tauR" type="number" value="1.0" step="0.1" min="0" max="100"
+          class="w-full mt-1 px-2 py-1.5 bg-kernel-800 border border-kernel-600 rounded text-kernel-200 text-sm" />
+      </div>
+      <div>
+        <label class="text-xs text-kernel-500">κ ledger</label>
+        <input id="seam-kappa" type="number" value="0" step="0.1" min="-20" max="0"
+          class="w-full mt-1 px-2 py-1.5 bg-kernel-800 border border-kernel-600 rounded text-kernel-200 text-sm" />
+      </div>
+      <div>
+        <label class="text-xs text-kernel-500">tol<sub>seam</sub></label>
+        <input id="seam-tol" type="number" value="0.005" step="0.001" min="0" max="0.1"
+          class="w-full mt-1 px-2 py-1.5 bg-kernel-800 border border-kernel-600 rounded text-kernel-200 text-sm" readonly />
+        <span class="text-xs text-kernel-600">frozen</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ Compute Button ═══════ -->
+  <button id="btn-compute" class="w-full py-3.5 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white font-bold rounded-xl transition shadow-lg shadow-amber-900/30 text-base">
+    Compute →
+  </button>
+
+  <!-- ═══════ Results Area ═══════ -->
+  <div id="results-area" class="hidden space-y-5">
+
+    <!-- Regime Badge -->
+    <div id="regime-badge" class="text-center py-4 rounded-xl font-bold text-xl border-2 shadow-lg"></div>
+
+    <!-- ─── Kernel Output Cards ─── -->
+    <div id="output-cards" class="space-y-4">
+      <!-- Invariants grid -->
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-3" id="invariants-grid"></div>
+
+      <!-- Heterogeneity gap bar -->
+      <div id="gap-panel" class="bg-kernel-900 border border-kernel-700 rounded-xl p-4">
+        <div class="flex justify-between items-center mb-2">
+          <div>
+            <span class="text-sm font-bold text-kernel-300">Heterogeneity Gap</span>
+            <span class="text-xs text-kernel-600 ml-2">Δ = F − IC — channel divergence measure</span>
+          </div>
+          <span id="gap-value" class="text-lg font-mono font-bold"></span>
+        </div>
+        <div class="w-full bg-kernel-800 rounded-full h-3">
+          <div id="gap-bar" class="h-3 rounded-full transition-all"></div>
+        </div>
+        <div id="gap-interpretation" class="text-xs text-kernel-500 mt-2"></div>
+      </div>
+    </div>
+
+    <!-- ─── Radar Chart ─── -->
+    <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-4">
+      <h3 class="text-sm font-bold text-kernel-300 mb-3">Kernel Radar — 6 Invariants</h3>
+      <div class="flex justify-center">
+        <div class="relative" style="max-width:460px;width:100%;">
+          <canvas id="radar-canvas" style="max-width:460px;cursor:crosshair;"></canvas>
+          <div id="radar-tooltip" class="hidden absolute pointer-events-none text-xs bg-kernel-900/95 border border-kernel-600 rounded px-2 py-1 text-kernel-200 font-mono shadow-lg z-10"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Sweep Charts (mode=sweep|compute) ─── -->
+    <div id="sweep-output" class="space-y-4">
+      <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-4">
+        <h3 class="text-sm font-bold text-kernel-300 mb-1" id="sweep-chart-title">Sensitivity Sweep</h3>
+        <p class="text-xs text-kernel-600 mb-3" id="sweep-chart-subtitle"></p>
+        <div class="relative" style="height:340px;">
+          <canvas id="sweep-canvas" class="w-full" style="height:340px;cursor:crosshair;"></canvas>
+          <div id="sweep-tooltip" class="hidden absolute pointer-events-none text-xs bg-kernel-900/95 border border-kernel-600 rounded px-3 py-2 text-kernel-200 font-mono shadow-lg z-10 whitespace-pre"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Phase Diagram (mode=phase) ─── -->
+    <div id="phase-output" class="hidden space-y-4">
+      <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-4">
+        <h3 class="text-sm font-bold text-kernel-300 mb-1">Phase Diagram — Regime Landscape</h3>
+        <p class="text-xs text-kernel-600 mb-3" id="phase-subtitle"></p>
+        <div class="relative" style="height:400px;">
+          <canvas id="phase-canvas" class="w-full" style="height:400px;cursor:crosshair;"></canvas>
+          <div id="phase-tooltip" class="hidden absolute pointer-events-none text-xs bg-kernel-900/95 border border-kernel-600 rounded px-3 py-2 text-kernel-200 font-mono shadow-lg z-10 whitespace-pre"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Identity Lab (mode=identity) ─── -->
+    <div id="identity-output" class="space-y-4">
+      <!-- Identity checks -->
+      <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-4">
+        <h3 class="text-sm font-bold text-kernel-300 mb-3">Tier-1 Identity Verification</h3>
+        <div id="identity-checks" class="space-y-2"></div>
+      </div>
+      <!-- S+κ curve (mode=identity) -->
+      <div id="entropy-output" class="hidden">
+        <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-4">
+          <h3 class="text-sm font-bold text-kernel-300 mb-1">Bernoulli Field: S(c), κ(c), and f = S + κ</h3>
+          <p class="text-xs text-kernel-600 mb-3">S + κ = 0 exactly at c = ½ (equator). f(θ) = 2cos²θ·ln(tan θ) verified < 10⁻¹⁶.</p>
+          <div class="relative" style="height:300px;">
+            <canvas id="entropy-canvas" class="w-full" style="height:300px;cursor:crosshair;"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Seam Budget (mode=seam|compute) ─── -->
+    <div id="seam-output" class="space-y-4">
+      <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-4">
+        <h3 class="text-sm font-bold text-kernel-300 mb-3">Seam Budget — Debit/Credit Ledger</h3>
+        <div id="seam-results" class="space-y-3"></div>
+      </div>
+      <!-- Gamma curve (mode=seam) -->
+      <div id="gamma-output" class="hidden">
+        <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-4">
+          <h3 class="text-sm font-bold text-kernel-300 mb-1">Γ(ω) — Drift Cost Function</h3>
+          <p class="text-xs text-kernel-600 mb-3">Γ(ω) = ω³/(1−ω+ε). Pole at ω=1; first weld at c ≈ 0.318 where Γ drops below 1.</p>
+          <div class="relative" style="height:300px;">
+            <canvas id="gamma-canvas" class="w-full" style="height:300px;cursor:crosshair;"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Output Interpretation ─── -->
+    <div id="interpretation-panel" class="bg-gradient-to-b from-kernel-900/80 to-kernel-950 border border-kernel-700 rounded-xl p-5">
+      <h3 class="text-sm font-bold text-green-400/80 uppercase tracking-wider mb-3">Structural Reading</h3>
+      <div id="interpretation-content" class="text-sm text-kernel-300 space-y-2"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .mode-tab {
+    background: rgba(30, 30, 50, 0.6);
+    color: #94a3b8;
+    border: 1px solid rgba(100, 116, 139, 0.2);
+  }
+  .mode-tab:hover {
+    background: rgba(40, 40, 65, 0.8);
+    color: #e2e8f0;
+  }
+  .mode-tab.active {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(245, 158, 11, 0.05));
+    color: #fbbf24;
+    border-color: rgba(245, 158, 11, 0.4);
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.1);
+  }
+  .channel-slider::-webkit-slider-thumb { cursor: grab; }
+  .channel-slider:active::-webkit-slider-thumb { cursor: grabbing; }
+  #regime-badge.regime-stable { background: rgba(5, 150, 105, 0.15); border-color: #059669; color: #34d399; }
+  #regime-badge.regime-watch { background: rgba(217, 119, 6, 0.15); border-color: #d97706; color: #fbbf24; }
+  #regime-badge.regime-collapse { background: rgba(220, 38, 38, 0.15); border-color: #dc2626; color: #f87171; }
+  #regime-badge.regime-critical { background: rgba(168, 85, 247, 0.15); border-color: #a855f7; color: #c084fc; }
+</style>
+
+<script>
+  import {
+    computeKernel, classifyRegime, computeSeamBudget, verifyIdentities,
+    gammaOmega, bernoulliEntropy, computeTauRStar, PRESETS,
+    sweepChannel, sweepHomogeneous, entropyCurve, gammaCurve, heatmap2D,
+  } from '../lib/kernel';
+  import type { KernelResult, SweepPoint } from '../lib/kernel';
+  import { REGIME_COLORS, KERNEL_SYMBOLS } from '../lib/constants';
+  import {
+    setupCanvas, clearChart, drawGrid, drawAxes, drawCurve,
+    drawVerticalMarker, drawHorizontalMarker, drawPoint, drawLegend,
+    mapX, mapY, CHART_COLORS,
+  } from '../lib/chart';
+  import type { ChartArea, AxisConfig } from '../lib/chart';
+
+  /* ─── Mode Definitions ─────────────────────────────────────── */
+
+  type Mode = 'compute' | 'sweep' | 'phase' | 'identity' | 'seam';
+
+  const MODE_INFO: Record<Mode, { description: string; guidance: string[] }> = {
+    compute: {
+      description: 'Standard kernel computation — enter a trace vector and get all six Tier-1 invariants, regime classification, identity verification, and seam budget. The fundamental analysis mode.',
+      guidance: [
+        '<strong>Inputs:</strong> Set each channel c<sub>i</sub> to the normalized [0,1] value of a measurable degree of freedom. Use presets to explore canonical configurations.',
+        '<strong>Outputs:</strong> F (what survived), ω (what was lost), S (uncertainty), C (channel heterogeneity), κ (log-sensitivity), IC (multiplicative coherence).',
+        '<strong>Math focus:</strong> Compare F vs IC — a large gap Δ = F−IC means one or more dead channels. Check if IC ≤ F holds (must always). Watch for geometric slaughter: one near-zero channel kills IC while F stays healthy.',
+      ],
+    },
+    sweep: {
+      description: 'Vary a single channel from 0 → 1 while holding others fixed. Reveals how sensitive each invariant is to that channel — the structural dependency map.',
+      guidance: [
+        '<strong>Inputs:</strong> Select which channel to sweep. The other channels stay at their current values. This isolates the contribution of one degree of freedom.',
+        '<strong>Outputs:</strong> Charts showing F, IC, Δ, S, C, ω as functions of the swept channel value. Regime boundaries appear as colored regions.',
+        '<strong>What to look for:</strong> The IC curve reveals geometric slaughter — as c<sub>i</sub> → 0, IC drops exponentially while F drops linearly. The S curve peaks at c<sub>i</sub> = ½. Regime transitions appear as sharp boundaries.',
+      ],
+    },
+    phase: {
+      description: '2D heatmap — vary two channels simultaneously to map the regime landscape. See where Stable/Watch/Collapse regions lie in channel space.',
+      guidance: [
+        '<strong>Inputs:</strong> Select two channels as X and Y axes. Choose which metric to visualize as heatmap color. Other channels stay at current values.',
+        '<strong>Outputs:</strong> A color-coded map showing how the chosen metric varies across the 2D slice of channel space. Your current point is marked.',
+        '<strong>What to look for:</strong> IC heatmaps show the "integrity cliff" — sharp drops where one channel approaches zero. The Stable region (green) is small (12.5% of Fisher space). Look for regime boundary shapes.',
+      ],
+    },
+    identity: {
+      description: 'Deep verification of the three algebraic identities (F+ω=1, IC=exp(κ), IC≤F) plus the Bernoulli field entropy curve S(c), log-integrity κ(c), and their sum f = S+κ.',
+      guidance: [
+        '<strong>Inputs:</strong> Any trace vector — the identities must hold for ALL inputs by construction.',
+        '<strong>Outputs:</strong> Residuals for each identity (should be < 10⁻¹⁴). The S+κ curve shows f = 0 exactly at c = ½ (the equator). The S curve peaks at c = ½ with value ln(2).',
+        '<strong>What to look for:</strong> F+ω=1 residual should be exactly 0.0 (machine precision). IC=exp(κ) should be < 10⁻¹⁵. IC≤F must hold with margin ≥ 0. These are not tests — they are structural necessities.',
+      ],
+    },
+    seam: {
+      description: 'Full seam budget analysis — the debit/credit ledger that determines if a collapse-return cycle closes. Includes the Γ(ω) drift cost curve showing where the first weld is possible.',
+      guidance: [
+        '<strong>Inputs:</strong> Set R (return rate) and τ<sub>R</sub> (return time). The seam debits drift Γ(ω) and curvature α·C, then credits R·τ<sub>R</sub>. Budget Δκ = credit − debit.',
+        '<strong>Outputs:</strong> Individual debit/credit terms, total budget, seam PASS/FAIL verdict (|residual| ≤ tol<sub>seam</sub> = 0.005).',
+        '<strong>What to look for:</strong> The Γ(ω) curve shows the drift cost function with its pole at ω=1. At ω ≈ 0.318, Γ first drops below 1.0 (the first weld). The budget must close for the return to be real.',
+      ],
+    },
+  };
+
+  /* ─── State ────────────────────────────────────────────────── */
+
+  let currentMode: Mode = 'compute';
+  let nChannels = 8;
+  let channelValues: number[] = [0.95, 0.92, 0.97, 0.93, 0.96, 0.94, 0.91, 0.98];
+  let weightValues: number[] = Array(8).fill(0.125);
+  let lastResult: KernelResult | null = null;
+
+  /* ─── Initialize ───────────────────────────────────────────── */
+
+  function init() {
+    renderPresets();
+    renderInputs();
+    updateModeUI();
+    attachListeners();
+    // Auto-compute on load
+    compute();
+  }
+
+  /* ─── Mode Switching ───────────────────────────────────────── */
+
+  function updateModeUI() {
+    const info = MODE_INFO[currentMode];
+    document.getElementById('mode-description')!.innerHTML = info.description;
+    document.getElementById('guidance-content')!.innerHTML = info.guidance.map(g => `<p>→ ${g}</p>`).join('');
+
+    // Toggle mode-specific controls
+    document.getElementById('sweep-controls')!.classList.toggle('hidden', currentMode !== 'sweep');
+    document.getElementById('phase-controls')!.classList.toggle('hidden', currentMode !== 'phase');
+    document.getElementById('seam-controls')!.classList.toggle('hidden', currentMode !== 'seam');
+
+    // Update sweep/phase channel selectors
+    if (currentMode === 'sweep' || currentMode === 'phase') {
+      populateChannelSelectors();
+    }
+
+    // Show/hide result sections based on mode
+    const sweepOut = document.getElementById('sweep-output')!;
+    const phaseOut = document.getElementById('phase-output')!;
+    const identityOut = document.getElementById('identity-output')!;
+    const seamOut = document.getElementById('seam-output')!;
+    const entropyOut = document.getElementById('entropy-output')!;
+    const gammaOut = document.getElementById('gamma-output')!;
+
+    sweepOut.classList.toggle('hidden', currentMode === 'phase');
+    phaseOut.classList.toggle('hidden', currentMode !== 'phase');
+    identityOut.classList.toggle('hidden', currentMode === 'phase');
+    seamOut.classList.toggle('hidden', currentMode === 'phase' || currentMode === 'identity');
+    entropyOut.classList.toggle('hidden', currentMode !== 'identity');
+    gammaOut.classList.toggle('hidden', currentMode !== 'seam');
+
+    // Update tabs active state
+    document.querySelectorAll('.mode-tab').forEach(btn => {
+      const isActive = (btn as HTMLElement).dataset.mode === currentMode;
+      btn.classList.toggle('active', isActive);
+    });
+  }
+
+  function populateChannelSelectors() {
+    const options = Array.from({ length: nChannels }, (_, i) =>
+      `<option value="${i}">c${i + 1} = ${channelValues[i].toFixed(3)}</option>`
+    ).join('');
+
+    const sweepSel = document.getElementById('sweep-channel') as HTMLSelectElement;
+    if (sweepSel) sweepSel.innerHTML = options;
+
+    const ph1 = document.getElementById('phase-ch1') as HTMLSelectElement;
+    const ph2 = document.getElementById('phase-ch2') as HTMLSelectElement;
+    if (ph1) ph1.innerHTML = options;
+    if (ph2) { ph2.innerHTML = options; if (nChannels > 1) ph2.value = '1'; }
+  }
+
+  /* ─── Presets ──────────────────────────────────────────────── */
+
+  function renderPresets() {
+    const container = document.getElementById('preset-buttons')!;
+    container.innerHTML = '';
+    for (const [key, preset] of Object.entries(PRESETS)) {
+      const btn = document.createElement('button');
+      btn.className = 'text-xs px-3 py-1.5 bg-kernel-800 text-kernel-300 rounded-lg hover:bg-kernel-700 hover:text-kernel-100 transition border border-kernel-700/50';
+      btn.textContent = preset.name;
+      btn.addEventListener('click', () => {
+        channelValues = [...preset.c];
+        weightValues = [...preset.w];
+        nChannels = channelValues.length;
+        document.getElementById('active-preset-label')!.textContent = preset.name;
+        renderInputs();
+        populateChannelSelectors();
+        compute();
+      });
+      container.appendChild(btn);
+    }
+  }
+
+  /* ─── Input Rendering ──────────────────────────────────────── */
+
+  function renderInputs() {
+    const chContainer = document.getElementById('channel-inputs')!;
+    const wContainer = document.getElementById('weight-inputs')!;
+    chContainer.innerHTML = '';
+    wContainer.innerHTML = '';
+
+    for (let i = 0; i < nChannels; i++) {
+      // Channel row
+      const chDiv = document.createElement('div');
+      chDiv.className = 'flex items-center gap-2';
+      const cVal = channelValues[i] ?? 0.5;
+      chDiv.innerHTML = `
+        <span class="text-xs text-kernel-500 w-8 font-mono">c${i + 1}</span>
+        <input type="range" min="0" max="1" step="0.001" value="${cVal}"
+          class="flex-1 h-1.5 accent-amber-500 channel-slider" data-ch="${i}" />
+        <input type="number" min="0" max="1" step="0.01" value="${cVal.toFixed(3)}"
+          class="w-20 px-2 py-1 bg-kernel-800 border border-kernel-600 rounded text-kernel-200 text-xs text-right font-mono" data-ch-num="${i}" />
+      `;
+      chContainer.appendChild(chDiv);
+
+      // Weight row
+      const wDiv = document.createElement('div');
+      wDiv.className = 'flex items-center gap-2';
+      const wVal = weightValues[i] ?? 1 / nChannels;
+      wDiv.innerHTML = `
+        <span class="text-xs text-kernel-500 w-8 font-mono">w${i + 1}</span>
+        <input type="range" min="0" max="1" step="0.001" value="${wVal}"
+          class="flex-1 h-1.5 accent-blue-400" data-w="${i}" />
+        <input type="number" min="0" max="1" step="0.01" value="${wVal.toFixed(4)}"
+          class="w-20 px-2 py-1 bg-kernel-800 border border-kernel-600 rounded text-kernel-200 text-xs text-right font-mono" data-w-num="${i}" />
+      `;
+      wContainer.appendChild(wDiv);
+    }
+    updateWeightSum();
+    drawChannelBars();
+  }
+
+  /* ─── Channel Bar Chart ────────────────────────────────────── */
+
+  function drawChannelBars() {
+    const canvas = document.getElementById('channel-bar-canvas') as HTMLCanvasElement;
+    if (!canvas) return;
+    const parent = canvas.parentElement!;
+    const cssW = parent.clientWidth;
+    const cssH = 70;
+    const dpr = Math.min(window.devicePixelRatio || 1, 3);
+    canvas.width = Math.round(cssW * dpr);
+    canvas.height = Math.round(cssH * dpr);
+    canvas.style.width = cssW + 'px';
+    canvas.style.height = cssH + 'px';
+    const ctx = canvas.getContext('2d')!;
+    ctx.scale(dpr, dpr);
+
+    ctx.fillStyle = '#0a0a14';
+    ctx.fillRect(0, 0, cssW, cssH);
+
+    const n = channelValues.length;
+    const barW = Math.min((cssW - 20) / n - 4, 40);
+    const totalW = n * (barW + 4);
+    const startX = (cssW - totalW) / 2;
+
+    for (let i = 0; i < n; i++) {
+      const v = channelValues[i];
+      const x = startX + i * (barW + 4);
+      const h = v * (cssH - 22);
+      const y = cssH - 12 - h;
+
+      // Bar gradient
+      const grad = ctx.createLinearGradient(x, y, x, cssH - 12);
+      if (v < 0.1) { grad.addColorStop(0, '#ef4444'); grad.addColorStop(1, '#7f1d1d'); }
+      else if (v < 0.5) { grad.addColorStop(0, '#f59e0b'); grad.addColorStop(1, '#78350f'); }
+      else { grad.addColorStop(0, '#34d399'); grad.addColorStop(1, '#064e3b'); }
+      ctx.fillStyle = grad;
+      ctx.fillRect(x, y, barW, h);
+
+      // Label
+      ctx.fillStyle = '#64748b';
+      ctx.font = '9px ui-monospace, monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(`c${i + 1}`, x + barW / 2, cssH - 2);
+    }
+  }
+
+  /* ─── Listeners ────────────────────────────────────────────── */
+
+  function attachListeners() {
+    // Mode tabs
+    document.querySelectorAll('.mode-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentMode = (btn as HTMLElement).dataset.mode as Mode;
+        updateModeUI();
+        if (lastResult) compute();
+      });
+    });
+
+    // Channel inputs (delegated)
+    document.getElementById('channel-inputs')!.addEventListener('input', (e) => {
+      const t = e.target as HTMLInputElement;
+      const idx = t.dataset.ch ?? t.dataset.chNum;
+      if (idx !== undefined) {
+        const i = parseInt(idx);
+        channelValues[i] = parseFloat(t.value);
+        const row = t.closest('div')!;
+        const slider = row.querySelector(`[data-ch="${i}"]`) as HTMLInputElement;
+        const num = row.querySelector(`[data-ch-num="${i}"]`) as HTMLInputElement;
+        if (slider && t !== slider) slider.value = t.value;
+        if (num && t !== num) num.value = parseFloat(t.value).toFixed(3);
+        document.getElementById('active-preset-label')!.textContent = 'Custom';
+        drawChannelBars();
+      }
+    });
+
+    // Weight inputs
+    document.getElementById('weight-inputs')!.addEventListener('input', (e) => {
+      const t = e.target as HTMLInputElement;
+      const idx = t.dataset.w ?? t.dataset.wNum;
+      if (idx !== undefined) {
+        const i = parseInt(idx);
+        weightValues[i] = parseFloat(t.value);
+        const row = t.closest('div')!;
+        const slider = row.querySelector(`[data-w="${i}"]`) as HTMLInputElement;
+        const num = row.querySelector(`[data-w-num="${i}"]`) as HTMLInputElement;
+        if (slider && t !== slider) slider.value = t.value;
+        if (num && t !== num) num.value = parseFloat(t.value).toFixed(4);
+        updateWeightSum();
+      }
+    });
+
+    // Add/remove
+    document.getElementById('btn-add-ch')!.addEventListener('click', () => {
+      nChannels++;
+      channelValues.push(0.5);
+      weightValues.push(0);
+      renderInputs();
+      populateChannelSelectors();
+    });
+    document.getElementById('btn-rm-ch')!.addEventListener('click', () => {
+      if (nChannels > 2) {
+        nChannels--;
+        channelValues.pop();
+        weightValues.pop();
+        renderInputs();
+        populateChannelSelectors();
+      }
+    });
+
+    // Uniform weights
+    document.getElementById('btn-uniform')!.addEventListener('click', () => {
+      weightValues = Array(nChannels).fill(1 / nChannels);
+      renderInputs();
+    });
+
+    // Compute
+    document.getElementById('btn-compute')!.addEventListener('click', compute);
+  }
+
+  function updateWeightSum() {
+    const sum = weightValues.reduce((a, b) => a + b, 0);
+    const el = document.getElementById('weight-sum')!;
+    el.textContent = `Σw = ${sum.toFixed(4)}`;
+    el.className = Math.abs(sum - 1) < 0.01
+      ? 'text-xs text-green-400 mt-2 font-mono'
+      : 'text-xs text-red-400 mt-2 font-mono';
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     COMPUTE — Main dispatcher
+     ═══════════════════════════════════════════════════════════════ */
+
+  function compute() {
+    // Core kernel computation (always runs)
+    const result = computeKernel(channelValues, weightValues);
+    lastResult = result;
+    const { regime, isCritical } = classifyRegime(result);
+    const identities = verifyIdentities(result);
+
+    // Show results
+    document.getElementById('results-area')!.classList.remove('hidden');
+
+    // Regime badge
+    renderRegimeBadge(regime, isCritical);
+
+    // Output cards
+    renderOutputCards(result);
+
+    // Gap panel
+    renderGapPanel(result);
+
+    // Radar chart
+    renderRadar(result, regime, isCritical);
+
+    // Identity checks
+    renderIdentityChecks(identities);
+
+    // Mode-specific outputs
+    if (currentMode === 'sweep') {
+      renderSweepChart();
+    } else if (currentMode === 'compute') {
+      // Auto-sweep first channel for compute mode too
+      renderSweepChart(0);
+    }
+
+    if (currentMode === 'phase') {
+      renderPhaseHeatmap();
+    }
+
+    if (currentMode === 'identity') {
+      renderEntropyCurve();
+    }
+
+    if (currentMode === 'seam') {
+      renderGammaCurve();
+    }
+
+    // Seam budget (compute + seam modes)
+    if (currentMode === 'compute' || currentMode === 'seam') {
+      renderSeamBudget(result);
+    }
+
+    // Interpretation
+    renderInterpretation(result, regime, isCritical);
+  }
+
+  /* ─── Regime Badge ─────────────────────────────────────────── */
+
+  function renderRegimeBadge(regime: string, isCritical: boolean) {
+    const badge = document.getElementById('regime-badge')!;
+    badge.className = 'text-center py-4 rounded-xl font-bold text-xl border-2 shadow-lg';
+    if (isCritical) badge.classList.add('regime-critical');
+    else if (regime === 'STABLE') badge.classList.add('regime-stable');
+    else if (regime === 'WATCH') badge.classList.add('regime-watch');
+    else badge.classList.add('regime-collapse');
+    badge.textContent = isCritical ? `${regime} + CRITICAL` : regime;
+  }
+
+  /* ─── Output Cards ─────────────────────────────────────────── */
+
+  function renderOutputCards(result: KernelResult) {
+    const grid = document.getElementById('invariants-grid')!;
+    const syms = KERNEL_SYMBOLS;
+    const entries = [
+      { key: 'F', value: result.F, sym: syms.F, desc: 'What survives collapse' },
+      { key: 'omega', value: result.omega, sym: syms.omega, desc: 'What is lost to collapse' },
+      { key: 'S', value: result.S, sym: syms.S, desc: 'Collapse field uncertainty' },
+      { key: 'C', value: result.C, sym: syms.C, desc: 'Channel heterogeneity' },
+      { key: 'kappa', value: result.kappa, sym: syms.kappa, desc: 'Log-sensitivity of coherence' },
+      { key: 'IC', value: result.IC, sym: syms.IC, desc: 'Multiplicative coherence' },
+    ];
+
+    grid.innerHTML = entries.map(e => {
+      const dangerClass = (e.key === 'omega' && e.value > 0.3) || (e.key === 'IC' && e.value < 0.3)
+        ? 'border-red-700/50' : 'border-kernel-700';
+      return `
+        <div class="bg-kernel-800/80 rounded-xl p-3 border ${dangerClass} hover:border-kernel-600 transition group">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-xs text-kernel-500">${e.sym.name}</span>
+            <span class="text-xs text-kernel-600">${e.sym.symbol}</span>
+          </div>
+          <div class="text-lg font-mono font-bold text-kernel-100">${e.value.toFixed(6)}</div>
+          <div class="text-xs text-kernel-600 mt-1 italic">${e.sym.latin}</div>
+          <div class="text-xs text-kernel-500 mt-0.5 hidden group-hover:block">${e.desc}</div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  /* ─── Gap Panel ────────────────────────────────────────────── */
+
+  function renderGapPanel(result: KernelResult) {
+    const gapValue = document.getElementById('gap-value')!;
+    const gapBar = document.getElementById('gap-bar')!;
+    const gapInterp = document.getElementById('gap-interpretation')!;
+
+    gapValue.textContent = result.delta.toFixed(6);
+    gapValue.className = 'text-lg font-mono font-bold ' +
+      (result.delta > 0.3 ? 'text-red-400' : result.delta > 0.1 ? 'text-amber-400' : 'text-green-400');
+
+    gapBar.style.width = Math.min(result.delta * 100, 100) + '%';
+    gapBar.className = 'h-3 rounded-full transition-all ' +
+      (result.delta > 0.3 ? 'bg-red-500' : result.delta > 0.1 ? 'bg-amber-500' : 'bg-green-500');
+
+    if (result.delta < 0.01) {
+      gapInterp.textContent = 'Near-homogeneous trace. All channels close to equal → IC ≈ F.';
+    } else if (result.delta < 0.1) {
+      gapInterp.textContent = 'Mild heterogeneity. Channels diverge slightly — IC tracks F with small lag.';
+    } else if (result.delta < 0.3) {
+      gapInterp.textContent = 'Significant heterogeneity. One or more weaker channels drag IC below F. Investigate which channels are lowest.';
+    } else {
+      gapInterp.textContent = 'Geometric slaughter zone. At least one channel near ε is destroying multiplicative coherence while arithmetic mean stays moderate. This is the integrity cliff.';
+    }
+  }
+
+  /* ─── Radar ────────────────────────────────────────────────── */
+
+  function renderRadar(result: KernelResult, regime: string, isCritical: boolean) {
+    const canvas = document.getElementById('radar-canvas') as HTMLCanvasElement;
+    const tooltip = document.getElementById('radar-tooltip')!;
+    const container = canvas.parentElement!;
+    const cssW = Math.min(container.clientWidth, 460);
+    const cssH = cssW;
+    const dpr = Math.min(window.devicePixelRatio || 1, 3);
+    canvas.width = Math.round(cssW * dpr);
+    canvas.height = Math.round(cssH * dpr);
+    canvas.style.width = cssW + 'px';
+    canvas.style.height = cssH + 'px';
+    const ctx = canvas.getContext('2d')!;
+    ctx.scale(dpr, dpr);
+
+    ctx.fillStyle = '#06060c';
+    ctx.fillRect(0, 0, cssW, cssH);
+
+    const cx = cssW / 2, cy = cssH / 2;
+    const radius = Math.min(cssW, cssH) / 2 - 44;
+
+    const axes = [
+      { label: 'F', value: result.F, max: 1 },
+      { label: 'ω', value: result.omega, max: 1 },
+      { label: 'S', value: result.S, max: Math.log(2) + 0.01 },
+      { label: 'C', value: result.C, max: 1 },
+      { label: 'κ', value: Math.abs(result.kappa), max: Math.max(Math.abs(result.kappa), 5) },
+      { label: 'IC', value: result.IC, max: 1 },
+    ];
+    const n = axes.length;
+    const angle = (i: number) => (Math.PI * 2 * i) / n - Math.PI / 2;
+
+    // Grid rings
+    for (let r = 1; r <= 5; r++) {
+      const rr = (r / 5) * radius;
+      ctx.beginPath();
+      for (let i = 0; i <= n; i++) {
+        const a = angle(i % n);
+        i === 0 ? ctx.moveTo(cx + rr * Math.cos(a), cy + rr * Math.sin(a))
+                 : ctx.lineTo(cx + rr * Math.cos(a), cy + rr * Math.sin(a));
+      }
+      ctx.closePath();
+      ctx.strokeStyle = r === 5 ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.06)';
+      ctx.lineWidth = r === 5 ? 0.8 : 0.5;
+      ctx.stroke();
+      // Ring scale label
+      if (r < 5) {
+        ctx.fillStyle = 'rgba(255,255,255,0.15)';
+        ctx.font = '8px ui-monospace, monospace';
+        ctx.textAlign = 'left';
+        ctx.fillText((r / 5).toFixed(1), cx + 3, cy - rr + 3);
+      }
+    }
+
+    // Spokes
+    for (let i = 0; i < n; i++) {
+      const a = angle(i);
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + radius * Math.cos(a), cy + radius * Math.sin(a));
+      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+    }
+
+    // Labels
+    ctx.font = '13px ui-sans-serif, system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    for (let i = 0; i < n; i++) {
+      const a = angle(i);
+      const lx = cx + (radius + 26) * Math.cos(a);
+      const ly = cy + (radius + 26) * Math.sin(a);
+      ctx.fillStyle = 'rgba(255,255,255,0.75)';
+      ctx.fillText(axes[i].label, lx, ly);
+      ctx.font = '10px ui-monospace, monospace';
+      ctx.fillStyle = 'rgba(255,255,255,0.4)';
+      const nv = axes[i].label === 'κ' ? result.kappa.toFixed(3) : axes[i].value.toFixed(3);
+      ctx.fillText(nv, lx, ly + 15);
+      ctx.font = '13px ui-sans-serif, system-ui, sans-serif';
+    }
+
+    // Data polygon
+    const dataPoints: [number, number][] = [];
+    for (let i = 0; i < n; i++) {
+      const norm = Math.min(axes[i].value / axes[i].max, 1);
+      const a = angle(i);
+      dataPoints.push([cx + norm * radius * Math.cos(a), cy + norm * radius * Math.sin(a)]);
+    }
+
+    const rc = isCritical ? 'rgba(168,85,247,' : regime === 'STABLE' ? 'rgba(34,197,94,' : regime === 'WATCH' ? 'rgba(245,158,11,' : 'rgba(239,68,68,';
+
+    ctx.beginPath();
+    for (let i = 0; i <= n; i++) {
+      const [px, py] = dataPoints[i % n];
+      i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+    ctx.fillStyle = rc + '0.12)';
+    ctx.fill();
+    ctx.shadowColor = rc + '0.5)';
+    ctx.shadowBlur = 10;
+    ctx.strokeStyle = rc + '0.8)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    for (let i = 0; i < n; i++) {
+      const [px, py] = dataPoints[i];
+      ctx.beginPath();
+      ctx.arc(px, py, 4, 0, Math.PI * 2);
+      ctx.fillStyle = rc + '0.9)';
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+    }
+
+    // Hover
+    canvas.onmousemove = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+      let closest = -1, minD = 20;
+      for (let i = 0; i < n; i++) {
+        const dx = mx - dataPoints[i][0], dy = my - dataPoints[i][1];
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if (d < minD) { minD = d; closest = i; }
+      }
+      if (closest >= 0) {
+        const ax = axes[closest];
+        tooltip.innerHTML = `${ax.label} = ${ax.label === 'κ' ? result.kappa.toFixed(6) : ax.value.toFixed(6)}`;
+        tooltip.style.left = (mx + 12) + 'px';
+        tooltip.style.top = (my - 10) + 'px';
+        tooltip.classList.remove('hidden');
+      } else {
+        tooltip.classList.add('hidden');
+      }
+    };
+    canvas.onmouseleave = () => tooltip.classList.add('hidden');
+  }
+
+  /* ─── Identity Checks ──────────────────────────────────────── */
+
+  function renderIdentityChecks(identities: ReturnType<typeof verifyIdentities>) {
+    const container = document.getElementById('identity-checks')!;
+    container.innerHTML = identities.map(check => `
+      <div class="flex items-center justify-between p-2 rounded-lg ${check.pass ? 'bg-green-900/20 border border-green-800/30' : 'bg-red-900/20 border border-red-800/30'}">
+        <span class="text-sm text-kernel-300">
+          <span class="${check.pass ? 'text-green-400' : 'text-red-400'} font-bold">${check.pass ? '✓' : '✗'}</span>
+          <span class="font-semibold ml-1">${check.name}:</span>
+          <span class="text-kernel-400 ml-1">${check.formula}</span>
+        </span>
+        <span class="font-mono text-xs ${check.pass ? 'text-green-400' : 'text-red-400'}">
+          |r| = ${check.residual.toExponential(2)}
+        </span>
+      </div>
+    `).join('');
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     SWEEP CHART
+     ═══════════════════════════════════════════════════════════════ */
+
+  function renderSweepChart(overrideChannel?: number) {
+    const chIdx = overrideChannel ?? parseInt((document.getElementById('sweep-channel') as HTMLSelectElement)?.value ?? '0');
+    const resolution = parseInt((document.getElementById('sweep-resolution') as HTMLSelectElement)?.value ?? '200');
+    const metric = (document.getElementById('sweep-metric') as HTMLSelectElement)?.value ?? 'all';
+
+    const data = sweepChannel(channelValues, weightValues, chIdx, resolution);
+
+    // Title
+    document.getElementById('sweep-chart-title')!.textContent =
+      `Sensitivity Sweep — c${chIdx + 1} from 0 → 1`;
+    document.getElementById('sweep-chart-subtitle')!.textContent =
+      `Other channels fixed. ${currentMode === 'compute' ? 'Switch to Sweep mode for full controls.' : ''}`;
+
+    const canvas = document.getElementById('sweep-canvas') as HTMLCanvasElement;
+    const tooltipEl = document.getElementById('sweep-tooltip')!;
+    const parent = canvas.parentElement!;
+    const cssW = parent.clientWidth;
+    const cssH = 340;
+
+    const area = setupCanvas(canvas, cssW, cssH, {
+      margins: { top: 20, right: 20, bottom: 48, left: 60 },
+    });
+    clearChart(area);
+
+    const xAxis: AxisConfig = { label: `c${chIdx + 1}`, min: 0, max: 1, ticks: 10 };
+
+    // Determine Y range based on metric
+    let yMax = 1;
+    if (metric === 'all' || metric === 'S') {
+      const sMax = Math.max(...data.map(d => d.S));
+      if (sMax > yMax) yMax = sMax * 1.1;
+    }
+    const yAxis: AxisConfig = { label: metric === 'all' ? 'Invariant value' : metric, min: 0, max: yMax, ticks: 8 };
+
+    drawGrid(area, xAxis, yAxis);
+    drawAxes(area, xAxis, yAxis);
+
+    const xr = { min: 0, max: 1 };
+    const yr = { min: 0, max: yMax };
+
+    // Regime background bands
+    for (let i = 0; i < data.length - 1; i++) {
+      const d = data[i];
+      const x1 = mapX(area, d.param, 0, 1);
+      const x2 = mapX(area, data[i + 1].param, 0, 1);
+      let col = 'rgba(5,150,105,0.06)';
+      if (d.regime === 'WATCH') col = 'rgba(217,119,6,0.06)';
+      else if (d.regime === 'COLLAPSE') col = 'rgba(220,38,38,0.06)';
+      area.ctx.fillStyle = col;
+      area.ctx.fillRect(x1, area.plotY, x2 - x1, area.plotH);
+    }
+
+    // Draw curves
+    const curves: { key: string; color: string; get: (d: SweepPoint) => number }[] =
+      metric === 'all'
+        ? [
+            { key: 'F', color: CHART_COLORS.green, get: d => d.F },
+            { key: 'IC', color: CHART_COLORS.cyan, get: d => d.IC },
+            { key: 'ω', color: CHART_COLORS.red, get: d => d.omega },
+            { key: 'S', color: CHART_COLORS.amber, get: d => d.S },
+            { key: 'C', color: CHART_COLORS.purple, get: d => d.C },
+            { key: 'Δ', color: '#fb923c', get: d => d.delta },
+          ]
+        : metric === 'F' ? [{ key: 'F', color: CHART_COLORS.green, get: d => d.F }]
+        : metric === 'IC' ? [{ key: 'IC', color: CHART_COLORS.cyan, get: d => d.IC }, { key: 'F', color: CHART_COLORS.green, get: d => d.F }]
+        : metric === 'delta' ? [{ key: 'Δ', color: '#fb923c', get: d => d.delta }]
+        : [{ key: 'S', color: CHART_COLORS.amber, get: d => d.S }];
+
+    for (const curve of curves) {
+      const pts = data.map(d => ({ x: d.param, y: curve.get(d) }));
+      drawCurve(area, pts, xr, yr, { color: curve.color, lineWidth: 1.8 });
+    }
+
+    // Current position marker
+    if (channelValues[chIdx] !== undefined) {
+      const cv = channelValues[chIdx];
+      drawVerticalMarker(area, cv, xr, {
+        color: 'rgba(255,255,255,0.4)',
+        dash: [4, 4],
+        label: `Current: ${cv.toFixed(3)}`,
+        labelPosition: 'top',
+      });
+    }
+
+    // Regime threshold markers
+    drawHorizontalMarker(area, 0.038, yr, { color: 'rgba(5,150,105,0.4)', dash: [4, 4], label: 'ω stable < 0.038' });
+    drawHorizontalMarker(area, 0.30, yr, { color: 'rgba(220,38,38,0.4)', dash: [4, 4], label: 'ω collapse ≥ 0.30' });
+
+    // Legend
+    drawLegend(area, curves.map(c => ({ label: c.key, color: c.color })), 'top-right');
+
+    // Hover
+    canvas.onmousemove = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const paramVal = (mx - area.plotX) / area.plotW;
+      if (paramVal < 0 || paramVal > 1) { tooltipEl.classList.add('hidden'); return; }
+      const idx = Math.round(paramVal * (data.length - 1));
+      if (idx < 0 || idx >= data.length) { tooltipEl.classList.add('hidden'); return; }
+      const d = data[idx];
+      tooltipEl.innerHTML = [
+        `c${chIdx + 1} = ${d.param.toFixed(3)}  [${d.regime}]`,
+        `F  = ${d.F.toFixed(4)}   IC = ${d.IC.toFixed(4)}`,
+        `ω  = ${d.omega.toFixed(4)}   Δ  = ${d.delta.toFixed(4)}`,
+        `S  = ${d.S.toFixed(4)}   C  = ${d.C.toFixed(4)}`,
+      ].join('\n');
+      tooltipEl.style.left = Math.min(mx + 12, cssW - 200) + 'px';
+      tooltipEl.style.top = '8px';
+      tooltipEl.classList.remove('hidden');
+    };
+    canvas.onmouseleave = () => tooltipEl.classList.add('hidden');
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     PHASE HEATMAP
+     ═══════════════════════════════════════════════════════════════ */
+
+  function renderPhaseHeatmap() {
+    const ch1 = parseInt((document.getElementById('phase-ch1') as HTMLSelectElement).value);
+    const ch2 = parseInt((document.getElementById('phase-ch2') as HTMLSelectElement).value);
+    const metric = (document.getElementById('phase-metric') as HTMLSelectElement).value as 'F' | 'IC' | 'delta' | 'S' | 'omega' | 'C';
+
+    document.getElementById('phase-subtitle')!.textContent =
+      `c${ch1 + 1} (X) × c${ch2 + 1} (Y) — color = ${metric}. Current position marked ◉.`;
+
+    const steps = 60;
+    const { data: heatData, size, min: hMin, max: hMax } = heatmap2D(
+      channelValues, weightValues, ch1, ch2, metric, steps
+    );
+
+    const canvas = document.getElementById('phase-canvas') as HTMLCanvasElement;
+    const tooltipEl = document.getElementById('phase-tooltip')!;
+    const parent = canvas.parentElement!;
+    const cssW = parent.clientWidth;
+    const cssH = 400;
+
+    const area = setupCanvas(canvas, cssW, cssH, {
+      margins: { top: 20, right: 80, bottom: 48, left: 60 },
+    });
+    clearChart(area);
+
+    const xAxis: AxisConfig = { label: `c${ch1 + 1}`, min: 0, max: 1, ticks: 10 };
+    const yAxis: AxisConfig = { label: `c${ch2 + 1}`, min: 0, max: 1, ticks: 10 };
+    drawAxes(area, xAxis, yAxis);
+
+    // Draw heatmap cells
+    const cellW = area.plotW / size;
+    const cellH = area.plotH / size;
+    const range = hMax - hMin || 1;
+
+    for (let j = 0; j < size; j++) {
+      for (let i = 0; i < size; i++) {
+        const v = heatData[j * size + i];
+        const t = (v - hMin) / range; // 0→1
+        area.ctx.fillStyle = heatmapColor(t, metric);
+        const px = area.plotX + i * cellW;
+        const py = area.plotY + area.plotH - (j + 1) * cellH;
+        area.ctx.fillRect(px, py, cellW + 0.5, cellH + 0.5);
+      }
+    }
+
+    // Mark current point
+    const curX = mapX(area, channelValues[ch1], 0, 1);
+    const curY = mapY(area, channelValues[ch2], 0, 1);
+    area.ctx.beginPath();
+    area.ctx.arc(curX, curY, 6, 0, Math.PI * 2);
+    area.ctx.strokeStyle = '#fff';
+    area.ctx.lineWidth = 2;
+    area.ctx.stroke();
+    area.ctx.beginPath();
+    area.ctx.arc(curX, curY, 3, 0, Math.PI * 2);
+    area.ctx.fillStyle = '#fff';
+    area.ctx.fill();
+
+    // Color bar (legend)
+    const barX = area.plotX + area.plotW + 16;
+    const barY = area.plotY;
+    const barW = 16;
+    const barH = area.plotH;
+    for (let y = 0; y < barH; y++) {
+      const t = 1 - y / barH;
+      area.ctx.fillStyle = heatmapColor(t, metric);
+      area.ctx.fillRect(barX, barY + y, barW, 1.5);
+    }
+    area.ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+    area.ctx.strokeRect(barX, barY, barW, barH);
+    area.ctx.fillStyle = '#94a3b8';
+    area.ctx.font = '10px ui-monospace, monospace';
+    area.ctx.textAlign = 'left';
+    area.ctx.fillText(hMax.toFixed(3), barX + barW + 4, barY + 5);
+    area.ctx.fillText(hMin.toFixed(3), barX + barW + 4, barY + barH);
+    area.ctx.fillText(((hMin + hMax) / 2).toFixed(3), barX + barW + 4, barY + barH / 2 + 3);
+
+    // Hover
+    canvas.onmousemove = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+      const normX = (mx - area.plotX) / area.plotW;
+      const normY = 1 - (my - area.plotY) / area.plotH;
+      if (normX < 0 || normX > 1 || normY < 0 || normY > 1) { tooltipEl.classList.add('hidden'); return; }
+      const i = Math.floor(normX * steps);
+      const j = Math.floor(normY * steps);
+      const v = heatData[j * size + i];
+      tooltipEl.innerHTML = `c${ch1+1}=${normX.toFixed(3)}, c${ch2+1}=${normY.toFixed(3)}\n${metric} = ${v.toFixed(4)}`;
+      tooltipEl.style.left = Math.min(mx + 12, cssW - 180) + 'px';
+      tooltipEl.style.top = Math.min(my + 12, cssH - 60) + 'px';
+      tooltipEl.classList.remove('hidden');
+    };
+    canvas.onmouseleave = () => tooltipEl.classList.add('hidden');
+  }
+
+  function heatmapColor(t: number, metric: string): string {
+    // t in [0,1] → color
+    if (metric === 'omega' || metric === 'C' || metric === 'delta') {
+      // Inverted: high = bad (red), low = good (green)
+      const r = Math.round(40 + t * 200);
+      const g = Math.round(180 - t * 150);
+      const b = Math.round(100 - t * 60);
+      return `rgb(${r},${g},${b})`;
+    }
+    // Normal: high = good (cyan/green), low = bad (dark)
+    const r = Math.round(10 + t * 30);
+    const g = Math.round(20 + t * 200);
+    const b = Math.round(40 + t * 180);
+    return `rgb(${r},${g},${b})`;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     ENTROPY CURVE (Identity Lab)
+     ═══════════════════════════════════════════════════════════════ */
+
+  function renderEntropyCurve() {
+    document.getElementById('entropy-output')!.classList.remove('hidden');
+    const data = entropyCurve(300);
+
+    const canvas = document.getElementById('entropy-canvas') as HTMLCanvasElement;
+    const parent = canvas.parentElement!;
+    const cssW = parent.clientWidth;
+    const cssH = 300;
+
+    const area = setupCanvas(canvas, cssW, cssH, {
+      margins: { top: 20, right: 20, bottom: 48, left: 60 },
+    });
+    clearChart(area);
+
+    const xAxis: AxisConfig = { label: 'Channel value c', min: 0, max: 1, ticks: 10 };
+    const yMax = 1.0;
+    const yMin = -5;
+    const yAxis: AxisConfig = { label: 'Value', min: yMin, max: yMax, ticks: 6 };
+
+    drawGrid(area, xAxis, yAxis);
+    drawAxes(area, xAxis, yAxis);
+
+    const xr = { min: 0, max: 1 };
+    const yr = { min: yMin, max: yMax };
+
+    // S curve
+    drawCurve(area, data.map(d => ({ x: d.c, y: d.S })), xr, yr, { color: CHART_COLORS.amber, lineWidth: 2 });
+    // κ curve
+    drawCurve(area, data.filter(d => d.kappa > yMin).map(d => ({ x: d.c, y: d.kappa })), xr, yr, { color: CHART_COLORS.cyan, lineWidth: 2 });
+    // f = S + κ
+    drawCurve(area, data.filter(d => d.f > yMin && d.f < yMax).map(d => ({ x: d.c, y: d.f })), xr, yr, { color: CHART_COLORS.green, lineWidth: 2.5 });
+
+    // Zero line
+    drawHorizontalMarker(area, 0, yr, { color: 'rgba(255,255,255,0.2)', dash: [3, 3] });
+    // Equator marker
+    drawVerticalMarker(area, 0.5, xr, { color: 'rgba(168,85,247,0.5)', dash: [4, 4], label: 'c = ½ (equator)' });
+    // c* marker
+    drawVerticalMarker(area, 0.7822, xr, { color: 'rgba(34,211,153,0.4)', dash: [4, 4], label: 'c* = 0.7822' });
+
+    drawLegend(area, [
+      { label: 'S (entropy)', color: CHART_COLORS.amber },
+      { label: 'κ (log-integrity)', color: CHART_COLORS.cyan },
+      { label: 'f = S + κ', color: CHART_COLORS.green },
+    ], 'bottom-right');
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     GAMMA CURVE (Seam Budget)
+     ═══════════════════════════════════════════════════════════════ */
+
+  function renderGammaCurve() {
+    document.getElementById('gamma-output')!.classList.remove('hidden');
+    const data = gammaCurve(300);
+
+    const canvas = document.getElementById('gamma-canvas') as HTMLCanvasElement;
+    const parent = canvas.parentElement!;
+    const cssW = parent.clientWidth;
+    const cssH = 300;
+
+    const area = setupCanvas(canvas, cssW, cssH, {
+      margins: { top: 20, right: 20, bottom: 48, left: 60 },
+    });
+    clearChart(area);
+
+    // Clip y to reasonable range
+    const yMax = 5;
+    const xAxis: AxisConfig = { label: 'Drift ω', min: 0, max: 1, ticks: 10 };
+    const yAxis: AxisConfig = { label: 'Γ(ω)', min: 0, max: yMax, ticks: 10 };
+
+    drawGrid(area, xAxis, yAxis);
+    drawAxes(area, xAxis, yAxis);
+
+    const xr = { min: 0, max: 1 };
+    const yr = { min: 0, max: yMax };
+
+    const clipped = data.filter(d => d.gamma < yMax);
+    drawCurve(area, clipped.map(d => ({ x: d.omega, y: d.gamma })), xr, yr, {
+      color: CHART_COLORS.red, lineWidth: 2.5,
+    });
+
+    // Markers
+    drawHorizontalMarker(area, 1.0, yr, { color: 'rgba(255,255,255,0.3)', dash: [4, 4], label: 'Γ = 1.0' });
+    drawVerticalMarker(area, 0.038, xr, { color: 'rgba(5,150,105,0.5)', dash: [4, 4], label: 'ω stable < 0.038' });
+    drawVerticalMarker(area, 0.30, xr, { color: 'rgba(220,38,38,0.5)', dash: [4, 4], label: 'ω collapse ≥ 0.30' });
+
+    // Mark current omega
+    if (lastResult) {
+      const curOmega = lastResult.omega;
+      const curGamma = gammaOmega(curOmega);
+      if (curGamma < yMax) {
+        drawPoint(area, curOmega, curGamma, xr, yr, {
+          color: CHART_COLORS.amber, radius: 5, strokeColor: '#fff', glow: true,
+        });
+      }
+    }
+
+    drawLegend(area, [{ label: 'Γ(ω) = ω³/(1−ω+ε)', color: CHART_COLORS.red }], 'top-left');
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     SEAM BUDGET
+     ═══════════════════════════════════════════════════════════════ */
+
+  function renderSeamBudget(result: KernelResult) {
+    const R = parseFloat((document.getElementById('seam-R') as HTMLInputElement)?.value ?? '1');
+    const tauR = parseFloat((document.getElementById('seam-tauR') as HTMLInputElement)?.value ?? '1');
+    const seam = computeSeamBudget(result.omega, result.C, R, tauR);
+
+    const container = document.getElementById('seam-results')!;
+    container.innerHTML = `
+      <!-- Budget bar visualization -->
+      <div class="bg-kernel-800 rounded-xl p-4 mb-3">
+        <div class="flex items-center justify-between text-xs text-kernel-500 mb-2">
+          <span>DEBITS (cost)</span>
+          <span>CREDIT (return)</span>
+        </div>
+        <div class="flex h-8 rounded-lg overflow-hidden gap-1">
+          <div class="bg-red-600/60 flex items-center justify-center text-xs text-red-200 font-mono"
+            style="width: ${Math.min(seam.D_omega / (seam.D_omega + seam.D_C + Math.max(seam.credit, 0.01)) * 100, 50)}%">
+            Γ ${seam.D_omega.toFixed(3)}
+          </div>
+          <div class="bg-amber-600/60 flex items-center justify-center text-xs text-amber-200 font-mono"
+            style="width: ${Math.min(seam.D_C / (seam.D_omega + seam.D_C + Math.max(seam.credit, 0.01)) * 100, 30)}%">
+            D<sub>C</sub> ${seam.D_C.toFixed(3)}
+          </div>
+          <div class="flex-1 bg-green-600/60 flex items-center justify-center text-xs text-green-200 font-mono">
+            R·τ ${seam.credit.toFixed(3)}
+          </div>
+        </div>
+      </div>
+
+      <!-- Detail grid -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+        <div class="bg-kernel-800 rounded-lg p-2.5">
+          <span class="text-kernel-500">Γ(ω)</span>
+          <span class="float-right font-mono text-red-400">${seam.gamma.toFixed(6)}</span>
+        </div>
+        <div class="bg-kernel-800 rounded-lg p-2.5">
+          <span class="text-kernel-500">D<sub>ω</sub></span>
+          <span class="float-right font-mono text-red-400">${seam.D_omega.toFixed(6)}</span>
+        </div>
+        <div class="bg-kernel-800 rounded-lg p-2.5">
+          <span class="text-kernel-500">D<sub>C</sub></span>
+          <span class="float-right font-mono text-amber-400">${seam.D_C.toFixed(6)}</span>
+        </div>
+        <div class="bg-kernel-800 rounded-lg p-2.5">
+          <span class="text-kernel-500">Credit</span>
+          <span class="float-right font-mono text-green-400">${seam.credit.toFixed(6)}</span>
+        </div>
+      </div>
+
+      <!-- Budget result -->
+      <div class="mt-3 grid grid-cols-2 gap-2 text-xs">
+        <div class="bg-kernel-800 rounded-lg p-2.5">
+          <span class="text-kernel-500">Δκ (budget)</span>
+          <span class="float-right font-mono ${seam.deltaKappa >= 0 ? 'text-green-400' : 'text-red-400'}">${seam.deltaKappa.toFixed(6)}</span>
+        </div>
+        <div class="bg-kernel-800 rounded-lg p-2.5">
+          <span class="text-kernel-500">|residual|</span>
+          <span class="float-right font-mono text-kernel-200">${Math.abs(seam.residual).toFixed(6)}</span>
+        </div>
+      </div>
+
+      <!-- PASS/FAIL -->
+      <div class="mt-3 p-3 rounded-xl text-center font-bold text-sm border ${
+        seam.pass
+          ? 'bg-green-900/30 text-green-400 border-green-700/50'
+          : 'bg-red-900/30 text-red-400 border-red-700/50'
+      }">
+        Seam ${seam.pass ? 'PASS ✓' : 'FAIL ✗'} — |s| = ${Math.abs(seam.residual).toFixed(6)} ${seam.pass ? '≤' : '>'} tol = 0.005
+      </div>
+    `;
+
+    // Re-attach seam listeners for live update
+    const rInput = document.getElementById('seam-R');
+    const tInput = document.getElementById('seam-tauR');
+    if (rInput) rInput.oninput = () => renderSeamBudget(result);
+    if (tInput) tInput.oninput = () => renderSeamBudget(result);
+  }
+
+  /* ─── Interpretation ───────────────────────────────────────── */
+
+  function renderInterpretation(result: KernelResult, regime: string, isCritical: boolean) {
+    const lines: string[] = [];
+
+    // Regime assessment
+    if (regime === 'STABLE') {
+      lines.push(`<strong>Regime: Stable.</strong> All four gates satisfied (ω < 0.038, F > 0.90, S < 0.15, C < 0.14). This trace vector is in the rare 12.5% of Fisher space that qualifies as stable.`);
+    } else if (regime === 'WATCH') {
+      lines.push(`<strong>Regime: Watch.</strong> Between stability and collapse. At least one gate fails the Stable criterion but ω < 0.30. The system retains structure but has measurable drift.`);
+    } else {
+      lines.push(`<strong>Regime: Collapse.</strong> Drift ω ≥ 0.30 — the system has lost substantial fidelity. This is not failure; it is the condition that makes return meaningful. <em>Ruptura est fons constantiae.</em>`);
+    }
+    if (isCritical) {
+      lines.push(`<strong>⚠ CRITICAL overlay:</strong> IC < 0.30 — multiplicative coherence is dangerously low. At least one channel is near ε, destroying the geometric mean.`);
+    }
+
+    // Gap analysis
+    if (result.delta > 0.3) {
+      lines.push(`<strong>Geometric slaughter detected (Δ = ${result.delta.toFixed(4)}).</strong> The gap between F and IC is massive. Look at the channel bar chart — at least one channel is near zero while others are healthy. This is the signature of confinement-type phase transitions.`);
+    } else if (result.delta > 0.1) {
+      lines.push(`<strong>Significant heterogeneity (Δ = ${result.delta.toFixed(4)}).</strong> Channels diverge appreciably. IC lags F — the weakest channels drag multiplicative coherence below arithmetic fidelity.`);
+    } else if (result.delta < 0.01) {
+      lines.push(`<strong>Near-homogeneous (Δ = ${result.delta.toFixed(4)}).</strong> All channels are close to equal. IC ≈ F — the trace is effectively rank-1. C ≈ 0.`);
+    }
+
+    // Key ratios
+    const icf = result.F > 0 ? result.IC / result.F : 0;
+    lines.push(`<strong>IC/F ratio:</strong> ${icf.toFixed(4)} — ${icf > 0.9 ? 'high coherence' : icf > 0.5 ? 'moderate coherence' : icf > 0.1 ? 'degraded coherence' : 'near-total decoherence (geometric slaughter)'}.`);
+
+    // Entropy note
+    if (result.S > 0.6) {
+      lines.push(`<strong>High entropy (S = ${result.S.toFixed(4)}):</strong> Many channels near c = ½ — maximum uncertainty per channel. The collapse field is maximally disordered.`);
+    } else if (result.S < 0.05) {
+      lines.push(`<strong>Low entropy (S = ${result.S.toFixed(4)}):</strong> Channels are near 0 or 1 — minimal uncertainty. The collapse field is nearly determined.`);
+    }
+
+    document.getElementById('interpretation-content')!.innerHTML =
+      lines.map(l => `<p class="leading-relaxed">${l}</p>`).join('');
+  }
+
+  /* ─── Bootstrap ────────────────────────────────────────────── */
+
+  init();
+</script>

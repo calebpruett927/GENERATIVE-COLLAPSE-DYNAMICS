@@ -42,6 +42,7 @@ export interface SeamBudgetResult {
   gamma: number;        // Γ(ω) = ωᵖ/(1−ω+ε)
   D_omega: number;      // Drift debit
   D_C: number;          // Curvature debit
+  credit: number;       // R · τ_R (return credit)
   deltaKappa: number;   // Δκ = R·τ_R − (D_ω + D_C)
   residual: number;     // seam residual
   pass: boolean;        // |residual| ≤ tol_seam
@@ -220,12 +221,13 @@ export function computeSeamBudget(
   const gamma = gammaOmega(omega);
   const D_omega = gamma;
   const D_C = costCurvature(C);
+  const credit = isFinite(tauR) ? R * tauR : 0;
 
   let deltaKappa: number;
   if (!isFinite(tauR)) {
     deltaKappa = 0; // τ_R = ∞_rec → no credit
   } else {
-    deltaKappa = R * tauR - (D_omega + D_C);
+    deltaKappa = credit - (D_omega + D_C);
   }
 
   const residual = deltaKappa - kappaLedger;
@@ -234,6 +236,7 @@ export function computeSeamBudget(
     gamma,
     D_omega,
     D_C,
+    credit,
     deltaKappa,
     residual,
     pass: Math.abs(residual) <= TOL_SEAM,
@@ -357,3 +360,129 @@ export const PRESETS = {
     w: [0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125],
   },
 } as const;
+
+/* ─── Analysis / Sweep Functions ────────────────────────────────── */
+
+export interface SweepPoint {
+  param: number;
+  F: number;
+  omega: number;
+  S: number;
+  C: number;
+  kappa: number;
+  IC: number;
+  delta: number;
+  regime: string;
+  isCritical: boolean;
+}
+
+/**
+ * Sweep a single channel from 0 to 1 while holding others fixed.
+ * Returns an array of SweepPoints at the given resolution.
+ */
+export function sweepChannel(
+  channels: number[],
+  weights: number[],
+  channelIndex: number,
+  steps: number = 200,
+  epsilon: number = 1e-8,
+): SweepPoint[] {
+  const points: SweepPoint[] = [];
+  const c = [...channels];
+  for (let i = 0; i <= steps; i++) {
+    const v = i / steps;
+    c[channelIndex] = v;
+    const result = computeKernel(c, weights, epsilon);
+    const { regime, isCritical } = classifyRegime(result);
+    points.push({
+      param: v,
+      F: result.F, omega: result.omega, S: result.S,
+      C: result.C, kappa: result.kappa, IC: result.IC,
+      delta: result.delta, regime, isCritical,
+    });
+  }
+  return points;
+}
+
+/**
+ * Sweep all channels uniformly from 0 to 1 (homogeneous trace).
+ */
+export function sweepHomogeneous(
+  nChannels: number = 8,
+  steps: number = 200,
+  epsilon: number = 1e-8,
+): SweepPoint[] {
+  const points: SweepPoint[] = [];
+  const w = Array(nChannels).fill(1 / nChannels);
+  for (let i = 0; i <= steps; i++) {
+    const v = i / steps;
+    const c = Array(nChannels).fill(v);
+    const result = computeKernel(c, w, epsilon);
+    const { regime, isCritical } = classifyRegime(result);
+    points.push({
+      param: v,
+      F: result.F, omega: result.omega, S: result.S,
+      C: result.C, kappa: result.kappa, IC: result.IC,
+      delta: result.delta, regime, isCritical,
+    });
+  }
+  return points;
+}
+
+/**
+ * Compute Bernoulli entropy curve for a single channel c ∈ [0,1].
+ */
+export function entropyCurve(steps: number = 200): { c: number; S: number; kappa: number; f: number }[] {
+  const pts: { c: number; S: number; kappa: number; f: number }[] = [];
+  for (let i = 0; i <= steps; i++) {
+    const c = i / steps;
+    const S = bernoulliEntropy(c);
+    const cε = Math.max(c, 1e-8);
+    const kappa = Math.log(cε);
+    pts.push({ c, S, kappa, f: S + kappa });
+  }
+  return pts;
+}
+
+/**
+ * Compute the Γ(ω) drift cost curve.
+ */
+export function gammaCurve(steps: number = 200): { omega: number; gamma: number }[] {
+  const pts: { omega: number; gamma: number }[] = [];
+  for (let i = 0; i <= steps; i++) {
+    const omega = i / steps;
+    pts.push({ omega, gamma: gammaOmega(omega) });
+  }
+  return pts;
+}
+
+/**
+ * 2D heatmap: vary two channels, compute a chosen metric.
+ * Returns a flat Float64Array of size (steps+1)^2 in row-major order.
+ */
+export function heatmap2D(
+  channels: number[],
+  weights: number[],
+  ch1: number,
+  ch2: number,
+  metric: 'F' | 'IC' | 'delta' | 'S' | 'C' | 'omega' = 'IC',
+  steps: number = 60,
+  epsilon: number = 1e-8,
+): { data: Float64Array; size: number; min: number; max: number } {
+  const n = steps + 1;
+  const data = new Float64Array(n * n);
+  const c = [...channels];
+  let min = Infinity, max = -Infinity;
+  for (let j = 0; j < n; j++) {
+    c[ch2] = j / steps;
+    for (let i = 0; i < n; i++) {
+      c[ch1] = i / steps;
+      const r = computeKernel(c, weights, epsilon);
+      const v = r[metric];
+      data[j * n + i] = v;
+      if (v < min) min = v;
+      if (v > max) max = v;
+    }
+  }
+  return { data, size: n, min, max };
+}

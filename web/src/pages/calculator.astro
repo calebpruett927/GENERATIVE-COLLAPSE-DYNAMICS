@@ -1,17 +1,79 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import KernelCalculator from '../components/KernelCalculator.astro';
+import StructureExplorer from '../components/StructureExplorer.astro';
 ---
 
-<BaseLayout title="Kernel Calculator — GCD">
-  <div class="max-w-5xl mx-auto">
-    <div class="mb-6">
-      <h1 class="text-3xl font-bold text-kernel-100 mb-2">Kernel Calculator</h1>
-      <p class="text-kernel-400">
-        Interactive computation of the GCD kernel K: [0,1]ⁿ × Δⁿ → (F, ω, S, C, κ, IC).
-        All computation runs client-side in your browser using the TypeScript kernel port.
+<BaseLayout title="Structure Explorer — GCD Kernel Research Tool">
+  <div class="max-w-6xl mx-auto">
+    <!-- Hero -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-kernel-100 mb-2">Structure Explorer</h1>
+      <p class="text-kernel-400 text-lg leading-relaxed">
+        Interactive research tool for the GCD kernel K: [0,1]<sup>n</sup> × Δ<sup>n</sup> → (F, ω, S, C, κ, IC).
+        Five analysis modes let you compute invariants, sweep channels for sensitivity,
+        map regime landscapes, verify identities, and explore seam budgets.
       </p>
     </div>
-    <KernelCalculator />
+
+    <!-- Quick reference -->
+    <div class="mb-6 bg-kernel-900/50 border border-kernel-700/50 rounded-xl p-5">
+      <h2 class="text-sm font-bold text-amber-400/80 uppercase tracking-wider mb-3">Quick Reference — The Six Invariants</h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 text-xs">
+        <div class="bg-kernel-800/60 rounded-lg p-2.5">
+          <span class="text-green-400 font-bold">F</span>
+          <span class="text-kernel-500 ml-1">Fidelity</span>
+          <div class="text-kernel-600 mt-1">Σ wᵢcᵢ — what survives</div>
+        </div>
+        <div class="bg-kernel-800/60 rounded-lg p-2.5">
+          <span class="text-red-400 font-bold">ω</span>
+          <span class="text-kernel-500 ml-1">Drift</span>
+          <div class="text-kernel-600 mt-1">1 − F — what is lost</div>
+        </div>
+        <div class="bg-kernel-800/60 rounded-lg p-2.5">
+          <span class="text-amber-400 font-bold">S</span>
+          <span class="text-kernel-500 ml-1">Entropy</span>
+          <div class="text-kernel-600 mt-1">Bernoulli field uncertainty</div>
+        </div>
+        <div class="bg-kernel-800/60 rounded-lg p-2.5">
+          <span class="text-purple-400 font-bold">C</span>
+          <span class="text-kernel-500 ml-1">Curvature</span>
+          <div class="text-kernel-600 mt-1">stddev(cᵢ)/0.5 — coupling</div>
+        </div>
+        <div class="bg-kernel-800/60 rounded-lg p-2.5">
+          <span class="text-cyan-400 font-bold">κ</span>
+          <span class="text-kernel-500 ml-1">Log-integrity</span>
+          <div class="text-kernel-600 mt-1">Σ wᵢ ln(cᵢ) — sensitivity</div>
+        </div>
+        <div class="bg-kernel-800/60 rounded-lg p-2.5">
+          <span class="text-blue-400 font-bold">IC</span>
+          <span class="text-kernel-500 ml-1">Integrity</span>
+          <div class="text-kernel-600 mt-1">exp(κ) — multiplicative coherence</div>
+        </div>
+      </div>
+      <div class="mt-3 grid grid-cols-1 md:grid-cols-3 gap-2 text-xs text-kernel-500">
+        <div class="bg-kernel-800/40 rounded-lg p-2">
+          <span class="text-green-400">■</span> <strong>Stable:</strong> ω &lt; 0.038, F &gt; 0.90, S &lt; 0.15, C &lt; 0.14 <span class="text-kernel-600">(12.5% of manifold)</span>
+        </div>
+        <div class="bg-kernel-800/40 rounded-lg p-2">
+          <span class="text-amber-400">■</span> <strong>Watch:</strong> 0.038 ≤ ω &lt; 0.30 <span class="text-kernel-600">(24.4%)</span>
+        </div>
+        <div class="bg-kernel-800/40 rounded-lg p-2">
+          <span class="text-red-400">■</span> <strong>Collapse:</strong> ω ≥ 0.30 <span class="text-kernel-600">(63.1%)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Explorer -->
+    <StructureExplorer />
+
+    <!-- Math notes footer -->
+    <div class="mt-10 mb-8 bg-kernel-900/30 border border-kernel-800/50 rounded-xl p-5 text-xs text-kernel-500 space-y-2">
+      <h3 class="text-sm font-bold text-kernel-400 mb-2">Mathematical Notes</h3>
+      <p><strong>Three algebraic identities</strong> (always true): F + ω = 1, IC ≤ F, IC = exp(κ).</p>
+      <p><strong>One statistical constraint</strong>: S ≈ f(F, C) — entropy is asymptotically determined by fidelity and curvature.</p>
+      <p><strong>Three effective DOF</strong>: 6 kernel outputs reduce to 3 independent dimensions (F, κ, C).</p>
+      <p><strong>Frozen parameters</strong>: ε = 10⁻⁸, p = 3 (Cardano root), α = 1.0, tol = 0.005 — seam-derived, not chosen.</p>
+      <p class="text-kernel-600 italic">All computation runs client-side — no data leaves your browser.</p>
+    </div>
   </div>
 </BaseLayout>
