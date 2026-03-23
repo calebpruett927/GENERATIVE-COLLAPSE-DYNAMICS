@@ -1,0 +1,31 @@
+{
+  "schema": "schemas/manifest.schema.json",
+  "casepack": {
+    "id": "bell_curve_pgs",
+    "version": "1.0.0",
+    "title": "Bell Curve Revisited — PGS Educational Attainment Kernel",
+    "description": "Kernel analysis of Conley & Domingue (2016) 'The Bell Curve Revisited' (PMC5679002). Maps polygenic score (PGS) effects on educational transitions across three birth cohorts (1919, 1937, 1955) from the Health and Retirement Study (N=8,865). Six channels capture PGS effects at HS completion, college attendance, college completion, graduate school, assortative mating, and fertility. All cohorts occupy Collapse regime (omega > 0.50); the scalar PGS has low fidelity across all channels (F < 0.50), corresponding to the 2.5% variance explained by PGS. The missing heritability (40% twin h-squared vs 2.5% PGS) manifests as high drift, not as within-level channel heterogeneity. Intelligence is a multi-channel trace vector; the PGS and g-factor are scalar compressions that erase the structure where cognitive fragility is visible.",
+    "created_utc": "2026-07-19T00:00:00Z",
+    "timezone": "America/Chicago",
+    "authors": ["Clement Paulus"]
+  },
+  "refs": {
+    "canon_anchors": { "path": "canon/anchors.yaml" },
+    "contract": { "id": "UMA.INTSTACK.v1", "path": "contracts/UMA.INTSTACK.v1.yaml" },
+    "closures_registry": { "id": "UMCP.CLOSURES.DEFAULT.v1", "path": "closures/registry.yaml" }
+  },
+  "artifacts": {
+    "raw_measurements": {
+      "path": "raw_measurements.csv",
+      "format": "csv"
+    },
+    "expected": {
+      "psi_csv": { "path": "expected/psi.csv" },
+      "invariants_json": { "path": "expected/invariants.json" },
+      "ss1m_receipt_json": { "path": "expected/ss1m_receipt.json" }
+    }
+  },
+  "run_intent": {
+    "notes": "Tests three Herrnstein & Murray propositions from 'The Bell Curve' through the GCD kernel, using Conley & Domingue (2016) molecular genetic data (N=8,865 HRS, polygenic scores). RESULTS: (1) Increasing genetic stratification: FALSIFIED — F declines across cohorts (0.463 -> 0.410 -> 0.353), PGS effects are weakening, not strengthening. (2) Increasing genotypic assortative mating: FALSIFIED — spousal PGS correlation channel (c5) declines from 0.34 to 0.18 even as phenotypic assortment increases. (3) Dysgenic fertility: NOT SIGNIFICANT — fertility channel (c6) declines modestly from 0.47 to 0.30 with cohort 2 raw value crossing zero. KERNEL SYNTHESIS: The PGS is a scalar compression of a 6-channel cognitive trace vector. Its channels are relatively homogeneous (heterogeneity gap delta ~ 0.01-0.02), meaning the scalar PGS does not compress away much within-level structure. The dominant signal is LOW OVERALL FIDELITY: PGS explains ~2.5% of phenotypic variance (vs 40% twin heritability), yielding omega > 0.50 (Collapse regime) for all cohorts. The missing heritability gap between genomic and twin levels IS the between-level heterogeneity gap — the scalar PGS operates at the wrong scale of measurement. Intelligence is a trace vector (multi-channel coherence pattern), not a quantity; the g-factor and PGS are compression artifacts that erase the channel structure where fragility and resilience are visible. All three cohorts occupy Collapse regime with tau_R = INF_REC (no demonstrated return)."
+  }
+}

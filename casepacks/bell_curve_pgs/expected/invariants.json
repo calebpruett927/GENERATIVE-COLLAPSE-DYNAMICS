@@ -1,0 +1,57 @@
+{
+  "schema": "schemas/invariants.schema.json",
+  "format": "tier1_invariants",
+  "contract_id": "UMA.INTSTACK.v1",
+  "closure_registry_id": "UMCP.CLOSURES.DEFAULT.v1",
+  "canon": {
+    "pre_doi": "10.5281/zenodo.17756705",
+    "post_doi": "10.5281/zenodo.18072852",
+    "weld_id": "W-2025-12-31-PHYS-COHERENCE",
+    "timezone": "America/Chicago"
+  },
+  "rows": [
+    {
+      "t": 0,
+      "omega": 0.5372222222,
+      "F": 0.4627777778,
+      "S": 0.6694355083,
+      "C": 0.2030568855,
+      "tau_R": "INF_REC",
+      "kappa": -0.7936723393,
+      "IC": 0.4521811798,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": 1,
+      "omega": 0.59,
+      "F": 0.41,
+      "S": 0.6582899281,
+      "C": 0.1892969449,
+      "tau_R": "INF_REC",
+      "kappa": -0.9175938271,
+      "IC": 0.3994791014,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": false
+      }
+    },
+    {
+      "t": 2,
+      "omega": 0.6475,
+      "F": 0.3525,
+      "S": 0.6263540687,
+      "C": 0.1993113143,
+      "tau_R": "INF_REC",
+      "kappa": -1.0898429825,
+      "IC": 0.3362692897,
+      "regime": {
+        "label": "Collapse",
+        "critical_overlay": false
+      }
+    }
+  ],
+  "notes": "Conley & Domingue 2016 (PMC5679002): PGS educational attainment across three HRS birth cohorts. All cohorts in Collapse regime (omega > 0.50). PGS channels are relatively homogeneous (small heterogeneity gap delta ~ 0.01-0.02), meaning the scalar PGS does not compress away much within-level channel heterogeneity. The dominant signal is LOW FIDELITY across all channels (F < 0.50 for all cohorts), corresponding to PGS explaining only ~2.5% of phenotypic variance. The missing heritability (40% twin h-squared vs 2.5% PGS) manifests as high drift omega, not as within-level delta. F declines monotonically across cohorts (0.463 -> 0.410 -> 0.353), falsifying the H&M prediction of increasing genetic stratification."
+}

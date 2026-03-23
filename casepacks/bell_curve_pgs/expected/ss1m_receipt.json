@@ -1,0 +1,48 @@
+{
+  "schema": "schemas/receipt.ss1m.schema.json",
+  "receipt": {
+    "kind": "ss1m",
+    "version": 1,
+    "created_utc": "2026-07-19T00:00:00Z",
+    "casepack": {
+      "id": "bell_curve_pgs",
+      "manifest_path": "casepacks/bell_curve_pgs/manifest.json"
+    },
+    "canon": {
+      "pre_doi": "10.5281/zenodo.17756705",
+      "post_doi": "10.5281/zenodo.18072852",
+      "weld_id": "W-2025-12-31-PHYS-COHERENCE"
+    },
+    "contract": {
+      "id": "UMA.INTSTACK.v1",
+      "path": "contracts/UMA.INTSTACK.v1.yaml"
+    },
+    "closures": {
+      "registry_id": "UMCP.CLOSURES.DEFAULT.v1",
+      "registry_path": "closures/registry.yaml"
+    },
+    "row": {
+      "t": 0,
+      "row_id": "bell_curve_pgs:t0"
+    },
+    "kernel": {
+      "omega": 0.5372222222,
+      "F": 0.4627777778,
+      "S": 0.6694355083,
+      "C": 0.2030568855,
+      "tau_R": "INF_REC",
+      "kappa": -0.7936723393,
+      "IC": 0.4521811798
+    },
+    "regime": {
+      "label": "Collapse",
+      "critical_overlay": false
+    },
+    "tolerances": {
+      "epsilon": 1.0e-8,
+      "tol_seam": 0.005,
+      "tol_id": 1.0e-9
+    },
+    "notes": "SS1m receipt for Early cohort row (t=0). All three Tier-1 identities verified to machine precision. All cohorts in Collapse regime: PGS channels are relatively homogeneous (delta ~ 0.01), but overall fidelity is low (F < 0.50). The scalar PGS explains 2.5% of phenotypic variance; the remaining 97.5% lives in drift (omega = 0.54). Missing heritability is expressed as high omega, not as within-level channel heterogeneity."
+  }
+}

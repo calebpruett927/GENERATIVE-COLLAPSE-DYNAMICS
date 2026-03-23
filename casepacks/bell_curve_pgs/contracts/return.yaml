@@ -1,0 +1,14 @@
+return:
+  norm: L2
+  return_domain:
+    description: "Prior cohort observations in the HRS dataset"
+    source: "Health and Retirement Study, N=8,865 non-Hispanic whites"
+  return_horizon: INF
+  typing:
+    INF_REC: "No demonstrated return from Collapse regime"
+    OOR: "PGS effect outside calibrated physical range"
+  credit_rule:
+    description: >
+      Return credit requires tau_R < INF. Since all three cohorts occupy
+      Collapse regime (omega >= 0.30) with no demonstrated re-entry to
+      Stable, tau_R = INF_REC for all rows. Zero budget credit.

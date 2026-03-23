@@ -1,0 +1,38 @@
+embedding:
+  description: >
+    Linear-affine normalization of PGS effects (logit coefficients and
+    correlations) into [0,1] channel coordinates. Raw values from
+    Conley & Domingue 2016 Tables 2-5.
+  source_space:
+    channels:
+      - name: hs_completion
+        label: "PGS effect on high school completion"
+        units: logit_coefficient
+        physical_range: [-0.05, 0.15]
+      - name: college_attendance
+        label: "PGS effect on college attendance"
+        units: logit_coefficient
+        physical_range: [-0.05, 0.15]
+      - name: college_completion
+        label: "PGS effect on college completion"
+        units: logit_coefficient
+        physical_range: [-0.05, 0.15]
+      - name: graduate_school
+        label: "PGS effect on graduate school attendance"
+        units: logit_coefficient
+        physical_range: [-0.05, 0.15]
+      - name: assortative_mating
+        label: "Spousal PGS correlation"
+        units: correlation
+        physical_range: [0.0, 0.5]
+      - name: fertility
+        label: "PGS effect on number of children"
+        units: regression_coefficient
+        physical_range: [-0.05, 0.10]
+  target_space:
+    interval: [0.0, 1.0]
+  transform:
+    method: linear_affine
+    description: >
+      c_k = (x_k - a_k) / (b_k - a_k) clamped to [epsilon, 1 - epsilon].
+      Each channel has its own physical range (a_k, b_k) from the source space.

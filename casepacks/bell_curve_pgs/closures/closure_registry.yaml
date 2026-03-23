@@ -1,0 +1,19 @@
+registry:
+  id: UMCP.CLOSURES.DEFAULT.v1
+  description: >
+    Closure references for the Bell Curve PGS casepack.
+    Uses standard UMCP closures for gamma, return domain,
+    norms, and curvature neighborhood.
+closures:
+  gamma:
+    path: closures/gcd/gamma.yaml
+    description: "Gamma cost function: Gamma(omega) = omega^p / (1 - omega + epsilon)"
+  return_domain:
+    path: closures/gcd/return_domain.yaml
+    description: "Return domain D_theta with L2 norm"
+  norms:
+    path: closures/gcd/norms.yaml
+    description: "Norm definitions for budget and seam"
+  curvature_neighborhood:
+    path: closures/gcd/curvature_neighborhood.yaml
+    description: "Curvature cost: D_C = alpha * C"

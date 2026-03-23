@@ -1,0 +1,4 @@
+t,x1_si,x2_si,x3_si,x4_si,x5_si,x6_si,units,notes
+0,0.036,0.079,0.055,0.024,0.17,0.02,PGS_effect,Early cohort (born ~1919); PGS effects from Conley & Domingue 2016 Tables 2-5; x1=HS_completion x2=college_attendance x3=college_completion x4=graduate_school x5=assortative_mating_corr x6=fertility_PGS_effect
+1,0.030,0.065,0.045,0.012,0.15,0.01,PGS_effect,Middle cohort (born ~1937); interpolated from cohort-interaction trends
+2,0.022,0.050,0.035,0.020,0.09,-0.005,PGS_effect,Late cohort (born ~1955); declining PGS effects for HS/college; rising for graduate school

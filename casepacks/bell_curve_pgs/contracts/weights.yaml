@@ -1,0 +1,25 @@
+weights:
+  policy: equal
+  channels:
+    - name: hs_completion
+      label: "HS completion PGS effect"
+      weight: 0.166667
+    - name: college_attendance
+      label: "College attendance PGS effect"
+      weight: 0.166667
+    - name: college_completion
+      label: "College completion PGS effect"
+      weight: 0.166667
+    - name: graduate_school
+      label: "Graduate school PGS effect"
+      weight: 0.166667
+    - name: assortative_mating
+      label: "Spousal PGS correlation"
+      weight: 0.166667
+    - name: fertility
+      label: "Fertility PGS effect"
+      weight: 0.166667
+  total: 1.000002
+  note: >
+    Equal weights — no a priori reason to privilege one educational transition
+    or genetic pathway over another. Six channels, w_i = 1/6 each.
