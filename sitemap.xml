@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Core pages -->
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/</loc><priority>1.0</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/about/</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/papers/</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+
+  <!-- Tools -->
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/calculator/</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/regime/</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/diagnostics/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/precision/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/formulas/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/seam-budget/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/identities/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/reference/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/scale-ladder/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+
+  <!-- Reference -->
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/geometry/</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/rosetta/</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/ledger/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/orientation/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+
+  <!-- Corpus (deep content) -->
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/grammar/</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/epistemology/</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/philosophy/</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
+
+  <!-- Domain closures (20 domains) -->
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/gcd/</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/rcft/</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/kinematics/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/weyl/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/standard_model/</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/nuclear_physics/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/quantum_mechanics/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/atomic_physics/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/materials_science/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/everyday_physics/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/finance/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/security/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/astronomy/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/evolution/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/consciousness_coherence/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/awareness_cognition/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/clinical_neuroscience/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/dynamic_semiotics/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/continuity_theory/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/spacetime_memory/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+</urlset>

@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://gcd-kernel.org/sitemap.xml
+
+Sitemap: https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/sitemap.xml
