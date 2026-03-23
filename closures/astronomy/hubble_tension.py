@@ -882,7 +882,7 @@ def compute_weighted_mean_h0(measurements: list[H0Measurement]) -> tuple[float, 
     if not weights:
         return 0.0, 0.0
     w_sum = sum(weights)
-    h0_mean = sum(w * v for w, v in zip(weights, values)) / w_sum
+    h0_mean = sum(w * v for w, v in zip(weights, values, strict=False)) / w_sum
     h0_err = 1.0 / math.sqrt(w_sum)
     return h0_mean, h0_err
 
@@ -1158,8 +1158,8 @@ def run_full_analysis() -> dict[str, Any]:
     current = [m for m in db if m.year <= 2026]
     projected = [m for m in db if m.year > 2026]
 
-    # Individual kernels
-    individual_kernels = {m.name: compute_h0_kernel(m) for m in current}
+    # Individual kernels (computed for side effects / caching)
+    _individual_kernels = {m.name: compute_h0_kernel(m) for m in current}
 
     # Early vs late
     early, late = early_vs_late_split(current)
