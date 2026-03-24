@@ -527,7 +527,7 @@ def step_update_integrity(ctx: RepoContext) -> StepResult:
 # CI still runs the full suite; pre-commit only needs the fast gate.
 
 _MIN_EXPECTED_TESTS = 1000  # floor — repo has ~2,476+ and growing
-_MAX_EXPECTED_TESTS = 12000  # ceiling — sanity upper bound
+_MAX_EXPECTED_TESTS = 16000  # ceiling — sanity upper bound
 
 
 def step_pytest(ctx: RepoContext) -> StepResult:
