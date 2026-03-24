@@ -79,14 +79,14 @@ def _regime(r: dict) -> str:
     return "Watch"
 
 
-def _fmt(v: float, decimals: int = 15) -> str:
+def _fmt(v: float | np.floating, decimals: int = 15) -> str:
     """Format a float to specified decimal places."""
-    return f"{v:.{decimals}f}"
+    return f"{float(v):.{decimals}f}"
 
 
-def _sci(v: float) -> str:
+def _sci(v: float | np.floating) -> str:
     """Format in scientific notation."""
-    return f"{v:.2e}"
+    return f"{float(v):.2e}"
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -142,7 +142,7 @@ def _generate_computational_proof() -> str:
 
     violations = 0
     max_gap = 0.0
-    example_gap_c = None
+    example_gap_c: tuple[float, float] = (0.0, 0.0)
     for _ in range(10_000):
         n = rng.integers(2, 20)
         c = rng.uniform(0, 1, size=n)
