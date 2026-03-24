@@ -1,0 +1,961 @@
+---
+/**
+ * Advanced Explorer — Extended GCD Kernel Research Tool
+ *
+ * Four advanced analysis modes:
+ *   1. Composition — Compare & compose two trace vectors (F arithmetic, IC geometric)
+ *   2. Batch Analysis — Side-by-side comparison of multiple domain entities
+ *   3. τ_R* Surface — 2D thermodynamic return favorability heatmap
+ *   4. Orientation Proofs — All 10 orientation receipts computed live
+ *
+ * Supplements the 5 modes in StructureExplorer. All computation client-side.
+ */
+---
+
+<div id="advanced-explorer" class="space-y-6 mt-12">
+
+  <!-- ═══════ Section Header ═══════ -->
+  <div class="border-t border-kernel-700/50 pt-8">
+    <h2 class="text-2xl font-bold text-kernel-100 mb-2">Advanced Research Tools</h2>
+    <p class="text-kernel-400 text-sm">Composition algebra, cross-domain batch analysis, thermodynamic surfaces, and live orientation proofs.</p>
+  </div>
+
+  <!-- ═══════ Advanced Mode Selector ═══════ -->
+  <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-5">
+    <div class="flex flex-wrap gap-2" id="adv-mode-tabs">
+      <button data-adv-mode="composition" class="adv-mode-tab active px-4 py-2 rounded-lg text-sm font-semibold transition">
+        <span class="mr-1">⊕</span> Composition
+      </button>
+      <button data-adv-mode="batch" class="adv-mode-tab px-4 py-2 rounded-lg text-sm font-semibold transition">
+        <span class="mr-1">▦</span> Batch Analysis
+      </button>
+      <button data-adv-mode="taustar" class="adv-mode-tab px-4 py-2 rounded-lg text-sm font-semibold transition">
+        <span class="mr-1">τ</span> τ_R* Surface
+      </button>
+      <button data-adv-mode="orientation" class="adv-mode-tab px-4 py-2 rounded-lg text-sm font-semibold transition">
+        <span class="mr-1">✓</span> Orientation Proofs
+      </button>
+    </div>
+    <div id="adv-mode-description" class="mt-3 text-sm text-kernel-400 border-t border-kernel-800 pt-3"></div>
+  </div>
+
+  <!-- ═══════ Composition Panel ═══════ -->
+  <div id="adv-composition" class="space-y-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <!-- System A -->
+      <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-4">
+        <div class="flex justify-between items-center mb-3">
+          <h3 class="text-sm font-bold text-green-400">System A</h3>
+          <select id="comp-preset-a" class="text-xs px-2 py-1 bg-kernel-800 border border-kernel-600 rounded text-kernel-200">
+            <option value="custom">Custom</option>
+          </select>
+        </div>
+        <div id="comp-channels-a" class="space-y-1"></div>
+      </div>
+      <!-- System B -->
+      <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-4">
+        <div class="flex justify-between items-center mb-3">
+          <h3 class="text-sm font-bold text-blue-400">System B</h3>
+          <select id="comp-preset-b" class="text-xs px-2 py-1 bg-kernel-800 border border-kernel-600 rounded text-kernel-200">
+            <option value="custom">Custom</option>
+          </select>
+        </div>
+        <div id="comp-channels-b" class="space-y-1"></div>
+      </div>
+    </div>
+    <button id="btn-compose" class="w-full py-3 bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-500 hover:to-blue-500 text-white font-bold rounded-xl transition shadow-lg text-sm">
+      Compose Systems →
+    </button>
+    <div id="composition-results" class="hidden space-y-4">
+      <!-- Comparison table -->
+      <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-4 overflow-x-auto">
+        <h3 class="text-sm font-bold text-kernel-300 mb-3">Comparison &amp; Composition</h3>
+        <table id="comp-table" class="w-full text-xs font-mono">
+          <thead><tr class="text-kernel-500 border-b border-kernel-700">
+            <th class="px-2 py-1 text-left">Invariant</th>
+            <th class="px-2 py-1 text-right text-green-400">System A</th>
+            <th class="px-2 py-1 text-right text-blue-400">System B</th>
+            <th class="px-2 py-1 text-right text-amber-400">Composed</th>
+            <th class="px-2 py-1 text-left">Rule</th>
+          </tr></thead>
+          <tbody id="comp-table-body"></tbody>
+        </table>
+      </div>
+      <!-- Dual radar -->
+      <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-4">
+        <h3 class="text-sm font-bold text-kernel-300 mb-3">Dual Radar — A vs B vs Composed</h3>
+        <div class="flex justify-center">
+          <canvas id="comp-radar-canvas" width="460" height="460" style="max-width:460px;cursor:crosshair;"></canvas>
+        </div>
+      </div>
+      <!-- Composition law verification -->
+      <div id="comp-laws" class="bg-kernel-900 border border-kernel-700 rounded-xl p-4">
+        <h3 class="text-sm font-bold text-kernel-300 mb-3">Composition Law Verification</h3>
+        <div id="comp-law-checks" class="space-y-2"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ Batch Analysis Panel ═══════ -->
+  <div id="adv-batch" class="hidden space-y-4">
+    <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-4">
+      <div class="flex justify-between items-center mb-3">
+        <h3 class="text-sm font-bold text-kernel-300">Select Entities for Comparison</h3>
+        <div class="flex gap-2">
+          <button id="batch-select-all" class="text-xs px-2 py-1 bg-kernel-800 text-kernel-300 rounded hover:bg-kernel-700">Select All</button>
+          <button id="batch-clear" class="text-xs px-2 py-1 bg-kernel-800 text-kernel-300 rounded hover:bg-kernel-700">Clear</button>
+        </div>
+      </div>
+      <div id="batch-domain-filter" class="flex flex-wrap gap-1 mb-3"></div>
+      <div id="batch-entity-list" class="grid grid-cols-2 md:grid-cols-4 gap-1 max-h-60 overflow-y-auto"></div>
+    </div>
+    <button id="btn-batch" class="w-full py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold rounded-xl transition shadow-lg text-sm">
+      Run Batch Analysis →
+    </button>
+    <div id="batch-results" class="hidden space-y-4">
+      <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-4 overflow-x-auto">
+        <h3 class="text-sm font-bold text-kernel-300 mb-3">Cross-Domain Comparison</h3>
+        <table class="w-full text-xs font-mono">
+          <thead><tr class="text-kernel-500 border-b border-kernel-700">
+            <th class="px-2 py-1 text-left">Entity</th>
+            <th class="px-2 py-1 text-left">Domain</th>
+            <th class="px-2 py-1 text-right">F</th>
+            <th class="px-2 py-1 text-right">ω</th>
+            <th class="px-2 py-1 text-right">IC</th>
+            <th class="px-2 py-1 text-right">Δ</th>
+            <th class="px-2 py-1 text-right">S</th>
+            <th class="px-2 py-1 text-right">C</th>
+            <th class="px-2 py-1 text-center">Regime</th>
+            <th class="px-2 py-1 text-center">Rank</th>
+            <th class="px-2 py-1 text-center">IDs</th>
+          </tr></thead>
+          <tbody id="batch-table-body"></tbody>
+        </table>
+      </div>
+      <!-- Multi-radar overlay -->
+      <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-4">
+        <h3 class="text-sm font-bold text-kernel-300 mb-3">Multi-Entity Radar Overlay</h3>
+        <div class="flex justify-center">
+          <canvas id="batch-radar-canvas" width="460" height="460" style="max-width:460px;"></canvas>
+        </div>
+        <div id="batch-radar-legend" class="flex flex-wrap gap-2 mt-3 justify-center text-xs"></div>
+      </div>
+      <!-- Regime distribution -->
+      <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-4">
+        <h3 class="text-sm font-bold text-kernel-300 mb-3">Regime Distribution</h3>
+        <div id="batch-regime-dist" class="flex h-8 rounded-lg overflow-hidden"></div>
+        <div id="batch-regime-legend" class="flex gap-4 mt-2 text-xs text-kernel-400 justify-center"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ τ_R* Surface Panel ═══════ -->
+  <div id="adv-taustar" class="hidden space-y-4">
+    <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-4">
+      <h3 class="text-sm font-bold text-kernel-300 mb-2">τ_R* Thermodynamic Return Favorability</h3>
+      <p class="text-xs text-kernel-500 mb-3">τ_R* = (1 − ω) / (Γ(ω) + α·C + ε) — higher values = more favorable return conditions. The surface over (ω, C) plane reveals the thermodynamic landscape.</p>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="text-xs text-kernel-500">Resolution</label>
+          <select id="tau-resolution" class="w-full mt-1 px-2 py-1.5 bg-kernel-800 border border-kernel-600 rounded text-kernel-200 text-sm">
+            <option value="40">40×40 (fast)</option>
+            <option value="60" selected>60×60</option>
+            <option value="80">80×80 (detailed)</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-xs text-kernel-500">Color scale</label>
+          <select id="tau-scale" class="w-full mt-1 px-2 py-1.5 bg-kernel-800 border border-kernel-600 rounded text-kernel-200 text-sm">
+            <option value="log" selected>Logarithmic</option>
+            <option value="linear">Linear</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <button id="btn-taustar" class="w-full py-3 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white font-bold rounded-xl transition shadow-lg text-sm">
+      Generate τ_R* Surface →
+    </button>
+    <div id="taustar-results" class="hidden space-y-4">
+      <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-4">
+        <div class="relative" style="height:440px;">
+          <canvas id="taustar-canvas" class="w-full" style="height:440px;cursor:crosshair;"></canvas>
+          <div id="taustar-tooltip" class="hidden absolute pointer-events-none text-xs bg-kernel-900/95 border border-kernel-600 rounded px-3 py-2 text-kernel-200 font-mono shadow-lg z-10 whitespace-pre"></div>
+        </div>
+      </div>
+      <!-- Fixed points on the surface -->
+      <div id="taustar-fixed-points" class="bg-kernel-900 border border-kernel-700 rounded-xl p-4">
+        <h3 class="text-sm font-bold text-kernel-300 mb-3">Fixed Points on the τ_R* Surface</h3>
+        <div id="taustar-fp-content" class="space-y-2"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ Orientation Proofs Panel ═══════ -->
+  <div id="adv-orientation" class="hidden space-y-4">
+    <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-4">
+      <h3 class="text-sm font-bold text-kernel-300 mb-2">Live Orientation Receipts</h3>
+      <p class="text-xs text-kernel-500">These 10 receipts are the compressed derivation chains from <code>scripts/orientation.py</code>. Each receipt constrains classification — they are computed live in your browser to machine precision.</p>
+    </div>
+    <button id="btn-orientation" class="w-full py-3 bg-gradient-to-r from-amber-600 to-red-600 hover:from-amber-500 hover:to-red-500 text-white font-bold rounded-xl transition shadow-lg text-sm">
+      Run Orientation Proofs →
+    </button>
+    <div id="orientation-results" class="hidden space-y-4">
+      <div id="orientation-cards" class="space-y-3"></div>
+      <!-- Summary -->
+      <div id="orientation-summary" class="bg-kernel-900 border border-kernel-700 rounded-xl p-4">
+        <h3 class="text-sm font-bold text-kernel-300 mb-3">Proof Summary</h3>
+        <div id="orientation-summary-content" class="text-sm text-kernel-300"></div>
+      </div>
+      <!-- Fixed point analysis -->
+      <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-4">
+        <h3 class="text-sm font-bold text-kernel-300 mb-3">Fixed Point Analysis — Three Special Points</h3>
+        <div id="fixed-point-cards" class="grid grid-cols-1 md:grid-cols-3 gap-3"></div>
+      </div>
+      <!-- Regime partition -->
+      <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-4">
+        <h3 class="text-sm font-bold text-kernel-300 mb-3">Regime Partition (Monte Carlo, n=10K)</h3>
+        <div id="regime-partition" class="space-y-3"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .adv-mode-tab {
+    background: rgba(30, 30, 50, 0.6);
+    color: #94a3b8;
+    border: 1px solid rgba(100, 116, 139, 0.2);
+  }
+  .adv-mode-tab:hover {
+    background: rgba(40, 40, 65, 0.8);
+    color: #e2e8f0;
+  }
+  .adv-mode-tab.active {
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(6, 182, 212, 0.05));
+    color: #67e8f9;
+    border-color: rgba(6, 182, 212, 0.4);
+    box-shadow: 0 0 12px rgba(6, 182, 212, 0.1);
+  }
+</style>
+
+<script>
+  import {
+    computeKernel, classifyRegime, verifyIdentities,
+    computeTauRStar, gammaOmega, PRESETS,
+    composeKernels, fisherCoordinates, classifyRank,
+    computeOrientationReceipts, analyzeFixedPoints,
+    tauRStarSurface, verifyExtendedIdentities,
+    estimateRegimePartition, batchCompute,
+    DOMAIN_PRESETS,
+  } from '../lib/kernel';
+  import type { KernelResult, DomainPreset } from '../lib/kernel';
+  import { REGIME_COLORS } from '../lib/constants';
+  import { setupCanvas, clearChart, drawGrid } from '../lib/chart';
+
+  /* ─── Advanced Mode Definitions ─────────────────────────── */
+
+  type AdvMode = 'composition' | 'batch' | 'taustar' | 'orientation';
+
+  const ADV_MODE_INFO: Record<AdvMode, string> = {
+    composition: 'Compare two systems and compose them. F composes arithmetically: F₁₂ = (F₁+F₂)/2. IC composes geometrically: IC₁₂ = √(IC₁·IC₂). Gap composition follows a Hellinger-like law.',
+    batch: 'Select entities from across 20 closure domains for side-by-side comparison. See regime distribution, rank classification, and overlay radars to identify structural twins.',
+    taustar: '2D heatmap of τ_R* = (1−ω)/(Γ(ω)+α·C+ε) over the (ω,C) plane. Reveals thermodynamic return favorability landscape — where collapse is recoverable vs. permanent.',
+    orientation: 'Compute all 10 orientation receipts live in the browser. These are the compressed derivation chains that constrain classification. Includes fixed point analysis and regime partition.',
+  };
+
+  let currentAdvMode: AdvMode = 'composition';
+  let compChannelsA: number[] = [0.95, 0.92, 0.97, 0.93, 0.96, 0.94, 0.91, 0.98];
+  let compChannelsB: number[] = [0.40, 0.30, 0.55, 0.20, 0.45, 0.35, 0.25, 0.50];
+  let selectedBatchEntities: Set<number> = new Set();
+  let activeDomainFilter: string | null = null;
+
+  /* ─── Initialize ───────────────────────────────────────── */
+
+  function initAdvanced() {
+    updateAdvModeUI();
+    attachAdvListeners();
+    renderCompositionInputs();
+    renderBatchEntityList();
+  }
+
+  /* ─── Mode Switching ───────────────────────────────────── */
+
+  function updateAdvModeUI() {
+    document.getElementById('adv-mode-description')!.innerHTML = ADV_MODE_INFO[currentAdvMode];
+
+    // Toggle panels
+    for (const mode of ['composition', 'batch', 'taustar', 'orientation'] as AdvMode[]) {
+      document.getElementById(`adv-${mode}`)!.classList.toggle('hidden', mode !== currentAdvMode);
+    }
+
+    // Update tabs
+    document.querySelectorAll('.adv-mode-tab').forEach(btn => {
+      const isActive = (btn as HTMLElement).dataset.advMode === currentAdvMode;
+      btn.classList.toggle('active', isActive);
+    });
+  }
+
+  /* ─── Listeners ────────────────────────────────────────── */
+
+  function attachAdvListeners() {
+    // Mode tabs
+    document.querySelectorAll('.adv-mode-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentAdvMode = (btn as HTMLElement).dataset.advMode as AdvMode;
+        updateAdvModeUI();
+      });
+    });
+
+    // Composition presets
+    const allPresets = [
+      ...Object.entries(PRESETS).map(([k, v]) => ({ key: k, name: v.name, c: [...v.c], w: [...v.w] })),
+      ...DOMAIN_PRESETS.map((dp, i) => ({ key: `dp-${i}`, name: dp.name, c: [...dp.c], w: [...dp.w] })),
+    ];
+
+    for (const sel of ['comp-preset-a', 'comp-preset-b'] as const) {
+      const selectEl = document.getElementById(sel) as HTMLSelectElement;
+      selectEl.innerHTML = '<option value="custom">Custom</option>' +
+        allPresets.map(p => `<option value="${p.key}">${p.name}</option>`).join('');
+      selectEl.addEventListener('change', () => {
+        const p = allPresets.find(x => x.key === selectEl.value);
+        if (p) {
+          if (sel === 'comp-preset-a') { compChannelsA = [...p.c]; }
+          else { compChannelsB = [...p.c]; }
+          renderCompositionInputs();
+        }
+      });
+    }
+
+    // Buttons
+    document.getElementById('btn-compose')!.addEventListener('click', runComposition);
+    document.getElementById('btn-batch')!.addEventListener('click', runBatchAnalysis);
+    document.getElementById('btn-taustar')!.addEventListener('click', runTauStarSurface);
+    document.getElementById('btn-orientation')!.addEventListener('click', runOrientationProofs);
+
+    // Batch controls
+    document.getElementById('batch-select-all')!.addEventListener('click', () => {
+      const filtered = getFilteredEntities();
+      filtered.forEach((_, i) => {
+        const globalIdx = DOMAIN_PRESETS.indexOf(filtered[i]);
+        selectedBatchEntities.add(globalIdx);
+      });
+      renderBatchEntityList();
+    });
+    document.getElementById('batch-clear')!.addEventListener('click', () => {
+      selectedBatchEntities.clear();
+      renderBatchEntityList();
+    });
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     COMPOSITION MODE
+     ═══════════════════════════════════════════════════════════ */
+
+  function renderCompositionInputs() {
+    for (const [id, channels] of [['comp-channels-a', compChannelsA], ['comp-channels-b', compChannelsB]] as const) {
+      const container = document.getElementById(id)!;
+      container.innerHTML = '';
+      for (let i = 0; i < channels.length; i++) {
+        const div = document.createElement('div');
+        div.className = 'flex items-center gap-2';
+        div.innerHTML = `
+          <span class="text-xs text-kernel-500 w-7 font-mono">c${i + 1}</span>
+          <input type="range" min="0" max="1" step="0.001" value="${channels[i]}"
+            class="flex-1 h-1 accent-${id.includes('-a') ? 'green' : 'blue'}-400" data-comp-ch="${i}" data-comp-sys="${id.includes('-a') ? 'a' : 'b'}" />
+          <span class="text-xs text-kernel-400 w-12 text-right font-mono" data-comp-val="${id.includes('-a') ? 'a' : 'b'}-${i}">${channels[i].toFixed(3)}</span>
+        `;
+        container.appendChild(div);
+      }
+    }
+
+    // Attach slide listeners
+    document.querySelectorAll('[data-comp-ch]').forEach(el => {
+      el.addEventListener('input', (e) => {
+        const t = e.target as HTMLInputElement;
+        const idx = parseInt(t.dataset.compCh!);
+        const sys = t.dataset.compSys!;
+        const val = parseFloat(t.value);
+        if (sys === 'a') compChannelsA[idx] = val;
+        else compChannelsB[idx] = val;
+        const label = document.querySelector(`[data-comp-val="${sys}-${idx}"]`);
+        if (label) label.textContent = val.toFixed(3);
+      });
+    });
+  }
+
+  function runComposition() {
+    const w = Array(compChannelsA.length).fill(1 / compChannelsA.length);
+    const rA = computeKernel(compChannelsA, w);
+    const rB = computeKernel(compChannelsB, w);
+    const comp = composeKernels(rA, rB);
+    const regA = classifyRegime(rA);
+    const regB = classifyRegime(rB);
+
+    // Show results
+    document.getElementById('composition-results')!.classList.remove('hidden');
+
+    // Table
+    const tbody = document.getElementById('comp-table-body')!;
+    const rows = [
+      ['F (Fidelity)', rA.F, rB.F, comp.F_composed, 'Arithmetic: (F₁+F₂)/2'],
+      ['ω (Drift)', rA.omega, rB.omega, comp.omega_composed, 'ω = 1 − F'],
+      ['IC (Integrity)', rA.IC, rB.IC, comp.IC_composed, 'Geometric: √(IC₁·IC₂)'],
+      ['Δ (Gap)', rA.delta, rB.delta, comp.delta_composed, 'Δ = F − IC'],
+      ['S (Entropy)', rA.S, rB.S, (rA.S + rB.S) / 2, 'Arithmetic average'],
+      ['C (Curvature)', rA.C, rB.C, (rA.C + rB.C) / 2, 'Arithmetic average'],
+    ];
+    tbody.innerHTML = rows.map(([name, a, b, c, rule]) =>
+      `<tr class="border-b border-kernel-800">
+        <td class="px-2 py-1.5 text-kernel-300">${name}</td>
+        <td class="px-2 py-1.5 text-right text-green-400">${(a as number).toFixed(6)}</td>
+        <td class="px-2 py-1.5 text-right text-blue-400">${(b as number).toFixed(6)}</td>
+        <td class="px-2 py-1.5 text-right text-amber-400 font-bold">${(c as number).toFixed(6)}</td>
+        <td class="px-2 py-1.5 text-kernel-500">${rule}</td>
+      </tr>`
+    ).join('');
+
+    // Regime row
+    tbody.innerHTML += `<tr class="border-b border-kernel-800">
+      <td class="px-2 py-1.5 text-kernel-300">Regime</td>
+      <td class="px-2 py-1.5 text-right"><span class="px-2 py-0.5 rounded text-xs" style="background:${REGIME_COLORS[regA.regime].bg};color:${REGIME_COLORS[regA.regime].text}">${regA.regime}</span></td>
+      <td class="px-2 py-1.5 text-right"><span class="px-2 py-0.5 rounded text-xs" style="background:${REGIME_COLORS[regB.regime].bg};color:${REGIME_COLORS[regB.regime].text}">${regB.regime}</span></td>
+      <td class="px-2 py-1.5 text-right"><span class="px-2 py-0.5 rounded text-xs" style="background:${REGIME_COLORS[comp.regime].bg};color:${REGIME_COLORS[comp.regime].text}">${comp.regime}</span></td>
+      <td class="px-2 py-1.5 text-kernel-500">Gate classification</td>
+    </tr>`;
+
+    // Radar
+    renderDualRadar(rA, rB, comp);
+
+    // Composition law checks
+    const lawChecks = document.getElementById('comp-law-checks')!;
+    const fCheck = Math.abs(comp.F_composed - (rA.F + rB.F) / 2);
+    const icCheck = Math.abs(comp.IC_composed - Math.sqrt(rA.IC * rB.IC));
+    const gapCheck = Math.abs(comp.delta_composed - comp.gap_predicted);
+    lawChecks.innerHTML = [
+      { name: 'F arithmetic composition', formula: 'F₁₂ = (F₁+F₂)/2', residual: fCheck, pass: fCheck < 1e-12 },
+      { name: 'IC geometric composition', formula: 'IC₁₂ = √(IC₁·IC₂)', residual: icCheck, pass: icCheck < 1e-12 },
+      { name: 'Gap Hellinger law', formula: 'Δ₁₂ = (Δ₁+Δ₂)/2 + (√IC₁−√IC₂)²/2', residual: gapCheck, pass: gapCheck < 0.01 },
+      { name: 'IC ≤ F (composed)', formula: 'IC₁₂ ≤ F₁₂', residual: Math.max(0, comp.IC_composed - comp.F_composed), pass: comp.IC_composed <= comp.F_composed + 1e-10 },
+    ].map(c => `
+      <div class="flex items-center gap-3 p-2 rounded-lg ${c.pass ? 'bg-green-900/20 border border-green-800/30' : 'bg-red-900/20 border border-red-800/30'}">
+        <span class="text-base">${c.pass ? '✓' : '✗'}</span>
+        <div class="flex-1">
+          <div class="text-xs font-bold text-kernel-300">${c.name}</div>
+          <div class="text-xs text-kernel-500 font-mono">${c.formula}</div>
+        </div>
+        <span class="text-xs font-mono ${c.pass ? 'text-green-400' : 'text-red-400'}">|r| = ${c.residual.toExponential(2)}</span>
+      </div>
+    `).join('');
+  }
+
+  function renderDualRadar(rA: KernelResult, rB: KernelResult, comp: { F_composed: number; IC_composed: number; omega_composed: number; delta_composed: number }) {
+    const canvas = document.getElementById('comp-radar-canvas') as HTMLCanvasElement;
+    if (!canvas) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 3);
+    const size = 460;
+    canvas.width = Math.round(size * dpr);
+    canvas.height = Math.round(size * dpr);
+    canvas.style.width = size + 'px';
+    canvas.style.height = size + 'px';
+    const ctx = canvas.getContext('2d')!;
+    ctx.scale(dpr, dpr);
+
+    const cx = size / 2, cy = size / 2, radius = size * 0.35;
+    ctx.fillStyle = '#0a0a14';
+    ctx.fillRect(0, 0, size, size);
+
+    // Labels
+    const labels = ['F', 'ω', 'S', 'C', 'κ_norm', 'IC'];
+    const nAxes = labels.length;
+
+    // Draw axes
+    for (let i = 0; i < nAxes; i++) {
+      const angle = (Math.PI * 2 * i) / nAxes - Math.PI / 2;
+      const ex = cx + Math.cos(angle) * radius;
+      const ey = cy + Math.sin(angle) * radius;
+      ctx.strokeStyle = '#1e293b';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(ex, ey); ctx.stroke();
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '11px ui-monospace, monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(labels[i], cx + Math.cos(angle) * (radius + 16), cy + Math.sin(angle) * (radius + 16));
+    }
+
+    // Rings
+    for (let r = 0.25; r <= 1; r += 0.25) {
+      ctx.strokeStyle = '#1e293b';
+      ctx.lineWidth = 0.5;
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius * r, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    // Draw data polygons
+    const normalize = (r: KernelResult) => [r.F, r.omega, Math.min(r.S / 0.7, 1), r.C, Math.min(-r.kappa / 5, 1), r.IC];
+    const compResult: KernelResult = { F: comp.F_composed, omega: comp.omega_composed, S: 0, C: 0, kappa: 0, IC: comp.IC_composed, delta: comp.delta_composed, isHomogeneous: false };
+
+    const datasets = [
+      { values: normalize(rA), color: '#22c55e', alpha: 0.15, label: 'System A' },
+      { values: normalize(rB), color: '#3b82f6', alpha: 0.15, label: 'System B' },
+      { values: [comp.F_composed, comp.omega_composed, 0.5, 0.5, 0.5, comp.IC_composed], color: '#f59e0b', alpha: 0.2, label: 'Composed' },
+    ];
+
+    for (const ds of datasets) {
+      ctx.beginPath();
+      for (let i = 0; i < nAxes; i++) {
+        const angle = (Math.PI * 2 * i) / nAxes - Math.PI / 2;
+        const v = Math.max(0, Math.min(1, ds.values[i]));
+        const px = cx + Math.cos(angle) * radius * v;
+        const py = cy + Math.sin(angle) * radius * v;
+        if (i === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.closePath();
+      ctx.fillStyle = ds.color + Math.round(ds.alpha * 255).toString(16).padStart(2, '0');
+      ctx.fill();
+      ctx.strokeStyle = ds.color;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+
+    // Legend
+    ctx.font = '10px ui-sans-serif, sans-serif';
+    let ly = 20;
+    for (const ds of datasets) {
+      ctx.fillStyle = ds.color;
+      ctx.fillRect(15, ly - 6, 10, 10);
+      ctx.fillStyle = '#94a3b8';
+      ctx.textAlign = 'left';
+      ctx.fillText(ds.label, 30, ly + 2);
+      ly += 16;
+    }
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     BATCH ANALYSIS MODE
+     ═══════════════════════════════════════════════════════════ */
+
+  function getFilteredEntities(): DomainPreset[] {
+    if (!activeDomainFilter) return DOMAIN_PRESETS;
+    return DOMAIN_PRESETS.filter(dp => dp.domain === activeDomainFilter);
+  }
+
+  function renderBatchEntityList() {
+    // Domain filter buttons
+    const domains = [...new Set(DOMAIN_PRESETS.map(dp => dp.domain))];
+    const filterContainer = document.getElementById('batch-domain-filter')!;
+    filterContainer.innerHTML = `<button class="text-xs px-2 py-1 rounded ${!activeDomainFilter ? 'bg-cyan-700 text-white' : 'bg-kernel-800 text-kernel-400'}" data-domain-filter="all">All</button>` +
+      domains.map(d => `<button class="text-xs px-2 py-1 rounded ${activeDomainFilter === d ? 'bg-cyan-700 text-white' : 'bg-kernel-800 text-kernel-400'}" data-domain-filter="${d}">${d.replace(/_/g, ' ')}</button>`).join('');
+
+    filterContainer.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const f = (btn as HTMLElement).dataset.domainFilter!;
+        activeDomainFilter = f === 'all' ? null : f;
+        renderBatchEntityList();
+      });
+    });
+
+    // Entity checkboxes
+    const container = document.getElementById('batch-entity-list')!;
+    const filtered = getFilteredEntities();
+    container.innerHTML = filtered.map((dp, i) => {
+      const globalIdx = DOMAIN_PRESETS.indexOf(dp);
+      const checked = selectedBatchEntities.has(globalIdx);
+      return `<label class="flex items-center gap-1.5 text-xs py-1 px-2 rounded cursor-pointer hover:bg-kernel-800/50 ${checked ? 'bg-kernel-800/80' : ''}">
+        <input type="checkbox" ${checked ? 'checked' : ''} data-batch-idx="${globalIdx}" class="accent-cyan-400" />
+        <span class="text-kernel-300 truncate">${dp.name}</span>
+        <span class="text-kernel-600 text-[10px]">${dp.domain.replace(/_/g, ' ')}</span>
+      </label>`;
+    }).join('');
+
+    container.querySelectorAll('input[type=checkbox]').forEach(cb => {
+      cb.addEventListener('change', (e) => {
+        const idx = parseInt((cb as HTMLInputElement).dataset.batchIdx!);
+        if ((cb as HTMLInputElement).checked) selectedBatchEntities.add(idx);
+        else selectedBatchEntities.delete(idx);
+      });
+    });
+  }
+
+  function runBatchAnalysis() {
+    if (selectedBatchEntities.size === 0) return;
+
+    const entries = [...selectedBatchEntities].map(idx => ({
+      name: DOMAIN_PRESETS[idx].name,
+      c: [...DOMAIN_PRESETS[idx].c],
+      w: [...DOMAIN_PRESETS[idx].w],
+      domain: DOMAIN_PRESETS[idx].domain,
+    }));
+
+    const results = batchCompute(entries.map(e => ({ name: e.name, c: e.c, w: e.w })));
+
+    document.getElementById('batch-results')!.classList.remove('hidden');
+
+    // Table
+    const tbody = document.getElementById('batch-table-body')!;
+    tbody.innerHTML = results.map((r, i) => {
+      const rc = REGIME_COLORS[r.regime.regime];
+      return `<tr class="border-b border-kernel-800 hover:bg-kernel-800/30">
+        <td class="px-2 py-1.5 text-kernel-200 font-medium">${r.name}</td>
+        <td class="px-2 py-1.5 text-kernel-500 text-[10px]">${entries[i].domain.replace(/_/g, ' ')}</td>
+        <td class="px-2 py-1.5 text-right text-green-400">${r.result.F.toFixed(4)}</td>
+        <td class="px-2 py-1.5 text-right text-red-400">${r.result.omega.toFixed(4)}</td>
+        <td class="px-2 py-1.5 text-right text-blue-400">${r.result.IC.toFixed(4)}</td>
+        <td class="px-2 py-1.5 text-right text-amber-400">${r.result.delta.toFixed(4)}</td>
+        <td class="px-2 py-1.5 text-right text-purple-400">${r.result.S.toFixed(4)}</td>
+        <td class="px-2 py-1.5 text-right text-cyan-400">${r.result.C.toFixed(4)}</td>
+        <td class="px-2 py-1.5 text-center"><span class="px-1.5 py-0.5 rounded text-[10px]" style="background:${rc.bg};color:${rc.text}">${r.regime.regime}</span></td>
+        <td class="px-2 py-1.5 text-center text-kernel-400">${r.rank.rank}</td>
+        <td class="px-2 py-1.5 text-center">${r.identityPass ? '<span class="text-green-400">✓</span>' : '<span class="text-red-400">✗</span>'}</td>
+      </tr>`;
+    }).join('');
+
+    // Multi-radar
+    renderBatchRadar(results);
+
+    // Regime distribution
+    const regimeCounts = { STABLE: 0, WATCH: 0, COLLAPSE: 0 };
+    results.forEach(r => { regimeCounts[r.regime.regime]++; });
+    const total = results.length;
+    const distContainer = document.getElementById('batch-regime-dist')!;
+    distContainer.innerHTML = '';
+    for (const [regime, count] of Object.entries(regimeCounts)) {
+      if (count === 0) continue;
+      const pct = (count / total) * 100;
+      const rc = REGIME_COLORS[regime as keyof typeof REGIME_COLORS];
+      const div = document.createElement('div');
+      div.style.width = pct + '%';
+      div.style.background = rc.border;
+      div.className = 'flex items-center justify-center text-[10px] text-white font-bold';
+      div.textContent = count > 0 ? `${Math.round(pct)}%` : '';
+      distContainer.appendChild(div);
+    }
+    document.getElementById('batch-regime-legend')!.innerHTML =
+      Object.entries(regimeCounts).map(([r, c]) => {
+        const rc = REGIME_COLORS[r as keyof typeof REGIME_COLORS];
+        return `<span><span style="color:${rc.text}">■</span> ${r}: ${c}/${total}</span>`;
+      }).join('');
+  }
+
+  function renderBatchRadar(results: ReturnType<typeof batchCompute>) {
+    const canvas = document.getElementById('batch-radar-canvas') as HTMLCanvasElement;
+    if (!canvas) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 3);
+    const size = 460;
+    canvas.width = Math.round(size * dpr);
+    canvas.height = Math.round(size * dpr);
+    canvas.style.width = size + 'px';
+    canvas.style.height = size + 'px';
+    const ctx = canvas.getContext('2d')!;
+    ctx.scale(dpr, dpr);
+
+    const cx = size / 2, cy = size / 2, radius = size * 0.35;
+    ctx.fillStyle = '#0a0a14';
+    ctx.fillRect(0, 0, size, size);
+
+    const labels = ['F', 'ω', 'S', 'C', '−κ', 'IC'];
+    const nAxes = labels.length;
+
+    // Axes and rings
+    for (let i = 0; i < nAxes; i++) {
+      const angle = (Math.PI * 2 * i) / nAxes - Math.PI / 2;
+      const ex = cx + Math.cos(angle) * radius;
+      const ey = cy + Math.sin(angle) * radius;
+      ctx.strokeStyle = '#1e293b'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(ex, ey); ctx.stroke();
+      ctx.fillStyle = '#94a3b8'; ctx.font = '10px ui-monospace, monospace'; ctx.textAlign = 'center';
+      ctx.fillText(labels[i], cx + Math.cos(angle) * (radius + 16), cy + Math.sin(angle) * (radius + 16));
+    }
+    for (let r = 0.25; r <= 1; r += 0.25) {
+      ctx.strokeStyle = '#1e293b'; ctx.lineWidth = 0.5;
+      ctx.beginPath(); ctx.arc(cx, cy, radius * r, 0, Math.PI * 2); ctx.stroke();
+    }
+
+    // Color palette
+    const colors = ['#22c55e', '#3b82f6', '#f59e0b', '#ef4444', '#a855f7', '#06b6d4', '#ec4899', '#84cc16', '#f97316', '#14b8a6'];
+    const legendContainer = document.getElementById('batch-radar-legend')!;
+    legendContainer.innerHTML = '';
+
+    results.forEach((r, i) => {
+      const color = colors[i % colors.length];
+      const vals = [r.result.F, r.result.omega, Math.min(r.result.S / 0.7, 1), r.result.C, Math.min(-r.result.kappa / 5, 1), r.result.IC];
+
+      ctx.beginPath();
+      for (let j = 0; j < nAxes; j++) {
+        const angle = (Math.PI * 2 * j) / nAxes - Math.PI / 2;
+        const v = Math.max(0, Math.min(1, vals[j]));
+        const px = cx + Math.cos(angle) * radius * v;
+        const py = cy + Math.sin(angle) * radius * v;
+        if (j === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      ctx.closePath();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1.5;
+      ctx.globalAlpha = 0.7;
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+
+      legendContainer.innerHTML += `<span style="color:${color}">● ${r.name}</span>`;
+    });
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     τ_R* SURFACE MODE
+     ═══════════════════════════════════════════════════════════ */
+
+  function runTauStarSurface() {
+    const steps = parseInt((document.getElementById('tau-resolution') as HTMLSelectElement).value);
+    const useLog = (document.getElementById('tau-scale') as HTMLSelectElement).value === 'log';
+    const surface = tauRStarSurface(steps);
+
+    document.getElementById('taustar-results')!.classList.remove('hidden');
+
+    // Render heatmap
+    const canvas = document.getElementById('taustar-canvas') as HTMLCanvasElement;
+    if (!canvas) return;
+    const parent = canvas.parentElement!;
+    const cssW = parent.clientWidth;
+    const cssH = 420;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(cssW * dpr);
+    canvas.height = Math.round(cssH * dpr);
+    canvas.style.width = cssW + 'px';
+    canvas.style.height = cssH + 'px';
+    const ctx = canvas.getContext('2d')!;
+    ctx.scale(dpr, dpr);
+
+    const margin = { top: 30, right: 70, bottom: 50, left: 60 };
+    const plotW = cssW - margin.left - margin.right;
+    const plotH = cssH - margin.top - margin.bottom;
+
+    ctx.fillStyle = '#0a0a14';
+    ctx.fillRect(0, 0, cssW, cssH);
+
+    // Title
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = 'bold 12px ui-sans-serif, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('τ_R* = (1 − ω) / (Γ(ω) + α·C + ε)', cssW / 2, 18);
+
+    const n = surface.size;
+    const cellW = plotW / n;
+    const cellH = plotH / n;
+
+    // Compute log range
+    const logMin = useLog ? Math.log10(Math.max(surface.min, 0.01)) : surface.min;
+    const logMax = useLog ? Math.log10(surface.max) : surface.max;
+
+    for (let j = 0; j < n; j++) {
+      for (let i = 0; i < n; i++) {
+        const raw = surface.data[j * n + i];
+        const val = useLog ? Math.log10(Math.max(raw, 0.01)) : raw;
+        const t = (val - logMin) / (logMax - logMin);
+        const x = margin.left + i * cellW;
+        const y = margin.top + (n - 1 - j) * cellH;  // Flip Y
+        ctx.fillStyle = tauStarColor(t);
+        ctx.fillRect(x, y, cellW + 0.5, cellH + 0.5);
+      }
+    }
+
+    // Axes labels
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '11px ui-sans-serif, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('ω (Drift)', cssW / 2, cssH - 5);
+    ctx.save();
+    ctx.translate(14, cssH / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText('C (Curvature)', 0, 0);
+    ctx.restore();
+
+    // Tick labels
+    ctx.font = '9px ui-monospace, monospace';
+    ctx.fillStyle = '#64748b';
+    for (let t = 0; t <= 1; t += 0.2) {
+      const x = margin.left + t * plotW;
+      ctx.textAlign = 'center';
+      ctx.fillText(t.toFixed(1), x, cssH - margin.bottom + 15);
+      const y = margin.top + (1 - t) * plotH;
+      ctx.textAlign = 'right';
+      ctx.fillText(t.toFixed(1), margin.left - 8, y + 3);
+    }
+
+    // Color bar
+    const barX = cssW - margin.right + 15;
+    const barW = 15;
+    for (let py = 0; py < plotH; py++) {
+      const t = 1 - py / plotH;
+      ctx.fillStyle = tauStarColor(t);
+      ctx.fillRect(barX, margin.top + py, barW, 1);
+    }
+    ctx.fillStyle = '#64748b';
+    ctx.font = '8px ui-monospace, monospace';
+    ctx.textAlign = 'left';
+    const maxLabel = useLog ? '10^' + logMax.toFixed(1) : surface.max.toFixed(1);
+    const minLabel = useLog ? '10^' + logMin.toFixed(1) : surface.min.toFixed(1);
+    ctx.fillText(maxLabel, barX + barW + 3, margin.top + 8);
+    ctx.fillText(minLabel, barX + barW + 3, margin.top + plotH);
+
+    // Mark regime boundaries
+    ctx.strokeStyle = '#fbbf24';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    // ω = 0.038 (stable boundary)
+    const x038 = margin.left + 0.038 * plotW;
+    ctx.beginPath(); ctx.moveTo(x038, margin.top); ctx.lineTo(x038, margin.top + plotH); ctx.stroke();
+    // ω = 0.30 (collapse boundary)
+    const x30 = margin.left + 0.30 * plotW;
+    ctx.beginPath(); ctx.moveTo(x30, margin.top); ctx.lineTo(x30, margin.top + plotH); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Labels for boundaries
+    ctx.fillStyle = '#fbbf24';
+    ctx.font = '8px ui-sans-serif, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('ω=0.038', x038, margin.top - 5);
+    ctx.fillText('ω=0.30', x30, margin.top - 5);
+
+    // Tooltip
+    const tooltip = document.getElementById('taustar-tooltip')!;
+    canvas.onmousemove = (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+      if (mx >= margin.left && mx <= margin.left + plotW && my >= margin.top && my <= margin.top + plotH) {
+        const omega = (mx - margin.left) / plotW;
+        const C = 1 - (my - margin.top) / plotH;
+        const tau = computeTauRStar(omega, C);
+        tooltip.classList.remove('hidden');
+        tooltip.style.left = (mx + 15) + 'px';
+        tooltip.style.top = (my - 10) + 'px';
+        tooltip.textContent = `ω = ${omega.toFixed(3)}\nC = ${C.toFixed(3)}\nτ_R* = ${tau.toFixed(4)}`;
+      } else {
+        tooltip.classList.add('hidden');
+      }
+    };
+    canvas.onmouseleave = () => tooltip.classList.add('hidden');
+
+    // Fixed points
+    const fpContent = document.getElementById('taustar-fp-content')!;
+    const fixedPoints = [
+      { name: 'Origin (ω=0, C=0)', omega: 0.001, C: 0.001 },
+      { name: 'Stable boundary (ω=0.038, C=0.14)', omega: 0.038, C: 0.14 },
+      { name: 'Watch midpoint (ω=0.15, C=0.3)', omega: 0.15, C: 0.3 },
+      { name: 'Collapse boundary (ω=0.30, C=0.5)', omega: 0.30, C: 0.5 },
+      { name: 'Deep collapse (ω=0.7, C=0.8)', omega: 0.7, C: 0.8 },
+    ];
+    fpContent.innerHTML = fixedPoints.map(fp => {
+      const tau = computeTauRStar(fp.omega, fp.C);
+      return `<div class="flex justify-between items-center p-2 bg-kernel-800/50 rounded">
+        <span class="text-xs text-kernel-300">${fp.name}</span>
+        <span class="text-xs font-mono ${tau > 10 ? 'text-green-400' : tau > 1 ? 'text-amber-400' : 'text-red-400'}">${tau.toFixed(4)}</span>
+      </div>`;
+    }).join('');
+  }
+
+  function tauStarColor(t: number): string {
+    // Dark blue → cyan → green → yellow → red
+    t = Math.max(0, Math.min(1, t));
+    if (t < 0.25) {
+      const s = t / 0.25;
+      return `rgb(${Math.round(10 + s * 0)}, ${Math.round(10 + s * 80)}, ${Math.round(80 + s * 130)})`;
+    } else if (t < 0.5) {
+      const s = (t - 0.25) / 0.25;
+      return `rgb(${Math.round(10 + s * 20)}, ${Math.round(90 + s * 140)}, ${Math.round(210 - s * 60)})`;
+    } else if (t < 0.75) {
+      const s = (t - 0.5) / 0.25;
+      return `rgb(${Math.round(30 + s * 200)}, ${Math.round(230 - s * 30)}, ${Math.round(150 - s * 120)})`;
+    } else {
+      const s = (t - 0.75) / 0.25;
+      return `rgb(${Math.round(230 + s * 25)}, ${Math.round(200 - s * 150)}, ${Math.round(30 - s * 20)})`;
+    }
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     ORIENTATION PROOFS MODE
+     ═══════════════════════════════════════════════════════════ */
+
+  function runOrientationProofs() {
+    document.getElementById('orientation-results')!.classList.remove('hidden');
+
+    // Orientation receipts
+    const receipts = computeOrientationReceipts();
+    const cardsContainer = document.getElementById('orientation-cards')!;
+    cardsContainer.innerHTML = receipts.map(r => `
+      <div class="flex items-start gap-3 p-3 rounded-xl border ${r.pass ? 'bg-green-900/10 border-green-800/30' : 'bg-red-900/10 border-red-800/30'}">
+        <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-lg font-bold ${r.pass ? 'bg-green-900/40 text-green-400' : 'bg-red-900/40 text-red-400'}">
+          §${r.section}
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2">
+            <span class="text-sm font-bold text-kernel-200">${r.name}</span>
+            <span class="text-xs px-1.5 py-0.5 rounded ${r.pass ? 'bg-green-900/30 text-green-400' : 'bg-red-900/30 text-red-400'}">${r.pass ? 'PASS' : 'FAIL'}</span>
+          </div>
+          <p class="text-xs text-kernel-500 mt-0.5">${r.description}</p>
+          <div class="flex gap-4 mt-1 text-xs font-mono">
+            <span class="text-kernel-400">computed: <span class="${r.pass ? 'text-green-400' : 'text-red-400'}">${r.value.toExponential(4)}</span></span>
+            <span class="text-kernel-600">expected: ${r.expected}</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    // Summary
+    const nPass = receipts.filter(r => r.pass).length;
+    const summaryEl = document.getElementById('orientation-summary-content')!;
+    summaryEl.innerHTML = `
+      <div class="flex items-center gap-3 mb-3">
+        <span class="text-2xl font-bold ${nPass === receipts.length ? 'text-green-400' : 'text-red-400'}">${nPass}/${receipts.length} PASS</span>
+        <span class="text-kernel-500">— Orientation receipts verified to machine precision</span>
+      </div>
+      <p class="text-xs text-kernel-500">These numbers are compressed derivation chains. An agent with these numbers cannot misclassify because the numbers constrain what can be said. Each receipt follows structurally from the kernel's algebraic identities.</p>
+    `;
+
+    // Fixed points
+    const fixedPoints = analyzeFixedPoints();
+    const fpContainer = document.getElementById('fixed-point-cards')!;
+    fpContainer.innerHTML = fixedPoints.map(fp => `
+      <div class="bg-kernel-800/50 rounded-xl p-3 space-y-2">
+        <div class="text-sm font-bold text-kernel-200">${fp.name}</div>
+        <div class="text-[10px] text-kernel-600 italic">${fp.latin}</div>
+        <div class="text-xs text-kernel-400">c = ${fp.c_value}</div>
+        <div class="grid grid-cols-2 gap-1 text-xs font-mono">
+          <span class="text-green-400">F = ${fp.F.toFixed(6)}</span>
+          <span class="text-red-400">ω = ${fp.omega.toFixed(6)}</span>
+          <span class="text-amber-400">S = ${fp.S.toFixed(6)}</span>
+          <span class="text-blue-400">IC = ${fp.IC.toFixed(6)}</span>
+          <span class="text-cyan-400">κ = ${fp.kappa.toFixed(6)}</span>
+          <span class="text-purple-400">S+κ = ${fp.SpluskKappa.toExponential(2)}</span>
+        </div>
+        <p class="text-[10px] text-kernel-500">${fp.significance}</p>
+      </div>
+    `).join('');
+
+    // Regime partition
+    const partition = estimateRegimePartition(8, 10000);
+    const partContainer = document.getElementById('regime-partition')!;
+    partContainer.innerHTML = `
+      <div class="flex h-10 rounded-lg overflow-hidden">
+        <div style="width:${partition.stablePct}%;background:${REGIME_COLORS.STABLE.border}" class="flex items-center justify-center text-xs text-white font-bold">${partition.stablePct.toFixed(1)}%</div>
+        <div style="width:${partition.watchPct}%;background:${REGIME_COLORS.WATCH.border}" class="flex items-center justify-center text-xs text-white font-bold">${partition.watchPct.toFixed(1)}%</div>
+        <div style="width:${partition.collapsePct}%;background:${REGIME_COLORS.COLLAPSE.border}" class="flex items-center justify-center text-xs text-white font-bold">${partition.collapsePct.toFixed(1)}%</div>
+      </div>
+      <div class="flex gap-4 text-xs text-kernel-400 justify-center mt-2">
+        <span><span style="color:${REGIME_COLORS.STABLE.text}">■</span> Stable: ${partition.stablePct.toFixed(1)}% (expected ~12.5%)</span>
+        <span><span style="color:${REGIME_COLORS.WATCH.text}">■</span> Watch: ${partition.watchPct.toFixed(1)}% (expected ~24.4%)</span>
+        <span><span style="color:${REGIME_COLORS.COLLAPSE.text}">■</span> Collapse: ${partition.collapsePct.toFixed(1)}% (expected ~63.1%)</span>
+      </div>
+      <p class="text-xs text-kernel-500 mt-2">
+        Based on ${partition.total.toLocaleString()} random uniform traces with ${8} channels.
+        Stability is rare — ${(100 - partition.stablePct).toFixed(1)}% of the manifold lies outside it.
+        ${partition.critical} traces (${partition.criticalPct.toFixed(1)}%) had IC &lt; 0.30 (Critical overlay).
+      </p>
+    `;
+  }
+
+  /* ─── Init ─────────────────────────────────────────────── */
+
+  initAdvanced();
+</script>
