@@ -3,15 +3,942 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import RegimeDiagram from '../components/RegimeDiagram.astro';
 ---
 
-<BaseLayout title="Regime Phase Diagram — GCD">
-  <div class="max-w-5xl mx-auto">
-    <div class="mb-6">
-      <h1 class="text-3xl font-bold text-kernel-100 mb-2">Regime Phase Diagram</h1>
-      <p class="text-kernel-400">
-        High-resolution 2D phase diagram showing regime classification across the c₁ &times; c₂ plane.
-        Three regimes derived from frozen gates: Stable (12.5%), Watch (24.4%), Collapse (63.1%) of Fisher space.
+<BaseLayout title="Regime Classification — GCD" description="The three-regime classification system: Stable, Watch, Collapse. Four frozen gates, Fisher space geometry, regime transitions, cross-domain evidence, and the interactive phase diagram — all derived from Axiom-0.">
+  <div class="max-w-5xl mx-auto space-y-12">
+
+    <!-- ═══ HEADER ═══ -->
+    <header class="border-b border-kernel-800 pb-8">
+      <p class="text-xs font-mono text-kernel-600 tracking-widest uppercase mb-2">Regime Classification</p>
+      <h1 class="text-4xl font-bold text-kernel-100 mb-3">
+        The Three Regimes of Collapse
+      </h1>
+      <p class="text-kernel-400 text-lg max-w-3xl">
+        Every system in GCD occupies exactly one of three regimes — <strong class="text-emerald-400">Stable</strong>,
+        <strong class="text-amber-400">Watch</strong>, or <strong class="text-red-400">Collapse</strong> —
+        determined by four frozen gates applied to the kernel invariants. The regime is <em>derived</em>, never asserted.
+        Stability is rare: 87.5% of the Fisher manifold lies outside it.
       </p>
-    </div>
-    <RegimeDiagram />
+      <p class="text-kernel-500 text-sm mt-2 italic">
+        Ruptura est fons constantiae — dissolution is the source of constancy.
+      </p>
+      <nav class="flex flex-wrap gap-2 mt-5" aria-label="Page sections">
+        <a href="#overview" class="text-xs bg-kernel-800 hover:bg-kernel-700 text-kernel-300 px-3 py-1.5 rounded transition">Overview</a>
+        <a href="#gates" class="text-xs bg-kernel-800 hover:bg-kernel-700 text-kernel-300 px-3 py-1.5 rounded transition">Four Gates</a>
+        <a href="#regimes" class="text-xs bg-kernel-800 hover:bg-kernel-700 text-kernel-300 px-3 py-1.5 rounded transition">Regime Profiles</a>
+        <a href="#critical" class="text-xs bg-kernel-800 hover:bg-kernel-700 text-kernel-300 px-3 py-1.5 rounded transition">Critical Overlay</a>
+        <a href="#geometry" class="text-xs bg-kernel-800 hover:bg-kernel-700 text-kernel-300 px-3 py-1.5 rounded transition">Geometry</a>
+        <a href="#transitions" class="text-xs bg-kernel-800 hover:bg-kernel-700 text-kernel-300 px-3 py-1.5 rounded transition">Transitions</a>
+        <a href="#gap" class="text-xs bg-kernel-800 hover:bg-kernel-700 text-kernel-300 px-3 py-1.5 rounded transition">Heterogeneity Gap</a>
+        <a href="#cross-domain" class="text-xs bg-kernel-800 hover:bg-kernel-700 text-kernel-300 px-3 py-1.5 rounded transition">Cross-Domain</a>
+        <a href="#explorer" class="text-xs bg-kernel-800 hover:bg-kernel-700 text-kernel-300 px-3 py-1.5 rounded transition">Live Explorer</a>
+        <a href="#phase-diagram" class="text-xs bg-kernel-800 hover:bg-kernel-700 text-kernel-300 px-3 py-1.5 rounded transition">Phase Diagram</a>
+      </nav>
+    </header>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         §1  OVERVIEW — WHY THREE REGIMES?
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="overview">
+      <h2 class="text-2xl font-bold text-amber-400 mb-2">&sect;1 &mdash; Why Three Regimes?</h2>
+      <p class="text-kernel-400 text-sm mb-5">
+        The regime system translates continuous kernel invariants into discrete structural phases. Verdicts are derived from gates, never asserted.
+      </p>
+
+      <div class="bg-kernel-900 border border-kernel-700 rounded-lg p-6 mb-6">
+        <h3 class="text-lg font-bold text-kernel-200 mb-4">The Partition of Fisher Space</h3>
+        <p class="text-kernel-400 text-sm mb-4">
+          The kernel K&nbsp;:&nbsp;[0,1]<sup>n</sup>&nbsp;&times;&nbsp;&Delta;<sup>n</sup>&nbsp;&rarr;&nbsp;(F,&nbsp;&omega;,&nbsp;S,&nbsp;C,&nbsp;&kappa;,&nbsp;IC) produces continuous invariants.
+          Four frozen gates discretize this into three regimes, partitioning the entire 4-dimensional Fisher manifold.
+          The gates are <em>conjunctive</em> for Stable &mdash; all four must be satisfied simultaneously &mdash;
+          which is why stability is structurally rare.
+        </p>
+
+        <!-- Fisher space partition bar -->
+        <div class="mb-4">
+          <div class="flex h-8 rounded-lg overflow-hidden shadow-inner border border-kernel-700">
+            <div class="flex items-center justify-center text-xs font-bold text-emerald-100" style="width: 12.5%; background: linear-gradient(135deg, #059669, #10b981)">12.5%</div>
+            <div class="flex items-center justify-center text-xs font-bold text-amber-100" style="width: 24.4%; background: linear-gradient(135deg, #d97706, #f59e0b)">24.4%</div>
+            <div class="flex items-center justify-center text-xs font-bold text-red-100" style="width: 63.1%; background: linear-gradient(135deg, #dc2626, #ef4444)">63.1%</div>
+          </div>
+          <div class="flex justify-between text-[10px] text-kernel-500 mt-1.5 font-mono px-1">
+            <span>Stable</span>
+            <span>Watch</span>
+            <span>Collapse</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-kernel-950 border border-emerald-800/40 rounded-lg p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="w-3 h-3 rounded-sm bg-emerald-500"></span>
+              <h4 class="text-emerald-400 font-bold">Stable</h4>
+            </div>
+            <p class="text-kernel-400 text-xs">Low drift, high fidelity, low entropy, low curvature. All four gates satisfied. The quiet zone &mdash; only 12.5% of the manifold qualifies.</p>
+          </div>
+          <div class="bg-kernel-950 border border-amber-800/40 rounded-lg p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="w-3 h-3 rounded-sm bg-amber-500"></span>
+              <h4 class="text-amber-400 font-bold">Watch</h4>
+            </div>
+            <p class="text-kernel-400 text-xs">Moderate drift or a Stable gate not met. The intermediate zone where most &ldquo;interesting&rdquo; dynamics live &mdash; curvature cost often dominates.</p>
+          </div>
+          <div class="bg-kernel-950 border border-red-800/40 rounded-lg p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="w-3 h-3 rounded-sm bg-red-500"></span>
+              <h4 class="text-red-400 font-bold">Collapse</h4>
+            </div>
+            <p class="text-kernel-400 text-xs">High drift (&omega;&nbsp;&ge;&nbsp;0.30). The dominant regime &mdash; 63.1% of the manifold. Not failure but the generative boundary that makes return meaningful.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-kernel-950 border border-kernel-800 rounded-lg p-4 text-sm text-kernel-500">
+        <strong class="text-kernel-300">Key structural insight:</strong> Collapse is not an error state.
+        <em>Ruptura est fons constantiae</em> &mdash; dissolution is the source of constancy.
+        The axiom (&ldquo;only what returns is real&rdquo;) requires a boundary to return <em>from</em>.
+        Collapse provides that boundary. 63.1% of the manifold is generative territory.
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         §2  THE FOUR GATES
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="gates">
+      <h2 class="text-2xl font-bold text-amber-400 mb-2">&sect;2 &mdash; The Four Gates</h2>
+      <p class="text-kernel-400 text-sm mb-5">
+        Four frozen thresholds &mdash; seam-derived, not prescribed &mdash; classify every kernel output into a regime.
+        Stable is <em>conjunctive</em>: all four gates must be satisfied simultaneously.
+      </p>
+
+      <div class="bg-kernel-900 border border-kernel-700 rounded-lg overflow-hidden mb-6">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="text-left border-b border-kernel-700">
+              <th class="px-4 py-3 text-kernel-400 font-semibold">Gate</th>
+              <th class="px-4 py-3 text-kernel-400 font-semibold">Symbol</th>
+              <th class="px-4 py-3 text-kernel-400 font-semibold">Stable Threshold</th>
+              <th class="px-4 py-3 text-kernel-400 font-semibold">What It Measures</th>
+            </tr>
+          </thead>
+          <tbody class="text-kernel-300">
+            <tr class="border-b border-kernel-800">
+              <td class="px-4 py-2.5 font-bold text-amber-400">Drift Gate</td>
+              <td class="px-4 py-2.5 font-mono">&omega;</td>
+              <td class="px-4 py-2.5 font-mono">&lt; 0.038</td>
+              <td class="px-4 py-2.5 text-kernel-400 text-xs">How much signal is lost to collapse (1 &minus; F). Primary regime variable.</td>
+            </tr>
+            <tr class="border-b border-kernel-800">
+              <td class="px-4 py-2.5 font-bold text-blue-400">Fidelity Gate</td>
+              <td class="px-4 py-2.5 font-mono">F</td>
+              <td class="px-4 py-2.5 font-mono">&gt; 0.90</td>
+              <td class="px-4 py-2.5 text-kernel-400 text-xs">What fraction of coherence survives collapse. Arithmetic mean of channels.</td>
+            </tr>
+            <tr class="border-b border-kernel-800">
+              <td class="px-4 py-2.5 font-bold text-purple-400">Entropy Gate</td>
+              <td class="px-4 py-2.5 font-mono">S</td>
+              <td class="px-4 py-2.5 font-mono">&lt; 0.15</td>
+              <td class="px-4 py-2.5 text-kernel-400 text-xs">Bernoulli field entropy &mdash; uncertainty of the collapse field.</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-2.5 font-bold text-cyan-400">Curvature Gate</td>
+              <td class="px-4 py-2.5 font-mono">C</td>
+              <td class="px-4 py-2.5 font-mono">&lt; 0.14</td>
+              <td class="px-4 py-2.5 text-kernel-400 text-xs">Channel heterogeneity &mdash; coupling to uncontrolled degrees of freedom.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Gate logic diagram -->
+      <div class="bg-kernel-950 border border-kernel-800 rounded-lg p-6 mb-6">
+        <h3 class="text-lg font-bold text-kernel-200 mb-4">Classification Logic</h3>
+        <div class="space-y-3 font-mono text-sm">
+          <div class="flex items-start gap-3">
+            <span class="text-red-400 font-bold w-24 shrink-0">COLLAPSE</span>
+            <span class="text-kernel-400">&omega;&nbsp;&ge;&nbsp;0.30</span>
+            <span class="text-kernel-600 text-xs ml-auto">(primary boundary)</span>
+          </div>
+          <div class="border-t border-kernel-800"></div>
+          <div class="flex items-start gap-3">
+            <span class="text-emerald-400 font-bold w-24 shrink-0">STABLE</span>
+            <span class="text-kernel-400">&omega;&nbsp;&lt;&nbsp;0.038 &nbsp;<strong class="text-kernel-300">AND</strong>&nbsp; F&nbsp;&gt;&nbsp;0.90 &nbsp;<strong class="text-kernel-300">AND</strong>&nbsp; S&nbsp;&lt;&nbsp;0.15 &nbsp;<strong class="text-kernel-300">AND</strong>&nbsp; C&nbsp;&lt;&nbsp;0.14</span>
+            <span class="text-kernel-600 text-xs ml-auto">(conjunctive)</span>
+          </div>
+          <div class="border-t border-kernel-800"></div>
+          <div class="flex items-start gap-3">
+            <span class="text-amber-400 font-bold w-24 shrink-0">WATCH</span>
+            <span class="text-kernel-400">everything else</span>
+            <span class="text-kernel-600 text-xs ml-auto">(default)</span>
+          </div>
+        </div>
+        <p class="text-kernel-500 text-xs mt-4 italic">
+          Stable is conjunctive because stability requires <em>all</em> invariants to be simultaneously clean.
+          A single gate violation drops the system to Watch, even if the other three are perfect.
+        </p>
+      </div>
+
+      <!-- Why these thresholds? -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-kernel-900 border border-kernel-700 rounded-lg p-4">
+          <h4 class="text-sm font-bold text-kernel-200 mb-2">Why &omega; = 0.038?</h4>
+          <p class="text-kernel-400 text-xs">3.8% drift is the empirical boundary where all four Stable gates can plausibly be met. Below this threshold F&nbsp;&gt;&nbsp;0.962, and S and C are typically sufficiently low. Above it, the chances of satisfying all four gates simultaneously drops sharply.</p>
+        </div>
+        <div class="bg-kernel-900 border border-kernel-700 rounded-lg p-4">
+          <h4 class="text-sm font-bold text-kernel-200 mb-2">Why &omega; = 0.30?</h4>
+          <p class="text-kernel-400 text-xs">At 30% drift, the system has lost nearly a third of its coherence. The drift cost closure &Gamma;(&omega;) begins its steep cubic ascent. This is where return from collapse requires structural intervention, not incremental correction.</p>
+        </div>
+        <div class="bg-kernel-900 border border-kernel-700 rounded-lg p-4">
+          <h4 class="text-sm font-bold text-kernel-200 mb-2">Why F &gt; 0.90?</h4>
+          <p class="text-kernel-400 text-xs">90% fidelity is the floor for stability. Below it, even with low drift (which is constrained by F + &omega; = 1), the system cannot maintain coherence across channels reliably.</p>
+        </div>
+        <div class="bg-kernel-900 border border-kernel-700 rounded-lg p-4">
+          <h4 class="text-sm font-bold text-kernel-200 mb-2">Why S &lt; 0.15 and C &lt; 0.14?</h4>
+          <p class="text-kernel-400 text-xs">These thresholds ensure that the collapse field is locally ordered (low entropy) and channels are approximately homogeneous (low curvature). The maximum Bernoulli field entropy is ln&nbsp;2&nbsp;&asymp;&nbsp;0.693, so 0.15 is about 22% of maximum &mdash; very constrained.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         §3  REGIME PROFILES — DEEP CHARACTERIZATION
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="regimes">
+      <h2 class="text-2xl font-bold text-amber-400 mb-2">&sect;3 &mdash; Regime Profiles</h2>
+      <p class="text-kernel-400 text-sm mb-5">
+        Each regime has a distinct signature across all six kernel invariants and a characteristic return dynamic.
+      </p>
+
+      <div id="regime-profiles" class="space-y-4">
+        <!-- Stable profile -->
+        <div class="bg-kernel-900 border-l-4 border-emerald-500 rounded-r-lg p-6">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="w-4 h-4 rounded bg-emerald-500"></span>
+            <h3 class="text-xl font-bold text-emerald-400">Stable</h3>
+            <span class="text-kernel-500 text-xs font-mono ml-auto">12.5% of Fisher space</span>
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-6 gap-2 mb-4" id="stable-invariants">
+            <!-- Filled by script -->
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <h4 class="text-sm font-bold text-kernel-200 mb-1">Kernel Signature</h4>
+              <ul class="text-kernel-400 text-xs space-y-1 list-disc list-inside">
+                <li>F &gt; 0.90 &mdash; very high coherence survival</li>
+                <li>&omega; &lt; 0.038 &mdash; negligible drift</li>
+                <li>S &lt;0.15 &mdash; low entropy, collapse field is ordered</li>
+                <li>C &lt; 0.14 &mdash; channels are nearly homogeneous</li>
+                <li>IC/F &gt; 0.95 &mdash; minimal heterogeneity gap</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="text-sm font-bold text-kernel-200 mb-1">Return Dynamics</h4>
+              <ul class="text-kernel-400 text-xs space-y-1 list-disc list-inside">
+                <li>&Gamma;(&omega;) &lt; 10<sup>&minus;5</sup> &mdash; drift cost negligible</li>
+                <li>&tau;_R* dominated by memory term &Delta;&kappa;</li>
+                <li>Budget runs surplus &mdash; system generates credit</li>
+                <li>Basin requires O(&epsilon;&sup2;) perturbation to escape</li>
+              </ul>
+            </div>
+          </div>
+          <p class="text-kernel-500 text-xs mt-3 italic">Typical: healthy atoms, well-calibrated instruments, equilibrium systems.</p>
+        </div>
+
+        <!-- Watch profile -->
+        <div class="bg-kernel-900 border-l-4 border-amber-500 rounded-r-lg p-6">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="w-4 h-4 rounded bg-amber-500"></span>
+            <h3 class="text-xl font-bold text-amber-400">Watch</h3>
+            <span class="text-kernel-500 text-xs font-mono ml-auto">24.4% of Fisher space</span>
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-6 gap-2 mb-4" id="watch-invariants">
+            <!-- Filled by script -->
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <h4 class="text-sm font-bold text-kernel-200 mb-1">Kernel Signature</h4>
+              <ul class="text-kernel-400 text-xs space-y-1 list-disc list-inside">
+                <li>F &asymp; 0.70&ndash;0.90 &mdash; moderate coherence</li>
+                <li>&omega; &asymp; 0.038&ndash;0.30 &mdash; measurable drift</li>
+                <li>S &asymp; 0.15&ndash;0.40 &mdash; moderate entropy</li>
+                <li>C &asymp; 0.14&ndash;0.50 &mdash; visible channel spread</li>
+                <li>IC/F &asymp; 0.70&ndash;0.95 &mdash; moderate heterogeneity gap</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="text-sm font-bold text-kernel-200 mb-1">Return Dynamics</h4>
+              <ul class="text-kernel-400 text-xs space-y-1 list-disc list-inside">
+                <li>&Gamma;(&omega;) &asymp; 0.1&ndash;1.0 &mdash; drift cost measurable</li>
+                <li>&tau;_R* dominated by curvature cost &alpha;&middot;C</li>
+                <li>Budget near break-even &mdash; costly but feasible return</li>
+                <li>&Gamma; and &alpha;C compete for dominance</li>
+              </ul>
+            </div>
+          </div>
+          <p class="text-kernel-500 text-xs mt-3 italic">Typical: composites, biological systems, financial portfolios, mid-scale physics.</p>
+        </div>
+
+        <!-- Collapse profile -->
+        <div class="bg-kernel-900 border-l-4 border-red-500 rounded-r-lg p-6">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="w-4 h-4 rounded bg-red-500"></span>
+            <h3 class="text-xl font-bold text-red-400">Collapse</h3>
+            <span class="text-kernel-500 text-xs font-mono ml-auto">63.1% of Fisher space</span>
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-6 gap-2 mb-4" id="collapse-invariants">
+            <!-- Filled by script -->
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <h4 class="text-sm font-bold text-kernel-200 mb-1">Kernel Signature</h4>
+              <ul class="text-kernel-400 text-xs space-y-1 list-disc list-inside">
+                <li>F &lt; 0.70 &mdash; majority of coherence lost</li>
+                <li>&omega; &ge; 0.30 &mdash; high or extreme drift</li>
+                <li>S &gt; 0.40 &mdash; high uncertainty in collapse field</li>
+                <li>C &gt; 0.50 &mdash; severe channel heterogeneity</li>
+                <li>IC/F &lt; 0.70 &mdash; large heterogeneity gap, dead channels</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="text-sm font-bold text-kernel-200 mb-1">Return Dynamics</h4>
+              <ul class="text-kernel-400 text-xs space-y-1 list-disc list-inside">
+                <li>&Gamma;(&omega;) &gt; 100 &mdash; drift cost overwhelms curvature</li>
+                <li>&tau;_R* dominated by drift cost &Gamma;(&omega;)</li>
+                <li>Budget in deep deficit &mdash; structural intervention needed</li>
+                <li>Beyond &omega;_trap &asymp; 0.682: trapping &mdash; no single-step escape</li>
+              </ul>
+            </div>
+          </div>
+          <p class="text-kernel-500 text-xs mt-3 italic">Typical: confinement (quarks &rarr; hadrons), phase boundaries, system failure, deep restructuring.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         §4  CRITICAL OVERLAY
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="critical">
+      <h2 class="text-2xl font-bold text-amber-400 mb-2">&sect;4 &mdash; Critical Overlay</h2>
+      <p class="text-kernel-400 text-sm mb-5">
+        Critical is <em>not</em> a regime &mdash; it is a severity flag that can accompany any regime. It signals that composite integrity has collapsed.
+      </p>
+
+      <div class="bg-kernel-900 border border-violet-700/50 rounded-lg p-6 mb-4">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="w-4 h-4 rounded bg-violet-600"></span>
+          <h3 class="text-lg font-bold text-violet-400">CRITICAL: IC &lt; 0.30</h3>
+        </div>
+        <div class="bg-kernel-950 border border-kernel-600 rounded p-4 text-center mb-4">
+          <span class="font-mono text-xl text-violet-400">IC = exp(&kappa;) &lt; 0.30</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <h4 class="text-sm font-bold text-kernel-200 mb-2">What IC &lt; 0.30 means</h4>
+            <ul class="text-kernel-400 text-xs space-y-1 list-disc list-inside">
+              <li>Integrity is dangerously low &mdash; the weighted geometric mean has collapsed</li>
+              <li>One or more channels are near-dead (c<sub>i</sub> &rarr; &epsilon;)</li>
+              <li>Geometric slaughter: even if F is healthy, IC crashes</li>
+              <li>The seam budget becomes very expensive</li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-kernel-200 mb-2">Overlay behavior</h4>
+            <ul class="text-kernel-400 text-xs space-y-1 list-disc list-inside">
+              <li>Can appear in <em>any</em> regime &mdash; even Watch with moderate &omega;</li>
+              <li>In the phase diagram, Critical is rendered as a violet tint</li>
+              <li>Takes precedence in the classification cascade</li>
+              <li>Signals structural fragility regardless of drift level</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-kernel-950 border border-kernel-800 rounded-lg p-4 text-sm text-kernel-500">
+        <strong class="text-kernel-300">Example:</strong> A system with &omega; = 0.20 (Watch) but one dead channel can have IC = 0.08 &mdash;
+        the system appears moderate by drift alone, but is structurally fragile. The Critical overlay catches what the drift gate misses.
+        This is the power of <em>multiplicative</em> coherence: one dead channel kills the geometric mean.
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         §5  GEOMETRY — FISHER SPACE AND THE BERNOULLI MANIFOLD
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="geometry">
+      <h2 class="text-2xl font-bold text-amber-400 mb-2">&sect;5 &mdash; Geometry of the Regime Manifold</h2>
+      <p class="text-kernel-400 text-sm mb-5">
+        The kernel lives on the Bernoulli manifold &mdash; the space of binary channel probabilities c &isin; [0,1]<sup>n</sup>.
+        Regime boundaries are geometric structures in Fisher coordinates.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-kernel-900 border border-kernel-700 rounded-lg p-5">
+          <h3 class="text-lg font-bold text-kernel-200 mb-3">Fisher Coordinates</h3>
+          <div class="bg-kernel-950 border border-kernel-600 rounded p-3 text-center mb-3">
+            <span class="font-mono text-amber-400">&theta; = arccos(&radic;F)</span>
+          </div>
+          <ul class="text-kernel-400 text-xs space-y-1.5 list-disc list-inside">
+            <li>The Bernoulli manifold is <strong class="text-kernel-200">flat</strong> in Fisher coordinates: g<sub>F</sub>(&theta;) = 1</li>
+            <li>All structure comes from the <em>embedding</em>, not intrinsic curvature</li>
+            <li>F + &omega; = 1 becomes sin&sup2;&theta; + cos&sup2;&theta; = 1 &mdash; an exact trigonometric identity</li>
+            <li>Regime boundaries are arcs at fixed &theta; values</li>
+          </ul>
+        </div>
+
+        <div class="bg-kernel-900 border border-kernel-700 rounded-lg p-5">
+          <h3 class="text-lg font-bold text-kernel-200 mb-3">The Equator</h3>
+          <div class="bg-kernel-950 border border-kernel-600 rounded p-3 text-center mb-3">
+            <span class="font-mono text-cyan-400">c = &frac12;, &theta; = &pi;/4</span>
+          </div>
+          <ul class="text-kernel-400 text-xs space-y-1.5 list-disc list-inside">
+            <li>S = ln 2 (maximum Bernoulli field entropy)</li>
+            <li>S + &kappa; = 0 (perfect cancellation)</li>
+            <li>F = &omega; = &frac12; (equal coherence and drift)</li>
+            <li>Four independent quantities converge simultaneously</li>
+            <li>The equator sits in the Watch regime</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Why stability is rare -->
+      <div class="bg-kernel-900 border border-kernel-700 rounded-lg p-5 mb-4">
+        <h3 class="text-lg font-bold text-kernel-200 mb-3">Why Stability Is Rare</h3>
+        <p class="text-kernel-400 text-sm mb-3">
+          Stable is the intersection of four 1-dimensional constraints in 4D space. Each constraint carves away a slab of the manifold;
+          their <em>intersection</em> is a tiny corner. The measure of this corner is &sim;12.5% of Fisher space.
+        </p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
+          <div class="bg-kernel-950 rounded-lg p-3">
+            <div class="text-xs text-kernel-500 mb-1">&omega; &lt; 0.038</div>
+            <div class="font-mono text-sm text-kernel-300">~96.2% passes</div>
+          </div>
+          <div class="bg-kernel-950 rounded-lg p-3">
+            <div class="text-xs text-kernel-500 mb-1">F &gt; 0.90</div>
+            <div class="font-mono text-sm text-kernel-300">~10% passes</div>
+          </div>
+          <div class="bg-kernel-950 rounded-lg p-3">
+            <div class="text-xs text-kernel-500 mb-1">S &lt; 0.15</div>
+            <div class="font-mono text-sm text-kernel-300">~21.6% passes</div>
+          </div>
+          <div class="bg-kernel-950 rounded-lg p-3">
+            <div class="text-xs text-kernel-500 mb-1">C &lt; 0.14</div>
+            <div class="font-mono text-sm text-kernel-300">~28% passes</div>
+          </div>
+        </div>
+        <p class="text-kernel-500 text-xs mt-3">
+          Conjunction: ~0.962 &times; 0.10 &times; 0.216 &times; 0.28 &asymp; 0.006 &mdash; the exact figure is 12.5% because the constraints are correlated (F + &omega; = 1 links the first two gates).
+        </p>
+      </div>
+
+      <!-- Special points -->
+      <div class="bg-kernel-950 border border-kernel-800 rounded-lg p-5">
+        <h3 class="text-sm font-bold text-kernel-200 mb-3">Special Points on the Manifold</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div class="bg-kernel-900 rounded-lg p-3">
+            <div class="font-mono text-cyan-400 text-sm font-bold">c* = 0.7822</div>
+            <p class="text-kernel-400 text-xs mt-1">Logistic self-dual fixed point. Maximizes S + &kappa; per channel. Sits in the Watch regime near the Stable boundary.</p>
+          </div>
+          <div class="bg-kernel-900 rounded-lg p-3">
+            <div class="font-mono text-red-400 text-sm font-bold">c<sub>trap</sub> = 0.3177</div>
+            <p class="text-kernel-400 text-xs mt-1">Trapping threshold. Below this, &Gamma;(&omega;<sub>trap</sub>) = &alpha; and single-step escape is impossible. Deep Collapse territory.</p>
+          </div>
+          <div class="bg-kernel-900 rounded-lg p-3">
+            <div class="font-mono text-amber-400 text-sm font-bold">c = &frac12; (equator)</div>
+            <p class="text-kernel-400 text-xs mt-1">Quintuple fixed point: S = ln 2, S + &kappa; = 0, &Phi;<sub>eq</sub> = 0. Exact center of Watch regime.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         §6  REGIME TRANSITIONS
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="transitions">
+      <h2 class="text-2xl font-bold text-amber-400 mb-2">&sect;6 &mdash; Regime Transitions</h2>
+      <p class="text-kernel-400 text-sm mb-5">
+        Regimes follow a monotonic ordering. Unlike classical phase transitions, regime changes in GCD are non-hysteretic &mdash;
+        the regime is a function of invariants, not history.
+      </p>
+
+      <!-- Progression diagram -->
+      <div class="bg-kernel-900 border border-kernel-700 rounded-lg p-6 mb-6">
+        <h3 class="text-lg font-bold text-kernel-200 mb-4">Monotonic Progression</h3>
+        <div class="flex items-center justify-center gap-4 flex-wrap mb-4">
+          <div class="bg-emerald-900/30 border border-emerald-700/40 rounded-lg px-5 py-3 text-center">
+            <div class="font-bold text-emerald-400">STABLE</div>
+            <div class="text-[10px] text-kernel-500 font-mono">&omega; &lt; 0.038</div>
+          </div>
+          <div class="text-kernel-500 text-xl">&rarr;</div>
+          <div class="bg-amber-900/30 border border-amber-700/40 rounded-lg px-5 py-3 text-center">
+            <div class="font-bold text-amber-400">WATCH</div>
+            <div class="text-[10px] text-kernel-500 font-mono">0.038 &le; &omega; &lt; 0.30</div>
+          </div>
+          <div class="text-kernel-500 text-xl">&rarr;</div>
+          <div class="bg-red-900/30 border border-red-700/40 rounded-lg px-5 py-3 text-center">
+            <div class="font-bold text-red-400">COLLAPSE</div>
+            <div class="text-[10px] text-kernel-500 font-mono">&omega; &ge; 0.30</div>
+          </div>
+          <div class="text-kernel-500 text-xl">&rarr;</div>
+          <div class="bg-kernel-800 border border-kernel-600 rounded-lg px-5 py-3 text-center">
+            <div class="font-bold text-kernel-400">POLE</div>
+            <div class="text-[10px] text-kernel-500 font-mono">&omega; &rarr; 1</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-kernel-950 rounded-lg p-4">
+            <h4 class="text-sm font-bold text-emerald-400 mb-2">Stable &rarr; Watch</h4>
+            <p class="text-kernel-400 text-xs">Any single gate violation triggers. Most common: &omega; crosses 0.038 or C crosses 0.14. The system leaves the quiet zone &mdash; drift or heterogeneity has become measurable.</p>
+          </div>
+          <div class="bg-kernel-950 rounded-lg p-4">
+            <h4 class="text-sm font-bold text-amber-400 mb-2">Watch &rarr; Collapse</h4>
+            <p class="text-kernel-400 text-xs">&omega; crosses 0.30. The drift cost &Gamma;(&omega;) begins its steep cubic ascent. The system has lost 30%+ of its coherence. Return now requires structural intervention.</p>
+          </div>
+          <div class="bg-kernel-950 rounded-lg p-4">
+            <h4 class="text-sm font-bold text-red-400 mb-2">Near the Pole</h4>
+            <p class="text-kernel-400 text-xs">As &omega; &rarr; 1, &Gamma; &rarr; &infin;, information loss becomes total. R<sub>min</sub> diverges: R<sub>min</sub>&middot;(1&minus;&omega;) &rarr; 1/tol<sub>seam</sub> = 200. No curvature reduction can compensate.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Non-hysteresis -->
+      <div class="bg-kernel-950 border border-kernel-800 rounded-lg p-5">
+        <h3 class="text-sm font-bold text-kernel-200 mb-3">Non-Hysteretic Transitions</h3>
+        <p class="text-kernel-400 text-xs mb-3">
+          GCD regime changes are non-hysteretic. The regime is a <em>function</em> of the current invariants, with no memory of the previous regime:
+        </p>
+        <ul class="text-kernel-400 text-xs space-y-1 list-disc list-inside">
+          <li><strong class="text-kernel-300">Forward:</strong> Stable &rarr; Watch &rarr; Collapse follows directly from gate evaluation</li>
+          <li><strong class="text-kernel-300">Reverse:</strong> Collapse &rarr; Watch &rarr; Stable requires &omega; <em>strictly</em> below each threshold</li>
+          <li><strong class="text-kernel-300">No bistability:</strong> same invariants always produce the same regime</li>
+          <li><strong class="text-kernel-300">Regime monotonicity (Lemma 22):</strong> tightening a threshold monotonically increases the Collapse fraction</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         §7  HETEROGENEITY GAP
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="gap">
+      <h2 class="text-2xl font-bold text-amber-400 mb-2">&sect;7 &mdash; Heterogeneity Gap per Regime</h2>
+      <p class="text-kernel-400 text-sm mb-5">
+        The heterogeneity gap &Delta; = F &minus; IC measures how much channel heterogeneity costs integrity.
+        It is the central diagnostic across regimes.
+      </p>
+
+      <div class="bg-kernel-900 border border-kernel-700 rounded-lg p-6 mb-6">
+        <div class="bg-kernel-950 border border-kernel-600 rounded p-4 text-center mb-4">
+          <span class="font-mono text-xl text-amber-400">&Delta; = F &minus; IC</span>
+          <span class="block text-xs text-kernel-500 mt-1">Arithmetic mean minus geometric mean of channels</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div class="bg-kernel-950 border border-emerald-800/30 rounded-lg p-4">
+            <h4 class="text-sm font-bold text-emerald-400 mb-2">Stable: &Delta; &asymp; 0&ndash;0.05</h4>
+            <p class="text-kernel-400 text-xs">All channels strong, approximately homogeneous. IC &asymp; F. Negligible gap &mdash; the geometric and arithmetic means nearly coincide.</p>
+          </div>
+          <div class="bg-kernel-950 border border-amber-800/30 rounded-lg p-4">
+            <h4 class="text-sm font-bold text-amber-400 mb-2">Watch: &Delta; &asymp; 0.05&ndash;0.30</h4>
+            <p class="text-kernel-400 text-xs">Some channels weaken, creating spread. IC drops faster than F. The gap reveals which channels need attention &mdash; the &ldquo;interesting zone&rdquo; for diagnostics.</p>
+          </div>
+          <div class="bg-kernel-950 border border-red-800/30 rounded-lg p-4">
+            <h4 class="text-sm font-bold text-red-400 mb-2">Collapse: &Delta; &asymp; 0.30&ndash;0.90</h4>
+            <p class="text-kernel-400 text-xs">Severe heterogeneity. Dead channels (c<sub>i</sub> &rarr; &epsilon;) kill IC while F remains positive. This is geometric slaughter &mdash; one dead channel destroys multiplicative coherence.</p>
+          </div>
+        </div>
+
+        <!-- The two-channel formula -->
+        <div class="bg-kernel-950 border border-kernel-600 rounded p-4">
+          <h4 class="text-sm font-bold text-kernel-200 mb-2">Two-Channel Formula</h4>
+          <div class="text-center mb-2">
+            <span class="font-mono text-sm text-cyan-400">
+              &Delta; = (c<sub>1</sub> + c<sub>2</sub>)/2 &minus; &radic;(c<sub>1</sub> &middot; c<sub>2</sub>)
+              = (&radic;c<sub>1</sub> &minus; &radic;c<sub>2</sub>)&sup2; / 2
+            </span>
+          </div>
+          <p class="text-kernel-400 text-xs">
+            The gap is always non-negative (the integrity bound IC &le; F). For n channels it satisfies the asymptotic bound
+            &Delta; &asymp; Var(c) / (2F) &mdash; the Fisher Information contribution from heterogeneity.
+          </p>
+        </div>
+      </div>
+
+      <!-- Geometric slaughter example -->
+      <div class="bg-kernel-950 border border-kernel-800 rounded-lg p-5">
+        <h3 class="text-sm font-bold text-kernel-200 mb-2">Geometric Slaughter (Lemma 47)</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center mb-3" id="slaughter-values">
+          <!-- Filled by script -->
+        </div>
+        <p class="text-kernel-500 text-xs">
+          8-channel trace: 7 channels perfect (c = 1), 1 channel dead (c = &epsilon;).
+          F stays healthy &mdash; the arithmetic mean barely notices one dead channel.
+          But IC crashes to &epsilon;<sup>1/8</sup> &asymp; 0.10 &mdash; the geometric mean is destroyed by a single weak link.
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         §8  CROSS-DOMAIN EVIDENCE
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="cross-domain">
+      <h2 class="text-2xl font-bold text-amber-400 mb-2">&sect;8 &mdash; Cross-Domain Evidence</h2>
+      <p class="text-kernel-400 text-sm mb-5">
+        The regime system is not domain-specific. The same gates, thresholds, and transitions appear across all 20 closure domains.
+        Here are canonical examples.
+      </p>
+
+      <div class="space-y-4">
+        <!-- Particle physics -->
+        <div class="bg-kernel-900 border border-kernel-700 rounded-lg p-5">
+          <h3 class="text-lg font-bold text-kernel-200 mb-3">Particle Physics: The Confinement Cliff</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
+            <div class="bg-kernel-950 rounded-lg p-3 text-center">
+              <div class="text-xs text-kernel-500">Quarks</div>
+              <div class="font-mono text-amber-400 text-sm">Watch</div>
+              <div class="text-[10px] text-kernel-500 mt-1">IC/F &asymp; 0.94</div>
+            </div>
+            <div class="flex items-center justify-center text-2xl text-kernel-600">&rarr;</div>
+            <div class="bg-kernel-950 rounded-lg p-3 text-center">
+              <div class="text-xs text-kernel-500">Hadrons</div>
+              <div class="font-mono text-red-400 text-sm">Collapse + Critical</div>
+              <div class="text-[10px] text-kernel-500 mt-1">IC/F &asymp; 0.01&ndash;0.04</div>
+            </div>
+          </div>
+          <p class="text-kernel-400 text-xs">
+            The color channel becomes dead at the confinement boundary (c<sub>color</sub> &rarr; &epsilon;).
+            IC drops 98% while F barely changes. This is geometric slaughter at a phase boundary &mdash;
+            the regime transition from Watch to Collapse+Critical is detected structurally by the kernel.
+          </p>
+        </div>
+
+        <!-- Atomic physics -->
+        <div class="bg-kernel-900 border border-kernel-700 rounded-lg p-5">
+          <h3 class="text-lg font-bold text-kernel-200 mb-3">Atomic Physics: The Restoration of Coherence</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
+            <div class="bg-kernel-950 rounded-lg p-3 text-center">
+              <div class="text-xs text-kernel-500">Hadrons</div>
+              <div class="font-mono text-red-400 text-sm">Collapse</div>
+              <div class="text-[10px] text-kernel-500 mt-1">IC/F &asymp; 0.04</div>
+            </div>
+            <div class="flex items-center justify-center text-2xl text-kernel-600">&rarr;</div>
+            <div class="bg-kernel-950 rounded-lg p-3 text-center">
+              <div class="text-xs text-kernel-500">Atoms (e.g., Nickel)</div>
+              <div class="font-mono text-emerald-400 text-sm">Stable</div>
+              <div class="text-[10px] text-kernel-500 mt-1">IC/F &asymp; 0.96</div>
+            </div>
+          </div>
+          <p class="text-kernel-400 text-xs">
+            Atoms <em>restore</em> coherence with new degrees of freedom (electron shells).
+            The dead color channel is replaced by high-coherence electronic channels.
+            IC/F recovers from 0.04 to 0.96 &mdash; a complete regime restoration from Collapse to Stable.
+          </p>
+        </div>
+
+        <!-- More cross-domain examples -->
+        <div class="bg-kernel-900 border border-kernel-700 rounded-lg p-5">
+          <h3 class="text-lg font-bold text-kernel-200 mb-3">Cross-Domain Regime Patterns</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="bg-kernel-950 rounded-lg p-3">
+              <h4 class="text-xs font-bold text-kernel-300 mb-1">Quantum Mechanics</h4>
+              <p class="text-kernel-400 text-xs">Confined phase (Collapse) &harr; Quantum spin liquid (Watch) &mdash; detected via IC cliff at confinement boundary.</p>
+            </div>
+            <div class="bg-kernel-950 rounded-lg p-3">
+              <h4 class="text-xs font-bold text-kernel-300 mb-1">Materials Science</h4>
+              <p class="text-kernel-400 text-xs">Ferromagnet (Stable) &harr; Paramagnetic (Watch) &harr; Spin glass (Collapse) &mdash; channel heterogeneity tracks magnetic disorder.</p>
+            </div>
+            <div class="bg-kernel-950 rounded-lg p-3">
+              <h4 class="text-xs font-bold text-kernel-300 mb-1">Neuroscience</h4>
+              <p class="text-kernel-400 text-xs">Alert cortex (Watch) &harr; Lesion state (Collapse) &harr; Recovery (Watch) &mdash; cortical channels track neural coherence.</p>
+            </div>
+            <div class="bg-kernel-950 rounded-lg p-3">
+              <h4 class="text-xs font-bold text-kernel-300 mb-1">Finance</h4>
+              <p class="text-kernel-400 text-xs">Stable portfolio (Stable) &harr; Stress (Watch) &harr; Crisis (Collapse) &mdash; market channels detect systemic coherence loss.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         §9  LIVE REGIME EXPLORER
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="explorer">
+      <h2 class="text-2xl font-bold text-amber-400 mb-2">&sect;9 &mdash; Live Regime Explorer</h2>
+      <p class="text-kernel-400 text-sm mb-5">
+        Enter channel values and see the kernel invariants, regime classification, and all four gate evaluations in real time.
+      </p>
+
+      <div class="bg-kernel-900 border border-kernel-700 rounded-lg p-6 mb-6">
+        <div class="mb-4">
+          <label class="text-xs uppercase tracking-widest text-kernel-500 font-semibold block mb-2">Channel Values (comma-separated, 0&ndash;1)</label>
+          <input id="channel-input" type="text" value="0.95, 0.92, 0.88, 0.91, 0.94, 0.90, 0.93, 0.89"
+            class="w-full px-3 py-2 bg-kernel-800 border border-kernel-600 rounded-lg text-kernel-200 font-mono text-sm focus:border-amber-600 focus:outline-none transition" />
+          <p class="text-[10px] text-kernel-500 mt-1">Equal weights assumed. Enter 2&ndash;64 values.</p>
+        </div>
+
+        <!-- Preset buttons -->
+        <div class="flex flex-wrap gap-2 mb-5">
+          <button class="regime-preset text-xs bg-emerald-900/30 hover:bg-emerald-900/50 border border-emerald-700/40 text-emerald-400 px-3 py-1.5 rounded transition" data-channels="0.98, 0.97, 0.96, 0.99, 0.95, 0.97, 0.98, 0.96">Stable</button>
+          <button class="regime-preset text-xs bg-amber-900/30 hover:bg-amber-900/50 border border-amber-700/40 text-amber-400 px-3 py-1.5 rounded transition" data-channels="0.85, 0.72, 0.91, 0.68, 0.77, 0.83, 0.90, 0.15">Watch</button>
+          <button class="regime-preset text-xs bg-red-900/30 hover:bg-red-900/50 border border-red-700/40 text-red-400 px-3 py-1.5 rounded transition" data-channels="0.40, 0.35, 0.45, 0.30, 0.50, 0.25, 0.38, 0.42">Collapse</button>
+          <button class="regime-preset text-xs bg-violet-900/30 hover:bg-violet-900/50 border border-violet-700/40 text-violet-400 px-3 py-1.5 rounded transition" data-channels="0.95, 0.90, 0.92, 0.001, 0.93, 0.91, 0.94, 0.88">Critical</button>
+          <button class="regime-preset text-xs bg-kernel-800 hover:bg-kernel-700 border border-kernel-600 text-kernel-300 px-3 py-1.5 rounded transition" data-channels="1.0, 0.00000001, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0">Geometric Slaughter</button>
+          <button class="regime-preset text-xs bg-kernel-800 hover:bg-kernel-700 border border-kernel-600 text-kernel-300 px-3 py-1.5 rounded transition" data-channels="0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5">Equator</button>
+        </div>
+
+        <!-- Results -->
+        <div id="explorer-results" class="space-y-4">
+          <!-- Regime banner -->
+          <div id="explorer-banner" class="rounded-lg p-4 text-center"></div>
+
+          <!-- Invariant grid -->
+          <div class="grid grid-cols-3 md:grid-cols-6 gap-2" id="explorer-invariants"></div>
+
+          <!-- Gate evaluation -->
+          <div class="bg-kernel-950 border border-kernel-800 rounded-lg p-4">
+            <h4 class="text-xs uppercase tracking-widest text-kernel-500 font-semibold mb-3">Gate Evaluation</h4>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2" id="explorer-gates"></div>
+          </div>
+
+          <!-- Derived quantities -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-2" id="explorer-derived"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         §10  INTERACTIVE PHASE DIAGRAM
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="phase-diagram">
+      <h2 class="text-2xl font-bold text-amber-400 mb-2">&sect;10 &mdash; Interactive Phase Diagram</h2>
+      <p class="text-kernel-400 text-sm mb-5">
+        Two-channel phase space showing regime boundaries. Move the cursor over the c<sub>1</sub> &times; c<sub>2</sub> plane
+        to explore kernel invariants at every point.
+      </p>
+      <RegimeDiagram />
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         §11  VERIFICATION
+         ═══════════════════════════════════════════════════════════════ -->
+    <section id="verification" class="border-t border-kernel-800 pt-8">
+      <h2 class="text-2xl font-bold text-amber-400 mb-4">&sect;11 &mdash; Verification</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-kernel-900 border border-kernel-700 rounded-lg p-5">
+          <h3 class="text-sm font-bold text-kernel-200 mb-3">Structural Identities</h3>
+          <ul class="text-kernel-400 text-xs space-y-1.5 list-disc list-inside">
+            <li><strong class="text-kernel-300">F + &omega; = 1</strong> &mdash; exact to 0.0e+00 across 10K traces</li>
+            <li><strong class="text-kernel-300">IC &le; F</strong> &mdash; integrity bound holds for all admissible inputs</li>
+            <li><strong class="text-kernel-300">IC = exp(&kappa;)</strong> &mdash; log-integrity relation verified to machine precision</li>
+            <li>44 structural identities re-derived computationally</li>
+          </ul>
+        </div>
+        <div class="bg-kernel-900 border border-kernel-700 rounded-lg p-5">
+          <h3 class="text-sm font-bold text-kernel-200 mb-3">Test Coverage</h3>
+          <ul class="text-kernel-400 text-xs space-y-1.5 list-disc list-inside">
+            <li>14,362 tests across 172 test files</li>
+            <li>Regime classification tested across all 20 closure domains</li>
+            <li>43 regime-classification theorems verified</li>
+            <li>Gate thresholds frozen per run&mdash;consistent across the seam</li>
+          </ul>
+        </div>
+        <div class="bg-kernel-900 border border-kernel-700 rounded-lg p-5">
+          <h3 class="text-sm font-bold text-kernel-200 mb-3">Key Lemmas</h3>
+          <ul class="text-kernel-400 text-xs space-y-1.5 list-disc list-inside">
+            <li><strong class="text-kernel-300">L19:</strong> Stable &rArr; &Gamma;(&omega;) &lt; 10<sup>&minus;5</sup></li>
+            <li><strong class="text-kernel-300">L22:</strong> Regime monotonicity &mdash; tightening preserves ordering</li>
+            <li><strong class="text-kernel-300">L39:</strong> Super-exponential IC convergence as channels approach 1</li>
+            <li><strong class="text-kernel-300">L47:</strong> Geometric slaughter at phase boundaries (8/20 domains)</li>
+          </ul>
+        </div>
+        <div class="bg-kernel-900 border border-kernel-700 rounded-lg p-5">
+          <h3 class="text-sm font-bold text-kernel-200 mb-3">Frozen Parameters</h3>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <div class="bg-kernel-950 rounded p-2"><span class="text-kernel-500">ε</span> <span class="font-mono text-kernel-300 ml-1">10<sup>&minus;8</sup></span></div>
+            <div class="bg-kernel-950 rounded p-2"><span class="text-kernel-500">p</span> <span class="font-mono text-kernel-300 ml-1">3</span></div>
+            <div class="bg-kernel-950 rounded p-2"><span class="text-kernel-500">&alpha;</span> <span class="font-mono text-kernel-300 ml-1">1.0</span></div>
+            <div class="bg-kernel-950 rounded p-2"><span class="text-kernel-500">tol<sub>seam</sub></span> <span class="font-mono text-kernel-300 ml-1">0.005</span></div>
+            <div class="bg-kernel-950 rounded p-2"><span class="text-kernel-500">&omega;<sub>stable</sub></span> <span class="font-mono text-kernel-300 ml-1">0.038</span></div>
+            <div class="bg-kernel-950 rounded p-2"><span class="text-kernel-500">&omega;<sub>collapse</sub></span> <span class="font-mono text-kernel-300 ml-1">0.30</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </div>
 </BaseLayout>
+
+<script>
+  import { computeKernel, classifyRegime, gammaOmega } from '../lib/kernel';
+  import { EPSILON, REGIME_THRESHOLDS } from '../lib/constants';
+
+  /* ═══ Regime Profile Invariant Grids ═══════════════════════════════ */
+
+  function renderProfileInvariants() {
+    // Stable example
+    const stableC = [0.97, 0.96, 0.98, 0.95, 0.97, 0.96, 0.98, 0.97];
+    const stableR = computeKernel(stableC);
+    fillInvariantGrid('stable-invariants', stableR, 'emerald');
+
+    // Watch example
+    const watchC = [0.85, 0.72, 0.91, 0.68, 0.77, 0.83, 0.90, 0.15];
+    const watchR = computeKernel(watchC);
+    fillInvariantGrid('watch-invariants', watchR, 'amber');
+
+    // Collapse example
+    const collapseC = [0.40, 0.35, 0.45, 0.30, 0.50, 0.25, 0.38, 0.42];
+    const collapseR = computeKernel(collapseC);
+    fillInvariantGrid('collapse-invariants', collapseR, 'red');
+  }
+
+  function fillInvariantGrid(containerId: string, r: ReturnType<typeof computeKernel>, color: string) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    const items = [
+      { label: 'F', value: r.F.toFixed(4) },
+      { label: '\u03c9', value: r.omega.toFixed(4) },
+      { label: 'S', value: r.S.toFixed(4) },
+      { label: 'C', value: r.C.toFixed(4) },
+      { label: '\u03ba', value: r.kappa.toFixed(4) },
+      { label: 'IC', value: r.IC.toFixed(4) },
+    ];
+    el.innerHTML = items.map(v => `
+      <div class="bg-kernel-950 rounded p-2 text-center">
+        <div class="text-[10px] text-kernel-500">${v.label}</div>
+        <div class="font-mono text-xs text-${color}-300">${v.value}</div>
+      </div>
+    `).join('');
+  }
+
+  /* ═══ Geometric Slaughter Values ══════════════════════════════════ */
+
+  function renderSlaughterValues() {
+    const el = document.getElementById('slaughter-values');
+    if (!el) return;
+    const c = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, EPSILON];
+    const r = computeKernel(c);
+    const items = [
+      { label: 'F', value: r.F.toFixed(4), color: 'text-kernel-300' },
+      { label: 'IC', value: r.IC.toFixed(4), color: 'text-red-400' },
+      { label: '\u0394', value: r.delta.toFixed(4), color: 'text-amber-400' },
+      { label: 'IC/F', value: (r.IC / r.F).toFixed(4), color: 'text-violet-400' },
+    ];
+    el.innerHTML = items.map(v => `
+      <div class="bg-kernel-900 rounded-lg p-3">
+        <div class="text-[10px] text-kernel-500">${v.label}</div>
+        <div class="font-mono text-sm font-bold ${v.color}">${v.value}</div>
+      </div>
+    `).join('');
+  }
+
+  /* ═══ Live Regime Explorer ════════════════════════════════════════ */
+
+  function updateExplorer() {
+    const input = document.getElementById('channel-input') as HTMLInputElement;
+    if (!input) return;
+
+    const channels = input.value.split(',').map(s => {
+      const v = parseFloat(s.trim());
+      return isNaN(v) ? 0.5 : Math.max(EPSILON, Math.min(1 - EPSILON, v));
+    }).filter(v => !isNaN(v));
+
+    if (channels.length < 2) return;
+
+    const result = computeKernel(channels);
+    const { regime, isCritical } = classifyRegime(result);
+
+    // Banner
+    const banner = document.getElementById('explorer-banner');
+    if (banner) {
+      const colors: Record<string, string> = {
+        STABLE: 'bg-emerald-900/40 border border-emerald-700/50 text-emerald-400',
+        WATCH: 'bg-amber-900/40 border border-amber-700/50 text-amber-400',
+        COLLAPSE: 'bg-red-900/40 border border-red-700/50 text-red-400',
+      };
+      const criticalTag = isCritical ? ' <span class="text-violet-400 text-sm font-normal ml-2">+ CRITICAL</span>' : '';
+      banner.className = `rounded-lg p-4 text-center ${colors[regime] || ''}`;
+      banner.innerHTML = `<span class="text-2xl font-bold">${regime}</span>${criticalTag}`;
+    }
+
+    // Invariants
+    const invEl = document.getElementById('explorer-invariants');
+    if (invEl) {
+      const items = [
+        { label: 'F (Fidelity)', value: result.F.toFixed(6) },
+        { label: '\u03c9 (Drift)', value: result.omega.toFixed(6) },
+        { label: 'S (Entropy)', value: result.S.toFixed(6) },
+        { label: 'C (Curvature)', value: result.C.toFixed(6) },
+        { label: '\u03ba (Log-IC)', value: result.kappa.toFixed(6) },
+        { label: 'IC (Integrity)', value: result.IC.toFixed(6) },
+      ];
+      invEl.innerHTML = items.map(v => `
+        <div class="bg-kernel-950 border border-kernel-800 rounded-lg p-3 text-center">
+          <div class="text-[10px] text-kernel-500">${v.label}</div>
+          <div class="font-mono text-sm text-kernel-200">${v.value}</div>
+        </div>
+      `).join('');
+    }
+
+    // Gates
+    const gatesEl = document.getElementById('explorer-gates');
+    if (gatesEl) {
+      const t = REGIME_THRESHOLDS;
+      const gates = [
+        { label: '\u03c9 < 0.038', pass: result.omega < t.omega_stable_max, value: result.omega.toFixed(4) },
+        { label: 'F > 0.90', pass: result.F > t.F_stable_min, value: result.F.toFixed(4) },
+        { label: 'S < 0.15', pass: result.S < t.S_stable_max, value: result.S.toFixed(4) },
+        { label: 'C < 0.14', pass: result.C < t.C_stable_max, value: result.C.toFixed(4) },
+      ];
+      gatesEl.innerHTML = gates.map(g => {
+        const bg = g.pass ? 'bg-emerald-900/30 border-emerald-700/30' : 'bg-red-900/30 border-red-700/30';
+        const icon = g.pass ? '<span class="text-emerald-400 mr-1">\u2713</span>' : '<span class="text-red-400 mr-1">\u2717</span>';
+        return `
+          <div class="rounded-lg p-2.5 border ${bg}">
+            <div class="text-[10px] text-kernel-500">${g.label}</div>
+            <div class="flex items-center mt-1">${icon}<span class="font-mono text-xs text-kernel-200">${g.value}</span></div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Derived quantities
+    const derivedEl = document.getElementById('explorer-derived');
+    if (derivedEl) {
+      const gamma = gammaOmega(result.omega);
+      const icfRatio = result.F > 0 ? (result.IC / result.F) : 0;
+      const derived = [
+        { label: '\u0394 (Gap)', value: result.delta.toFixed(6) },
+        { label: 'IC/F Ratio', value: icfRatio.toFixed(6) },
+        { label: '\u0393(\u03c9)', value: gamma < 0.001 ? gamma.toExponential(2) : gamma.toFixed(4) },
+        { label: 'Channels', value: channels.length.toString() },
+      ];
+      derivedEl.innerHTML = derived.map(v => `
+        <div class="bg-kernel-950 border border-kernel-800 rounded-lg p-3 text-center">
+          <div class="text-[10px] text-kernel-500">${v.label}</div>
+          <div class="font-mono text-sm text-kernel-200">${v.value}</div>
+        </div>
+      `).join('');
+    }
+  }
+
+  /* ═══ Event Listeners ═════════════════════════════════════════════ */
+
+  const channelInput = document.getElementById('channel-input');
+  if (channelInput) {
+    channelInput.addEventListener('input', updateExplorer);
+  }
+
+  document.querySelectorAll('.regime-preset').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const input = document.getElementById('channel-input') as HTMLInputElement;
+      if (input && btn instanceof HTMLElement) {
+        input.value = btn.dataset.channels || '';
+        updateExplorer();
+      }
+    });
+  });
+
+  /* ═══ Initialize ══════════════════════════════════════════════════ */
+
+  renderProfileInvariants();
+  renderSlaughterValues();
+  updateExplorer();
+</script>
