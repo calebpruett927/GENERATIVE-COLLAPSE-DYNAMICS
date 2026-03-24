@@ -1,4 +1,4 @@
-import{L as a,b as o}from"./constants.CLIOMgoO.js";const l=document.getElementById("lexicon-body");l.innerHTML=a.map(e=>{const r=e.symbol==="—"?"text-kernel-600":"text-amber-400 font-mono";return`
+import{L as a,c as o}from"./constants.6x37F0HI.js";const l=document.getElementById("lexicon-body");l.innerHTML=a.map(e=>{const r=e.symbol==="—"?"text-kernel-600":"text-amber-400 font-mono";return`
       <tr class="border-b border-kernel-800 hover:bg-kernel-800/30 transition">
         <td class="p-2 text-kernel-200 font-medium italic">${e.latin}</td>
         <td class="p-2 ${r}">${e.symbol}</td>
