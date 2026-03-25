@@ -153,3 +153,30 @@ theorems:
     name: "DOC Hierarchy"
   - id: "T-CN-10"
     name: "Developmental Plasticity"
+
+  # Brain Atlas theorems (T-BA-1 through T-BA-6)
+  # Source: HoliAtlas (Manjón et al. 2026) + NextBrain (Iglesias et al. 2025)
+  - id: "T-BA-1"
+    name: "Thalamus Maximum Fidelity"
+  - id: "T-BA-2"
+    name: "Resolution Dependence of Small Structures"
+  - id: "T-BA-3"
+    name: "Clinical-Resolution Product"
+  - id: "T-BA-4"
+    name: "Thalamic Heterogeneity Supremacy"
+  - id: "T-BA-5"
+    name: "White Matter Multimodal Contrast"
+  - id: "T-BA-6"
+    name: "Resolution-Gap Correlation"
+
+lessons_learned:
+  - id: "LL-CN-01"
+    date: "2026-07-15"
+    summary: >
+      Brain atlas integration (HoliAtlas 2026 + NextBrain 2025): ultra-high
+      resolution (0.125 mm³) enables detection of substructure-level
+      neurodegeneration invisible at standard 1 mm³. The GCD kernel reveals
+      that small structures with high resolution dependence show larger
+      heterogeneity gaps (Δ = F − IC) due to geometric slaughter from low
+      volumetric fraction. The thalamus (13 nuclei, highest connectivity)
+      achieves highest F among all 35 atlas structures.

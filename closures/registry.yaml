@@ -1278,10 +1278,11 @@ extensions:
     clinical_neuroscience:
       archetype: kernel-centric
       channels: 10
-      entities: 62
-      theorems: 22
+      entities: 97
+      theorems: 28
       tier1_bootstrap: false
       theorem_prefix: "TCN"
+      note: "97 entities across 6 closure files including brain atlas (35 entities, 6 theorems)"
     spacetime_memory:
       archetype: kernel-centric
       channels: 8
