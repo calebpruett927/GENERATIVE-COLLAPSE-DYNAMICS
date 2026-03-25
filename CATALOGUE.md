@@ -2,7 +2,7 @@
 
 > *Omnia numerantur; nihil latet.* — Everything is counted; nothing is hidden.
 
-**Version**: UMCP v2.2.5 · **Last updated**: 2026-03-22
+**Version**: UMCP v2.2.5 · **Last updated**: 2026-03-23
 
 This document is the **single authoritative index** of every named symbol, constant, identity, lemma, definition, theorem, class, schema, contract, and structural concept in the GENERATIVE-COLLAPSE-DYNAMICS repository. Each entry carries:
 
@@ -28,13 +28,14 @@ This document is the **single authoritative index** of every named symbol, const
     - [1.8 Formal Definitions](#18-formal-definitions)
     - [1.9 Lemmas](#19-lemmas)
       - [Core Lemmas (L1–L34)](#core-lemmas-l1l34)
-      - [Extended / Empirical Lemmas (L35–L46)](#extended--empirical-lemmas-l35l46)
+      - [Extended / Empirical Lemmas (L35–L48)](#extended--empirical-lemmas-l35l48)
     - [1.10 Structural Identities — Level A (Foundation)](#110-structural-identities--level-a-foundation)
     - [1.11 Structural Identities — Level B (Structure)](#111-structural-identities--level-b-structure)
     - [1.12 Structural Identities — Level C (Skeleton)](#112-structural-identities--level-c-skeleton)
     - [1.13 Structural Identities — Level D (Convergence)](#113-structural-identities--level-d-convergence)
-    - [1.14 Identity Connection Clusters](#114-identity-connection-clusters)
-    - [1.15 Derivation Tree](#115-derivation-tree)
+    - [1.14 Structural Identities — Level E (Discovery)](#114-structural-identities--level-e-discovery)
+    - [1.15 Identity Connection Clusters](#115-identity-connection-clusters)
+    - [1.16 Derivation Tree](#116-derivation-tree)
   - [Tier-0 — Protocol](#tier-0--protocol)
     - [2.1 Kernel Engine](#21-kernel-engine)
     - [2.2 Seam Budget](#22-seam-budget)
@@ -276,7 +277,7 @@ Rank-1 ⊂ Rank-2 ⊂ Rank-3. Almost all real-world systems are rank-3.
 | `L-33` | L33 | IC/F Ratio Bound | IC/F ∈ [ε^(1−min wᵢ)/F, 1] — bounded away from zero by guard band | AI-2, FP-ε |
 | `L-34` | L34 | Entropy-Curvature Coupling | In the homogeneous limit (C→0): S → h(F), IC → F | SC-1, AI-2 |
 
-#### Extended / Empirical Lemmas (L35–L46)
+#### Extended / Empirical Lemmas (L35–L48)
 
 | Tag | ID | Name | Statement (abbreviated) | Lineage |
 |-----|-----|------|------------------------|---------|
@@ -293,8 +294,9 @@ Rank-1 ⊂ Rank-2 ⊂ Rank-3. Almost all real-world systems are rank-3.
 | `L-45` | L45 | Seam Residual Algebra | Seam composition forms a monoid: associative with identity, verified to 5.55×10⁻¹⁷ | L-20, I-C8 |
 | `L-46` | L46 | Weld Closure Composition | Composed welds satisfy: PASS₁ ∧ PASS₂ ⇒ PASS₁₂ if residuals are within tolerance | Def-13, L-27 |
 | `L-47` | L47 | Geometric Slaughter (Cross-Domain) | One dead channel (cₖ → ε) kills IC while F stays healthy: IC/F → ε^(wₖ) · (IC_rest/F). Observed in 8/20 domains at phase boundaries (confinement, EWSB, cortical lesion). The drop is exactly IC_dead = ε^(1/n)·c₀^((n-1)/n) for uniform traces (cf. T-KS-1). | L-6, L-30, AI-2 |
+| `L-48` | L48 | Stability Measure-Zero | P(Stable \| uniform random c) → 0 as n grows. For n ≥ 8, the fraction of uniform random trace vectors landing in Stable regime is 0%. Stability is not the generic state — 87.5% of Fisher space lies outside it. | RG-S, I-B11 |
 
-**Source**: [KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md) §4 (L1–L34), §4b (L35–L46), cross-domain (L47)
+**Source**: [KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md) §4 (L1–L34), §4b (L35–L46), cross-domain (L47), computational probes (L48)
 
 ---
 
@@ -394,28 +396,49 @@ Verification: `scripts/deep_diagnostic.py`, `scripts/cross_domain_bridge.py`, `s
 
 ---
 
-### 1.14 Identity Connection Clusters
+### 1.14 Structural Identities — Level E (Discovery)
 
-The 44 identities (A: 7, B: 15, C: 11, D: 11) form a network with 6 computationally verified clusters. Cluster members now reference the derivation-level tags.
+> *E detegit.* — E discovers. 5 steps from K: novel patterns discovered through systematic computational probes of the Bernoulli manifold. Each verified to machine precision or analytical proof.
+
+| Tag | Name | Formula | Meaning | Derived from | Verification |
+|-----|------|---------|---------|-------------|--------------|
+| `I-E1` | Cost Cross-Product | Γ(ω)·Γ(1−ω) = [ω(1−ω)]^(p−1) | Cost function reflection law; for p=3: product equals square of ω(1−ω) | FP-p: algebraic expansion of Γ = ω^p/(1−ω+ε) | max error 1.01e-06 across 5000 traces |
+| `I-E2` | Trapping Echo | (S+κ)(1−c\*) = −1 exactly | Coupling function at the reflect of the fixed point equals exactly −1; integer resonance | I-C1 + I-C2: evaluate coupling at reflected fixed point | error 1.44e-15 |
+| `I-E3` | Departure Half | 1 − IC/F = Var(c)/(2F²) with β = 1/2 exactly | The fractional IC deficit is determined by the normalized variance with coefficient exactly ½ | I-A2, Taylor expansion of IC = exp(κ): κ ≈ ln F − σ²/(2F²) | analytical proof + numerical 1M samples, error < 1e-07 |
+| `I-E4` | Entropy Composition | S₁₂ = (S₁+S₂)/2 for composed systems | Entropy composes arithmetically — it is a weighted sum of h(cᵢ), hence linear in subsystems | K-S: linearity of S = Σwᵢh(cᵢ) | max error 2.22e-16 |
+| `I-E5` | Entropy Deficit | S\_homo(F) − S ∝ C² | The entropy loss from heterogeneity is quadratic in curvature | K-S, K-C: Taylor expand h(cᵢ) around h(F) | scaling exponent 2.0–2.15, coefficient ≈ 0.628 |
+| `I-E6` | Log-Variance Gap | Δ ≈ IC·Var(ln c)/2 | Alternative gap formula using log-variance; 1.45× more accurate than Var(c)/(2F) | I-A2, I-B3: refine gap approximation with log-domain variance | ratio improvement verified across 10,000 traces |
+| `I-E7` | Curvature Non-Composability | C₁₂ ≠ f(C₁, C₂) under any simple mean | Curvature is a second-order statistic (std) and cannot compose — it requires the joint distribution | K-C: std(c) is nonlinear; not of form Σwᵢf(cᵢ) | ~4–5% error under all means |
+| `I-E8` | Algebraic Signature | F,ω,S,κ: arithmetic; IC: geometric; C,gap: none | Complete composition classification of all 7 kernel outputs | I-C3, I-E4, I-E7: test all outputs under system composition | arithmetic errors < 10⁻¹⁶, geometric < 10⁻¹⁶ |
+| `I-E9` | Sensitivity Divergence | ∂κ/∂cᵢ = wᵢ/cᵢ → ∞ as cᵢ → 0 | Log-integrity sensitivity diverges at dead channels, explaining geometric slaughter | K-κ, L-6: differentiate κ = Σwᵢ ln cᵢ | ratio verification 1.000000 across all test points |
+
+**What Level E establishes**: The **cost function duality** (E1), the **integer resonance** at reflected fixed points (E2), the **exact departure coefficient** (E3), the **composition classification** of all outputs (E4, E7, E8), the **quadratic deficit** law (E5), the **log-variance gap** refinement (E6), and the **sensitivity mechanism** behind geometric slaughter (E9).
+
+---
+
+### 1.15 Identity Connection Clusters
+
+The 53 identities (A: 7, B: 15, C: 11, D: 11, E: 9) form a network with 7 computationally verified clusters. Cluster members now reference the derivation-level tags.
 
 | Tag | Cluster | Members | Structural Insight | Lineage |
 |-----|---------|---------|-------------------|---------|
 | `CC-1` | Equator Web | I-C1, I-B10, I-C2, I-D6 | c=½ is quintuple fixed point; entropy-integrity cancellation | Levels B–D |
 | `CC-2` | Dual Bounding Pair | I-A2, I-B4 | IC ≤ F below, S ≤ h(F) above; both exact iff C=0 | Levels A–B |
 | `CC-3` | Perturbation Chain | I-A6 → I-B3 → I-A2 | Integrity bound proved from kernel's Taylor structure | Levels A–B |
-| `CC-4` | Composition Algebra | I-D8, I-D9, I-C8 | Monoid structure with Hellinger-like gap correction | Levels C–D |
-| `CC-5` | Fixed-Point Triangle | I-D1/I-D2, I-D3, I-B10 | Manifold skeleton: equator + c\* + c_trap | Levels B–D |
+| `CC-4` | Composition Algebra | I-D8, I-D9, I-C8, I-E4, I-E7, I-E8 | Monoid structure with Hellinger-like gap correction; complete algebraic signature of all outputs | Levels C–E |
+| `CC-5` | Fixed-Point Triangle | I-D1/I-D2, I-D3, I-B10, I-E2 | Manifold skeleton: equator + c\* + c_trap + trapping echo at 1−c\* | Levels B–E |
 | `CC-6` | Spectral Family | I-A7, I-B7, I-B8, I-C10 | f = S+κ spectrally complete; ∫g_F·S dc = π²/3 | Levels A–C |
+| `CC-7` | Departure-Sensitivity Chain | I-E3, I-E5, I-E6, I-E9 | β=½ departure → quadratic deficit → log-variance gap; sensitivity divergence is the mechanism | Level E |
 
-**Source**: `scripts/identity_connections.py`
+**Source**: `scripts/identity_connections.py`, `scripts/_probe_novel.py`, `scripts/_probe_wave2.py`
 
 ---
 
-### 1.15 Derivation Tree
+### 1.16 Derivation Tree
 
-> *A ligat, B format, C invenit, D componit.* — A binds, B shapes, C discovers, D composes.
+> *A ligat, B format, C invenit, D componit, E detegit.* — A binds, B shapes, C discovers, D composes, E discovers.
 
-The 7 + 15 + 11 + 11 = 44 identities form a tree of depth 4 from Axiom-0. Legacy IDs (E/B/D/N series) are retained in the Legacy column for backward compatibility.
+The 7 + 15 + 11 + 11 + 9 = 53 identities form a tree of depth 5 from Axiom-0. Legacy IDs (E/B/D/N series) are retained in the Legacy column for backward compatibility.
 
 ```
 AXIOM-0 → KERNEL K
@@ -451,6 +474,7 @@ AXIOM-0 → KERNEL K
 | **B** | *format* | 15 | **Structure**: outputs interconnect; coupling, perturbation, spectra, regimes |
 | **C** | *invenit* | 11 | **Skeleton**: critical point, reflection, composition, complete moments |
 | **D** | *componit* | 11 | **Convergence**: special points, thresholds, algebras cross-reference |
+| **E** | *detegit* | 9 | **Discovery**: cost duality, departure coefficient, composition signature, sensitivity mechanism |
 
 **Legacy → Derivation Tag Cross-Reference** (for backward compatibility):
 
@@ -1395,10 +1419,10 @@ Def-11               →   T0-SeamAccum               →   T2-ST-9 (Intrinsic f
 | Regime gates | 4 |
 | Rank types | 3 |
 | Formal definitions | 14 |
-| Lemmas (core + extended) | 46 |
-| Structural identities (A+B+C+D) | 7 + 15 + 11 + 11 = 44 |
-| Connection clusters | 6 |
-| **Tier-1 total** | **136** |
+| Lemmas (core + extended) | 48 |
+| Structural identities (A+B+C+D+E) | 7 + 15 + 11 + 11 + 9 = 53 |
+| Connection clusters | 7 |
+| **Tier-1 total** | **147** |
 | | |
 | **Tier-0** | |
 | Classes / dataclasses | 26 |
@@ -1423,7 +1447,7 @@ Def-11               →   T0-SeamAccum               →   T2-ST-9 (Intrinsic f
 | Entity catalogs | 10 (≈565 entities total) |
 | **Tier-2 total** | **~348** |
 | | |
-| **GRAND TOTAL** | **~619 tagged objects** |
+| **GRAND TOTAL** | **~630 tagged objects** |
 
 ---
 
