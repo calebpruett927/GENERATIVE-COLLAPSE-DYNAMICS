@@ -417,6 +417,28 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div id="brain-3d-container" class="flex-1 relative hidden" style="min-height: 480px;">
           <canvas id="brain-3d-canvas" class="w-full h-full rounded"></canvas>
           <div class="absolute bottom-2 left-2 text-[10px] text-kernel-600">Drag to rotate · Scroll to zoom · Click a region</div>
+          <!-- 3D Control panel -->
+          <div class="absolute top-2 right-2 space-y-2">
+            <!-- Color mode selector -->
+            <div class="bg-kernel-950/90 border border-kernel-700 rounded px-2 py-1.5">
+              <div class="text-[9px] text-kernel-500 mb-1 font-bold">COLOR MODE</div>
+              <div class="flex gap-1">
+                <button data-color-mode="category" class="color-mode-btn px-1.5 py-0.5 text-[9px] rounded border border-amber-600 bg-amber-950/30 text-amber-400">Category</button>
+                <button data-color-mode="fidelity" class="color-mode-btn px-1.5 py-0.5 text-[9px] rounded border border-kernel-600 text-kernel-400 hover:text-amber-400">F</button>
+                <button data-color-mode="drift" class="color-mode-btn px-1.5 py-0.5 text-[9px] rounded border border-kernel-600 text-kernel-400 hover:text-amber-400">ω</button>
+                <button data-color-mode="integrity" class="color-mode-btn px-1.5 py-0.5 text-[9px] rounded border border-kernel-600 text-kernel-400 hover:text-amber-400">IC</button>
+              </div>
+            </div>
+            <!-- Pathway toggles -->
+            <div class="bg-kernel-950/90 border border-kernel-700 rounded px-2 py-1.5">
+              <div class="text-[9px] text-kernel-500 mb-1 font-bold">PATHWAYS</div>
+              <div class="flex flex-col gap-0.5" id="pathway-toggles"></div>
+              <div class="flex gap-1 mt-1">
+                <button id="btn-pw-all" class="px-1 py-0.5 text-[8px] rounded border border-kernel-600 text-kernel-500 hover:text-amber-400">All</button>
+                <button id="btn-pw-none" class="px-1 py-0.5 text-[8px] rounded border border-kernel-600 text-kernel-500 hover:text-amber-400">None</button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Region Detail Panel -->
@@ -1115,6 +1137,52 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <p class="text-kernel-500 italic">Detection gain from subfields: <span class="text-cyan-400">+30%</span></p>
         </div>
       </div>
+
+      <div class="bg-kernel-900 border border-kernel-700 rounded-lg p-5">
+        <h3 class="text-xs font-bold text-yellow-400 uppercase tracking-wider mb-3">Epilepsy</h3>
+        <div class="text-xs text-kernel-400 space-y-2">
+          <p><strong class="text-kernel-200">Primary targets:</strong> Hippocampus CA1 (F=0.740), CA2/3, amygdala lateral &amp; basal</p>
+          <p><strong class="text-kernel-200">Secondary:</strong> Temporal cortex, insular cortex, thalamus</p>
+          <p><strong class="text-kernel-200">Key finding:</strong> Mesial temporal sclerosis — the most common
+            surgical epilepsy substrate — presents as CA1 volume loss with
+            relative CA2/3 sparing. Ultra-high resolution resolves this
+            differential pattern. The Papez circuit (hippocampus → fornix →
+            mammillary → thalamus → cingulate) shows correlated IC depression
+            during seizure propagation, detectable as synchronized drift across
+            the circuit.</p>
+          <p class="text-kernel-500 italic">Detection gain from subfields: <span class="text-yellow-400">+42%</span></p>
+        </div>
+      </div>
+
+      <div class="bg-kernel-900 border border-kernel-700 rounded-lg p-5">
+        <h3 class="text-xs font-bold text-orange-400 uppercase tracking-wider mb-3">Huntington's Disease</h3>
+        <div class="text-xs text-kernel-400 space-y-2">
+          <p><strong class="text-kernel-200">Primary targets:</strong> Caudate nucleus (F=0.710), putamen (F=0.700), globus pallidus</p>
+          <p><strong class="text-kernel-200">Secondary:</strong> Insular cortex, frontal cortex, cingulate cortex</p>
+          <p><strong class="text-kernel-200">Key finding:</strong> Striatal volume loss (caudate + putamen) is the
+            hallmark biomarker. The kernel reveals that striatal degeneration
+            propagates along the reward pathway (VTA → nucleus accumbens →
+            caudate / putamen), with IC dropping geometrically across the
+            chain — a direct instance of geometric slaughter (§3 orientation).
+            Caudate volume loss up to 10 years before motor onset.</p>
+          <p class="text-kernel-500 italic">Detection gain from subfields: <span class="text-orange-400">+38%</span></p>
+        </div>
+      </div>
+
+      <div class="bg-kernel-900 border border-kernel-700 rounded-lg p-5">
+        <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-3">ALS (Amyotrophic Lateral Sclerosis)</h3>
+        <div class="text-xs text-kernel-400 space-y-2">
+          <p><strong class="text-kernel-200">Primary targets:</strong> Motor cortex (F=0.730), corticospinal tract (F=0.640), pons</p>
+          <p><strong class="text-kernel-200">Secondary:</strong> Medulla oblongata, cerebellar white matter, frontal cortex</p>
+          <p><strong class="text-kernel-200">Key finding:</strong> Upper and lower motor neuron degeneration
+            traces the motor pathway (motor cortex → corticospinal tract →
+            pons → medulla). The kernel detects this as progressive fidelity
+            loss along the pathway with the white-matter segments (WM)
+            showing the steepest drift. DTI-enabled resolution is critical —
+            WMn modality reveals demyelination invisible on T1w.</p>
+          <p class="text-kernel-500 italic">Detection gain from subfields: <span class="text-emerald-400">+33%</span></p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1443,6 +1511,55 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           canvas: canvas3d,
           container: container3d,
           onRegionClick: (name: string) => selectRegion(name),
+        });
+
+        // Feed kernel data for heatmap modes
+        const kdMap = new Map<string, { F: number; omega: number; IC: number; delta: number }>();
+        for (const r of allResults) {
+          kdMap.set(r.entity.name, { F: r.F, omega: r.omega, IC: r.IC, delta: r.delta });
+        }
+        brain3d.setKernelData(kdMap);
+
+        // Build pathway toggle buttons
+        const pwContainer = document.getElementById('pathway-toggles')!;
+        const pathways = Brain3D.getPathways();
+        for (const pw of pathways) {
+          const btn = document.createElement('button');
+          btn.className = 'flex items-center gap-1 px-1 py-0.5 text-[9px] rounded border border-kernel-700 text-kernel-500 hover:text-kernel-300 transition';
+          btn.innerHTML = `<span class="w-2 h-2 rounded-full inline-block" style="background:${pw.color}"></span>${pw.label}`;
+          btn.addEventListener('click', () => {
+            const on = brain3d!.togglePathway(pw.name);
+            btn.className = on
+              ? 'flex items-center gap-1 px-1 py-0.5 text-[9px] rounded border border-amber-600 bg-amber-950/20 text-amber-400 transition'
+              : 'flex items-center gap-1 px-1 py-0.5 text-[9px] rounded border border-kernel-700 text-kernel-500 hover:text-kernel-300 transition';
+          });
+          pwContainer.appendChild(btn);
+        }
+
+        // Pathway bulk controls
+        document.getElementById('btn-pw-all')!.addEventListener('click', () => {
+          brain3d!.showAllPathways();
+          pwContainer.querySelectorAll('button').forEach(b => {
+            b.className = 'flex items-center gap-1 px-1 py-0.5 text-[9px] rounded border border-amber-600 bg-amber-950/20 text-amber-400 transition';
+          });
+        });
+        document.getElementById('btn-pw-none')!.addEventListener('click', () => {
+          brain3d!.hideAllPathways();
+          pwContainer.querySelectorAll('button').forEach(b => {
+            b.className = 'flex items-center gap-1 px-1 py-0.5 text-[9px] rounded border border-kernel-700 text-kernel-500 hover:text-kernel-300 transition';
+          });
+        });
+
+        // Color mode buttons
+        const cmActive = 'color-mode-btn px-1.5 py-0.5 text-[9px] rounded border border-amber-600 bg-amber-950/30 text-amber-400';
+        const cmInactive = 'color-mode-btn px-1.5 py-0.5 text-[9px] rounded border border-kernel-600 text-kernel-400 hover:text-amber-400';
+        document.querySelectorAll('.color-mode-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const mode = (btn as HTMLElement).dataset.colorMode as 'category' | 'fidelity' | 'drift' | 'integrity';
+            brain3d!.setColorMode(mode);
+            document.querySelectorAll('.color-mode-btn').forEach(b => b.className = cmInactive);
+            btn.className = cmActive;
+          });
         });
       }
     }

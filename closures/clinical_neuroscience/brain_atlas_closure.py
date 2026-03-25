@@ -45,7 +45,7 @@ Channels (8, equal weights w_i = 1/8):
                    medial_geniculate, mammillothalamic_tract, pineal_gland,
                    choroid_plexus, area_postrema, suprachiasmatic_nucleus
 
-6 theorems (T-BA-1 through T-BA-6) + 3 systems (atlas comparison,
+10 theorems (T-BA-1 through T-BA-10) + 3 systems (atlas comparison,
 segmentation protocol fusion, clinical diagnostic sensitivity).
 """
 
@@ -1174,6 +1174,118 @@ def verify_t_ba_6(results: list[BAKernelResult]) -> dict:
     }
 
 
+def verify_t_ba_7(results: list[BAKernelResult]) -> dict:
+    """T-BA-7 (Hub-Fidelity): Structures with high connectivity_degree
+    (>0.80) have significantly higher mean F than structures with low
+    connectivity_degree (<0.60). Hub regions aggregate more balanced
+    channel profiles because their multi-modal detectability benefits
+    from diverse structural connections.
+
+    Evidence: Thalamus (conn=0.95, F=0.782), corpus callosum (0.95, 0.637),
+    frontal cortex (0.90, 0.730) — high-connectivity structures are
+    well-detected across all modalities. Corr(F, connectivity) ≈ 0.70.
+    """
+    hub_entities = [e for e in BA_ENTITIES if e.connectivity_degree > 0.80]
+    low_entities = [e for e in BA_ENTITIES if e.connectivity_degree < 0.60]
+
+    hub_F = float(np.mean([next(r for r in results if r.name == e.name).F for e in hub_entities]))
+    low_F = float(np.mean([next(r for r in results if r.name == e.name).F for e in low_entities]))
+    passed = hub_F > low_F and len(hub_entities) >= 5 and len(low_entities) >= 5
+    return {
+        "name": "T-BA-7",
+        "passed": bool(passed),
+        "hub_mean_F": hub_F,
+        "low_mean_F": low_F,
+        "n_hub": len(hub_entities),
+        "n_low": len(low_entities),
+        "separation": hub_F - low_F,
+    }
+
+
+def verify_t_ba_8(results: list[BAKernelResult]) -> dict:
+    """T-BA-8 (Midline Asymmetry): Structures with low bilateral_symmetry
+    (<0.80) — midline, commissural, and lateralized structures — have
+    lower mean IC than high-symmetry structures (≥0.90). Reduced
+    bilateral symmetry contributes an additional source of channel
+    heterogeneity that depresses the geometric mean IC.
+
+    Evidence: Vermis (bilat=0.50, IC=0.521), corpus callosum (0.50, 0.588),
+    arcuate fasciculus (0.60, 0.500) vs thalamus (0.95, 0.760).
+    """
+    low_sym = [e for e in BA_ENTITIES if e.bilateral_symmetry < 0.80]
+    high_sym = [e for e in BA_ENTITIES if e.bilateral_symmetry >= 0.90]
+
+    low_IC = float(np.mean([next(r for r in results if r.name == e.name).IC for e in low_sym]))
+    high_IC = float(np.mean([next(r for r in results if r.name == e.name).IC for e in high_sym]))
+    passed = high_IC > low_IC and len(low_sym) >= 5 and len(high_sym) >= 5
+    return {
+        "name": "T-BA-8",
+        "passed": bool(passed),
+        "low_sym_IC": low_IC,
+        "high_sym_IC": high_IC,
+        "n_low_sym": len(low_sym),
+        "n_high_sym": len(high_sym),
+        "separation": high_IC - low_IC,
+    }
+
+
+def verify_t_ba_9(results: list[BAKernelResult]) -> dict:
+    """T-BA-9 (Specialized Geometric Slaughter): The 'specialized' category
+    has the highest mean heterogeneity gap (Δ = F − IC) among all
+    categories. Small, deep-brain structures (hypothalamic nuclei,
+    thalamic subnuclei, pineal gland, habenula) have extreme channel
+    variation — one or two near-zero channels (e.g., volumetric_fraction)
+    drag IC toward zero while F remains moderate, a direct instance
+    of geometric slaughter (§3 orientation).
+
+    Evidence: Specialized mean Δ ≈ 0.170 vs cortical mean Δ ≈ 0.044.
+    """
+    cat_gaps: dict[str, list[float]] = {}
+    for r in results:
+        e = next(en for en in BA_ENTITIES if en.name == r.name)
+        cat_gaps.setdefault(e.category, []).append(r.F - r.IC)
+
+    specialized_gap = float(np.mean(cat_gaps.get("specialized", [0.0])))
+    other_gaps = {c: float(np.mean(gs)) for c, gs in cat_gaps.items() if c != "specialized"}
+    max_other = max(other_gaps.values()) if other_gaps else 0.0
+    passed = specialized_gap > max_other
+    return {
+        "name": "T-BA-9",
+        "passed": bool(passed),
+        "specialized_gap": specialized_gap,
+        "all_cat_gaps": {c: float(np.mean(gs)) for c, gs in cat_gaps.items()},
+        "max_other_gap": max_other,
+    }
+
+
+def verify_t_ba_10(results: list[BAKernelResult]) -> dict:
+    """T-BA-10 (Cortical Coherence): Cortical structures have the lowest
+    mean heterogeneity gap (Δ = F − IC) among all categories. Large
+    cortical regions have balanced channel profiles — moderate volume,
+    moderate-to-high values across all channels — producing high IC/F
+    ratios. This is the opposite pole of geometric slaughter: cortical
+    coherence means no single channel collapses the geometric mean.
+
+    Evidence: Cortical mean Δ ≈ 0.044, IC/F ≈ 0.93.
+    """
+    cat_gaps: dict[str, list[float]] = {}
+    for r in results:
+        e = next(en for en in BA_ENTITIES if en.name == r.name)
+        cat_gaps.setdefault(e.category, []).append(r.F - r.IC)
+
+    cortical_gap = float(np.mean(cat_gaps.get("cortical", [1.0])))
+    other_gaps = {c: float(np.mean(gs)) for c, gs in cat_gaps.items() if c != "cortical"}
+    min_other = min(other_gaps.values()) if other_gaps else 1.0
+    passed = cortical_gap < min_other
+    return {
+        "name": "T-BA-10",
+        "passed": bool(passed),
+        "cortical_gap": cortical_gap,
+        "all_cat_gaps": {c: float(np.mean(gs)) for c, gs in cat_gaps.items()},
+        "min_other_gap": min_other,
+    }
+
+
 def verify_all_theorems() -> list[dict]:
     """Run all T-BA theorems."""
     results = compute_all_entities()
@@ -1184,6 +1296,10 @@ def verify_all_theorems() -> list[dict]:
         verify_t_ba_4(results),
         verify_t_ba_5(results),
         verify_t_ba_6(results),
+        verify_t_ba_7(results),
+        verify_t_ba_8(results),
+        verify_t_ba_9(results),
+        verify_t_ba_10(results),
     ]
 
 
