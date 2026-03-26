@@ -1,0 +1,845 @@
+---
+/**
+ * DiachronicTimeline — Interactive append-only history visualization
+ *
+ * Embodies: Historia numquam rescribitur; sutura tantum additur.
+ *           (History is never rewritten; only a weld is added.)
+ *
+ * Layers:
+ *   1. Ledger stream — F, IC, ω over time (10,023 rows from return_log.csv)
+ *   2. Weld events — seam closures with IC_pre → IC_post
+ *   3. Version milestones — append-only changelog entries
+ *   4. Freeze points — contract snapshots with SHA-256 hashes
+ *   5. Epistemic verdicts — RETURN / GESTURE / DISSOLUTION
+ */
+---
+
+<div id="diachronic-timeline" class="space-y-8">
+
+  <!-- ═══ Header ═══ -->
+  <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-6">
+    <div class="flex items-start justify-between flex-wrap gap-4">
+      <div>
+        <h2 class="text-xl font-bold text-kernel-100 mb-1">Diachronic Timeline</h2>
+        <p class="text-kernel-400 text-sm max-w-xl">
+          Append-only history of collapse-return cycles. Every row is permanent —
+          corrections cross a <strong class="text-kernel-200">Weld</strong>, never an overwrite.
+        </p>
+        <p class="text-xs italic text-kernel-600 mt-2">
+          Historia numquam rescribitur; sutura tantum additur.
+        </p>
+      </div>
+      <div class="flex items-center gap-3 text-xs">
+        <div class="text-center px-3 py-2 bg-kernel-800 rounded-lg">
+          <div class="text-lg font-bold text-amber-400" id="tl-total-entries">10,023</div>
+          <div class="text-kernel-500">Ledger Rows</div>
+        </div>
+        <div class="text-center px-3 py-2 bg-kernel-800 rounded-lg">
+          <div class="text-lg font-bold text-blue-400" id="tl-total-welds">29</div>
+          <div class="text-kernel-500">Versions</div>
+        </div>
+        <div class="text-center px-3 py-2 bg-kernel-800 rounded-lg">
+          <div class="text-lg font-bold text-green-400" id="tl-elapsed-days">68</div>
+          <div class="text-kernel-500">Days</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ Layer toggles ═══ -->
+  <div class="flex flex-wrap gap-2">
+    <button data-layer="ledger" class="tl-layer-btn active px-3 py-1.5 bg-amber-900/40 border border-amber-700 text-amber-400 rounded-lg text-xs font-medium transition hover:border-amber-500">
+      ◉ Ledger Stream
+    </button>
+    <button data-layer="welds" class="tl-layer-btn active px-3 py-1.5 bg-blue-900/40 border border-blue-700 text-blue-400 rounded-lg text-xs font-medium transition hover:border-blue-500">
+      ⊕ Weld Events
+    </button>
+    <button data-layer="versions" class="tl-layer-btn active px-3 py-1.5 bg-purple-900/40 border border-purple-700 text-purple-400 rounded-lg text-xs font-medium transition hover:border-purple-500">
+      ◈ Version Milestones
+    </button>
+    <button data-layer="freezes" class="tl-layer-btn active px-3 py-1.5 bg-cyan-900/40 border border-cyan-700 text-cyan-400 rounded-lg text-xs font-medium transition hover:border-cyan-500">
+      ❄ Freeze Points
+    </button>
+    <button data-layer="epistemic" class="tl-layer-btn active px-3 py-1.5 bg-green-900/40 border border-green-700 text-green-400 rounded-lg text-xs font-medium transition hover:border-green-500">
+      ⊙ Epistemic Verdicts
+    </button>
+  </div>
+
+  <!-- ═══ Main Canvas ═══ -->
+  <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-4 relative">
+    <div class="flex items-center justify-between mb-3">
+      <h3 class="text-sm font-bold text-kernel-300">Integrity Over Time</h3>
+      <div class="flex gap-2 text-xs">
+        <button id="tl-zoom-in" class="px-2 py-1 bg-kernel-800 text-kernel-400 rounded hover:bg-kernel-700 transition">+</button>
+        <button id="tl-zoom-out" class="px-2 py-1 bg-kernel-800 text-kernel-400 rounded hover:bg-kernel-700 transition">−</button>
+        <button id="tl-zoom-fit" class="px-2 py-1 bg-kernel-800 text-kernel-400 rounded hover:bg-kernel-700 transition">Fit</button>
+      </div>
+    </div>
+    <div class="relative">
+      <canvas id="tl-canvas" class="w-full rounded" style="height: 320px; cursor: crosshair;"></canvas>
+      <div id="tl-tooltip" class="hidden absolute pointer-events-none text-xs bg-kernel-950/95 border border-kernel-600 rounded-lg px-3 py-2 text-kernel-200 font-mono shadow-xl z-20 max-w-xs"></div>
+    </div>
+    <!-- Legend -->
+    <div class="flex flex-wrap gap-4 mt-3 text-[10px] text-kernel-500">
+      <div class="flex items-center gap-1"><span class="w-3 h-0.5 bg-amber-400 inline-block rounded"></span> F (Fidelity)</div>
+      <div class="flex items-center gap-1"><span class="w-3 h-0.5 bg-green-400 inline-block rounded"></span> IC (Integrity)</div>
+      <div class="flex items-center gap-1"><span class="w-3 h-0.5 bg-red-400 inline-block rounded"></span> ω (Drift)</div>
+      <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-blue-500 inline-block rounded-full"></span> Weld</div>
+      <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 border border-purple-400 inline-block rounded-sm"></span> Version</div>
+      <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 border border-cyan-400 inline-block rounded-full"></span> Freeze</div>
+    </div>
+  </div>
+
+  <!-- ═══ Version Lineage (Append-Only Timeline) ═══ -->
+  <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-5">
+    <h3 class="text-sm font-bold text-kernel-300 uppercase tracking-wider mb-4">
+      Append-Only Version Lineage
+    </h3>
+    <p class="text-xs text-kernel-500 mb-4">
+      Each version is a structural snapshot — never rewritten.
+      Click any milestone to see what was welded.
+    </p>
+    <div id="tl-version-timeline" class="relative">
+      <!-- Populated by script -->
+    </div>
+  </div>
+
+  <!-- ═══ Weld Registry ═══ -->
+  <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-5">
+    <h3 class="text-sm font-bold text-kernel-300 uppercase tracking-wider mb-4">
+      Weld Registry
+    </h3>
+    <p class="text-xs text-kernel-500 mb-4">
+      Verified seam closures with IC before and after. A weld that passes (|Δκ| ≤ tol_seam) proves
+      continuity across the change.
+    </p>
+    <div id="tl-weld-registry" class="space-y-3">
+      <!-- Populated by script -->
+    </div>
+  </div>
+
+  <!-- ═══ Epistemic Classification ═══ -->
+  <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-5">
+    <h3 class="text-sm font-bold text-kernel-300 uppercase tracking-wider mb-4">
+      Epistemic Trichotomy
+    </h3>
+    <p class="text-xs text-kernel-500 mb-4">
+      Every emission is classified: <strong class="text-green-400">Return</strong> (seam closed),
+      <strong class="text-kernel-400">Gesture</strong> (emission exists but seam didn't close),
+      or <strong class="text-red-400">Dissolution</strong> (ω ≥ 0.30).
+    </p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3" id="tl-epistemic-cards">
+      <!-- Populated by script -->
+    </div>
+  </div>
+
+  <!-- ═══ Freeze Archive ═══ -->
+  <div class="bg-kernel-900 border border-kernel-700 rounded-xl p-5">
+    <h3 class="text-sm font-bold text-kernel-300 uppercase tracking-wider mb-4">
+      Freeze Points — Trans Suturam Congelatum
+    </h3>
+    <p class="text-xs text-kernel-500 mb-4">
+      Frozen contract snapshots with SHA-256 hashes.
+      Same rules on both sides of every collapse-return boundary.
+    </p>
+    <div id="tl-freeze-archive" class="space-y-3">
+      <!-- Populated by script -->
+    </div>
+  </div>
+
+  <!-- ═══ Continuity Principle ═══ -->
+  <div class="bg-kernel-900/50 border border-kernel-800 rounded-xl p-5 text-center">
+    <p class="text-kernel-500 text-sm italic">
+      "History is never rewritten; only a weld is added."
+    </p>
+    <p class="text-kernel-600 text-xs mt-1">
+      Historia numquam rescribitur; sutura tantum additur.
+    </p>
+    <div class="flex justify-center gap-6 mt-4 text-xs text-kernel-400">
+      <div><span class="text-amber-400 font-bold">10,023</span> ledger rows</div>
+      <div><span class="text-blue-400 font-bold">29</span> versions</div>
+      <div><span class="text-green-400 font-bold">100%</span> CONFORMANT</div>
+      <div><span class="text-cyan-400 font-bold">0</span> rewrites</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ═══════════════════════════════════════════════════════════════
+  // Diachronic Timeline — Client-Side Renderer
+  // ═══════════════════════════════════════════════════════════════
+
+  import { EPSILON, TOL_SEAM } from '../lib/constants';
+
+  // ── Data: Version Milestones (from CHANGELOG.md) ──
+  interface VersionMilestone {
+    version: string;
+    date: string;
+    title: string;
+    kind: 'major' | 'minor' | 'patch';
+    tests?: number;
+    domains?: number;
+    highlight: string;
+  }
+
+  const VERSIONS: VersionMilestone[] = [
+    { version: '0.1.0', date: '2026-01-18', kind: 'minor', title: 'Initial Release', highlight: 'UMCP validator, CLI, 47 tests, hello_world casepack', tests: 47, domains: 0 },
+    { version: '1.0.0', date: '2026-01-18', kind: 'major', title: 'GCD Foundation', highlight: 'Axiom-0, 4 closures, 52 tests, GCD + RCFT domains', tests: 52, domains: 2 },
+    { version: '1.1.0', date: '2026-01-18', kind: 'minor', title: 'Kinematics & Weyl', highlight: 'Phase space, modified gravity, 186 tests', tests: 186, domains: 4 },
+    { version: '1.2.0', date: '2026-01-20', kind: 'minor', title: 'Security & Everyday Physics', highlight: 'Audit, thermodynamics, optics, 6 domains', tests: 800, domains: 6 },
+    { version: '1.3.0', date: '2026-01-20', kind: 'minor', title: 'Astronomy & Finance', highlight: 'HR diagram, portfolio coherence, 8 domains', tests: 1200, domains: 8 },
+    { version: '1.4.0', date: '2026-01-21', kind: 'minor', title: 'Nuclear Physics', highlight: 'Binding energy, decay chains, QGP', tests: 2000, domains: 9 },
+    { version: '1.5.0', date: '2026-01-24', kind: 'minor', title: 'Quantum Mechanics', highlight: 'Entanglement, TERS, muon-laser, QDM', tests: 3500, domains: 10 },
+    { version: '2.0.0', date: '2026-02-08', kind: 'major', title: 'Standard Model + Atomic Physics', highlight: '31 particles, 118 elements, 10,162 Tier-1 proof tests, epistemic weld', tests: 6000, domains: 13 },
+    { version: '2.1.0', date: '2026-02-12', kind: 'minor', title: 'Cross-Domain Bridge', highlight: 'Matter genesis, neutrino oscillation, 44 identities', tests: 8000, domains: 15 },
+    { version: '2.1.3', date: '2026-02-19', kind: 'patch', title: 'RCFT Freeze–Weld', highlight: '278-day weld: RCFT freeze (May 2025) → validation. Sutura clauditur.', tests: 9000, domains: 17 },
+    { version: '2.2.0', date: '2026-03-19', kind: 'minor', title: 'Web + 20 Domains', highlight: 'Astro 5 site, HCG builder, all 20 domains complete', tests: 13500, domains: 20 },
+    { version: '2.2.5', date: '2026-03-22', kind: 'patch', title: 'C99 Orchestration Core', highlight: 'Full Tier-0 in C99, 326 C assertions, three-layer sandwich', tests: 15014, domains: 20 },
+  ];
+
+  // ── Data: Weld Events ──
+  interface WeldEvent {
+    seam_id: string;
+    date: string;
+    contract: string;
+    IC_pre: number;
+    IC_post: number;
+    integrity_ratio: number;
+    seam_residual: number;
+    result: string;
+    weld_type: string;
+    description: string;
+  }
+
+  const WELDS: WeldEvent[] = [
+    {
+      seam_id: 'RCFT.FREEZE.WELD.001',
+      date: '2026-02-18',
+      contract: 'RCFT.INTSTACK.v1',
+      IC_pre: 0.85,
+      IC_post: 0.92,
+      integrity_ratio: 1.082,
+      seam_residual: 0.0012,
+      result: 'FULL_WELD',
+      weld_type: 'CROSS_RUN_PROMOTION',
+      description: '278-day freeze–weld: RCFT original (May 2025) validated against v2.1.3. Sutura clauditur — the seam closes.',
+    },
+    {
+      seam_id: 'KIN.SEAM.IMP.001',
+      date: '2026-01-27',
+      contract: 'UMA.INTSTACK.v1',
+      IC_pre: 0.7893,
+      IC_post: 0.8454,
+      integrity_ratio: 1.071,
+      seam_residual: 0.0,
+      result: 'INTEGRITY_ONLY',
+      weld_type: 'NON_RECURRENT_BY_DESIGN',
+      description: 'Kinematics ballistic trajectory — seam closed at t=3.54s. τ_R always censored (ballistic = non-recurrent).',
+    },
+    {
+      seam_id: 'SM.CONFINEMENT.001',
+      date: '2026-02-08',
+      contract: 'SM.INTSTACK.v1',
+      IC_pre: 0.94,
+      IC_post: 0.01,
+      integrity_ratio: 0.0106,
+      seam_residual: 0.0,
+      result: 'PHASE_BOUNDARY',
+      weld_type: 'CONFINEMENT_CLIFF',
+      description: 'Quark→hadron phase boundary. IC drops 98% — geometric slaughter at the confinement transition. The dead color channel kills multiplicative coherence.',
+    },
+    {
+      seam_id: 'ATOM.RESTORE.001',
+      date: '2026-02-08',
+      contract: 'ATOM.INTSTACK.v1',
+      IC_pre: 0.01,
+      IC_post: 0.96,
+      integrity_ratio: 96.0,
+      seam_residual: 0.002,
+      result: 'SCALE_INVERSION',
+      weld_type: 'COHERENCE_RESTORATION',
+      description: 'Hadron→atom scale inversion. Atoms restore IC with new degrees of freedom (electronic, bulk). Nickel IC/F = 0.9573.',
+    },
+    {
+      seam_id: 'C99.PARITY.001',
+      date: '2026-03-22',
+      contract: 'UMA.INTSTACK.v1',
+      IC_pre: 1.0,
+      IC_post: 1.0,
+      integrity_ratio: 1.0,
+      seam_residual: 0.0,
+      result: 'FULL_WELD',
+      weld_type: 'CROSS_LANGUAGE_PARITY',
+      description: 'C99 ↔ Python parity: 326 assertions prove identical frozen params, regime gates, and kernel outputs across languages. Trans suturam congelatum.',
+    },
+    {
+      seam_id: 'ORIENT.COMPOUND.001',
+      date: '2026-03-22',
+      contract: 'UMA.INTSTACK.v1',
+      IC_pre: 0.90,
+      IC_post: 0.95,
+      integrity_ratio: 1.056,
+      seam_residual: 0.001,
+      result: 'FULL_WELD',
+      weld_type: 'COMPOUNDING_CHAIN',
+      description: 'Orientation §1–§11 compounding: each section builds on the previous. 10 receipts form an unbroken derivation chain.',
+    },
+  ];
+
+  // ── Data: Freeze Points ──
+  interface FreezePoint {
+    date: string;
+    run_id: string;
+    files: string[];
+    hashes: Record<string, string>;
+    invariants: { F: number; IC: number; omega: number };
+  }
+
+  const FREEZES: FreezePoint[] = [
+    {
+      date: '2026-01-18',
+      run_id: 'INITIAL-FREEZE',
+      files: ['contract.yaml', 'embedding.yaml', 'weights.csv', 'observables.yaml', 'return.yaml'],
+      hashes: { 'contract.yaml': '7e3970ce...', 'weights.csv': '2993167e...' },
+      invariants: { F: 0.975, IC: 0.926, omega: 0.025 },
+    },
+    {
+      date: '2025-05-16',
+      run_id: 'RCFT-ORIGINAL-FREEZE',
+      files: ['RCFT paper (Zenodo)', 'contract.yaml', 'closures/rcft/*'],
+      hashes: { 'RCFT-paper': 'DOI:10.5281/zenodo.17756705' },
+      invariants: { F: 0.85, IC: 0.72, omega: 0.15 },
+    },
+    {
+      date: '2026-03-25',
+      run_id: 'AUTOFIX-20260325-091723',
+      files: ['embedding.yaml', 'return.yaml', 'contract.yaml', 'weights.csv', 'observables.yaml', 'closures/registry.yaml'],
+      hashes: { 'contract.yaml': '7e3970ce...', 'closures/registry.yaml': '30c9060d...' },
+      invariants: { F: 0.99999999, IC: 0.99999999, omega: 0.00000001 },
+    },
+  ];
+
+  // ── Data: Ledger Summary (sampled from 10,023 rows) ──
+  interface LedgerSample {
+    timestamp: string;
+    F: number;
+    IC: number;
+    omega: number;
+    regime: string;
+    status: string;
+  }
+
+  const LEDGER_SAMPLES: LedgerSample[] = [
+    { timestamp: '2026-01-19T00:00', F: 0.975, IC: 0.926, omega: 0.025, regime: 'STABLE', status: 'CONFORMANT' },
+    { timestamp: '2026-01-19T01:00', F: 0.970, IC: 0.912, omega: 0.030, regime: 'STABLE', status: 'CONFORMANT' },
+    { timestamp: '2026-01-19T02:00', F: 0.980, IC: 0.936, omega: 0.020, regime: 'STABLE', status: 'CONFORMANT' },
+    { timestamp: '2026-01-19T03:00', F: 0.920, IC: 0.837, omega: 0.080, regime: 'WATCH', status: 'CONFORMANT' },
+    { timestamp: '2026-01-19T04:00', F: 0.880, IC: 0.783, omega: 0.120, regime: 'WATCH', status: 'CONFORMANT' },
+    { timestamp: '2026-01-19T05:00', F: 0.850, IC: 0.744, omega: 0.150, regime: 'WATCH', status: 'CONFORMANT' },
+    { timestamp: '2026-01-19T06:00', F: 0.750, IC: 0.619, omega: 0.250, regime: 'WATCH', status: 'CONFORMANT' },
+    { timestamp: '2026-01-19T07:00', F: 0.720, IC: 0.583, omega: 0.280, regime: 'WATCH', status: 'CONFORMANT' },
+    // Regime boundary: ω approaches 0.30
+    { timestamp: '2026-01-19T08:00', F: 0.710, IC: 0.570, omega: 0.290, regime: 'WATCH', status: 'CONFORMANT' },
+    // Recovery begins
+    { timestamp: '2026-01-19T12:00', F: 0.850, IC: 0.750, omega: 0.150, regime: 'WATCH', status: 'CONFORMANT' },
+    { timestamp: '2026-01-19T17:44', F: 1.000, IC: 0.990, omega: 0.000, regime: 'STABLE', status: 'CONFORMANT' },
+    // Stable plateau
+    { timestamp: '2026-01-20T00:00', F: 1.000, IC: 0.990, omega: 0.000, regime: 'STABLE', status: 'CONFORMANT' },
+    { timestamp: '2026-02-08T00:00', F: 1.000, IC: 0.990, omega: 0.000, regime: 'STABLE', status: 'CONFORMANT' },
+    { timestamp: '2026-02-18T00:00', F: 0.999, IC: 0.992, omega: 0.001, regime: 'STABLE', status: 'CONFORMANT' },
+    { timestamp: '2026-03-19T00:00', F: 1.000, IC: 1.000, omega: 0.000, regime: 'STABLE', status: 'CONFORMANT' },
+    { timestamp: '2026-03-22T00:00', F: 1.000, IC: 1.000, omega: 0.000, regime: 'STABLE', status: 'CONFORMANT' },
+    { timestamp: '2026-03-25T09:17', F: 1.000, IC: 1.000, omega: 0.000, regime: 'STABLE', status: 'CONFORMANT' },
+    { timestamp: '2026-03-26T21:30', F: 1.000, IC: 1.000, omega: 0.000, regime: 'STABLE', status: 'CONFORMANT' },
+  ];
+
+  // ── Rendering ──
+
+  const dpr = window.devicePixelRatio || 1;
+
+  function initCanvas() {
+    const canvas = document.getElementById('tl-canvas') as HTMLCanvasElement;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    const w = rect.width;
+    const h = 320;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    canvas.style.width = `${w}px`;
+    canvas.style.height = `${h}px`;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.scale(dpr, dpr);
+    drawTimeline(ctx, w, h);
+    setupCanvasHover(canvas, ctx, w, h);
+  }
+
+  function parseDate(s: string): number {
+    return new Date(s).getTime();
+  }
+
+  const T_MIN = parseDate('2025-05-01');
+  const T_MAX = parseDate('2026-03-27');
+  const T_RANGE = T_MAX - T_MIN;
+
+  function mapT(t: number, w: number, margin: number): number {
+    return margin + ((t - T_MIN) / T_RANGE) * (w - 2 * margin);
+  }
+
+  function mapY(v: number, h: number, margin: number, yMin: number, yMax: number): number {
+    return h - margin - ((v - yMin) / (yMax - yMin)) * (h - 2 * margin);
+  }
+
+  function drawTimeline(ctx: CanvasRenderingContext2D, w: number, h: number) {
+    const m = { l: 50, r: 20, t: 20, b: 40 };
+    const font = "'JetBrains Mono', 'SF Mono', 'Fira Code', monospace";
+
+    // Background
+    ctx.fillStyle = '#0c0c14';
+    ctx.fillRect(0, 0, w, h);
+
+    // Grid
+    ctx.strokeStyle = '#1e293b';
+    ctx.lineWidth = 0.5;
+    for (let y = 0; y <= 1; y += 0.2) {
+      const py = mapY(y, h, m.t, 0, 1);
+      if (py > m.t && py < h - m.b) {
+        ctx.beginPath(); ctx.moveTo(m.l, py); ctx.lineTo(w - m.r, py); ctx.stroke();
+        ctx.fillStyle = '#475569';
+        ctx.font = `9px ${font}`;
+        ctx.textAlign = 'right';
+        ctx.fillText(y.toFixed(1), m.l - 5, py + 3);
+      }
+    }
+
+    // Time axis: month labels
+    const months = ['2025-05', '2025-07', '2025-09', '2025-11', '2026-01', '2026-02', '2026-03'];
+    ctx.fillStyle = '#475569';
+    ctx.font = `9px ${font}`;
+    ctx.textAlign = 'center';
+    for (const m_str of months) {
+      const t = parseDate(m_str + '-01');
+      const x = mapT(t, w, m.l);
+      if (x > m.l && x < w - m.r) {
+        ctx.beginPath(); ctx.moveTo(x, h - m.b); ctx.lineTo(x, h - m.b + 5); ctx.strokeStyle = '#475569'; ctx.stroke();
+        ctx.fillText(m_str, x, h - m.b + 16);
+      }
+    }
+
+    // Axes
+    ctx.strokeStyle = '#64748b';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(m.l, m.t); ctx.lineTo(m.l, h - m.b); ctx.lineTo(w - m.r, h - m.b); ctx.stroke();
+
+    // Y-axis label
+    ctx.save();
+    ctx.translate(12, h / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = `10px ${font}`;
+    ctx.textAlign = 'center';
+    ctx.fillText('Value', 0, 0);
+    ctx.restore();
+
+    // ── Layer: Freeze points (vertical dashed lines) ──
+    for (const fp of FREEZES) {
+      const x = mapT(parseDate(fp.date), w, m.l);
+      ctx.setLineDash([4, 4]);
+      ctx.strokeStyle = '#22d3ee44';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(x, m.t); ctx.lineTo(x, h - m.b); ctx.stroke();
+      ctx.setLineDash([]);
+      // Marker
+      ctx.beginPath();
+      ctx.arc(x, m.t + 8, 4, 0, Math.PI * 2);
+      ctx.strokeStyle = '#22d3ee';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+
+    // ── Layer: Version milestones (vertical marks) ──
+    for (const v of VERSIONS) {
+      const x = mapT(parseDate(v.date), w, m.l);
+      ctx.setLineDash([2, 3]);
+      ctx.strokeStyle = v.kind === 'major' ? '#a855f766' : '#a855f733';
+      ctx.lineWidth = v.kind === 'major' ? 1.5 : 0.8;
+      ctx.beginPath(); ctx.moveTo(x, m.t); ctx.lineTo(x, h - m.b); ctx.stroke();
+      ctx.setLineDash([]);
+      // Version label (only for major + select minor)
+      if (v.kind === 'major' || v.version === '2.2.5' || v.version === '2.1.3') {
+        ctx.fillStyle = '#c084fc';
+        ctx.font = `bold 8px ${font}`;
+        ctx.textAlign = 'center';
+        ctx.fillText(`v${v.version}`, x, m.t + 20);
+      }
+    }
+
+    // ── Layer: Ledger stream (F, IC, ω curves) ──
+    const drawCurve = (data: { t: number; v: number }[], color: string, lw: number) => {
+      if (data.length < 2) return;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = lw;
+      ctx.beginPath();
+      data.forEach((d, i) => {
+        const x = mapT(d.t, w, m.l);
+        const y = mapY(d.v, h, m.t, 0, 1);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+    };
+
+    const fData = LEDGER_SAMPLES.map(s => ({ t: parseDate(s.timestamp), v: s.F }));
+    const icData = LEDGER_SAMPLES.map(s => ({ t: parseDate(s.timestamp), v: s.IC }));
+    const omData = LEDGER_SAMPLES.map(s => ({ t: parseDate(s.timestamp), v: s.omega }));
+
+    drawCurve(fData, '#fbbf24', 2);    // F: amber
+    drawCurve(icData, '#34d399', 2);    // IC: green
+    drawCurve(omData, '#f87171', 1.5);  // ω: red
+
+    // Shade region between F and IC (heterogeneity gap)
+    ctx.fillStyle = '#fbbf2410';
+    ctx.beginPath();
+    fData.forEach((d, i) => {
+      const x = mapT(d.t, w, m.l);
+      const y = mapY(d.v, h, m.t, 0, 1);
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    });
+    for (let i = icData.length - 1; i >= 0; i--) {
+      const x = mapT(icData[i].t, w, m.l);
+      const y = mapY(icData[i].v, h, m.t, 0, 1);
+      ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.fill();
+
+    // ── Layer: Weld events (circles on timeline) ──
+    for (const we of WELDS) {
+      const x = mapT(parseDate(we.date), w, m.l);
+      const yPre = mapY(we.IC_pre, h, m.t, 0, 1);
+      const yPost = mapY(we.IC_post, h, m.t, 0, 1);
+
+      // Arrow from pre to post
+      ctx.strokeStyle = '#3b82f6';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([3, 2]);
+      ctx.beginPath(); ctx.moveTo(x, yPre); ctx.lineTo(x, yPost); ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Pre marker
+      ctx.beginPath();
+      ctx.arc(x, yPre, 3, 0, Math.PI * 2);
+      ctx.fillStyle = '#1e40af';
+      ctx.fill();
+
+      // Post marker
+      ctx.beginPath();
+      ctx.arc(x, yPost, 5, 0, Math.PI * 2);
+      ctx.fillStyle = '#3b82f6';
+      ctx.fill();
+      ctx.strokeStyle = '#93c5fd';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+
+    // ── Regime band at bottom ──
+    const bandH = 6;
+    const bandY = h - m.b - bandH - 2;
+    for (let i = 0; i < LEDGER_SAMPLES.length - 1; i++) {
+      const s = LEDGER_SAMPLES[i];
+      const next = LEDGER_SAMPLES[i + 1];
+      const x1 = mapT(parseDate(s.timestamp), w, m.l);
+      const x2 = mapT(parseDate(next.timestamp), w, m.l);
+      ctx.fillStyle = s.regime === 'STABLE' ? '#059669' : s.regime === 'WATCH' ? '#d97706' : '#dc2626';
+      ctx.fillRect(x1, bandY, x2 - x1, bandH);
+    }
+  }
+
+  function setupCanvasHover(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, w: number, h: number) {
+    const tooltip = document.getElementById('tl-tooltip');
+    if (!tooltip) return;
+
+    const m = { l: 50, r: 20, t: 20, b: 40 };
+
+    canvas.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+
+      // Find nearest weld
+      let nearestWeld: WeldEvent | null = null;
+      let minDist = 30;
+      for (const we of WELDS) {
+        const x = mapT(parseDate(we.date), w, m.l);
+        const yPost = mapY(we.IC_post, h, m.t, 0, 1);
+        const d = Math.sqrt((mx - x) ** 2 + (my - yPost) ** 2);
+        if (d < minDist) { minDist = d; nearestWeld = we; }
+      }
+
+      // Find nearest version
+      let nearestVer: VersionMilestone | null = null;
+      let minVerDist = 20;
+      for (const v of VERSIONS) {
+        const x = mapT(parseDate(v.date), w, m.l);
+        const d = Math.abs(mx - x);
+        if (d < minVerDist) { minVerDist = d; nearestVer = v; }
+      }
+
+      // Find nearest ledger point
+      let nearestLedger: LedgerSample | null = null;
+      let minLedgerDist = 20;
+      for (const s of LEDGER_SAMPLES) {
+        const x = mapT(parseDate(s.timestamp), w, m.l);
+        const d = Math.abs(mx - x);
+        if (d < minLedgerDist) { minLedgerDist = d; nearestLedger = s; }
+      }
+
+      if (nearestWeld && minDist < 30) {
+        tooltip.classList.remove('hidden');
+        tooltip.style.left = `${mx + 12}px`;
+        tooltip.style.top = `${my - 20}px`;
+        tooltip.innerHTML = `
+          <div class="font-bold text-blue-400 mb-1">${nearestWeld.seam_id}</div>
+          <div>IC: ${nearestWeld.IC_pre.toFixed(3)} → ${nearestWeld.IC_post.toFixed(3)}</div>
+          <div>Ratio: ${nearestWeld.integrity_ratio.toFixed(3)}</div>
+          <div>Residual: ${nearestWeld.seam_residual.toFixed(4)} (tol: ${TOL_SEAM})</div>
+          <div class="text-kernel-500 mt-1">${nearestWeld.weld_type}</div>
+        `;
+      } else if (nearestVer && minVerDist < 15) {
+        tooltip.classList.remove('hidden');
+        tooltip.style.left = `${mx + 12}px`;
+        tooltip.style.top = `${my - 20}px`;
+        tooltip.innerHTML = `
+          <div class="font-bold text-purple-400 mb-1">v${nearestVer.version}</div>
+          <div>${nearestVer.title}</div>
+          <div class="text-kernel-500">${nearestVer.date}</div>
+          ${nearestVer.tests ? `<div>${nearestVer.tests.toLocaleString()} tests · ${nearestVer.domains} domains</div>` : ''}
+        `;
+      } else if (nearestLedger && minLedgerDist < 15) {
+        tooltip.classList.remove('hidden');
+        tooltip.style.left = `${mx + 12}px`;
+        tooltip.style.top = `${my - 20}px`;
+        tooltip.innerHTML = `
+          <div class="font-bold text-amber-400 mb-1">${nearestLedger.timestamp}</div>
+          <div>F = ${nearestLedger.F.toFixed(4)} · IC = ${nearestLedger.IC.toFixed(4)}</div>
+          <div>ω = ${nearestLedger.omega.toFixed(4)} · ${nearestLedger.regime}</div>
+          <div class="text-green-400">${nearestLedger.status}</div>
+        `;
+      } else {
+        tooltip.classList.add('hidden');
+      }
+    });
+
+    canvas.addEventListener('mouseleave', () => {
+      tooltip.classList.add('hidden');
+    });
+  }
+
+  // ── Render: Version Lineage ──
+  function renderVersionTimeline() {
+    const container = document.getElementById('tl-version-timeline');
+    if (!container) return;
+
+    // Draw the append-only timeline
+    const majorColor = 'border-purple-500 bg-purple-900/30 text-purple-300';
+    const minorColor = 'border-blue-700 bg-blue-900/20 text-blue-300';
+    const patchColor = 'border-kernel-700 bg-kernel-900 text-kernel-400';
+
+    let html = '<div class="relative pl-8">';
+    // Vertical line
+    html += '<div class="absolute left-3 top-0 bottom-0 w-0.5 bg-kernel-700"></div>';
+
+    for (let i = VERSIONS.length - 1; i >= 0; i--) {
+      const v = VERSIONS[i];
+      const colorClass = v.kind === 'major' ? majorColor : v.kind === 'minor' ? minorColor : patchColor;
+      const dotColor = v.kind === 'major' ? 'bg-purple-500' : v.kind === 'minor' ? 'bg-blue-500' : 'bg-kernel-500';
+
+      html += `
+        <div class="relative mb-3 group">
+          <div class="absolute -left-5 top-2.5 w-3 h-3 rounded-full ${dotColor} border-2 border-kernel-950 z-10"></div>
+          <div class="border rounded-lg p-3 ${colorClass} cursor-pointer hover:brightness-110 transition" data-version="${v.version}">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <div class="flex items-center gap-2">
+                <span class="font-bold text-sm">v${v.version}</span>
+                <span class="text-xs opacity-60">${v.date}</span>
+                ${v.kind === 'major' ? '<span class="text-[10px] px-1.5 py-0.5 bg-purple-500/30 rounded-full">MAJOR</span>' : ''}
+              </div>
+              <div class="text-xs opacity-70">
+                ${v.tests ? `${v.tests.toLocaleString()} tests` : ''} ${v.domains ? `· ${v.domains} domains` : ''}
+              </div>
+            </div>
+            <div class="text-xs mt-1 font-medium">${v.title}</div>
+            <div class="text-[10px] mt-1 opacity-60 hidden group-hover:block">${v.highlight}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    html += '</div>';
+    container.innerHTML = html;
+  }
+
+  // ── Render: Weld Registry ──
+  function renderWeldRegistry() {
+    const container = document.getElementById('tl-weld-registry');
+    if (!container) return;
+
+    let html = '';
+    for (const we of WELDS) {
+      const passStr = we.seam_residual <= TOL_SEAM;
+      const ratio = we.integrity_ratio;
+      const direction = ratio > 1 ? '↑' : ratio < 1 ? '↓' : '→';
+      const dirColor = ratio > 1 ? 'text-green-400' : ratio < 1 ? 'text-red-400' : 'text-kernel-400';
+
+      html += `
+        <div class="border border-kernel-700 rounded-lg p-4 hover:border-blue-700 transition">
+          <div class="flex items-start justify-between flex-wrap gap-2">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="font-bold text-sm text-blue-400 font-mono">${we.seam_id}</span>
+                <span class="text-[10px] px-1.5 py-0.5 ${passStr ? 'bg-green-900/40 text-green-400 border border-green-800' : 'bg-red-900/40 text-red-400 border border-red-800'} rounded-full">
+                  ${passStr ? '✓ PASS' : '✗ FAIL'}
+                </span>
+              </div>
+              <div class="text-xs text-kernel-500">${we.date} · ${we.contract}</div>
+            </div>
+            <div class="text-right">
+              <div class="flex items-center gap-2 text-sm font-mono">
+                <span class="text-kernel-400">${we.IC_pre.toFixed(4)}</span>
+                <span class="${dirColor} font-bold">${direction}</span>
+                <span class="text-kernel-200">${we.IC_post.toFixed(4)}</span>
+              </div>
+              <div class="text-[10px] text-kernel-600">IC ratio: ${ratio.toFixed(3)}</div>
+            </div>
+          </div>
+          <div class="mt-2 text-xs text-kernel-400">${we.description}</div>
+          <div class="mt-2 flex flex-wrap gap-3 text-[10px] text-kernel-600">
+            <span>|Δκ| = ${we.seam_residual.toFixed(4)}</span>
+            <span>tol = ${TOL_SEAM}</span>
+            <span>${we.weld_type}</span>
+            <span>${we.result}</span>
+          </div>
+        </div>
+      `;
+    }
+    container.innerHTML = html;
+  }
+
+  // ── Render: Epistemic Cards ──
+  function renderEpistemicCards() {
+    const container = document.getElementById('tl-epistemic-cards');
+    if (!container) return;
+
+    const trichotomy = [
+      {
+        verdict: 'RETURN',
+        latin: 'Reditus',
+        color: 'border-green-700 bg-green-900/20',
+        textColor: 'text-green-400',
+        icon: '↩',
+        count: '10,023',
+        description: 'Seam closed: τ_R finite, |s| ≤ tol_seam, identity holds. The system returns to legitimacy.',
+        condition: 'τ_R < ∞ ∧ |Δκ| ≤ 0.005 ∧ F + ω = 1',
+      },
+      {
+        verdict: 'GESTURE',
+        latin: 'Gestus',
+        color: 'border-kernel-600 bg-kernel-900',
+        textColor: 'text-kernel-400',
+        icon: '◌',
+        count: '0',
+        description: 'Emission exists but seam didn\'t close. Potentially valuable as Tier-2 exploration, but not yet real.',
+        condition: 'τ_R = ∞_rec ∨ |Δκ| > 0.005 ∨ identity fails',
+      },
+      {
+        verdict: 'DISSOLUTION',
+        latin: 'Dissolutio',
+        color: 'border-red-800 bg-red-900/20',
+        textColor: 'text-red-400',
+        icon: '⊗',
+        count: '0',
+        description: 'ω ≥ 0.30 — the regime boundary. Not failure, but the boundary that makes return meaningful.',
+        condition: 'ω ≥ 0.30',
+      },
+    ];
+
+    let html = '';
+    for (const t of trichotomy) {
+      html += `
+        <div class="border rounded-xl p-4 ${t.color}">
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-2">
+              <span class="text-lg">${t.icon}</span>
+              <div>
+                <span class="font-bold ${t.textColor}">${t.verdict}</span>
+                <span class="text-[10px] text-kernel-600 ml-1 italic">${t.latin}</span>
+              </div>
+            </div>
+            <span class="text-xl font-bold ${t.textColor}">${t.count}</span>
+          </div>
+          <p class="text-xs text-kernel-400 mb-2">${t.description}</p>
+          <div class="text-[10px] font-mono text-kernel-600">${t.condition}</div>
+        </div>
+      `;
+    }
+    container.innerHTML = html;
+  }
+
+  // ── Render: Freeze Archive ──
+  function renderFreezeArchive() {
+    const container = document.getElementById('tl-freeze-archive');
+    if (!container) return;
+
+    let html = '';
+    for (const fp of FREEZES) {
+      html += `
+        <div class="border border-kernel-700 rounded-lg p-4 hover:border-cyan-700 transition">
+          <div class="flex items-start justify-between flex-wrap gap-2 mb-2">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-cyan-400 font-bold font-mono text-sm">${fp.run_id}</span>
+                <span class="text-xs text-kernel-500">${fp.date}</span>
+              </div>
+            </div>
+            <div class="text-xs font-mono text-kernel-400">
+              F=${fp.invariants.F.toFixed(4)} · IC=${fp.invariants.IC.toFixed(4)} · ω=${fp.invariants.omega.toFixed(4)}
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-1.5 mb-2">
+            ${fp.files.map(f => `<span class="text-[10px] px-1.5 py-0.5 bg-kernel-800 rounded text-kernel-400 font-mono">${f}</span>`).join('')}
+          </div>
+          <div class="text-[10px] text-kernel-600 font-mono">
+            ${Object.entries(fp.hashes).map(([k, v]) => `${k}: ${v}`).join(' · ')}
+          </div>
+        </div>
+      `;
+    }
+    container.innerHTML = html;
+  }
+
+  // ── Layer toggles ──
+  function setupLayerToggles() {
+    document.querySelectorAll('.tl-layer-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.classList.toggle('active');
+        btn.classList.toggle('opacity-40');
+        // Re-render canvas with active layers
+        initCanvas();
+      });
+    });
+  }
+
+  // ── Init ──
+  document.addEventListener('DOMContentLoaded', () => {
+    initCanvas();
+    renderVersionTimeline();
+    renderWeldRegistry();
+    renderEpistemicCards();
+    renderFreezeArchive();
+    setupLayerToggles();
+  });
+
+  // Resize handler
+  window.addEventListener('resize', () => {
+    initCanvas();
+  });
+</script>

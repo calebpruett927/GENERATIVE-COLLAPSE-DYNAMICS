@@ -1,0 +1,159 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import DiachronicTimeline from '../components/DiachronicTimeline.astro';
+const base = import.meta.env.BASE_URL;
+const sections = ['principle', 'timeline', 'lineage', 'welds', 'epistemic', 'freezes'];
+---
+
+<BaseLayout title="Diachronic Continuity — GCD" description="Append-only history of collapse-return cycles. Weld lineage, freeze points, epistemic verdicts, and the full integrity ledger timeline.">
+  <div class="max-w-6xl mx-auto">
+
+    <!-- ═══════════ HERO ═══════════ -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-kernel-100 mb-2">Diachronic Continuity</h1>
+      <p class="text-kernel-400 text-lg italic">Historia numquam rescribitur; sutura tantum additur.</p>
+      <p class="text-kernel-500 text-sm mt-2 max-w-3xl">
+        History is never rewritten; only a weld is added. This page visualizes the
+        append-only audit trail — every version, weld, freeze, and epistemic verdict
+        that constitutes the project's return domain D<sub>θ</sub>.
+      </p>
+    </div>
+
+    <!-- ═══════════ NAV ═══════════ -->
+    <nav class="mb-8 flex flex-wrap gap-2">
+      {sections.map(s => (
+        <a href={`#${s}`} class="px-3 py-1.5 rounded-full text-xs font-medium
+          bg-kernel-800/60 text-kernel-400 hover:text-kernel-200 hover:bg-kernel-700/60
+          border border-kernel-700/40 transition no-underline">
+          {s === 'principle' ? 'Continuity Principle'
+           : s === 'timeline' ? 'Integrity Timeline'
+           : s === 'lineage' ? 'Version Lineage'
+           : s === 'welds' ? 'Weld Registry'
+           : s === 'epistemic' ? 'Epistemic Trichotomy'
+           : s === 'freezes' ? 'Freeze Points'
+           : s.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
+        </a>
+      ))}
+    </nav>
+
+    <!-- ═══════════ §1: CONTINUITY PRINCIPLE ═══════════ -->
+    <section id="principle" class="mb-10">
+      <h2 class="text-xl font-bold text-kernel-100 mb-4">The Continuity Constraint</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-kernel-900 border border-kernel-800 rounded-lg p-5">
+          <h3 class="text-sm font-bold text-amber-400 mb-3">Append-Only Ledger</h3>
+          <p class="text-xs text-kernel-400 leading-relaxed mb-3">
+            Every validation run, weld event, and freeze point is <strong class="text-kernel-200">permanent</strong>.
+            Prior exchanges, ledger rows, and validation results are never edited in place.
+            They form the return domain D<sub>θ</sub> that gives the present its context.
+          </p>
+          <div class="flex items-center gap-3 text-xs text-kernel-500">
+            <span class="text-amber-400 font-mono font-bold">10,023</span> ledger rows
+            <span class="text-kernel-700">·</span>
+            <span class="text-purple-400 font-mono font-bold">29</span> versions
+            <span class="text-kernel-700">·</span>
+            <span class="text-green-400 font-mono font-bold">0</span> rewrites
+          </div>
+        </div>
+        <div class="bg-kernel-900 border border-kernel-800 rounded-lg p-5">
+          <h3 class="text-sm font-bold text-blue-400 mb-3">Corrections Cross a Weld</h3>
+          <p class="text-xs text-kernel-400 leading-relaxed mb-3">
+            If a prior claim, threshold, or policy must change, the change is a named
+            <strong class="text-kernel-200">Weld</strong> at a shared anchor — not an overwrite.
+            The Weld runs pre/post tests, enforces κ-continuity (residual ≤ tol), and records
+            what changed and why.
+          </p>
+          <p class="text-xs text-kernel-400 leading-relaxed">
+            Errata are <strong class="text-kernel-200">first-class</strong>: not failures, but
+            Errata Welds that preserve the full audit trail.
+          </p>
+        </div>
+      </div>
+
+      <!-- The Five Stops of Continuity -->
+      <div class="mt-4 bg-kernel-900 border border-kernel-800 rounded-lg p-5">
+        <h3 class="text-sm font-bold text-kernel-300 mb-3">The Spine Governs History</h3>
+        <div class="flex items-center gap-2 text-xs font-mono text-kernel-500 overflow-x-auto pb-2">
+          <div class="bg-kernel-800 rounded px-3 py-2 text-center min-w-[100px]">
+            <div class="text-cyan-400 font-bold">CONTRACT</div>
+            <div class="text-[10px] text-kernel-600">freeze before evidence</div>
+          </div>
+          <span class="text-kernel-700">→</span>
+          <div class="bg-kernel-800 rounded px-3 py-2 text-center min-w-[100px]">
+            <div class="text-amber-400 font-bold">CANON</div>
+            <div class="text-[10px] text-kernel-600">narrate with 5 words</div>
+          </div>
+          <span class="text-kernel-700">→</span>
+          <div class="bg-kernel-800 rounded px-3 py-2 text-center min-w-[100px]">
+            <div class="text-purple-400 font-bold">CLOSURES</div>
+            <div class="text-[10px] text-kernel-600">publish thresholds</div>
+          </div>
+          <span class="text-kernel-700">→</span>
+          <div class="bg-kernel-800 rounded px-3 py-2 text-center min-w-[100px]">
+            <div class="text-green-400 font-bold">LEDGER</div>
+            <div class="text-[10px] text-kernel-600">debit / credit</div>
+          </div>
+          <span class="text-kernel-700">→</span>
+          <div class="bg-kernel-800 rounded px-3 py-2 text-center min-w-[100px]">
+            <div class="text-red-400 font-bold">STANCE</div>
+            <div class="text-[10px] text-kernel-600">derive verdict</div>
+          </div>
+        </div>
+        <p class="text-[10px] text-kernel-600 mt-2 italic">
+          Each stop is a permanent entry in the audit trail. History passes through all five.
+        </p>
+      </div>
+
+      <!-- Governance mechanisms -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+        <div class="bg-kernel-900 border border-kernel-800 rounded-lg p-5">
+          <h3 class="text-sm font-bold text-cyan-400 mb-2">Manifest <span class="text-kernel-600 font-normal">manifestum</span></h3>
+          <p class="text-xs text-kernel-400 leading-relaxed">
+            Provenance — binds artifacts to time, tools, checksums.
+            Every claim carries its receipt. SHA-256 hashes anchor
+            each freeze point immutably.
+          </p>
+        </div>
+        <div class="bg-kernel-900 border border-kernel-800 rounded-lg p-5">
+          <h3 class="text-sm font-bold text-blue-400 mb-2">Weld <span class="text-kernel-600 font-normal">sutura</span></h3>
+          <p class="text-xs text-kernel-400 leading-relaxed">
+            Continuity across change — the <em>only</em> legitimate way to change policy.
+            Names an anchor, runs pre/post tests, enforces κ-continuity.
+            History is append-only and welded, never rewritten.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ §2: TIMELINE (Interactive Canvas) ═══════════ -->
+    <section id="timeline" class="mb-10">
+      <DiachronicTimeline />
+    </section>
+
+    <!-- ═══════════ CROSS-LINKS ═══════════ -->
+    <section class="mb-10">
+      <h2 class="text-xl font-bold text-kernel-100 mb-4">Related Pages</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        {[
+          { name: 'Ledger', href: `${base}ledger/`, desc: 'Domain integrity audit', icon: '◉' },
+          { name: 'Episteme', href: `${base}epistemology/`, desc: 'Epistemic weld theory', icon: '⊙' },
+          { name: 'Grammar', href: `${base}grammar/`, desc: 'The five-stop spine', icon: '⌘' },
+          { name: 'Seam Budget', href: `${base}seam-budget/`, desc: 'Γ(ω), D_C, Δκ', icon: '△' },
+        ].map(link => (
+          <a href={link.href}
+             class="bg-kernel-900 border border-kernel-800 rounded-xl p-4 hover:border-kernel-600 hover:bg-kernel-900/80 transition group no-underline">
+            <div class="text-xl mb-1">{link.icon}</div>
+            <div class="text-sm font-bold text-kernel-100 group-hover:text-amber-400 transition">{link.name}</div>
+            <div class="text-xs text-kernel-500">{link.desc}</div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- ═══════════ FOOTER ═══════════ -->
+    <div class="text-center text-kernel-600 text-xs pb-8">
+      <p>UMCP v2.2.5 · MIT License</p>
+      <p class="mt-1 italic">Continuitas non narratur: mensuratur.</p>
+    </div>
+  </div>
+</BaseLayout>
