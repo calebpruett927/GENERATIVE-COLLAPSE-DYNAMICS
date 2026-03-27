@@ -247,17 +247,21 @@ void main() {
 
   // -- Photon ring sub-structure (n=0,1,2,3 sub-rings) --
   // Each successive sub-ring is exponentially demagnified and thinner
-  vec3 ringColor = vec3(1.0, 0.85, 0.4);
+  // Physical: photons completing n half-orbits form nested ring images
+  vec3 ringColor = vec3(1.0, 0.88, 0.45);
   for (int n = 0; n < 4; n++) {
     float nf = float(n);
-    float demag = exp(-3.14159 * nf * 0.8);  // Lyapunov demagnification
-    float subRingR = photonR * (1.0 + demag * 0.3);
-    float subRingWidth = 0.0004 * photonR * photonR * demag;
-    float subRingBright = 1.2 * demag;
+    float demag = exp(-3.14159 * nf * 0.7);  // Lyapunov demagnification
+    float subRingR = photonR * (1.0 + demag * 0.35);
+    float subRingWidth = 0.0005 * photonR * photonR * demag;
+    float subRingBright = 1.5 * demag;
     float rDist = abs(dist - subRingR);
     float ring = exp(-rDist * rDist / max(subRingWidth, 0.00001)) * subRingBright;
-    // Sub-rings shift color: inner -> bluer, outer -> redder
-    vec3 subCol = mix(ringColor, vec3(0.6, 0.75, 1.0), nf * 0.2);
+    // Sub-rings shift color: n=0 golden, n=1 warm white, n=2 blue-white, n=3 violet
+    vec3 subCol = n == 0 ? ringColor :
+                  n == 1 ? vec3(0.95, 0.90, 0.80) :
+                  n == 2 ? vec3(0.7, 0.80, 1.0) :
+                           vec3(0.55, 0.50, 0.95);
     col += subCol * ring;
   }
 
@@ -272,13 +276,23 @@ void main() {
   float ergoGlow = exp(-ergoDist * ergoDist / (0.002 * ergoR * ergoR)) * uSpinStar * 0.25;
   col += vec3(0.2, 0.4, 0.9) * ergoGlow;
 
-  // -- Event horizon shadow (black disk) --
-  float shadowEdge = smoothstep(shadowR, shadowR * 0.85, dist);
-  col *= (1.0 - shadowEdge);
+  // -- Event horizon shadow (soft penumbra) --
+  // Physical: the shadow edge is NOT sharp -- photon orbits at r=3M
+  // create a gradual dimming zone (penumbra) before total darkness
+  float penumbraOuter = shadowR * 1.08;  // outer penumbra start
+  float penumbraInner = shadowR * 0.82;  // inner shadow (fully dark)
+  float penumbra = smoothstep(penumbraOuter, penumbraInner, dist);
+  // Add gradient structure: scattered photons create faint ring zones
+  float scatterRing = exp(-pow((dist - shadowR) / (shadowR * 0.06), 2.0)) * 0.15;
+  col *= (1.0 - penumbra);
+  col += vec3(0.6, 0.45, 0.25) * scatterRing * (1.0 - penumbra * 0.5);
 
-  // -- Horizon edge glow (Hawking radiation) --
-  float edgeGlow = exp(-(dist - shadowR) * (dist - shadowR) / (0.001 * shadowR * shadowR));
-  col += vec3(0.8, 0.3, 0.1) * edgeGlow * 0.3;
+  // -- Horizon edge glow (Hawking radiation + corona) --
+  // Multi-layer corona: hot inner ring + warm outer halo
+  float edgeGlow = exp(-(dist - shadowR) * (dist - shadowR) / (0.0008 * shadowR * shadowR));
+  float coronaWide = exp(-(dist - shadowR) * (dist - shadowR) / (0.004 * shadowR * shadowR));
+  col += vec3(0.9, 0.35, 0.08) * edgeGlow * 0.4;
+  col += vec3(0.4, 0.15, 0.05) * coronaWide * 0.2;
   // Inner Cauchy horizon glow (for charged/spinning BHs) -- faint violet
   float innerHR = shadowR * 0.4;
   float innerGlow = exp(-(dist - innerHR) * (dist - innerHR) / (0.0005 * innerHR * innerHR));
@@ -456,8 +470,16 @@ void main() {
   vec2 c = gl_PointCoord - 0.5;
   float r = length(c);
   if (r > 0.5) discard;
-  float glow = exp(-r * r * 8.0);
-  gl_FragColor = vec4(vColor * glow, glow * 0.8);
+  // Multi-layer glow: bright core + soft halo + wide haze
+  float core = exp(-r * r * 50.0);   // tight brilliant center
+  float halo = exp(-r * r * 12.0);   // medium warm glow
+  float outer = exp(-r * r * 3.0);   // wide soft haze
+  float glow = core * 0.5 + halo * 0.35 + outer * 0.15;
+  // Core whitening: hottest center approaches white
+  vec3 coreColor = mix(vColor, vec3(1.0, 0.97, 0.92), core * 0.6);
+  // Subtle chromatic fringe at halo edge
+  vec3 fringeColor = coreColor + vec3(0.05, -0.02, 0.08) * halo * (1.0 - core);
+  gl_FragColor = vec4(fringeColor * glow, glow * 0.9);
 }
 `;
 

@@ -56,7 +56,26 @@ const base = import.meta.env.BASE_URL;
         padding: 12px 16px;
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
+        transition: border-color 0.5s ease, box-shadow 0.5s ease;
       }
+
+      /* Subtle scan-line overlay for sci-fi feel */
+      .hud-panel::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 8px;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(100, 180, 255, 0.015) 2px,
+          rgba(100, 180, 255, 0.015) 4px
+        );
+        pointer-events: none;
+      }
+
+      .hud-panel { position: relative; overflow: hidden; }
 
       #hud-left {
         top: 16px;
@@ -89,6 +108,7 @@ const base = import.meta.env.BASE_URL;
         font-size: 18px;
         color: #bdf;
         font-weight: 600;
+        transition: color 0.4s ease;
       }
 
       .hud-label {
@@ -102,9 +122,15 @@ const base = import.meta.env.BASE_URL;
         gap: 24px;
       }
 
-      .regime-stable { color: #6ee7b7; }
-      .regime-watch { color: #fcd34d; }
-      .regime-collapse { color: #fca5a5; }
+      /* Value highlight flash on significant change */
+      .hud-value.flash {
+        color: #fff;
+        text-shadow: 0 0 12px rgba(140,200,255,0.8);
+      }
+
+      .regime-stable { color: #6ee7b7; text-shadow: 0 0 8px rgba(110,231,183,0.3); }
+      .regime-watch { color: #fcd34d; text-shadow: 0 0 8px rgba(252,211,77,0.3); }
+      .regime-collapse { color: #fca5a5; text-shadow: 0 0 8px rgba(252,165,165,0.4); }
 
       /* -- Controls Overlay -- */
       #controls-overlay {
@@ -220,7 +246,8 @@ const base = import.meta.env.BASE_URL;
         right: 0;
         height: 3px;
         z-index: 10;
-        transition: background-color 0.5s;
+        transition: background-color 0.5s, box-shadow 0.5s;
+        box-shadow: 0 -2px 12px rgba(0,0,0,0.5);
       }
 
       /* -- Responsive -- */
@@ -405,6 +432,9 @@ const base = import.meta.env.BASE_URL;
 
       // Throttle HUD updates to ~15fps for performance
       let lastHUDUpdate = 0;
+      let prevRegime = '';
+      const leftPanel = document.querySelector('#hud-left .hud-panel') as HTMLElement;
+      const rightPanel = document.querySelector('#hud-right .hud-panel') as HTMLElement;
 
       function updateHUD(data: HUDData) {
         const now = performance.now();
@@ -435,7 +465,7 @@ const base = import.meta.env.BASE_URL;
         elSurfG.textContent = data.surfGravity.toFixed(4);
         elRadEff.textContent = (data.radEfficiency * 100).toFixed(1) + '%';
 
-        // Regime coloring
+        // Regime coloring + panel glow
         const regime = data.regime.split(' ')[0];
         elRegime.textContent = data.regime;
         elRegime.className = 'hud-value regime-' + regime.toLowerCase();
@@ -445,7 +475,25 @@ const base = import.meta.env.BASE_URL;
           WATCH: '#d97706',
           COLLAPSE: '#dc2626',
         };
-        regimeBar.style.backgroundColor = regimeColors[regime] || '#333';
+        const color = regimeColors[regime] || '#333';
+        regimeBar.style.backgroundColor = color;
+        regimeBar.style.boxShadow = '0 -2px 16px ' + color + '80';
+
+        // Flash panel borders on regime change
+        if (regime !== prevRegime && prevRegime !== '') {
+          const glowColor = color + '60';
+          leftPanel.style.borderColor = color;
+          rightPanel.style.borderColor = color;
+          leftPanel.style.boxShadow = '0 0 20px ' + glowColor;
+          rightPanel.style.boxShadow = '0 0 20px ' + glowColor;
+          setTimeout(() => {
+            leftPanel.style.borderColor = '';
+            rightPanel.style.borderColor = '';
+            leftPanel.style.boxShadow = '';
+            rightPanel.style.boxShadow = '';
+          }, 1200);
+        }
+        prevRegime = regime;
       }
 
       const sim = initSpaceSim(canvas, updateHUD);

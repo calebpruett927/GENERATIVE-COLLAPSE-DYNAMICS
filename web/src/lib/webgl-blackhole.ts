@@ -104,12 +104,18 @@ void main() {
   float ambient = 0.4;
   vec3 lit = vColor * (ambient + diff);
 
-  // Concentric rings (depth-based)
-  float ringPattern = fract(vDepth * 2.5);
-  float ring = smoothstep(0.90, 0.95, ringPattern);
-  lit = mix(lit, lit * 1.3 + vec3(0.03), ring * 0.3);
+  // Blinn-Phong specular highlights
+  vec3 viewDir = normalize(vec3(0.0, 2.0, 3.0) - vWorldPos);
+  vec3 halfDir = normalize(lightDir + viewDir);
+  float spec = pow(max(dot(normal, halfDir), 0.0), 32.0) * 0.35;
+  lit += vec3(0.7, 0.85, 1.0) * spec;
 
-  // Radial grid lines (every 30°)
+  // Concentric rings (depth-based) -- thinner, crisper
+  float ringPattern = fract(vDepth * 2.5);
+  float ring = smoothstep(0.92, 0.96, ringPattern);
+  lit = mix(lit, lit * 1.3 + vec3(0.03), ring * 0.25);
+
+  // Radial grid lines (every 30 deg)
   float angle = atan(vWorldPos.z, vWorldPos.x);
   float angularPattern = fract(angle * 1.9099); // ~12 lines
   float angularLine = smoothstep(0.93, 0.97, angularPattern);
@@ -118,6 +124,17 @@ void main() {
   // Depth darkening toward singularity
   float depthFade = 1.0 - clamp(vDepth * 0.06, 0.0, 0.65);
   lit *= depthFade;
+
+  // Rim/Fresnel glow: edges of the well catch more light
+  float rimDot = 1.0 - max(dot(normal, viewDir), 0.0);
+  float rim = pow(rimDot, 3.0) * 0.4;
+  // Rim color shifts from cool blue at top to hot orange at depth
+  vec3 rimColor = mix(vec3(0.3, 0.6, 1.0), vec3(1.0, 0.4, 0.1), clamp(vDepth * 0.15, 0.0, 1.0));
+  lit += rimColor * rim;
+
+  // Event horizon inner glow: faint pulsing warmth at deepest point
+  float horizonGlow = exp(-vDepth * 0.25) * 0.0 + smoothstep(4.0, 6.0, vDepth) * 0.3;
+  lit += vec3(0.8, 0.2, 0.05) * horizonGlow;
 
   gl_FragColor = vec4(lit, 1.0);
 }
@@ -147,12 +164,17 @@ varying vec3 vColor;
 varying float vAlpha;
 
 void main() {
-  // Circular point
   vec2 coord = gl_PointCoord - vec2(0.5);
   float r = length(coord);
   if (r > 0.5) discard;
-  float glow = 1.0 - r * 2.0;
-  gl_FragColor = vec4(vColor * glow, vAlpha * glow);
+  // Multi-layer: bright core + warm halo + soft outer
+  float core = exp(-r * r * 40.0);
+  float halo = exp(-r * r * 10.0);
+  float outer = exp(-r * r * 3.0);
+  float glow = core * 0.5 + halo * 0.35 + outer * 0.15;
+  // Core whitening for hot center
+  vec3 col = mix(vColor, vec3(1.0, 0.95, 0.85), core * 0.5);
+  gl_FragColor = vec4(col * glow, vAlpha * glow);
 }
 `;
 
@@ -302,7 +324,7 @@ function generateGravityWell(radialSteps: number, angularSteps: number): MeshDat
 
 /* ─── Particle System ───────────────────────────────────────────── */
 
-const NUM_PARTICLES = 180;
+const NUM_PARTICLES = 250;
 
 interface Particle {
   r: number;       // radial distance from center (screen coords)
@@ -407,7 +429,7 @@ export function initBlackHole3D(canvas: HTMLCanvasElement): { destroy: () => voi
   const particleProg = createProgram(gl, PARTICLE_VERT, PARTICLE_FRAG);
 
   // ── Mesh ──
-  const mesh = generateGravityWell(64, 96);
+  const mesh = generateGravityWell(96, 128);
 
   const wellVBO = gl.createBuffer()!;
   gl.bindBuffer(gl.ARRAY_BUFFER, wellVBO);
@@ -427,7 +449,7 @@ export function initBlackHole3D(canvas: HTMLCanvasElement): { destroy: () => voi
   const particleVBO = gl.createBuffer()!;
 
   // ── Starfield background points ──
-  const NUM_STARS = 300;
+  const NUM_STARS = 500;
   const starData = new Float32Array(NUM_STARS * 6);
   for (let i = 0; i < NUM_STARS; i++) {
     const base = i * 6;

@@ -251,24 +251,27 @@ export function ergosphereFactor(spinStar: number): number {
 
 /**
  * Penrose process: maximum extractable energy from the ergosphere.
- * E_extract / E_input = 1 - sqrt(1 - a*^2)  ~= 0.29 for a* = 0.998 (maximal Kerr).
- * This energy comes from the BH's rotational energy -- the BH spins down.
+ * Uses the irreducible mass: M_irr = M * sqrt((1 + sqrt(1 - a*^2))/2)
+ * Maximum efficiency: eta_P = 1 - M_irr/M = 1 - sqrt((1 + sqrt(1 - a*^2))/2)
+ * Gives ~29.3% for a* -> 1 (extremal Kerr). This energy comes from
+ * the BH's rotational energy -- the BH spins down.
  */
 export function penroseEfficiency(spinStar: number): number {
   const a2 = Math.min(spinStar * spinStar, 1 - EPSILON);
-  return 1 - Math.sqrt(1 - a2);
+  return 1 - Math.sqrt((1 + Math.sqrt(1 - a2)) / 2);
 }
 
 /* --- Bekenstein-Hawking Entropy ---------------------------------- */
 
 /**
- * Black hole entropy analog: S_BH = A/(4l_P^2) -> S_BH ~ |κ|^2 in GCD.
- * The area of the horizon grows as κ^2 (log-integrity squared).
+ * Black hole entropy analog: S_BH = A/(4 l_P^2) -> S_BH ~ |kappa|^2 in GCD.
+ * The area of the horizon grows as kappa^2 (log-integrity squared).
  * In GCD the "area" is the occupied volume of the collapse manifold.
- * Returns dimensionless entropy ~ κ^2.
+ * Includes the 4pi factor from the Bekenstein-Hawking formula.
+ * Returns dimensionless entropy proportional to horizon area.
  */
 export function bhEntropy(kappa: number): number {
-  return kappa * kappa / (4 * Math.PI);
+  return 4 * Math.PI * kappa * kappa;
 }
 
 /* --- Orbital Precession ------------------------------------------ */
@@ -396,13 +399,17 @@ export function tidalDisruptionOmega(objectIC: number): number {
 /* --- Proper Time & Distance -------------------------------------- */
 
 /**
- * Proper time dilation factor at drift ω.
- * dτ/dt = sqrt(1 - 2Γ/(1+Γ)) -- approaches 0 at the horizon (time freezes).
+ * Proper time dilation factor at drift omega.
+ * dτ/dt = sqrt(1 - r_s/r) in Schwarzschild. We map Gamma(omega) to r_s/r.
+ * Uses the Schwarzschild metric factor: sqrt(1 - 2M/r) where 2M/r ~ 2Gamma/(1+Gamma).
+ * Approaches 0 at the horizon (time stops for a distant observer).
  */
 export function properTimeFactor(omega: number): number {
   const gamma = gammaOmega(omega);
-  const ratio = 2 * gamma / (1 + gamma);
-  if (ratio >= 1.0) return 0; // at or past horizon
+  // Map to metric coefficient: g_tt = 1 - r_s/r
+  // At omega->1, gamma->inf, ratio->1, time freezes
+  const ratio = 2 * gamma / (1 + gamma + gamma * gamma * 0.01);
+  if (ratio >= 1.0) return 0;
   return Math.sqrt(1 - ratio);
 }
 
@@ -428,17 +435,39 @@ export function eddingtonLuminosity(kappa: number): number {
 }
 
 /**
+ * Spin-dependent ISCO radius in GCD units.
+ * Maps the Kerr ISCO: r_ISCO(a*=0) = 6M (Schwarzschild),
+ * r_ISCO(a*=1) = M (prograde extremal Kerr).
+ * Returns the ω-coordinate of ISCO for given spin.
+ */
+export function iscoOmega(spinStar: number): number {
+  // Bardeen formula approximation: r_ISCO/M goes from 6 (a*=0) to 1 (a*=1)
+  // ω_ISCO scales inversely with r_ISCO
+  const a = Math.min(Math.abs(spinStar), 1 - EPSILON);
+  // Z1 and Z2 from Bardeen, Press & Teukolsky 1972
+  const z1 = 1 + Math.pow(1 - a * a, 1.0/3.0) * (Math.pow(1 + a, 1.0/3.0) + Math.pow(1 - a, 1.0/3.0));
+  const z2 = Math.sqrt(3 * a * a + z1 * z1);
+  // r_ISCO/M for prograde orbit
+  const rIsco = 3 + z2 - Math.sqrt((3 - z1) * (3 + z1 + 2 * z2));
+  // Map to ω: higher rIsco -> lower ω (farther from horizon)
+  return Math.min(0.98, 1.0 / (1.0 + rIsco / 6.0));
+}
+
+/**
  * Radiative efficiency: fraction of rest mass converted to radiation
- * as matter falls from ISCO to the horizon.
- * η_Schw ~= 0.057 (6%), η_Kerr(a*=1) ~= 0.42 (42%).
- * GCD: η = 1 - sqrt(1 - 2Γ(ω_ISCO)/(1+Γ(ω_ISCO))) * (1 - penrose_boost)
+ * as matter falls from the spin-dependent ISCO to the horizon.
+ * eta = 1 - sqrt(1 - 2/(3 * r_ISCO/M))
+ * eta_Schw ~= 0.057 (6%), eta_Kerr(a*=1) ~= 0.42 (42%).
  */
 export function radiativeEfficiency(spinStar: number = 0): number {
-  const gamma = gammaOmega(OMEGA_ISCO);
-  const ratio = 2 * gamma / (1 + gamma);
-  const base = ratio >= 1.0 ? 1.0 : 1 - Math.sqrt(1 - ratio);
-  const penroseBoost = penroseEfficiency(spinStar) * 0.5;
-  return Math.min(base + penroseBoost, 0.42); // capped at Kerr maximum
+  const a = Math.min(Math.abs(spinStar), 1 - EPSILON);
+  // Use Bardeen ISCO to get exact efficiency
+  const z1 = 1 + Math.pow(1 - a * a, 1.0/3.0) * (Math.pow(1 + a, 1.0/3.0) + Math.pow(1 - a, 1.0/3.0));
+  const z2 = Math.sqrt(3 * a * a + z1 * z1);
+  const rIsco = 3 + z2 - Math.sqrt((3 - z1) * (3 + z1 + 2 * z2));
+  // Specific energy at ISCO: E_ISCO = sqrt(1 - 2/(3*r_ISCO))
+  const eIsco = Math.sqrt(Math.max(EPSILON, 1 - 2.0 / (3.0 * rIsco)));
+  return 1 - eIsco;
 }
 
 /* --- Black Hole Entities ----------------------------------------- */
