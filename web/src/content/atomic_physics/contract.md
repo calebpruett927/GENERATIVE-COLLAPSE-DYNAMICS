@@ -76,6 +76,6 @@ pageType: contract
 
 ---
 
-*Contract frozen by the Headless Contract Gateway (HCG) · Domain: atomic_physics · UMCP v2.2.5*
+*Contract frozen by the Headless Contract Gateway (HCG) · Domain: atomic_physics · UMCP v2.3.0*
 
 *No contract found for this domain.*

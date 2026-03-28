@@ -5,6 +5,25 @@ All notable changes to the UMCP validator and repository will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0] - 2026-03-28
+
+### Changed
+- **Version bump**: 2.2.5 → 2.3.0 across all repository files
+- **PyPI metadata refinement** (`pyproject.toml`):
+  Description updated with test count, ruff dependency relaxed (`==0.14.14` → `>=0.14.0`)
+  for forward compatibility, all classifiers and URLs verified current
+- **Metrics synchronization**: closure module count corrected from 181 → 193 in all
+  documentation (README.md, README_PYPI.md, copilot-instructions.md, AGENTS.md)
+- **SHA-256 tracked file count** corrected: 221 → 231 in all documentation references
+- **Dockerfile**: version label updated from 2.2.2 → 2.3.0
+- **Web timeline**: DiachronicTimeline updated with v2.3.0 milestone, T_MAX extended
+- **106 web content files**: HCG version footer updated to v2.3.0
+
+### Fixed
+- Stale closure module count (181) in README.md, copilot-instructions.md — actual count is 193
+- Stale SHA-256 tracked file count (221) in copilot-instructions.md — actual count is 231
+- Dockerfile version label was still at 2.2.2, now synchronized with package version
+
 ## [2.2.5] - 2026-03-22
 
 ### Added

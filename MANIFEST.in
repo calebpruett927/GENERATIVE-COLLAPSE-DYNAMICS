@@ -1,4 +1,4 @@
-# MANIFEST.in — UMCP v2.2.5
+# MANIFEST.in — UMCP v2.3.0
 # Controls which non-Python files are included in source distributions (sdist).
 # Without this, pip install won't ship contracts, schemas, closures, or canon.
 

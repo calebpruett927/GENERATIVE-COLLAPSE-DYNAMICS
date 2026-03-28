@@ -1,6 +1,6 @@
 # Copilot Instructions for GENERATIVE-COLLAPSE-DYNAMICS
 
-**UMCP v2.2.5** · **15,260 tests** · **20 domains** · **181 closure modules** · **47 lemmas** · **44 structural identities**
+**UMCP v2.3.0** · **15,260 tests** · **20 domains** · **193 closure modules** · **47 lemmas** · **44 structural identities**
 
 ## Foundational Principle — Read This First
 
@@ -354,13 +354,13 @@ Before writing or modifying code, verify:
 
 UMCP (Universal Measurement Contract Protocol) validates reproducible computational workflows against mathematical contracts. The unit of work is a **casepack** — a directory containing raw data, a contract reference, closures, and expected outputs. The validator checks schema conformance, Tier-1 kernel identities (F = 1 − ω, IC ≈ exp(κ), IC ≤ F), regime classification, and SHA256 integrity, producing a three-valued CONFORMANT/NONCONFORMANT/NON_EVALUABLE verdict and appending to `ledger/return_log.csv`.
 
-**Version**: 2.2.5 · **Python**: ≥ 3.11 · **License**: MIT
+**Version**: 2.3.0 · **Python**: ≥3.11 · **License**: MIT
 
 ## Architecture
 
 ```
 src/umcp/
-├── __init__.py               # Public API: validate(), MeasurementEngine, __version__ (v2.2.5)
+├── __init__.py               # Public API: validate(), MeasurementEngine, __version__ (v2.3.0)
 ├── __main__.py               # python -m umcp entry point
 ├── cli.py                    # 2659-line argparse CLI — validation engine, all subcommands
 ├── validator.py              # Root-file validator (16 files, checksums, math identities)
@@ -517,7 +517,7 @@ closures/
 - `casepacks/*/manifest.json` — 25 casepack manifests referencing contract, closures, expected outputs
 - `schemas/*.schema.json` — 17 JSON Schema Draft 2020-12 files validating all artifacts
 - `canon/*.yaml` — 21 canonical anchor files (domain-specific reference points)
-- `integrity/sha256.txt` — SHA-256 checksums for 221 tracked files
+- `integrity/sha256.txt` — SHA-256 checksums for 231 tracked files
 - `ledger/return_log.csv` — append-only validation log
 
 ## Standard Model Formalism (27 Theorems)
@@ -591,7 +591,7 @@ pytest                                       # 15,260 tests (pytest --collect-on
 python scripts/update_integrity.py          # MUST run after changing any tracked file
 umcp validate .                             # Validate entire repo
 umcp validate casepacks/hello_world --strict # Validate casepack (strict = fail on warnings)
-umcp integrity                              # Verify SHA-256 checksums (221 tracked files)
+umcp integrity                              # Verify SHA-256 checksums (231 tracked files)
 ```
 
 **⚠️ `python scripts/update_integrity.py` is mandatory** after modifying any `src/umcp/*.py`, `contracts/*.yaml`, `closures/**`, `schemas/**`, or `scripts/*.py` file. It regenerates SHA256 checksums in `integrity/sha256.txt`. CI will fail on mismatch.
@@ -615,7 +615,7 @@ This script mirrors CI exactly and must exit 0 before committing. It runs 11 ste
 5. `git add -A` — stage all changes
 6. Repository health check — drift detection, version sync, freeze verification
 7. Update test count in documentation
-8. Regenerate SHA-256 integrity checksums (221 tracked files)
+8. Regenerate SHA-256 integrity checksums (231 tracked files)
 9. Pytest bounds — collect tests and verify count within bounds (1000–16000)
 10. `umcp validate .` — contract validation (must be CONFORMANT)
 11. Axiom-0 conformance — terminology, symbol capture, frozen params check

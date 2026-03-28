@@ -1,6 +1,6 @@
 # UMCP Tier System
 
-**Version**: 2.2.5
+**Version**: 2.3.0
 **Status**: Protocol Foundation
 **Source**: UMCP Manuscript v1.0.0 §3 (revised per cross-domain validation, 146 experiments)
 **Last Updated**: 2026-03-11
@@ -554,7 +554,7 @@ Across all 20 domains, Bernoulli field entropy S appears in only 1 of 13 theorem
 
 ---
 
-## Implementation Status (v2.2.5)
+## Implementation Status (v2.3.0)
 
 - ✅ **Tier-1**: The kernel function defined, verified, and mathematically complete
   - 4 primitive equations (F, κ, S, C) + 2 derived values (ω = 1−F, IC = exp(κ)) — defining K: [0,1]ⁿ × Δⁿ → ℝ⁶

@@ -195,6 +195,7 @@
     { version: '2.1.3', date: '2026-02-19', kind: 'patch', title: 'RCFT Freeze–Weld', highlight: '278-day weld: RCFT freeze (May 2025) → validation. Sutura clauditur.', tests: 9000, domains: 17 },
     { version: '2.2.0', date: '2026-03-19', kind: 'minor', title: 'Web + 20 Domains', highlight: 'Astro 5 site, HCG builder, all 20 domains complete', tests: 13500, domains: 20 },
     { version: '2.2.5', date: '2026-03-22', kind: 'patch', title: 'C99 Orchestration Core', highlight: 'Full Tier-0 in C99, 326 C assertions, three-layer sandwich', tests: 15014, domains: 20 },
+    { version: '2.3.0', date: '2026-03-28', kind: 'minor', title: 'Package Refinement', highlight: 'PyPI metadata + metrics sync, 193 closures, 231 tracked files, version consistency', tests: 15260, domains: 20 },
   ];
 
   // ── Data: Weld Events ──
@@ -379,7 +380,7 @@
   }
 
   const T_MIN = parseDate('2025-05-01');
-  const T_MAX = parseDate('2026-03-27');
+  const T_MAX = parseDate('2026-03-30');
   const T_RANGE = T_MAX - T_MIN;
 
   function mapT(t: number, w: number, margin: number): number {
@@ -466,7 +467,7 @@
       ctx.beginPath(); ctx.moveTo(x, m.t); ctx.lineTo(x, h - m.b); ctx.stroke();
       ctx.setLineDash([]);
       // Version label (only for major + select minor)
-      if (v.kind === 'major' || v.version === '2.2.5' || v.version === '2.1.3') {
+      if (v.kind === 'major' || v.version === '2.3.0' || v.version === '2.1.3') {
         ctx.fillStyle = '#c084fc';
         ctx.font = `bold 8px ${font}`;
         ctx.textAlign = 'center';

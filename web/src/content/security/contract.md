@@ -71,4 +71,4 @@ These symbols are frozen within a run. Any Tier-2 code that redefines them is au
 
 ---
 
-*Contract frozen by the Headless Contract Gateway (HCG) · Domain: security · UMCP v2.2.5*
+*Contract frozen by the Headless Contract Gateway (HCG) · Domain: security · UMCP v2.3.0*
