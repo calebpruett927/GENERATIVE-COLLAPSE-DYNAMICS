@@ -330,12 +330,8 @@ def verify_t_crs_1(results: list[CRSKernelResult]) -> dict:
     """
     galactic = [r for r in results if r.category == "galactic"]
     extreme = [r for r in results if r.category == "galactic_extreme"]
-    mean_icf_gal = float(np.mean(
-        [r.IC / r.F if r.F > EPSILON else 0.0 for r in galactic]
-    ))
-    mean_icf_ext = float(np.mean(
-        [r.IC / r.F if r.F > EPSILON else 0.0 for r in extreme]
-    ))
+    mean_icf_gal = float(np.mean([r.IC / r.F if r.F > EPSILON else 0.0 for r in galactic]))
+    mean_icf_ext = float(np.mean([r.IC / r.F if r.F > EPSILON else 0.0 for r in extreme]))
     passed = mean_icf_ext > mean_icf_gal
     return {
         "name": "T-CRS-1",

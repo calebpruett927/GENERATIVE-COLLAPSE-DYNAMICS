@@ -385,7 +385,7 @@ def verify_t_as_cr_3(results: list[ASKernelResult]) -> dict:
     return {
         "name": "T-AS-CR-3",
         "passed": bool(monotonic),
-        "mean_coherence_by_stage": dict(zip(categories, mean_coh)),
+        "mean_coherence_by_stage": dict(zip(categories, mean_coh, strict=False)),
     }
 
 
