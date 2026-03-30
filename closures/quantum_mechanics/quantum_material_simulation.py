@@ -477,12 +477,12 @@ def verify_t_qsm_4(results: list[QSMKernelResult]) -> dict:
     # Spearman rank correlation
     from scipy.stats import spearmanr  # type: ignore[import-untyped]
 
-    rho, _ = spearmanr(ew_values, ic_values)
+    rho: float = float(spearmanr(ew_values, ic_values)[0])  # type: ignore[arg-type]  # statistic
     passed = rho > 0.5
     return {
         "name": "T-QSM-4",
         "passed": bool(passed),
-        "spearman_rho": float(rho),
+        "spearman_rho": rho,
         "threshold": 0.5,
     }
 
