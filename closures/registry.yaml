@@ -1178,7 +1178,7 @@ registry:
           - "src/umcp/kernel_optimized.py"
       - name: "neural_criticality"
         path: "closures/clinical_neuroscience/neural_criticality.py"
-        description: "Neural criticality closure: 12 brain states × 8 criticality-specific channels → Tier-1 invariants. Maps healthy waking, sleep, pathological, and extreme states through branching ratio, power-law exponent, long-range correlation, spectral slope, susceptibility, correlation length, entropy rate, dynamic range. 6 theorems (T-NCR-1 through T-NCR-6). Motivated by PRL March 2026: brain operates near but not at the critical point."
+        description: "Neural criticality closure: 12 brain states × 8 criticality-specific channels → Tier-1 invariants. Maps healthy waking, sleep, pathological, and extreme states through branching ratio, power-law exponent, long-range correlation, spectral slope, susceptibility, correlation length, entropy rate, dynamic range. 7 theorems (T-NCR-1 through T-NCR-7). Motivated by PRL March 2026: brain operates near but not at the critical point."
         contract: "UMA.INTSTACK.v1"
         inputs: ["brain_state_criticality_profiles"]
         outputs: ["F", "omega", "S", "C", "kappa", "IC", "heterogeneity_gap", "regime"]
@@ -1195,7 +1195,7 @@ registry:
           epsilon: 1.0e-8
           n_channels: 8
           n_entities: 12
-          n_theorems: 6
+          n_theorems: 7
         cross_references:
           - "closures/clinical_neuroscience/neurocognitive_kernel.py"
           - "closures/consciousness_coherence/coherence_kernel.py"

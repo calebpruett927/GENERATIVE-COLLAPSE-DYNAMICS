@@ -88,7 +88,7 @@ python scripts/pre_commit_protocol.py    # Full validation, must exit 0
 | C++ accelerator | `src/umcp_cpp/` (links umcp_c_core, pybind11, 434 Catch2 assertions) |
 | Closures (20 domains) | `closures/` |
 | Contracts | `contracts/*.yaml` |
-| Tests (16,203) | `tests/` |
+| Tests (16,204) | `tests/` |
 | Orientation script | `scripts/orientation.py` (11 sections + compounding summary) |
 | Orientation checkpoint | `scripts/orientation_checkpoint.py` |
 | Deep diagnostic | `scripts/deep_diagnostic.py` |
