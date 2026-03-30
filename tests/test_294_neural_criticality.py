@@ -1,7 +1,7 @@
 """Tests for neural criticality closure (clinical neuroscience domain).
 
 Validates 12 entities, 8-channel trace construction,
-Tier-1 kernel identities, and 6 theorems (T-NCR-1 through T-NCR-6).
+Tier-1 kernel identities, and 7 theorems (T-NCR-1 through T-NCR-7).
 
 Motivated by PRL March 2026: the human brain operates near, but not at,
 the critical point.  GCD translation: healthy waking = Watch regime.
@@ -28,6 +28,7 @@ from closures.clinical_neuroscience.neural_criticality import (
     verify_t_ncr_4,
     verify_t_ncr_5,
     verify_t_ncr_6,
+    verify_t_ncr_7,
 )
 
 
@@ -123,6 +124,9 @@ class TestTheorems:
 
     def test_t_ncr_6(self, all_results):
         assert verify_t_ncr_6(all_results)["passed"]
+
+    def test_t_ncr_7(self, all_results):
+        assert verify_t_ncr_7(all_results)["passed"]
 
     def test_all_theorems_pass(self, all_results):
         for t in verify_all_theorems():

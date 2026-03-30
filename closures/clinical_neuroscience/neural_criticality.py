@@ -27,7 +27,7 @@ Channels (8, equal weights w_i = 1/8):
   Pathological (3):   Psychedelic_psilocybin, General_anesthesia, Coma
   Extreme (2):        Epileptic_seizure, Infant_6mo
 
-6 theorems (T-NCR-1 through T-NCR-6).
+7 theorems (T-NCR-1 through T-NCR-7).
 
 References:
   - Beggs & Plenz (2003). Neuronal avalanches in neocortical circuits.
@@ -311,7 +311,7 @@ def compute_all_entities() -> list[NCRKernelResult]:
 
 
 # ---------------------------------------------------------------------------
-# Theorems T-NCR-1 through T-NCR-6
+# Theorems T-NCR-1 through T-NCR-7
 # ---------------------------------------------------------------------------
 
 
@@ -436,6 +436,45 @@ def verify_t_ncr_6(results: list[NCRKernelResult]) -> dict:
     }
 
 
+def verify_t_ncr_7(results: list[NCRKernelResult]) -> dict:
+    """T-NCR-7: Watch as the Cognitive Tension Zone.
+
+    Cognition requires three simultaneously non-trivial arms of tension:
+      - S > 0.30  (input: meaningful uncertainty is present and being processed)
+      - C > 0.05  (implication: channels differ, things point in different directions)
+      - F > 0.80  (conviction: the system commits despite the uncertainty)
+
+    Watch is the only regime where all three hold together.  The brain is
+    bound between two failure modes: Stable (kills S and C — zero tension,
+    nothing implies anything) and Collapse (kills F — conviction lost,
+    return blocked).  Cognition lives in the tension, not despite it.
+
+    Vita est reditus continuus.
+    """
+    healthy = [r for r in results if r.category == "healthy"]
+    # All healthy (Watch) entities must have all three arms non-trivial
+    s_threshold = 0.30
+    c_threshold = 0.05
+    f_threshold = 0.80
+    all_watch_have_tension = all(s_threshold < r.S and c_threshold < r.C and f_threshold < r.F for r in healthy)
+    # Brain never enters Stable — the zero-tension frozen zone
+    no_stable = not any(r.regime == "Stable" for r in results)
+    # Pathological Collapse loses conviction (F) — not just S or C
+    path_collapse = [r for r in results if r.category == "pathological" and r.regime == "Collapse"]
+    conviction_lost = all(r.F < 0.20 for r in path_collapse)
+    passed = all_watch_have_tension and no_stable and conviction_lost
+    return {
+        "name": "T-NCR-7",
+        "passed": bool(passed),
+        "all_watch_have_tension": bool(all_watch_have_tension),
+        "no_stable_entities": bool(no_stable),
+        "pathological_collapse_conviction_lost": bool(conviction_lost),
+        "healthy_s_min": float(min(r.S for r in healthy)),
+        "healthy_c_min": float(min(r.C for r in healthy)),
+        "healthy_f_min": float(min(r.F for r in healthy)),
+    }
+
+
 def verify_all_theorems() -> list[dict]:
     """Run all T-NCR theorems."""
     results = compute_all_entities()
@@ -446,6 +485,7 @@ def verify_all_theorems() -> list[dict]:
         verify_t_ncr_4(results),
         verify_t_ncr_5(results),
         verify_t_ncr_6(results),
+        verify_t_ncr_7(results),
     ]
 
 

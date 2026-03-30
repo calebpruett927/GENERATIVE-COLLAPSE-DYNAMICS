@@ -1362,10 +1362,10 @@ extensions:
       archetype: kernel-centric
       channels: 10
       entities: 109
-      theorems: 34
+      theorems: 35
       tier1_bootstrap: false
       theorem_prefix: "TCN"
-      note: "109 entities across 7 closure files including neural criticality (12 entities, 6 theorems T-NCR-1–6)"
+      note: "109 entities across 7 closure files including neural criticality (12 entities, 7 theorems T-NCR-1–7)"
     spacetime_memory:
       archetype: kernel-centric
       channels: 8
