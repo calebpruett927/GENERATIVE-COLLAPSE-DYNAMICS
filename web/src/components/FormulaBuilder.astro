@@ -234,7 +234,7 @@
     const container = canvas.parentElement!;
     const cssW = Math.min(container.clientWidth, 720);
     const cssH = 320;
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = Math.min(window.devicePixelRatio || 1, 3);
 
     canvas.width = Math.round(cssW * dpr);
     canvas.height = Math.round(cssH * dpr);

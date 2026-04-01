@@ -93,6 +93,13 @@ const categoryColors: Record<string, string> = {
   Humanities: 'text-rose-400 border-rose-600/30',
 };
 
+const toolCatColors: Record<string, string> = {
+  Compute: 'text-amber-400',
+  Visualize: 'text-blue-400',
+  Verify: 'text-green-400',
+  Reference: 'text-purple-400',
+};
+
 const lensColors: Record<string, string> = {
   Epistemology: 'text-amber-400',
   Ontology: 'text-blue-400',
@@ -111,7 +118,7 @@ const totalModules = domainCatalog.reduce((s, d) => s + d.modules, 0);
   <!-- ═══════ §1  HERO ═══════ -->
   <section class="text-center py-24 md:py-32 relative" id="hero">
     <div class="absolute inset-0 -z-10 overflow-hidden">
-      <canvas id="hero-canvas" class="w-full h-full opacity-15"></canvas>
+      <canvas id="hero-canvas" class="w-full h-full opacity-25"></canvas>
     </div>
 
     <p class="text-xs tracking-[0.3em] uppercase text-kernel-500 mb-6">Single-Axiom Mathematical Framework</p>
@@ -154,7 +161,8 @@ const totalModules = domainCatalog.reduce((s, d) => s + d.modules, 0);
 
 
   <!-- ═══════ §2  KERNEL OVERVIEW ═══════ -->
-  <section class="py-20 border-t border-kernel-800/40">
+  <section class="py-20 border-t border-kernel-800/40 relative">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-amber-500/60 to-transparent"></div>
     <div class="text-center mb-12">
       <p class="text-xs tracking-[0.2em] uppercase text-kernel-600 mb-3">The Kernel Function</p>
       <h2 class="text-3xl font-bold text-kernel-100">K: [0,1]<sup>n</sup> &times; &Delta;<sup>n</sup> &rarr; (F, &omega;, S, C, &kappa;, IC)</h2>
@@ -205,7 +213,8 @@ const totalModules = domainCatalog.reduce((s, d) => s + d.modules, 0);
 
 
   <!-- ═══════ §3  THE SPINE ═══════ -->
-  <section class="py-20 border-t border-kernel-800/40">
+  <section class="py-20 border-t border-kernel-800/40 relative">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-blue-500/60 to-transparent"></div>
     <div class="text-center mb-12">
       <p class="text-xs tracking-[0.2em] uppercase text-kernel-600 mb-3">Every claim follows the same path</p>
       <h2 class="text-3xl font-bold text-kernel-100">The Spine</h2>
@@ -244,30 +253,36 @@ const totalModules = domainCatalog.reduce((s, d) => s + d.modules, 0);
 
 
   <!-- ═══════ §4  INTERACTIVE TOOLS ═══════ -->
-  <section class="py-20 border-t border-kernel-800/40">
+  <section class="py-20 border-t border-kernel-800/40 relative">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-green-500/60 to-transparent"></div>
     <div class="text-center mb-12">
       <p class="text-xs tracking-[0.2em] uppercase text-kernel-600 mb-3">Client-side &middot; No server required</p>
       <h2 class="text-3xl font-bold text-kernel-100">Interactive Tools</h2>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-5xl mx-auto">
-      {toolCategories.flatMap(cat =>
-        cat.tools.map(t => (
+      {toolCategories.flatMap(cat => {
+        const textColor = toolCatColors[cat.name] || 'text-kernel-400';
+        return cat.tools.map(t => (
           <a href={t.href}
              class="flex items-center gap-4 px-5 py-4 rounded-xl bg-kernel-900/40 hover:bg-kernel-900/80 border border-kernel-800/40 hover:border-kernel-700/60 transition group no-underline">
             <div>
-              <div class="text-sm font-medium text-kernel-200 group-hover:text-amber-400 transition">{t.name}</div>
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-medium text-kernel-200 group-hover:text-amber-400 transition">{t.name}</span>
+                <span class={`text-[9px] uppercase tracking-widest ${textColor} opacity-60`}>{cat.name}</span>
+              </div>
               <div class="text-xs text-kernel-500">{t.desc}</div>
             </div>
           </a>
-        ))
-      )}
+        ));
+      })}
     </div>
   </section>
 
 
   <!-- ═══════ §5  DOMAIN CLOSURES ═══════ -->
-  <section class="py-20 border-t border-kernel-800/40" id="domains">
+  <section class="py-20 border-t border-kernel-800/40 relative" id="domains">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-purple-500/60 to-transparent"></div>
     <div class="text-center mb-8">
       <p class="text-xs tracking-[0.2em] uppercase text-kernel-600 mb-3">From quarks to consciousness</p>
       <h2 class="text-3xl font-bold text-kernel-100">20 Domain Closures</h2>
@@ -293,7 +308,10 @@ const totalModules = domainCatalog.reduce((s, d) => s + d.modules, 0);
         <a href={`${base}${d.slug}/`}
            class={`domain-card rounded-xl px-5 py-4 border bg-kernel-900/30 hover:bg-kernel-900/60 transition group no-underline block ${categoryColors[d.category]?.split(' ').slice(1).join(' ') || 'border-kernel-800/40'}`}
            data-category={d.category} data-lens={d.lens}>
-          <div class="text-sm font-medium text-kernel-200 group-hover:text-amber-400 transition mb-1">{d.name}</div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class={`inline-block w-1.5 h-1.5 rounded-full ${categoryColors[d.category]?.split(' ')[0]?.replace('text-', 'bg-') || 'bg-kernel-500'}`}></span>
+            <span class="text-sm font-medium text-kernel-200 group-hover:text-amber-400 transition">{d.name}</span>
+          </div>
           <p class="text-xs text-kernel-500 mb-3">{d.desc}</p>
           <div class="flex items-center gap-2 text-[10px] text-kernel-600">
             <span>{d.modules} modules</span>
@@ -309,7 +327,8 @@ const totalModules = domainCatalog.reduce((s, d) => s + d.modules, 0);
 
 
   <!-- ═══════ §6  BY THE NUMBERS ═══════ -->
-  <section class="py-20 border-t border-kernel-800/40">
+  <section class="py-20 border-t border-kernel-800/40 relative">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-cyan-500/60 to-transparent"></div>
     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-8 text-center max-w-5xl mx-auto">
       <div>
         <div class="text-3xl font-bold text-amber-400">1</div>
@@ -348,7 +367,8 @@ const totalModules = domainCatalog.reduce((s, d) => s + d.modules, 0);
 
 
   <!-- ═══════ §7  CORPUS & PAPERS ═══════ -->
-  <section class="py-20 border-t border-kernel-800/40">
+  <section class="py-20 border-t border-kernel-800/40 relative">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-amber-500/40 to-transparent"></div>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
       <!-- Corpus -->
       <div>

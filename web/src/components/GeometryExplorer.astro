@@ -97,7 +97,7 @@
     const container = canvas.parentElement!;
     const cssW = Math.min(container.clientWidth, 720);
     const cssH = 340;
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = Math.min(window.devicePixelRatio || 1, 3);
 
     canvas.width = Math.round(cssW * dpr);
     canvas.height = Math.round(cssH * dpr);
@@ -288,7 +288,7 @@
   function renderICFHeatmap() {
     const canvas = document.getElementById('icf-canvas') as HTMLCanvasElement;
     const cssW = 400, cssH = 400;
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = Math.min(window.devicePixelRatio || 1, 3);
     canvas.width = Math.round(cssW * dpr);
     canvas.height = Math.round(cssH * dpr);
     canvas.style.width = cssW + 'px';
@@ -434,7 +434,7 @@
 
   function renderColorBar() {
     const bar = document.getElementById('icf-colorbar') as HTMLCanvasElement;
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = Math.min(window.devicePixelRatio || 1, 3);
     bar.width = Math.round(20 * dpr);
     bar.height = Math.round(200 * dpr);
     const ctx = bar.getContext('2d')!;

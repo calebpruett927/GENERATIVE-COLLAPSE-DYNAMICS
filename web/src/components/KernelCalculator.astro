@@ -356,7 +356,7 @@
     const container = canvas.parentElement!;
     const cssW = Math.min(container.clientWidth, 420);
     const cssH = cssW; // square
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = Math.min(window.devicePixelRatio || 1, 3);
     canvas.width = Math.round(cssW * dpr);
     canvas.height = Math.round(cssH * dpr);
     canvas.style.width = cssW + 'px';
@@ -421,7 +421,7 @@
       ctx.fillStyle = 'rgba(255,255,255,0.7)';
       ctx.fillText(axes[i].label, lx, ly);
       // Value below label
-      ctx.font = '9px ui-monospace, monospace';
+      ctx.font = '11px ui-monospace, monospace';
       ctx.fillStyle = 'rgba(255,255,255,0.4)';
       const nv = axes[i].label === 'κ' ? result.kappa.toFixed(3) : axes[i].value.toFixed(3);
       ctx.fillText(nv, lx, ly + 14);

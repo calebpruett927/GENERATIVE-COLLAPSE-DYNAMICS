@@ -153,7 +153,7 @@ export function drawGrid(
 
   ctx.save();
   ctx.strokeStyle = cfg.gridColor;
-  ctx.lineWidth = 0.5;
+  ctx.lineWidth = 0.75;
   ctx.globalAlpha = cfg.gridAlpha;
 
   // Vertical grid lines
@@ -552,7 +552,7 @@ export function drawCrosshair(
 
   // Crosshair lines
   ctx.strokeStyle = 'rgba(226, 232, 240, 0.25)';
-  ctx.lineWidth = 0.5;
+  ctx.lineWidth = 0.75;
   ctx.setLineDash([3, 3]);
 
   ctx.beginPath();

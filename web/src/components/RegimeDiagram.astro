@@ -39,8 +39,8 @@
         class="w-full mt-1.5 px-2.5 py-1.5 bg-kernel-800 border border-kernel-600/50 rounded-lg text-kernel-200 text-sm focus:border-amber-600/60 focus:outline-none transition">
         <option value="100">100 &times; 100</option>
         <option value="200">200 &times; 200</option>
-        <option value="300" selected>300 &times; 300</option>
-        <option value="400">400 &times; 400</option>
+        <option value="300">300 &times; 300</option>
+        <option value="400" selected>400 &times; 400</option>
         <option value="600">600 &times; 600</option>
       </select>
     </div>
@@ -233,7 +233,7 @@
       const container = canvas.parentElement!;
       const cssW = Math.min(container.clientWidth, 720);
       const cssH = cssW; // square
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, 3);
 
       canvas.width = Math.round(cssW * dpr);
       canvas.height = Math.round(cssH * dpr);
