@@ -1,0 +1,2374 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL;
+---
+
+<BaseLayout title="Deep Reading — GCD Whitepaper" description="Interactive deep reading of the GCD/UMCP whitepaper: contract-frozen kernel invariants and typed return">
+  <div class="max-w-4xl mx-auto">
+
+    <!-- ═══ Hero ═══ -->
+    <div class="text-center py-16 md:py-24 relative">
+      <p class="text-xs uppercase tracking-[0.3em] text-kernel-500 mb-4">Deep Reading</p>
+      <h1 class="text-2xl md:text-4xl font-bold text-kernel-100 mb-3 leading-[1.15] tracking-tight">
+        Generative Collapse Dynamics (UMCP/GCD)
+      </h1>
+      <p class="text-sm md:text-base text-kernel-400 max-w-2xl mx-auto mb-2 leading-relaxed italic">
+        Enabling Cross-Domain Comparability via Contract-Frozen Kernel Invariants and Typed Return
+      </p>
+      <p class="text-sm text-kernel-500 mb-2">Clement Paulus · March 2026</p>
+      <p class="text-xs text-kernel-600 max-w-lg mx-auto mb-8">
+        An interactive reading of the formal whitepaper. Each section pairs the original text
+        with contextual commentary and live verification tools.
+      </p>
+      <div class="inline-flex gap-3">
+        <a href="#ch-abstract" class="bg-amber-500 hover:bg-amber-400 text-kernel-950 px-5 py-2.5 rounded-lg text-sm font-semibold transition shadow-lg shadow-amber-500/20">
+          Begin Reading &darr;
+        </a>
+        <a href={`${base}calculator/`} class="bg-kernel-800/80 hover:bg-kernel-700 border border-kernel-700/50 text-kernel-200 px-5 py-2.5 rounded-lg text-sm font-medium transition">
+          Open Calculator &rarr;
+        </a>
+      </div>
+    </div>
+
+    <!-- ═══ Table of Contents ═══ -->
+    <nav class="mb-16 bg-kernel-900/50 border border-kernel-800/40 rounded-xl p-6">
+      <p class="text-xs tracking-[0.2em] uppercase text-kernel-600 mb-4">Chapters</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+        <a href="#ch-abstract" class="toc-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-kernel-800/60 transition text-kernel-300 hover:text-kernel-100 no-underline">
+          <span class="text-xs font-mono text-kernel-600 w-6 text-right">—</span>
+          <span>Abstract &amp; Scope</span>
+        </a>
+        <a href="#ch-1" class="toc-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-kernel-800/60 transition text-kernel-300 hover:text-kernel-100 no-underline">
+          <span class="text-xs font-mono text-kernel-600 w-6 text-right">1</span>
+          <span>Measured Object <span class="text-kernel-600 text-xs ml-1">Observables, Adapter, Trace</span></span>
+        </a>
+        <a href="#ch-2" class="toc-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-kernel-800/60 transition text-kernel-300 hover:text-kernel-100 no-underline">
+          <span class="text-xs font-mono text-kernel-600 w-6 text-right">2</span>
+          <span>Kernel (Tier-1) <span class="text-kernel-600 text-xs ml-1">Notation &amp; Six Invariants</span></span>
+        </a>
+        <a href="#ch-3" class="toc-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-kernel-800/60 transition text-kernel-300 hover:text-kernel-100 no-underline">
+          <span class="text-xs font-mono text-kernel-600 w-6 text-right">3</span>
+          <span>Frozen Parameters <span class="text-kernel-600 text-xs ml-1">Seam-Derived Constants</span></span>
+        </a>
+        <a href="#ch-4" class="toc-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-kernel-800/60 transition text-kernel-300 hover:text-kernel-100 no-underline">
+          <span class="text-xs font-mono text-kernel-600 w-6 text-right">4</span>
+          <span>Regime Classification <span class="text-kernel-600 text-xs ml-1">Four-Gate Criterion</span></span>
+        </a>
+        <a href="#ch-5" class="toc-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-kernel-800/60 transition text-kernel-300 hover:text-kernel-100 no-underline">
+          <span class="text-xs font-mono text-kernel-600 w-6 text-right">5</span>
+          <span>Seam Budget <span class="text-kernel-600 text-xs ml-1">Cost Closures &amp; Weld</span></span>
+        </a>
+        <a href="#ch-6" class="toc-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-kernel-800/60 transition text-kernel-300 hover:text-kernel-100 no-underline">
+          <span class="text-xs font-mono text-kernel-600 w-6 text-right">6</span>
+          <span>Return Typing <span class="text-kernel-600 text-xs ml-1">Censoring &amp; &tau;<sub>R</sub></span></span>
+        </a>
+        <a href="#ch-7" class="toc-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-kernel-800/60 transition text-kernel-300 hover:text-kernel-100 no-underline">
+          <span class="text-xs font-mono text-kernel-600 w-6 text-right">7</span>
+          <span>Diagnostics <span class="text-kernel-600 text-xs ml-1">&Delta;, &rho;, Tier-2</span></span>
+        </a>
+        <a href="#ch-8" class="toc-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-kernel-800/60 transition text-kernel-300 hover:text-kernel-100 no-underline">
+          <span class="text-xs font-mono text-kernel-600 w-6 text-right">8</span>
+          <span>Cross-Domain Patterns <span class="text-kernel-600 text-xs ml-1">20 Domains</span></span>
+        </a>
+        <a href="#ch-9" class="toc-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-kernel-800/60 transition text-kernel-300 hover:text-kernel-100 no-underline">
+          <span class="text-xs font-mono text-kernel-600 w-6 text-right">9</span>
+          <span>Scale Ladder <span class="text-kernel-600 text-xs ml-1">406 Objects, 11 Rungs</span></span>
+        </a>
+        <a href="#ch-10" class="toc-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-kernel-800/60 transition text-kernel-300 hover:text-kernel-100 no-underline">
+          <span class="text-xs font-mono text-kernel-600 w-6 text-right">10</span>
+          <span>Degenerate Limits <span class="text-kernel-600 text-xs ml-1">Arrow of Derivation</span></span>
+        </a>
+        <a href="#ch-11" class="toc-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-kernel-800/60 transition text-kernel-300 hover:text-kernel-100 no-underline">
+          <span class="text-xs font-mono text-kernel-600 w-6 text-right">11</span>
+          <span>44 Identities &amp; 47 Lemmas <span class="text-kernel-600 text-xs ml-1">Machine Precision</span></span>
+        </a>
+        <a href="#ch-12" class="toc-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-kernel-800/60 transition text-kernel-300 hover:text-kernel-100 no-underline">
+          <span class="text-xs font-mono text-kernel-600 w-6 text-right">12</span>
+          <span>Falsifiable Predictions <span class="text-kernel-600 text-xs ml-1">4 Testable Claims</span></span>
+        </a>
+        <a href="#ch-13" class="toc-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-kernel-800/60 transition text-kernel-300 hover:text-kernel-100 no-underline">
+          <span class="text-xs font-mono text-kernel-600 w-6 text-right">13</span>
+          <span>Continuity Across Change <span class="text-kernel-600 text-xs ml-1">Seam &amp; Weld</span></span>
+        </a>
+        <a href="#ch-14" class="toc-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-kernel-800/60 transition text-kernel-300 hover:text-kernel-100 no-underline">
+          <span class="text-xs font-mono text-kernel-600 w-6 text-right">14</span>
+          <span>Citation &amp; Reproducibility <span class="text-kernel-600 text-xs ml-1">Zenodo &amp; GitHub</span></span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- ════════════════════════════════════════════════ -->
+    <!--  ABSTRACT & SCOPE                               -->
+    <!-- ════════════════════════════════════════════════ -->
+    <section class="mb-20" id="ch-abstract">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-8 h-px bg-kernel-700"></div>
+        <p class="text-xs tracking-[0.2em] uppercase text-kernel-500">Abstract &amp; Scope</p>
+        <div class="flex-1 h-px bg-kernel-800/60"></div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Abstract</p>
+          <p class="text-kernel-300 text-sm leading-relaxed mb-3">
+            Generative Collapse Dynamics (GCD) is a contract-first measurement discipline governed by a single
+            admissibility axiom: <em class="text-amber-400/80">collapse is generative; only what returns through collapse is real</em>.
+            In UMCP terms, "real" is not metaphysical; it is an audit rule: a claim receives epistemic credit only if
+            (i) it is evaluated on a declared bounded trace Ψ(t) ∈ [0,1]<sup>n</sup> produced by a declared adapter N<sub>K</sub>
+            from observables x(t), and (ii) it exhibits finite re-entry time τ<sub>R</sub>(t) under the same frozen evaluation
+            rules across the collapse/return boundary.
+          </p>
+          <p class="text-kernel-300 text-sm leading-relaxed mb-3">
+            We formalize the Tier-1 kernel ledger &#123;&omega;, F, S, C, &kappa;, IC&#125; and the typed return output &tau;<sub>R</sub>,
+            state the Tier-1 identities that hold for every admissible trace, and introduce two diagnostics:
+            the heterogeneity gap Δ ≔ F − IC and coherence efficiency ρ ≔ IC/F.
+          </p>
+          <p class="text-kernel-300 text-sm leading-relaxed">
+            We present the frozen parameter set (ε, p, α, tol<sub>seam</sub>) and the seam-derived structural
+            constants (c*, ω<sub>trap</sub>), the conjunctive four-gate regime classification, the seam budget identity,
+            the scale-ladder summary (406 objects across 11 rungs), and the 44 structural identities and 47 lemmas
+            verified to machine precision.
+          </p>
+        </div>
+
+        <!-- Axiom-0 -->
+        <div class="bg-gradient-to-b from-amber-500/5 to-transparent border border-amber-500/20 rounded-xl p-5">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-amber-400">⚡</span>
+            <p class="text-xs text-amber-400 uppercase tracking-wider font-bold">Axiom-0 — The Return Axiom</p>
+          </div>
+          <blockquote class="border-l-2 border-amber-500/40 pl-5 text-kernel-200 italic leading-relaxed text-base mb-3">
+            Collapse is generative; only what returns through collapse is real.
+          </blockquote>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            Every definition, identity, regime label, and seam decision in this paper derives from this single
+            admissibility constraint. "Real" is operational: a claim receives epistemic credit if and only if
+            it exhibits finite re-entry (τ<sub>R</sub> ≠ ∞<sub>rec</sub>) under the frozen contract.
+            No additional axiom is imported; classical results emerge as degenerate limits when degrees of freedom
+            are removed from the kernel.
+          </p>
+        </div>
+
+        <!-- Scope & non-negotiables -->
+        <div class="bg-kernel-950/50 rounded-xl p-5 border border-kernel-800/20">
+          <p class="text-xs text-amber-400/80 uppercase tracking-wider mb-3">Scope &amp; Non-Negotiables</p>
+          <div class="space-y-3 text-sm text-kernel-400 leading-relaxed">
+            <div class="flex gap-3">
+              <span class="text-amber-400/60 shrink-0 mt-0.5">1.</span>
+              <div>
+                <strong class="text-kernel-200">Tier-1 reservation.</strong>
+                The symbols &#123;&omega;, F, S, C, &tau;<sub>R</sub>, &kappa;, IC&#125; denote kernel outputs on &Psi;<sub>&epsilon;</sub>(t)
+                under the frozen contract. They are not redefined by overlays, narrative interpretation, or
+                domain-specific semantics.
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <span class="text-amber-400/60 shrink-0 mt-0.5">2.</span>
+              <div>
+                <strong class="text-kernel-200">Structural-change rule.</strong>
+                Any change to the embedding N<sub>K</sub>; the return neighborhood generator D<sub>θ</sub>;
+                the metric ‖·‖; tolerance η; weights w; clipping level ε; or any closure entering seam accounting
+                constitutes a structural change. Continuity claims across structural change require an explicit
+                seam specification and a weld.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RunID -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Run Identity (RunID)</p>
+          <div class="font-mono text-xs text-amber-400/80 bg-kernel-950/60 px-3 py-2 rounded mb-3 overflow-x-auto">
+            RunID ≡ (Π, N<sub>K</sub>, ε, w, ‖·‖, η, D<sub>θ</sub>, C)
+          </div>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            A UMCP evaluation is identified by a run key that binds <em>what was measured</em> to <em>how it was evaluated</em>.
+            Two results are audit-comparable only if they share the same RunID (or else the comparison is explicitly staged
+            across a seam). Any modification to any component constitutes a structural change.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════ -->
+    <!--  CHAPTER 1 — Measured Object                    -->
+    <!-- ════════════════════════════════════════════════ -->
+    <section class="mb-20" id="ch-1">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-8 h-px bg-kernel-700"></div>
+        <p class="text-xs tracking-[0.2em] uppercase text-kernel-500">§1 · Measured Object: Observables, Adapter, Bounded Trace</p>
+        <div class="flex-1 h-px bg-kernel-800/60"></div>
+      </div>
+
+      <div class="space-y-6">
+        <!-- Observables -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Observables &amp; Time Base</p>
+          <p class="text-kernel-300 text-sm leading-relaxed mb-3">
+            Let x(t) denote the observed data stream at discrete index t &isin; &#123;0, 1, 2, &hellip;&#125;.
+            A UMCP measurement is the pair (x(t), Π), where Π is the declared acquisition and preprocessing pipeline.
+          </p>
+          <p class="text-kernel-400 text-sm leading-relaxed mb-3">
+            Audit-equivalence requires explicit declaration of:
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div class="bg-kernel-950/50 rounded-lg p-3">
+              <p class="text-xs text-amber-400/60 font-bold mb-1">Units &amp; frame</p>
+              <p class="text-xs text-kernel-500">Reference frame, coordinate conventions for each channel</p>
+            </div>
+            <div class="bg-kernel-950/50 rounded-lg p-3">
+              <p class="text-xs text-amber-400/60 font-bold mb-1">Time base</p>
+              <p class="text-xs text-kernel-500">Sampling cadence, windowing/segmentation, interpolation</p>
+            </div>
+            <div class="bg-kernel-950/50 rounded-lg p-3">
+              <p class="text-xs text-amber-400/60 font-bold mb-1">Timestamps</p>
+              <p class="text-xs text-kernel-500">Absolute timestamps (preferred) or explicit abstract index</p>
+            </div>
+            <div class="bg-kernel-950/50 rounded-lg p-3">
+              <p class="text-xs text-amber-400/60 font-bold mb-1">Pipeline provenance</p>
+              <p class="text-xs text-kernel-500">Instrument + preprocessing (versions, calibration, filters)</p>
+            </div>
+          </div>
+          <p class="text-[10px] text-kernel-600 mt-3 italic">
+            If any component is unspecified, the induced trace Ψ(t) is not reproducible and the run is not audit-equivalent.
+          </p>
+        </div>
+
+        <!-- Adapter -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Adapter (Embedding)</p>
+          <div class="font-mono text-xs text-amber-400/80 bg-kernel-950/60 px-3 py-2 rounded mb-3">
+            N<sub>K</sub>: x(t) → Ψ(t) ∈ [0,1]<sup>n</sup>
+          </div>
+          <p class="text-kernel-400 text-sm leading-relaxed mb-3">
+            An adapter maps observables into a bounded trace, where n is fixed by the adapter schema and does not vary
+            within a run. <strong class="text-kernel-200">The adapter is part of the measured object</strong> — changing
+            N<sub>K</sub> changes what it means to measure x(t).
+          </p>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            Minimum adapter declaration: channel map (ordered list with meanings), normalization (explicit map from raw
+            to [0,1] per channel), bounds policy (OOR rule: clip/saturate/drop/flag), missingness policy
+            (impute/mask/skip/fail-fast). Absent an explicit declaration, the run is non-auditable.
+          </p>
+        </div>
+
+        <!-- Guard band -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Log-Safety &amp; ε-Clipping</p>
+          <div class="font-mono text-xs text-amber-400/80 bg-kernel-950/60 px-3 py-2 rounded mb-3">
+            Ψ<sub>ε</sub>(t) ≔ clip(Ψ(t), ε, 1−ε)
+          </div>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            All log-domain quantities — specifically κ(t) = Σ w<sub>i</sub> ln(c<sub>i,ε</sub>(t)) and
+            IC(t) = exp(κ(t)) — are computed on Ψ<sub>ε</sub>(t). Boundary operations are not silent conveniences:
+            every OOR correction and every ε-induced substitution must be recorded in the run log.
+            <strong class="text-kernel-200">Silent boundary substitution is nonconformant</strong> under the contract
+            because it changes IC and κ while denying provenance.
+          </p>
+        </div>
+
+        <!-- Commentary -->
+        <div class="bg-kernel-950/50 rounded-xl p-5 border border-kernel-800/20">
+          <p class="text-xs text-amber-400/80 uppercase tracking-wider mb-3">Commentary</p>
+          <p class="text-kernel-400 text-sm leading-relaxed mb-3">
+            This chapter establishes the most important principle in the entire system:
+            <strong class="text-kernel-200">the measured object includes the adapter</strong>.
+            In conventional measurement, the instrument and the thing measured are considered separate.
+            In UMCP, they are bound together in the RunID. Changing the adapter changes the object.
+          </p>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            This means cross-domain comparison is not about comparing "the same thing measured differently" — it is about
+            comparing different measured objects through the same kernel. The kernel is universal; the adapter is domain-specific.
+            This separation is what makes 20 domain closures commensurable.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════ -->
+    <!--  CHAPTER 2 — Kernel (Tier-1)                    -->
+    <!-- ════════════════════════════════════════════════ -->
+    <section class="mb-20" id="ch-2">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-8 h-px bg-kernel-700"></div>
+        <p class="text-xs tracking-[0.2em] uppercase text-kernel-500">§2 · Kernel (Tier-1) and Notation</p>
+        <div class="flex-1 h-px bg-kernel-800/60"></div>
+      </div>
+
+      <div class="space-y-6">
+        <!-- Weights -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Weights</p>
+          <div class="font-mono text-xs text-amber-400/80 bg-kernel-950/60 px-3 py-2 rounded mb-3">
+            w = (w&#x2081;, &hellip;, w&#x2099;),&ensp;w&#x1D62; &ge; 0,&ensp;&Sigma; w&#x1D62; = 1
+          </div>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            Weights are part of the evaluation interface and are frozen within a run. They form a probability simplex.
+            They are not fitted post hoc — they are declared before evidence.
+          </p>
+        </div>
+
+        <!-- The Six Invariants -->
+        <div>
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-4">The Six Kernel Invariants</p>
+          <div class="space-y-4" id="invariant-sections">
+            <!-- Populated by script -->
+          </div>
+        </div>
+
+        <!-- Three Identities -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Three Structural Identities (Always True)</p>
+          <div class="space-y-3">
+            <div class="flex items-center gap-3 p-3 bg-kernel-950/50 rounded-lg">
+              <span class="text-green-400 text-sm">I₁</span>
+              <div class="flex-1">
+                <span class="font-mono text-sm text-kernel-200">F + ω = 1</span>
+                <span class="text-xs text-kernel-500 ml-2">Duality identity — complementary partition</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 p-3 bg-kernel-950/50 rounded-lg">
+              <span class="text-green-400 text-sm">I₂</span>
+              <div class="flex-1">
+                <span class="font-mono text-sm text-kernel-200">IC ≤ F</span>
+                <span class="text-xs text-kernel-500 ml-2">Integrity bound — solvability condition</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 p-3 bg-kernel-950/50 rounded-lg">
+              <span class="text-green-400 text-sm">I₃</span>
+              <div class="flex-1">
+                <span class="font-mono text-sm text-kernel-200">IC = exp(κ)</span>
+                <span class="text-xs text-kernel-500 ml-2">Log-integrity relation — multiplicative ↔ additive</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Integrity bound proof -->
+        <div class="bg-kernel-950/50 rounded-xl p-5 border border-kernel-800/20">
+          <p class="text-xs text-amber-400/80 uppercase tracking-wider mb-3">Commentary: The Integrity Bound</p>
+          <p class="text-kernel-400 text-sm leading-relaxed mb-3">
+            The integrity bound IC ≤ F is proved via Jensen's inequality on concave ln(·) — the mathematical content
+            (weighted geometric mean ≤ weighted arithmetic mean) is classical. But the contribution is not the inequality
+            itself but four architectural consequences:
+          </p>
+          <div class="space-y-2 text-sm text-kernel-400">
+            <div class="flex gap-3">
+              <span class="text-amber-400/60 shrink-0">1.</span>
+              <span><strong class="text-kernel-200">Axiom-produced domain.</strong> The bounded trace and normalized weights are consequences of Axiom-0 and the frozen contract — the axiom produces the conditions under which Jensen applies.</span>
+            </div>
+            <div class="flex gap-3">
+              <span class="text-amber-400/60 shrink-0">2.</span>
+              <span><strong class="text-kernel-200">Solvability interpretation.</strong> For n = 2 channels: c₁,₂ = F ± √(F² − IC²) requires IC ≤ F for real solutions — individual channel recovery from aggregate invariants.</span>
+            </div>
+            <div class="flex gap-3">
+              <span class="text-amber-400/60 shrink-0">3.</span>
+              <span><strong class="text-kernel-200">Composition laws.</strong> IC composes geometrically (IC₁₂ = √(IC₁·IC₂)), F composes arithmetically (F₁₂ = (F₁+F₂)/2). The gap's variance decomposition connects to Fisher information geometry.</span>
+            </div>
+            <div class="flex gap-3">
+              <span class="text-amber-400/60 shrink-0">4.</span>
+              <span><strong class="text-kernel-200">Cross-domain universality.</strong> IC ≤ F holds with zero violations across 20 domains, 16,487 tests, and 406 scale-ladder objects — the architecture makes it universally diagnostic.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live verification panel -->
+        <div class="bg-gradient-to-b from-amber-500/5 to-transparent border border-amber-500/20 rounded-xl p-5" id="verify-panel">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="text-amber-400">⚡</span>
+            <p class="text-xs text-amber-400 uppercase tracking-wider font-bold">Live Verification — Compute &amp; Check All Three Identities</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="text-xs text-kernel-500 block mb-1">Channels (comma-separated, 0–1)</label>
+              <input type="text" id="verify-channels" value="0.95, 0.80, 0.60, 0.30"
+                     class="w-full bg-kernel-950 border border-kernel-700 rounded-lg px-3 py-2 text-sm text-kernel-200 font-mono focus:border-amber-500 focus:outline-none transition" />
+            </div>
+            <div>
+              <label class="text-xs text-kernel-500 block mb-1">Weights (equal if empty)</label>
+              <input type="text" id="verify-weights" value=""
+                     class="w-full bg-kernel-950 border border-kernel-700 rounded-lg px-3 py-2 text-sm text-kernel-200 font-mono focus:border-amber-500 focus:outline-none transition" />
+            </div>
+          </div>
+          <button id="verify-btn" class="bg-amber-500 hover:bg-amber-400 text-kernel-950 px-5 py-2 rounded-lg text-sm font-semibold transition mb-4">
+            Compute &amp; Verify
+          </button>
+          <div id="verify-results" class="hidden space-y-3">
+            <div class="grid grid-cols-3 md:grid-cols-6 gap-2" id="invariant-outputs"></div>
+            <div class="space-y-2 mt-4" id="identity-checks"></div>
+          </div>
+        </div>
+
+        <!-- Tool links -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <a href={`${base}calculator/`} class="flex items-center gap-3 p-4 bg-kernel-900/50 border border-kernel-800/40 rounded-xl hover:border-kernel-600 transition no-underline group">
+            <span class="text-amber-400 text-lg">⊕</span>
+            <div>
+              <p class="text-sm text-kernel-200 font-medium group-hover:text-amber-400 transition">Structure Explorer</p>
+              <p class="text-xs text-kernel-500">Full kernel computation with 9 analysis modes</p>
+            </div>
+          </a>
+          <a href={`${base}identities/`} class="flex items-center gap-3 p-4 bg-kernel-900/50 border border-kernel-800/40 rounded-xl hover:border-kernel-600 transition no-underline group">
+            <span class="text-cyan-400 text-lg">≡</span>
+            <div>
+              <p class="text-sm text-kernel-200 font-medium group-hover:text-cyan-400 transition">44 Structural Identities</p>
+              <p class="text-xs text-kernel-500">All provable properties of the kernel function</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════ -->
+    <!--  CHAPTER 3 — Frozen Parameters                  -->
+    <!-- ════════════════════════════════════════════════ -->
+    <section class="mb-20" id="ch-3">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-8 h-px bg-kernel-700"></div>
+        <p class="text-xs tracking-[0.2em] uppercase text-kernel-500">§3 · Frozen Parameters and Seam-Derived Constants</p>
+        <div class="flex-1 h-px bg-kernel-800/60"></div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="bg-kernel-950/50 rounded-xl p-5 border border-kernel-800/20">
+          <p class="text-xs text-amber-400/80 uppercase tracking-wider mb-3">Commentary</p>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            The kernel requires a small set of constants that are <em>frozen</em> — consistent across the seam,
+            the same rules on both sides of every collapse-return boundary. These are not prescribed by convention;
+            they are the unique values where seams close consistently across all domain closures.
+            <em class="text-kernel-500">Trans suturam congelatum.</em>
+          </p>
+        </div>
+
+        <!-- Frozen parameters table -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-4">Frozen Contract Parameters</p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-kernel-800/40">
+                  <th class="text-left text-xs text-kernel-500 font-medium pb-2">Parameter</th>
+                  <th class="text-left text-xs text-kernel-500 font-medium pb-2">Value</th>
+                  <th class="text-left text-xs text-kernel-500 font-medium pb-2">Symbol</th>
+                  <th class="text-left text-xs text-kernel-500 font-medium pb-2">Role</th>
+                </tr>
+              </thead>
+              <tbody class="text-kernel-300">
+                <tr class="border-b border-kernel-800/20">
+                  <td class="py-2">Guard band</td>
+                  <td class="py-2 font-mono text-amber-400/80">10⁻⁸</td>
+                  <td class="py-2 font-mono">ε</td>
+                  <td class="py-2 text-kernel-400 text-xs">Pole guard; log-stability</td>
+                </tr>
+                <tr class="border-b border-kernel-800/20">
+                  <td class="py-2">Drift exponent</td>
+                  <td class="py-2 font-mono text-amber-400/80">3</td>
+                  <td class="py-2 font-mono">p</td>
+                  <td class="py-2 text-kernel-400 text-xs">Cardano root: x³ + x − 1 = 0</td>
+                </tr>
+                <tr class="border-b border-kernel-800/20">
+                  <td class="py-2">Curvature coefficient</td>
+                  <td class="py-2 font-mono text-amber-400/80">1.0</td>
+                  <td class="py-2 font-mono">α</td>
+                  <td class="py-2 text-kernel-400 text-xs">D<sub>C</sub> = α · C</td>
+                </tr>
+                <tr class="border-b border-kernel-800/20">
+                  <td class="py-2">Seam tolerance</td>
+                  <td class="py-2 font-mono text-amber-400/80">0.005</td>
+                  <td class="py-2 font-mono">tol<sub>seam</sub></td>
+                  <td class="py-2 text-kernel-400 text-xs">IC ≤ F at 100% (20 domains)</td>
+                </tr>
+                <tr>
+                  <td class="py-2">Domain</td>
+                  <td class="py-2 font-mono text-amber-400/80">[0, 1]</td>
+                  <td class="py-2 font-mono">[a, b]</td>
+                  <td class="py-2 text-kernel-400 text-xs">Bounded trace domain</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Seam-derived constants -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Seam-Derived Structural Constants</p>
+
+          <div class="space-y-4">
+            <div class="bg-kernel-950/50 rounded-lg p-4">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="font-mono text-amber-400 font-bold">c* ≈ 0.7822</span>
+                <span class="text-xs text-kernel-500">Logistic self-dual fixed point</span>
+              </div>
+              <p class="text-kernel-400 text-sm leading-relaxed">
+                The channel value that maximizes S + κ per channel, solving ln((1−c)/c) + 1/c = 0.
+                Systems that persist — that <em>return</em> — cluster near c*.
+              </p>
+            </div>
+
+            <div class="bg-kernel-950/50 rounded-lg p-4">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="font-mono text-amber-400 font-bold">ω<sub>trap</sub> ≈ 0.6823</span>
+                <span class="text-xs text-kernel-500">Trapping threshold</span>
+              </div>
+              <p class="text-kernel-400 text-sm leading-relaxed mb-2">
+                The drift value where the cost function Γ(ω) = ω<sup>p</sup>/(1−ω+ε) equals α,
+                giving the boundary between returnable and trapped drift.
+                With p = 3, ω<sub>trap</sub> is the unique real root of the depressed cubic x³ + x − 1 = 0.
+              </p>
+              <div class="font-mono text-xs text-amber-400/80 bg-kernel-950/60 px-3 py-2 rounded mb-2">
+                c<sub>trap</sub> = 1 − ω<sub>trap</sub> ≈ 0.3177
+              </div>
+              <p class="text-[10px] text-kernel-600 italic">
+                p = 3 is the unique integer exponent for which the trapping threshold satisfies a solvable depressed cubic
+                with a single real root. No other integer p yields a Cardano-solvable algebraic form. Discovered, not chosen.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive: compute Gamma -->
+        <div class="bg-gradient-to-b from-cyan-500/5 to-transparent border border-cyan-500/20 rounded-xl p-5">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-cyan-400">⊕</span>
+            <p class="text-xs text-cyan-400/80 uppercase tracking-wider font-bold">Live Demo: Drift Cost Γ(ω)</p>
+          </div>
+          <p class="text-kernel-400 text-xs mb-4">
+            Drag ω and watch the cost function. At ω<sub>trap</sub> ≈ 0.6823, the cost exceeds α = 1.0 — return becomes trapped.
+          </p>
+          <div class="mb-3">
+            <label class="text-xs text-kernel-500 block mb-1">Drift ω</label>
+            <input type="range" id="gamma-omega" min="0" max="99" value="30" class="w-full accent-cyan-400" />
+            <div class="flex justify-between text-xs text-kernel-600 font-mono mt-1">
+              <span>0</span>
+              <span id="gamma-omega-label">0.30</span>
+              <span>0.99</span>
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-2 text-center">
+            <div class="bg-kernel-950/80 rounded-lg p-3">
+              <div class="text-xs text-kernel-500">Γ(ω)</div>
+              <div class="text-lg font-bold font-mono text-kernel-200" id="gamma-value">—</div>
+            </div>
+            <div class="bg-kernel-950/80 rounded-lg p-3">
+              <div class="text-xs text-kernel-500">Trapped?</div>
+              <div class="text-lg font-bold font-mono" id="gamma-trapped">—</div>
+            </div>
+            <div class="bg-kernel-950/80 rounded-lg p-3">
+              <div class="text-xs text-kernel-500">Regime</div>
+              <div class="text-lg font-bold font-mono" id="gamma-regime">—</div>
+            </div>
+          </div>
+        </div>
+
+        <a href={`${base}seam-budget/`} class="flex items-center gap-3 p-4 bg-kernel-900/50 border border-kernel-800/40 rounded-xl hover:border-kernel-600 transition no-underline group">
+          <span class="text-cyan-400 text-lg">⧗</span>
+          <div>
+            <p class="text-sm text-kernel-200 font-medium group-hover:text-cyan-400 transition">Seam Budget Calculator</p>
+            <p class="text-xs text-kernel-500">Full budget computation: Γ(ω), D_C, Δκ, weld decision</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════ -->
+    <!--  CHAPTER 4 — Regime Classification              -->
+    <!-- ════════════════════════════════════════════════ -->
+    <section class="mb-20" id="ch-4">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-8 h-px bg-kernel-700"></div>
+        <p class="text-xs tracking-[0.2em] uppercase text-kernel-500">§4 · Regime Classification</p>
+        <div class="flex-1 h-px bg-kernel-800/60"></div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="bg-kernel-950/50 rounded-xl p-5 border border-kernel-800/20">
+          <p class="text-xs text-amber-400/80 uppercase tracking-wider mb-3">Commentary</p>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            The kernel maps continuous invariants to discrete regime labels via a conjunctive four-gate criterion.
+            Stability is <em>conjunctive</em>: all four gates must be satisfied simultaneously.
+            Relaxing any single gate moves the system to Watch.
+          </p>
+        </div>
+
+        <!-- The three regimes -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div class="bg-kernel-900/50 border-l-4 border-green-500 rounded-r-xl p-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-green-400 font-bold">Stable</span>
+              <span class="text-xs text-green-400/60 font-mono">12.5%</span>
+            </div>
+            <div class="text-xs text-kernel-400 font-mono space-y-0.5">
+              <div>ω &lt; 0.038</div>
+              <div>F &gt; 0.90</div>
+              <div>S &lt; 0.15</div>
+              <div>C &lt; 0.14</div>
+            </div>
+            <p class="text-[10px] text-kernel-600 mt-2">All four gates conjunctive</p>
+          </div>
+          <div class="bg-kernel-900/50 border-l-4 border-yellow-500 rounded-r-xl p-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-yellow-400 font-bold">Watch</span>
+              <span class="text-xs text-yellow-400/60 font-mono">24.4%</span>
+            </div>
+            <div class="text-xs text-kernel-400 font-mono">
+              0.038 ≤ ω &lt; 0.30<br/>
+              or Stable gates broken
+            </div>
+            <p class="text-[10px] text-kernel-600 mt-2">Intermediate — at least one gate fails</p>
+          </div>
+          <div class="bg-kernel-900/50 border-l-4 border-red-500 rounded-r-xl p-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-red-400 font-bold">Collapse</span>
+              <span class="text-xs text-red-400/60 font-mono">63.1%</span>
+            </div>
+            <div class="text-xs text-kernel-400 font-mono">
+              ω ≥ 0.30
+            </div>
+            <p class="text-[10px] text-kernel-600 mt-2">Dissolution — but generative</p>
+          </div>
+        </div>
+
+        <!-- Critical overlay -->
+        <div class="bg-kernel-900/30 border border-red-500/20 rounded-xl p-5">
+          <p class="text-xs text-red-400/80 uppercase tracking-wider mb-3">Critical Severity Overlay</p>
+          <div class="font-mono text-xs text-red-400/80 bg-kernel-950/60 px-3 py-2 rounded mb-3">
+            Critical: IC &lt; 0.30
+          </div>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            Critical is not a regime — it is a severity flag that accompanies any regime. A system can be
+            Watch + Critical (moderate drift, but multiplicative coherence has collapsed) or even
+            <strong class="text-kernel-200">Stable + Critical</strong> (all drift/entropy/curvature gates pass,
+            but a single near-ε channel suppresses IC).
+          </p>
+        </div>
+
+        <!-- Geometric slaughter -->
+        <div class="bg-kernel-950/50 rounded-xl p-5 border border-kernel-800/20">
+          <p class="text-xs text-amber-400/80 uppercase tracking-wider mb-3">Commentary: Geometric Slaughter</p>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            A single channel c<sub>k</sub> → ε drives IC → 0 regardless of the remaining channels, because the
+            weighted geometric mean is multiplicatively fragile: IC = ∏ c<sub>i</sub><sup>w<sub>i</sub></sup>,
+            so one near-zero factor annihilates the product. Meanwhile F (the weighted arithmetic mean) can remain
+            healthy. This decoupling of F from IC is the mechanism behind Stable + Critical configurations and
+            explains why the heterogeneity gap Δ = F − IC is the primary diagnostic of structural vulnerability.
+          </p>
+        </div>
+
+        <!-- Interactive: Geometric Slaughter Demo -->
+        <div class="bg-gradient-to-b from-red-500/5 to-transparent border border-red-500/20 rounded-xl p-5">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-red-400">◎</span>
+            <p class="text-xs text-red-400/80 uppercase tracking-wider font-bold">Live Demo: Geometric Slaughter</p>
+          </div>
+          <p class="text-kernel-400 text-xs mb-4">
+            Watch one dead channel destroy IC while F stays healthy. All other channels are 1.0 (perfect).
+          </p>
+          <div class="grid grid-cols-2 gap-3 mb-3">
+            <div>
+              <label class="text-xs text-kernel-500 block mb-1">Number of channels</label>
+              <input type="range" id="slaughter-n" min="2" max="12" value="8" class="w-full accent-red-400" />
+              <span class="text-xs text-kernel-500 font-mono" id="slaughter-n-label">8 channels</span>
+            </div>
+            <div>
+              <label class="text-xs text-kernel-500 block mb-1">Dead channel value</label>
+              <input type="range" id="slaughter-dead" min="0" max="100" value="1" class="w-full accent-red-400" />
+              <span class="text-xs text-kernel-500 font-mono" id="slaughter-dead-label">0.01</span>
+            </div>
+          </div>
+          <div class="grid grid-cols-4 gap-2 text-center">
+            <div class="bg-kernel-950/80 rounded-lg p-3">
+              <div class="text-xs text-kernel-500">F</div>
+              <div class="text-lg font-bold font-mono text-kernel-200" id="sl-F">—</div>
+            </div>
+            <div class="bg-kernel-950/80 rounded-lg p-3">
+              <div class="text-xs text-kernel-500">IC</div>
+              <div class="text-lg font-bold font-mono text-kernel-200" id="sl-IC">—</div>
+            </div>
+            <div class="bg-kernel-950/80 rounded-lg p-3">
+              <div class="text-xs text-kernel-500">Δ = F − IC</div>
+              <div class="text-lg font-bold font-mono text-amber-400" id="sl-gap">—</div>
+            </div>
+            <div class="bg-kernel-950/80 rounded-lg p-3">
+              <div class="text-xs text-kernel-500">IC/F</div>
+              <div class="text-lg font-bold font-mono text-red-400" id="sl-ratio">—</div>
+            </div>
+          </div>
+          <p class="text-[10px] text-kernel-600 mt-2 italic">
+            IC is a geometric mean — it cannot hide a dead channel the way the arithmetic mean F can.
+          </p>
+        </div>
+
+        <!-- Fisher space partition -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Fisher Space Partition</p>
+          <div class="flex gap-1 h-8 rounded-lg overflow-hidden mb-3">
+            <div class="bg-green-500/60 flex items-center justify-center" style="width: 12.5%">
+              <span class="text-[9px] font-bold text-white">12.5%</span>
+            </div>
+            <div class="bg-yellow-500/60 flex items-center justify-center" style="width: 24.4%">
+              <span class="text-[9px] font-bold text-white">24.4%</span>
+            </div>
+            <div class="bg-red-500/60 flex items-center justify-center" style="width: 63.1%">
+              <span class="text-[9px] font-bold text-white">63.1%</span>
+            </div>
+          </div>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            Stability is rare — <strong class="text-kernel-200">87.5% of the manifold lies outside it</strong>.
+            This is structural, not accidental: the conjunctive gate makes stability demanding,
+            which is precisely what gives return from collapse its meaning.
+          </p>
+        </div>
+
+        <a href={`${base}regime/`} class="flex items-center gap-3 p-4 bg-kernel-900/50 border border-kernel-800/40 rounded-xl hover:border-kernel-600 transition no-underline group">
+          <span class="text-green-400 text-lg">◉</span>
+          <div>
+            <p class="text-sm text-kernel-200 font-medium group-hover:text-green-400 transition">Regime Explorer</p>
+            <p class="text-xs text-kernel-500">Interactive four-gate regime classification with live boundary visualization</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════ -->
+    <!--  CHAPTER 5 — Seam Budget                        -->
+    <!-- ════════════════════════════════════════════════ -->
+    <section class="mb-20" id="ch-5">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-8 h-px bg-kernel-700"></div>
+        <p class="text-xs tracking-[0.2em] uppercase text-kernel-500">§5 · Seam Budget and Cost Closures</p>
+        <div class="flex-1 h-px bg-kernel-800/60"></div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="bg-kernel-950/50 rounded-xl p-5 border border-kernel-800/20">
+          <p class="text-xs text-amber-400/80 uppercase tracking-wider mb-3">Commentary</p>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            The seam budget is the accounting identity that determines whether a return from collapse receives
+            epistemic credit. It balances return credit against drift and curvature costs — computed from the frozen
+            contract and the Tier-1 kernel outputs.
+          </p>
+        </div>
+
+        <!-- Drift cost -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Drift Cost Closure</p>
+          <div class="font-mono text-sm text-amber-400/80 bg-kernel-950/60 px-3 py-2 rounded mb-3">
+            Γ(ω) ≔ ω<sup>p</sup> / (1 − ω + ε)
+          </div>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            Where p = 3 and ε = 10⁻⁸ are frozen. The drift debit is D<sub>ω</sub> = Γ(ω).
+            At low drift, the cost is negligible (ω³ is small). As ω approaches 1, the denominator
+            vanishes and cost diverges — the pole guards against claims of return from near-total collapse.
+          </p>
+        </div>
+
+        <!-- Curvature cost -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Curvature Cost Closure</p>
+          <div class="font-mono text-sm text-amber-400/80 bg-kernel-950/60 px-3 py-2 rounded mb-3">
+            D<sub>C</sub> ≔ α · C
+          </div>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            Where α = 1.0 is frozen and C is the curvature proxy from the kernel.
+            Curvature cost couples channel dispersion into the budget — heterogeneous traces pay more
+            than homogeneous ones, even at the same fidelity level.
+          </p>
+        </div>
+
+        <!-- Budget identity -->
+        <div class="bg-gradient-to-b from-cyan-500/5 to-transparent border border-cyan-500/20 rounded-xl p-5">
+          <p class="text-xs text-cyan-400/80 uppercase tracking-wider mb-3">The Budget Identity</p>
+          <div class="font-mono text-sm text-cyan-400/80 bg-kernel-950/60 px-3 py-2 rounded mb-3 text-center">
+            Δκ<sub>budget</sub> = R · τ<sub>R</sub> − (D<sub>ω</sub> + D<sub>C</sub>)
+          </div>
+          <p class="text-kernel-400 text-sm leading-relaxed mb-3">
+            Return credit (R · τ<sub>R</sub>) must offset drift and curvature costs. If τ<sub>R</sub> = ∞<sub>rec</sub>,
+            the credit term is zero: <em class="text-kernel-500">no return, no credit</em>.
+          </p>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            <em>Si τ<sub>R</sub> = ∞<sub>rec</sub>, nulla fides datur.</em>
+          </p>
+        </div>
+
+        <!-- Seam residual and weld decision -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Seam Residual &amp; Weld Decision</p>
+          <div class="font-mono text-xs text-amber-400/80 bg-kernel-950/60 px-3 py-2 rounded mb-3">
+            s ≔ Δκ<sub>budget</sub> − Δκ<sub>ledger</sub>
+          </div>
+          <p class="text-kernel-400 text-sm leading-relaxed mb-3">
+            A weld PASS requires three conditions:
+          </p>
+          <div class="space-y-2">
+            <div class="flex items-center gap-3 p-2 bg-kernel-950/50 rounded-lg">
+              <span class="text-green-400 text-sm">✓</span>
+              <div class="flex-1">
+                <span class="text-sm text-kernel-200">Finite return</span>
+                <span class="text-xs text-kernel-500 ml-2">τ<sub>R</sub> ≠ ∞<sub>rec</sub></span>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 p-2 bg-kernel-950/50 rounded-lg">
+              <span class="text-green-400 text-sm">✓</span>
+              <div class="flex-1">
+                <span class="text-sm text-kernel-200">Residual closure</span>
+                <span class="text-xs text-kernel-500 ml-2">|s| ≤ tol<sub>seam</sub> = 0.005</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 p-2 bg-kernel-950/50 rounded-lg">
+              <span class="text-green-400 text-sm">✓</span>
+              <div class="flex-1">
+                <span class="text-sm text-kernel-200">Identity check</span>
+                <span class="text-xs text-kernel-500 ml-2">i<sub>r</sub> = IC(t₁)/IC(t₀) ≈ exp(Δκ<sub>ledger</sub>)</span>
+              </div>
+            </div>
+          </div>
+          <p class="text-[10px] text-kernel-600 mt-3 italic">
+            If τ<sub>R</sub> = ∞<sub>rec</sub>, return credit is censored by typing (default rule),
+            and no weld may claim continuity credit.
+          </p>
+        </div>
+
+        <a href={`${base}seam-budget/`} class="flex items-center gap-3 p-4 bg-kernel-900/50 border border-kernel-800/40 rounded-xl hover:border-kernel-600 transition no-underline group">
+          <span class="text-cyan-400 text-lg">⧗</span>
+          <div>
+            <p class="text-sm text-kernel-200 font-medium group-hover:text-cyan-400 transition">Seam Budget Calculator</p>
+            <p class="text-xs text-kernel-500">Interactive budget computation with weld decision</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════ -->
+    <!--  CHAPTER 6 — Return Typing and Censoring        -->
+    <!-- ════════════════════════════════════════════════ -->
+    <section class="mb-20" id="ch-6">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-8 h-px bg-kernel-700"></div>
+        <p class="text-xs tracking-[0.2em] uppercase text-kernel-500">&sect;6 &middot; Return Typing and Censoring</p>
+        <div class="flex-1 h-px bg-kernel-800/60"></div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="bg-kernel-950/50 rounded-xl p-5 border border-kernel-800/20">
+          <p class="text-xs text-amber-400/80 uppercase tracking-wider mb-3">Commentary</p>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            Return is not inferred by the kernel &mdash; it is a <strong class="text-kernel-200">contract object</strong>.
+            The kernel receives a return neighborhood generator and a metric as frozen evaluation settings.
+            This chapter defines <em>what counts as return</em>, <em>how delay is measured</em>, and
+            <em>what happens when no return is observed</em>.
+          </p>
+        </div>
+
+        <!-- Return neighborhood -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Return Neighborhood &amp; Admissible Candidates</p>
+          <p class="text-kernel-400 text-sm leading-relaxed mb-3">
+            Fix a closure-defined return domain D<sub>&theta;</sub>(t) at time t, parameterized by &theta;,
+            together with a frozen metric &Vert;&middot;&Vert; on &Psi;-space and a frozen tolerance &eta; &gt; 0.
+          </p>
+          <div class="font-mono text-xs text-amber-400/80 bg-kernel-950/60 px-3 py-2 rounded mb-3 overflow-x-auto">
+            U<sub>&theta;</sub>(t) := &#123; u &isin; D<sub>&theta;</sub>(t) : &Vert;&Psi;(t) &minus; &Psi;(u)&Vert; &le; &eta; &#125;
+          </div>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            Here u ranges over evaluation indices available to the run (e.g., u &isin; &#123;0, 1, &hellip;, t&#125;
+            for a retrospective search, or a specified horizon window if the contract restricts search).
+            <strong class="text-kernel-200">The horizon rule is part of the closure specification</strong>
+            &mdash; changing it changes D<sub>&theta;</sub> and therefore changes the measured object.
+          </p>
+        </div>
+
+        <!-- Re-entry delay -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Re-Entry Delay &tau;<sub>R</sub></p>
+          <div class="font-mono text-xs text-amber-400/80 bg-kernel-950/60 px-3 py-2 rounded mb-3 overflow-x-auto">
+            &tau;<sub>R</sub>(t) := min&#123; t &minus; u : u &isin; U<sub>&theta;</sub>(t) &#125; if U<sub>&theta;</sub>(t) &ne; &empty;, &ensp; &infin;<sub>rec</sub> otherwise
+          </div>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            Thus &tau;<sub>R</sub>(t) is either a nonnegative integer (finite return observed under the contract)
+            or the typed sentinel &infin;<sub>rec</sub> (no return observed under the contract).
+            Unless the active contract specifies return evaluation on &Psi;<sub>&epsilon;</sub>,
+            the return metric is evaluated on &Psi; (unclipped) while log-domain quantities are evaluated
+            on &Psi;<sub>&epsilon;</sub>.
+          </p>
+        </div>
+
+        <!-- Typed Censoring -->
+        <div class="bg-gradient-to-b from-red-500/5 to-transparent border border-red-500/20 rounded-xl p-5">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-red-400">&perp;</span>
+            <p class="text-xs text-red-400/80 uppercase tracking-wider font-bold">Typed Censoring: &infin;<sub>rec</sub></p>
+          </div>
+          <p class="text-kernel-400 text-sm leading-relaxed mb-3">
+            &infin;<sub>rec</sub> is a <strong class="text-kernel-200">typed censoring value, not a large number</strong>.
+            It asserts: <em class="text-kernel-300">under the active contract and within the active horizon,
+            no admissible candidate u was found</em>.
+          </p>
+          <div class="space-y-2">
+            <div class="flex items-center gap-3 p-2 bg-kernel-950/50 rounded-lg">
+              <span class="text-red-400/80 text-sm">&bull;</span>
+              <span class="text-sm text-kernel-300">Segments with &tau;<sub>R</sub> = &infin;<sub>rec</sub> receive <strong class="text-kernel-200">zero</strong> return credit in any seam or continuity accounting</span>
+            </div>
+            <div class="flex items-center gap-3 p-2 bg-kernel-950/50 rounded-lg">
+              <span class="text-red-400/80 text-sm">&bull;</span>
+              <span class="text-sm text-kernel-300">Must be treated as <strong class="text-kernel-200">censored</strong> rather than as finite-but-large delays</span>
+            </div>
+            <div class="flex items-center gap-3 p-2 bg-kernel-950/50 rounded-lg">
+              <span class="text-red-400/80 text-sm">&bull;</span>
+              <span class="text-sm text-kernel-300">In data files, stays as the string <code class="text-amber-400/80 text-xs">INF_REC</code>; in Python, maps to <code class="text-amber-400/80 text-xs">float("inf")</code></span>
+            </div>
+          </div>
+          <p class="text-[10px] text-kernel-600 mt-3 italic">
+            Si &tau;<sub>R</sub> = &infin;<sub>rec</sub>, nulla fides datur. Recusatio est exitus primi ordinis, non error rotundationis.
+          </p>
+        </div>
+
+        <!-- Contract dependence box -->
+        <div class="bg-kernel-950/50 rounded-xl p-5 border border-kernel-800/20">
+          <p class="text-xs text-amber-400/80 uppercase tracking-wider mb-3">Commentary: Contract Dependence</p>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            The triple (D<sub>&theta;</sub>, &Vert;&middot;&Vert;, &eta;) is part of RunID. Any modification to the return
+            domain generator, metric, tolerance, or horizon constitutes a structural change and must be declared before inference.
+            This is the core discipline: <strong class="text-kernel-200">return is measured, not assumed</strong>.
+            <em class="text-kernel-500">Continuitas non narratur: mensuratur.</em>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════ -->
+    <!--  CHAPTER 7 — Diagnostics                        -->
+    <!-- ════════════════════════════════════════════════ -->
+    <section class="mb-20" id="ch-7">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-8 h-px bg-kernel-700"></div>
+        <p class="text-xs tracking-[0.2em] uppercase text-kernel-500">&sect;7 &middot; Diagnostics from the Invariant Ledger</p>
+        <div class="flex-1 h-px bg-kernel-800/60"></div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Tier-2; Non-Gating</p>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            This section defines Tier-2 diagnostics constructed from the Tier-1 ledger.
+            They are permitted as <em>descriptive</em> quantities (ranking, visualization, clustering, annotation),
+            but they are <strong class="text-kernel-200">not</strong> regime or weld gates unless explicitly promoted
+            through a declared seam and a new frozen run. No Tier-2 score may override the active regime gates or
+            typed return censoring. <em class="text-kernel-500">Diagnostica informant, portae decernunt.</em>
+          </p>
+        </div>
+
+        <!-- Heterogeneity gap -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Heterogeneity Gap &Delta;</p>
+          <div class="font-mono text-sm text-amber-400/80 bg-kernel-950/60 px-3 py-2 rounded mb-3 text-center">
+            &Delta;(t) := F(t) &minus; IC(t) &ensp;&ge;&ensp; 0
+          </div>
+          <p class="text-kernel-400 text-sm leading-relaxed mb-3">
+            F(t) is an arithmetic aggregate of channel confidence, while IC(t) is multiplicative and therefore
+            bottlenecked by weak channels. Large &Delta;(t) indicates imbalance: the mean can remain moderate while
+            multiplicative coherence is driven toward the guard band. Equivalently, &Delta;(t) is the gap between
+            "average adequacy" and "weakest-link survivability" under the frozen weights.
+          </p>
+          <div class="bg-kernel-950/50 rounded-lg p-4">
+            <p class="text-xs text-kernel-500 font-bold mb-2">Variance Decomposition (Equal Weights, Small Heterogeneity)</p>
+            <div class="font-mono text-xs text-cyan-400/80 bg-kernel-950/60 px-3 py-2 rounded mb-2">
+              &Delta;(t) &approx; Var(c(t)) / (2 &middot; c&#x0304;(t))
+            </div>
+            <p class="text-kernel-500 text-xs">
+              The heterogeneity gap is proportional to the Fisher information contribution from channel heterogeneity.
+            </p>
+          </div>
+        </div>
+
+        <!-- Diagnostic labels -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Diagnostic Labels (Non-Gating)</p>
+          <p class="text-kernel-500 text-xs mb-3 italic">Optional labels for reporting and visualization only &mdash; not gates.</p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-kernel-800/40">
+                  <th class="text-left text-xs text-kernel-500 font-medium pb-2">Condition on &Delta;</th>
+                  <th class="text-left text-xs text-kernel-500 font-medium pb-2">Label</th>
+                </tr>
+              </thead>
+              <tbody class="text-kernel-300 font-mono text-xs">
+                <tr class="border-b border-kernel-800/20">
+                  <td class="py-2">&Delta; &lt; 10<sup>&minus;6</sup></td>
+                  <td class="py-2"><span class="text-green-400">Homogeneous</span></td>
+                </tr>
+                <tr class="border-b border-kernel-800/20">
+                  <td class="py-2">10<sup>&minus;6</sup> &le; &Delta; &lt; 10<sup>&minus;2</sup></td>
+                  <td class="py-2"><span class="text-blue-400">Coherent</span></td>
+                </tr>
+                <tr class="border-b border-kernel-800/20">
+                  <td class="py-2">10<sup>&minus;2</sup> &le; &Delta; &lt; 5&times;10<sup>&minus;2</sup></td>
+                  <td class="py-2"><span class="text-yellow-400">Heterogeneous</span></td>
+                </tr>
+                <tr>
+                  <td class="py-2">&Delta; &ge; 5&times;10<sup>&minus;2</sup></td>
+                  <td class="py-2"><span class="text-red-400">Fragmented</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Coherence efficiency -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Coherence Efficiency &rho;</p>
+          <div class="font-mono text-sm text-amber-400/80 bg-kernel-950/60 px-3 py-2 rounded mb-3 text-center">
+            &rho;(t) := IC(t) / F(t) &ensp;&isin;&ensp; (0, 1)
+          </div>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            &rho;(t) measures how much of the arithmetic mean survives multiplicatively under the frozen weights.
+            At fixed F(t), smaller &rho;(t) indicates stronger bottlenecking by one (or several) weak channels.
+            <strong class="text-kernel-200">Always report &rho; alongside &Delta; (or IC)</strong> so that
+            "efficiency loss" is not confused with low fidelity.
+          </p>
+        </div>
+
+        <!-- Interactive: Diagnostics Explorer -->
+        <div class="bg-gradient-to-b from-amber-500/5 to-transparent border border-amber-500/20 rounded-xl p-5">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-amber-400">&#x26A1;</span>
+            <p class="text-xs text-amber-400 uppercase tracking-wider font-bold">Live Demo: Diagnostic Explorer</p>
+          </div>
+          <p class="text-kernel-400 text-xs mb-4">
+            Enter channels to see &Delta;, &rho;, and the diagnostic label alongside the full kernel output.
+          </p>
+          <div class="mb-3">
+            <label class="text-xs text-kernel-500 block mb-1">Channels (comma-separated, 0&ndash;1)</label>
+            <input type="text" id="diag-channels" value="0.95, 0.90, 0.85, 0.02"
+                   class="w-full bg-kernel-950 border border-kernel-700 rounded-lg px-3 py-2 text-sm text-kernel-200 font-mono focus:border-amber-500 focus:outline-none transition" />
+          </div>
+          <button id="diag-btn" class="bg-amber-500 hover:bg-amber-400 text-kernel-950 px-5 py-2 rounded-lg text-sm font-semibold transition mb-4">
+            Compute Diagnostics
+          </button>
+          <div id="diag-results" class="hidden">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2" id="diag-outputs"></div>
+          </div>
+        </div>
+
+        <div class="bg-kernel-950/50 rounded-xl p-5 border border-kernel-800/20">
+          <p class="text-xs text-amber-400/80 uppercase tracking-wider mb-3">Commentary</p>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            The key insight is the <strong class="text-kernel-200">separation between gates and diagnostics</strong>.
+            Gates decide regime classification; diagnostics describe what is happening within that regime.
+            A system classified as "Stable" by the four-gate criterion can still be diagnostically "Fragmented"
+            if it has a large &Delta; &mdash; meaning its arithmetic mean masks a deep channel imbalance.
+            This is exactly the Stable + Critical configuration: all drift/entropy/curvature gates pass, but
+            multiplicative coherence is critically low.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════ -->
+    <!--  CHAPTER 8 — Cross-Domain Patterns              -->
+    <!-- ════════════════════════════════════════════════ -->
+    <section class="mb-20" id="ch-8">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-8 h-px bg-kernel-700"></div>
+        <p class="text-xs tracking-[0.2em] uppercase text-kernel-500">&sect;8 &middot; Cross-Domain Patterns (20 Domains)</p>
+        <div class="flex-1 h-px bg-kernel-800/60"></div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="bg-kernel-950/50 rounded-xl p-5 border border-kernel-800/20">
+          <p class="text-xs text-amber-400/80 uppercase tracking-wider mb-3">Commentary</p>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            The kernel exists to make comparison possible without importing domain-native units into the invariant ledger.
+            Each domain closure supplies a declared adapter N<sub>K</sub> that produces a bounded trace
+            &Psi;(t) &isin; [0,1]<sup>n</sup>; after that point, the quantities (F, &omega;, &kappa;, IC, S, C, &tau;<sub>R</sub>)
+            are the <strong class="text-kernel-200">same mathematical objects</strong> in every domain.
+            The statements below are expressed in kernel terms: they refer to the invariant ledger and its
+            Tier-2 diagnostics (&Delta;, &rho;), not to the native physical units of the source measurements.
+          </p>
+        </div>
+
+        <!-- Particle & Atomic -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Particle &amp; Atomic Physics</p>
+          <div class="space-y-3 text-sm text-kernel-400">
+            <div class="flex gap-3">
+              <span class="text-amber-400/60 shrink-0 mt-0.5">&bull;</span>
+              <div>
+                <strong class="text-kernel-200">Identity conformance at scale.</strong>
+                31 Standard Model particles and 118 chemical elements satisfy all three Tier-1 identities
+                with zero violations under the active adapters.
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <span class="text-amber-400/60 shrink-0 mt-0.5">&bull;</span>
+              <div>
+                <strong class="text-kernel-200">Generation monotonicity.</strong>
+                Strict ordering in integrity-derived quantities across fermion generations, expressed as a decrease
+                in IC (and typically &rho;) from first- to third-generation particles.
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <span class="text-amber-400/60 shrink-0 mt-0.5">&bull;</span>
+              <div>
+                <strong class="text-kernel-200">Integrity cliff at quark&rarr;hadron boundary.</strong>
+                A sharp discontinuity: an abrupt 98% drop in IC at the quark&rarr;hadron transition,
+                accompanied by a spike in &Delta; (weak-channel bottlenecking by the dead color channel).
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quantum & Materials -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Quantum Mechanics &amp; Materials</p>
+          <div class="space-y-3 text-sm text-kernel-400">
+            <div class="flex gap-3">
+              <span class="text-cyan-400/60 shrink-0 mt-0.5">&bull;</span>
+              <div>
+                <strong class="text-kernel-200">Complementarity cliff.</strong>
+                When wave- and particle-proxy channels simultaneously approach the guard band:
+                F remains nonzero (the mean does not vanish), IC collapses toward the guard band
+                (multiplicative failure), hence &Delta; spikes, and return may fail (&tau;<sub>R</sub> = &infin;<sub>rec</sub>).
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <span class="text-cyan-400/60 shrink-0 mt-0.5">&bull;</span>
+              <div>
+                <strong class="text-kernel-200">Phase-transition signatures.</strong>
+                Phase transitions manifest as joint excursions in dispersion diagnostics:
+                spikes in &Delta; (imbalance) and C (dispersion), with drops in coherence efficiency &rho;.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nuclear, RCFT, Cosmology -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Nuclear, RCFT, Cosmology</p>
+          <div class="space-y-3 text-sm text-kernel-400">
+            <div class="flex gap-3">
+              <span class="text-purple-400/60 shrink-0 mt-0.5">&bull;</span>
+              <div>
+                <strong class="text-kernel-200">Critical points as dispersion maxima.</strong>
+                In nuclear and RCFT closures, critical points are local maxima in &Delta; and/or C,
+                often coincident with increased S and elevated &omega;.
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <span class="text-purple-400/60 shrink-0 mt-0.5">&bull;</span>
+              <div>
+                <strong class="text-kernel-200">Cosmological heterogeneity.</strong>
+                One or more near-zero channels suppress IC toward the guard band while leaving F moderate,
+                producing large &Delta; and small &rho;. The claim is not "low fidelity" but
+                "coherence is bottlenecked by one or more channels."
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Finance, Evolution, Everyday -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Finance, Evolution, Everyday Systems</p>
+          <div class="space-y-3 text-sm text-kernel-400">
+            <div class="flex gap-3">
+              <span class="text-green-400/60 shrink-0 mt-0.5">&bull;</span>
+              <div>
+                <strong class="text-kernel-200">Finance: stress as weak-channel dominance.</strong>
+                Systemic stress manifests as spikes in &Delta; and drops in &rho;, with &omega; increasing as coherence degrades.
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <span class="text-green-400/60 shrink-0 mt-0.5">&bull;</span>
+              <div>
+                <strong class="text-kernel-200">Evolution: anti-proof configurations.</strong>
+                Cancer as an "anti-proof" &mdash; local channel fidelity can remain high while organism-level IC collapses
+                (large &Delta;, low &rho;). Humans reported with &Delta; &approx; 0.34 under the relevant adapter.
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <span class="text-green-400/60 shrink-0 mt-0.5">&bull;</span>
+              <div>
+                <strong class="text-kernel-200">Everyday physics: identity preservation.</strong>
+                Macroscopic systems (thermodynamics, optics, electromagnetism) satisfy the Tier-1 identities
+                under their declared adapters, supporting single-kernel comparability across scale.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Common mechanism -->
+        <div class="bg-kernel-950/50 rounded-xl p-5 border border-kernel-800/20">
+          <p class="text-xs text-amber-400/80 uppercase tracking-wider mb-3">The Common Mechanism</p>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            In every domain, the diagnostic content is the same mechanism: &Delta; isolates imbalance,
+            &rho; quantifies multiplicative survival relative to the mean, and typed return censoring
+            (&tau;<sub>R</sub> = &infin;<sub>rec</sub>) forbids continuity credit where return is not observed.
+            The kernel is the shared language; the adapter is the domain-specific translation.
+          </p>
+        </div>
+
+        <!-- Domain grid -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+          <div class="bg-kernel-900/50 rounded-lg p-3 text-center">
+            <span class="text-amber-400 text-lg">&#x2699;</span>
+            <p class="text-xs text-kernel-300 mt-1">Standard Model</p>
+            <p class="text-[10px] text-kernel-600">31 particles</p>
+          </div>
+          <div class="bg-kernel-900/50 rounded-lg p-3 text-center">
+            <span class="text-cyan-400 text-lg">&#x269B;</span>
+            <p class="text-xs text-kernel-300 mt-1">Atomic Physics</p>
+            <p class="text-[10px] text-kernel-600">118 elements</p>
+          </div>
+          <div class="bg-kernel-900/50 rounded-lg p-3 text-center">
+            <span class="text-purple-400 text-lg">&#x2600;</span>
+            <p class="text-xs text-kernel-300 mt-1">Cosmology</p>
+            <p class="text-[10px] text-kernel-600">Weyl + Spacetime</p>
+          </div>
+          <div class="bg-kernel-900/50 rounded-lg p-3 text-center">
+            <span class="text-green-400 text-lg">&#x2634;</span>
+            <p class="text-xs text-kernel-300 mt-1">Evolution</p>
+            <p class="text-[10px] text-kernel-600">40 organisms</p>
+          </div>
+          <div class="bg-kernel-900/50 rounded-lg p-3 text-center">
+            <span class="text-red-400 text-lg">&#x2622;</span>
+            <p class="text-xs text-kernel-300 mt-1">Nuclear</p>
+            <p class="text-[10px] text-kernel-600">QGP/RHIC</p>
+          </div>
+          <div class="bg-kernel-900/50 rounded-lg p-3 text-center">
+            <span class="text-yellow-400 text-lg">&#x2696;</span>
+            <p class="text-xs text-kernel-300 mt-1">Finance</p>
+            <p class="text-[10px] text-kernel-600">Market coherence</p>
+          </div>
+          <div class="bg-kernel-900/50 rounded-lg p-3 text-center">
+            <span class="text-blue-400 text-lg">&#x1F9E0;</span>
+            <p class="text-xs text-kernel-300 mt-1">Consciousness</p>
+            <p class="text-[10px] text-kernel-600">20 systems</p>
+          </div>
+          <div class="bg-kernel-900/50 rounded-lg p-3 text-center">
+            <span class="text-orange-400 text-lg">&#x2702;</span>
+            <p class="text-xs text-kernel-300 mt-1">Semiotics</p>
+            <p class="text-[10px] text-kernel-600">30 sign systems</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════ -->
+    <!--  CHAPTER 9 — Scale Ladder                       -->
+    <!-- ════════════════════════════════════════════════ -->
+    <section class="mb-20" id="ch-9">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-8 h-px bg-kernel-700"></div>
+        <p class="text-xs tracking-[0.2em] uppercase text-kernel-500">&sect;9 &middot; Scale-Ladder Summary (406 Objects; 11 Rungs)</p>
+        <div class="flex-1 h-px bg-kernel-800/60"></div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="bg-kernel-950/50 rounded-xl p-5 border border-kernel-800/20">
+          <p class="text-xs text-amber-400/80 uppercase tracking-wider mb-3">Commentary</p>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            The scale-ladder run applies a single kernel to a heterogeneous catalog: 406 objects spanning 11 scale rungs
+            (from Planck length through the cosmic horizon). The run uses frozen &epsilon; and equal weights,
+            so cross-object comparison is driven by trace values rather than tuned weighting.
+          </p>
+        </div>
+
+        <!-- Seven findings -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-4">Reported Outcomes (Kernel Terms)</p>
+          <div class="space-y-4 text-sm text-kernel-400">
+
+            <div class="flex gap-3">
+              <span class="text-amber-400/60 font-bold shrink-0 mt-0.5">1.</span>
+              <div>
+                <strong class="text-kernel-200">Exact complementarity.</strong>
+                F + &omega; = 1 for every object. Identity, not trend &mdash; enforced by the kernel definition.
+              </div>
+            </div>
+
+            <div class="flex gap-3">
+              <span class="text-amber-400/60 font-bold shrink-0 mt-0.5">2.</span>
+              <div>
+                <strong class="text-kernel-200">Fidelity is not monotone in scale.</strong>
+                Mean F does not increase or decrease monotonically with physical size. Highest mean F at the galactic
+                rung (~10<sup>21</sup> m); Planck-scale objects have near-zero F under the scale-ladder adapter.
+              </div>
+            </div>
+
+            <div class="flex gap-3">
+              <span class="text-amber-400/60 font-bold shrink-0 mt-0.5">3.</span>
+              <div>
+                <strong class="text-kernel-200">Single incoherence mechanism.</strong>
+                Across rungs, &Delta; diagnoses incoherence by the same mechanism: one (or more) near-zero
+                channels suppress IC toward the guard band while F remains moderate.
+              </div>
+            </div>
+
+            <div class="flex gap-3">
+              <span class="text-amber-400/60 font-bold shrink-0 mt-0.5">4.</span>
+              <div>
+                <strong class="text-kernel-200">Geological objects maximize low-integrity incidence.</strong>
+                The geological rung has the largest fraction of objects with IC &lt; 0.01 &mdash;
+                multiplicative collapse in the trace, not low mean fidelity.
+              </div>
+            </div>
+
+            <div class="flex gap-3">
+              <span class="text-amber-400/60 font-bold shrink-0 mt-0.5">5.</span>
+              <div>
+                <strong class="text-kernel-200">Watch regime is rare.</strong>
+                Only 10/406 objects fall in Watch under the four-gate criterion.
+                Objects cluster toward Stable or Collapse; the intermediate state is uncommon.
+              </div>
+            </div>
+
+            <div class="flex gap-3">
+              <span class="text-amber-400/60 font-bold shrink-0 mt-0.5">6.</span>
+              <div>
+                <strong class="text-kernel-200">Coherence efficiency separates nuclear from cosmological.</strong>
+                &rho; = IC/F is maximized in nuclear objects (~72.6%) and minimized in cosmological objects (~17.6%).
+                Nuclear rung preserves multiplicative coherence; cosmological rung loses it to weak-channel suppression.
+              </div>
+            </div>
+
+            <div class="flex gap-3">
+              <span class="text-amber-400/60 font-bold shrink-0 mt-0.5">7.</span>
+              <div>
+                <strong class="text-kernel-200">Specialization as imbalance.</strong>
+                In biological rungs, specialization is quantified by &Delta;/F. Highly specialized cells have
+                large &Delta;/F with near-zero IC despite moderate F, while yeast remains balanced (small &Delta;, higher &rho;).
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scale ladder visual -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Scale Coverage</p>
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] text-kernel-500 w-20 text-right font-mono">10<sup>&minus;35</sup> m</span>
+              <div class="flex-1 bg-kernel-800/40 rounded-full h-4 overflow-hidden">
+                <div class="bg-purple-500/60 h-full rounded-full" style="width: 8%"></div>
+              </div>
+              <span class="text-[10px] text-kernel-400 w-16">Planck</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] text-kernel-500 w-20 text-right font-mono">10<sup>&minus;15</sup> m</span>
+              <div class="flex-1 bg-kernel-800/40 rounded-full h-4 overflow-hidden">
+                <div class="bg-red-500/60 h-full rounded-full" style="width: 45%"></div>
+              </div>
+              <span class="text-[10px] text-kernel-400 w-16">Nuclear</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] text-kernel-500 w-20 text-right font-mono">10<sup>&minus;10</sup> m</span>
+              <div class="flex-1 bg-kernel-800/40 rounded-full h-4 overflow-hidden">
+                <div class="bg-cyan-500/60 h-full rounded-full" style="width: 60%"></div>
+              </div>
+              <span class="text-[10px] text-kernel-400 w-16">Atomic</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] text-kernel-500 w-20 text-right font-mono">10<sup>&minus;6</sup> m</span>
+              <div class="flex-1 bg-kernel-800/40 rounded-full h-4 overflow-hidden">
+                <div class="bg-green-500/60 h-full rounded-full" style="width: 40%"></div>
+              </div>
+              <span class="text-[10px] text-kernel-400 w-16">Cellular</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] text-kernel-500 w-20 text-right font-mono">10<sup>0</sup> m</span>
+              <div class="flex-1 bg-kernel-800/40 rounded-full h-4 overflow-hidden">
+                <div class="bg-yellow-500/60 h-full rounded-full" style="width: 70%"></div>
+              </div>
+              <span class="text-[10px] text-kernel-400 w-16">Everyday</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] text-kernel-500 w-20 text-right font-mono">10<sup>6</sup> m</span>
+              <div class="flex-1 bg-kernel-800/40 rounded-full h-4 overflow-hidden">
+                <div class="bg-orange-500/60 h-full rounded-full" style="width: 25%"></div>
+              </div>
+              <span class="text-[10px] text-kernel-400 w-16">Geological</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] text-kernel-500 w-20 text-right font-mono">10<sup>21</sup> m</span>
+              <div class="flex-1 bg-kernel-800/40 rounded-full h-4 overflow-hidden">
+                <div class="bg-blue-500/60 h-full rounded-full" style="width: 85%"></div>
+              </div>
+              <span class="text-[10px] text-kernel-400 w-16">Galactic</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] text-kernel-500 w-20 text-right font-mono">10<sup>26</sup> m</span>
+              <div class="flex-1 bg-kernel-800/40 rounded-full h-4 overflow-hidden">
+                <div class="bg-indigo-500/60 h-full rounded-full" style="width: 20%"></div>
+              </div>
+              <span class="text-[10px] text-kernel-400 w-16">Cosmic</span>
+            </div>
+          </div>
+          <p class="text-[10px] text-kernel-600 mt-2 italic">
+            Bar width represents approximate mean &rho; (coherence efficiency) at each rung. Same kernel, same &epsilon;, same weights.
+          </p>
+        </div>
+
+        <div class="bg-kernel-950/50 rounded-xl p-5 border border-kernel-800/20">
+          <p class="text-xs text-amber-400/80 uppercase tracking-wider mb-3">Reporting Rule</p>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            These scale-ladder claims are recorded as reported summaries. Any attempt to promote a scale-ladder pattern
+            into a gate, a closure, or a continuity claim must bind the claim to a frozen RunID
+            and (when structural changes are involved) to an explicit seam and weld decision.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════ -->
+    <!--  CHAPTER 10 — Degenerate Limits                 -->
+    <!-- ════════════════════════════════════════════════ -->
+    <section class="mb-20" id="ch-10">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-8 h-px bg-kernel-700"></div>
+        <p class="text-xs tracking-[0.2em] uppercase text-kernel-500">&sect;10 &middot; Degenerate Limits and the Arrow of Derivation</p>
+        <div class="flex-1 h-px bg-kernel-800/60"></div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="bg-gradient-to-b from-amber-500/5 to-transparent border border-amber-500/20 rounded-xl p-5">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-amber-400">&#x21C9;</span>
+            <p class="text-xs text-amber-400 uppercase tracking-wider font-bold">The Arrow of Derivation</p>
+          </div>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            Classical results emerge as degenerate limits when degrees of freedom are removed from the GCD kernel.
+            The arrow of derivation runs <strong class="text-kernel-200">from Axiom-0 to the classical result</strong>,
+            never the reverse. The classical version is what remains when structure is removed.
+          </p>
+        </div>
+
+        <!-- Degenerate limits table -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-4">Degenerate Operations</p>
+          <div class="space-y-3">
+            <div class="bg-kernel-950/50 rounded-lg p-4">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="font-mono text-amber-400 font-bold text-sm">IC &le; F</span>
+                <span class="text-xs text-kernel-600">&rarr;</span>
+                <span class="font-mono text-kernel-300 text-sm">Weighted AM&ndash;GM inequality</span>
+              </div>
+              <p class="text-xs text-kernel-500">
+                <strong>Strip:</strong> channel semantics, weights, &epsilon;-guard band.
+                The integrity bound is the <em>solvability condition</em> for recovering individual channels
+                from aggregate invariants; the classical inequality is what remains when the channel semantics are discarded.
+              </p>
+            </div>
+            <div class="bg-kernel-950/50 rounded-lg p-4">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="font-mono text-amber-400 font-bold text-sm">S (Bernoulli)</span>
+                <span class="text-xs text-kernel-600">&rarr;</span>
+                <span class="font-mono text-kernel-300 text-sm">Shannon entropy</span>
+              </div>
+              <p class="text-xs text-kernel-500">
+                <strong>Strip:</strong> collapse field (set c<sub>i</sub> &isin; &#123;0, 1&#125; only).
+                Shannon entropy is the degenerate limit when the collapse field is removed.
+              </p>
+            </div>
+            <div class="bg-kernel-950/50 rounded-lg p-4">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="font-mono text-amber-400 font-bold text-sm">F + &omega; = 1</span>
+                <span class="text-xs text-kernel-600">&rarr;</span>
+                <span class="font-mono text-kernel-300 text-sm">Unitarity</span>
+              </div>
+              <p class="text-xs text-kernel-500">
+                <strong>Strip:</strong> cost function and trace.
+                The duality identity is a structural identity of collapse, not an import from quantum mechanics.
+              </p>
+            </div>
+            <div class="bg-kernel-950/50 rounded-lg p-4">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="font-mono text-amber-400 font-bold text-sm">IC = exp(&kappa;)</span>
+                <span class="text-xs text-kernel-600">&rarr;</span>
+                <span class="font-mono text-kernel-300 text-sm">Exponential map</span>
+              </div>
+              <p class="text-xs text-kernel-500">
+                <strong>Strip:</strong> channel structure.
+                The log-integrity relation links multiplicative and additive coherence; the exponential map is the skeleton.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-kernel-950/50 rounded-xl p-5 border border-kernel-800/20">
+          <p class="text-xs text-amber-400/80 uppercase tracking-wider mb-3">Commentary: Why This Matters</p>
+          <p class="text-kernel-400 text-sm leading-relaxed mb-3">
+            This section establishes the originality claim precisely. The integrity bound IC &le; F is
+            <strong class="text-kernel-200">not "the AM&ndash;GM inequality applied to GCD"</strong> &mdash;
+            it is the solvability condition for recovering individual channels from aggregate invariants,
+            independently derived from Axiom-0 on the bounded trace.
+            The classical inequality is what remains when the channel semantics are discarded.
+          </p>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            This matters operationally because it determines what you can and cannot say:
+            "GCD derives independently from Axiom-0; the classical result emerges as a degenerate limit" is correct.
+            "GCD uses AM&ndash;GM" is <strong class="text-red-400">wrong</strong> &mdash; it reverses the arrow of derivation.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════ -->
+    <!--  CHAPTER 11 — Structural Identities & Lemmas    -->
+    <!-- ════════════════════════════════════════════════ -->
+    <section class="mb-20" id="ch-11">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-8 h-px bg-kernel-700"></div>
+        <p class="text-xs tracking-[0.2em] uppercase text-kernel-500">&sect;11 &middot; Structural Identities and Lemma Inventory</p>
+        <div class="flex-1 h-px bg-kernel-800/60"></div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="bg-kernel-950/50 rounded-xl p-5 border border-kernel-800/20">
+          <p class="text-xs text-amber-400/80 uppercase tracking-wider mb-3">Commentary</p>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            The Tier-1 kernel and its Tier-0 protocol machinery yield <strong class="text-kernel-200">44 structural identities</strong>
+            and <strong class="text-kernel-200">47 lemmas</strong>, verified computationally to machine precision
+            (&lt;10<sup>&minus;16</sup> residual) across all domain closures. Five diagnostic scripts in the repository
+            re-derive the full set; the key results are summarized below.
+          </p>
+        </div>
+
+        <!-- Three core identities -->
+        <div class="bg-gradient-to-b from-cyan-500/5 to-transparent border border-cyan-500/20 rounded-xl p-5">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-cyan-400">&#x2261;</span>
+            <p class="text-xs text-cyan-400 uppercase tracking-wider font-bold">Three Core Identities (Tier-1; Always True)</p>
+          </div>
+          <div class="space-y-3">
+            <div class="flex items-center gap-4 p-3 bg-kernel-950/50 rounded-lg">
+              <span class="text-amber-400 font-bold font-mono text-sm shrink-0">1.</span>
+              <div>
+                <p class="text-kernel-200 text-sm font-semibold">Duality identity</p>
+                <div class="font-mono text-xs text-amber-400/80 mt-1">F + &omega; = 1</div>
+                <p class="text-kernel-500 text-xs mt-1">The complementary partition of the bounded trace.</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-4 p-3 bg-kernel-950/50 rounded-lg">
+              <span class="text-amber-400 font-bold font-mono text-sm shrink-0">2.</span>
+              <div>
+                <p class="text-kernel-200 text-sm font-semibold">Integrity bound</p>
+                <div class="font-mono text-xs text-amber-400/80 mt-1">IC &le; F</div>
+                <p class="text-kernel-500 text-xs mt-1">Solvability condition; equality iff homogeneous.</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-4 p-3 bg-kernel-950/50 rounded-lg">
+              <span class="text-amber-400 font-bold font-mono text-sm shrink-0">3.</span>
+              <div>
+                <p class="text-kernel-200 text-sm font-semibold">Log-integrity relation</p>
+                <div class="font-mono text-xs text-amber-400/80 mt-1">IC = exp(&kappa;)</div>
+                <p class="text-kernel-500 text-xs mt-1">Link between multiplicative and additive coherence.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Key derived results -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-4">Key Derived Results (from the 44-Identity Set)</p>
+          <div class="space-y-3 text-sm text-kernel-400">
+            <div class="flex gap-3">
+              <span class="text-cyan-400/60 shrink-0 mt-0.5">&bull;</span>
+              <div>
+                <strong class="text-kernel-200">Flat manifold.</strong>
+                The Fisher metric on the Bernoulli manifold is g<sub>F</sub>(&theta;) = 1 &mdash; all structure comes
+                from the embedding, not intrinsic curvature.
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <span class="text-cyan-400/60 shrink-0 mt-0.5">&bull;</span>
+              <div>
+                <strong class="text-kernel-200">One function.</strong>
+                S and &kappa; are projections of one function: f(&theta;) = 2cos&sup2;&theta;&middot;ln(tan &theta;),
+                verified to residual &lt;10<sup>&minus;16</sup>.
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <span class="text-cyan-400/60 shrink-0 mt-0.5">&bull;</span>
+              <div>
+                <strong class="text-kernel-200">p = 3 uniqueness.</strong>
+                &omega;<sub>trap</sub> is the Cardano root of x&sup3; + x &minus; 1 = 0; no other integer p yields
+                a solvable algebraic form.
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <span class="text-cyan-400/60 shrink-0 mt-0.5">&bull;</span>
+              <div>
+                <strong class="text-kernel-200">Solvability.</strong>
+                For n = 2 channels, c<sub>1,2</sub> = F &pm; &radic;(F&sup2; &minus; IC&sup2;) requires IC &le; F for real solutions.
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <span class="text-cyan-400/60 shrink-0 mt-0.5">&bull;</span>
+              <div>
+                <strong class="text-kernel-200">Low-rank closures.</strong>
+                5 closure diagnostics span only 4 effective dimensions (PCA) &mdash; the closure algebra is low-rank.
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <span class="text-cyan-400/60 shrink-0 mt-0.5">&bull;</span>
+              <div>
+                <strong class="text-kernel-200">Composition laws.</strong>
+                IC composes geometrically (IC<sub>12</sub> = &radic;(IC<sub>1</sub>&middot;IC<sub>2</sub>));
+                F composes arithmetically (F<sub>12</sub> = (F<sub>1</sub> + F<sub>2</sub>)/2).
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <span class="text-cyan-400/60 shrink-0 mt-0.5">&bull;</span>
+              <div>
+                <strong class="text-kernel-200">Regime partition.</strong>
+                Under the four-gate criterion: Collapse 63.1%, Watch 24.4%, Stable 12.5% of Fisher space.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lemma coverage -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Lemma Coverage (47 Lemmas)</p>
+          <p class="text-kernel-400 text-sm leading-relaxed mb-3">
+            The 47 lemmas (L1&ndash;L47) cover the full operational surface of the kernel:
+          </p>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+            <div class="bg-kernel-950/50 rounded-lg p-2">
+              <p class="text-[10px] text-kernel-500 uppercase tracking-wider">Range &amp; Bounds</p>
+              <p class="text-xs text-kernel-300 font-mono">L1, L10</p>
+            </div>
+            <div class="bg-kernel-950/50 rounded-lg p-2">
+              <p class="text-[10px] text-kernel-500 uppercase tracking-wider">Monotonicity</p>
+              <p class="text-xs text-kernel-300 font-mono">L2, L12</p>
+            </div>
+            <div class="bg-kernel-950/50 rounded-lg p-2">
+              <p class="text-[10px] text-kernel-500 uppercase tracking-wider">Sensitivity</p>
+              <p class="text-xs text-kernel-300 font-mono">L3, L7</p>
+            </div>
+            <div class="bg-kernel-950/50 rounded-lg p-2">
+              <p class="text-[10px] text-kernel-500 uppercase tracking-wider">&tau;<sub>R</sub> Well-posedness</p>
+              <p class="text-xs text-kernel-300 font-mono">L8</p>
+            </div>
+            <div class="bg-kernel-950/50 rounded-lg p-2">
+              <p class="text-[10px] text-kernel-500 uppercase tracking-wider">Entropy Envelopes</p>
+              <p class="text-xs text-kernel-300 font-mono">L5, L15, L16</p>
+            </div>
+            <div class="bg-kernel-950/50 rounded-lg p-2">
+              <p class="text-[10px] text-kernel-500 uppercase tracking-wider">Lipschitz</p>
+              <p class="text-xs text-kernel-300 font-mono">L23</p>
+            </div>
+            <div class="bg-kernel-950/50 rounded-lg p-2">
+              <p class="text-[10px] text-kernel-500 uppercase tracking-wider">Seam Composition</p>
+              <p class="text-xs text-kernel-300 font-mono">L20</p>
+            </div>
+            <div class="bg-kernel-950/50 rounded-lg p-2">
+              <p class="text-[10px] text-kernel-500 uppercase tracking-wider">Return Probability</p>
+              <p class="text-xs text-kernel-300 font-mono">L29</p>
+            </div>
+            <div class="bg-kernel-950/50 rounded-lg p-2">
+              <p class="text-[10px] text-kernel-500 uppercase tracking-wider">Empirical Discoveries</p>
+              <p class="text-xs text-kernel-300 font-mono">L35, L39, L41</p>
+            </div>
+          </div>
+          <p class="text-[10px] text-kernel-600 mt-3 italic">
+            All lemmas verified computationally in the test suite (16,487 tests across 20 domain closures).
+          </p>
+        </div>
+
+        <!-- 6 connection clusters -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-4">Identity Network &mdash; 6 Connection Clusters</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="bg-kernel-950/50 rounded-lg p-3">
+              <p class="text-xs text-amber-400/80 font-bold mb-1">1. Equator Web</p>
+              <p class="text-[10px] text-kernel-500">c = 1/2 is a quintuple fixed point (C1, B10, C2, D6)</p>
+            </div>
+            <div class="bg-kernel-950/50 rounded-lg p-3">
+              <p class="text-xs text-cyan-400/80 font-bold mb-1">2. Dual Bounds</p>
+              <p class="text-[10px] text-kernel-500">IC &le; F below, S &le; h(F) above (A2, B4)</p>
+            </div>
+            <div class="bg-kernel-950/50 rounded-lg p-3">
+              <p class="text-xs text-purple-400/80 font-bold mb-1">3. Perturbation Chain</p>
+              <p class="text-[10px] text-kernel-500">A6 &rarr; B3 &rarr; A2: integrity bound from Taylor structure</p>
+            </div>
+            <div class="bg-kernel-950/50 rounded-lg p-3">
+              <p class="text-xs text-green-400/80 font-bold mb-1">4. Composition Algebra</p>
+              <p class="text-[10px] text-kernel-500">Gap has Hellinger-like composition law (D8, D9, C8)</p>
+            </div>
+            <div class="bg-kernel-950/50 rounded-lg p-3">
+              <p class="text-xs text-red-400/80 font-bold mb-1">5. Fixed-Point Triangle</p>
+              <p class="text-[10px] text-kernel-500">Manifold skeleton: equator + c* + c<sub>trap</sub> (D1/D2, D3, B10)</p>
+            </div>
+            <div class="bg-kernel-950/50 rounded-lg p-3">
+              <p class="text-xs text-blue-400/80 font-bold mb-1">6. Spectral Family</p>
+              <p class="text-[10px] text-kernel-500">f = S + &kappa; spectrally complete, &int;g<sub>F</sub>&middot;S dc = &pi;&sup2;/3 = 2&zeta;(2)</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-kernel-950/50 rounded-xl p-5 border border-kernel-800/20">
+          <p class="text-xs text-amber-400/80 uppercase tracking-wider mb-3">Commentary</p>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            The identity network is not a catalogue &mdash; it is a <strong class="text-kernel-200">connected graph</strong>.
+            Each identity derives from the kernel function K: [0,1]<sup>n</sup> &times; &Delta;<sup>n</sup> &rarr; (F, &omega;, S, C, &kappa;, IC)
+            and its frozen parameters. The six clusters show that the 44 identities are not independent facts
+            but consequences of one shared algebraic structure. Run
+            <code class="text-amber-400/80 text-xs">scripts/identity_connections.py</code> to re-derive them.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════ -->
+    <!--  CHAPTER 12 — Falsifiable Predictions           -->
+    <!-- ════════════════════════════════════════════════ -->
+    <section class="mb-20" id="ch-12">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-8 h-px bg-kernel-700"></div>
+        <p class="text-xs tracking-[0.2em] uppercase text-kernel-500">&sect;12 &middot; Falsifiable Predictions</p>
+        <div class="flex-1 h-px bg-kernel-800/60"></div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="bg-kernel-950/50 rounded-xl p-5 border border-kernel-800/20">
+          <p class="text-xs text-amber-400/80 uppercase tracking-wider mb-3">Commentary</p>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            A framework that only describes and organizes does not yet constitute a theory.
+            The following predictions are derived from the kernel architecture and have
+            <strong class="text-kernel-200">not yet been independently tested</strong>. Each is stated in falsifiable form:
+            a specific empirical outcome that, if contradicted, would require revision of the framework or its
+            domain closures.
+          </p>
+        </div>
+
+        <!-- Prediction 1: Confinement-scale inversion -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="bg-amber-500/20 text-amber-400 text-xs font-mono px-2 py-0.5 rounded">P1</span>
+            <p class="text-xs text-kernel-600 uppercase tracking-wider">Confinement&ndash;Scale Inversion Universality</p>
+          </div>
+          <p class="text-kernel-400 text-sm leading-relaxed mb-3">
+            The Standard Model closure documents a 98% drop in IC at the quark&rarr;hadron boundary,
+            followed by IC recovery at the atomic scale when new measurable channels are added to the adapter.
+            GCD predicts this cliff-and-recovery pattern is <strong class="text-kernel-200">universal for confinement boundaries</strong>:
+          </p>
+          <div class="space-y-2 mb-3">
+            <div class="flex items-center gap-3 p-2 bg-kernel-950/50 rounded-lg">
+              <span class="text-amber-400/80 text-xs font-mono">i.</span>
+              <span class="text-sm text-kernel-300">At any boundary where constituent DOF become confined, IC collapses while F may remain moderate, producing a spike in &Delta;.</span>
+            </div>
+            <div class="flex items-center gap-3 p-2 bg-kernel-950/50 rounded-lg">
+              <span class="text-amber-400/80 text-xs font-mono">ii.</span>
+              <span class="text-sm text-kernel-300">When the composite system acquires new measurable channels, IC recovers.</span>
+            </div>
+            <div class="flex items-center gap-3 p-2 bg-kernel-950/50 rounded-lg">
+              <span class="text-amber-400/80 text-xs font-mono">iii.</span>
+              <span class="text-sm text-kernel-300">Recovery magnitude scales as (n<sub>new</sub>/n<sub>total</sub>)<sup>1/n<sub>total</sub></sup> to leading order in the geometric mean.</span>
+            </div>
+          </div>
+          <div class="bg-red-500/10 border border-red-500/20 rounded-lg p-3">
+            <p class="text-xs text-red-400/80 font-bold mb-1">Falsification Criterion</p>
+            <p class="text-xs text-kernel-400">
+              Build adapters for atom&rarr;molecule, molecule&rarr;crystal, neuron&rarr;circuit. Failure to observe
+              the cliff at a genuine confinement boundary would falsify this prediction.
+            </p>
+          </div>
+        </div>
+
+        <!-- Prediction 2: c* clustering -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="bg-amber-500/20 text-amber-400 text-xs font-mono px-2 py-0.5 rounded">P2</span>
+            <p class="text-xs text-kernel-600 uppercase tracking-wider">c* Clustering in Persistent Systems</p>
+          </div>
+          <p class="text-kernel-400 text-sm leading-relaxed mb-3">
+            The logistic self-dual fixed point c* &approx; 0.7822 maximizes S + &kappa; per channel.
+            GCD predicts that systems which persist over evolutionary, geological, or operational timescales &mdash;
+            systems that <em>return</em> (&tau;<sub>R</sub> &ne; &infin;<sub>rec</sub>) &mdash; will exhibit mean channel
+            values that cluster near c*. Systems far from c* should either drift toward it or fail to return.
+          </p>
+          <div class="bg-red-500/10 border border-red-500/20 rounded-lg p-3">
+            <p class="text-xs text-red-400/80 font-bold mb-1">Falsification Criterion</p>
+            <p class="text-xs text-kernel-400">
+              Across all domain closures, compute c&#x0304; for Stable vs. Collapse objects.
+              A domain where Stable objects systematically avoid c* would falsify this prediction.
+            </p>
+          </div>
+        </div>
+
+        <!-- Prediction 3: Delta as leading indicator -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="bg-amber-500/20 text-amber-400 text-xs font-mono px-2 py-0.5 rounded">P3</span>
+            <p class="text-xs text-kernel-600 uppercase tracking-wider">Heterogeneity Gap as a Leading Indicator</p>
+          </div>
+          <p class="text-kernel-400 text-sm leading-relaxed mb-3">
+            The variance decomposition &Delta; &approx; Var(c)/(2c&#x0304;) implies that &Delta; responds to channel
+            divergence <em>before</em> the arithmetic mean F deteriorates &mdash; because variance increases before the
+            mean shifts. GCD predicts:
+          </p>
+          <div class="font-mono text-sm text-amber-400/80 bg-kernel-950/60 px-3 py-2 rounded mb-3 text-center">
+            t<sub>&Delta;-spike</sub> &lt; t<sub>regime change</sub>
+          </div>
+          <div class="bg-red-500/10 border border-red-500/20 rounded-lg p-3">
+            <p class="text-xs text-red-400/80 font-bold mb-1">Falsification Criterion</p>
+            <p class="text-xs text-kernel-400">
+              In domains with temporal evolution (finance, materials, biological development), compute &Delta;(t).
+              If &Delta; consistently <em>lags</em> rather than leads, the prediction is falsified.
+            </p>
+          </div>
+        </div>
+
+        <!-- Prediction 4: omega_trap as return boundary -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="bg-amber-500/20 text-amber-400 text-xs font-mono px-2 py-0.5 rounded">P4</span>
+            <p class="text-xs text-kernel-600 uppercase tracking-wider">Trapping Threshold as Return Boundary</p>
+          </div>
+          <p class="text-kernel-400 text-sm leading-relaxed mb-3">
+            The trapping threshold &omega;<sub>trap</sub> &approx; 0.6823 is seam-derived (Cardano root of x&sup3; + x &minus; 1 = 0).
+            GCD predicts that a sharp transition from finite &tau;<sub>R</sub> to &tau;<sub>R</sub> = &infin;<sub>rec</sub>
+            occurs near &omega; &approx; &omega;<sub>trap</sub>. Systems above the threshold should exhibit &infin;<sub>rec</sub>
+            with overwhelming frequency; systems below should predominantly return.
+          </p>
+          <div class="bg-red-500/10 border border-red-500/20 rounded-lg p-3">
+            <p class="text-xs text-red-400/80 font-bold mb-1">Falsification Criterion</p>
+            <p class="text-xs text-kernel-400">
+              Bin objects by &omega; across all domain closures and compute the fraction with &tau;<sub>R</sub> = &infin;<sub>rec</sub>.
+              A smooth, gradual relationship with <em>no inflection</em> near 0.6823 would falsify this prediction.
+            </p>
+          </div>
+        </div>
+
+        <!-- Status note -->
+        <div class="bg-kernel-950/50 rounded-xl p-5 border border-kernel-800/20">
+          <p class="text-xs text-amber-400/80 uppercase tracking-wider mb-3">Status</p>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            None of these predictions has been independently verified as of the current release.
+            They are stated here to make the framework <strong class="text-kernel-200">falsifiable</strong>
+            and to distinguish it from a purely descriptive system.
+            Independent testing &mdash; especially by researchers outside the GCD development lineage &mdash;
+            is the necessary next step for any claim beyond internal consistency.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════ -->
+    <!--  CHAPTER 13 — Continuity Across Change          -->
+    <!-- ════════════════════════════════════════════════ -->
+    <section class="mb-20" id="ch-13">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-8 h-px bg-kernel-700"></div>
+        <p class="text-xs tracking-[0.2em] uppercase text-kernel-500">&sect;13 &middot; Continuity Across Structural Change</p>
+        <div class="flex-1 h-px bg-kernel-800/60"></div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="bg-kernel-950/50 rounded-xl p-5 border border-kernel-800/20">
+          <p class="text-xs text-amber-400/80 uppercase tracking-wider mb-3">Commentary</p>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            Continuity is not assumed; it is evaluated. If continuity across a structural change is claimed,
+            a <strong class="text-kernel-200">seam</strong> must be explicitly declared and a
+            <strong class="text-kernel-200">weld</strong> decision recorded.
+            <em class="text-kernel-500">Continuitas non narratur: mensuratur.</em>
+          </p>
+        </div>
+
+        <!-- Seam definition -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Seam Declaration</p>
+          <p class="text-kernel-400 text-sm leading-relaxed mb-3">
+            A <strong class="text-kernel-200">seam</strong> names the boundary between two evaluations:
+            RunID<sub>pre</sub> and RunID<sub>post</sub>. It is defined by:
+          </p>
+          <div class="space-y-2">
+            <div class="flex items-center gap-3 p-2 bg-kernel-950/50 rounded-lg">
+              <span class="text-amber-400 text-xs font-mono font-bold">i.</span>
+              <span class="text-sm text-kernel-300">The comparison points (t<sub>0</sub>, t<sub>1</sub>) or comparison windows</span>
+            </div>
+            <div class="flex items-center gap-3 p-2 bg-kernel-950/50 rounded-lg">
+              <span class="text-amber-400 text-xs font-mono font-bold">ii.</span>
+              <span class="text-sm text-kernel-300">The identity-check rule in force</span>
+            </div>
+            <div class="flex items-center gap-3 p-2 bg-kernel-950/50 rounded-lg">
+              <span class="text-amber-400 text-xs font-mono font-bold">iii.</span>
+              <span class="text-sm text-kernel-300">The frozen closure registry used to compute seam costs and return credit</span>
+            </div>
+          </div>
+          <p class="text-kernel-500 text-xs mt-3 italic">
+            Absent an explicit seam declaration, comparisons across structural changes are descriptive only
+            and do not carry continuity credit.
+          </p>
+        </div>
+
+        <!-- Weld decision -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Weld Decision</p>
+          <p class="text-kernel-400 text-sm leading-relaxed mb-3">
+            A <strong class="text-kernel-200">weld</strong> is the only legitimate way to change policy.
+            It names an anchor, runs pre/post tests, and enforces &kappa;-continuity (residual &le; tol<sub>seam</sub>).
+          </p>
+          <div class="bg-kernel-950/50 rounded-lg p-4">
+            <div class="flex items-center justify-between text-xs mb-2">
+              <span class="text-kernel-500">Seam budget:</span>
+              <span class="font-mono text-amber-400/80">&Delta;&kappa; = R&middot;&tau;<sub>R</sub> &minus; (D<sub>&omega;</sub> + D<sub>C</sub>)</span>
+            </div>
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-kernel-500">Weld PASS if:</span>
+              <span class="font-mono text-green-400/80">|&Delta;&kappa;| &le; tol<sub>seam</sub> = 0.005</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- History is append-only -->
+        <div class="bg-gradient-to-b from-purple-500/5 to-transparent border border-purple-500/20 rounded-xl p-5">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-purple-400">&#x1F4DC;</span>
+            <p class="text-xs text-purple-400 uppercase tracking-wider font-bold">Append-Only History</p>
+          </div>
+          <p class="text-kernel-400 text-sm leading-relaxed mb-2">
+            History is <strong class="text-kernel-200">never rewritten</strong>; only a weld is added.
+            Prior exchanges, ledger rows, and validation results are never edited in place.
+            Corrections are <strong class="text-kernel-200">Errata Welds</strong> that preserve the full audit trail &mdash;
+            the original and the correction both exist; continuity is demonstrated, not assumed.
+          </p>
+          <p class="text-[10px] text-kernel-600 italic">
+            Historia numquam rescribitur; sutura tantum additur.
+          </p>
+        </div>
+
+        <div class="bg-kernel-950/50 rounded-xl p-5 border border-kernel-800/20">
+          <p class="text-xs text-amber-400/80 uppercase tracking-wider mb-3">Falsifiability in the Gates</p>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            Stance <strong class="text-kernel-200">must</strong> change when thresholds are crossed. A claim that does not change
+            under new evidence is a <em class="text-kernel-300">gestus</em> (gesture), not a weld.
+            This is the key structural constraint: the system is designed so that evidence forces reclassification.
+            No regime label is permanent; no stance is exempt from the gates.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════ -->
+    <!--  CHAPTER 14 — Citation & Reproducibility        -->
+    <!-- ════════════════════════════════════════════════ -->
+    <section class="mb-20" id="ch-14">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-8 h-px bg-kernel-700"></div>
+        <p class="text-xs tracking-[0.2em] uppercase text-kernel-500">&sect;14 &middot; Citation and Reproducibility</p>
+        <div class="flex-1 h-px bg-kernel-800/60"></div>
+      </div>
+
+      <div class="space-y-6">
+        <!-- Verification -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Verification</p>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            The current release line contains <strong class="text-kernel-200">16,487 tests</strong> across
+            <strong class="text-kernel-200">20 domain closures</strong>,
+            <strong class="text-kernel-200">193 closure modules</strong>, and
+            <strong class="text-kernel-200">47 lemmas</strong>.
+            The three core Tier-1 identities (F + &omega; = 1, IC &le; F, IC = exp(&kappa;)) are verified with
+            zero violations across the full test suite. The 44 structural identities are re-derivable by running
+            the diagnostic scripts in the repository.
+          </p>
+        </div>
+
+        <!-- Whitepaper citation -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Whitepaper Citation (Zenodo; Fixed Artifact)</p>
+          <div class="bg-kernel-950/50 rounded-lg p-4 font-mono text-xs text-kernel-300 leading-relaxed">
+            C.&nbsp;Paulus, <em class="text-kernel-200">Generative Collapse Dynamics (UMCP/GCD): Kernel invariants,
+            return typing, and cross-domain diagnostics</em>, Zenodo, 2025.
+          </div>
+        </div>
+
+        <!-- Repository citation -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Repository Citation (GitHub; Release Line)</p>
+          <div class="bg-kernel-950/50 rounded-lg p-4 font-mono text-xs text-kernel-300 leading-relaxed">
+            Generative Collapse Dynamics (UMCP/GCD). Validator line v2.3.0.<br/>
+            Repository:
+            <a href="https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS"
+               class="text-amber-400/80 hover:text-amber-300 underline" target="_blank" rel="noopener">
+              github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS</a>. MIT License.
+          </div>
+        </div>
+
+        <!-- Canon anchors -->
+        <div class="bg-kernel-900/30 border border-kernel-800/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-600 uppercase tracking-wider mb-3">Canon Anchors</p>
+          <div class="space-y-2">
+            <div class="flex items-center gap-3 p-2 bg-kernel-950/50 rounded-lg">
+              <span class="text-xs text-amber-400 font-bold">PRE</span>
+              <span class="text-xs text-kernel-300"><em>The Episteme of Return</em> &mdash; Zenodo DOI: 10.5281/zenodo.17756705</span>
+            </div>
+            <div class="flex items-center gap-3 p-2 bg-kernel-950/50 rounded-lg">
+              <span class="text-xs text-amber-400 font-bold">POST</span>
+              <span class="text-xs text-kernel-300"><em>The Physics of Coherence</em> &mdash; Zenodo DOI: 10.5281/zenodo.18072852</span>
+            </div>
+          </div>
+          <p class="text-kernel-500 text-xs mt-3">
+            These anchors define the contract-first invariant skeleton and continuity-law context for the present release line.
+          </p>
+        </div>
+
+        <!-- Endnote -->
+        <div class="bg-gradient-to-b from-kernel-800/20 to-transparent border border-kernel-700/30 rounded-xl p-5">
+          <p class="text-xs text-kernel-500 uppercase tracking-wider mb-3">Endnote &mdash; Admissibility Stance</p>
+          <p class="text-kernel-400 text-sm leading-relaxed">
+            Axiom-0 is enforced as an admissibility rule: if return is not observed under the active contract,
+            the system is typed as no-return (&tau;<sub>R</sub> = &infin;<sub>rec</sub>) and receives zero return
+            credit under the default censoring rule. No-return is recorded and censored (typed); any change that
+            converts no-return to return must be declared as a structural seam and evaluated under a weld decision.
+          </p>
+          <p class="text-[10px] text-kernel-600 mt-3 italic">
+            Collapsus generativus est; solum quod redit, reale est.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Footer nav ═══ -->
+    <section class="mb-16">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <a href={`${base}readings/`} class="flex items-center gap-3 p-4 bg-kernel-900/50 border border-kernel-800/40 rounded-xl hover:border-kernel-600 transition no-underline group">
+          <span class="text-kernel-400 text-lg">&larr;</span>
+          <div>
+            <p class="text-sm text-kernel-200 font-medium group-hover:text-amber-400 transition">All Deep Readings</p>
+            <p class="text-xs text-kernel-500">Browse the full reading list</p>
+          </div>
+        </a>
+        <a href={`${base}readings/liber-collapsus/`} class="flex items-center gap-3 p-4 bg-kernel-900/50 border border-kernel-800/40 rounded-xl hover:border-kernel-600 transition no-underline group">
+          <span class="text-kernel-400 text-lg italic font-serif">L</span>
+          <div>
+            <p class="text-sm text-kernel-200 font-medium group-hover:text-amber-400 transition italic">Liber Collapsus</p>
+            <p class="text-xs text-kernel-500">The foundational Latin treatise</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+  </div>
+</BaseLayout>
+
+<script>
+  // ═══════════════════════════════════════════════════
+  //  GCD Whitepaper Deep Reading — Interactive Logic
+  // ═══════════════════════════════════════════════════
+
+  const EPS = 1e-8;
+
+  function clamp(x: number): number {
+    return Math.min(1 - EPS, Math.max(EPS, x));
+  }
+
+  function computeKernel(channels: number[], weights?: number[]): {
+    F: number; omega: number; S: number; C: number; kappa: number; IC: number;
+    regime: string; regimeColor: string;
+  } {
+    const n = channels.length;
+    const w = weights || channels.map(() => 1 / n);
+    const F = channels.reduce((s, c, i) => s + w[i] * c, 0);
+    const omega = 1 - F;
+    const clamped = channels.map(c => clamp(c));
+    const kappa = clamped.reduce((s, c, i) => s + w[i] * Math.log(c), 0);
+    const IC = Math.exp(kappa);
+    const S = -clamped.reduce((s, c, i) => s + w[i] * (c * Math.log(c) + (1 - c) * Math.log(1 - c)), 0);
+    const mean = F;
+    const variance = channels.reduce((s, c, i) => s + w[i] * (c - mean) ** 2, 0);
+    const C = Math.sqrt(variance) / 0.5;
+
+    let regime = 'Watch';
+    let regimeColor = 'text-yellow-400';
+    if (omega >= 0.30) { regime = 'Collapse'; regimeColor = 'text-red-400'; }
+    else if (omega < 0.038 && F > 0.90 && S < 0.15 && C < 0.14) { regime = 'Stable'; regimeColor = 'text-green-400'; }
+
+    return { F, omega, S, C, kappa, IC, regime, regimeColor };
+  }
+
+  // ── Invariant sections for Chapter 2 ───────────────
+
+  const invariants = [
+    {
+      symbol: 'F', name: 'Fidelity', latin: 'quid supersit post collapsum',
+      formula: 'F(t) = Σ wᵢ cᵢ(t)',
+      desc: 'Fidelity — what survives collapse. The weighted arithmetic mean of the trace vector.',
+      note: 'Primitive. F is the first degree of freedom.',
+    },
+    {
+      symbol: 'ω', name: 'Drift', latin: 'quantum collapsu deperdatur',
+      formula: 'ω(t) = 1 − F(t)',
+      desc: 'Drift — how much is lost to collapse. The complement of fidelity.',
+      note: 'Derived from F. The duality identity F + ω = 1 holds exactly (residual 0.0e+00).',
+    },
+    {
+      symbol: 'κ', name: 'Log-Integrity', latin: 'sensibilitas logarithmica',
+      formula: 'κ(t) = Σ wᵢ ln(c_{i,ε}(t))',
+      desc: 'Log-integrity — the logarithmic sensitivity of coherence. Always ≤ 0. Any channel near 0 drags κ toward −∞.',
+      note: 'Primitive. κ is the second degree of freedom.',
+    },
+    {
+      symbol: 'IC', name: 'Integrity Composite', latin: 'cohaerentia multiplicativa',
+      formula: 'IC(t) = exp(κ(t))',
+      desc: 'Integrity composite — multiplicative coherence. The weighted geometric mean. IC ≤ F always (the integrity bound).',
+      note: 'Derived from κ. The log-integrity relation IC = exp(κ) links multiplicative and additive coherence.',
+    },
+    {
+      symbol: 'S', name: 'Entropy', latin: 'incertitudo campi collapsus',
+      formula: 'S(t) = −Σ wᵢ [c ln(c) + (1−c) ln(1−c)]',
+      desc: 'Bernoulli field entropy — the uncertainty of the collapse field. Not Shannon entropy (that is the degenerate limit).',
+      note: 'Computed, not free. Asymptotically determined by F and C (corr → −1 as n → ∞). 3 effective DOF, not 4.',
+    },
+    {
+      symbol: 'C', name: 'Curvature', latin: 'coniunctio cum gradibus libertatis',
+      formula: 'C(t) = StdDev({cᵢ}) / 0.5',
+      desc: 'Curvature — coupling to uncontrolled degrees of freedom. Measures channel heterogeneity, normalized to [0,1].',
+      note: 'Primitive. C is the third degree of freedom. Together, F, κ, C span the full kernel.',
+    },
+  ];
+
+  const invContainer = document.getElementById('invariant-sections');
+  if (invContainer) {
+    invariants.forEach((inv) => {
+      const isPrimitive = ['F', 'κ', 'S', 'C'].includes(inv.symbol);
+      const dotColor = isPrimitive ? 'bg-amber-500' : 'bg-blue-400';
+      const borderColor = isPrimitive ? 'border-amber-500/20' : 'border-blue-400/20';
+
+      const section = document.createElement('div');
+      section.className = `bg-kernel-900/30 border ${borderColor} rounded-xl p-5 transition hover:bg-kernel-900/50`;
+      section.innerHTML = `
+        <div class="flex items-start gap-3">
+          <span class="w-2 h-2 rounded-full ${dotColor} mt-2 shrink-0"></span>
+          <div class="flex-1">
+            <div class="flex items-center gap-3 mb-1">
+              <span class="text-xl font-mono font-bold text-kernel-100">${inv.symbol}</span>
+              <span class="text-sm font-bold text-kernel-300">${inv.name}</span>
+              <span class="text-xs text-kernel-600 italic hidden md:inline">— ${inv.latin}</span>
+            </div>
+            <div class="font-mono text-xs text-amber-400/80 bg-kernel-950/60 inline-block px-2 py-1 rounded mb-2">${inv.formula}</div>
+            <p class="text-sm text-kernel-400 leading-relaxed">${inv.desc}</p>
+            <p class="text-xs text-kernel-600 mt-2 italic">${inv.note}</p>
+          </div>
+        </div>
+      `;
+      invContainer.appendChild(section);
+    });
+  }
+
+  // ── Live Verification ──────────────────────────────
+
+  const verifyBtn = document.getElementById('verify-btn');
+  const verifyResults = document.getElementById('verify-results');
+  const invariantOutputs = document.getElementById('invariant-outputs');
+  const identityChecks = document.getElementById('identity-checks');
+
+  verifyBtn?.addEventListener('click', () => {
+    const channelStr = (document.getElementById('verify-channels') as HTMLInputElement).value;
+    const weightStr = (document.getElementById('verify-weights') as HTMLInputElement).value;
+
+    const channels = channelStr.split(',').map(s => parseFloat(s.trim())).filter(n => !isNaN(n));
+    if (channels.length < 2) return;
+
+    let weights: number[] | undefined;
+    if (weightStr.trim()) {
+      weights = weightStr.split(',').map(s => parseFloat(s.trim())).filter(n => !isNaN(n));
+      if (weights.length !== channels.length) weights = undefined;
+    }
+
+    const k = computeKernel(channels, weights);
+
+    if (invariantOutputs) {
+      invariantOutputs.innerHTML = [
+        { label: 'F', value: k.F.toFixed(4), color: 'text-kernel-100' },
+        { label: 'ω', value: k.omega.toFixed(4), color: 'text-kernel-100' },
+        { label: 'S', value: k.S.toFixed(4), color: 'text-kernel-100' },
+        { label: 'C', value: k.C.toFixed(4), color: 'text-kernel-100' },
+        { label: 'κ', value: k.kappa.toFixed(4), color: 'text-kernel-100' },
+        { label: 'IC', value: k.IC.toFixed(4), color: 'text-kernel-100' },
+      ].map(o => `
+        <div class="bg-kernel-950/80 rounded-lg p-3 text-center">
+          <div class="text-xs text-kernel-500 font-mono">${o.label}</div>
+          <div class="text-lg font-bold font-mono ${o.color}">${o.value}</div>
+        </div>
+      `).join('');
+    }
+
+    if (identityChecks) {
+      const duality = Math.abs(k.F + k.omega - 1);
+      const bound = k.IC <= k.F + 1e-12;
+      const logRel = Math.abs(k.IC - Math.exp(k.kappa));
+
+      identityChecks.innerHTML = `
+        <div class="flex items-center gap-3 p-3 bg-kernel-950/60 rounded-lg">
+          <span class="${duality < 1e-10 ? 'text-green-400' : 'text-red-400'} text-lg">
+            ${duality < 1e-10 ? '✓' : '✗'}
+          </span>
+          <div class="flex-1">
+            <span class="text-sm text-kernel-200 font-medium">F + ω = 1</span>
+            <span class="text-xs text-kernel-500 ml-2">Duality identity</span>
+          </div>
+          <span class="text-xs font-mono text-kernel-400">residual: ${duality.toExponential(1)}</span>
+        </div>
+        <div class="flex items-center gap-3 p-3 bg-kernel-950/60 rounded-lg">
+          <span class="${bound ? 'text-green-400' : 'text-red-400'} text-lg">
+            ${bound ? '✓' : '✗'}
+          </span>
+          <div class="flex-1">
+            <span class="text-sm text-kernel-200 font-medium">IC ≤ F</span>
+            <span class="text-xs text-kernel-500 ml-2">Integrity bound</span>
+          </div>
+          <span class="text-xs font-mono text-kernel-400">Δ = ${(k.F - k.IC).toFixed(4)}</span>
+        </div>
+        <div class="flex items-center gap-3 p-3 bg-kernel-950/60 rounded-lg">
+          <span class="${logRel < 1e-10 ? 'text-green-400' : 'text-red-400'} text-lg">
+            ${logRel < 1e-10 ? '✓' : '✗'}
+          </span>
+          <div class="flex-1">
+            <span class="text-sm text-kernel-200 font-medium">IC = exp(κ)</span>
+            <span class="text-xs text-kernel-500 ml-2">Log-integrity relation</span>
+          </div>
+          <span class="text-xs font-mono text-kernel-400">residual: ${logRel.toExponential(1)}</span>
+        </div>
+        <div class="flex items-center gap-3 p-3 bg-kernel-950/60 rounded-lg">
+          <span class="${k.regimeColor} text-lg">◉</span>
+          <div class="flex-1">
+            <span class="text-sm text-kernel-200 font-medium">Regime: <span class="${k.regimeColor} font-bold">${k.regime}</span></span>
+            <span class="text-xs text-kernel-500 ml-2">Derived from four-gate criterion</span>
+          </div>
+        </div>
+      `;
+    }
+
+    verifyResults?.classList.remove('hidden');
+  });
+
+  // Auto-run on load
+  verifyBtn?.click();
+
+  // ── Geometric Slaughter Demo ───────────────────────
+
+  const slaughterN = document.getElementById('slaughter-n') as HTMLInputElement;
+  const slaughterDead = document.getElementById('slaughter-dead') as HTMLInputElement;
+  const slNLabel = document.getElementById('slaughter-n-label');
+  const slDeadLabel = document.getElementById('slaughter-dead-label');
+
+  function updateSlaughter() {
+    const n = parseInt(slaughterN?.value || '8');
+    const deadVal = parseInt(slaughterDead?.value || '1') / 100;
+    if (slNLabel) slNLabel.textContent = `${n} channels`;
+    if (slDeadLabel) slDeadLabel.textContent = deadVal.toFixed(2);
+
+    const channels = Array(n - 1).fill(1.0).concat([deadVal]);
+    const k = computeKernel(channels);
+
+    const elF = document.getElementById('sl-F');
+    const elIC = document.getElementById('sl-IC');
+    const elGap = document.getElementById('sl-gap');
+    const elRatio = document.getElementById('sl-ratio');
+
+    if (elF) elF.textContent = k.F.toFixed(4);
+    if (elIC) elIC.textContent = k.IC.toFixed(4);
+    if (elGap) elGap.textContent = (k.F - k.IC).toFixed(4);
+    if (elRatio) elRatio.textContent = (k.IC / k.F).toFixed(4);
+  }
+
+  slaughterN?.addEventListener('input', updateSlaughter);
+  slaughterDead?.addEventListener('input', updateSlaughter);
+  updateSlaughter();
+
+  // ── Gamma (Drift Cost) Demo ────────────────────────
+
+  const gammaSlider = document.getElementById('gamma-omega') as HTMLInputElement;
+  const gammaLabel = document.getElementById('gamma-omega-label');
+  const gammaValue = document.getElementById('gamma-value');
+  const gammaTrapped = document.getElementById('gamma-trapped');
+  const gammaRegime = document.getElementById('gamma-regime');
+
+  function updateGamma() {
+    const omega = parseInt(gammaSlider?.value || '30') / 100;
+    if (gammaLabel) gammaLabel.textContent = omega.toFixed(2);
+
+    const gamma = Math.pow(omega, 3) / (1 - omega + EPS);
+    const trapped = omega >= 0.6823;
+
+    if (gammaValue) gammaValue.textContent = gamma < 100 ? gamma.toFixed(4) : gamma.toExponential(2);
+    if (gammaTrapped) {
+      gammaTrapped.textContent = trapped ? 'YES' : 'No';
+      gammaTrapped.className = `text-lg font-bold font-mono ${trapped ? 'text-red-400' : 'text-green-400'}`;
+    }
+    if (gammaRegime) {
+      let regime = 'Watch'; let color = 'text-yellow-400';
+      if (omega >= 0.30) { regime = 'Collapse'; color = 'text-red-400'; }
+      else if (omega < 0.038) { regime = 'Stable'; color = 'text-green-400'; }
+      gammaRegime.textContent = regime;
+      gammaRegime.className = `text-lg font-bold font-mono ${color}`;
+    }
+  }
+
+  gammaSlider?.addEventListener('input', updateGamma);
+  updateGamma();
+
+  // ── Diagnostic Explorer (Chapter 7) ─────────────────
+  const diagBtn = document.getElementById('diag-btn');
+  const diagChannelsInput = document.getElementById('diag-channels') as HTMLInputElement | null;
+  const diagResults = document.getElementById('diag-results');
+  const diagOutputs = document.getElementById('diag-outputs');
+
+  function runDiagnostics() {
+    if (!diagChannelsInput || !diagResults || !diagOutputs) return;
+    const raw = diagChannelsInput.value.split(',').map(s => parseFloat(s.trim())).filter(v => !isNaN(v) && v >= 0 && v <= 1);
+    if (raw.length < 2) { diagOutputs.innerHTML = '<p class="text-red-400 text-xs col-span-4">Need at least 2 valid channels (0-1)</p>'; diagResults.classList.remove('hidden'); return; }
+
+    const EPS = 1e-8;
+    const n = raw.length;
+    const w = 1 / n;
+    const clamped = raw.map(v => Math.max(v, EPS));
+
+    const F = clamped.reduce((s, c) => s + w * c, 0);
+    const omega = 1 - F;
+    const kappa = clamped.reduce((s, c) => s + w * Math.log(c), 0);
+    const IC = Math.exp(kappa);
+    const delta = F - IC;
+    const rho = IC / F;
+
+    let label = 'Homogeneous';
+    let labelColor = 'text-green-400';
+    if (delta >= 0.05) { label = 'Fragmented'; labelColor = 'text-red-400'; }
+    else if (delta >= 0.01) { label = 'Heterogeneous'; labelColor = 'text-yellow-400'; }
+    else if (delta >= 1e-6) { label = 'Coherent'; labelColor = 'text-blue-400'; }
+
+    const items = [
+      { name: 'F', value: F.toFixed(6), color: 'text-cyan-400' },
+      { name: '\u03C9', value: omega.toFixed(6), color: 'text-amber-400' },
+      { name: 'IC', value: IC.toFixed(6), color: 'text-purple-400' },
+      { name: '\u0394', value: delta.toFixed(6), color: 'text-red-400' },
+      { name: '\u03C1', value: rho.toFixed(4), color: 'text-green-400' },
+      { name: '\u03BA', value: kappa.toFixed(6), color: 'text-blue-400' },
+      { name: 'Label', value: label, color: labelColor },
+      { name: 'n', value: String(n), color: 'text-kernel-300' },
+    ];
+
+    diagOutputs.innerHTML = items.map(it =>
+      `<div class="bg-kernel-950/60 rounded-lg p-2 text-center"><p class="text-[10px] text-kernel-500">${it.name}</p><p class="font-mono text-xs ${it.color}">${it.value}</p></div>`
+    ).join('');
+    diagResults.classList.remove('hidden');
+  }
+
+  diagBtn?.addEventListener('click', runDiagnostics);
+
+  // ── Smooth scroll for TOC links ────────────────────
+
+  document.querySelectorAll('.toc-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const href = (link as HTMLAnchorElement).getAttribute('href');
+      if (href?.startsWith('#')) {
+        e.preventDefault();
+        const target = document.querySelector(href);
+        target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
