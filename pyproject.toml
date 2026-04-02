@@ -17,7 +17,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "umcp"
 version = "2.3.0"
-description = "Contract-first validation framework for reproducible computational workflows. Six kernel invariants, 20 scientific domains, 252 proven theorems, 17,858 tests, three-layer C/C++/Python architecture, three-valued verdicts."
+description = "Contract-first validation framework for reproducible computational workflows. Six kernel invariants, 20 scientific domains, 258 proven theorems, 18,018 tests, three-layer C/C++/Python architecture, three-valued verdicts."
 readme = "README_PYPI.md"
 requires-python = ">=3.11"
 license = "MIT"

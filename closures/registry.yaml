@@ -1051,6 +1051,29 @@ registry:
           - "closures/evolution/brain_kernel.py"
           - "src/umcp/epistemic_weld.py"
           - "canon/semiotics_anchors.yaml"
+      - name: "malbolge_kernel"
+        path: "closures/dynamic_semiotics/malbolge_kernel.py"
+        description: "Malbolge kernel closure: 12 esoteric programming languages × 8 channels → Tier-1 invariants. Maps adversarial, self-modifying, minimalist, and structured esoteric languages as dissolution laboratories. Distinguishes uniform dissolution (Malbolge: all channels near-zero, small Δ) from heterogeneous collapse (Iota: extreme variance, large Δ). All entities in Collapse regime."
+        contract: "UMA.INTSTACK.v1"
+        inputs: ["esoteric_language_profiles"]
+        outputs: ["F", "omega", "S", "C", "kappa", "IC", "heterogeneity_gap", "regime", "category"]
+        channels:
+          - "instruction_fidelity"
+          - "memory_coherence"
+          - "cipher_transparency"
+          - "control_flow_regularity"
+          - "compositionality"
+          - "halting_predictability"
+          - "debug_observability"
+          - "generative_expressiveness"
+        frozen_params:
+          epsilon: 1.0e-8
+          n_channels: 8
+          n_entities: 12
+        cross_references:
+          - "closures/dynamic_semiotics/semiotic_kernel.py"
+          - "closures/dynamic_semiotics/computational_semiotics.py"
+          - "canon/semiotics_anchors.yaml"
 
     continuity_theory:
       - name: "butzbach_embedding"
@@ -1389,8 +1412,8 @@ extensions:
     dynamic_semiotics:
       archetype: kernel-centric
       channels: 8
-      entities: 42
-      theorems: 16
+      entities: 54
+      theorems: 22
       tier1_bootstrap: true
       theorem_prefix: "TS"
     consciousness_coherence:

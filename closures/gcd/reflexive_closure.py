@@ -169,7 +169,7 @@ def _regime(k: dict[str, Any]) -> str:
 #   Layer 1: Foundational Mathematics (axiom, proofs, identities)
 #   Layer 2: Mathematical Physics (kernel function, manifold structure)
 #   Layer 3: Measurement Theory (contracts, seams, frozen parameters)
-#   Layer 4: Domain Science (20 closures, 252+ theorems)
+#   Layer 4: Domain Science (20 closures, 258+ theorems)
 #   Layer 5: Engineering (protocol, code, tests, CI)
 #
 # Channel values are objective assessable properties:

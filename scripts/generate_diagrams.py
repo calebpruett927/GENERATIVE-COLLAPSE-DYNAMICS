@@ -1783,7 +1783,7 @@ def plot_tier_architecture() -> None:
             "Regime gates: Stable / Watch / Collapse  │  Seam calculus\n\n"
             "Validator  │  Contracts  │  Schemas  │  SHA-256 integrity\n"
             "Three-valued verdicts: CONFORMANT / NONCONFORMANT / NON_EVALUABLE\n"
-            "17,858 tests  │  217 closure modules  │  C++17 accelerator (50-80× speedup)",
+            "18,018 tests  │  218 closure modules  │  C++17 accelerator (50-80× speedup)",
         ),
         (
             1.5,
