@@ -323,12 +323,13 @@ def verify_t_ai_6(results: list[AIKernelResult]) -> dict:
     responsiveness = np.array([e.treatment_responsiveness for e in AI_ENTITIES])
     from scipy.stats import spearmanr  # type: ignore[import]
 
-    rho, _ = spearmanr(chronicity, responsiveness)
+    rho_result = spearmanr(chronicity, responsiveness)
+    rho = float(rho_result[0])  # type: ignore[arg-type]
     passed = bool(rho < 0.0)  # negative correlation expected
     return {
         "name": "T-AI-6",
         "passed": passed,
-        "spearman_rho_chronicity_vs_responsiveness": float(rho),
+        "spearman_rho_chronicity_vs_responsiveness": rho,
         "interpretation": "higher chronicity associated with lower treatment responsiveness",
     }
 

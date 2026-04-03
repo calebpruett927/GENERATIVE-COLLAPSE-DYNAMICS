@@ -313,12 +313,13 @@ def verify_t_vr_6(results: list[VRKernelResult]) -> dict:
     # Spearman rank correlation
     from scipy.stats import spearmanr  # type: ignore[import]
 
-    rho, _ = spearmanr(scalability, ics)
+    rho_result = spearmanr(scalability, ics)
+    rho = float(rho_result[0])  # type: ignore[arg-type]
     passed = bool(rho < 0.0)  # negative correlation expected
     return {
         "name": "T-VR-6",
         "passed": passed,
-        "spearman_rho_scalability_vs_IC": float(rho),
+        "spearman_rho_scalability_vs_IC": rho,
         "interpretation": "higher scalability associated with lower IC",
     }
 
