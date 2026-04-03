@@ -378,28 +378,23 @@ void main() {
   }
 
   // ─ 5. Final colour composition ─
+  // Captured rays = pure black (no photon escapes the event horizon).
+  // Only accumulated disk emission from crossings before capture is kept.
   vec3 finalColor = color;
   float photonR = 1.5 * RS;
 
-  if (captured) {
-    float prG = exp(-pow((minDist - photonR) / (RS * 0.08), 2.0)) * 0.7;
-    finalColor += vec3(1.0, 0.90, 0.50) * prG * (1.0 - alpha);
-    float chR = RS * 0.5 * (1.0 + sqrt(max(1.0 - uSpinStar * uSpinStar, 0.0)));
-    float chG = exp(-pow((minDist - chR) / (RS * 0.04), 2.0)) * uSpinStar * 0.25;
-    finalColor += vec3(0.40, 0.15, 0.70) * chG * (1.0 - alpha);
-  } else {
+  if (!captured) {
+    // Background starfield (gravitationally lensed direction)
     vec3 bg = starfield(vel);
     finalColor += bg * (1.0 - alpha);
-  }
 
-  // Photon-ring enhancement for near-miss rays
-  float prGlow = exp(-pow((minDist - photonR) / (RS * 0.15), 2.0)) * 0.35;
-  finalColor += vec3(1.0, 0.92, 0.55) * prGlow;
+    // Photon-ring: bright ring at shadow edge from near-miss rays only
+    float prGlow = exp(-pow((minDist - photonR) / (RS * 0.12), 2.0)) * 0.45;
+    finalColor += vec3(1.0, 0.92, 0.55) * prGlow;
 
-  // Ergosphere tint
-  if (minDist < 2.0 * M_BH * 1.1) {
-    float ergoF = smoothstep(2.0 * M_BH * 1.1, RS * 0.6, minDist) * uSpinStar;
-    finalColor += vec3(0.08, 0.15, 0.35) * ergoF * 0.15;
+    // Einstein ring enhancement — rays deflected > pi accumulate extra brightness
+    float erGlow = exp(-pow((minDist - photonR) / (RS * 0.04), 2.0)) * 0.25;
+    finalColor += vec3(1.0, 0.97, 0.80) * erGlow;
   }
 
   // ACES tone mapping + gamma
