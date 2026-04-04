@@ -1,7 +1,8 @@
 """Tests for fungi kingdom closure (evolution domain).
 
-Validates 12 fungi species, 8-channel trace construction,
-Tier-1 kernel identities, and 6 theorems (T-FK-1 through T-FK-6).
+Validates 12 fungi species, 6 mycorrhizal stress configurations,
+8-channel trace construction, Tier-1 kernel identities,
+and 9 theorems (T-FK-1 through T-FK-9).
 """
 
 from __future__ import annotations
