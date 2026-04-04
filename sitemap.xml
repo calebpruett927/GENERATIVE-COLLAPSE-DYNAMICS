@@ -28,7 +28,7 @@
   <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/epistemology/</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/philosophy/</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
 
-  <!-- Domain closures (20 domains) -->
+  <!-- Domain closures (21 domains) -->
   <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/gcd/</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/rcft/</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/kinematics/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
@@ -49,9 +49,13 @@
   <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/dynamic_semiotics/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/continuity_theory/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/spacetime_memory/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/immunology/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
 
   <!-- Deep readings -->
   <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/readings/</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/readings/liber-collapsus/</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/readings/gcd-whitepaper/</loc><priority>0.9</priority><changefreq>weekly</changefreq></url>
+
+  <!-- Machine-readable AI context -->
+  <url><loc>https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/llms.txt</loc><priority>0.5</priority><changefreq>monthly</changefreq></url>
 </urlset>

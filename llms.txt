@@ -1,0 +1,94 @@
+# Generative Collapse Dynamics (GCD)
+
+> A single-axiom mathematical framework: "Collapse is generative; only what returns is real."
+
+## Project Statistics (Canonical Values)
+
+- Version: 2.3.0
+- Domains: 21
+- Theorems: 716 (unique proven theorems)
+- Tests: 19,397 automated tests across 218 test files
+- Structural Identities: 44
+- Lemmas: 47
+- Closure Modules: 222
+- C/C++ Assertions: 760
+- Python: ≥3.11
+
+## Core Framework (UMCP — Universal Measurement Contract Protocol)
+
+UMCP validates reproducible computational workflows against mathematical contracts.
+Every claim follows the spine: Contract → Canon → Closures → Integrity Ledger → Stance.
+Verdicts are three-valued: CONFORMANT / NONCONFORMANT / NON_EVALUABLE.
+
+## The Kernel Function
+
+K: [0,1]^n × Δ^n → (F, ω, S, C, κ, IC)
+
+Six outputs, 3 effective degrees of freedom (F, κ, C):
+- F (Fidelity): What survives collapse — F = Σ wᵢcᵢ
+- ω (Drift): What is lost — ω = 1 − F
+- S (Entropy): Bernoulli field entropy of the collapse field
+- C (Curvature): Coupling to uncontrolled degrees of freedom — stddev(cᵢ)/0.5
+- κ (Log-integrity): Logarithmic sensitivity — κ = Σ wᵢ ln(cᵢ)
+- IC (Integrity): Multiplicative coherence — IC = exp(κ)
+
+## Algebraic Identities (Always True)
+
+1. F + ω = 1 (Duality identity)
+2. IC ≤ F (Integrity bound — solvability condition)
+3. IC = exp(κ) (Log-integrity relation)
+
+## Frozen Parameters (Seam-Derived)
+
+- ε (epsilon): 1e-8 — guard band
+- p: 3 — drift cost exponent (Cardano root)
+- α (alpha): 1.0 — curvature cost coefficient
+- tol_seam: 0.005 — seam residual tolerance
+- c*: 0.7822 — logistic self-dual fixed point
+
+## Regime Classification
+
+- Stable: ω < 0.038 AND F > 0.90 AND S < 0.15 AND C < 0.14 (12.5% of manifold)
+- Watch: 0.038 ≤ ω < 0.30 (24.4%)
+- Collapse: ω ≥ 0.30 (63.1%)
+
+## 21 Domain Closures
+
+1. GCD (self-reference)
+2. RCFT (recursive collapse)
+3. Kinematics (motion analysis)
+4. Weyl cosmology (modified gravity)
+5. Security (audit validation)
+6. Astronomy (stellar classification)
+7. Nuclear physics (binding energy, QGP)
+8. Quantum mechanics (QDM, FQHE)
+9. Finance (portfolio coherence)
+10. Atomic physics (118 elements)
+11. Materials science (element database)
+12. Standard Model (31 particles, 27 theorems)
+13. Everyday physics (thermo, optics, EM)
+14. Evolution (40 organisms, brain kernel)
+15. Dynamic semiotics (30 sign systems, Malbolge)
+16. Continuity theory (persistence, budget geometry)
+17. Consciousness coherence (20 systems)
+18. Awareness-cognition (34 organisms)
+19. Spacetime memory (40 entities, gravitational memory)
+20. Clinical neuroscience (cortical kernel)
+21. Immunology (adaptive immunity, T/B cells)
+
+## Links
+
+- Website: https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/
+- Repository: https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS
+- PyPI: https://pypi.org/project/umcp/
+- Calculator: https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/calculator/
+- API Documentation: https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/reference/
+
+## Terminology (Correct Usage)
+
+- Bernoulli field entropy (NOT "Shannon entropy")
+- Integrity bound IC ≤ F (NOT "AM-GM inequality")
+- Heterogeneity gap Δ = F − IC (NOT "AM-GM gap")
+- Duality identity F + ω = 1 (NOT "unitarity")
+- Frozen parameters (NOT "hyperparameters")
+- Derives independently from Axiom-0 (NOT "rederives" or "recovers" classical results)

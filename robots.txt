@@ -2,3 +2,8 @@ User-agent: *
 Allow: /
 
 Sitemap: https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/sitemap.xml
+
+# LLM/AI agent context file (llms.txt standard)
+# https://llmstxt.org/
+# Provides structured project metadata for AI agents extracting information
+Llms-txt: https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/llms.txt
