@@ -1628,3 +1628,15 @@ extensions:
       tier1_bootstrap: false
       theorem_prefix: "TIC/TCY/TVR/TAI/TNI/TPNI"
       note: "76 entities across 6 sub-closures: immune cells (16), cytokines (12), vaccines (12), autoimmune (12), neuroimmune bridge (12), PNI (12)"
+    information_theory:
+      - name: "information_theory_kernel"
+        path: "closures/information_theory/information_theory_kernel.py"
+        description: "Pure information-theoretic closure mapping P/NP and RE to channels."
+    ecology:
+      - name: "ecology_kernel"
+        path: "closures/ecology/ecology_kernel.py"
+        description: "Ecological systems closure mapping trophic cascades to QGP/RHIC."
+    dynamic_semiotics_linguistic:
+      - name: "linguistic_evolution_kernel"
+        path: "closures/dynamic_semiotics/linguistic_evolution_kernel.py"
+        description: "Linguistic evolution closure connecting phonological drift to meaning return paths."

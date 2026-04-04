@@ -52,6 +52,8 @@ CLOSURE_DOMAINS = [
     "continuity_theory",
     "consciousness_coherence",
     "immunology",
+    "information_theory",
+    "ecology",
 ]
 
 __all__ = ["CLOSURES_ROOT", "CLOSURE_DOMAINS"]
