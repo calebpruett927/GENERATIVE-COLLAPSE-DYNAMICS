@@ -589,6 +589,9 @@ All papers use RevTeX4-2 (`revtex4-2` document class) and share `Bibliography.bi
 pip install -e ".[all]"                     # Dev install (core + api + viz + dev tools)
 pytest                                       # 20,221 tests (pytest --collect-only | grep ":" | wc -l to verify)
 python scripts/update_integrity.py          # MUST run after changing any tracked file
+python scripts/ground_truth.py              # Print current ground truth metrics
+python scripts/sync_ground_truth.py         # Propagate metrics to all files (70+ rules)
+python scripts/sync_ground_truth.py --dry-run  # Preview changes without writing
 umcp validate .                             # Validate entire repo
 umcp validate casepacks/hello_world --strict # Validate casepack (strict = fail on warnings)
 umcp integrity                              # Verify SHA-256 checksums (248 tracked files)
@@ -614,13 +617,46 @@ This script mirrors CI exactly and must exit 0 before committing. It runs 11 ste
 4. `mypy src/umcp` — type checking (non-blocking)
 5. `git add -A` — stage all changes
 6. Repository health check — drift detection, version sync, freeze verification
-7. Update test count in documentation
+7. Sync ground truth — propagate all metrics from `scripts/ground_truth.py` to 15+ files
 8. Regenerate SHA-256 integrity checksums (248 tracked files)
 9. Pytest bounds — collect tests and verify count within bounds (1000–25000)
 10. `umcp validate .` — contract validation (must be CONFORMANT)
 11. Axiom-0 conformance — terminology, symbol capture, frozen params check
 
 See `COMMIT_PROTOCOL.md` for the full specification. **Never skip this step.** Every commit that reaches GitHub must pass all CI checks.
+
+## Ground Truth System (MANDATORY — Single Source of Truth)
+
+> *Veritas una est; propagatio automatica.* — The truth is one; propagation is automatic.
+
+All repository metrics (version, test count, domain count, closure count, theorem count, etc.) have **exactly one source of truth**: `scripts/ground_truth.py`. Metrics are **never hardcoded** in documentation, web files, or instruction files. They are propagated automatically by `scripts/sync_ground_truth.py` (70+ regex rules across 15+ target files).
+
+**Three metric tiers** in `scripts/ground_truth.py`:
+
+| Tier | Examples | How Updated |
+|------|----------|-------------|
+| **COMPUTED** | `test_count`, `domain_count`, `closure_count`, `test_file_count`, `casepack_count`, `canon_count` | Auto-derived from repo (counting files/directories). Never edit manually. |
+| **MANUAL** | `version`, `theorem_count`, `contract_count`, `schema_count` | Edit the constant in `ground_truth.py` when content changes. One line, one place. |
+| **FROZEN** | `identity_count` (44), `lemma_count` (47) | Immutable structural constants. Change only through formal seam weld. |
+
+**Workflow when adding content** (closures, tests, domains, theorems, etc.):
+
+1. Add your content (new closure, new test file, etc.)
+2. Run `python scripts/pre_commit_protocol.py` — step 7 auto-syncs all metrics
+3. Done. COMPUTED metrics refresh automatically. If you added theorems, update `THEOREM_COUNT` in `ground_truth.py` first.
+
+**NEVER do any of the following:**
+- Manually edit test counts, domain counts, or closure counts in documentation files
+- Hardcode `20,221` or `23 domains` or `245 closures` directly in `.md`, `.astro`, `.ts`, or `.txt` files
+- Update metrics in one file but not others (the sync script handles ALL files atomically)
+- Skip the ground truth sync when adding new content to the repo
+
+**If a metric is wrong**, fix it in `ground_truth.py` (the ONE source), run `sync_ground_truth.py`, and all 15+ files update simultaneously. This is how an append-only repo stays coherent.
+
+**Key files:**
+- `scripts/ground_truth.py` — the source of truth (frozen dataclass + compute functions)
+- `scripts/sync_ground_truth.py` — the propagation engine (70+ `SyncRule` objects)
+- Pre-commit step 7 runs `sync_ground_truth.py --skip-pytest` automatically
 
 ## Code Conventions
 
@@ -863,6 +899,7 @@ Before approving any code or documentation change:
 - [ ] **Frozen parameters sourced correctly**: Are epsilon/tol_seam/etc. taken from the frozen contract, not hardcoded separately? (Fix: reference CONTRACT or frozen_contract.py)
 - [ ] **INF_REC handled correctly**: Is τ_R = INF_REC kept as a typed string in data files and mapped to float("inf") in Python? Never coerced silently.
 - [ ] **Integrity updated**: If any tracked file changed, was `python scripts/update_integrity.py` run?
+- [ ] **Ground truth synced**: If any closure, test, domain, or theorem was added, was `python scripts/sync_ground_truth.py` run (or pre-commit protocol which includes it)? Metrics are NEVER hardcoded — they come from `scripts/ground_truth.py`.
 
 ## Discourse and Insight Protocol
 

@@ -73,6 +73,24 @@ python scripts/update_integrity.py       # Regenerate SHA-256 checksums
 python scripts/pre_commit_protocol.py    # Full validation, must exit 0
 ```
 
+## Ground Truth System (MANDATORY)
+
+> *Veritas una est; propagatio automatica.* — The truth is one; propagation is automatic.
+
+All repository metrics have **exactly one source of truth**: `scripts/ground_truth.py`. Metrics are **never hardcoded** in documentation, web, or instruction files. They are propagated by `scripts/sync_ground_truth.py` (70+ regex rules across 15+ files).
+
+**Three metric tiers:**
+
+| Tier | Examples | How Updated |
+|------|----------|-------------|
+| **COMPUTED** | `test_count`, `domain_count`, `closure_count`, `test_file_count` | Auto-derived from repo. Never edit manually. |
+| **MANUAL** | `version`, `theorem_count`, `contract_count`, `schema_count` | Edit in `ground_truth.py`. One line, one place. |
+| **FROZEN** | `identity_count` (44), `lemma_count` (47) | Immutable. Change only through formal seam weld. |
+
+**Workflow:** Add content → run `python scripts/pre_commit_protocol.py` → done. COMPUTED metrics refresh automatically. MANUAL metrics need one-line change in `ground_truth.py`. **NEVER** hardcode counts in `.md`, `.astro`, `.ts`, or `.txt` files.
+
+**If a metric is wrong**, fix it in `ground_truth.py` (the ONE source), run `sync_ground_truth.py`, and all 15+ files update simultaneously.
+
 ## Key Paths
 
 | Purpose | Path |
@@ -98,6 +116,8 @@ python scripts/pre_commit_protocol.py    # Full validation, must exit 0
 | Semiotic convergence | `SEMIOTIC_CONVERGENCE.md` |
 | **Master catalogue (all tags)** | `CATALOGUE.md` — **~620 tagged objects**: every symbol, lemma, identity, theorem, class, with tier + lineage |
 | Full AI instructions | `.github/copilot-instructions.md` |
+| Ground truth source | `scripts/ground_truth.py` — single source of all repo metrics |
+| Ground truth sync | `scripts/sync_ground_truth.py` — propagation engine (70+ rules) |
 
 ## The Spine (Every Claim Follows This)
 
