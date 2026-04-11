@@ -78,27 +78,21 @@ Generative-Collapse Spine}
 \date{\today}
 
 \begin{abstract}
-We trace a single measurement---three voltage readings at 99\%
-fidelity---through the complete validation spine of the Universal
-Measurement Contract Protocol (UMCP).  Starting from Axiom-0
-(``Collapse is generative; only what returns is real'') and a frozen
-contract, we embed the raw data into a bounded trace vector
-$\tvec \in [\eps, 1-\eps]^3$, compute the six kernel invariants
-$(F, \omega, S, C, \kappa, \IC)$, reconcile the integrity ledger,
-classify the regime via four frozen gates, and derive the three-valued
-verdict \conform{}.  Every number is exact, every identity is verified
-to machine precision, and every step is reproducible from the
-open-source reference implementation.  We present the kernel
-computation in explicit detail, prove the three structural identities
-($F + \omega = 1$, $\IC \leq F$, $\IC = e^\kappa$) for the worked
-example, demonstrate the seam budget closure, and show how the same
-spine applies identically regardless of the interface used---command
-line, Python API, or REST endpoint.  A heterogeneous counterexample
-is provided to demonstrate geometric slaughter: the mechanism by which
-a single degraded channel destroys multiplicative coherence while
-leaving the arithmetic mean apparently healthy.  The paper serves as
-a self-contained entrance to the GCD formalism, requiring no prior
-knowledge of the framework.
+This paper is the shortest complete route through the
+Generative Collapse Dynamics (GCD) validation spine.  We trace a
+single measurement---three voltage readings at 99\% fidelity---from
+Axiom-0 (``Collapse is generative; only what returns is real'')
+through every stop of the Universal Measurement Contract Protocol
+(UMCP): frozen contract, bounded embedding, kernel computation,
+integrity ledger, regime classification, and three-valued verdict.
+Every number is exact, every identity is verified to machine
+precision, and every step is reproducible from the open-source
+reference implementation.  A heterogeneous counterexample exposes
+geometric slaughter---the mechanism by which a single degraded
+channel destroys multiplicative coherence while the arithmetic mean
+appears healthy.  The paper requires no prior knowledge of the
+framework: a reader who has followed one complete pass can navigate
+any domain closure, any theorem, and any extension of the system.
 \end{abstract}
 
 \maketitle
@@ -109,22 +103,16 @@ knowledge of the framework.
 
 The Generative Collapse Dynamics (GCD) framework and its operational
 arm, the Universal Measurement Contract Protocol
-(UMCP)~\cite{paulus2025umcp,paulus2025physicscoherence}, constitute a
-contract-first validation system built on a single axiom.  The
-framework has been applied across 23 domain
-closures~\cite{umcpmetadatarepo}, from particle
-physics~\cite{paulus2025physicscoherence} to consciousness coherence,
-with 20{,}221 automated tests, 47~lemmas, and 44~structural
-identities verified to machine precision.  A \emph{closure} in this
-context is a domain-specific mapping layer: it selects which
-real-world quantities become the trace vector's channels and weights,
-but does not alter the kernel or the protocol that evaluates them.
-
-Despite this scope, no single document has previously traced one
-complete object through every layer of the system: from the axiom
-through the frozen contract, embedding, kernel computation, ledger
-reconciliation, regime classification, casepack packaging, and
-operational execution---all with exact numbers.
+(UMCP)~\cite{paulus2025umcp,paulus2025physicscoherence}, have been
+validated across 23 domain
+closures~\cite{umcpmetadatarepo}---from particle
+physics~\cite{paulus2025physicscoherence} to consciousness
+coherence---with 20{,}221 automated tests, 47~lemmas, and
+44~structural identities verified to machine precision.  Yet no
+single document has traced one complete object through every layer
+of the system: from the axiom through the frozen contract, embedding,
+kernel computation, ledger reconciliation, regime classification,
+casepack packaging, and operational execution---all with exact numbers.
 
 This paper provides that trace.  The object is deliberately
 minimal: three identical voltage readings.  This choice is
@@ -136,6 +124,9 @@ particles.  Only the Tier-2 closure changes---the mapping from raw
 observables to the unit interval.  A reader who has verified the
 spine for the simplest case can navigate any domain closure by
 understanding only the channel selection, never the protocol itself.
+A \emph{closure} is precisely this mapping layer: it selects which
+real-world quantities become the trace vector's channels and weights,
+but does not alter the kernel or the protocol that evaluates them.
 
 \subsection{Scope and structure}
 
@@ -850,9 +841,10 @@ historical priority claims about the classical results themselves.
 \section{Discussion}\label{sec:discussion}
 % ============================================================
 
-We have traced three voltage readings---the simplest possible
-measurement---through the complete GCD/UMCP spine.  The trace
-demonstrates:
+The twelve stops above constitute the shortest complete route through
+the GCD validation spine.  Because the route is complete---every stop
+visited, every number exact---several structural properties become
+visible that a partial trace would not expose:
 
 \begin{enumerate}[leftmargin=*]
 \item \textbf{Contract precedence.}  All parameters are frozen
@@ -862,23 +854,33 @@ demonstrates:
 \item \textbf{Exact identities.}  $F + \omega = 1$ holds to
   $0.0 \times 10^0$ residual; $\IC = e^\kappa$ holds to machine
   precision; $\IC \leq F$ with equality for homogeneous traces.
+  These are not checked \emph{in addition to} the spine; they are
+  the spine's own structural constraints.
 
 \item \textbf{Three-valued logic.}  The verdict is \conform{},
-  \nonconform{}, or \neval{}---never boolean.
+  \nonconform{}, or \neval{}---never boolean.  The third state
+  is revealed only when the full route is traversed, because a
+  shortcut that omits the ledger or the regime would collapse the
+  verdict space to two values.
 
 \item \textbf{Typed boundaries.}  $\tR = \IR$ is a first-class
   semantic value (not an error or a missing datum) that directly
-  determines ledger credit.
+  determines ledger credit.  The first pass makes this visible:
+  a measurement with no history earns zero credit and still
+  conforms.
 
 \item \textbf{Interface invariance.}  CLI, Python API, REST API,
-  C99 core, and C++ accelerator all produce identical results from
-  the same spine and frozen parameters.
+  C99 core, and C++ accelerator all produce identical results
+  because each traverses the same frozen spine.
 
 \item \textbf{Structural stability is rare.}
   \regime{Stable} occupies 12.5\% of Fisher space; the homogeneous
   high-fidelity trace sits in the small corner where all four gates
   simultaneously pass.
 \end{enumerate}
+
+Each point is a consequence of completeness: it could not be
+demonstrated without visiting every stop.
 
 \subsection{Reproduce this pass}\label{sec:reproduce}
 
@@ -917,13 +919,15 @@ repository~\cite{umcpmetadatarepo}.  The following commands suffice:
 \section{Conclusions}\label{sec:conclusions}
 % ============================================================
 
-We have provided a complete, self-contained trace of a single
-measurement through the twelve stops of the GCD validation spine.
-Every number is reproducible by running the open-source reference
-implementation~\cite{umcpmetadatarepo}.  The paper serves as the
-canonical entrance to the framework: a reader who has seen one
-complete pass can navigate any domain closure, any theorem, and any
-extension of the system.
+The GCD validation spine has exactly one shortest complete route:
+freeze the contract, embed the data, compute the kernel, reconcile
+the ledger, classify the regime, derive the verdict.  This paper
+has walked that route with exact numbers for the simplest possible
+input, proving by construction that every stop is necessary and
+sufficient.  A reader who has followed this single pass can enter
+the framework at any point---any of 23 domain closures, any of the
+44 structural identities, any extension---because the protocol that
+governs them is precisely what was traversed here.
 
 The first pass is complete.  Now proceed through any door.
 
