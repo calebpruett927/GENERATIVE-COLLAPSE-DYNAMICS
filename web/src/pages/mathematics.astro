@@ -438,7 +438,7 @@ const base = import.meta.env.BASE_URL;
       <div class="bg-kernel-900 border border-kernel-700 rounded-lg p-6">
         <h3 class="text-lg font-bold text-kernel-200 mb-3">Five Frozen Parameters <span class="text-kernel-500 text-sm font-normal">(seam-derived, not chosen)</span></h3>
         <p class="text-kernel-400 text-sm mb-4">
-          These are not hyperparameters. They are the <em>unique values</em> where seams close consistently across all 21 domains. Click each to see why it must be this value.
+          These are not hyperparameters. They are the <em>unique values</em> where seams close consistently across all 23 domains. Click each to see why it must be this value.
         </p>
         <div class="space-y-3" id="frozen-cards"></div>
         <div id="frozen-detail" class="hidden mt-4 bg-kernel-950 border border-kernel-600 rounded-lg p-5">
@@ -865,7 +865,7 @@ const base = import.meta.env.BASE_URL;
       section: '§3', name: 'Geometric Slaughter', latin: 'Trucidatio Geometrica', value: 'IC/F: 1.0 → 0.11', color: 'text-red-400', borderColor: 'border-red-700 hover:border-red-500',
       detail: `<p><strong>What happens:</strong> Start with 8 channels all at 0.95 (IC/F = 1.0). Kill just 1 channel (set to ε). IC/F drops to 0.11.</p>
         <p><strong>Why "slaughter":</strong> F barely notices (0.95 → 0.83). But IC collapses (0.95 → 0.095). One dead channel in eight destroys 89% of integrity while fidelity only drops 13%.</p>
-        <p><strong>Universal:</strong> This holds across all 21 domains. It is a structural property of the geometric mean, not domain-specific.</p>`
+        <p><strong>Universal:</strong> This holds across all 23 domains. It is a structural property of the geometric mean, not domain-specific.</p>`
     },
     {
       section: '§4', name: 'First Weld', latin: 'Limen Generativum', value: 'Γ(0.682) = 0.998', color: 'text-cyan-400', borderColor: 'border-cyan-700 hover:border-cyan-500',
@@ -963,7 +963,7 @@ const base = import.meta.env.BASE_URL;
       gcd: 'IC = exp(κ)', classical: 'Exponential Map (local)', stripped: 'Domain universality, global scope', color: 'text-purple-400', borderColor: 'border-purple-700 hover:border-purple-500',
       detail: `<p>The classical exponential map is chart-specific (defined locally on a tangent space). GCD's IC = exp(κ) is:</p>
         <ul class="list-disc ml-4 space-y-1">
-          <li><strong>Universal:</strong> works across all 21 domains with the same formula.</li>
+          <li><strong>Universal:</strong> works across all 23 domains with the same formula.</li>
           <li><strong>Global:</strong> valid for all c ∈ [0,1]ⁿ, not just near a base point.</li>
           <li><strong>Composable:</strong> seam chains compose additively in κ-space.</li>
         </ul>
@@ -1314,7 +1314,7 @@ const base = import.meta.env.BASE_URL;
     },
     {
       level: 'L5', name: 'Domain Theorems (200+)', color: 'text-orange-400', borderColor: 'border-orange-700 hover:border-orange-500',
-      items: ['Standard Model: 27 theorems', 'Consciousness: 7 theorems', 'Awareness: 10 theorems', '21 domains × domain-specific results'],
+      items: ['Standard Model: 27 theorems', 'Consciousness: 7 theorems', 'Awareness: 10 theorems', '23 domains × domain-specific results'],
       detail: `<p>Tier-2 domain closures apply the kernel to specific fields — each produces domain theorems validated through the spine.</p>
         <p><strong>Standard Model:</strong> 27 theorems (10 core + 2 neutrino + 15 extended). Spin-statistics, generation monotonicity, confinement as IC collapse, mass-kernel log mapping.</p>
         <p><strong>Cross-domain universality:</strong> The same kernel, same frozen parameters, same identities hold across quarks, consciousness, finance, cosmology, semiotics. This is not analogy — it is structural identity.</p>`
@@ -1402,7 +1402,7 @@ const base = import.meta.env.BASE_URL;
     { symbol: 'ε', value: '10⁻⁸', name: 'Guard Band', color: 'text-amber-400', borderColor: 'border-amber-700 hover:border-amber-500',
       detail: `<p><strong>Why this value:</strong> The pole at ω = 1 (c = 0) does not affect any measurement to machine precision with ε = 10⁻⁸.</p>
         <p>For float64, the smallest representable positive number above 0 is ~5×10⁻³²⁴. An ε of 10⁻⁸ is astronomically larger — it's a conservative guard that prevents numerical issues while being invisible to all physical measurements.</p>
-        <p><strong>How discovered:</strong> Vary ε from 10⁻¹ to 10⁻¹⁵. At 10⁻⁸, kernel outputs stabilize to within machine epsilon for all 21 domains. Smaller values add no information; larger values introduce bias.</p>` },
+        <p><strong>How discovered:</strong> Vary ε from 10⁻¹ to 10⁻¹⁵. At 10⁻⁸, kernel outputs stabilize to within machine epsilon for all 23 domains. Smaller values add no information; larger values introduce bias.</p>` },
     { symbol: 'p', value: '3', name: 'Drift Exponent', color: 'text-red-400', borderColor: 'border-red-700 hover:border-red-500',
       detail: `<p><strong>Why this value:</strong> p = 3 is the <em>unique integer</em> such that ω^p + ω = 1 has an algebraic solution via Cardano's formula. The root is ω_trap = 0.6823.</p>
         <p><strong>p = 1:</strong> linear cost — too weak to separate regimes.</p>
@@ -1413,10 +1413,10 @@ const base = import.meta.env.BASE_URL;
       detail: `<p><strong>Why this value:</strong> Unit coupling — curvature cost is at the same scale as drift cost. The crossover Γ = D_C occurs at ω ≈ 0.58.</p>
         <p>If α were ≠ 1: the crossover would shift, changing the balance between drift and heterogeneity in the budget. α = 1 is the unique value where the two costs have equal standing in the budget equation.</p>` },
     { symbol: 'tol', value: '0.005', name: 'Seam Tolerance', color: 'text-cyan-400', borderColor: 'border-cyan-700 hover:border-cyan-500',
-      detail: `<p><strong>Why this value:</strong> The width where IC ≤ F holds at 100% across all 21 domains. This is discovered empirically by sweeping tolerance values and checking pass rates.</p>
+      detail: `<p><strong>Why this value:</strong> The width where IC ≤ F holds at 100% across all 23 domains. This is discovered empirically by sweeping tolerance values and checking pass rates.</p>
         <p><strong>Tighter (0.001):</strong> Some domains fail at boundary cases — too strict.</p>
         <p><strong>Looser (0.01):</strong> Some nonconformant cases pass — too lax.</p>
-        <p><strong>0.005:</strong> The sweet spot where all 21 domains pass and all genuine violations are caught.</p>` },
+        <p><strong>0.005:</strong> The sweet spot where all 23 domains pass and all genuine violations are caught.</p>` },
     { symbol: 'c*', value: '0.7822', name: 'Logistic Self-Dual Fixed Point', color: 'text-green-400', borderColor: 'border-green-700 hover:border-green-500',
       detail: `<p><strong>Definition:</strong> The unique c ∈ (1/2, 1) satisfying c* = σ(1/c*), where σ is the logistic function. Equivalently: ln((1−c)/c) + 1/c = 0.</p>
         <p><strong>What it maximizes:</strong> S + κ per channel. The point where entropy production and log-integrity are in optimal balance.</p>

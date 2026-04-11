@@ -148,7 +148,7 @@ The entire system can be grasped through **one axiom, one spine, five words, six
 | **ε** | 10⁻⁸ | Guard band: pole at ω=1 does not affect measurements to machine precision |
 | **p** | 3 | Unique integer where ω_trap is a Cardano root of x³+x−1=0 |
 | **α** | 1.0 | Curvature cost coefficient (unit coupling) |
-| **tol_seam** | 0.005 | Width where IC ≤ F holds at 100% across all 21 domains |
+| **tol_seam** | 0.005 | Width where IC ≤ F holds at 100% across all 23 domains |
 | **c\*** | 0.7822 | Logistic self-dual fixed point: maximizes S + κ per channel |
 
 **THREE ALGEBRAIC IDENTITIES** (always true, by construction):
@@ -309,7 +309,7 @@ The kernel K: [0,1]ⁿ × Δⁿ → (F, ω, S, C, κ, IC) has four primitive equ
 
 ### Frozen Parameters (from `frozen_contract.py` — Seam-Derived, Not Prescribed)
 
-These values are the unique constants where seams close consistently across all 21 domains. They are discovered by the mathematics, not chosen by convention. All code **must** reference these from `frozen_contract.py`, never hardcode alternatives.
+These values are the unique constants where seams close consistently across all 23 domains. They are discovered by the mathematics, not chosen by convention. All code **must** reference these from `frozen_contract.py`, never hardcode alternatives.
 
 | Parameter | Value | Symbol | Role | Source |
 |-----------|-------|--------|------|--------|
@@ -845,7 +845,7 @@ There is no fourth option. No external framework is co-equal with Axiom-0 inside
 
 2. **Classical results are degenerate limits, not sources.** The arrow of derivation runs FROM Axiom-0 TO classical results. Strip the channel semantics from IC ≤ F and you get AM-GM. Strip the collapse field from S and you get Shannon entropy. Strip the cost function from F + ω = 1 and you get unitarity. The classical versions are what remain when degrees of freedom are removed.
 
-3. **Frozen parameters are seam-derived, not prescribed.** Standard frameworks prescribe constants from outside (α = 0.05 by convention, 3σ by tradition, hyperparameters by cross-validation). UMCP's frozen parameters are the unique values where seams close consistently: p = 3 is discovered (not chosen), tol_seam = 0.005 is where IC ≤ F holds at 100% across 21 domains, ε = 10⁻⁸ is where the pole at ω = 1 does not affect any measurement to machine precision.
+3. **Frozen parameters are seam-derived, not prescribed.** Standard frameworks prescribe constants from outside (α = 0.05 by convention, 3σ by tradition, hyperparameters by cross-validation). UMCP's frozen parameters are the unique values where seams close consistently: p = 3 is discovered (not chosen), tol_seam = 0.005 is where IC ≤ F holds at 100% across 23 domains, ε = 10⁻⁸ is where the pole at ω = 1 does not affect any measurement to machine precision.
 
 4. **Three-valued verdicts, not boolean.** CONFORMANT / NONCONFORMANT / NON_EVALUABLE. There is always a third state. *Tertia via semper patet.*
 

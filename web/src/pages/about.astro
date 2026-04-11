@@ -305,7 +305,7 @@ const base = import.meta.env.BASE_URL;
 
         <!-- Visual example -->
         <div class="bg-kernel-950 rounded-lg p-4">
-          <p class="text-xs text-kernel-500 mb-3 font-medium uppercase tracking-wider">Example: One Tier-1 identity test compounds across 21 domains</p>
+          <p class="text-xs text-kernel-500 mb-3 font-medium uppercase tracking-wider">Example: One Tier-1 identity test compounds across 23 domains</p>
           <div class="font-mono text-xs space-y-1">
             <div class="text-kernel-500"># One parametrized test function:</div>
             <div class="text-amber-400">@pytest.mark.parametrize("domain", ALL_20_DOMAINS)</div>
@@ -318,7 +318,7 @@ const base = import.meta.env.BASE_URL;
           <div class="mt-3 flex items-center gap-2 text-[10px]">
             <span class="text-kernel-500">→ 1 function</span>
             <span class="text-kernel-600">×</span>
-            <span class="text-kernel-500">21 domains</span>
+            <span class="text-kernel-500">23 domains</span>
             <span class="text-kernel-600">×</span>
             <span class="text-kernel-500">12–118 entities</span>
             <span class="text-kernel-600">=</span>
@@ -889,7 +889,7 @@ const base = import.meta.env.BASE_URL;
     {
       name: 'Closures', role: 'Publish thresholds — no mid-edit', color: 'text-yellow-400', borderColor: 'border-yellow-500 hover:border-yellow-400',
       latin: 'Clausurae',
-      detail: '<p>Closures <strong>publish the decision boundaries</strong> and their ordering. Once a closure set is declared, it cannot be edited mid-episode — the stance <em>must</em> change when thresholds are crossed.</p><p>Each of the 21 domains has its own closures: which real-world quantities become channels, how they map to [0, 1], and what entity catalogs are used.</p>',
+      detail: '<p>Closures <strong>publish the decision boundaries</strong> and their ordering. Once a closure set is declared, it cannot be edited mid-episode — the stance <em>must</em> change when thresholds are crossed.</p><p>Each of the 23 domains has its own closures: which real-world quantities become channels, how they map to [0, 1], and what entity catalogs are used.</p>',
       example: '<p class="text-xs"><strong>Example:</strong> The standard model closure maps 31 particles to 8 channels: mass_log, spin_norm, charge_norm, color, weak_isospin, lepton_num, baryon_num, generation. Equal weights w_i = 1/8.</p>',
     },
     {
@@ -1118,8 +1118,8 @@ const base = import.meta.env.BASE_URL;
     },
     {
       tier: 'Tier-2', name: 'Expansion Space', color: 'text-green-400', borderColor: 'border-green-700 hover:border-green-500',
-      summary: '21 domain closures — freely extensible.',
-      detail: '<p>Tier-2 is the <strong>expansion space</strong> — domain closures that choose which real-world quantities become the trace vector c and weights w. Each closure maps a specific domain\'s data into the kernel\'s input format.</p><p>Currently 21 domains: from <strong>particle physics</strong> (31 particles, 8-channel trace) to <strong>consciousness studies</strong> (20 systems, coherence kernel) to <strong>finance</strong> (portfolio continuity, market microstructure). Freely extensible — add new domains by creating new closures and validating through Tier-0 against Tier-1.</p>',
+      summary: '23 domain closures — freely extensible.',
+      detail: '<p>Tier-2 is the <strong>expansion space</strong> — domain closures that choose which real-world quantities become the trace vector c and weights w. Each closure maps a specific domain\'s data into the kernel\'s input format.</p><p>Currently 23 domains: from <strong>particle physics</strong> (31 particles, 8-channel trace) to <strong>consciousness studies</strong> (20 systems, coherence kernel) to <strong>finance</strong> (portfolio continuity, market microstructure). Freely extensible — add new domains by creating new closures and validating through Tier-0 against Tier-1.</p>',
       mutable: 'Freely extensible. Validated before trust.',
       examples: '<p class="text-xs">standard_model/ (31 particles, 27 theorems), atomic_physics/ (118 elements, 10,162 Tier-1 tests), consciousness_coherence/ (20 systems, 7 theorems), finance/ (portfolio, microstructure).</p>',
     },
@@ -1424,7 +1424,7 @@ const base = import.meta.env.BASE_URL;
     python: {
       name: 'Python — The Orchestrator', color: 'text-emerald-400',
       detail: `
-        <p>The <strong>high-level layer</strong> that brings everything together: 21 domain closures, the validation CLI, 46-page Streamlit dashboard, distributed fleet, and the entire test suite.</p>
+        <p>The <strong>high-level layer</strong> that brings everything together: 23 domain closures, the validation CLI, 46-page Streamlit dashboard, distributed fleet, and the entire test suite.</p>
         <div class="grid grid-cols-2 gap-3 my-3">
           <div class="bg-kernel-950 rounded-lg p-3">
             <p class="text-xs text-kernel-400 mb-1 font-medium">Core Modules</p>

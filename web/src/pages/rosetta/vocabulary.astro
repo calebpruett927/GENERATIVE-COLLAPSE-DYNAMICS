@@ -157,7 +157,7 @@ const base = import.meta.env.BASE_URL;
       formula: 'IC ≤ F',
       proof: 'IC = exp(Σ wᵢ ln cᵢ) is the weighted geometric mean. F = Σ wᵢcᵢ is the weighted arithmetic mean. GM ≤ AM, with equality iff all cᵢ equal. More fundamentally: IC ≤ F is the solvability condition — for n=2, c₁,₂ = F ± √(F²−IC²) requires IC ≤ F for real solutions.',
       meaning: 'Integrity cannot exceed fidelity. One dead channel kills IC via geometric slaughter while F stays healthy. The gap Δ = F − IC is the heterogeneity gap measuring channel divergence.',
-      verified: '100% (all 21 domains)',
+      verified: '100% (all 23 domains)',
     },
     {
       name: 'Log-Integrity Relation',
@@ -229,7 +229,7 @@ const base = import.meta.env.BASE_URL;
     { name: 'p (P_EXPONENT)', value: `${P_EXPONENT}`, source: 'Cardano root', role: 'Unique integer where ω_trap is a root of x³ + x − 1 = 0. Governs Γ(ω) = ω^p/(1−ω+ε).' },
     { name: 'α (ALPHA)', value: `${ALPHA}`, source: 'Unit coupling', role: 'Curvature cost coefficient: D_C = α·C. Unit coupling — curvature debit equals curvature directly.' },
     { name: 'λ (LAMBDA)', value: `${LAMBDA}`, source: 'Auxiliary', role: 'Auxiliary coefficient for extended diagnostics.' },
-    { name: 'tol_seam (TOL_SEAM)', value: `${TOL_SEAM}`, source: 'Seam closure', role: 'Width where IC ≤ F holds at 100% across all 21 domains. |s| ≤ tol_seam for seam PASS.' },
+    { name: 'tol_seam (TOL_SEAM)', value: `${TOL_SEAM}`, source: 'Seam closure', role: 'Width where IC ≤ F holds at 100% across all 23 domains. |s| ≤ tol_seam for seam PASS.' },
     { name: 'c* (C_STAR)', value: `${C_STAR}`, source: 'Logistic fixed point', role: 'Self-dual fixed point of the logistic map. Maximizes S + κ per channel.' },
     { name: 'ω_trap (OMEGA_TRAP)', value: `${OMEGA_TRAP}`, source: 'Cardano root', role: 'Drift trapping point: x³ + x − 1 = 0 where x = ω_trap. c_trap = 1 − ω_trap.' },
     { name: 'c_trap (C_TRAP)', value: `${C_TRAP}`, source: 'From ω_trap', role: 'Channel-space trapping point. Location of the first weld (Γ drops below 1.0).' },
@@ -240,7 +240,7 @@ const base = import.meta.env.BASE_URL;
       <h2 class="text-lg font-bold text-kernel-200 mb-1">Frozen Parameters</h2>
       <p class="text-xs text-kernel-500 mb-4">
         <em>Trans suturam congelatum</em> — frozen across the seam. These values are the unique constants
-        where seams close consistently across all 21 domains. They are discovered by the mathematics,
+        where seams close consistently across all 23 domains. They are discovered by the mathematics,
         not chosen by convention. Never say "we chose" or "hyperparameter."
       </p>
       <div class="overflow-x-auto">

@@ -1886,7 +1886,7 @@ def plot_tier_architecture() -> None:
             "K: [0,1]ⁿ × Δⁿ → (F, ω, S, C, κ, IC)\n\n"
             "F + ω = 1  │  IC ≤ F  │  IC = exp(κ)\n"
             "44 structural identities  │  47 lemmas  │  5 frozen constants\n"
-            "716 proven theorems across 23 domains  │  0 violations",
+            "746 proven theorems across 23 domains  │  0 violations",
         ),
         (
             1.5,
@@ -1898,7 +1898,7 @@ def plot_tier_architecture() -> None:
             "Regime gates: Stable / Watch / Collapse  │  Seam calculus\n\n"
             "Validator  │  Contracts  │  Schemas  │  SHA-256 integrity\n"
             "Three-valued verdicts: CONFORMANT / NONCONFORMANT / NON_EVALUABLE\n"
-            "19,631 tests  │  222 closure modules  │  C++17 accelerator (50-80× speedup)",
+            "20,221 tests  │  245 closure modules  │  C++17 accelerator (50-80× speedup)",
         ),
         (
             1.5,

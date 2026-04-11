@@ -7,8 +7,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/blob/main/LICENSE)
 [![CI](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/actions/workflows/validate.yml/badge.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/actions)
 [![Tests: 20,221](https://img.shields.io/badge/tests-20%2C221-brightgreen.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/tree/main/tests)
-[![Theorems: 716](https://img.shields.io/badge/theorems-716-purple.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/blob/main/CATALOGUE.md)
-[![Domains: 21](https://img.shields.io/badge/domains-21-teal.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/tree/main/closures)
+[![Theorems: 746](https://img.shields.io/badge/theorems-746-purple.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/blob/main/CATALOGUE.md)
+[![Domains: 23](https://img.shields.io/badge/domains-23-teal.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/tree/main/closures)
 [![Production/Stable](https://img.shields.io/badge/status-Production%2FStable-brightgreen.svg)](https://pypi.org/project/umcp/)
 
 **A contract-first validation framework for reproducible computational workflows.**
@@ -247,7 +247,7 @@ src/umcp_cpp/           # C++17 Accelerator (pybind11)
 ├── bindings/            # Zero-copy NumPy bridge
 └── tests/               # 434 Catch2 assertions
 
-closures/                # 21 domain closure modules (222 .py files)
+closures/                # 23 domain closure modules (245 .py files)
 contracts/               # 23 versioned mathematical contracts (YAML)
 casepacks/               # 29 self-contained validation packages
 schemas/                 # 17 JSON Schema Draft 2020-12 definitions

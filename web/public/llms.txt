@@ -4,13 +4,13 @@
 
 ## Project Statistics (Canonical Values)
 
-- Version: 2.3.0
-- Domains: 21
-- Theorems: 716 (unique proven theorems)
-- Tests: 19,397 automated tests across 218 test files
+- Version: 2.3.1
+- Domains: 23
+- Theorems: 746 (unique proven theorems)
+- Tests: 20,221 automated tests across 231 test files
 - Structural Identities: 44
 - Lemmas: 47
-- Closure Modules: 222
+- Closure Modules: 245
 - C/C++ Assertions: 760
 - Python: ≥3.11
 
@@ -52,19 +52,19 @@ Six outputs, 3 effective degrees of freedom (F, κ, C):
 - Watch: 0.038 ≤ ω < 0.30 (24.4%)
 - Collapse: ω ≥ 0.30 (63.1%)
 
-## 21 Domain Closures
+## 23 Domain Closures
 
 1. GCD (self-reference)
 2. RCFT (recursive collapse)
 3. Kinematics (motion analysis)
 4. Weyl cosmology (modified gravity)
 5. Security (audit validation)
-6. Astronomy (stellar classification)
-7. Nuclear physics (binding energy, QGP)
-8. Quantum mechanics (QDM, FQHE)
-9. Finance (portfolio coherence)
+6. Astronomy (stellar classification, exoplanet atmospheres)
+7. Nuclear physics (binding energy, QGP, nucleosynthesis)
+8. Quantum mechanics (QDM, FQHE, quantum error correction)
+9. Finance (portfolio coherence, credit risk contagion)
 10. Atomic physics (118 elements)
-11. Materials science (element database)
+11. Materials science (element database, energy storage)
 12. Standard Model (31 particles, 27 theorems)
 13. Everyday physics (thermo, optics, EM)
 14. Evolution (40 organisms, brain kernel)
@@ -75,6 +75,8 @@ Six outputs, 3 effective degrees of freedom (F, κ, C):
 19. Spacetime memory (40 entities, gravitational memory)
 20. Clinical neuroscience (cortical kernel)
 21. Immunology (adaptive immunity, T/B cells)
+22. Intelligence coherence (58 entities)
+23. Fungi kingdom (12 species, mycorrhizal stress)
 
 ## Links
 

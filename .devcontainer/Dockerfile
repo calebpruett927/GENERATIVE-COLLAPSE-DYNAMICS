@@ -1,4 +1,4 @@
-# UMCP Development Container — v2.2.2
+# UMCP Development Container — v2.3.1
 # Python 3.12 on Debian Bookworm — matches CI (ubuntu-latest / Python 3.12).
 # Includes: LaTeX (RevTeX4-2 papers), system libs for scipy/numpy, git tooling.
 

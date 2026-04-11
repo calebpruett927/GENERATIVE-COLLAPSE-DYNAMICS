@@ -572,7 +572,7 @@ Across all 21 domains, Bernoulli field entropy S appears in only 1 of 13 theorem
   - Seam structure defined; closures implemented
   - ⚠️ Automated weld PASS/FAIL computation not yet integrated into CLI
 
-- ✅ **Tier-2**: 21 domain expansions active (716+ theorems)
+- ✅ **Tier-2**: 23 domain expansions active (746+ theorems)
   - GCD, RCFT, Kinematics, Finance, Security, Astronomy
   - Nuclear, Quantum, Weyl, Atomic Physics, Materials Science, Standard Model
   - Everyday Physics, Evolution, Dynamic Semiotics, Consciousness Coherence

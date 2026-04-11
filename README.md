@@ -9,9 +9,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![UMCP v2.3.1](https://img.shields.io/badge/UMCP-v2.3.1-orange.svg)](pyproject.toml)
 [![Tests: 20,221](https://img.shields.io/badge/tests-20%2C221-brightgreen.svg)](tests/)
-[![Domains: 21](https://img.shields.io/badge/domains-21-blueviolet.svg)](closures/)
-[![Closures: 222](https://img.shields.io/badge/closures-222-informational.svg)](closures/)
-[![Theorems: 716](https://img.shields.io/badge/theorems-716_proven-ff69b4.svg)](closures/)
+[![Domains: 23](https://img.shields.io/badge/domains-23-blueviolet.svg)](closures/)
+[![Closures: 245](https://img.shields.io/badge/closures-245-informational.svg)](closures/)
+[![Theorems: 746](https://img.shields.io/badge/theorems-746_proven-ff69b4.svg)](closures/)
 [![Identities: 44](https://img.shields.io/badge/identities-44_verified-9cf.svg)](scripts/)
 
 ## [**Try the Interactive Web Calculator →**](https://calebpruett927.github.io/GENERATIVE-COLLAPSE-DYNAMICS/calculator)
@@ -41,7 +41,7 @@ This is not a simulation. It is a **metrological enforcement engine**: schema co
 </li>
 <li><a href="#interactive-web-calculator">Interactive Web Calculator</a></li>
 <li><a href="#architecture">Architecture</a></li>
-<li><a href="#closure-domains">Closure Domains (21 Domains)</a></li>
+<li><a href="#closure-domains">Closure Domains (23 Domains)</a></li>
 <li><a href="#the-kernel">The Kernel</a></li>
 <li><a href="#originality--terminology">Originality &amp; Terminology</a></li>
 <li><a href="#installation">Installation</a></li>
@@ -139,10 +139,10 @@ Tier-1 (44 structural identities, 47 lemmas, 746 proven theorems) → Tier-0 (20
 <p align="center">
   <img src="images/10_tier_architecture.png" alt="Three-Tier Architecture: Tier-1 (Kernel) → Tier-0 (Protocol) → Tier-2 (Domains)" width="88%">
   <br>
-  <sub><b>Figure 1</b> — Three-Tier Stack: Immutable kernel invariants (Tier-1) flow through protocol machinery (Tier-0) into 21 domain closures (Tier-2). No back-edges.</sub>
+  <sub><b>Figure 1</b> — Three-Tier Stack: Immutable kernel invariants (Tier-1) flow through protocol machinery (Tier-0) into 23 domain closures (Tier-2). No back-edges.</sub>
 </p>
 
-### Integrity Bound: IC ≤ F — Zero Violations Across 21 Domains
+### Integrity Bound: IC ≤ F — Zero Violations Across 23 Domains
 
 The integrity bound holds universally from quarks to consciousness — verified across Standard Model particles, 118 periodic table elements, 40 organisms, 30 sign systems, and 20 consciousness states. Derived independently from Axiom-0. Zero violations across all domains.
 
@@ -262,7 +262,7 @@ src/umcp_cpp/                     # C++ accelerator (links umcp_c_core)
 | **Schemas** | 17 | `schemas/*.schema.json` | JSON Schema files validating all artifacts |
 | **Canon Anchors** | 21 | `canon/*.yaml` | Domain-specific canonical reference points |
 | **Casepacks** | 26 | `casepacks/` | Reproducible validation bundles |
-| **Closure Domains** | 21 | `closures/*/` | Domain closure packages (245 modules) |
+| **Closure Domains** | 23 | `closures/*/` | Domain closure packages (245 modules) |
 | **Closure Registry** | 1 | `closures/registry.yaml` | Central listing of all closures |
 | **Validator Rules** | 1 | `validator_rules.yaml` | Semantic rule definitions (E101, W201, ...) |
 | **Integrity** | 1 | `integrity/sha256.txt` | SHA-256 checksums for 248 tracked files |
@@ -275,7 +275,7 @@ UMCP validates across **23 domains** with **245 closure modules**, each encoding
 
 ### Standard Model — 12 modules
 
-The crown jewel: 31 particles mapped through the GCD kernel with **27 proven theorems** (134/134 subtests at machine precision). Part of a **716-theorem corpus** across 21 formalisms spanning particle physics, quantum mechanics, nuclear physics, materials science, evolution, consciousness, semiotics, awareness-cognition, active matter, and blast-wave dynamics.
+The crown jewel: 31 particles mapped through the GCD kernel with **27 proven theorems** (134/134 subtests at machine precision). Part of a **746-theorem corpus** across 23 formalisms spanning particle physics, quantum mechanics, nuclear physics, materials science, evolution, consciousness, semiotics, awareness-cognition, active matter, and blast-wave dynamics.
 
 | Module | What It Encodes |
 |--------|----------------|
@@ -1170,7 +1170,7 @@ python scripts/identity_deep_probes.py      # N11-N16: moment families, composit
 | 5 | **4-dimensional closure algebra** — 5 diagnostics span 4 effective dimensions | Half the degrees of freedom are constrained by the kernel |
 | 6 | **Stability is rare** — Collapse 63% / Watch 24% / Stable 12.5% of Fisher space | Return from collapse to stability is the exception, not the norm |
 
-### Across 21 Domains and 716 Proven Theorems
+### Across 23 Domains and 746 Proven Theorems
 
 1. **Confinement is a cliff**: IC drops 98.1% at the quark→hadron boundary — confinement is visible as geometric-mean collapse in the kernel trace
 
@@ -1208,7 +1208,7 @@ python scripts/identity_deep_probes.py      # N11-N16: moment families, composit
 
 18. **Entropy as binding gate in ML force fields**: Across 15 OPoly26 polymer traces, entropy S is the dominant bottleneck for 60% of models — not drift ω or fidelity F. The best ML force fields are limited by the information-theoretic spread of their error profiles, not by mean error magnitude. This structural insight changes what "improvement" means: reducing entropy (making error profiles more uniform) matters more than reducing mean error.
 
-19. **89.75-million sensitivity ratio — extreme channel pathology**: UMA-s-1p1's electrolyte channel has ∂IC/∂c = 1,088,402, while all other channels sit at ~0.012. The system's integrity hangs on a single thread. This is the most extreme sensitivity ratio observed in any of the 21 domain closures — directly actionable intelligence for ML force-field developers.
+19. **89.75-million sensitivity ratio — extreme channel pathology**: UMA-s-1p1's electrolyte channel has ∂IC/∂c = 1,088,402, while all other channels sit at ~0.012. The system's integrity hangs on a single thread. This is the most extreme sensitivity ratio observed in any of the 23 domain closures — directly actionable intelligence for ML force-field developers.
 
 20. **Composition algebra validity domain**: IC geometric composition (IC₁₂ = √(IC₁·IC₂)) is exact within 0.00003 for same-phase subsystems but fails by 0.53 when composing across the coherent/fragmented phase boundary. You cannot compose across a phase transition — the algebra has a validity domain tied to structural similarity.
 
