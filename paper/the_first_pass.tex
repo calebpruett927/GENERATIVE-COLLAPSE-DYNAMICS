@@ -126,22 +126,16 @@ through the frozen contract, embedding, kernel computation, ledger
 reconciliation, regime classification, casepack packaging, and
 operational execution---all with exact numbers.
 
-This paper provides that trace.  The object is deliberately minimal:
-three identical voltage readings.  The simplicity is the point.  When
-the system is understood for the simplest case, the general case
-follows by replacing the trace vector---the spine does not change.
-
-The choice of a trivial example is architectural, not pedagogical
-laziness.  The validation spine is \emph{invariant} across domains:
-the same frozen contract, kernel, ledger, regime gates, and verdict
-logic apply whether the trace vector carries three voltages or
-thirty-one Standard Model particles.  Only the Tier-2 closure
-changes---the mapping from raw observables to the unit interval.
-One complete pass through the simplest case therefore constitutes
-the correct entrance to the entire framework, because a reader who
-has verified the spine for three homogeneous channels can then
-navigate any domain closure by understanding only the channel
-selection, never the protocol itself.
+This paper provides that trace.  The object is deliberately
+minimal: three identical voltage readings.  This choice is
+architectural, not pedagogical laziness.  The validation spine is
+\emph{invariant} across domains: the same frozen contract, kernel,
+ledger, regime gates, and verdict logic apply whether the trace
+vector carries three voltages or thirty-one Standard Model
+particles.  Only the Tier-2 closure changes---the mapping from raw
+observables to the unit interval.  A reader who has verified the
+spine for the simplest case can navigate any domain closure by
+understanding only the channel selection, never the protocol itself.
 
 \subsection{Scope and structure}
 
@@ -154,9 +148,9 @@ fixed discourse spine:
   is bounded, and the kernel is computed.
 \item \textbf{Closures} (Stop~6): Thresholds are published; the
   ledger is debited and credited.
-\item \textbf{Integrity Ledger} (Stops~6--7): The seam residual is
+\item \textbf{Integrity Ledger} (Stop~7): The seam residual is
   checked; the regime is classified.
-\item \textbf{Stance} (Stops~7--12): The verdict is derived;
+\item \textbf{Stance} (Stops~8--12): The verdict is derived;
   the result is packaged, executed, rendered, and read back into
   ordinary language.
 \end{enumerate}
@@ -190,14 +184,10 @@ stages visually.
   12 & Ordinary reading  & & Tier-2 \\
   \bottomrule
 \end{tabular}
-\caption{The twelve stops mapped onto the five stages of the
-  fixed discourse spine:
-  Contract~$\to$~Canon~$\to$~Closures~$\to$~Integrity
-  Ledger~$\to$~Stance.  The \textbf{Tier} column shows whether each
-  stop is Tier-1 (the kernel and its identities), Tier-0 (the protocol
-  that implements and interprets the kernel), or Tier-2 (domain-specific
-  channel selection).  ``$1 \!\leftarrow\! 0$'' denotes a crossing:
-  Tier-0 code evaluates a Tier-1 function.}
+\caption{Twelve stops mapped onto the five spine stages.
+  Tier-1: kernel and its identities; Tier-0: protocol implementation;
+  Tier-2: domain-specific channel selection.
+  ``$1 \!\leftarrow\! 0$'': Tier-0 code evaluates a Tier-1 function.}
 \label{fig:spine}
 \end{figure}
 
@@ -601,20 +591,21 @@ Table~\ref{tab:distinctions} separates them.
 \caption{Four related but distinct concepts.  Each is computed from
   different inputs and answers a different question.}
 \label{tab:distinctions}
-\begin{ruledtabular}
-\begin{tabular}{P{1.3cm}P{1.8cm}P{1.9cm}P{1.5cm}}
-  Object & Computed from & Meaning & This example \\
-  \hline
-  Regime & Four gates on $(F,\omega,S,C)$ & Structural phase of the
-    trace & \regime{Stable} \\
-  Stance / verdict & Ledger reconciliation + regime + identity checks
-    & Auditable three-valued judgment & \conform{} \\
-  Validator result & Schema, semantics, checksums, identities & Protocol
-    compliance of the casepack & \conform{}, 0 errors \\
-  Return status & $\tR$ from prior history & Whether the system has
-    re-entered $D_\theta$ & $\tR = \IR$ \\
-\end{tabular}
-\end{ruledtabular}
+{\footnotesize\setlength{\tabcolsep}{3pt}%
+\begin{tabular}{@{}P{1.2cm}P{1.7cm}P{1.9cm}P{1.6cm}@{}}
+  \toprule
+  Object & Computed from & Meaning & This run \\
+  \midrule
+  Regime & $F,\omega,S,C$ gates & Structural phase of
+    the trace & Stable \\
+  Stance & Ledger + regime + identities
+    & Three-valued verdict & Conf. \\
+  Validator & Schema, sums, IDs & Protocol
+    compliance & Conf. \\
+  Return & $\tR$ from history & Re-entry into $D_\theta$?
+    & $\tR{=}\IR$ \\
+  \bottomrule
+\end{tabular}}
 \end{table}
 
 % ============================================================
@@ -755,17 +746,12 @@ from gates.  The structure measures; the agent does not.
 Translation}\label{sec:latin}
 % ============================================================
 
-The following section is not ornamentation.  The GCD framework
-maintains a canonical Latin discourse layer because each Latin term
+The following section is not ornamentation.  Each Latin term
 carries morphological constraints that English prose does not---the
-operational definition is encoded in the word's structure.  This
-section demonstrates that the worked example can be rendered in full
-canonical form, verifying that the five-word vocabulary and the
-Rosetta translation are operational, not decorative.
-
-The canonical Latin vocabulary carries operational constraints that
-English does not.  Each term is not a translation but a precision
-instrument whose morphology encodes the operational definition.
+operational definition is encoded in the word's structure.  We
+render the worked example in full canonical form to verify that the
+five-word vocabulary and the Rosetta translation are operational,
+not decorative.
 
 The worked example, rendered canonically:
 
@@ -894,12 +880,6 @@ demonstrates:
   simultaneously pass.
 \end{enumerate}
 
-The simplicity of the example is a feature: the spine is identical
-for three voltage readings and for 31~Standard Model
-particles~\cite{paulus2025physicscoherence}.  Only the Tier-2
-channel choice changes; the Tier-1 kernel and Tier-0 protocol are
-invariant.
-
 \subsection{Reproduce this pass}\label{sec:reproduce}
 
 Every number in this paper can be regenerated from the open-source
@@ -918,7 +898,7 @@ repository~\cite{umcpmetadatarepo}.  The following commands suffice:
 ]
 \small
 \textbf{Clone \& install}\\[2pt]
-\texttt{git clone https://github.com/\\\hspace*{2em}calebpruett927/\\\hspace*{2em}GENERATIVE-COLLAPSE-DYNAMICS.git}\\[1pt]
+{\footnotesize\texttt{git clone https://github.com/\\\hspace*{1em}calebpruett927/\\\hspace*{1em}GENERATIVE-COLLAPSE-DYNAMICS.git}}\\[1pt]
 \texttt{cd GENERATIVE-COLLAPSE-DYNAMICS}\\[1pt]
 \texttt{pip install -e ".[all]"}\\[6pt]
 %
