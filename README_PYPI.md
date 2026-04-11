@@ -6,7 +6,7 @@
 [![C++17](https://img.shields.io/badge/C%2B%2B17-accelerator-orange.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/tree/main/src/umcp_cpp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/blob/main/LICENSE)
 [![CI](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/actions/workflows/validate.yml/badge.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/actions)
-[![Tests: 19,921](https://img.shields.io/badge/tests-19%2C921-brightgreen.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/tree/main/tests)
+[![Tests: 20,221](https://img.shields.io/badge/tests-20%2C221-brightgreen.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/tree/main/tests)
 [![Theorems: 716](https://img.shields.io/badge/theorems-716-purple.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/blob/main/CATALOGUE.md)
 [![Domains: 21](https://img.shields.io/badge/domains-21-teal.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/tree/main/closures)
 [![Production/Stable](https://img.shields.io/badge/status-Production%2FStable-brightgreen.svg)](https://pypi.org/project/umcp/)
@@ -27,9 +27,9 @@ Built on **Generative Collapse Dynamics (GCD)**, a measurement theory derived fr
 |---------|-------------|
 | **Contract-first validation** | Define mathematical contracts before evidence. Frozen parameters ensure reproducibility. |
 | **Tier-1 kernel** | Six invariants (F, ω, S, C, κ, IC) computed from any bounded trace vector — domain-independent. |
-| **21 scientific domains** | From particle physics and cosmology to neuroscience and finance — all through one kernel. |
-| **716 proven theorems** | 47 lemmas, 44 structural identities, 716 theorems verified to machine precision. |
-| **19,921 tests** | Comprehensive test suite across 226 files with 222 closure modules. |
+| **23 scientific domains** | From particle physics and cosmology to neuroscience and finance — all through one kernel. |
+| **746 proven theorems** | 47 lemmas, 44 structural identities, 746 theorems verified to machine precision. |
+| **20,221 tests** | Comprehensive test suite across 231 files with 245 closure modules. |
 | **Three-valued verdicts** | Never boolean. Always CONFORMANT / NONCONFORMANT / NON\_EVALUABLE. |
 | **Three-layer architecture** | C99 orchestration (~1,900 lines) → C++17 accelerator → Python engine. 760 C/C++ assertions. |
 | **Interactive dashboard** | 46-page Streamlit dashboard for real-time kernel exploration. |

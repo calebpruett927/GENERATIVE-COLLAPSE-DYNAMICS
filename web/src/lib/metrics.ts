@@ -12,12 +12,12 @@
 /* ─── Repository-Scale Metrics ──────────────────────────────────── */
 
 /** Total collected pytest items (pytest --collect-only | grep "::" | wc -l). */
-export const TEST_COUNT = '19,921';
-export const TEST_COUNT_RAW = 19_921;
+export const TEST_COUNT = '20,221';
+export const TEST_COUNT_RAW = 20_221;
 
 /** Number of closure domains in closures/. */
-export const DOMAIN_COUNT = '21';
-export const DOMAIN_COUNT_RAW = 21;
+export const DOMAIN_COUNT = '23';
+export const DOMAIN_COUNT_RAW = 23;
 
 /** Structural identities derived from Axiom-0. */
 export const IDENTITY_COUNT = '44';
@@ -28,20 +28,20 @@ export const LEMMA_COUNT = '47';
 export const LEMMA_COUNT_RAW = 47;
 
 /** Closure modules across all domains. */
-export const CLOSURE_COUNT = '222';
-export const CLOSURE_COUNT_RAW = 222;
+export const CLOSURE_COUNT = '245';
+export const CLOSURE_COUNT_RAW = 245;
 
 /** Proven theorems across all domain closures. */
-export const THEOREM_COUNT = '716';
-export const THEOREM_COUNT_RAW = 716;
+export const THEOREM_COUNT = '746';
+export const THEOREM_COUNT_RAW = 746;
 
 /** Implementation languages (C99, C++17, Python). */
 export const LANGUAGE_COUNT = '3';
 export const LANGUAGE_COUNT_RAW = 3;
 
 /** Test files (numbered test_000 through test_338). */
-export const TEST_FILE_COUNT = '226';
-export const TEST_FILE_COUNT_RAW = 226;
+export const TEST_FILE_COUNT = '231';
+export const TEST_FILE_COUNT_RAW = 231;
 
 /** Base test functions before parametrization. */
 export const BASE_TEST_COUNT = '~800';

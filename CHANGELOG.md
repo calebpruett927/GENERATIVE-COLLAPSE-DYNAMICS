@@ -5,6 +5,34 @@ All notable changes to the UMCP validator and repository will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.1] - 2026-04-11
+
+### Added
+- **5 new Tier-2 closure modules** (30 theorems, 60 entities each, all PROVEN):
+  - `closures/astronomy/exoplanet_atmospheres.py` — exoplanet characterization (T-EP-1–T-EP-6)
+  - `closures/finance/credit_risk_contagion.py` — credit risk contagion networks (T-CR-1–T-CR-6)
+  - `closures/nuclear_physics/stellar_nucleosynthesis.py` — nucleosynthesis pathways (T-NS-1–T-NS-6)
+  - `closures/materials_science/energy_storage.py` — energy storage systems (T-ES-1–T-ES-6)
+  - `closures/quantum_mechanics/quantum_error_correction.py` — quantum error correction (T-QE-1–T-QE-6)
+- 5 new test files: `test_339` through `test_343` (300 tests, 60 each, all passing)
+- `web/src/lib/identity-verification.ts` — identity verification state machine
+- `web/tests/integrity.test.ts` — 11 CI integrity guards (metric consistency, overclaim prevention)
+
+### Changed
+- **Version bump**: 2.3.0 → 2.3.1 across all repository files
+- **Test count**: 19,921 → 20,221 (300 new tests from 5 closure modules)
+- **Closure count**: 222 → 245 modules across 23 domains (was 21)
+- **Theorem count**: 716 → 746 proven theorems
+- **Test file count**: 226 → 231 files
+- Metrics centralized in `web/src/lib/metrics.ts` — single source of truth for all web counts
+- All web pages, README.md, README_PYPI.md, copilot-instructions.md, AGENTS.md, CLAUDE.md
+  synchronized with ground truth counts
+
+### Fixed
+- B8 identity proof: corrected `∫₀¹ g_F · S dc = π²/3` derivation (was displaying wrong)
+- Identity verification states: proper 4-state machine (unverified → verifying → verified/failed)
+- Eliminated duplicate hard-coded metrics across 6+ web pages — all now import from metrics.ts
+
 ## [2.3.0] - 2026-03-28
 
 ### Changed

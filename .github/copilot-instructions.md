@@ -1,6 +1,6 @@
 # Copilot Instructions for GENERATIVE-COLLAPSE-DYNAMICS
 
-**UMCP v2.3.0** · **19,921 tests** · **21 domains** · **222 closure modules** · **47 lemmas** · **44 structural identities**
+**UMCP v2.3.1** · **20,221 tests** · **23 domains** · **245 closure modules** · **47 lemmas** · **44 structural identities**
 
 ## Foundational Principle — Read This First
 
@@ -354,13 +354,13 @@ Before writing or modifying code, verify:
 
 UMCP (Universal Measurement Contract Protocol) validates reproducible computational workflows against mathematical contracts. The unit of work is a **casepack** — a directory containing raw data, a contract reference, closures, and expected outputs. The validator checks schema conformance, Tier-1 kernel identities (F = 1 − ω, IC ≈ exp(κ), IC ≤ F), regime classification, and SHA256 integrity, producing a three-valued CONFORMANT/NONCONFORMANT/NON_EVALUABLE verdict and appending to `ledger/return_log.csv`.
 
-**Version**: 2.3.0 · **Python**: ≥3.11 · **License**: MIT
+**Version**: 2.3.1 · **Python**: ≥3.11 · **License**: MIT
 
 ## Architecture
 
 ```
 src/umcp/
-├── __init__.py               # Public API: validate(), MeasurementEngine, __version__ (v2.3.0)
+├── __init__.py               # Public API: validate(), MeasurementEngine, __version__ (v2.3.1)
 ├── __main__.py               # python -m umcp entry point
 ├── cli.py                    # 2659-line argparse CLI — validation engine, all subcommands
 ├── validator.py              # Root-file validator (16 files, checksums, math identities)
@@ -587,7 +587,7 @@ All papers use RevTeX4-2 (`revtex4-2` document class) and share `Bibliography.bi
 
 ```bash
 pip install -e ".[all]"                     # Dev install (core + api + viz + dev tools)
-pytest                                       # 19,921 tests (pytest --collect-only | grep ":" | wc -l to verify)
+pytest                                       # 20,221 tests (pytest --collect-only | grep ":" | wc -l to verify)
 python scripts/update_integrity.py          # MUST run after changing any tracked file
 umcp validate .                             # Validate entire repo
 umcp validate casepacks/hello_world --strict # Validate casepack (strict = fail on warnings)
@@ -616,7 +616,7 @@ This script mirrors CI exactly and must exit 0 before committing. It runs 11 ste
 6. Repository health check — drift detection, version sync, freeze verification
 7. Update test count in documentation
 8. Regenerate SHA-256 integrity checksums (248 tracked files)
-9. Pytest bounds — collect tests and verify count within bounds (1000–16000)
+9. Pytest bounds — collect tests and verify count within bounds (1000–25000)
 10. `umcp validate .` — contract validation (must be CONFORMANT)
 11. Axiom-0 conformance — terminology, symbol capture, frozen params check
 
@@ -653,12 +653,12 @@ umcp validate <target>
 
 ## Test Patterns
 
-**19,921 test cases** across **226 test files** in `tests/` (225 top-level `test_*.py` + 1 in `tests/closures/` + `conftest.py`), numbered by tier and domain (`test_000_*` through `test_338_*`). Single `tests/conftest.py` provides:
+**20,221 test cases** across **231 test files** in `tests/` (230 top-level `test_*.py` + 1 in `tests/closures/` + `conftest.py`), numbered by tier and domain (`test_000_*` through `test_343_*`). Single `tests/conftest.py` provides:
 - Frozen `RepoPaths` dataclass (session-scoped) with all critical paths
 - `@lru_cache` helpers: `_read_file()`, `_parse_json()`, `_parse_yaml()`, `_compile_schema()`
 - Convention: `test_<subject>_<behavior>()` for functions; `TestCLI*` classes with `subprocess.run` for CLI integration
 - Additional coverage: `test_fleet_worker.py` (Worker, WorkerPool, WorkerConfig), `test_insights.py` (PatternDatabase, InsightEngine)
-- Parametrized tests expand the collected items to 19,921 (verify: `pytest --collect-only | grep "::" | wc -l`)
+- Parametrized tests expand the collected items to 20,221 (verify: `pytest --collect-only | grep "::" | wc -l`)
 
 ### Test Distribution by Range
 
@@ -755,9 +755,14 @@ umcp validate <target>
 | `test_325` | Malbolge dynamics (VM, trajectory, 6 theorems T-MD-1–T-MD-6) | 90 |
 | `test_337` | Fungi kingdom (12 species + 6 mycorrhizal stress, 9 theorems T-FK-1–T-FK-9) | 95 |
 | `test_338` | Intelligence coherence (58 entities, 6 theorems T-IC-1–T-IC-6) | 195 |
+| `test_339` | Exoplanet characterization (12 entities, 6 theorems T-EP-1–T-EP-6) | 60 |
+| `test_340` | Credit risk modeling (12 entities, 6 theorems T-CR-1–T-CR-6) | 60 |
+| `test_341` | Nucleosynthesis pathways (12 entities, 6 theorems T-NS-1–T-NS-6) | 60 |
+| `test_342` | Energy storage systems (12 entities, 6 theorems T-ES-1–T-ES-6) | 60 |
+| `test_343` | Quantum error correction (12 entities, 6 theorems T-QE-1–T-QE-6) | 60 |
 | `closures/` | Closure-specific tests (kinematics phase) | 27 |
 | Infrastructure | Kernel, seam, frozen contract, extensions, uncertainty, calculator, coverage, etc. | 1,939 |
-| **TOTAL** | | **19,921** |
+| **TOTAL** | | **20,221** |
 
 ## Extension System
 
@@ -800,7 +805,7 @@ Extensions use `typing.Protocol` (`ExtensionProtocol` requiring `name`, `version
 | Casepack structure | `casepacks/hello_world/` |
 | Contract format | `contracts/UMA.INTSTACK.v1.yaml` |
 | Semantic rules | `validator_rules.yaml` |
-| Canonical anchors | `canon/` (21 domain anchor files) |
+| Canonical anchors | `canon/` (23 domain anchor files) |
 | Semiotic convergence | `SEMIOTIC_CONVERGENCE.md` (GCD as semiotic system, Peirce correspondence) |
 | Semiotic kernel | `closures/dynamic_semiotics/semiotic_kernel.py` (30 sign systems, 8-channel trace) |
 | **Any symbol, lemma, identity, theorem, tag** | `CATALOGUE.md` — **master index** of all ~620 formal objects, organized by tier with full definitions and lineage |

@@ -1,7 +1,7 @@
 {
   "name": "gcd-kernel-sites",
   "type": "module",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Autonomous domain sites powered by the GCD Headless Contract Gateway",
   "scripts": {
     "dev": "astro dev",

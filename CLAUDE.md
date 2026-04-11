@@ -104,7 +104,7 @@ python scripts/pre_commit_protocol.py       # Full 11-step protocol, must exit 0
   frozen contract, regime gates, trace management, integrity ledger, and the full
   validation spine. No heap allocation in the hot path. Stable `extern "C"` ABI.
   The code is Tier-0; what it computes is Tier-1.
-- **Tier-2** (Expansion): `closures/` — 21 domain closures that choose which
+- **Tier-2** (Expansion): `closures/` — 23 domain closures that choose which
   real-world quantities become channels. Validated through Tier-0 against Tier-1.
 
 Key files: `src/umcp/frozen_contract.py` (constants), `src/umcp/kernel_optimized.py`

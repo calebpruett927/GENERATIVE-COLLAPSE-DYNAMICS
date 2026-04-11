@@ -114,7 +114,7 @@ def generate_contract_markdown(data: SiteData) -> str:
 
     # Footer
     sections.append("---\n")
-    sections.append(f"*Contract frozen by the Headless Contract Gateway (HCG) · Domain: {data.domain} · UMCP v2.3.0*\n")
+    sections.append(f"*Contract frozen by the Headless Contract Gateway (HCG) · Domain: {data.domain} · UMCP v2.3.1*\n")
 
     return "\n".join(sections)
 

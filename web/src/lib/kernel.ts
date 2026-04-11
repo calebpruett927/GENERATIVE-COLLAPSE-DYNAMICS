@@ -1283,7 +1283,7 @@ export function exportResults(
   }
   return {
     timestamp: new Date().toISOString(),
-    version: '2.3.0',
+    version: '2.3.1',
     channels: [...c],
     weights: w ? [...w] : Array(c.length).fill(1 / c.length),
     kernel, regime, rank, fisher, identities, seamBudget,

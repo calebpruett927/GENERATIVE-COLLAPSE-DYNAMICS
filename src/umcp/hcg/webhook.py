@@ -195,7 +195,7 @@ class WebhookOrchestrator:
 
             headers = {
                 "Content-Type": "application/json",
-                "User-Agent": "UMCP-HCG/2.3.0",
+                "User-Agent": "UMCP-HCG/2.3.1",
                 **target.headers,
             }
             req = Request(
