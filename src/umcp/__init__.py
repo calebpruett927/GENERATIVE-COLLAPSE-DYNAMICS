@@ -20,7 +20,84 @@ Design intent:
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from . import accel as accel
+    from . import compute_utils as compute_utils
+    from . import continuity_law as continuity_law
+    from . import frozen_contract as frozen_contract
+    from . import measurement_engine as measurement_engine
+    from . import return_rope as return_rope
+    from . import ss1m_triad as ss1m_triad
+    from . import tau_r_star as tau_r_star
+    from . import tau_r_star_dynamics as tau_r_star_dynamics
+    from . import umcp_extensions as umcp_extensions
+    from . import uncertainty as uncertainty
+    from . import universal_calculator as universal_calculator
+    from . import weld_lineage as weld_lineage
+    from .closures import ClosureLoader as ClosureLoader
+    from .closures import get_closure_loader as get_closure_loader
+    from .cognitive_equalizer import CE_SYSTEM_PROMPT as CE_SYSTEM_PROMPT
+    from .cognitive_equalizer import AequatorCognitivus as AequatorCognitivus
+    from .cognitive_equalizer import CEChannels as CEChannels
+    from .cognitive_equalizer import CEReport as CEReport
+    from .cognitive_equalizer import CEVerdict as CEVerdict
+    from .cognitive_equalizer import CognitiveEqualizer as CognitiveEqualizer
+    from .continuity_law import ContinuityLawSpec as ContinuityLawSpec
+    from .continuity_law import ContinuityVerdict as ContinuityVerdict
+    from .continuity_law import verify_continuity_law as verify_continuity_law
+    from .file_refs import UMCPFiles as UMCPFiles
+    from .file_refs import get_umcp_files as get_umcp_files
+    from .frozen_contract import DEFAULT_CONTRACT as DEFAULT_CONTRACT
+    from .frozen_contract import FrozenContract as FrozenContract
+    from .frozen_contract import KernelOutput as KernelOutput
+    from .frozen_contract import Regime as Regime
+    from .frozen_contract import check_seam_pass as check_seam_pass
+    from .frozen_contract import classify_regime as classify_regime
+    from .frozen_contract import compute_kernel as compute_kernel
+    from .frozen_contract import gamma_omega as gamma_omega
+    from .kernel_optimized import CostDecomposition as CostDecomposition
+    from .kernel_optimized import GateMargins as GateMargins
+    from .kernel_optimized import KernelDiagnostics as KernelDiagnostics
+    from .kernel_optimized import OptimizedKernelComputer as OptimizedKernelComputer
+    from .kernel_optimized import classify_collapse_type as classify_collapse_type
+    from .kernel_optimized import diagnose as diagnose
+    from .measurement_engine import EmbeddingConfig as EmbeddingConfig
+    from .measurement_engine import EmbeddingSpec as EmbeddingSpec
+    from .measurement_engine import EmbeddingStrategy as EmbeddingStrategy
+    from .measurement_engine import EngineResult as EngineResult
+    from .measurement_engine import InvariantRow as InvariantRow
+    from .measurement_engine import MeasurementEngine as MeasurementEngine
+    from .measurement_engine import TraceRow as TraceRow
+    from .measurement_engine import safe_tau_R as safe_tau_R
+    from .measurement_engine import tau_R_display as tau_R_display
+    from .seam_optimized import SeamChainAccumulator as SeamChainAccumulator
+    from .ss1m_triad import EditionTriad as EditionTriad
+    from .ss1m_triad import compute_triad as compute_triad
+    from .ss1m_triad import triad_to_eid12 as triad_to_eid12
+    from .ss1m_triad import verify_triad as verify_triad
+    from .tau_r_star import diagnose as diagnose_thermodynamic
+    from .tau_r_star import diagnose_invariants as diagnose_thermodynamic_batch
+    from .tau_r_star_dynamics import diagnose_extended as diagnose_extended
+    from .uncertainty import KernelGradients as KernelGradients
+    from .uncertainty import UncertaintyBounds as UncertaintyBounds
+    from .uncertainty import compute_kernel_gradients as compute_kernel_gradients
+    from .uncertainty import propagate_uncertainty as propagate_uncertainty
+    from .universal_calculator import ComputationMode as ComputationMode
+    from .universal_calculator import UniversalCalculator as UniversalCalculator
+    from .universal_calculator import UniversalResult as UniversalResult
+    from .universal_calculator import compute_full as compute_full
+    from .universal_calculator import compute_regime as compute_regime
+    from .validator import RootFileValidator as RootFileValidator
+    from .validator import get_root_validator as get_root_validator
+    from .weld_lineage import EditionIdentity as EditionIdentity
+    from .weld_lineage import SS1mReceipt as SS1mReceipt
+    from .weld_lineage import WeldAnchor as WeldAnchor
+    from .weld_lineage import WeldLineage as WeldLineage
+    from .weld_lineage import compute_extended_triad as compute_extended_triad
+    from .weld_lineage import compute_ss1m_receipt as compute_ss1m_receipt
+    from .weld_lineage import create_weld as create_weld
 
 __all__ = [
     "CE_SYSTEM_PROMPT",
