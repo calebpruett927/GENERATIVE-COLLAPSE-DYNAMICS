@@ -1,0 +1,757 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { TEST_COUNT, DOMAIN_COUNT, THEOREM_COUNT } from '../lib/metrics';
+---
+
+<BaseLayout title="Cognitive Equalizer — Aequator Cognitivus" description="Interactive AI evaluation tool using the GCD kernel. Score 8 channels, derive three-valued verdicts, and explore geometric slaughter — all client-side.">
+  <div class="max-w-6xl mx-auto">
+    <!-- Hero -->
+    <div class="mb-8 text-center">
+      <div class="inline-block mb-3 px-3 py-1 rounded-full bg-kernel-800/60 border border-kernel-700/40 text-[10px] font-mono text-kernel-400 uppercase tracking-widest">
+        Aequator Cognitivus · CE-v1-frozen · 8 Channels · 3 Verdicts
+      </div>
+      <h1 class="text-4xl font-extrabold text-kernel-100 mb-3 tracking-tight">
+        Cognitive Equalizer
+      </h1>
+      <p class="text-kernel-400 text-lg leading-relaxed max-w-3xl mx-auto">
+        <em class="text-amber-400/80">Non agens mensurat, sed structura.</em> — Not the agent measures, but the structure.
+      </p>
+      <p class="text-kernel-500 text-sm mt-2 max-w-2xl mx-auto">
+        A standalone module that externalises every agent-dependent decision point into frozen, verifiable structure.
+        Same input + same contract → same verdict, regardless of which AI runs it.
+      </p>
+    </div>
+
+    <!-- ═══════ The Spine ═══════ -->
+    <div class="mb-6 bg-kernel-900/40 border border-kernel-700/40 rounded-xl p-5">
+      <h2 class="text-xs font-bold text-purple-400/80 uppercase tracking-wider mb-3">The Spine — Every Evaluation Follows This Path</h2>
+      <div class="flex flex-wrap items-center justify-center gap-2 text-xs font-mono mb-3">
+        <span class="px-3 py-1.5 bg-kernel-800/60 rounded-lg border border-kernel-700/30 text-green-400">CONTRACT<br/><span class="text-kernel-600 text-[9px]">freeze thresholds</span></span>
+        <span class="text-kernel-600">→</span>
+        <span class="px-3 py-1.5 bg-kernel-800/60 rounded-lg border border-kernel-700/30 text-amber-400">CANON<br/><span class="text-kernel-600 text-[9px]">5 words</span></span>
+        <span class="text-kernel-600">→</span>
+        <span class="px-3 py-1.5 bg-kernel-800/60 rounded-lg border border-kernel-700/30 text-cyan-400">CLOSURES<br/><span class="text-kernel-600 text-[9px]">regime gates</span></span>
+        <span class="text-kernel-600">→</span>
+        <span class="px-3 py-1.5 bg-kernel-800/60 rounded-lg border border-kernel-700/30 text-purple-400">LEDGER<br/><span class="text-kernel-600 text-[9px]">debit/credit</span></span>
+        <span class="text-kernel-600">→</span>
+        <span class="px-3 py-1.5 bg-kernel-800/60 rounded-lg border border-kernel-700/30 text-red-400">STANCE<br/><span class="text-kernel-600 text-[9px]">verdict</span></span>
+      </div>
+      <p class="text-center text-[10px] text-kernel-600 italic">Omnia per spinam transeunt — Everything passes through the spine</p>
+    </div>
+
+    <!-- ═══════ Five Decision Points ═══════ -->
+    <div class="mb-6 bg-kernel-900/50 border border-kernel-700/50 rounded-xl p-5">
+      <h2 class="text-sm font-bold text-amber-400/80 uppercase tracking-wider mb-3">Five Externalized Decision Points</h2>
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-3 text-xs">
+        <div class="bg-kernel-800/50 rounded-lg p-3 border border-kernel-700/30">
+          <div class="text-green-400 font-bold mb-1">1. Thresholds</div>
+          <div class="text-kernel-500">Frozen — seam-derived, not chosen. ε=10⁻⁸, p=3, α=1.0, tol=0.005</div>
+        </div>
+        <div class="bg-kernel-800/50 rounded-lg p-3 border border-kernel-700/30">
+          <div class="text-amber-400 font-bold mb-1">2. Vocabulary</div>
+          <div class="text-kernel-500">Five words only: Drift · Fidelity · Roughness · Return · Integrity</div>
+        </div>
+        <div class="bg-kernel-800/50 rounded-lg p-3 border border-kernel-700/30">
+          <div class="text-cyan-400 font-bold mb-1">3. Conclusions</div>
+          <div class="text-kernel-500">Three-valued: CONFORMANT / NONCONFORMANT / NON_EVALUABLE</div>
+        </div>
+        <div class="bg-kernel-800/50 rounded-lg p-3 border border-kernel-700/30">
+          <div class="text-purple-400 font-bold mb-1">4. Methodology</div>
+          <div class="text-kernel-500">The Spine: Contract → Canon → Closures → Ledger → Stance</div>
+        </div>
+        <div class="bg-kernel-800/50 rounded-lg p-3 border border-kernel-700/30">
+          <div class="text-red-400 font-bold mb-1">5. Ambiguity</div>
+          <div class="text-kernel-500">NON_EVALUABLE — declared, never guessed away. Tertia via semper patet.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════ TABS ═══════ -->
+    <div class="mb-4 flex flex-wrap gap-2 border-b border-kernel-800/50 pb-3" id="ce-tabs">
+      <button data-tab="interactive" class="ce-tab active px-4 py-2 rounded-lg text-sm font-medium transition-all bg-amber-500/20 text-amber-400 border border-amber-500/30">
+        Interactive Evaluator
+      </button>
+      <button data-tab="presets" class="ce-tab px-4 py-2 rounded-lg text-sm font-medium transition-all text-kernel-500 hover:text-kernel-300 border border-transparent hover:border-kernel-700/30">
+        Preset Demos
+      </button>
+      <button data-tab="channels" class="ce-tab px-4 py-2 rounded-lg text-sm font-medium transition-all text-kernel-500 hover:text-kernel-300 border border-transparent hover:border-kernel-700/30">
+        Channel Reference
+      </button>
+      <button data-tab="prompt" class="ce-tab px-4 py-2 rounded-lg text-sm font-medium transition-all text-kernel-500 hover:text-kernel-300 border border-transparent hover:border-kernel-700/30">
+        AI System Prompt
+      </button>
+      <button data-tab="download" class="ce-tab px-4 py-2 rounded-lg text-sm font-medium transition-all text-kernel-500 hover:text-kernel-300 border border-transparent hover:border-kernel-700/30">
+        Download & Implement
+      </button>
+    </div>
+
+    <!-- ═══════ TAB: Interactive Evaluator ═══════ -->
+    <div id="tab-interactive" class="ce-panel">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Left: Channel Sliders -->
+        <div class="bg-kernel-900/50 border border-kernel-700/50 rounded-xl p-5">
+          <h3 class="text-sm font-bold text-green-400/80 uppercase tracking-wider mb-4">8 Evaluation Channels</h3>
+          <div class="space-y-4" id="channel-sliders">
+            <!-- Sliders generated by JS -->
+          </div>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <button id="btn-evaluate" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-kernel-950 rounded-lg text-sm font-bold transition-colors">
+              Run CE Spine
+            </button>
+            <button id="btn-reset" class="px-3 py-2 bg-kernel-800 hover:bg-kernel-700 text-kernel-300 rounded-lg text-xs transition-colors">
+              Reset All
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Results -->
+        <div class="space-y-4">
+          <!-- Verdict Badge -->
+          <div id="verdict-display" class="bg-kernel-900/50 border border-kernel-700/50 rounded-xl p-5 text-center">
+            <div class="text-kernel-600 text-sm mb-2">Stance (Verdict)</div>
+            <div id="verdict-badge" class="inline-block px-6 py-3 rounded-xl text-2xl font-black tracking-wider border-2 border-kernel-700 text-kernel-600">
+              —
+            </div>
+            <div id="regime-badge" class="mt-2 text-xs text-kernel-500 font-mono">
+              Regime: — · Critical: —
+            </div>
+          </div>
+
+          <!-- Radar Chart (Canvas) -->
+          <div class="bg-kernel-900/50 border border-kernel-700/50 rounded-xl p-5">
+            <h3 class="text-xs font-bold text-cyan-400/80 uppercase tracking-wider mb-3">Channel Radar</h3>
+            <canvas id="radar-canvas" width="320" height="320" class="mx-auto"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Full Spine Report -->
+      <div id="spine-report" class="mt-6 bg-kernel-950 border border-kernel-700/50 rounded-xl p-5 hidden">
+        <h3 class="text-xs font-bold text-purple-400/80 uppercase tracking-wider mb-3">Full Spine Report</h3>
+        <pre id="report-text" class="text-xs text-kernel-300 font-mono whitespace-pre-wrap leading-relaxed"></pre>
+      </div>
+
+      <!-- Kernel Invariants -->
+      <div id="invariants-panel" class="mt-4 hidden">
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
+          <div class="inv-card bg-kernel-900/50 border border-kernel-700/30 rounded-lg p-3 text-center">
+            <div class="text-[10px] text-kernel-600 uppercase tracking-wider">Fidelity</div>
+            <div id="inv-F" class="text-lg font-bold text-green-400 font-mono">—</div>
+          </div>
+          <div class="inv-card bg-kernel-900/50 border border-kernel-700/30 rounded-lg p-3 text-center">
+            <div class="text-[10px] text-kernel-600 uppercase tracking-wider">Drift ω</div>
+            <div id="inv-omega" class="text-lg font-bold text-amber-400 font-mono">—</div>
+          </div>
+          <div class="inv-card bg-kernel-900/50 border border-kernel-700/30 rounded-lg p-3 text-center">
+            <div class="text-[10px] text-kernel-600 uppercase tracking-wider">Entropy S</div>
+            <div id="inv-S" class="text-lg font-bold text-cyan-400 font-mono">—</div>
+          </div>
+          <div class="inv-card bg-kernel-900/50 border border-kernel-700/30 rounded-lg p-3 text-center">
+            <div class="text-[10px] text-kernel-600 uppercase tracking-wider">Curvature C</div>
+            <div id="inv-C" class="text-lg font-bold text-purple-400 font-mono">—</div>
+          </div>
+          <div class="inv-card bg-kernel-900/50 border border-kernel-700/30 rounded-lg p-3 text-center">
+            <div class="text-[10px] text-kernel-600 uppercase tracking-wider">κ</div>
+            <div id="inv-kappa" class="text-lg font-bold text-kernel-300 font-mono">—</div>
+          </div>
+          <div class="inv-card bg-kernel-900/50 border border-kernel-700/30 rounded-lg p-3 text-center">
+            <div class="text-[10px] text-kernel-600 uppercase tracking-wider">IC</div>
+            <div id="inv-IC" class="text-lg font-bold text-red-400 font-mono">—</div>
+          </div>
+          <div class="inv-card bg-kernel-900/50 border border-kernel-700/30 rounded-lg p-3 text-center">
+            <div class="text-[10px] text-kernel-600 uppercase tracking-wider">Gap Δ</div>
+            <div id="inv-delta" class="text-lg font-bold text-kernel-400 font-mono">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════ TAB: Presets ═══════ -->
+    <div id="tab-presets" class="ce-panel hidden">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="preset-grid">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- ═══════ TAB: Channel Reference ═══════ -->
+    <div id="tab-channels" class="ce-panel hidden">
+      <div class="bg-kernel-900/50 border border-kernel-700/50 rounded-xl p-5">
+        <h3 class="text-sm font-bold text-cyan-400/80 uppercase tracking-wider mb-4">Eight Evaluation Channels</h3>
+        <p class="text-kernel-500 text-sm mb-4">
+          Each channel is scored ∈ [0.0, 1.0]. Equal weights w<sub>i</sub> = 1/8.
+          The kernel computes <span class="font-mono text-green-400">F</span> (arithmetic mean) and
+          <span class="font-mono text-red-400">IC</span> (geometric mean) from these 8 scores.
+        </p>
+        <div class="space-y-3" id="channel-reference">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="mt-6 bg-kernel-800/60 rounded-lg p-4 border border-amber-500/20">
+          <h4 class="text-sm font-bold text-amber-400 mb-2">Geometric Slaughter Warning</h4>
+          <p class="text-kernel-400 text-xs leading-relaxed">
+            If <strong>any single channel</strong> drops below 0.3, the geometric mean (IC) collapses regardless
+            of how strong the other 7 channels are. Example: 7 channels at 0.95 + 1 channel at 0.001 →
+            <span class="font-mono text-green-400">F ≈ 0.83</span> (looks fine) but
+            <span class="font-mono text-red-400">IC ≈ 0.001</span> (obliterated).
+            The heterogeneity gap <span class="font-mono text-amber-400">Δ = F − IC ≈ 0.83</span> reveals the structural collapse
+            that the average masks. This is the <em class="text-kernel-300">trucidatio geometrica</em>.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════ TAB: AI System Prompt ═══════ -->
+    <div id="tab-prompt" class="ce-panel hidden">
+      <div class="bg-kernel-900/50 border border-kernel-700/50 rounded-xl p-5">
+        <h3 class="text-sm font-bold text-purple-400/80 uppercase tracking-wider mb-2">CE System Prompt</h3>
+        <p class="text-kernel-500 text-xs mb-4">
+          Copy this prompt into any AI system (ChatGPT, Claude, Gemini, etc.) to enable Cognitive Equalizer mode.
+          The AI will then self-audit using the 8-channel Spine protocol with frozen thresholds and three-valued verdicts.
+        </p>
+        <div class="relative">
+          <button id="btn-copy-prompt" class="absolute top-2 right-2 px-3 py-1 bg-kernel-700 hover:bg-kernel-600 text-kernel-300 rounded text-xs transition-colors z-10">
+            Copy
+          </button>
+          <pre id="prompt-text" class="bg-kernel-950 border border-kernel-800 rounded-lg p-4 text-xs text-kernel-400 font-mono whitespace-pre-wrap leading-relaxed max-h-[600px] overflow-y-auto"></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════ TAB: Download & Implement ═══════ -->
+    <div id="tab-download" class="ce-panel hidden">
+      <div class="space-y-6">
+        <!-- Overview -->
+        <div class="bg-kernel-900/50 border border-kernel-700/50 rounded-xl p-5">
+          <h3 class="text-sm font-bold text-amber-400/80 uppercase tracking-wider mb-3">Implement the Cognitive Equalizer</h3>
+          <p class="text-kernel-400 text-sm leading-relaxed mb-4">
+            The CE is a <strong class="text-kernel-200">standalone, zero-dependency module</strong> that can be embedded in any system.
+            Three implementations are available — each produces <strong class="text-kernel-200">identical results</strong>
+            because the contract is frozen: <em class="text-amber-400/80">trans suturam congelatum</em>.
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-kernel-800/60 rounded-lg p-4 border border-green-500/20">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-green-400 text-lg">🐍</span>
+                <span class="text-green-400 font-bold text-sm">Python</span>
+              </div>
+              <p class="text-kernel-500 text-xs mb-3">Full implementation with CLI, system prompt, Latin aliases. Part of the UMCP package.</p>
+              <code class="text-[10px] text-kernel-400 block bg-kernel-900 rounded p-2 mb-2">pip install umcp</code>
+              <code class="text-[10px] text-kernel-400 block bg-kernel-900 rounded p-2">from umcp.cognitive_equalizer import CognitiveEqualizer</code>
+            </div>
+            <div class="bg-kernel-800/60 rounded-lg p-4 border border-cyan-500/20">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-cyan-400 text-lg">📘</span>
+                <span class="text-cyan-400 font-bold text-sm">TypeScript</span>
+              </div>
+              <p class="text-kernel-500 text-xs mb-3">Browser-ready module. Same formulas, same frozen parameters, same verdicts. Zero dependencies.</p>
+              <code class="text-[10px] text-kernel-400 block bg-kernel-900 rounded p-2">import &lcub; engage &rcub; from './cognitive-equalizer'</code>
+            </div>
+            <div class="bg-kernel-800/60 rounded-lg p-4 border border-purple-500/20">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-purple-400 text-lg">📋</span>
+                <span class="text-purple-400 font-bold text-sm">System Prompt</span>
+              </div>
+              <p class="text-kernel-500 text-xs mb-3">Paste into any AI chat to enable CE mode. No code required — the AI becomes the evaluator.</p>
+              <button id="btn-copy-prompt-dl" class="px-3 py-1 bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 rounded text-xs transition-colors border border-purple-500/30">
+                Copy Prompt
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Download Links -->
+        <div class="bg-kernel-900/50 border border-kernel-700/50 rounded-xl p-5">
+          <h3 class="text-sm font-bold text-green-400/80 uppercase tracking-wider mb-3">Download Source Files</h3>
+          <div class="space-y-3">
+            <a id="dl-python" href="#" class="flex items-center gap-3 bg-kernel-800/60 hover:bg-kernel-700/60 rounded-lg p-4 border border-kernel-700/30 transition-colors group no-underline">
+              <span class="text-2xl">🐍</span>
+              <div>
+                <div class="text-kernel-200 font-bold text-sm group-hover:text-green-400 transition-colors">cognitive_equalizer.py</div>
+                <div class="text-kernel-500 text-xs">Complete Python implementation — 930 lines, standalone, CLI, system prompt, Latin aliases</div>
+              </div>
+              <span class="ml-auto text-kernel-600 text-xs">↓ .py</span>
+            </a>
+            <a id="dl-typescript" href="#" class="flex items-center gap-3 bg-kernel-800/60 hover:bg-kernel-700/60 rounded-lg p-4 border border-kernel-700/30 transition-colors group no-underline">
+              <span class="text-2xl">📘</span>
+              <div>
+                <div class="text-kernel-200 font-bold text-sm group-hover:text-cyan-400 transition-colors">cognitive-equalizer.ts</div>
+                <div class="text-kernel-500 text-xs">TypeScript module — browser-ready, same kernel, presets, formatting utilities</div>
+              </div>
+              <span class="ml-auto text-kernel-600 text-xs">↓ .ts</span>
+            </a>
+            <a id="dl-prompt" href="#" class="flex items-center gap-3 bg-kernel-800/60 hover:bg-kernel-700/60 rounded-lg p-4 border border-kernel-700/30 transition-colors group no-underline">
+              <span class="text-2xl">📋</span>
+              <div>
+                <div class="text-kernel-200 font-bold text-sm group-hover:text-purple-400 transition-colors">ce-system-prompt.txt</div>
+                <div class="text-kernel-500 text-xs">Standalone system prompt — paste into any AI to enable CE mode</div>
+              </div>
+              <span class="ml-auto text-kernel-600 text-xs">↓ .txt</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Architecture -->
+        <div class="bg-kernel-900/50 border border-kernel-700/50 rounded-xl p-5">
+          <h3 class="text-sm font-bold text-purple-400/80 uppercase tracking-wider mb-3">Architecture Overview</h3>
+          <pre class="text-xs text-kernel-400 font-mono bg-kernel-950 rounded-lg p-4 overflow-x-auto leading-relaxed">{`┌─────────────────────────────────────────────────────────────┐
+│                   COGNITIVE EQUALIZER                       │
+│            Aequator Cognitivus — CE-v1-frozen               │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  INPUT: 8 Channels ∈ [0, 1]                                │
+│  ┌─────────┬──────────┬──────────────┬─────────────┐       │
+│  │Relevance│ Accuracy │ Completeness │ Consistency │       │
+│  ├─────────┼──────────┼──────────────┼─────────────┤       │
+│  │Traceab. │ Grounded │ Constraint   │ Return Fid. │       │
+│  └────┬────┴────┬─────┴──────┬───────┴──────┬──────┘       │
+│       │         │            │              │               │
+│       ▼         ▼            ▼              ▼               │
+│  ┌──────────────────────────────────────────────────┐      │
+│  │  TIER-1 KERNEL  (same formulas as Python + C)    │      │
+│  │  F = Σ wᵢcᵢ    κ = Σ wᵢ ln(cᵢ,ε)              │      │
+│  │  S = −Σ wᵢ h(cᵢ)   C = σ(c)/0.5               │      │
+│  │  ω = 1−F       IC = exp(κ)      Δ = F−IC        │      │
+│  └─────────────────────┬────────────────────────────┘      │
+│                        │                                    │
+│       ┌────────────────┼────────────────┐                  │
+│       ▼                ▼                ▼                   │
+│  ┌─────────┐   ┌──────────────┐  ┌───────────┐            │
+│  │ REGIME  │   │    LEDGER    │  │   CANON   │            │
+│  │ GATES   │   │  D_ω = Γ(ω) │  │ 5 Words:  │            │
+│  │ Stable  │   │  D_C = α·C  │  │ Drift     │            │
+│  │ Watch   │   │  Δκ balance  │  │ Fidelity  │            │
+│  │ Collapse│   │  ≤ tol_seam  │  │ Roughness │            │
+│  └────┬────┘   └──────┬───────┘  │ Return    │            │
+│       │               │          │ Integrity │            │
+│       ▼               ▼          └───────────┘            │
+│  ┌──────────────────────────────────────────────────┐      │
+│  │  VERDICT (three-valued — never boolean)          │      │
+│  │  CONFORMANT · NONCONFORMANT · NON_EVALUABLE      │      │
+│  └──────────────────────────────────────────────────┘      │
+│                                                             │
+│  Frozen: ε=1e-8  p=3  α=1.0  tol=0.005                    │
+│  Trans suturam congelatum — same rules both sides.         │
+└─────────────────────────────────────────────────────────────┘`}</pre>
+        </div>
+
+        <!-- Integration Examples -->
+        <div class="bg-kernel-900/50 border border-kernel-700/50 rounded-xl p-5">
+          <h3 class="text-sm font-bold text-cyan-400/80 uppercase tracking-wider mb-3">Integration Examples</h3>
+          <div class="space-y-4">
+            <div>
+              <h4 class="text-xs font-bold text-green-400 mb-2">Python — Score an AI response</h4>
+              <pre class="text-xs text-kernel-400 font-mono bg-kernel-950 rounded-lg p-3 overflow-x-auto">{`from umcp.cognitive_equalizer import CognitiveEqualizer, CEChannels
+
+ce = CognitiveEqualizer()
+channels = CEChannels(
+    relevance=0.90, accuracy=0.85, completeness=0.80,
+    consistency=0.95, traceability=0.70, groundedness=0.88,
+    constraint_respect=0.92, return_fidelity=0.75,
+)
+report = ce.engage("Explain entropy", channels)
+print(report.stance)           # CONFORMANT / NONCONFORMANT / NON_EVALUABLE
+print(report.full_report())    # Full Spine report`}</pre>
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-cyan-400 mb-2">TypeScript — Browser evaluation</h4>
+              <pre class="text-xs text-kernel-400 font-mono bg-kernel-950 rounded-lg p-3 overflow-x-auto">{`import { engage, formatReport } from './cognitive-equalizer';
+
+const report = engage({
+  relevance: 0.90, accuracy: 0.85, completeness: 0.80,
+  consistency: 0.95, traceability: 0.70, groundedness: 0.88,
+  constraintRespect: 0.92, returnFidelity: 0.75,
+});
+console.log(report.stance);      // 'CONFORMANT'
+console.log(formatReport(report)); // Full text report`}</pre>
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-purple-400 mb-2">CLI — Command line</h4>
+              <pre class="text-xs text-kernel-400 font-mono bg-kernel-950 rounded-lg p-3 overflow-x-auto">{`# Score 8 channels directly
+umcp-ce --channels 0.90,0.85,0.80,0.95,0.70,0.88,0.92,0.75
+
+# Run built-in demo
+umcp-ce --demo
+
+# Print system prompt for embedding
+umcp-ce --prompt
+
+# Latin alias works too:
+aequator-cognitivus --demo`}</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══════ CLIENT-SIDE SCRIPT ═══════ -->
+  <script>
+    import {
+      engage, ceKernel, formatReport, channelsToVector, defaultChannels,
+      CE_CHANNEL_NAMES, CE_CHANNEL_LABELS, CE_CHANNEL_QUESTIONS,
+      CE_PRESETS, CE_SYSTEM_PROMPT,
+      type CEChannels, type CEReport,
+    } from '../lib/cognitive-equalizer';
+
+    /* ── State ─────────────────────────────── */
+    let currentChannels: CEChannels = {
+      relevance: 0.85, accuracy: 0.80, completeness: 0.75, consistency: 0.90,
+      traceability: 0.70, groundedness: 0.82, constraintRespect: 0.88, returnFidelity: 0.78,
+    };
+
+    /* ── Tab switching ─────────────────────── */
+    const tabs = document.querySelectorAll('.ce-tab') as NodeListOf<HTMLButtonElement>;
+    const panels = document.querySelectorAll('.ce-panel') as NodeListOf<HTMLElement>;
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const target = tab.dataset.tab;
+        tabs.forEach(t => {
+          t.classList.remove('active', 'bg-amber-500/20', 'text-amber-400', 'border-amber-500/30');
+          t.classList.add('text-kernel-500', 'border-transparent');
+        });
+        tab.classList.add('active', 'bg-amber-500/20', 'text-amber-400', 'border-amber-500/30');
+        tab.classList.remove('text-kernel-500', 'border-transparent');
+
+        panels.forEach(p => p.classList.add('hidden'));
+        document.getElementById(`tab-${target}`)?.classList.remove('hidden');
+      });
+    });
+
+    /* ── Build channel sliders ─────────────── */
+    const slidersContainer = document.getElementById('channel-sliders')!;
+    const CHANNEL_COLORS = [
+      'text-green-400', 'text-cyan-400', 'text-blue-400', 'text-purple-400',
+      'text-pink-400', 'text-amber-400', 'text-orange-400', 'text-red-400',
+    ];
+
+    CE_CHANNEL_NAMES.forEach((name, i) => {
+      const label = CE_CHANNEL_LABELS[name];
+      const value = (currentChannels as any)[name] as number;
+      const color = CHANNEL_COLORS[i];
+
+      const row = document.createElement('div');
+      row.className = 'space-y-1';
+      row.innerHTML = `
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-medium ${color}" title="${CE_CHANNEL_QUESTIONS[name]}">${label}</label>
+          <span class="text-xs font-mono text-kernel-400" id="val-${name}">${value.toFixed(2)}</span>
+        </div>
+        <input type="range" min="0" max="100" value="${Math.round(value * 100)}"
+          class="w-full h-1.5 rounded-full appearance-none cursor-pointer bg-kernel-800
+          [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3.5 [&::-webkit-slider-thumb]:h-3.5
+          [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-amber-400
+          [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:cursor-pointer"
+          id="slider-${name}" data-channel="${name}" />
+        <div class="text-[9px] text-kernel-600">${CE_CHANNEL_QUESTIONS[name]}</div>
+      `;
+      slidersContainer.appendChild(row);
+
+      const slider = row.querySelector(`#slider-${name}`) as HTMLInputElement;
+      slider.addEventListener('input', () => {
+        const v = parseInt(slider.value) / 100;
+        (currentChannels as any)[name] = v;
+        document.getElementById(`val-${name}`)!.textContent = v.toFixed(2);
+      });
+    });
+
+    /* ── Evaluate ─────────────────────────── */
+    function runEvaluation() {
+      const report = engage(currentChannels);
+      updateDisplay(report);
+    }
+
+    function updateDisplay(report: CEReport) {
+      // Verdict badge
+      const badge = document.getElementById('verdict-badge')!;
+      badge.textContent = report.stance;
+      badge.className = 'inline-block px-6 py-3 rounded-xl text-2xl font-black tracking-wider border-2 ';
+      if (report.stance === 'CONFORMANT') {
+        badge.className += 'border-green-500/50 text-green-400 bg-green-500/10';
+      } else if (report.stance === 'NONCONFORMANT') {
+        badge.className += 'border-red-500/50 text-red-400 bg-red-500/10';
+      } else {
+        badge.className += 'border-amber-500/50 text-amber-400 bg-amber-500/10';
+      }
+
+      // Regime badge
+      const regimeBadge = document.getElementById('regime-badge')!;
+      const regimeColor = report.regime === 'STABLE' ? 'text-green-400' : report.regime === 'WATCH' ? 'text-amber-400' : 'text-red-400';
+      const criticalText = report.isCritical ? '<span class="text-red-500 font-bold">YES</span>' : '<span class="text-kernel-500">No</span>';
+      regimeBadge.innerHTML = `Regime: <span class="${regimeColor} font-bold">${report.regime}</span> · Critical: ${criticalText}`;
+
+      // Invariants
+      const kr = report.kernel;
+      document.getElementById('inv-F')!.textContent = kr.F.toFixed(4);
+      document.getElementById('inv-omega')!.textContent = kr.omega.toFixed(4);
+      document.getElementById('inv-S')!.textContent = kr.S.toFixed(4);
+      document.getElementById('inv-C')!.textContent = kr.C.toFixed(4);
+      document.getElementById('inv-kappa')!.textContent = kr.kappa.toFixed(4);
+      document.getElementById('inv-IC')!.textContent = kr.IC.toFixed(4);
+      document.getElementById('inv-delta')!.textContent = kr.delta.toFixed(4);
+      document.getElementById('invariants-panel')!.classList.remove('hidden');
+
+      // Full report
+      document.getElementById('report-text')!.textContent = formatReport(report);
+      document.getElementById('spine-report')!.classList.remove('hidden');
+
+      // Radar chart
+      drawRadar(report);
+    }
+
+    document.getElementById('btn-evaluate')!.addEventListener('click', runEvaluation);
+    document.getElementById('btn-reset')!.addEventListener('click', () => {
+      currentChannels = {
+        relevance: 0.85, accuracy: 0.80, completeness: 0.75, consistency: 0.90,
+        traceability: 0.70, groundedness: 0.82, constraintRespect: 0.88, returnFidelity: 0.78,
+      };
+      CE_CHANNEL_NAMES.forEach(name => {
+        const v = (currentChannels as any)[name] as number;
+        (document.getElementById(`slider-${name}`) as HTMLInputElement).value = String(Math.round(v * 100));
+        document.getElementById(`val-${name}`)!.textContent = v.toFixed(2);
+      });
+    });
+
+    /* ── Radar chart ─────────────────────── */
+    function drawRadar(report: CEReport) {
+      const canvas = document.getElementById('radar-canvas') as HTMLCanvasElement;
+      const ctx = canvas.getContext('2d')!;
+      const w = canvas.width;
+      const h = canvas.height;
+      const cx = w / 2;
+      const cy = h / 2;
+      const r = Math.min(cx, cy) - 40;
+
+      ctx.clearRect(0, 0, w, h);
+
+      const vec = channelsToVector(report.channels);
+      const n = vec.length;
+      const labels = CE_CHANNEL_NAMES.map(n => CE_CHANNEL_LABELS[n]);
+
+      // Draw grid circles
+      for (let ring = 0.25; ring <= 1.0; ring += 0.25) {
+        ctx.beginPath();
+        for (let i = 0; i <= n; i++) {
+          const angle = (i % n) * (2 * Math.PI / n) - Math.PI / 2;
+          const x = cx + r * ring * Math.cos(angle);
+          const y = cy + r * ring * Math.sin(angle);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = 'rgba(148, 163, 184, 0.12)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // Ring label
+        ctx.fillStyle = 'rgba(148, 163, 184, 0.3)';
+        ctx.font = '9px monospace';
+        ctx.fillText(ring.toFixed(2), cx + 3, cy - r * ring + 3);
+      }
+
+      // Draw axis lines
+      for (let i = 0; i < n; i++) {
+        const angle = i * (2 * Math.PI / n) - Math.PI / 2;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(cx + r * Math.cos(angle), cy + r * Math.sin(angle));
+        ctx.strokeStyle = 'rgba(148, 163, 184, 0.08)';
+        ctx.stroke();
+
+        // Label
+        const lx = cx + (r + 25) * Math.cos(angle);
+        const ly = cy + (r + 25) * Math.sin(angle);
+        ctx.fillStyle = CHANNEL_COLORS[i].includes('green') ? '#4ade80' :
+                        CHANNEL_COLORS[i].includes('cyan') ? '#22d3ee' :
+                        CHANNEL_COLORS[i].includes('blue') ? '#60a5fa' :
+                        CHANNEL_COLORS[i].includes('purple') ? '#a78bfa' :
+                        CHANNEL_COLORS[i].includes('pink') ? '#f472b6' :
+                        CHANNEL_COLORS[i].includes('amber') ? '#fbbf24' :
+                        CHANNEL_COLORS[i].includes('orange') ? '#fb923c' : '#f87171';
+        ctx.font = '9px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        // Shorter labels for display
+        const shortLabels = ['Rel', 'Acc', 'Cmp', 'Con', 'Trc', 'Gnd', 'Cst', 'Ret'];
+        ctx.fillText(shortLabels[i], lx, ly);
+      }
+
+      // Draw data polygon
+      ctx.beginPath();
+      for (let i = 0; i <= n; i++) {
+        const angle = (i % n) * (2 * Math.PI / n) - Math.PI / 2;
+        const val = vec[i % n];
+        const x = cx + r * val * Math.cos(angle);
+        const y = cy + r * val * Math.sin(angle);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      const fillColor = report.stance === 'CONFORMANT' ? 'rgba(74, 222, 128, 0.15)' :
+                        report.stance === 'NONCONFORMANT' ? 'rgba(248, 113, 113, 0.15)' :
+                        'rgba(251, 191, 36, 0.15)';
+      const strokeColor = report.stance === 'CONFORMANT' ? '#4ade80' :
+                          report.stance === 'NONCONFORMANT' ? '#f87171' : '#fbbf24';
+      ctx.fillStyle = fillColor;
+      ctx.fill();
+      ctx.strokeStyle = strokeColor;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Draw data points
+      for (let i = 0; i < n; i++) {
+        const angle = i * (2 * Math.PI / n) - Math.PI / 2;
+        const val = vec[i];
+        const x = cx + r * val * Math.cos(angle);
+        const y = cy + r * val * Math.sin(angle);
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, 2 * Math.PI);
+        ctx.fillStyle = val < 0.3 ? '#f87171' : strokeColor;
+        ctx.fill();
+      }
+
+      // Draw F and IC lines
+      const fRadius = r * report.kernel.F;
+      ctx.beginPath();
+      ctx.arc(cx, cy, fRadius, 0, 2 * Math.PI);
+      ctx.strokeStyle = 'rgba(74, 222, 128, 0.3)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 4]);
+      ctx.stroke();
+
+      const icRadius = r * report.kernel.IC;
+      ctx.beginPath();
+      ctx.arc(cx, cy, icRadius, 0, 2 * Math.PI);
+      ctx.strokeStyle = 'rgba(248, 113, 113, 0.3)';
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Legend
+      ctx.font = '9px monospace';
+      ctx.textAlign = 'left';
+      ctx.fillStyle = 'rgba(74, 222, 128, 0.6)';
+      ctx.fillText(`F = ${report.kernel.F.toFixed(3)}`, 8, h - 24);
+      ctx.fillStyle = 'rgba(248, 113, 113, 0.6)';
+      ctx.fillText(`IC = ${report.kernel.IC.toFixed(3)}`, 8, h - 12);
+      ctx.fillStyle = 'rgba(251, 191, 36, 0.6)';
+      ctx.fillText(`Δ = ${report.kernel.delta.toFixed(3)}`, 90, h - 12);
+    }
+
+    /* ── Preset grid ─────────────────────── */
+    const presetGrid = document.getElementById('preset-grid')!;
+    CE_PRESETS.forEach((preset, idx) => {
+      const report = engage(preset.channels);
+      const kr = report.kernel;
+
+      const card = document.createElement('div');
+      card.className = 'bg-kernel-900/50 border border-kernel-700/50 rounded-xl p-5 cursor-pointer hover:border-amber-500/30 transition-all';
+      const stanceColor = report.stance === 'CONFORMANT' ? 'text-green-400' : report.stance === 'NONCONFORMANT' ? 'text-red-400' : 'text-amber-400';
+      const regimeColor = report.regime === 'STABLE' ? 'text-green-400' : report.regime === 'WATCH' ? 'text-amber-400' : 'text-red-400';
+      const critBadge = report.isCritical ? '<span class="text-red-500 text-[9px] font-bold ml-1">CRITICAL</span>' : '';
+
+      card.innerHTML = `
+        <div class="flex items-center justify-between mb-2">
+          <h4 class="text-sm font-bold text-kernel-200">${preset.name}</h4>
+          <span class="${stanceColor} text-xs font-bold font-mono">${report.stance}</span>
+        </div>
+        <p class="text-kernel-500 text-xs mb-3">${preset.description}</p>
+        <div class="grid grid-cols-4 gap-2 text-[10px] font-mono">
+          <div><span class="text-kernel-600">F</span> <span class="text-green-400">${kr.F.toFixed(3)}</span></div>
+          <div><span class="text-kernel-600">IC</span> <span class="text-red-400">${kr.IC.toFixed(3)}</span></div>
+          <div><span class="text-kernel-600">Δ</span> <span class="text-amber-400">${kr.delta.toFixed(3)}</span></div>
+          <div><span class="text-kernel-600">ω</span> <span class="text-kernel-400">${kr.omega.toFixed(3)}</span></div>
+        </div>
+        <div class="mt-2 text-[10px]">
+          <span class="${regimeColor} font-bold">${report.regime}</span>${critBadge}
+        </div>
+      `;
+
+      card.addEventListener('click', () => {
+        // Load preset into sliders
+        currentChannels = { ...preset.channels };
+        CE_CHANNEL_NAMES.forEach(name => {
+          const v = (currentChannels as any)[name] as number;
+          (document.getElementById(`slider-${name}`) as HTMLInputElement).value = String(Math.round(v * 100));
+          document.getElementById(`val-${name}`)!.textContent = v.toFixed(2);
+        });
+        // Switch to interactive tab and evaluate
+        (document.querySelector('[data-tab="interactive"]') as HTMLButtonElement).click();
+        runEvaluation();
+      });
+
+      presetGrid.appendChild(card);
+    });
+
+    /* ── Channel Reference ────────────────── */
+    const channelRef = document.getElementById('channel-reference')!;
+    CE_CHANNEL_NAMES.forEach((name, i) => {
+      const div = document.createElement('div');
+      div.className = 'flex items-start gap-3 bg-kernel-800/40 rounded-lg p-3 border border-kernel-700/20';
+      const color = CHANNEL_COLORS[i];
+      div.innerHTML = `
+        <div class="flex-shrink-0 w-8 h-8 rounded-lg bg-kernel-700/40 flex items-center justify-center text-sm font-bold ${color}">${i + 1}</div>
+        <div>
+          <div class="text-sm font-bold ${color}">${CE_CHANNEL_LABELS[name]}</div>
+          <div class="text-xs text-kernel-400 mt-0.5">${CE_CHANNEL_QUESTIONS[name]}</div>
+          <div class="text-[10px] text-kernel-600 mt-1 font-mono">${name} ∈ [0.0, 1.0] · weight = 1/8</div>
+        </div>
+      `;
+      channelRef.appendChild(div);
+    });
+
+    /* ── System Prompt tab ─────────────────── */
+    document.getElementById('prompt-text')!.textContent = CE_SYSTEM_PROMPT;
+
+    function copyPrompt() {
+      navigator.clipboard.writeText(CE_SYSTEM_PROMPT).then(() => {
+        const btn = document.getElementById('btn-copy-prompt')!;
+        btn.textContent = 'Copied!';
+        btn.classList.add('bg-green-600');
+        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('bg-green-600'); }, 2000);
+      });
+    }
+    document.getElementById('btn-copy-prompt')?.addEventListener('click', copyPrompt);
+    document.getElementById('btn-copy-prompt-dl')?.addEventListener('click', copyPrompt);
+
+    /* ── Download links ─────────────────────── */
+    function makeDownloadLink(id: string, filename: string, content: string, mimeType = 'text/plain') {
+      const blob = new Blob([content], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+      const el = document.getElementById(id) as HTMLAnchorElement;
+      if (el) {
+        el.href = url;
+        el.download = filename;
+      }
+    }
+
+    // Prompt download
+    makeDownloadLink('dl-prompt', 'ce-system-prompt.txt', CE_SYSTEM_PROMPT);
+
+    // For Python and TypeScript, we fetch the actual source files
+    const base = import.meta.env.BASE_URL || '/';
+
+    // Python source — fetch from GitHub raw
+    fetch('https://raw.githubusercontent.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/main/src/umcp/cognitive_equalizer.py')
+      .then(r => r.ok ? r.text() : Promise.reject('Failed'))
+      .then(text => makeDownloadLink('dl-python', 'cognitive_equalizer.py', text, 'text/x-python'))
+      .catch(() => {
+        // Fallback: generate a stub that points to the repo
+        makeDownloadLink('dl-python', 'cognitive_equalizer.py',
+          '# Full source: https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/blob/main/src/umcp/cognitive_equalizer.py\n# Install: pip install umcp\n# Then: from umcp.cognitive_equalizer import CognitiveEqualizer\n',
+          'text/x-python');
+      });
+
+    // TypeScript source — fetch from GitHub raw
+    fetch('https://raw.githubusercontent.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/main/web/src/lib/cognitive-equalizer.ts')
+      .then(r => r.ok ? r.text() : Promise.reject('Failed'))
+      .then(text => makeDownloadLink('dl-typescript', 'cognitive-equalizer.ts', text, 'text/typescript'))
+      .catch(() => {
+        makeDownloadLink('dl-typescript', 'cognitive-equalizer.ts',
+          '// Full source: https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/blob/main/web/src/lib/cognitive-equalizer.ts\n',
+          'text/typescript');
+      });
+
+    /* ── Initial evaluation on page load ──── */
+    runEvaluation();
+  </script>
+</BaseLayout>
