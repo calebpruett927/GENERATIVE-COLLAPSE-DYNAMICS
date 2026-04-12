@@ -310,13 +310,13 @@ class CELedger:
     Integrity ledger for one CE engagement.
 
     Debit:  D_drift + D_roughness
-    Credit: R (return credit from return_fidelity channel)
+    Return: R (return_fidelity score — enters balance through κ as one of 8 channel scores)
     Balance: delta_kappa = κ − D_drift − D_roughness
     """
 
     D_drift: float  # drift debit Γ(ω)
     D_roughness: float  # curvature debit α·C
-    R_return: float  # return_fidelity score (credit proxy)
+    R_return: float  # return_fidelity score (enters Δκ through κ)
     delta_kappa: float  # ledger balance (must be ≥ −tol_seam for PASS)
 
     @property
@@ -435,8 +435,8 @@ class CEReport:
             "  " + "─" * 50,
             f"  Debit (drift)     D_ω = {self.ledger.D_drift:.6f}",
             f"  Debit (roughness) D_C = {self.ledger.D_roughness:.6f}",
-            f"  Credit (return)   R   = {self.ledger.R_return:.6f}",
-            f"  Balance           Δκ  = {self.ledger.delta_kappa:.6f}  [{self.ledger.balance_label}]",
+            f"  Return (score)    R   = {self.ledger.R_return:.6f}  [channel — enters Δκ through κ]",
+            f"  Balance           Δκ  = {self.ledger.delta_kappa:.6f}  [{self.ledger.balance_label}]  (κ − D_ω − D_C)",
             "",
             "  Kernel Invariants (Tier-1)",
             "  " + "─" * 50,
@@ -752,7 +752,7 @@ same verdict, regardless of which AI runs this protocol.
 You must never:
   • Pick thresholds during a response (thresholds are declared, not chosen)
   • Assert a verdict without showing the derivation
-  • Give a binary yes/no when a third state (NOT_EVALUABLE) applies
+  • Give a binary yes/no when a third state (NON_EVALUABLE) applies
   • Frame conclusions — only derive them
 
 ═══════════════════════════════════════════════════════════════
@@ -808,8 +808,8 @@ THREE-VALUED VERDICTS — never binary
 
   CONFORMANT      — channels pass; ledger balanced; reasoning traces back
   NONCONFORMANT   — one or more channels fail; ledger won't balance
-  NOT_EVALUABLE   — insufficient context, out-of-range input, or ambiguous
-                    scope. DO NOT guess. Declare NOT_EVALUABLE and state
+  NON_EVALUABLE   — insufficient context, out-of-range input, or ambiguous
+                    scope. DO NOT guess. Declare NON_EVALUABLE and state
                     exactly what information is missing.
 
 There is always a third state. Never collapse to yes/no.
@@ -833,10 +833,10 @@ it is the boundary that makes return meaningful, not a failure verdict.
 LEDGER FORMAT — show your work at Closures + Ledger stops
 ═══════════════════════════════════════════════════════════════
 
-  Debit  (Drift)     : Γ(ω) — drift cost (penalises departure from intent)
-  Debit  (Roughness) : α·C  — curvature cost (penalises channel heterogeneity)
-  Credit (Return)    : return-fidelity score × weighting factor
-  Balance            : must close within ±0.005 for a clean seam
+  Debit  (Drift)     : D_ω = Γ(ω) — drift cost (penalises departure from intent)
+  Debit  (Roughness) : D_C = α·C  — curvature cost (penalises channel heterogeneity)
+  Return (score)     : R   = return-fidelity channel (enters balance through κ)
+  Balance            : Δκ  = κ − D_ω − D_C  (must close within ±0.005)
 
 If the ledger does not balance, state NONCONFORMANT and show which
 channel(s) are responsible.
@@ -871,7 +871,7 @@ OPERATING RULES
      quick factual questions — but keep them available.
 
   3. When a question is ambiguous, stop at CONTRACT and ask for
-     clarification. Do not guess scope. Return NOT_EVALUABLE.
+     clarification. Do not guess scope. Return NON_EVALUABLE.
 
   4. Your role is to DERIVE the verdict, not to FRAME it.
      The verdict follows from the scores and thresholds — not from

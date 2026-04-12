@@ -75,7 +75,7 @@ export const CE_CHANNEL_QUESTIONS: Record<string, string> = {
 export type CEVerdict = 'CONFORMANT' | 'NONCONFORMANT' | 'NON_EVALUABLE';
 
 /** Regime classification. */
-export type CERegime = 'STABLE' | 'WATCH' | 'COLLAPSE';
+export type CERegime = 'STABLE' | 'WATCH' | 'COLLAPSE' | 'NON_EVALUABLE';
 
 /** Tier-1 kernel result from CE channels. */
 export interface CEKernelResult {
@@ -92,7 +92,7 @@ export interface CEKernelResult {
 export interface CELedger {
   D_drift: number;      // drift debit Γ(ω)
   D_roughness: number;  // curvature debit α·C
-  R_return: number;     // return_fidelity score (credit proxy)
+  R_return: number;     // return_fidelity score (enters Δκ through κ)
   deltaKappa: number;   // ledger balance κ − D_ω − D_C
   balanced: boolean;    // |Δκ| ≤ tol_seam
   balanceLabel: string; // "BALANCED" or "UNBALANCED"
@@ -316,7 +316,7 @@ export function engage(channels: CEChannels, contractLabel = 'CE-v1-frozen'): CE
         summary: 'NON_EVALUABLE — channel scores out of range',
         stanceLine: 'NON_EVALUABLE',
       },
-      regime: 'COLLAPSE',
+      regime: 'NON_EVALUABLE',
       isCritical: true,
       ledger: { D_drift: 0, D_roughness: 0, R_return: 0, deltaKappa: 0, balanced: false, balanceLabel: 'NON_EVALUABLE' },
       stance: 'NON_EVALUABLE',
@@ -450,7 +450,7 @@ same verdict, regardless of which AI runs this protocol.
 You must never:
   • Pick thresholds during a response (thresholds are declared, not chosen)
   • Assert a verdict without showing the derivation
-  • Give a binary yes/no when a third state (NOT_EVALUABLE) applies
+  • Give a binary yes/no when a third state (NON_EVALUABLE) applies
   • Frame conclusions — only derive them
 
 ═══════════════════════════════════════════════════════════════
@@ -500,7 +500,7 @@ THREE-VALUED VERDICTS — never binary
 
   CONFORMANT      — channels pass; ledger balanced; reasoning traces back
   NONCONFORMANT   — one or more channels fail; ledger won't balance
-  NOT_EVALUABLE   — insufficient context or ambiguous scope. Declare and state
+  NON_EVALUABLE   — insufficient context or ambiguous scope. Declare and state
                     exactly what is missing.
 
 ═══════════════════════════════════════════════════════════════
@@ -516,10 +516,10 @@ FROZEN THRESHOLDS
 LEDGER FORMAT
 ═══════════════════════════════════════════════════════════════
 
-  Debit  (Drift)     : Γ(ω) — drift cost
-  Debit  (Roughness) : α·C  — curvature cost
-  Credit (Return)    : return-fidelity score × weighting factor
-  Balance            : must close within ±0.005 for a clean seam
+  Debit  (Drift)     : D_ω = Γ(ω) — drift cost
+  Debit  (Roughness) : D_C = α·C  — curvature cost
+  Return (score)     : R   = return-fidelity channel (enters balance through κ)
+  Balance            : Δκ  = κ − D_ω − D_C  (must close within ±0.005)
 
 Finis, sed semper initium recursionis.`;
 
@@ -562,8 +562,8 @@ export function formatReport(report: CEReport): string {
     `  ${dash}`,
     `  Debit (drift)     D_ω = ${fmt(lg.D_drift, 6)}`,
     `  Debit (roughness) D_C = ${fmt(lg.D_roughness, 6)}`,
-    `  Credit (return)   R   = ${fmt(lg.R_return, 6)}`,
-    `  Balance           Δκ  = ${fmt(lg.deltaKappa, 6)}  [${lg.balanceLabel}]`,
+    `  Return (score)    R   = ${fmt(lg.R_return, 6)}  [channel — enters Δκ through κ]`,
+    `  Balance           Δκ  = ${fmt(lg.deltaKappa, 6)}  [${lg.balanceLabel}]  (κ − D_ω − D_C)`,
     '',
     '  Kernel Invariants (Tier-1)',
     `  ${dash}`,
