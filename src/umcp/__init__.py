@@ -110,93 +110,131 @@ __version__ = "2.3.1"
 VALIDATOR_NAME = "umcp-validator"
 DEFAULT_TZ = "America/Chicago"
 
-# Import utilities
-from . import (
-    accel,
-    compute_utils,
-    continuity_law,
-    frozen_contract,
-    measurement_engine,
-    return_rope,
-    ss1m_triad,
-    tau_r_star,
-    tau_r_star_dynamics,
-    umcp_extensions,
-    uncertainty,
-    universal_calculator,
-    weld_lineage,
-)
-from . import (
-    cognitive_equalizer as cognitive_equalizer,
-)
-from .closures import ClosureLoader, get_closure_loader
-from .cognitive_equalizer import (
-    CE_SYSTEM_PROMPT,
-    AequatorCognitivus,
-    CEChannels,
-    CEReport,
-    CEVerdict,
-    CognitiveEqualizer,
-)
-from .continuity_law import ContinuityLawSpec, ContinuityVerdict, verify_continuity_law
-from .file_refs import UMCPFiles, get_umcp_files
-from .frozen_contract import (
-    DEFAULT_CONTRACT,
-    FrozenContract,
-    KernelOutput,
-    Regime,
-    check_seam_pass,
-    classify_regime,
-    compute_kernel,
-    gamma_omega,
-)
-from .kernel_optimized import (
-    CostDecomposition,
-    GateMargins,
-    KernelDiagnostics,
-    OptimizedKernelComputer,
-    classify_collapse_type,
-    diagnose,
-)
-from .measurement_engine import (
-    EmbeddingConfig,
-    EmbeddingSpec,
-    EmbeddingStrategy,
-    EngineResult,
-    InvariantRow,
-    MeasurementEngine,
-    TraceRow,
-    safe_tau_R,
-    tau_R_display,
-)
-from .seam_optimized import SeamChainAccumulator
-from .ss1m_triad import EditionTriad, compute_triad, triad_to_eid12, verify_triad
-from .tau_r_star import diagnose as diagnose_thermodynamic
-from .tau_r_star import diagnose_invariants as diagnose_thermodynamic_batch
-from .tau_r_star_dynamics import diagnose_extended
-from .uncertainty import (
-    KernelGradients,
-    UncertaintyBounds,
-    compute_kernel_gradients,
-    propagate_uncertainty,
-)
-from .universal_calculator import (
-    ComputationMode,
-    UniversalCalculator,
-    UniversalResult,
-    compute_full,
-    compute_regime,
-)
-from .validator import RootFileValidator, get_root_validator
-from .weld_lineage import (
-    EditionIdentity,
-    SS1mReceipt,
-    WeldAnchor,
-    WeldLineage,
-    compute_extended_triad,
-    compute_ss1m_receipt,
-    create_weld,
-)
+# ---------------------------------------------------------------------------
+# Lazy imports — dimensional reduction applied to the import graph.
+#
+# The kernel reduces 6 outputs to 3 effective DOF (F, κ, C — S is determined).
+# Same principle: most consumers need 2-3 modules, not all 20.  Eager imports
+# pulled ~183 modules (numpy, yaml, math, dataclasses …) on every
+# ``import umcp``.  Lazy loading pays that cost only when a name is actually
+# used, cutting bare-import time from ~300 ms to ~5 ms.
+#
+# ``__getattr__`` is the Python 3.7+ standard mechanism (PEP 562).
+# ---------------------------------------------------------------------------
+
+# Map every public name to (module_path, attribute_name | None).
+# None means "import the module itself".
+_LAZY_IMPORTS: dict[str, tuple[str, str | None]] = {
+    # --- submodules (import umcp.X) ---
+    "accel": (".accel", None),
+    "compute_utils": (".compute_utils", None),
+    "continuity_law": (".continuity_law", None),
+    "frozen_contract": (".frozen_contract", None),
+    "measurement_engine": (".measurement_engine", None),
+    "return_rope": (".return_rope", None),
+    "ss1m_triad": (".ss1m_triad", None),
+    "tau_r_star": (".tau_r_star", None),
+    "tau_r_star_dynamics": (".tau_r_star_dynamics", None),
+    "umcp_extensions": (".umcp_extensions", None),
+    "uncertainty": (".uncertainty", None),
+    "universal_calculator": (".universal_calculator", None),
+    "weld_lineage": (".weld_lineage", None),
+    "cognitive_equalizer": (".cognitive_equalizer", None),
+    # --- cognitive_equalizer symbols ---
+    "CE_SYSTEM_PROMPT": (".cognitive_equalizer", "CE_SYSTEM_PROMPT"),
+    "AequatorCognitivus": (".cognitive_equalizer", "AequatorCognitivus"),
+    "CEChannels": (".cognitive_equalizer", "CEChannels"),
+    "CEReport": (".cognitive_equalizer", "CEReport"),
+    "CEVerdict": (".cognitive_equalizer", "CEVerdict"),
+    "CognitiveEqualizer": (".cognitive_equalizer", "CognitiveEqualizer"),
+    # --- closures ---
+    "ClosureLoader": (".closures", "ClosureLoader"),
+    "get_closure_loader": (".closures", "get_closure_loader"),
+    # --- continuity_law ---
+    "ContinuityLawSpec": (".continuity_law", "ContinuityLawSpec"),
+    "ContinuityVerdict": (".continuity_law", "ContinuityVerdict"),
+    "verify_continuity_law": (".continuity_law", "verify_continuity_law"),
+    # --- file_refs ---
+    "UMCPFiles": (".file_refs", "UMCPFiles"),
+    "get_umcp_files": (".file_refs", "get_umcp_files"),
+    # --- frozen_contract ---
+    "DEFAULT_CONTRACT": (".frozen_contract", "DEFAULT_CONTRACT"),
+    "FrozenContract": (".frozen_contract", "FrozenContract"),
+    "KernelOutput": (".frozen_contract", "KernelOutput"),
+    "Regime": (".frozen_contract", "Regime"),
+    "check_seam_pass": (".frozen_contract", "check_seam_pass"),
+    "classify_regime": (".frozen_contract", "classify_regime"),
+    "compute_kernel": (".frozen_contract", "compute_kernel"),
+    "gamma_omega": (".frozen_contract", "gamma_omega"),
+    # --- kernel_optimized ---
+    "CostDecomposition": (".kernel_optimized", "CostDecomposition"),
+    "GateMargins": (".kernel_optimized", "GateMargins"),
+    "KernelDiagnostics": (".kernel_optimized", "KernelDiagnostics"),
+    "OptimizedKernelComputer": (".kernel_optimized", "OptimizedKernelComputer"),
+    "classify_collapse_type": (".kernel_optimized", "classify_collapse_type"),
+    "diagnose": (".kernel_optimized", "diagnose"),
+    # --- measurement_engine ---
+    "EmbeddingConfig": (".measurement_engine", "EmbeddingConfig"),
+    "EmbeddingSpec": (".measurement_engine", "EmbeddingSpec"),
+    "EmbeddingStrategy": (".measurement_engine", "EmbeddingStrategy"),
+    "EngineResult": (".measurement_engine", "EngineResult"),
+    "InvariantRow": (".measurement_engine", "InvariantRow"),
+    "MeasurementEngine": (".measurement_engine", "MeasurementEngine"),
+    "TraceRow": (".measurement_engine", "TraceRow"),
+    "safe_tau_R": (".measurement_engine", "safe_tau_R"),
+    "tau_R_display": (".measurement_engine", "tau_R_display"),
+    # --- seam_optimized ---
+    "SeamChainAccumulator": (".seam_optimized", "SeamChainAccumulator"),
+    # --- ss1m_triad ---
+    "EditionTriad": (".ss1m_triad", "EditionTriad"),
+    "compute_triad": (".ss1m_triad", "compute_triad"),
+    "triad_to_eid12": (".ss1m_triad", "triad_to_eid12"),
+    "verify_triad": (".ss1m_triad", "verify_triad"),
+    # --- tau_r_star ---
+    "diagnose_thermodynamic": (".tau_r_star", "diagnose"),
+    "diagnose_thermodynamic_batch": (".tau_r_star", "diagnose_invariants"),
+    # --- tau_r_star_dynamics ---
+    "diagnose_extended": (".tau_r_star_dynamics", "diagnose_extended"),
+    # --- uncertainty ---
+    "KernelGradients": (".uncertainty", "KernelGradients"),
+    "UncertaintyBounds": (".uncertainty", "UncertaintyBounds"),
+    "compute_kernel_gradients": (".uncertainty", "compute_kernel_gradients"),
+    "propagate_uncertainty": (".uncertainty", "propagate_uncertainty"),
+    # --- universal_calculator ---
+    "ComputationMode": (".universal_calculator", "ComputationMode"),
+    "UniversalCalculator": (".universal_calculator", "UniversalCalculator"),
+    "UniversalResult": (".universal_calculator", "UniversalResult"),
+    "compute_full": (".universal_calculator", "compute_full"),
+    "compute_regime": (".universal_calculator", "compute_regime"),
+    # --- validator ---
+    "RootFileValidator": (".validator", "RootFileValidator"),
+    "get_root_validator": (".validator", "get_root_validator"),
+    # ValidationResult and validate are defined locally in __init__.py
+    # --- weld_lineage ---
+    "EditionIdentity": (".weld_lineage", "EditionIdentity"),
+    "SS1mReceipt": (".weld_lineage", "SS1mReceipt"),
+    "WeldAnchor": (".weld_lineage", "WeldAnchor"),
+    "WeldLineage": (".weld_lineage", "WeldLineage"),
+    "compute_extended_triad": (".weld_lineage", "compute_extended_triad"),
+    "compute_ss1m_receipt": (".weld_lineage", "compute_ss1m_receipt"),
+    "create_weld": (".weld_lineage", "create_weld"),
+}
+
+
+def __getattr__(name: str) -> Any:
+    """Lazy import — PEP 562.  Resolves public names on first access."""
+    entry = _LAZY_IMPORTS.get(name)
+    if entry is None:
+        msg = f"module 'umcp' has no attribute {name!r}"
+        raise AttributeError(msg)
+    mod_path, attr = entry
+    import importlib
+
+    mod = importlib.import_module(mod_path, __name__)
+    obj = mod if attr is None else getattr(mod, attr)
+    # Cache on the module dict so __getattr__ is not called again
+    globals()[name] = obj
+    return obj
 
 
 class ValidationResult:
