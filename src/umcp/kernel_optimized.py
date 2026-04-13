@@ -527,9 +527,9 @@ class KernelDiagnostics:
     # Coupling ratio
     ic_f_ratio: float  # IC/F — multiplicative coherence fraction
 
-    # Canonical regime (4-gate system from frozen_contract)
-    regime: str  # "STABLE", "WATCH", "COLLAPSE", or "CRITICAL"
-    critical: bool  # IC < 0.30 overlay
+    # Canonical regime (3-gate system from frozen_contract)
+    regime: str  # "STABLE", "WATCH", or "COLLAPSE" (never "CRITICAL")
+    critical: bool  # True if IC < threshold (overlay)
 
     # Gate margins
     gates: GateMargins
@@ -601,9 +601,12 @@ def diagnose(
     # IC/F ratio — multiplicative coherence fraction
     ic_f_ratio = outputs.IC / outputs.F if epsilon < outputs.F else 0.0
 
-    # Canonical 4-gate regime
+    # Canonical 3-gate regime (overlay for critical)
     regime_enum = _classify_regime(outputs.omega, outputs.F, outputs.S, outputs.C, outputs.IC, thresholds)
     regime_str = regime_enum.value
+    if regime_str == "CRITICAL":
+        # Defensive: never return CRITICAL as regime
+        regime_str = "COLLAPSE"
     critical = thresholds.I_critical_max > outputs.IC
 
     # Gate margins (positive = inside Stable, negative = outside)
@@ -702,7 +705,7 @@ def classify_collapse_type(
     - collapse_type: "selective" (dead channels kill IC) vs "uniform" (all drift together)
     - n_dead: Number of channels below ε threshold
     - IC/F ratio: Multiplicative coherence fraction
-    - regime: Canonical 4-gate classification (STABLE/WATCH/COLLAPSE/CRITICAL)
+    - regime: Canonical 3-gate classification (STABLE/WATCH/COLLAPSE)
 
     This replaces the legacy _classify_heterogeneity labels
     ("homogeneous"/"coherent"/"heterogeneous"/"fragmented") with a
@@ -720,7 +723,7 @@ def classify_collapse_type(
     computer = OptimizedKernelComputer(epsilon=epsilon)
     outputs = computer.compute(c, w)
 
-    # Canonical 4-gate regime
+    # Canonical 3-gate regime (overlay for critical)
     regime_enum = _classify_regime(outputs.omega, outputs.F, outputs.S, outputs.C, outputs.IC)
 
     # Collapse typing: selective vs uniform
@@ -735,6 +738,9 @@ def classify_collapse_type(
     # Uniform: all channels alive, drift is collective
     collapse_type = "selective" if n_dead > 0 and delta > 0.01 else "uniform"
 
+    regime_str = regime_enum.value
+    if regime_str == "CRITICAL":
+        regime_str = "COLLAPSE"
     return {
         "F": outputs.F,
         "IC": outputs.IC,
@@ -746,7 +752,7 @@ def classify_collapse_type(
         "kappa": outputs.kappa,
         "collapse_type": collapse_type,
         "n_dead": n_dead,
-        "regime": regime_enum.value,
+        "regime": regime_str,
     }
 
 

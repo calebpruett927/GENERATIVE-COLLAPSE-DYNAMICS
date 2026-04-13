@@ -60,7 +60,6 @@ static void test_types_regime_enum(void)
     ASSERT_EQ(UMCP_REGIME_STABLE,   0, "STABLE = 0");
     ASSERT_EQ(UMCP_REGIME_WATCH,    1, "WATCH = 1");
     ASSERT_EQ(UMCP_REGIME_COLLAPSE, 2, "COLLAPSE = 2");
-    ASSERT_EQ(UMCP_REGIME_CRITICAL, 3, "CRITICAL = 3");
 }
 
 static void test_types_verdict_enum(void)
@@ -91,14 +90,12 @@ static void test_types_inf_rec(void)
 static void test_types_string_conversion(void)
 {
     printf("  Test: String conversion utilities\n");
-    ASSERT(strcmp(umcp_regime_str(UMCP_REGIME_STABLE), "STABLE") == 0,
-           "STABLE string");
-    ASSERT(strcmp(umcp_regime_str(UMCP_REGIME_WATCH), "WATCH") == 0,
-           "WATCH string");
-    ASSERT(strcmp(umcp_regime_str(UMCP_REGIME_COLLAPSE), "COLLAPSE") == 0,
-           "COLLAPSE string");
-    ASSERT(strcmp(umcp_regime_str(UMCP_REGIME_CRITICAL), "CRITICAL") == 0,
-           "CRITICAL string");
+        ASSERT(strcmp(umcp_regime_str(UMCP_REGIME_STABLE), "STABLE") == 0,
+            "STABLE string");
+        ASSERT(strcmp(umcp_regime_str(UMCP_REGIME_WATCH), "WATCH") == 0,
+            "WATCH string");
+        ASSERT(strcmp(umcp_regime_str(UMCP_REGIME_COLLAPSE), "COLLAPSE") == 0,
+            "COLLAPSE string");
 
     ASSERT(strcmp(umcp_verdict_str(UMCP_CONFORMANT), "CONFORMANT") == 0,
            "CONFORMANT string");
@@ -289,12 +286,14 @@ static void test_regime_collapse(void)
     umcp_kernel_result_t k;
     umcp_kernel_compute(c, w, 8, 1e-8, &k);
 
-    umcp_regime_t r = umcp_classify_regime_default(&k);
-    ASSERT(r == UMCP_REGIME_COLLAPSE || r == UMCP_REGIME_CRITICAL,
-           "low-fidelity → COLLAPSE or CRITICAL");
+        umcp_regime_with_overlay_t r = umcp_classify_regime_with_overlay(&k, &ct.thresholds);
+        ASSERT(r.base_regime == UMCP_REGIME_COLLAPSE,
+            "low-fidelity → COLLAPSE");
 }
 
 static void test_regime_critical(void)
+    umcp_regime_with_overlay_t r = umcp_classify_regime_with_overlay(&k, &thr);
+    ASSERT(r.is_critical, "overlay struct: is_critical set");
 {
     printf("  Test: CRITICAL overlay detection\n");
     /* One dead channel kills IC → IC < 0.30 */
@@ -874,9 +873,8 @@ static void test_pipeline_regime_transition(void)
     double c2[8] = {0.3, 0.4, 0.2, 0.5, 0.3, 0.4, 0.2, 0.5};
     umcp_trace_set_channels(&tr, c2);
     umcp_pipeline_step(&pipe, &tr, 1.0, 1.0, &result);
-    ASSERT(result.regime == UMCP_REGIME_COLLAPSE ||
-           result.regime == UMCP_REGIME_CRITICAL,
-           "step 2 COLLAPSE or CRITICAL");
+        ASSERT(result.regime == UMCP_REGIME_COLLAPSE,
+            "step 2 COLLAPSE");
 
     umcp_trace_free(&tr);
 }

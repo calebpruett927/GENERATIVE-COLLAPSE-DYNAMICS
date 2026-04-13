@@ -27,6 +27,9 @@
 \usepackage{enumitem}
 \usepackage{array}
 \usepackage{fancyvrb}
+\usepackage{caption}
+\usepackage{tikz}
+\usetikzlibrary{positioning, arrows.meta}
 \usepackage[most]{tcolorbox}
 \newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 
@@ -149,38 +152,77 @@ fixed discourse spine:
 Figure~\ref{fig:spine} maps the twelve stops onto the five spine
 stages visually.
 
-\begin{figure}[ht]
-\centering
-\small
-\setlength{\tabcolsep}{2pt}
-\begin{tabular}{@{}c@{\,}l@{\quad}l@{\quad}l@{}}
+\begin{center}
+\begin{tikzpicture}[
+  font=\small,
+  stage/.style={draw, rectangle, rounded corners=4pt, inner sep=4pt,
+    minimum width=2.6cm, minimum height=0.9cm, align=center,
+    fill=black!6, font=\scshape\small},
+  stop/.style={font=\scriptsize, text=black!70, align=left},
+  arr/.style={-{Stealth[length=5pt]}, thick, black!60},
+]
+  % Row 1: Contract and Canon
+  \node[stage] (contract) at (0,0) {Contract \\ \normalfont\scriptsize (freeze)};
+  \node[stage] (canon) at (3.2,0) {Canon \\ \normalfont\scriptsize (tell)};
+
+  % Row 2: Closures (centered, staggered down)
+  \node[stage] (closures) at (3.2,-1.7) {Closures \\ \normalfont\scriptsize (publish)};
+
+  % Row 3: Ledger and Stance
+  \node[stage] (ledger) at (0,-1.7) {Integrity Ledger \\ \normalfont\scriptsize (reconcile)};
+  \node[stage] (stance) at (1.6,-3.4) {Stance \\ \normalfont\scriptsize (read)};
+
+  % Arrows: zigzag path
+  \draw[arr] (contract) -- (canon);
+  \draw[arr] (canon) -- (closures);
+  \draw[arr] (closures) -- (ledger);
+  \draw[arr] (ledger) -- (stance);
+
+  % Stop annotations (right side of each node)
+  \node[stop, anchor=west] at (contract.east)
+    [xshift=7pt, yshift=9pt] {\textit{1--2}};
+  \node[stop, anchor=west] at (canon.east)
+    [xshift=7pt, yshift=9pt] {\textit{3--5}};
+  \node[stop, anchor=west] at (closures.east)
+    [xshift=7pt, yshift=9pt] {\textit{6}};
+  \node[stop, anchor=west] at (ledger.west)
+    [xshift=-16pt, yshift=9pt] {\textit{7}};
+  \node[stop, anchor=east] at (stance.east)
+    [xshift=16pt, yshift=9pt] {\textit{8--12}};
+\end{tikzpicture}
+
+\vspace{0.4cm}
+{\footnotesize\setlength{\tabcolsep}{2pt}%
+\begin{tabular}{@{}c@{\;}l@{\;\;}l@{\;\;}l@{}}
   \toprule
-  \textbf{Stop} & \textbf{What happens} & \textbf{Spine stage} & \textbf{Tier} \\
+  \textbf{Stop} & \textbf{What happens} & \textbf{Stage} & \textbf{Tier} \\
   \midrule
-  1 & Axiom declared    & \multirow{2}{*}{\textsc{Contract}} & Tier-1 \\
-  2 & Parameters frozen  & & Tier-0 \\
+  1 & Axiom declared    & \multirow{2}{*}{\textsc{Contract}} & 1 \\
+  2 & Params frozen     & & 0 \\
   \midrule
-  3 & Channels chosen    & \multirow{3}{*}{\textsc{Canon}} & Tier-2 \\
-  4 & Trace bounded      & & Tier-0 \\
-  5 & Kernel computed    & & $1 \!\leftarrow\! 0$ \\
+  3 & Channels chosen   & \multirow{3}{*}{\textsc{Canon}} & 2 \\
+  4 & Trace bounded     & & 0 \\
+  5 & Kernel computed   & & $1\!\leftarrow\!0$ \\
   \midrule
-  6 & Ledger debited / credited & \textsc{Closures} & Tier-0 \\
+  6 & Ledger debited    & \textsc{Closures} & 0 \\
   \midrule
-  7 & Regime classified  & \textsc{Integrity Ledger} & Tier-0 \\
+  7 & Regime classified & \textsc{Ledger} & 0 \\
   \midrule
-  8 & Casepack assembled & \multirow{5}{*}{\textsc{Stance}} & Tier-0 \\
-  9 & CLI executed       & & Tier-0 \\
-  10 & API called        & & Tier-0 \\
-  11 & Latin rendered    & & Tier-2 \\
-  12 & Ordinary reading  & & Tier-2 \\
+  8 & Casepack built    & \multirow{5}{*}{\textsc{Stance}} & 0 \\
+  9 & CLI executed      & & 0 \\
+  10 & API called       & & 0 \\
+  11 & Latin rendered   & & 2 \\
+  12 & Ordinary reading & & 2 \\
   \bottomrule
-\end{tabular}
-\caption{Twelve stops mapped onto the five spine stages.
-  Tier-1: kernel and its identities; Tier-0: protocol implementation;
-  Tier-2: domain-specific channel selection.
-  ``$1 \!\leftarrow\! 0$'': Tier-0 code evaluates a Tier-1 function.}
+\end{tabular}}
+\captionof{figure}{Twelve stops mapped onto the five spine stages.
+  The diagram traces the zigzag path through the spine;
+  stop numbers appear as superscripts.
+  Tier-1: kernel and its identities; Tier-0: protocol;
+  Tier-2: domain closures.
+  ``$1\!\leftarrow\!0$'': Tier-0 code evaluates a Tier-1 function.}
 \label{fig:spine}
-\end{figure}
+\end{center}
 
 \subsection{Source files}
 

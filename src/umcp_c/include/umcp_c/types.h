@@ -34,14 +34,23 @@ extern "C" {
  * STABLE:   ω < 0.038  ∧  F > 0.90  ∧  S < 0.15  ∧  C < 0.14
  * WATCH:    0.038 ≤ ω < 0.30 (or Stable gates not all met)
  * COLLAPSE: ω ≥ 0.30
- * CRITICAL: IC < 0.30 (severity overlay, accompanies any regime)
+ *
+ * CRITICAL: IC < 0.30 (severity overlay, not a regime; can accompany any base regime)
  */
 typedef enum {
     UMCP_REGIME_STABLE   = 0,
     UMCP_REGIME_WATCH    = 1,
-    UMCP_REGIME_COLLAPSE = 2,
-    UMCP_REGIME_CRITICAL = 3
+    UMCP_REGIME_COLLAPSE = 2
 } umcp_regime_t;
+
+/**
+ * Regime + overlay: base regime plus critical severity flag.
+ * This struct preserves the canon model: Critical is an overlay, not a regime.
+ */
+typedef struct {
+    umcp_regime_t base_regime;
+    int is_critical; // 1 if IC < threshold, 0 otherwise
+} umcp_regime_with_overlay_t;
 
 /* ─── Three-Valued Verdict ──────────────────────────────────────── */
 

@@ -13,11 +13,17 @@
 
 /* ─── Regime Classification ─────────────────────────────────────── */
 
-umcp_regime_t umcp_classify_regime(
+
+umcp_regime_with_overlay_t umcp_classify_regime_with_overlay(
     const umcp_kernel_result_t *result,
     const umcp_regime_thresholds_t *thresholds)
 {
-    if (!result || !thresholds) return UMCP_REGIME_WATCH;
+    umcp_regime_with_overlay_t out;
+    out.is_critical = 0;
+    if (!result || !thresholds) {
+        out.base_regime = UMCP_REGIME_WATCH;
+        return out;
+    }
 
     double omega = result->omega;
     double F     = result->F;
@@ -25,19 +31,20 @@ umcp_regime_t umcp_classify_regime(
     double C     = result->C;
     double IC    = result->IC;
 
-    /* Critical overlay takes precedence */
     if (IC < thresholds->IC_critical_max) {
-        return UMCP_REGIME_CRITICAL;
+        out.is_critical = 1;
     }
 
     /* Collapse: ω ≥ 0.30 */
     if (omega >= thresholds->omega_collapse_min) {
-        return UMCP_REGIME_COLLAPSE;
+        out.base_regime = UMCP_REGIME_COLLAPSE;
+        return out;
     }
 
     /* Watch: 0.038 ≤ ω < 0.30 */
     if (omega >= thresholds->omega_watch_min) {
-        return UMCP_REGIME_WATCH;
+        out.base_regime = UMCP_REGIME_WATCH;
+        return out;
     }
 
     /* Stable requires ALL conditions (conjunctive) */
@@ -45,11 +52,22 @@ umcp_regime_t umcp_classify_regime(
         F     > thresholds->F_stable_min &&
         S     < thresholds->S_stable_max &&
         C     < thresholds->C_stable_max) {
-        return UMCP_REGIME_STABLE;
+        out.base_regime = UMCP_REGIME_STABLE;
+        return out;
     }
 
     /* Default to Watch if not clearly stable */
-    return UMCP_REGIME_WATCH;
+    out.base_regime = UMCP_REGIME_WATCH;
+    return out;
+}
+
+// Legacy API for compatibility: returns only the base regime (no overlay)
+umcp_regime_t umcp_classify_regime(
+    const umcp_kernel_result_t *result,
+    const umcp_regime_thresholds_t *thresholds)
+{
+    umcp_regime_with_overlay_t tmp = umcp_classify_regime_with_overlay(result, thresholds);
+    return tmp.base_regime;
 }
 
 umcp_regime_t umcp_classify_regime_default(const umcp_kernel_result_t *result)
@@ -104,7 +122,8 @@ void umcp_regime_partition(
 
     lcg_seed(42);  /* Deterministic for reproducibility */
 
-    size_t counts[4] = {0, 0, 0, 0};
+    size_t counts[3] = {0, 0, 0};
+    size_t count_critical = 0;
     double *c = (double *)malloc(n_channels * sizeof(double));
     double *w = (double *)malloc(n_channels * sizeof(double));
     if (!c || !w) {
@@ -125,8 +144,9 @@ void umcp_regime_partition(
         }
 
         if (umcp_kernel_compute(c, w, n_channels, 1e-8, &result) == UMCP_OK) {
-            umcp_regime_t regime = umcp_classify_regime(&result, thresholds);
-            counts[regime]++;
+            umcp_regime_with_overlay_t regime = umcp_classify_regime_with_overlay(&result, thresholds);
+            counts[regime.base_regime]++;
+            if (regime.is_critical) count_critical++;
         }
     }
 
@@ -134,7 +154,7 @@ void umcp_regime_partition(
     *pct_stable   = 100.0 * (double)counts[UMCP_REGIME_STABLE]   / total;
     *pct_watch    = 100.0 * (double)counts[UMCP_REGIME_WATCH]    / total;
     *pct_collapse = 100.0 * (double)counts[UMCP_REGIME_COLLAPSE] / total;
-    *pct_critical = 100.0 * (double)counts[UMCP_REGIME_CRITICAL] / total;
+    *pct_critical = 100.0 * (double)count_critical / total;
 
     free(c);
     free(w);
