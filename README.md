@@ -111,7 +111,7 @@ Every claim, measurement, validation, and narrative in UMCP follows exactly **fi
 
 ```
 ┌─────────────┐    ┌─────────────┐    ┌──────────────┐    ┌───────────────────┐    ┌──────────┐
-│   CONTRACT  │───▶│    CANON    │───▶│   CLOSURES   │───▶│ INTEGRITY LEDGER  │───▶│  STANCE  │
+│   CONTRACT  │───▶│    CANON    │───▶│   CLOSURES   │───▶│ INTEGRITY LEDGER  │───▶│ STANCE  │
 │   (freeze)  │    │   (tell)    │    │  (publish)   │    │   (reconcile)     │    │  (read)  │
 └─────────────┘    └─────────────┘    └──────────────┘    └───────────────────┘    └──────────┘
    Define             Narrate           Threshold           Debit/Credit           Verdict
@@ -134,7 +134,7 @@ Every claim, measurement, validation, and narrative in UMCP follows exactly **fi
 
 ### The Three-Tier Stack
 
-Tier-1 (44 structural identities, 47 lemmas, 746 proven theorems) → Tier-0 (20,221 tests, 245 closure modules, C++17 accelerator) → Tier-2 (23 domains from particle physics to consciousness). One-way dependency. No back-edges within a frozen run.
+Tier-1 (44 structural identities, 47 lemmas, 746 proven theorems) → Tier-0 (20,235 tests, 245 closure modules, C++17 accelerator) → Tier-2 (23 domains from particle physics to consciousness). One-way dependency. No back-edges within a frozen run.
 
 <p align="center">
   <img src="images/10_tier_architecture.png" alt="Three-Tier Architecture: Tier-1 (Kernel) → Tier-0 (Protocol) → Tier-2 (Domains)" width="88%">
