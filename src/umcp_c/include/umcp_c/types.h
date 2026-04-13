@@ -112,7 +112,6 @@ static inline const char *umcp_regime_str(umcp_regime_t r) {
         case UMCP_REGIME_STABLE:   return "STABLE";
         case UMCP_REGIME_WATCH:    return "WATCH";
         case UMCP_REGIME_COLLAPSE: return "COLLAPSE";
-        case UMCP_REGIME_CRITICAL: return "CRITICAL";
         default:                   return "UNKNOWN";
     }
 }
