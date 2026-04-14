@@ -1,0 +1,343 @@
+<!DOCTYPE html><link rel="stylesheet" href="/GENERATIVE-COLLAPSE-DYNAMICS/_astro/_slug_.46zHgi0b.css">
+<style>.corpus-resolver-panel[data-astro-cid-qvm6klgw]{border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:1rem;display:grid;gap:.75rem}.corpus-resolver-panel__header[data-astro-cid-qvm6klgw]{display:flex;justify-content:space-between;align-items:center;gap:1rem}.corpus-resolver-panel__form[data-astro-cid-qvm6klgw]{display:grid;gap:.5rem}.corpus-resolver-panel__form[data-astro-cid-qvm6klgw] input[data-astro-cid-qvm6klgw]{width:100%}.corpus-resolver-panel__results[data-astro-cid-qvm6klgw]{list-style:none;padding:0;margin:0;display:grid;gap:.75rem}.corpus-resolver-panel__result[data-astro-cid-qvm6klgw]{display:flex;justify-content:space-between;gap:.75rem;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:.75rem}.corpus-resolver-panel__result[data-astro-cid-qvm6klgw] p[data-astro-cid-qvm6klgw],.corpus-resolver-panel__result[data-astro-cid-qvm6klgw] small[data-astro-cid-qvm6klgw]{margin:.25rem 0 0;display:block}.corpus-resolver-panel__placeholder[data-astro-cid-qvm6klgw]{opacity:.8}
+.run-summary-card[data-astro-cid-oq76engr]{border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:1rem;display:grid;gap:.75rem}.run-summary-card__header[data-astro-cid-oq76engr]{display:flex;justify-content:space-between;align-items:center;gap:1rem}.run-summary-card__content[data-astro-cid-oq76engr]{display:grid;gap:.5rem}.run-summary-card__content[data-astro-cid-oq76engr] p[data-astro-cid-oq76engr],.run-summary-card__content[data-astro-cid-oq76engr] h3[data-astro-cid-oq76engr],.run-summary-card__placeholder[data-astro-cid-oq76engr]{margin:0}.run-summary-card__content[data-astro-cid-oq76engr] pre[data-astro-cid-oq76engr]{margin:0;white-space:pre-wrap;word-break:break-word;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:.75rem}.run-summary-card__placeholder[data-astro-cid-oq76engr]{opacity:.8}.casepacks-page[data-astro-cid-jvymcrff]{display:grid;gap:1rem}.operator-main-card[data-astro-cid-jvymcrff],.operator-sidebar-card[data-astro-cid-jvymcrff]{border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:1rem}.operator-main-card__header[data-astro-cid-jvymcrff]{display:flex;justify-content:space-between;align-items:center;gap:1rem}.casepacks-list[data-astro-cid-jvymcrff]{list-style:none;padding:0;margin:1rem 0 0;display:grid;gap:.75rem}.casepacks-list__item[data-astro-cid-jvymcrff]{display:flex;justify-content:space-between;gap:1rem;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:.75rem}.casepacks-list__item[data-astro-cid-jvymcrff] p[data-astro-cid-jvymcrff],.casepacks-list__item[data-astro-cid-jvymcrff] small[data-astro-cid-jvymcrff]{margin:.25rem 0 0;display:block}.casepacks-list__actions[data-astro-cid-jvymcrff]{display:flex;gap:.5rem;align-items:start}.operator-main-card[data-astro-cid-jvymcrff] pre[data-astro-cid-jvymcrff]{margin:0;white-space:pre-wrap;word-break:break-word}
+</style><div class="operator-shell__container"> <header class="operator-shell__header"> <h1>CAI · Casepacks</h1> <span class="operator-shell__session-id">Session: bootstrap</span> </header> <nav class="operator-shell__nav"> <ul> <li><a href="/cai">CAI Home</a></li> <li><a href="/operator">Operator Workspace</a></li> <li><a href="/operator/chat">Chat</a></li> <li><a href="/operator/contracts">Contracts</a></li> <li><a href="/operator/casepacks">Casepacks</a></li> </ul> </nav> <div class="operator-shell__layout"> <aside class="operator-shell__left">  <section class="operator-sidebar-card" data-astro-cid-jvymcrff> <h2 data-astro-cid-jvymcrff>Session</h2> <p id="casepacks-session-status" data-astro-cid-jvymcrff>Initializing session…</p> <p data-astro-cid-jvymcrff><strong data-astro-cid-jvymcrff>Session ID:</strong> <span id="casepacks-session-id" data-astro-cid-jvymcrff>—</span></p> <p data-astro-cid-jvymcrff><strong data-astro-cid-jvymcrff>Active Contract:</strong> <span id="casepacks-contract-id" data-astro-cid-jvymcrff>—</span></p> </section> <section class="corpus-resolver-panel" data-corpus-resolver data-astro-cid-qvm6klgw> <header class="corpus-resolver-panel__header" data-astro-cid-qvm6klgw> <h2 data-astro-cid-qvm6klgw>Corpus Resolver</h2> <button type="button" id="corpus-clear-working-set" data-astro-cid-qvm6klgw>Clear set</button> </header> <form class="corpus-resolver-panel__form" id="corpus-search-form" data-astro-cid-qvm6klgw> <label data-astro-cid-qvm6klgw>
+Search corpus
+<input id="corpus-search-input" name="query" type="search" placeholder="Search papers, casepacks, contracts, theorems…" required data-astro-cid-qvm6klgw> </label> <button type="submit" data-astro-cid-qvm6klgw>Search</button> </form> <div class="corpus-resolver-panel__status" id="corpus-search-status" data-astro-cid-qvm6klgw>
+Ready.
+</div> <ul class="corpus-resolver-panel__results" id="corpus-search-results" data-astro-cid-qvm6klgw> <li class="corpus-resolver-panel__placeholder" data-astro-cid-qvm6klgw>
+No results yet.
+</li> </ul> <script type="module">
+    import { searchCorpus } from "../lib/operator-api.ts";
+
+    const root = document.currentScript?.closest("[data-corpus-resolver]");
+    const form = root?.querySelector("#corpus-search-form");
+    const input = root?.querySelector("#corpus-search-input");
+    const status = root?.querySelector("#corpus-search-status");
+    const results = root?.querySelector("#corpus-search-results");
+    const clearButton = root?.querySelector("#corpus-clear-working-set");
+
+    function setStatus(text) {
+      if (status) status.textContent = text;
+    }
+
+    function renderResults(items) {
+      if (!results) return;
+      if (!items.length) {
+        results.innerHTML = `<li class="corpus-resolver-panel__placeholder">No results.</li>`;
+        return;
+      }
+      results.innerHTML = items.map((item) => `
+        <li class="corpus-resolver-panel__result">
+          <div>
+            <strong>${item.title}</strong>
+            <p>${item.kind}:${item.id}</p>
+            ${item.summary ? `<small>${item.summary}</small>` : ""}
+          </div>
+          <div class="corpus-resolver-panel__result-actions">
+            <button
+              type="button"
+              data-use-kind="${item.kind}"
+              data-use-id="${item.id}"
+              data-use-title="${item.title}"
+            >
+              Use
+            </button>
+          </div>
+        </li>
+      `).join("");
+    }
+
+    results?.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      if (target.matches("[data-use-kind]")) {
+        const ref = {
+          kind: target.dataset.useKind,
+          id: target.dataset.useId,
+          title: target.dataset.useTitle,
+        };
+        window.dispatchEvent(
+          new CustomEvent("operator:working-set:add", { detail: ref }),
+        );
+        setStatus(`Added ${ref.kind}:${ref.id} to working set.`);
+      }
+    });
+
+    clearButton?.addEventListener("click", () => {
+      window.dispatchEvent(new CustomEvent("operator:working-set:clear"));
+      setStatus("Working set cleared.");
+    });
+
+    form?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!input) return;
+      const query = input.value.trim();
+      if (!query) return;
+      setStatus(`Searching for "${query}"…`);
+      try {
+        const response = await searchCorpus({
+          query,
+          limit: 10,
+        });
+        renderResults(response.results);
+        setStatus(`Found ${response.results.length} result(s).`);
+      } catch (error) {
+        renderResults([]);
+        setStatus(error instanceof Error ? error.message : "Search failed.");
+      }
+    });
+  </script> </section>   </aside> <main class="operator-shell__main">   <section class="casepacks-page" data-astro-cid-jvymcrff> <article class="operator-main-card" data-astro-cid-jvymcrff> <header class="operator-main-card__header" data-astro-cid-jvymcrff> <h2 data-astro-cid-jvymcrff>Casepacks</h2> <button type="button" id="casepacks-refresh" data-astro-cid-jvymcrff>Refresh</button> </header> <p id="casepacks-status" data-astro-cid-jvymcrff>Loading casepacks…</p> <ul class="casepacks-list" id="casepacks-list" data-astro-cid-jvymcrff> <li class="casepacks-list__placeholder" data-astro-cid-jvymcrff>No casepacks found.</li> </ul> </article> <article class="operator-main-card" data-astro-cid-jvymcrff> <h2 data-astro-cid-jvymcrff>Selected Casepack</h2> <pre id="casepacks-detail-json" data-astro-cid-jvymcrff>No casepack selected.</pre> </article> </section>  <script type="module">
+    import { getCorpusObject, searchCorpus } from "../../lib/operator-api.ts";
+    import { ensureOperatorSession } from "../../lib/operator-session.ts";
+
+		const sessionStatus = document.getElementById("casepacks-session-status");
+		const sessionIdEl = document.getElementById("casepacks-session-id");
+		const contractEl = document.getElementById("casepacks-contract-id");
+		const casepacksStatus = document.getElementById("casepacks-status");
+		const casepacksList = document.getElementById("casepacks-list");
+		const detailJson = document.getElementById("casepacks-detail-json");
+		const refreshButton = document.getElementById("casepacks-refresh");
+
+		let sessionId = "";
+		let activeContractId = "UMA.INTSTACK.v1";
+
+		function setStatus(text) {
+			if (casepacksStatus) casepacksStatus.textContent = text;
+		}
+
+		function renderCasepacks(results) {
+			if (!casepacksList) return;
+
+			if (!results.length) {
+				casepacksList.innerHTML = `<li class="casepacks-list__placeholder">No casepacks found.</li>`;
+				return;
+			}
+
+			casepacksList.innerHTML = results.map((item) => `
+				<li class="casepacks-list__item">
+					<div>
+						<strong>${item.title}</strong>
+						<p>${item.kind}:${item.id}</p>
+						${item.summary ? `<small>${item.summary}</small>` : ""}
+					</div>
+					<div class="casepacks-list__actions">
+						<button type="button" data-inspect-id="${item.id}" data-inspect-title="${item.title}">Inspect</button>
+						<button type="button" data-run-id="${item.id}" data-run-title="${item.title}">Run</button>
+					</div>
+				</li>
+			`).join("");
+		}
+
+		async function inspectCasepack(casepackId, title = casepackId) {
+			try {
+				const response = await getCorpusObject("casepack", casepackId);
+
+				if (detailJson) {
+					detailJson.textContent = JSON.stringify(response.object, null, 2);
+				}
+
+				window.dispatchEvent(
+					new CustomEvent("operator:run-update", {
+						detail: {
+							runId: `staged:${casepackId}`,
+							status: "staged",
+							casepackId,
+							contractId: activeContractId,
+							invariants: null,
+							stance: {
+								verdict: "NON_EVALUABLE",
+								rationale: [
+									"Casepack selected and inspected.",
+									"Authoritative run execution endpoint is not wired in this pass."
+								]
+							},
+							artifacts: [],
+						},
+					}),
+				);
+
+				setStatus(`Inspected casepack ${title}.`);
+			} catch (error) {
+				if (detailJson) {
+					detailJson.textContent =
+						error instanceof Error ? error.message : "Failed to inspect casepack.";
+				}
+				setStatus("Inspection failed.");
+			}
+		}
+
+		async function loadCasepacks() {
+			setStatus("Loading casepacks…");
+
+			try {
+				const response = await searchCorpus({
+					query: "",
+					kinds: ["casepack"],
+					limit: 50,
+				});
+
+				renderCasepacks(response.results);
+				setStatus(`Loaded ${response.results.length} casepack(s).`);
+			} catch (error) {
+				renderCasepacks([]);
+				setStatus(error instanceof Error ? error.message : "Failed to load casepacks.");
+			}
+		}
+
+		async function pollRun(runId) {
+			const maxAttempts = 12;
+			const delayMs = 250;
+
+			for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+				const run = await getRun(runId);
+
+				window.dispatchEvent(
+					new CustomEvent("operator:run-update", { detail: run }),
+				);
+
+				if (run.status === "completed" || run.status === "failed") {
+					return run;
+				}
+
+				await new Promise((resolve) => setTimeout(resolve, delayMs));
+			}
+
+			return getRun(runId);
+		}
+
+		async function runCasepack(casepackId, title = casepackId) {
+			if (!sessionId) {
+				setStatus("Session not ready.");
+				return;
+			}
+
+			try {
+				   setStatus(`Starting run for ${title}…`);
+
+				   const started = await startCasepackRun(casepackId, {
+					   sessionId,
+					   contractId: activeContractId,
+					   overrideInputs: null,
+				   });
+
+				   // Poll backend for final run record
+				   const finalRun = await pollRun(started.runId);
+				   window.dispatchEvent(
+					   new CustomEvent("operator:run-update", { detail: finalRun }),
+				   );
+				   setStatus(`Run ${finalRun.runId} finished with status ${finalRun.status}.`);
+			} catch (error) {
+				setStatus(error instanceof Error ? error.message : "Failed to run casepack.");
+			}
+		}
+
+		casepacksList?.addEventListener("click", async (event) => {
+			const target = event.target;
+			if (!(target instanceof HTMLElement)) return;
+
+			const inspectId = target.dataset.inspectId;
+			const inspectTitle = target.dataset.inspectTitle;
+			const runId = target.dataset.runId;
+			const runTitle = target.dataset.runTitle;
+
+			if (inspectId) {
+				await inspectCasepack(inspectId, inspectTitle || inspectId);
+				return;
+			}
+
+			if (runId) {
+				await runCasepack(runId, runTitle || runId);
+			}
+		});
+
+		refreshButton?.addEventListener("click", () => {
+			loadCasepacks();
+		});
+
+		async function bootstrap() {
+			try {
+				const envelope = await ensureOperatorSession({
+					mode: "casepack",
+					activeContractId: "UMA.INTSTACK.v1",
+					activeClosureIds: [],
+					activeCasepackId: null,
+				});
+
+				sessionId = envelope.session.sessionId;
+				activeContractId = envelope.session.activeContractId || "UMA.INTSTACK.v1";
+
+				if (sessionStatus) sessionStatus.textContent = "Session ready.";
+				if (sessionIdEl) sessionIdEl.textContent = sessionId;
+				if (contractEl) contractEl.textContent = activeContractId;
+
+				window.dispatchEvent(
+					new CustomEvent("operator:session-ready", { detail: envelope }),
+				);
+
+				await loadCasepacks();
+			} catch (error) {
+				if (sessionStatus) {
+					sessionStatus.textContent =
+						error instanceof Error ? error.message : "Failed to initialize session.";
+				}
+				setStatus("Could not load casepacks.");
+			}
+		}
+
+		bootstrap();
+	</script>  </main> <aside class="operator-shell__right">  <section class="run-summary-card" data-run-summary-card data-astro-cid-oq76engr> <header class="run-summary-card__header" data-astro-cid-oq76engr> <h2 data-astro-cid-oq76engr>Run Summary</h2> <button type="button" id="run-summary-clear" data-astro-cid-oq76engr>Clear</button> </header> <div id="run-summary-body" data-astro-cid-oq76engr> <p class="run-summary-card__placeholder" data-astro-cid-oq76engr>
+No run selected. Inspect or stage a casepack to populate this card.
+</p> </div> <script type="module">
+    const root = document.currentScript?.closest("[data-run-summary-card]");
+    const body = root?.querySelector("#run-summary-body");
+    const clearButton = root?.querySelector("#run-summary-clear");
+
+    function renderRun(run) {
+      if (!body) return;
+
+      if (!run) {
+        body.innerHTML = `
+          <p class="run-summary-card__placeholder">
+            No run selected. Inspect or stage a casepack to populate this card.
+          </p>
+        `;
+        return;
+      }
+
+      const invariants = run.invariants ?? null;
+      const stance = run.stance ?? null;
+      const artifacts = run.artifacts ?? [];
+
+      body.innerHTML = `
+        <div class="run-summary-card__content">
+          <p><strong>Run ID:</strong> ${run.runId ?? "—"}</p>
+          <p><strong>Status:</strong> ${run.status ?? "—"}</p>
+          <p><strong>Casepack:</strong> ${run.casepackId ?? "—"}</p>
+          <p><strong>Contract:</strong> ${run.contractId ?? "—"}</p>
+
+          <h3>Invariants</h3>
+          <pre>${JSON.stringify(invariants, null, 2)}</pre>
+
+          <h3>Stance</h3>
+          <pre>${JSON.stringify(stance, null, 2)}</pre>
+
+          <h3>Artifacts</h3>
+          <pre>${JSON.stringify(artifacts, null, 2)}</pre>
+        </div>
+      `;
+    }
+
+    window.addEventListener("operator:run-update", (event) => {
+      renderRun(event.detail);
+    });
+
+    window.addEventListener("operator:run-clear", () => {
+      renderRun(null);
+    });
+
+    clearButton?.addEventListener("click", () => {
+      window.dispatchEvent(new CustomEvent("operator:run-clear"));
+      renderRun(null);
+    });
+  </script> </section>   </aside> </div> </div> 
