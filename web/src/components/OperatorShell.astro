@@ -1,13 +1,14 @@
 
 
+---
 export interface Props {
   title?: string;
   sessionId?: string;
 }
 
-
 // Default to CAI identity for visible workspace, fallback to prop or operator naming if needed
 const { title = "CAI · Collapse-Aware Intelligence", sessionId = "" } = Astro.props;
+---
 
 <div class="operator-shell__container">
   <header class="operator-shell__header">
