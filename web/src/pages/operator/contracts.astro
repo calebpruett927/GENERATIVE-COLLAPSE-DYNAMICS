@@ -20,43 +20,38 @@ const bootstrapSession: OperatorSession = {
 };
 ---
 
-<OperatorShell title="GCD Operator · Contracts" sessionId={bootstrapSession.sessionId}>
-	<Fragment slot="left">
-		<section class="operator-sidebar-card">
-			<h2>Session</h2>
-			<p id="contracts-session-status">Initializing session…</p>
-			<p><strong>Session ID:</strong> <span id="contracts-session-id">—</span></p>
-			<p><strong>Active Contract:</strong> <span id="contracts-active-contract">—</span></p>
-		</section>
 
-		<CorpusResolverPanel />
-	</Fragment>
-
-	<section class="contracts-page">
-		<article class="operator-main-card">
-			<header class="operator-main-card__header">
-				<h2>Contracts</h2>
-				<button type="button" id="contracts-refresh">Refresh</button>
-			</header>
-
-			<p id="contracts-status">Loading contracts…</p>
-
-			<ul class="contracts-list" id="contracts-list">
-				<li class="contracts-list__placeholder">No contracts loaded yet.</li>
-			</ul>
-		</article>
-	</section>
-
-	<Fragment slot="right">
-		<section class="operator-sidebar-card">
-			<h2>Selected Contract</h2>
-			<pre id="contracts-detail-json">No contract selected.</pre>
-		</section>
-	</Fragment>
-
-	<script type="module">
-		import { bindContract, getCorpusObject, searchCorpus } from "../../lib/operator-api.ts";
-		import { ensureOperatorSession } from "../../lib/operator-session.ts";
+<OperatorShell title="CAI · Contracts" sessionId={bootstrapSession.sessionId}>
+  <Fragment slot="left">
+    <section class="operator-sidebar-card">
+      <h2>Session</h2>
+      <p id="contracts-session-status">Initializing session…</p>
+      <p><strong>Session ID:</strong> <span id="contracts-session-id">—</span></p>
+      <p><strong>Active Contract:</strong> <span id="contracts-active-contract">—</span></p>
+    </section>
+    <CorpusResolverPanel />
+  </Fragment>
+  <section class="contracts-page">
+    <article class="operator-main-card">
+      <header class="operator-main-card__header">
+        <h2>Contracts</h2>
+        <button type="button" id="contracts-refresh">Refresh</button>
+      </header>
+      <p id="contracts-status">Loading contracts…</p>
+      <ul class="contracts-list" id="contracts-list">
+        <li class="contracts-list__placeholder">No contracts found.</li>
+      </ul>
+    </article>
+  </section>
+  <Fragment slot="right">
+    <section class="operator-sidebar-card">
+      <h2>Selected Contract</h2>
+      <pre id="contracts-detail-json">No contract selected.</pre>
+    </section>
+  </Fragment>
+  <script type="module">
+    import { bindContract, getCorpusObject, searchCorpus } from "../../lib/operator-api.ts";
+    import { ensureOperatorSession } from "../../lib/operator-session.ts";
 
 		const sessionStatus = document.getElementById("contracts-session-status");
 		const sessionIdEl = document.getElementById("contracts-session-id");
@@ -81,34 +76,36 @@ const bootstrapSession: OperatorSession = {
 				return;
 			}
 
-			contractsList.innerHTML = results.map((item) => `
-				<li class="contracts-list__item">
-					<div>
-						<strong>${item.title}</strong>
-						<p>${item.kind}:${item.id}</p>
-						${item.summary ? `<small>${item.summary}</small>` : ""}
-					</div>
-					<div class="contracts-list__actions">
-						<button type="button" data-inspect-id="${item.id}">Inspect</button>
-						<button type="button" data-activate-id="${item.id}">Activate</button>
-					</div>
-				</li>
-			`).join("");
+			   contractsList.innerHTML = results.map((item) => {
+				   const isActive = item.id === activeContractId;
+				   return `
+				   <li class="contracts-list__item">
+					   <div>
+						   <strong>${item.title}</strong>
+						   <p>${item.kind || 'contract'}:${item.id}</p>
+						   ${item.summary ? `<small>${item.summary}</small>` : ""}
+					   </div>
+					   <div class="contracts-list__actions">
+						   <button type="button" data-inspect-id="${item.id}">Inspect</button>
+						   <button type="button" data-activate-id="${item.id}" ${isActive ? 'disabled' : ''}>${isActive ? 'Active' : 'Activate'}</button>
+					   </div>
+				   </li>
+				   `;
+			   }).join("");
 		}
 
-		async function inspectContract(contractId) {
-			try {
-				const response = await getCorpusObject("contract", contractId);
-				if (detailJson) {
-					detailJson.textContent = JSON.stringify(response.object, null, 2);
-				}
-			} catch (error) {
-				if (detailJson) {
-					detailJson.textContent =
-						error instanceof Error ? error.message : "Failed to inspect contract.";
-				}
-			}
-		}
+		   async function inspectContract(contractId) {
+			   try {
+				   const response = await getCorpusObject("contract", contractId);
+				   if (detailJson) {
+					   detailJson.textContent = JSON.stringify(response.object, null, 2);
+				   }
+			   } catch (error) {
+				   if (detailJson) {
+					   detailJson.textContent = error instanceof Error ? error.message : "Failed to inspect contract.";
+				   }
+			   }
+		   }
 
 		async function loadContracts() {
 			setStatus("Loading contracts…");
@@ -128,46 +125,47 @@ const bootstrapSession: OperatorSession = {
 			}
 		}
 
-		contractsList?.addEventListener("click", async (event) => {
-			const target = event.target;
-			if (!(target instanceof HTMLElement)) return;
+		   contractsList?.addEventListener("click", async (event) => {
+			   const target = event.target;
+			   if (!(target instanceof HTMLElement)) return;
 
-			const inspectId = target.dataset.inspectId;
-			const activateId = target.dataset.activateId;
+			   const inspectId = target.dataset.inspectId;
+			   const activateId = target.dataset.activateId;
 
-			if (inspectId) {
-				await inspectContract(inspectId);
-				return;
-			}
+			   if (inspectId) {
+				   await inspectContract(inspectId);
+				   return;
+			   }
 
-			if (activateId) {
-				if (!sessionId) {
-					setStatus("Session not ready.");
-					return;
-				}
-
-				try {
-					const response = await bindContract({
-						sessionId,
-						contractId: activateId,
-					});
-
-					activeContractId = response.activeContractId;
-					if (activeContractEl) activeContractEl.textContent = activeContractId;
-					if (detailJson) {
-						detailJson.textContent = JSON.stringify(response.spineState, null, 2);
-					}
-
-					window.dispatchEvent(
-						new CustomEvent("operator:spine-update", { detail: response.spineState }),
-					);
-
-					setStatus(`Activated contract ${activateId}.`);
-				} catch (error) {
-					setStatus(error instanceof Error ? error.message : "Failed to activate contract.");
-				}
-			}
-		});
+			   if (activateId) {
+				   if (!sessionId) {
+					   setStatus("Session not ready.");
+					   return;
+				   }
+				   if (activateId === activeContractId) {
+					   setStatus("Contract already active.");
+					   return;
+				   }
+				   try {
+					   const response = await bindContract({
+						   sessionId,
+						   contractId: activateId,
+					   });
+					   activeContractId = response.activeContractId;
+					   if (activeContractEl) activeContractEl.textContent = activeContractId;
+					   if (detailJson) {
+						   detailJson.textContent = JSON.stringify(response.spineState, null, 2);
+					   }
+					   window.dispatchEvent(
+						   new CustomEvent("operator:spine-update", { detail: response.spineState }),
+					   );
+					   setStatus(`Activated contract ${activateId}.`);
+					   await loadContracts();
+				   } catch (error) {
+					   setStatus(error instanceof Error ? error.message : "Failed to activate contract.");
+				   }
+			   }
+		   });
 
 		refreshButton?.addEventListener("click", () => {
 			loadContracts();

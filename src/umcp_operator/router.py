@@ -37,7 +37,7 @@ def get_operator_session(session_id: str) -> SessionEnvelope:
     session = SESSION_STORE.get(session_id)
     if session is None:
         raise HTTPException(status_code=404, detail="Session not found")
-
+    # For now, return a minimal spine with contract only
     spine = SpineState(
         contract=ContractBinding(
             contractId=session.activeContractId or "UMA.INTSTACK.v1",
@@ -75,7 +75,6 @@ def bind_contract(payload: BindContractRequest) -> BindContractResponse:
     session = SESSION_STORE.get(payload.sessionId)
     if session is None:
         raise HTTPException(status_code=404, detail="Session not found")
-
     updated = SESSION_STORE.update_contract(payload.sessionId, payload.contractId)
     spine = SpineState(
         contract=ContractBinding(
@@ -85,7 +84,6 @@ def bind_contract(payload: BindContractRequest) -> BindContractResponse:
         ),
         closures=[],
     )
-
     return BindContractResponse(
         sessionId=updated.sessionId,
         activeContractId=payload.contractId,

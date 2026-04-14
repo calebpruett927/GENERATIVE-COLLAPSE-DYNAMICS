@@ -1,4 +1,68 @@
-// Operator chat interface
+
 import OperatorChatPanel from "../../components/OperatorChatPanel.astro";
+import OperatorShell from "../../components/OperatorShell.astro";
+import CorpusResolverPanel from "../../components/CorpusResolverPanel.astro";
+import CEAuditCard from "../../components/CEAuditCard.astro";
+import { createOperatorSession, getOperatorSession } from "../../lib/operator-api.ts";
+import type { OperatorSession, SessionEnvelope, CEAudit, SpineState } from "../../lib/operator-types";
+
+let session: OperatorSession | null = null;
+let spine: SpineState | null = null;
+let ceAudit: CEAudit | null = null;
+
+if (typeof window !== "undefined") {
+	const storedSessionId = window.localStorage.getItem("operatorSessionId");
+	if (storedSessionId) {
+		try {
+			const envelope = await getOperatorSession(storedSessionId);
+			session = envelope.session;
+			spine = envelope.spineState;
+		} catch (e) {
+			// fallback to new session
+		}
+	}
+	if (!session) {
+		const created = await createOperatorSession({ mode: "explain" });
+		session = created;
+		window.localStorage.setItem("operatorSessionId", session.sessionId);
+		const envelope = await getOperatorSession(session.sessionId);
+		spine = envelope.spineState;
+	}
+	// Dispatch session-ready event
+	setTimeout(() => {
+		window.dispatchEvent(new CustomEvent("operator:session-ready", { detail: { sessionId: session?.sessionId } }));
+	}, 0);
+	// Listen for CE audit and spine updates
+	window.addEventListener("operator:ce-audit", (event) => {
+		ceAudit = event.detail;
+		// Optionally trigger a re-render if using a reactive framework
+	});
+	window.addEventListener("operator:spine-update", (event) => {
+		spine = event.detail;
+		// Optionally trigger a re-render if using a reactive framework
+	});
+}
+
 ---
-<OperatorChatPanel />
+
+<OperatorShell title="CAI · Chat" sessionId={session?.sessionId ?? ""}>
+  <Fragment slot="left">
+    <section class="operator-sidebar-card">
+      <h2>Session</h2>
+      <p><strong>Session ID:</strong> {session?.sessionId ?? "—"}</p>
+      <p><strong>Active Contract:</strong> {session?.activeContractId ?? "—"}</p>
+      <p><strong>Mode:</strong> {session?.mode ?? "—"}</p>
+    </section>
+    <CorpusResolverPanel />
+  </Fragment>
+  <section>
+    <OperatorChatPanel session={session} initialSpine={spine} />
+    <section class="operator-chat-spine-state">
+      <h3>Spine State</h3>
+      <pre id="spine-state-json">{JSON.stringify(spine, null, 2)}</pre>
+    </section>
+    <section class="operator-ce-audit-panel">
+      <CEAuditCard audit={ceAudit} />
+    </section>
+  </section>
+</OperatorShell>

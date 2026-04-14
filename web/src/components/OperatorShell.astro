@@ -1,17 +1,37 @@
-// Operator workspace shell: five-pane spine + side panels
-import SpineInspector from "./SpineInspector.astro";
-import CorpusResolverPanel from "./CorpusResolverPanel.astro";
-import ActiveContractCard from "./ActiveContractCard.astro";
-import ClosureRegistryCard from "./ClosureRegistryCard.astro";
-import WeldReceiptViewer from "./WeldReceiptViewer.astro";
-import InvocationGatePanel from "./InvocationGatePanel.astro";
----
 
-<div class="operator-shell">
-  <SpineInspector />
-  <CorpusResolverPanel />
-  <ActiveContractCard />
-  <ClosureRegistryCard />
-  <WeldReceiptViewer />
-  <InvocationGatePanel />
+
+export interface Props {
+  title?: string;
+  sessionId?: string;
+}
+
+
+// Default to CAI identity for visible workspace, fallback to prop or operator naming if needed
+const { title = "CAI · Collapse-Aware Intelligence", sessionId = "" } = Astro.props;
+
+<div class="operator-shell__container">
+  <header class="operator-shell__header">
+    <h1>{title}</h1>
+    {sessionId && <span class="operator-shell__session-id">Session: {sessionId}</span>}
+  </header>
+  <nav class="operator-shell__nav">
+    <ul>
+      <li><a href="/cai">CAI Home</a></li>
+      <li><a href="/operator">Operator Workspace</a></li>
+      <li><a href="/operator/chat">Chat</a></li>
+      <li><a href="/operator/contracts">Contracts</a></li>
+      <li><a href="/operator/casepacks">Casepacks</a></li>
+    </ul>
+  </nav>
+  <div class="operator-shell__layout">
+    <aside class="operator-shell__left">
+      <slot name="left" />
+    </aside>
+    <main class="operator-shell__main">
+      <slot />
+    </main>
+    <aside class="operator-shell__right">
+      <slot name="right" />
+    </aside>
+  </div>
 </div>

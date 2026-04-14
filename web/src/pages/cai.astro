@@ -1,12 +1,11 @@
 ---
-import OperatorShell from "../../components/OperatorShell.astro";
-import { createOperatorSession, getOperatorSession } from "../../lib/operator-api.ts";
-import type { OperatorSession, SessionEnvelope } from "../../lib/operator-types";
+import OperatorShell from "../components/OperatorShell.astro";
+import { createOperatorSession, getOperatorSession } from "../lib/operator-api.ts";
+import type { OperatorSession, SessionEnvelope } from "../lib/operator-types";
 
 let session: OperatorSession | null = null;
 let spine: SessionEnvelope["spineState"] | null = null;
 
-// Try to resume from localStorage, else create new session
 if (typeof window !== "undefined") {
 	const storedSessionId = window.localStorage.getItem("operatorSessionId");
 	if (storedSessionId) {
@@ -14,22 +13,17 @@ if (typeof window !== "undefined") {
 			const envelope = await getOperatorSession(storedSessionId);
 			session = envelope.session;
 			spine = envelope.spineState;
-		} catch (e) {
-			// fallback to new session
-		}
+		} catch (e) {}
 	}
 	if (!session) {
 		const created = await createOperatorSession({ mode: "explain" });
 		session = created;
 		window.localStorage.setItem("operatorSessionId", session.sessionId);
-		// fetch spine
 		const envelope = await getOperatorSession(session.sessionId);
 		spine = envelope.spineState;
 	}
 }
-
 ---
-
 
 <OperatorShell title="CAI · Collapse-Aware Intelligence" sessionId={session?.sessionId ?? ""}>
 	<Fragment slot="left">
@@ -41,16 +35,13 @@ if (typeof window !== "undefined") {
 		</section>
 	</Fragment>
 	<section>
-		<h2>Workspace Overview</h2>
+		<h2>Workspace Summary</h2>
 		<ul>
-			<li><strong>Session created:</strong> {session?.createdAt ?? "—"}</li>
-			<li><strong>Active contract:</strong> {session?.activeContractId ?? "—"}</li>
-			<li><strong>Active casepack:</strong> {session?.activeCasepackId ?? "—"}</li>
-			<li><strong>Closures:</strong> {session?.activeClosureIds?.length ?? 0}</li>
+			<li>Session created: {session?.createdAt ?? "—"}</li>
+			<li>Active contract: {session?.activeContractId ?? "—"}</li>
+			<li>Active casepack: {session?.activeCasepackId ?? "—"}</li>
+			<li>Closures: {session?.activeClosureIds?.length ?? 0}</li>
 		</ul>
-		<details>
-			<summary>Spine State</summary>
-			<pre>{JSON.stringify(spine, null, 2)}</pre>
-		</details>
+		<pre>{JSON.stringify(spine, null, 2)}</pre>
 	</section>
 </OperatorShell>

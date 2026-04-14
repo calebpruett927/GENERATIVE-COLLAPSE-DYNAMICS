@@ -1,4 +1,3 @@
-
 ---
 export interface Props {
   title?: string;
@@ -53,12 +52,10 @@ const { title = "Corpus Resolver" } = Astro.props;
 
     function renderResults(items) {
       if (!results) return;
-
       if (!items.length) {
         results.innerHTML = `<li class="corpus-resolver-panel__placeholder">No results.</li>`;
         return;
       }
-
       results.innerHTML = items.map((item) => `
         <li class="corpus-resolver-panel__result">
           <div>
@@ -83,14 +80,12 @@ const { title = "Corpus Resolver" } = Astro.props;
     results?.addEventListener("click", (event) => {
       const target = event.target;
       if (!(target instanceof HTMLElement)) return;
-
       if (target.matches("[data-use-kind]")) {
         const ref = {
           kind: target.dataset.useKind,
           id: target.dataset.useId,
           title: target.dataset.useTitle,
         };
-
         window.dispatchEvent(
           new CustomEvent("operator:working-set:add", { detail: ref }),
         );
@@ -106,18 +101,14 @@ const { title = "Corpus Resolver" } = Astro.props;
     form?.addEventListener("submit", async (event) => {
       event.preventDefault();
       if (!input) return;
-
       const query = input.value.trim();
       if (!query) return;
-
       setStatus(`Searching for "${query}"…`);
-
       try {
         const response = await searchCorpus({
           query,
           limit: 10,
         });
-
         renderResults(response.results);
         setStatus(`Found ${response.results.length} result(s).`);
       } catch (error) {

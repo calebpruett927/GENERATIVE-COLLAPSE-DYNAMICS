@@ -8,15 +8,15 @@ export interface Props {
 
 const { session } = Astro.props;
 
+
 <section
   class="operator-chat"
   data-session-id={session.sessionId}
   data-ready={session.sessionId !== "bootstrap" ? "true" : "false"}
 >
   <div class="operator-chat__messages" id="operator-messages">
-import SpineInspector from "./SpineInspector.astro";
     <article class="operator-chat__message operator-chat__message--system">
-      <h2>GCD Operator</h2>
+      <h2>CAI Operator</h2>
       <p id="operator-status-text">
         Initializing session…
       </p>
@@ -61,8 +61,10 @@ import SpineInspector from "./SpineInspector.astro";
     function updateReadinessUi() {
       const ready = isReady();
       if (submitButton) submitButton.disabled = !ready;
-      if (statusText && ready) {
-        statusText.textContent = "Session ready. Ask a corpus-aware question.";
+      if (statusText) {
+        statusText.textContent = ready
+          ? "Session ready. Ask a corpus-aware question."
+          : "Initializing session…";
       }
     }
 
@@ -82,12 +84,13 @@ import SpineInspector from "./SpineInspector.astro";
         ${jsonData ? `<pre>${JSON.stringify(jsonData, null, 2)}</pre>` : ""}
       `;
       messages.appendChild(article);
+      messages.scrollTop = messages.scrollHeight;
     }
 
     window.addEventListener("operator:session-ready", (event) => {
       const detail = event.detail || {};
       if (!root) return;
-      root.dataset.sessionId = detail.session?.sessionId || "";
+      root.dataset.sessionId = detail.sessionId || "";
       root.dataset.ready = "true";
       updateReadinessUi();
     });
@@ -95,7 +98,6 @@ import SpineInspector from "./SpineInspector.astro";
     window.addEventListener("operator:working-set:add", (event) => {
       const item = event.detail;
       if (!item?.kind || !item?.id) return;
-
       const exists = workingSet.some((ref) => ref.kind === item.kind && ref.id === item.id);
       if (!exists) {
         workingSet = [...workingSet, item];
@@ -113,19 +115,15 @@ import SpineInspector from "./SpineInspector.astro";
 
     form?.addEventListener("submit", async (event) => {
       event.preventDefault();
-
       const sessionId = root?.dataset.sessionId;
       if (!input || !sessionId || !isReady()) {
         appendMessage("System", "Operator session is not ready yet.");
         return;
       }
-
       const text = input.value.trim();
       if (!text) return;
-
       appendMessage("You", text);
       input.value = "";
-
       try {
         const response = await chatOperator({
           sessionId,
@@ -133,7 +131,6 @@ import SpineInspector from "./SpineInspector.astro";
           mode: "explain",
           workingSet,
         });
-
         appendMessage(
           "Operator",
           response.answer.plainText,
@@ -143,13 +140,11 @@ import SpineInspector from "./SpineInspector.astro";
             ceAudit: response.ceAudit,
           },
         );
-
         if (response.ceAudit) {
           window.dispatchEvent(
             new CustomEvent("operator:ce-audit", { detail: response.ceAudit }),
           );
         }
-
         if (response.answer?.structured) {
           window.dispatchEvent(
             new CustomEvent("operator:spine-update", {

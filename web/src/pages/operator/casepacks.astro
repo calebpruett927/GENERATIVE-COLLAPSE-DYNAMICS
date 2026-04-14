@@ -21,45 +21,39 @@ const bootstrapSession: OperatorSession = {
 };
 ---
 
-<OperatorShell title="GCD Operator · Casepacks" sessionId={bootstrapSession.sessionId}>
-	<Fragment slot="left">
-		<section class="operator-sidebar-card">
-			<h2>Session</h2>
-			<p id="casepacks-session-status">Initializing session…</p>
-			<p><strong>Session ID:</strong> <span id="casepacks-session-id">—</span></p>
-			<p><strong>Contract:</strong> <span id="casepacks-contract-id">—</span></p>
-		</section>
 
-		<CorpusResolverPanel />
-	</Fragment>
-
-	<section class="casepacks-page">
-		<article class="operator-main-card">
-			<header class="operator-main-card__header">
-				<h2>Casepacks</h2>
-				<button type="button" id="casepacks-refresh">Refresh</button>
-			</header>
-
-			<p id="casepacks-status">Loading casepacks…</p>
-
-			<ul class="casepacks-list" id="casepacks-list">
-				<li class="casepacks-list__placeholder">No casepacks loaded yet.</li>
-			</ul>
-		</article>
-
-		<article class="operator-main-card">
-			<h2>Selected Casepack</h2>
-			<pre id="casepacks-detail-json">No casepack selected.</pre>
-		</article>
-	</section>
-
-	<Fragment slot="right">
-		<RunSummaryCard />
-	</Fragment>
-
-	<script type="module">
-		import { getCorpusObject, searchCorpus } from "../../lib/operator-api.ts";
-		import { ensureOperatorSession } from "../../lib/operator-session.ts";
+<OperatorShell title="CAI · Casepacks" sessionId={bootstrapSession.sessionId}>
+  <Fragment slot="left">
+    <section class="operator-sidebar-card">
+      <h2>Session</h2>
+      <p id="casepacks-session-status">Initializing session…</p>
+      <p><strong>Session ID:</strong> <span id="casepacks-session-id">—</span></p>
+      <p><strong>Active Contract:</strong> <span id="casepacks-contract-id">—</span></p>
+    </section>
+    <CorpusResolverPanel />
+  </Fragment>
+  <section class="casepacks-page">
+    <article class="operator-main-card">
+      <header class="operator-main-card__header">
+        <h2>Casepacks</h2>
+        <button type="button" id="casepacks-refresh">Refresh</button>
+      </header>
+      <p id="casepacks-status">Loading casepacks…</p>
+      <ul class="casepacks-list" id="casepacks-list">
+        <li class="casepacks-list__placeholder">No casepacks found.</li>
+      </ul>
+    </article>
+    <article class="operator-main-card">
+      <h2>Selected Casepack</h2>
+      <pre id="casepacks-detail-json">No casepack selected.</pre>
+    </article>
+  </section>
+  <Fragment slot="right">
+    <RunSummaryCard />
+  </Fragment>
+  <script type="module">
+    import { getCorpusObject, searchCorpus } from "../../lib/operator-api.ts";
+    import { ensureOperatorSession } from "../../lib/operator-session.ts";
 
 		const sessionStatus = document.getElementById("casepacks-session-status");
 		const sessionIdEl = document.getElementById("casepacks-session-id");
@@ -183,30 +177,20 @@ const bootstrapSession: OperatorSession = {
 			}
 
 			try {
-				setStatus(`Starting run for ${title}…`);
+				   setStatus(`Starting run for ${title}…`);
 
-				const started = await startCasepackRun(casepackId, {
-					sessionId,
-					contractId: activeContractId,
-					overrideInputs: null,
-				});
+				   const started = await startCasepackRun(casepackId, {
+					   sessionId,
+					   contractId: activeContractId,
+					   overrideInputs: null,
+				   });
 
-				window.dispatchEvent(
-					new CustomEvent("operator:run-update", {
-						detail: {
-							runId: started.runId,
-							status: started.status,
-							casepackId,
-							contractId: activeContractId,
-							invariants: null,
-							stance: null,
-							artifacts: [],
-						},
-					}),
-				);
-
-				const finalRun = await pollRun(started.runId);
-				setStatus(`Run ${finalRun.runId} finished with status ${finalRun.status}.`);
+				   // Poll backend for final run record
+				   const finalRun = await pollRun(started.runId);
+				   window.dispatchEvent(
+					   new CustomEvent("operator:run-update", { detail: finalRun }),
+				   );
+				   setStatus(`Run ${finalRun.runId} finished with status ${finalRun.status}.`);
 			} catch (error) {
 				setStatus(error instanceof Error ? error.message : "Failed to run casepack.");
 			}

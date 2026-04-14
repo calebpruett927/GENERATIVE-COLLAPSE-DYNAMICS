@@ -170,21 +170,219 @@ class CasepackService:
                 }
                 return run
 
-        # Generalized fallback for non-hello_world casepacks:
-        # authoritative verdict first, invariant hydration later.
-        run.status = "completed" if verdict != "NONCONFORMANT" else "failed"
-        run.invariants = None
-        run.stance = {
-            "verdict": verdict,
-            "regime": None,
-            "critical": False,
-            "rationale": [
-                "Authoritative verdict derived from validate(casepack_path).",
-                "Invariant hydration for non-hello_world casepacks is the next generalization step.",
-            ],
+        # Generalized read-side hydration for non-hello_world casepacks
+        try:
+            expected_payload = self._load_expected_outputs(casepack_path)
+            invariants = expected_payload["invariants"]
+            psi_meta = expected_payload["psi_meta"]
+            regime = expected_payload["regime"]
+            critical = expected_payload["critical"]
+
+            run.status = "completed" if verdict != "NONCONFORMANT" else "failed"
+            run.invariants = invariants
+            run.stance = {
+                "verdict": verdict,
+                "regime": regime,
+                "critical": critical,
+                "rationale": [
+                    "Verdict derived from validate(casepack_path).",
+                    "Invariants hydrated from expected/invariants.json.",
+                    f"Trace metadata hydrated from expected/psi.csv: rows={psi_meta.get('rows')}, "
+                    f"format={psi_meta.get('format')}, "
+                    f"channels={psi_meta.get('channels')}.",
+                ],
+            }
+            run.artifacts = self._collect_expected_artifacts(casepack_path)
+            return run
+        except FileNotFoundError as exc:
+            run.status = "completed" if verdict != "NONCONFORMANT" else "failed"
+            run.invariants = None
+            run.stance = {
+                "verdict": "NON_EVALUABLE",
+                "regime": None,
+                "critical": False,
+                "rationale": [
+                    "Authoritative verdict derived from validate(casepack_path).",
+                    f"Read-side hydration skipped: expected outputs missing: {exc}",
+                ],
+            }
+            run.artifacts = self._collect_expected_artifacts(casepack_path)
+            return run
+        except Exception as exc:
+            run.status = "failed"
+            run.error = f"Expected-output hydration failed: {exc}"
+            run.stance = {
+                "verdict": "NON_EVALUABLE",
+                "regime": None,
+                "critical": False,
+                "rationale": [
+                    "Validation was attempted, but expected-output hydration failed.",
+                    run.error,
+                ],
+            }
+            run.artifacts = self._collect_expected_artifacts(casepack_path)
+            return run
+
+    def _load_expected_outputs(self, casepack_path: Path) -> dict[str, Any]:
+        """
+        Read-side hydration from:
+          expected/invariants.json
+          expected/psi.csv
+
+        This is intentionally tolerant to minor schema variation:
+        - invariants may be a dict with rows:[...], a dict with direct scalar fields, or a one-row list
+        - psi.csv may be long or wide format
+        """
+        expected_dir = casepack_path / "expected"
+        invariants_path = expected_dir / "invariants.json"
+        psi_path = expected_dir / "psi.csv"
+
+        if not invariants_path.exists():
+            raise FileNotFoundError(f"Missing expected/invariants.json in {casepack_path}")
+        if not psi_path.exists():
+            raise FileNotFoundError(f"Missing expected/psi.csv in {casepack_path}")
+
+        invariants = self._parse_expected_invariants(invariants_path)
+        psi_meta = self._parse_expected_psi(psi_path)
+
+        # SIM108: simplify regime extraction
+        regime = str(invariants.get("regime") or "") or None
+        critical = False
+        if "IC" in invariants and isinstance(invariants["IC"], (int, float)):
+            critical = float(invariants["IC"]) < 0.30
+        return {
+            "invariants": invariants,
+            "psi_meta": psi_meta,
+            "regime": regime,
+            "critical": critical,
         }
-        run.artifacts = [RunArtifact(name="manifest.json")]
-        return run
+
+    def _parse_expected_invariants(self, invariants_path: Path) -> dict[str, float | str]:
+        import json
+
+        with invariants_path.open("r", encoding="utf-8") as f:
+            doc = json.load(f)
+
+        row: dict[str, Any] | None = None
+
+        if isinstance(doc, dict):
+            if isinstance(doc.get("rows"), list) and doc["rows"]:
+                maybe_row = doc["rows"][0]
+                if isinstance(maybe_row, dict):
+                    row = maybe_row
+            elif any(k in doc for k in ("F", "omega", "kappa", "IC", "C", "S")):
+                row = doc
+        elif isinstance(doc, list) and doc and isinstance(doc[0], dict):
+            row = doc[0]
+
+        if row is None:
+            raise ValueError(f"Could not locate invariant row in {invariants_path}")
+
+        out: dict[str, float | str] = {}
+
+        scalar_fields = {
+            "F": ("F", "fidelity"),
+            "omega": ("omega", "drift"),
+            "kappa": ("kappa", "log_ic", "log_integrity"),
+            "IC": ("IC", "integrity_composite", "integrity"),
+            "C": ("C", "curvature"),
+            "S": ("S", "stiffness", "entropy"),
+        }
+
+        for canonical, aliases in scalar_fields.items():
+            value = None
+            for alias in aliases:
+                if alias in row:
+                    value = row[alias]
+                    break
+            if value is not None:
+                coerced = self._coerce_expected_scalar(value)
+                if isinstance(coerced, (int, float)):
+                    out[canonical] = float(coerced)
+
+        # Optional regime extraction
+        regime_value = None
+        if "regime" in row:
+            rv = row["regime"]
+            regime_value = rv.get("label") or rv.get("regime") if isinstance(rv, dict) else rv
+
+        if regime_value is not None:
+            out["regime"] = str(regime_value)
+
+        return out
+
+    def _parse_expected_psi(self, psi_path: Path) -> dict[str, Any]:
+        with psi_path.open("r", encoding="utf-8", newline="") as f:
+            reader = csv.DictReader(f)
+            if reader.fieldnames is None:
+                raise ValueError(f"CSV has no header row: {psi_path}")
+
+            rows = list(reader)
+            headers = list(reader.fieldnames)
+
+        keys = set(headers)
+
+        wide_channels = [k for k in headers if k.startswith("c_")]
+        if wide_channels:
+            fmt = "psi_trace_csv_wide"
+            channels = wide_channels
+        elif {"dim", "c"}.issubset(keys):
+            fmt = "psi_trace_csv_long"
+            dims = []
+            for row in rows:
+                dim = row.get("dim")
+                if dim:
+                    dims.append(str(dim))
+            channels = sorted(set(dims))
+        else:
+            fmt = "unknown"
+            channels = []
+
+        return {
+            "path": str(psi_path),
+            "rows": len(rows),
+            "format": fmt,
+            "channels": channels,
+            "headers": headers,
+        }
+
+    def _coerce_expected_scalar(self, value: Any) -> Any:
+        import math
+
+        if value is None:
+            return None
+        if isinstance(value, (int, float)):
+            if isinstance(value, float) and (math.isnan(value) or math.isinf(value)):
+                return value
+            return value
+
+        text = str(value).strip()
+        if not text:
+            return None
+
+        upper = text.upper().replace(" ", "_")
+        if upper in {"INF_REC", "INF", "INFINITY"}:
+            return float("inf")
+
+        try:
+            return float(text)
+        except ValueError:
+            return text
+
+    def _collect_expected_artifacts(self, casepack_path: Path) -> list[RunArtifact]:
+        expected_dir = casepack_path / "expected"
+        names = [
+            "invariants.json",
+            "psi.csv",
+            "ss1m_receipt.json",
+        ]
+
+        artifacts: list[RunArtifact] = []
+        for name in names:
+            path = expected_dir / name
+            if path.exists():
+                artifacts.append(RunArtifact(name=f"expected/{name}"))
+        return artifacts
 
     def _run_hello_world_measurement_engine(self, casepack_path: Path) -> dict[str, Any]:
         """
