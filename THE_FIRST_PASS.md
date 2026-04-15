@@ -80,7 +80,7 @@ And one **typed censoring rule**: if $\tau_R = \infty_{\text{rec}}$ (no return),
 
 The contract also pins three-valued verdicts — never boolean:
 
-$$\text{CONFORMANT} \quad | \quad \text{NONCONFORMANT} \quad | \quad \text{NON\_EVALUABLE}$$
+$\text{CONFORMANT} \quad$ | $\quad \text{NONCONFORMANT} \quad$ | $\quad \text{NONEVALUABLE}$
 
 *Numquam binarius; tertia via semper patet.*
 Never binary; the third way is always open.
