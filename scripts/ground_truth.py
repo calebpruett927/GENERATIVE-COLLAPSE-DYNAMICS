@@ -91,12 +91,21 @@ def compute_test_count(root: Path | None = None) -> int:
             timeout=120,
             cwd=str(repo),
         )
+        # Try standard patterns first
         for pattern in [r"(\d+) tests? collected", r"(\d+) items?"]:
             m = re.search(pattern, result.stdout)
             if m:
                 return int(m.group(1))
-        # Fallback: count lines with ::
-        return sum(1 for ln in result.stdout.splitlines() if "::" in ln)
+        # Fallback: sum all "tests/file.py: N" counts (parametrization-aware)
+        total = sum(1 for ln in result.stdout.splitlines() if "::" in ln)
+        if total > 0:
+            return total
+        # Alternative fallback: parse "tests/file.py: N" format and sum
+        count_pattern = re.compile(r"tests/[^:]+: (\d+)")
+        counts = [int(m.group(1)) for m in count_pattern.finditer(result.stdout)]
+        if counts:
+            return sum(counts)
+        return 0
     except Exception as e:
         print(f"Warning: pytest collection failed: {e}", file=sys.stderr)
         return 0
