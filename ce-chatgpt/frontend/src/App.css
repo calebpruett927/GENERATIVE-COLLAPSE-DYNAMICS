@@ -1,0 +1,67 @@
+body {
+  background: #181a20;
+  color: #eaeaea;
+  font-family: system-ui, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+.app-container {
+  max-width: 600px;
+  margin: 40px auto;
+  background: #23262f;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px #0002;
+  padding: 32px;
+}
+.input-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+textarea {
+  flex: 1;
+  min-height: 60px;
+  border-radius: 6px;
+  border: 1px solid #333;
+  background: #1a1c22;
+  color: #eaeaea;
+  padding: 8px;
+  resize: vertical;
+}
+select, button {
+  border-radius: 6px;
+  border: 1px solid #333;
+  background: #1a1c22;
+  color: #eaeaea;
+  padding: 8px 12px;
+  font-size: 1rem;
+}
+button {
+  background: #fbbf24;
+  color: #23262f;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+button:disabled {
+  background: #444;
+  color: #aaa;
+  cursor: not-allowed;
+}
+.response-block {
+  margin-top: 24px;
+  background: #181a20;
+  border-radius: 8px;
+  padding: 16px;
+}
+.gpt-answer {
+  margin-bottom: 12px;
+}
+.ce-audit pre {
+  background: #23262f;
+  color: #fbbf24;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 0.95em;
+  overflow-x: auto;
+}

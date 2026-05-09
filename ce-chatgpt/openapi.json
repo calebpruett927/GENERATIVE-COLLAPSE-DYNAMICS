@@ -1,0 +1,51 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CE-ChatGPT API",
+    "version": "1.0.0",
+    "description": "OpenAPI schema for the Cognitive Equalizer ChatGPT app."
+  },
+  "servers": [
+    { "url": "https://localhost" }
+  ],
+  "paths": {
+    "/chat": {
+      "post": {
+        "summary": "Send a chat message to GPT and get a CE audit.",
+        "operationId": "postChatMessage",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": { "type": "string", "description": "User message to send to GPT." },
+                  "ce_mode": { "type": "string", "enum": ["silent", "lightweight", "full"], "description": "Cognitive Equalizer audit mode." }
+                },
+                "required": ["message", "ce_mode"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "GPT response and CE audit.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "answer": { "type": "string" },
+                    "ce_audit": { "type": "object" }
+                  },
+                  "required": ["answer", "ce_audit"]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CE-ChatGPT Actions Schema",
+  "description": "Schema for actions that can be triggered by the Cognitive Equalizer ChatGPT app (e.g., chat, set mode, audit, etc.)",
+  "type": "object",
+  "oneOf": [
+    {
+      "title": "ChatAction",
+      "type": "object",
+      "properties": {
+        "action": { "const": "chat" },
+        "message": { "type": "string", "description": "User message to send to GPT." },
+        "ce_mode": { "type": "string", "enum": ["silent", "lightweight", "full"], "description": "Cognitive Equalizer audit mode." }
+      },
+      "required": ["action", "message", "ce_mode"],
+      "additionalProperties": false
+    },
+    {
+      "title": "SetModeAction",
+      "type": "object",
+      "properties": {
+        "action": { "const": "set_mode" },
+        "ce_mode": { "type": "string", "enum": ["silent", "lightweight", "full"] }
+      },
+      "required": ["action", "ce_mode"],
+      "additionalProperties": false
+    },
+    {
+      "title": "AuditAction",
+      "type": "object",
+      "properties": {
+        "action": { "const": "audit" },
+        "response": { "type": "string", "description": "GPT response to audit." },
+        "user_message": { "type": "string", "description": "Original user message." },
+        "ce_mode": { "type": "string", "enum": ["silent", "lightweight", "full"] }
+      },
+      "required": ["action", "response", "user_message", "ce_mode"],
+      "additionalProperties": false
+    }
+  ]
+}
