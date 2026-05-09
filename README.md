@@ -1,6 +1,6 @@
 # Generative Collapse Dynamics (GCD)
 
-[![CI](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/actions/workflows/validate.yml/badge.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/actions)
+[![CI](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/actions/workflows/main.yml/badge.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/actions)
 [![PyPI](https://img.shields.io/pypi/v/umcp)](https://pypi.org/project/umcp/)
 [![PyPI Downloads](https://img.shields.io/pypi/dm/umcp)](https://pypi.org/project/umcp/)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
