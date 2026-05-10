@@ -120,7 +120,7 @@ icon: shield
 UMCP-based security validation demonstrating 'What Returns Through Collapse Is Real' applied to security domain (anti-virus, anti-scam, identity, privacy).
 
 - **Contract**: `UMA.INTSTACK.v1`
-- **Path**: `casepacks/security_validation`
+- **Path**: `casepacks/closures/full/security`
 - **Status**: validated
 
 ## Validation History

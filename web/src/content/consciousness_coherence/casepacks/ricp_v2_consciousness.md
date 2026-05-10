@@ -17,7 +17,7 @@ Maps Jackson RICP v2.0 (14-stage framework, 16 levels) to 8-channel consciousnes
 | **Version** | 1.0.0 |
 | **Contract** | `UMA.INTSTACK.v1` |
 | **Status** | validated |
-| **Path** | `casepacks/ricp_v2_consciousness` |
+| **Path** | `casepacks/ladder/L4_ricp_v2_consciousness` |
 | **Canon Anchors** | `canon/anchors.yaml` |
 
 ## Authors

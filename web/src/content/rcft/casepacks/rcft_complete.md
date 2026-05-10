@@ -17,7 +17,7 @@ Complete RCFT Tier-2 example with zero entropy state and all GCD + RCFT closures
 | **Version** | 1.0.0 |
 | **Contract** | `RCFT.INTSTACK.v1` |
 | **Status** | validated |
-| **Path** | `casepacks/rcft_complete` |
+| **Path** | `casepacks/closures/full/rcft` |
 | **Canon Anchors** | `canon/rcft_anchors.yaml` |
 
 ## Authors

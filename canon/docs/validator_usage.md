@@ -23,7 +23,7 @@ The validator does not "interpret" your science. It enforces reproducible struct
 umcp validate .
 
 # Validate specific CasePack
-umcp validate casepacks/hello_world
+umcp validate casepacks/pedagogical/hello_world
 
 # Strict mode (publication-grade)
 umcp validate . --strict

@@ -12,8 +12,8 @@
 /* ─── Repository-Scale Metrics ──────────────────────────────────── */
 
 /** Total collected pytest items (pytest --collect-only | grep "::" | wc -l). */
-export const TEST_COUNT = '20,235';
-export const TEST_COUNT_RAW = 20_235;
+export const TEST_COUNT = '20,337';
+export const TEST_COUNT_RAW = 20_337;
 
 /** Number of closure domains in closures/. */
 export const DOMAIN_COUNT = '23';

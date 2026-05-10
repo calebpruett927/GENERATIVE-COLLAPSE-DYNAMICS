@@ -65,21 +65,21 @@ class TestSchemaAcceptance:
         assert errors == [], f"Contract validation errors: {errors}"
 
     def test_manifest_schema_accepts_hello_manifest(self) -> None:
-        """casepacks/hello_world/manifest.json validates against manifest.schema.json."""
+        """casepacks/pedagogical/hello_world/manifest.json validates against manifest.schema.json."""
         manifest = _load_json(REPO_ROOT / "casepacks" / "hello_world" / "manifest.json")
         schema = _load_schema("manifest.schema.json")
         errors = _validate(manifest, schema)
         assert errors == [], f"Manifest validation errors: {errors}"
 
     def test_invariants_schema_accepts_hello_invariants(self) -> None:
-        """casepacks/hello_world/expected/invariants.json validates."""
+        """casepacks/pedagogical/hello_world/expected/invariants.json validates."""
         inv = _load_json(REPO_ROOT / "casepacks" / "hello_world" / "expected" / "invariants.json")
         schema = _load_schema("invariants.schema.json")
         errors = _validate(inv, schema)
         assert errors == [], f"Invariants validation errors: {errors}"
 
     def test_receipt_schema_accepts_hello_receipt(self) -> None:
-        """casepacks/hello_world/expected/ss1m_receipt.json validates."""
+        """casepacks/pedagogical/hello_world/expected/ss1m_receipt.json validates."""
         receipt = _load_json(REPO_ROOT / "casepacks" / "hello_world" / "expected" / "ss1m_receipt.json")
         schema = _load_schema("receipt.ss1m.schema.json")
         errors = _validate(receipt, schema)

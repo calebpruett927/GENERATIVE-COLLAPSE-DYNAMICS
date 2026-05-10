@@ -1,0 +1,2 @@
+t,x1_si,x2_si,x3_si,units,notes
+0,9.9,9.9,9.9,arbitrary,"Stub: 3 uniform channels embed to c_k = 0.99 under bounds [0,10]."

@@ -39,21 +39,42 @@ TOL_DUALITY = 1e-6  # F + ω = 1
 TOL_LOG_IC = 1e-3  # IC ≈ exp(κ)  (security_validation has precision to ~3 decimal)
 TOL_BOUND = 0.002  # IC ≤ F  (ε-clamp artefacts: when F=0, IC=exp(κ_clamped)≈0.001)
 
-# ── All 14 casepack directories ──────────────────────────────────
-ALL_CASEPACKS: list[str] = sorted(d.name for d in CASEPACKS_DIR.iterdir() if d.is_dir() and not d.name.startswith("."))
+
+# ── All casepack directories (recursive — walks family subdirs) ──
+# A directory is a casepack iff it contains manifest.json; otherwise it's a
+# family directory (pedagogical/, ladder/, closures/full/) and we recurse.
+# Names are POSIX-relative paths (e.g. "pedagogical/hello_world",
+# "ladder/L2_confinement_T3", "closures/full/gcd").
+def _discover_casepacks(root: Path) -> list[str]:
+    found: list[str] = []
+
+    def _walk(d: Path) -> None:
+        if (d / "manifest.json").is_file():
+            found.append(d.relative_to(root).as_posix())
+            return
+        for child in sorted(d.iterdir()):
+            if child.is_dir() and not child.name.startswith(".") and not child.name.startswith("_"):
+                _walk(child)
+
+    _walk(root)
+    return sorted(found)
+
+
+ALL_CASEPACKS: list[str] = _discover_casepacks(CASEPACKS_DIR)
 
 # Casepacks whose invariants.json uses the standard "rows" format
-# (some casepacks have alternate structures or different file names)
+# (some casepacks have alternate structures or different file names).
+# Keys are relative paths under casepacks/.
 _INVARIANT_FILES: dict[str, str] = {
-    "confinement_T3": "expected/kernel_invariants.json",
+    "ladder/L2_confinement_T3": "expected/kernel_invariants.json",
 }
 
-# Casepacks with non-standard raw data paths
+# Casepacks with non-standard raw data paths.
 _RAW_DATA_FILES: dict[str, str] = {
-    "weyl_des_y3": "data/hJ_measurements.csv",
-    "retro_coherent_phys04": "data/raw_measurements.csv",
-    "confinement_T3": "raw_particles.csv",
-    "UMCP-REF-E2E-0001": "data/raw.csv",
+    "closures/full/weyl": "data/hJ_measurements.csv",
+    "ladder/L3_retro_coherent_phys04": "data/raw_measurements.csv",
+    "ladder/L2_confinement_T3": "raw_particles.csv",
+    "pedagogical/UMCP-REF-E2E-0001": "data/raw.csv",
 }
 
 
@@ -391,7 +412,7 @@ class TestCrossPackConsistency:
         confinement_T3 uses a non-standard structure (contract/fundamental/composite)
         and legitimately has zero rows — it is excluded.
         """
-        _NON_ROW_FORMAT = {"confinement_T3"}  # alternate schema without 'rows'
+        _NON_ROW_FORMAT = {"ladder/L2_confinement_T3"}  # alternate schema without 'rows'
         empty = []
         for name in _CASEPACKS_WITH_INVARIANTS:
             if name in _NON_ROW_FORMAT:

@@ -73,7 +73,7 @@ def test_validation_result_empty():
 
 def test_validate_hello_world():
     """Test validate() function with hello_world casepack."""
-    result = umcp.validate("casepacks/hello_world")
+    result = umcp.validate("casepacks/pedagogical/hello_world")
 
     assert isinstance(result, umcp.ValidationResult)
     assert result.status == "CONFORMANT"
@@ -83,7 +83,7 @@ def test_validate_hello_world():
 
 def test_validate_with_path_object():
     """Test validate() with Path object."""
-    path = Path("casepacks/hello_world")
+    path = Path("casepacks/pedagogical/hello_world")
     result = umcp.validate(path)
 
     assert isinstance(result, umcp.ValidationResult)
@@ -92,7 +92,7 @@ def test_validate_with_path_object():
 
 def test_validate_strict_mode():
     """Test validate() with strict mode enabled."""
-    result = umcp.validate("casepacks/hello_world", strict=True)
+    result = umcp.validate("casepacks/pedagogical/hello_world", strict=True)
 
     assert isinstance(result, umcp.ValidationResult)
     assert result.status == "CONFORMANT"

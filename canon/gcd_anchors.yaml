@@ -2,7 +2,7 @@
 # Generative Collapse Dynamics - Tier-1 Framework
 #
 # Interconnections:
-# - Referenced by: contracts/GCD.INTSTACK.v1.yaml, casepacks/gcd_complete/
+# - Referenced by: contracts/GCD.INTSTACK.v1.yaml, casepacks/closures/full/gcd/
 # - Parent: canon/anchors.yaml (UMCP.CANON.v1)
 # - Child: canon/rcft_anchors.yaml (RCFT extends GCD)
 # - Implements: Tier-1 invariants (ω, F, S, C, τ_R, κ, IC)

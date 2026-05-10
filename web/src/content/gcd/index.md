@@ -96,7 +96,7 @@ icon: atom
 Atomic physics domain closure demonstrating GCD kernel applied to 3 elements spanning the periodic table. 8-channel trace with equal weights. Hydrogen (simplest atom, highest fidelity), Iron (d-block, moderate), Uranium (heaviest stable, Collapse). Verifies Tier-1 identities and demonstrates that atomic complexity correlates with drift.
 
 - **Contract**: `ATOM.INTSTACK.v1`
-- **Path**: `casepacks/atomic_physics_elements`
+- **Path**: `casepacks/closures/full/atomic_physics`
 - **Status**: validated
 
 ### awareness_cognition_kernel
@@ -104,7 +104,7 @@ Atomic physics domain closure demonstrating GCD kernel applied to 3 elements spa
 Awareness-cognition domain closure demonstrating GCD kernel applied to 3 organisms spanning prokaryote to primate. 10-channel trace (5 awareness + 5 aptitude) with equal weights. Verifies Tier-1 identities and regime classification across phylogenetic diversity.
 
 - **Contract**: `AWC.INTSTACK.v1`
-- **Path**: `casepacks/awareness_cognition_kernel`
+- **Path**: `casepacks/closures/full/awareness_cognition`
 - **Status**: validated
 
 ### clinical_neuro_states
@@ -112,7 +112,7 @@ Awareness-cognition domain closure demonstrating GCD kernel applied to 3 organis
 Clinical neuroscience domain closure demonstrating GCD kernel applied to 3 consciousness states. 10-channel trace (4 cortical + 2 structural + 2 metabolic + 2 systemic) with equal weights. Healthy waking, deep coma, and psychedelic states classified through frozen regime gates.
 
 - **Contract**: `CLIN.INTSTACK.v1`
-- **Path**: `casepacks/clinical_neuro_states`
+- **Path**: `casepacks/closures/full/clinical_neuroscience`
 - **Status**: validated
 
 ### continuity_theory_systems
@@ -120,7 +120,7 @@ Clinical neuroscience domain closure demonstrating GCD kernel applied to 3 consc
 Continuity theory domain closure demonstrating GCD kernel applied to 3 dynamical systems with 5-channel trace. Stable oscillator (near-Stable, Watch due to S gate), damped oscillator (Collapse from energy loss), chaotic system (deep Collapse). Demonstrates continuity measurement across system trajectories.
 
 - **Contract**: `CT.INTSTACK.v1`
-- **Path**: `casepacks/continuity_theory_systems`
+- **Path**: `casepacks/closures/full/continuity_theory`
 - **Status**: validated
 
 ### everyday_physics_materials
@@ -128,7 +128,7 @@ Continuity theory domain closure demonstrating GCD kernel applied to 3 dynamical
 Everyday physics domain closure demonstrating GCD kernel applied to 3 materials with 6 thermodynamic channels. Copper (near-Stable), water (Collapse from channel heterogeneity), and diamond (Watch with high curvature). Verifies Tier-1 identities across macroscopic physical systems.
 
 - **Contract**: `EVDAY.INTSTACK.v1`
-- **Path**: `casepacks/everyday_physics_materials`
+- **Path**: `casepacks/closures/full/everyday_physics`
 - **Status**: validated
 
 ### evolution_kernel
@@ -136,7 +136,7 @@ Everyday physics domain closure demonstrating GCD kernel applied to 3 materials 
 Evolution domain closure demonstrating GCD kernel applied to 5 representative organisms across the tree of life. Verifies Tier-1 identities (F+ω=1, IC≤F, IC=exp(κ)) and regime classification for organisms spanning bacteria to humans.
 
 - **Contract**: `UMA.INTSTACK.v1`
-- **Path**: `casepacks/evolution_kernel`
+- **Path**: `casepacks/closures/full/evolution`
 - **Status**: validated
 
 ### gcd_complete
@@ -144,7 +144,7 @@ Evolution domain closure demonstrating GCD kernel applied to 5 representative or
 Complete GCD Tier-1 example demonstrating zero entropy state and all GCD closures
 
 - **Contract**: `GCD.INTSTACK.v1`
-- **Path**: `casepacks/gcd_complete`
+- **Path**: `casepacks/closures/full/gcd`
 - **Status**: validated
 
 ### materials_science_elements
@@ -152,7 +152,7 @@ Complete GCD Tier-1 example demonstrating zero entropy state and all GCD closure
 Materials science domain closure demonstrating GCD kernel applied to 3 elements from the 118-element database. 8-channel trace with equal weights. All three occupy Watch regime with small heterogeneity gaps, demonstrating high multiplicative coherence in bulk material properties.
 
 - **Contract**: `MATL.INTSTACK.v1`
-- **Path**: `casepacks/materials_science_elements`
+- **Path**: `casepacks/closures/full/materials_science`
 - **Status**: validated
 
 ### quantum_mechanics_complete
@@ -160,7 +160,7 @@ Materials science domain closure demonstrating GCD kernel applied to 3 elements 
 Comprehensive quantum mechanics casepack covering 6 subdomains: wavefunction collapse (Born rule), entanglement (Bell-CHSH), quantum tunneling, harmonic oscillator, spin measurement (Zeeman/Larmor), and Heisenberg uncertainty. Contains 30 experiments spanning the foundational pillars of QM, each mapped to UMCP invariants through the GCD framework. Wavefunction collapse is the literal archetype of Generative Collapse Dynamics.
 
 - **Contract**: `QM.INTSTACK.v1`
-- **Path**: `casepacks/quantum_mechanics_complete`
+- **Path**: `casepacks/closures/full/quantum_mechanics`
 - **Status**: validated
 
 ### rcft_complete
@@ -168,7 +168,7 @@ Comprehensive quantum mechanics casepack covering 6 subdomains: wavefunction col
 Complete RCFT Tier-2 example with zero entropy state and all GCD + RCFT closures
 
 - **Contract**: `RCFT.INTSTACK.v1`
-- **Path**: `casepacks/rcft_complete`
+- **Path**: `casepacks/closures/full/rcft`
 - **Status**: validated
 
 ### retro_coherent_phys04
@@ -176,7 +176,7 @@ Complete RCFT Tier-2 example with zero entropy state and all GCD + RCFT closures
 Type I seam classification of negative excitation time in cold 85Rb ensemble under postselection. Demonstrates curvature-reversed, drift-free return with zero residual. Source: Paulus (2025), based on Sinclair et al. PRX Quantum 3:010314 (2024)
 
 - **Contract**: `GCD.INTSTACK.v1`
-- **Path**: `casepacks/retro_coherent_phys04`
+- **Path**: `casepacks/ladder/L3_retro_coherent_phys04`
 - **Status**: validated
 
 ### semiotics_kernel
@@ -184,7 +184,7 @@ Type I seam classification of negative excitation time in cold 85Rb ensemble und
 Dynamic semiotics domain closure demonstrating GCD kernel applied to 3 sign systems. 8-channel semiotic trace with equal weights. Shows living language (Watch), dead language (Collapse from dead community channels), and formal notation (near-Stable, highest fidelity).
 
 - **Contract**: `SEM.INTSTACK.v1`
-- **Path**: `casepacks/semiotics_kernel`
+- **Path**: `casepacks/closures/full/dynamic_semiotics`
 - **Status**: validated
 
 ### spacetime_memory_entities
@@ -192,7 +192,7 @@ Dynamic semiotics domain closure demonstrating GCD kernel applied to 3 sign syst
 Spacetime memory domain closure demonstrating GCD kernel applied to 3 entities spanning stellar, cognitive, and diffuse categories. 8-channel trace (coherence_persistence, cycle_return_rate, well_depth_norm, gradient_strength, tidal_symmetry, trajectory_closure, circulation_area, heterogeneity_profile) with equal weights. Neutron star (Watch — highest F in catalog, near-homogeneous channels), Healthy memory (Watch — cognitive cross-domain bridge), Intergalactic medium (deep Collapse — diffuse system with dead channels).
 
 - **Contract**: `ST.INTSTACK.v1`
-- **Path**: `casepacks/spacetime_memory_entities`
+- **Path**: `casepacks/closures/full/spacetime_memory`
 - **Status**: validated
 
 ## Validation History

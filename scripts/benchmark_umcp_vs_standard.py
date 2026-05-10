@@ -160,7 +160,7 @@ def benchmark_validation(repo_root: Path, runs: int = 100) -> dict[str, Any]:
         ("canon/anchors.yaml", "canon_anchors.schema.json"),
         ("contracts/UMA.INTSTACK.v1.yaml", "contract.schema.json"),
         ("closures/registry.yaml", "closures_registry.schema.json"),
-        ("casepacks/hello_world/manifest.yaml", "casepack_manifest.schema.json"),
+        ("casepacks/pedagogical/hello_world/manifest.yaml", "casepack_manifest.schema.json"),
     ]
 
     # Filter to only existing files

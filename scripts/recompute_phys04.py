@@ -22,7 +22,7 @@ Usage:
 
 Reference:
     Sinclair et al., PRX Quantum 3:010314 (2024)
-    PHYS-04 casepack: casepacks/retro_coherent_phys04/
+    PHYS-04 casepack: casepacks/ladder/L3_retro_coherent_phys04/
 
 Source experiment:
     Medium: Cold 85Rb atomic ensemble
@@ -50,7 +50,7 @@ from typing import Any
 # Project paths
 # ---------------------------------------------------------------------------
 REPO_ROOT = Path(__file__).resolve().parent.parent
-CASEPACK_DIR = REPO_ROOT / "casepacks" / "retro_coherent_phys04"
+CASEPACK_DIR = REPO_ROOT / "casepacks" / "ladder" / "L3_retro_coherent_phys04"
 DATA_CSV = CASEPACK_DIR / "data" / "raw_measurements.csv"
 EXPECTED_INVARIANTS = CASEPACK_DIR / "expected" / "invariants.json"
 EXPECTED_RECEIPT = CASEPACK_DIR / "expected" / "seam_receipt.json"

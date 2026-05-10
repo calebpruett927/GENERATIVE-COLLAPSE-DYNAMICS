@@ -174,7 +174,7 @@ All 221 tests in the suite pass (100% success rate), including 142 original test
   - [closures/rcft/fractal_dimension.py](../closures/rcft/fractal_dimension.py)
   - [closures/rcft/recursive_field.py](../closures/rcft/recursive_field.py)
   - [closures/rcft/resonance_pattern.py](../closures/rcft/resonance_pattern.py)
-- **Examples**: [casepacks/rcft_complete/](../casepacks/rcft_complete/)
+- **Examples**: [casepacks/closures/full/rcft/](../casepacks/closures/full/rcft/)
 - **Tests**:
   - [tests/test_110_rcft_canon.py](../tests/test_110_rcft_canon.py)
   - [tests/test_111_rcft_closures.py](../tests/test_111_rcft_closures.py)

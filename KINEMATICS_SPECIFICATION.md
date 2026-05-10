@@ -417,7 +417,7 @@ This prevents $K_{stability}$ from going negative and ensures bounded output $\i
 
 **NOTE**: This is a Tier-0/Tier-2 kinematics closure, NOT Tier-1 kernel. Does not redefine Tier-1 symbols {ω, F, S, C, τ_R, IC, κ}.
 
-**CasePack**: `casepacks/kin_ref_phase_oscillator/`
+**CasePack**: `casepacks/ladder/L1_kin_ref_phase_oscillator/`
 
 **Main Functions**:
 - `compute_phase(x, v)` → φ (phase angle in [0, 2π))

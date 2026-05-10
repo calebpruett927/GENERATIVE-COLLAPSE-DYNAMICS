@@ -24,7 +24,7 @@ GENERATIVE-COLLAPSE-DYNAMICS
 │    │
 │    └── Casepacks:
 │         ├── manifest.yaml (root casepack)
-│         └── casepacks/hello_world/manifest.json
+│         └── casepacks/pedagogical/hello_world/manifest.json
 │
 ├─── TIER 1: GCD (Generative Collapse Dynamics) ───────────────
 │    │
@@ -39,7 +39,7 @@ GENERATIVE-COLLAPSE-DYNAMICS
 │    │    │   └── field_resonance.py
 │    │
 │    └── Casepacks:
-│         └── casepacks/gcd_complete/manifest.json
+│         └── casepacks/closures/full/gcd/manifest.json
 │
 └─── TIER 2: RCFT (Recursive Collapse Field Theory) ──────────
      │
@@ -55,7 +55,7 @@ GENERATIVE-COLLAPSE-DYNAMICS
      │        └── resonance_pattern.py
      │
      └── Casepacks:
-          └── casepacks/rcft_complete/manifest.json
+          └── casepacks/closures/full/rcft/manifest.json
 ```
 
 ---
@@ -120,9 +120,9 @@ Each casepack manifest references:
 
 ### Casepacks (4)
 - ✓ `manifest.yaml` (Root casepack)
-- ✓ `casepacks/hello_world/manifest.json` (Base example)
-- ✓ `casepacks/gcd_complete/manifest.json` (GCD example)
-- ✓ `casepacks/rcft_complete/manifest.json` (RCFT example)
+- ✓ `casepacks/pedagogical/hello_world/manifest.json` (Base example)
+- ✓ `casepacks/closures/full/gcd/manifest.json` (GCD example)
+- ✓ `casepacks/closures/full/rcft/manifest.json` (RCFT example)
 
 ---
 

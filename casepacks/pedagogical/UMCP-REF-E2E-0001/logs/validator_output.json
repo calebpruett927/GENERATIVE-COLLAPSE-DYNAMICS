@@ -1,0 +1,87 @@
+{
+  "schema": "schemas/validator.result.schema.json",
+  "created_utc": "2026-01-19T17:44:03Z",
+  "validator": {
+    "name": "umcp-validator",
+    "version": "0.1.0",
+    "implementation": {
+      "language": "python",
+      "python_version": "3.12.1",
+      "git_commit": "aa3d0921135b9ebfa12b214fa02d978ad4239871",
+      "build": "repo"
+    }
+  },
+  "run_status": "CONFORMANT",
+  "summary": {
+    "counts": {
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "targets_total": 5,
+      "targets_failed": 0
+    },
+    "policy": {
+      "strict": false,
+      "fail_on_warning": false
+    }
+  },
+  "targets": [
+    {
+      "target_type": "repo",
+      "target_path": ".",
+      "run_status": "CONFORMANT",
+      "counts": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 0
+      },
+      "issues": []
+    },
+    {
+      "target_type": "casepack",
+      "target_path": "casepacks/pedagogical/UMCP-REF-E2E-0001",
+      "run_status": "CONFORMANT",
+      "counts": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 0
+      },
+      "issues": []
+    },
+    {
+      "target_type": "casepack",
+      "target_path": "casepacks/closures/full/gcd",
+      "run_status": "CONFORMANT",
+      "counts": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 0
+      },
+      "issues": []
+    },
+    {
+      "target_type": "casepack",
+      "target_path": "casepacks/pedagogical/hello_world",
+      "run_status": "CONFORMANT",
+      "counts": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 0
+      },
+      "issues": []
+    },
+    {
+      "target_type": "casepack",
+      "target_path": "casepacks/closures/full/rcft",
+      "run_status": "CONFORMANT",
+      "counts": {
+        "errors": 0,
+        "warnings": 0,
+        "info": 0
+      },
+      "issues": []
+    }
+  ],
+  "issues": [],
+  "notes": "UMCP repository validation"
+}

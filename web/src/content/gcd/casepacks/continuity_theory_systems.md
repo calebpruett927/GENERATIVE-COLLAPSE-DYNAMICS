@@ -17,7 +17,7 @@ Continuity theory domain closure demonstrating GCD kernel applied to 3 dynamical
 | **Version** | 1.0.0 |
 | **Contract** | `CT.INTSTACK.v1` |
 | **Status** | validated |
-| **Path** | `casepacks/continuity_theory_systems` |
+| **Path** | `casepacks/closures/full/continuity_theory` |
 | **Canon Anchors** | `canon/ct_anchors.yaml` |
 
 ## Authors

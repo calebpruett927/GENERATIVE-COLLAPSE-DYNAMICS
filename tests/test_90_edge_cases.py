@@ -88,7 +88,7 @@ class TestPathHandling:
 
     def test_relative_path_resolution(self):
         """Relative paths should resolve correctly."""
-        path = Path("casepacks/hello_world")
+        path = Path("casepacks/pedagogical/hello_world")
         full_path = REPO_ROOT / path
 
         if not full_path.exists():

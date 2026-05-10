@@ -81,7 +81,7 @@ try:
     from .frozen_contract import classify_regime as _fc_classify_regime
 except ImportError:
     # Fallback for direct execution
-    __version__ = "2.3.1"
+    __version__ = "2.3.2"
     EPSILON = 1e-8
     P_EXPONENT = 3
     ALPHA = 1.0
@@ -711,10 +711,11 @@ async def health_check() -> HealthResponse:
         checks["schemas"] = {"status": "fail", "error": "schemas directory not found"}
         status = "degraded"
 
-    # Check casepacks directory
+    # Check casepacks directory (recursive: walks family subdirs; counts dirs
+    # that contain manifest.json as casepacks).
     casepacks_dir = repo_root / "casepacks"
     if casepacks_dir.exists():
-        casepack_count = len([d for d in casepacks_dir.iterdir() if d.is_dir()])
+        casepack_count = sum(1 for _p in casepacks_dir.rglob("manifest.json") if _p.is_file())
         checks["casepacks"] = {"status": "pass", "count": casepack_count}
     else:
         checks["casepacks"] = {"status": "fail", "error": "casepacks directory not found"}
@@ -868,7 +869,17 @@ async def list_casepacks(
         return []
 
     summaries: list[CasepackSummary] = []
-    for casepack_dir in sorted(casepacks_dir.iterdir()):
+    # Recursively discover casepacks: a directory is a casepack iff it contains
+    # manifest.json (or manifest.yaml). Otherwise it is a family directory
+    # (pedagogical/, ladder/, closures/full/) and we recurse into it.
+    casepack_dirs: list[Path] = sorted(
+        {
+            p.parent
+            for p in list(casepacks_dir.rglob("manifest.json")) + list(casepacks_dir.rglob("manifest.yaml"))
+            if p.is_file()
+        }
+    )
+    for casepack_dir in casepack_dirs:
         if not casepack_dir.is_dir():
             continue
 

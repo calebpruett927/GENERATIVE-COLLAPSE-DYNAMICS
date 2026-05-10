@@ -17,7 +17,7 @@ Canonical test vector for KIN.REF.PHASE closure implementing deterministic phase
 | **Version** | 1.0.0 |
 | **Contract** | `KIN.INTSTACK.v1` |
 | **Status** | validated |
-| **Path** | `casepacks/kin_ref_phase_oscillator` |
+| **Path** | `casepacks/ladder/L1_kin_ref_phase_oscillator` |
 | **Canon Anchors** | `canon/kin_anchors.yaml` |
 
 ## Authors

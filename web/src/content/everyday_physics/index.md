@@ -124,7 +124,7 @@ icon: sun
 Everyday physics domain closure demonstrating GCD kernel applied to 3 materials with 6 thermodynamic channels. Copper (near-Stable), water (Collapse from channel heterogeneity), and diamond (Watch with high curvature). Verifies Tier-1 identities across macroscopic physical systems.
 
 - **Contract**: `EVDAY.INTSTACK.v1`
-- **Path**: `casepacks/everyday_physics_materials`
+- **Path**: `casepacks/closures/full/everyday_physics`
 - **Status**: validated
 
 ## Validation History

@@ -17,7 +17,7 @@ assignees: ''
 ## Contract & Regime (if applicable)
 
 - **Contract**: <!-- e.g., UMA.INTSTACK.v1 -->
-- **Casepack**: <!-- e.g., casepacks/hello_world -->
+- **Casepack**: <!-- e.g., casepacks/pedagogical/hello_world -->
 - **Regime**: <!-- Stable / Watch / Collapse / NON_EVALUABLE / unknown -->
 - **Verdict**: <!-- CONFORMANT / NONCONFORMANT / NON_EVALUABLE -->
 

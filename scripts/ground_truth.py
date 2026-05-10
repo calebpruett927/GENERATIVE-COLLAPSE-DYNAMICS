@@ -30,7 +30,7 @@ _REPO_ROOT = Path(__file__).resolve().parent.parent
 # ── Manual / Frozen Metrics ──────────────────────────────────────
 # Update these when content changes.  The sync script propagates them.
 
-VERSION = "2.3.1"
+VERSION = "2.3.2"
 """Package version — canonical source is pyproject.toml, but this must match."""
 
 THEOREM_COUNT = 746
@@ -91,11 +91,20 @@ def compute_test_count(root: Path | None = None) -> int:
             timeout=120,
             cwd=str(repo),
         )
+        # Primary: sum per-file counts ("tests/test_foo.py: 42") emitted by conftest.
+        collected = 0
+        for ln in result.stdout.splitlines():
+            m = re.match(r".*:\s+(\d+)\s*$", ln.strip())
+            if m:
+                collected += int(m.group(1))
+        if collected:
+            return collected
+        # Fallbacks for vanilla pytest output formats.
         for pattern in [r"(\d+) tests? collected", r"(\d+) items?"]:
             m = re.search(pattern, result.stdout)
             if m:
                 return int(m.group(1))
-        # Fallback: count lines with ::
+        # Last resort: count lines with ::
         return sum(1 for ln in result.stdout.splitlines() if "::" in ln)
     except Exception as e:
         print(f"Warning: pytest collection failed: {e}", file=sys.stderr)

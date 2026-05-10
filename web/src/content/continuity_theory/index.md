@@ -97,7 +97,7 @@ icon: link
 Continuity theory domain closure demonstrating GCD kernel applied to 3 dynamical systems with 5-channel trace. Stable oscillator (near-Stable, Watch due to S gate), damped oscillator (Collapse from energy loss), chaotic system (deep Collapse). Demonstrates continuity measurement across system trajectories.
 
 - **Contract**: `CT.INTSTACK.v1`
-- **Path**: `casepacks/continuity_theory_systems`
+- **Path**: `casepacks/closures/full/continuity_theory`
 - **Status**: validated
 
 ## Validation History

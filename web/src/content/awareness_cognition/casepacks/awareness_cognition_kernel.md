@@ -17,7 +17,7 @@ Awareness-cognition domain closure demonstrating GCD kernel applied to 3 organis
 | **Version** | 1.0.0 |
 | **Contract** | `AWC.INTSTACK.v1` |
 | **Status** | validated |
-| **Path** | `casepacks/awareness_cognition_kernel` |
+| **Path** | `casepacks/closures/full/awareness_cognition` |
 | **Canon Anchors** | `canon/awc_anchors.yaml` |
 
 ## Authors

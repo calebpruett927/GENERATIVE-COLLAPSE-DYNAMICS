@@ -17,7 +17,7 @@ Everyday physics domain closure demonstrating GCD kernel applied to 3 materials 
 | **Version** | 1.0.0 |
 | **Contract** | `EVDAY.INTSTACK.v1` |
 | **Status** | validated |
-| **Path** | `casepacks/everyday_physics_materials` |
+| **Path** | `casepacks/closures/full/everyday_physics` |
 | **Canon Anchors** | `canon/evday_anchors.yaml` |
 
 ## Authors

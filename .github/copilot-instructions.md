@@ -1,6 +1,6 @@
 # Copilot Instructions for GENERATIVE-COLLAPSE-DYNAMICS
 
-**UMCP v2.3.1** · **20,235 tests** · **23 domains** · **245 closure modules** · **47 lemmas** · **44 structural identities**
+**UMCP v2.3.2** · **20,337 tests** · **23 domains** · **245 closure modules** · **47 lemmas** · **44 structural identities**
 
 ## Foundational Principle — Read This First
 
@@ -593,7 +593,7 @@ python scripts/ground_truth.py              # Print current ground truth metrics
 python scripts/sync_ground_truth.py         # Propagate metrics to all files (70+ rules)
 python scripts/sync_ground_truth.py --dry-run  # Preview changes without writing
 umcp validate .                             # Validate entire repo
-umcp validate casepacks/hello_world --strict # Validate casepack (strict = fail on warnings)
+umcp validate casepacks/pedagogical/hello_world --strict # Validate casepack (strict = fail on warnings)
 umcp integrity                              # Verify SHA-256 checksums (248 tracked files)
 ```
 
@@ -689,7 +689,7 @@ umcp validate <target>
 
 ## Test Patterns
 
-**20,235 test cases** across **232 test files** in `tests/` (230 top-level `test_*.py` + 1 in `tests/closures/` + `conftest.py`), numbered by tier and domain (`test_000_*` through `test_343_*`). Single `tests/conftest.py` provides:
+**20,337 test cases** across **232 test files** in `tests/` (230 top-level `test_*.py` + 1 in `tests/closures/` + `conftest.py`), numbered by tier and domain (`test_000_*` through `test_343_*`). Single `tests/conftest.py` provides:
 - Frozen `RepoPaths` dataclass (session-scoped) with all critical paths
 - `@lru_cache` helpers: `_read_file()`, `_parse_json()`, `_parse_yaml()`, `_compile_schema()`
 - Convention: `test_<subject>_<behavior>()` for functions; `TestCLI*` classes with `subprocess.run` for CLI integration
@@ -838,7 +838,7 @@ Extensions use `typing.Protocol` (`ExtensionProtocol` requiring `name`, `version
 | SM paper | `paper/standard_model_kernel.tex` (RevTeX4-2, 10 theorems) |
 | Bibliography | `paper/Bibliography.bib` (189 entries, PDG → Kramers) |
 | Test fixtures | `tests/conftest.py` (first 100 lines) |
-| Casepack structure | `casepacks/hello_world/` |
+| Casepack structure | `casepacks/pedagogical/hello_world/` |
 | Contract format | `contracts/UMA.INTSTACK.v1.yaml` |
 | Semantic rules | `validator_rules.yaml` |
 | Canonical anchors | `canon/` (23 domain anchor files) |

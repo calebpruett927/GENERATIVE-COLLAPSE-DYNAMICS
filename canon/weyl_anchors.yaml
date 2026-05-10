@@ -2,7 +2,7 @@
 # Modified Gravity Testing via Weyl Evolution - Tier-1 Extension
 #
 # Interconnections:
-# - Referenced by: contracts/WEYL.INTSTACK.v1.yaml, casepacks/weyl_des_y3/
+# - Referenced by: contracts/WEYL.INTSTACK.v1.yaml, casepacks/closures/full/weyl/
 # - Parent: canon/gcd_anchors.yaml (WEYL extends GCD)
 # - Implements: Tier-1 invariants for cosmological observables
 # - Documentation: GLOSSARY.md#weyl, SYMBOL_INDEX.md#weyl

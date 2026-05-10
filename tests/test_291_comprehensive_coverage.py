@@ -595,7 +595,7 @@ class TestSchedulerAdditional:
         from umcp.fleet.scheduler import Scheduler
 
         s = Scheduler()
-        job = s.submit("casepacks/hello_world", strict=True)
+        job = s.submit("casepacks/pedagogical/hello_world", strict=True)
         assert job.strict is True
 
     def test_scheduler_to_dict(self) -> None:
@@ -619,7 +619,7 @@ class TestSchedulerAdditional:
         from umcp.fleet.scheduler import Scheduler
 
         s = Scheduler()
-        job = s.submit("casepacks/hello_world")
+        job = s.submit("casepacks/pedagogical/hello_world")
         cancelled = s.cancel(job.job_id)
         assert cancelled is not None
 

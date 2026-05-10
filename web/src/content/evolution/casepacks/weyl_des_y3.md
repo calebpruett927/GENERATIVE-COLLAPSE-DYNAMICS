@@ -17,7 +17,7 @@ Modified gravity testing using DES Y3 MAGLIM data via Weyl evolution and hJ prox
 | **Version** | 1.0.0 |
 | **Contract** | `WEYL.INTSTACK.v1` |
 | **Status** | validated |
-| **Path** | `casepacks/weyl_des_y3` |
+| **Path** | `casepacks/closures/full/weyl` |
 | **Canon Anchors** | `canon/weyl_anchors.yaml` |
 
 ## Authors

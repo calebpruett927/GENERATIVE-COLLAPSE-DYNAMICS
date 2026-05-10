@@ -132,7 +132,7 @@ See `contracts/SECURITY.INTSTACK.v1.yaml` for the complete security contract inc
 
 ## CasePack
 
-See `casepacks/security_validation/` for a complete example with:
+See `casepacks/closures/full/security/` for a complete example with:
 - Sample security signals
 - Expected invariant outputs
 - Validation receipts

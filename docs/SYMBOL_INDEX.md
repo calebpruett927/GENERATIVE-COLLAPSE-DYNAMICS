@@ -227,7 +227,7 @@ IC = exp(κ)         (exact inverse)
 - Theory: [KINEMATICS_SPECIFICATION.md](../KINEMATICS_SPECIFICATION.md)
 - Contract: [contracts/KIN.INTSTACK.v1.yaml](contracts/KIN.INTSTACK.v1.yaml)
 - Implementations: [closures/kinematics/](closures/kinematics/)
-- CasePacks: [casepacks/kinematics_complete/](casepacks/kinematics_complete/)
+- CasePacks: [casepacks/closures/full/kinematics/](casepacks/closures/full/kinematics/)
 - Tests: [tests/test_120_kinematics_closures.py](tests/test_120_kinematics_closures.py)
 
 ---
@@ -249,7 +249,7 @@ IC = exp(κ)         (exact inverse)
 - Definitions: [canon/rcft_anchors.yaml](canon/rcft_anchors.yaml) → tier_2_extensions
 - Theory: [docs/rcft_theory.md](docs/rcft_theory.md)
 - Implementations: [closures/rcft/](closures/rcft/)
-- CasePacks: [casepacks/rcft_complete/](casepacks/rcft_complete/)
+- CasePacks: [casepacks/closures/full/rcft/](casepacks/closures/full/rcft/)
 - Tests: [tests/test_110_rcft_canon.py](tests/test_110_rcft_canon.py)
 
 ---
@@ -328,7 +328,7 @@ Psi_r = recursive_field_strength
 | Regime classification | ω, F, S, C | [contracts/GCD.INTSTACK.v1.yaml](contracts/GCD.INTSTACK.v1.yaml) → regime_gates |
 | Weld evaluation | Δκ, τ_R, R, s | [contracts/GCD.INTSTACK.v1.yaml](contracts/GCD.INTSTACK.v1.yaml) → weld_gate |
 | Integrity tracking | κ, IC | All `outputs/invariants.csv` |
-| RCFT overlay | D_f, Ψ_r, λ_p | [casepacks/rcft_complete/](casepacks/rcft_complete/) |
+| RCFT overlay | D_f, Ψ_r, λ_p | [casepacks/closures/full/rcft/](casepacks/closures/full/rcft/) |
 | Trace embedding | Ψ(t), c_i, w_i | `embedding.yaml`, `derived/trace.csv` |
 
 ### By Document Type

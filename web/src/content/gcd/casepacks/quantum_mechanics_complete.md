@@ -17,7 +17,7 @@ Comprehensive quantum mechanics casepack covering 6 subdomains: wavefunction col
 | **Version** | 1.0.0 |
 | **Contract** | `QM.INTSTACK.v1` |
 | **Status** | validated |
-| **Path** | `casepacks/quantum_mechanics_complete` |
+| **Path** | `casepacks/closures/full/quantum_mechanics` |
 | **Canon Anchors** | `canon/qm_anchors.yaml` |
 
 ## Authors

@@ -649,19 +649,19 @@ class TestKinematicsCasepack:
 
     def test_casepack_exists(self, repo_root: Path) -> None:
         """Test casepack directory exists."""
-        path = repo_root / "casepacks" / "kinematics_complete"
+        path = repo_root / "casepacks" / "closures" / "full" / "kinematics"
         assert path.exists()
 
     def test_manifest_exists(self, repo_root: Path) -> None:
         """Test manifest.json exists."""
-        path = repo_root / "casepacks" / "kinematics_complete" / "manifest.json"
+        path = repo_root / "casepacks" / "closures" / "full" / "kinematics" / "manifest.json"
         assert path.exists()
 
     def test_manifest_valid_json(self, repo_root: Path) -> None:
         """Test manifest is valid JSON."""
         import json
 
-        path = repo_root / "casepacks" / "kinematics_complete" / "manifest.json"
+        path = repo_root / "casepacks" / "closures" / "full" / "kinematics" / "manifest.json"
         with open(path) as f:
             manifest = json.load(f)
 
@@ -671,12 +671,12 @@ class TestKinematicsCasepack:
 
     def test_raw_measurements_exists(self, repo_root: Path) -> None:
         """Test raw_measurements.csv exists."""
-        path = repo_root / "casepacks" / "kinematics_complete" / "raw_measurements.csv"
+        path = repo_root / "casepacks" / "closures" / "full" / "kinematics" / "raw_measurements.csv"
         assert path.exists()
 
     def test_expected_invariants_exists(self, repo_root: Path) -> None:
         """Test expected invariants exist."""
-        path = repo_root / "casepacks" / "kinematics_complete" / "expected" / "invariants.json"
+        path = repo_root / "casepacks" / "closures" / "full" / "kinematics" / "expected" / "invariants.json"
         assert path.exists()
 
 

@@ -11,7 +11,7 @@ import CasepackLayout from '../../../layouts/CasepackLayout.astro';
 export async function getStaticPaths() {
   const casepacks = await getCollection('casepacks');
   return casepacks.map((entry) => {
-    // Entry id from glob is like "finance/casepacks/finance_continuity"
+    // Entry id from glob is like "finance/casepacks/closures/full/finance"
     const parts = entry.id.split('/');
     const domain = parts[0];
     // slug is everything after "casepacks/"

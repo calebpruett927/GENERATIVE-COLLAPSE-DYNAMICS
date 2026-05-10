@@ -331,7 +331,7 @@ The system conforms to its declared contract. The kernel identities hold. The se
 A **casepack** is the atomic unit of auditable work. It is a directory that contains everything needed to reproduce and verify the computation:
 
 ```
-casepacks/hello_world/
+casepacks/pedagogical/hello_world/
 ├── manifest.json           # What is in this casepack
 ├── raw_measurements.csv    # The raw data (our three voltage readings)
 ├── contracts/              # The frozen contract (UMA.INTSTACK.v1)
@@ -408,9 +408,9 @@ Note: `tau_R` is `"INF_REC"` — a **typed string**, not a number. In Python it 
 To validate the casepack:
 
 ```bash
-$ umcp validate casepacks/hello_world --strict
+$ umcp validate casepacks/pedagogical/hello_world --strict
 
-UMCP validation: CONFORMANT (repo + casepacks/hello_world),
+UMCP validation: CONFORMANT (repo + casepacks/pedagogical/hello_world),
   errors=0 warnings=0;
   validator=umcp-validator v2.3.1;
   policy strict=true;
@@ -445,7 +445,7 @@ The same computation is available programmatically:
 ```python
 from umcp import validate
 
-result = validate("casepacks/hello_world")
+result = validate("casepacks/pedagogical/hello_world")
 print(result["run_status"])  # "CONFORMANT"
 ```
 
@@ -454,7 +454,7 @@ Or via the REST API (`umcp-api`, port 8000):
 ```bash
 $ curl -X POST http://localhost:8000/validate \
     -H "Content-Type: application/json" \
-    -d '{"path": "casepacks/hello_world", "strict": true}'
+    -d '{"path": "casepacks/pedagogical/hello_world", "strict": true}'
 
 {
   "status": "CONFORMANT",
@@ -599,8 +599,8 @@ You have now seen the entire system work once. Here are the doors you can open n
 
 | If you want to... | Go to... |
 |-------------------|----------|
-| **Run it yourself** | `pip install -e ".[all]"` then `umcp validate casepacks/hello_world --strict` |
-| **See a richer example** | `casepacks/UMCP-REF-E2E-0001/` — 9 timesteps, OOR events, regime transitions |
+| **Run it yourself** | `pip install -e ".[all]"` then `umcp validate casepacks/pedagogical/hello_world --strict` |
+| **See a richer example** | `casepacks/pedagogical/UMCP-REF-E2E-0001/` — 9 timesteps, OOR events, regime transitions |
 | **Re-derive the math** | `python scripts/orientation.py` — 10 sections, ~10 seconds, produces the numbers |
 | **Look up any symbol** | `CATALOGUE.md` — master index of all ~620 tagged formal objects |
 | **Understand the kernel** | `KERNEL_SPECIFICATION.md` — formal definitions, 47 lemmas, 44 identities |
@@ -614,7 +614,7 @@ You have now seen the entire system work once. Here are the doors you can open n
 
 ## Appendix A — The Same Example With Heterogeneous Channels
 
-To see why homogeneity matters, consider what happens when the three channels diverge. Replace $\mathbf{c} = (0.99,\, 0.99,\, 0.99)$ with $\mathbf{c} = (0.85,\, 0.92,\, 0.98)$ (the $t = 0$ state from `casepacks/UMCP-REF-E2E-0001/`):
+To see why homogeneity matters, consider what happens when the three channels diverge. Replace $\mathbf{c} = (0.99,\, 0.99,\, 0.99)$ with $\mathbf{c} = (0.85,\, 0.92,\, 0.98)$ (the $t = 0$ state from `casepacks/pedagogical/UMCP-REF-E2E-0001/`):
 
 | Output | Homogeneous (0.99, 0.99, 0.99) | Heterogeneous (0.85, 0.92, 0.98) |
 |--------|---------:|----------:|

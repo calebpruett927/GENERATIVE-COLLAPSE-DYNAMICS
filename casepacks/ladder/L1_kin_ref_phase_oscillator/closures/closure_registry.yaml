@@ -1,0 +1,16 @@
+schema: "schemas/closures_registry.schema.json"
+
+registry:
+  id: "kin_ref_phase_oscillator.closures"
+
+  closures:
+    gamma:
+      path: "closures/gamma.default.v1.yaml"
+    return_domain:
+      path: "closures/return_domain.window64.v1.yaml"
+    norms:
+      path: "closures/norms.l2_eta1e-3.v1.yaml"
+    curvature_neighborhood:
+      path: "closures/curvature_neighborhood.default.v1.yaml"
+
+  notes: "KIN.REF.PHASE oscillator closures referencing base UMCP closure definitions. Domain-specific phase-anchor selection in casepacks/ladder/L1_kin_ref_phase_oscillator/closures/kin_ref_phase.py."

@@ -53,7 +53,7 @@ def main() -> None:
     repo = Path(__file__).resolve().parent.parent
 
     # Load casepacks
-    nuc_raw, nuc_inv = load_casepack(repo / "casepacks" / "nuclear_chain")
+    nuc_raw, nuc_inv = load_casepack(repo / "casepacks" / "ladder" / "L2_nuclear_chain")
     qm_raw, qm_inv = load_casepack(repo / "casepacks" / "quantum_mechanics_complete")
 
     # ── NUCLEAR PHYSICS ──────────────────────────────────────────────────

@@ -2,7 +2,7 @@
 # Recursive Collapse Field Theory - Tier-2 Domain Expansion
 #
 # Interconnections:
-# - Referenced by: contracts/RCFT.INTSTACK.v1.yaml, casepacks/rcft_complete/
+# - Referenced by: contracts/RCFT.INTSTACK.v1.yaml, casepacks/closures/full/rcft/
 # - Parent: canon/gcd_anchors.yaml (GCD.v1 - Tier-1 framework)
 # - Extends: Tier-1 invariants with fractal/recursive analysis
 # - Implements: Tier-2 symbols (D_f, Ψ_r, λ_p, Θ)

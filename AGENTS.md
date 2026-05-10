@@ -132,7 +132,7 @@ All repository metrics have **exactly one source of truth**: `scripts/ground_tru
 | C++ accelerator | `src/umcp_cpp/` (links umcp_c_core, pybind11, 434 Catch2 assertions) |
 | Closures (23 domains) | `closures/` |
 | Contracts | `contracts/*.yaml` |
-| Tests (20,235) | `tests/` |
+| Tests (20,337) | `tests/` |
 | Orientation script | `scripts/orientation.py` (11 sections + compounding summary) |
 | Orientation checkpoint | `scripts/orientation_checkpoint.py` |
 | Deep diagnostic | `scripts/deep_diagnostic.py` |

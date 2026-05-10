@@ -43,7 +43,7 @@ Tasks are processed in **batches of 3**. Within each batch:
 ### Incremental Validation Rules
 - Single closure change → `pytest tests/test_XXX.py -x` (specific test file)
 - Core module change → `pytest tests/test_000*.py tests/test_001*.py -x` (identity tests first)
-- Multi-file change → `umcp validate casepacks/hello_world --strict`
+- Multi-file change → `umcp validate casepacks/pedagogical/hello_world --strict`
 - Pre-commit only → `python scripts/pre_commit_protocol.py`
 - NEVER run full test suite mid-task
 

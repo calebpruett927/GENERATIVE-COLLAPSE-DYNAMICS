@@ -35,7 +35,7 @@ umcp health
 
 ```bash
 # Validate the hello_world casepack
-umcp validate casepacks/hello_world
+umcp validate casepacks/pedagogical/hello_world
 ```
 
 **What just happened?**
@@ -52,7 +52,7 @@ umcp validate casepacks/hello_world
 
 ```bash
 # View detailed validation with verbose flag
-umcp validate casepacks/hello_world --verbose
+umcp validate casepacks/pedagogical/hello_world --verbose
 ```
 
 **Key sections**:
@@ -72,7 +72,7 @@ umcp validate casepacks/hello_world --verbose
 umcp list casepacks
 
 # Validate a more complex casepack
-umcp validate casepacks/gcd_complete
+umcp validate casepacks/closures/full/gcd
 ```
 
 **Available casepacks**:
@@ -93,7 +93,7 @@ from umcp.frozen_contract import compute_kernel
 import numpy as np
 
 # Validate a casepack programmatically
-result = umcp.validate("casepacks/hello_world")
+result = umcp.validate("casepacks/pedagogical/hello_world")
 print(f"Status: {'✓ PASS' if result else '✗ FAIL'}")
 print(f"Errors: {result.error_count}, Warnings: {result.warning_count}")
 
@@ -220,7 +220,7 @@ umcp validate my_casepack/
 | Concept | Meaning | Example |
 |---------|---------|---------|
 | **Contract** | Frozen specification of computation | `UMA.INTSTACK.v1.yaml` |
-| **Casepack** | Reproducible validation unit | `casepacks/hello_world/` |
+| **Casepack** | Reproducible validation unit | `casepacks/pedagogical/hello_world/` |
 | **Kernel invariants** | Core metrics (ω, F, S, C, τ_R, κ, IC) | Computed from coherence values |
 | **Return time (τ_R)** | First-hitting-time to η-neighborhood | `5.0` or `INF_REC` |
 | **Regime** | System state classification | Stable, Watch, Collapse |
@@ -290,7 +290,7 @@ configuration needed. See [src/umcp_cpp/README.md](src/umcp_cpp/README.md) for d
 
 ---
 
-**Next**: Dive into [KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md) to understand the mathematical foundations, or explore [casepacks/gcd_complete/](casepacks/gcd_complete/) for a comprehensive example.
+**Next**: Dive into [KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md) to understand the mathematical foundations, or explore [casepacks/closures/full/gcd/](casepacks/closures/full/gcd/) for a comprehensive example.
 
 ---
 
@@ -298,7 +298,7 @@ configuration needed. See [src/umcp_cpp/README.md](src/umcp_cpp/README.md) for d
 
 - **GitHub Issues**: [Report bugs or request features](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/issues)
 - **Documentation**: Browse the 164 `.md` files in the repository
-- **Tests**: See `tests/` for 20,235 examples of API usage
+- **Tests**: See `tests/` for 20,337 examples of API usage
 - **Examples**: All casepacks in `casepacks/` are fully documented
 
 **Happy validating! 🎯**

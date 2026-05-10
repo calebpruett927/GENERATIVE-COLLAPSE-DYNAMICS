@@ -35,7 +35,7 @@ def sample_receipt_1(tmp_path) -> Path:
             "policy": {"strict": False, "fail_on_warning": False},
         },
         "targets": [
-            {"target_path": "casepacks/hello_world", "status": "CONFORMANT"},
+            {"target_path": "casepacks/pedagogical/hello_world", "status": "CONFORMANT"},
         ],
     }
     path = tmp_path / "receipt1.json"
@@ -63,7 +63,7 @@ def sample_receipt_2(tmp_path) -> Path:
             "policy": {"strict": True, "fail_on_warning": False},
         },
         "targets": [
-            {"target_path": "casepacks/hello_world", "status": "CONFORMANT"},
+            {"target_path": "casepacks/pedagogical/hello_world", "status": "CONFORMANT"},
             {"target_path": "casepacks/new_pack", "status": "CONFORMANT"},
         ],
     }

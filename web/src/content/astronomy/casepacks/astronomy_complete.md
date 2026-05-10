@@ -17,7 +17,7 @@ Comprehensive astronomy casepack covering 6 subdomains: stellar luminosity (Stef
 | **Version** | 1.0.0 |
 | **Contract** | `ASTRO.INTSTACK.v1` |
 | **Status** | validated |
-| **Path** | `casepacks/astronomy_complete` |
+| **Path** | `casepacks/closures/full/astronomy` |
 | **Canon Anchors** | `canon/astro_anchors.yaml` |
 
 ## Authors

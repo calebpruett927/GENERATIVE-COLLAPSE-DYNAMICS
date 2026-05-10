@@ -25,7 +25,7 @@ Quick start (in-process, no external dependencies)::
     scheduler = Scheduler()
     worker = Worker(worker_id="local-0", scheduler=scheduler)
     worker.start()
-    job = scheduler.submit("casepacks/hello_world", tenant=tenant)
+    job = scheduler.submit("casepacks/pedagogical/hello_world", tenant=tenant)
     result = scheduler.wait(job.job_id)
 """
 

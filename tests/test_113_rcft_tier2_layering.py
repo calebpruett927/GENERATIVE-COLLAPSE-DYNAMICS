@@ -198,12 +198,12 @@ class TestMultiTierValidation:
 
     def test_rcft_casepack_exists(self):
         """RCFT casepack should exist."""
-        manifest = Path("casepacks/rcft_complete/manifest.json")
+        manifest = Path("casepacks/closures/full/rcft/manifest.json")
         assert manifest.exists()
 
     def test_rcft_casepack_references_rcft_contract(self):
         """RCFT casepack should reference RCFT.INTSTACK.v1."""
-        manifest_path = Path("casepacks/rcft_complete/manifest.json")
+        manifest_path = Path("casepacks/closures/full/rcft/manifest.json")
         with open(manifest_path) as f:
             manifest = json.load(f)
 
@@ -212,7 +212,7 @@ class TestMultiTierValidation:
 
     def test_rcft_casepack_has_all_tier_outputs(self):
         """RCFT casepack should have outputs for all tiers."""
-        manifest_path = Path("casepacks/rcft_complete/manifest.json")
+        manifest_path = Path("casepacks/closures/full/rcft/manifest.json")
         with open(manifest_path) as f:
             manifest = json.load(f)
 
@@ -234,7 +234,7 @@ class TestMultiTierValidation:
 
     def test_rcft_receipt_validates_all_tiers(self):
         """RCFT receipt should validate identities from all tiers."""
-        receipt_path = Path("casepacks/rcft_complete/expected/seam_receipt.json")
+        receipt_path = Path("casepacks/closures/full/rcft/expected/seam_receipt.json")
         with open(receipt_path) as f:
             receipt = json.load(f)
 
@@ -311,7 +311,7 @@ class TestZeroEntropyAcrossTiers:
 
     def test_tier1_zero_entropy_values(self):
         """GCD Tier-1 zero entropy values."""
-        invariants_path = Path("casepacks/rcft_complete/expected/invariants.json")
+        invariants_path = Path("casepacks/closures/full/rcft/expected/invariants.json")
         with open(invariants_path) as f:
             inv = json.load(f)
 
@@ -324,7 +324,7 @@ class TestZeroEntropyAcrossTiers:
 
     def test_tier1_gcd_zero_entropy_values(self):
         """GCD extensions at zero entropy."""
-        energy_path = Path("casepacks/rcft_complete/expected/gcd_energy.json")
+        energy_path = Path("casepacks/closures/full/rcft/expected/gcd_energy.json")
         with open(energy_path) as f:
             energy = json.load(f)
 
@@ -333,8 +333,8 @@ class TestZeroEntropyAcrossTiers:
 
     def test_tier2_rcft_zero_entropy_values(self):
         """RCFT Tier-2 values at zero entropy."""
-        fractal_path = Path("casepacks/rcft_complete/expected/rcft_fractal.json")
-        recursive_path = Path("casepacks/rcft_complete/expected/rcft_recursive.json")
+        fractal_path = Path("casepacks/closures/full/rcft/expected/rcft_fractal.json")
+        recursive_path = Path("casepacks/closures/full/rcft/expected/rcft_recursive.json")
 
         with open(fractal_path) as f:
             fractal = json.load(f)

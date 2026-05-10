@@ -19,7 +19,7 @@ Available Closures:
 UMCP Integration:
     - Contract: WEYL.INTSTACK.v1 (extends GCD.INTSTACK.v1)
     - Canon anchors: canon/weyl_anchors.yaml
-    - Reference casepack: casepacks/weyl_des_y3/
+    - Reference casepack: casepacks/closures/full/weyl/
 
 Core Axiom Realization:
     AX-W0 (Weyl Axiom): "Reference anchor defines deviation"

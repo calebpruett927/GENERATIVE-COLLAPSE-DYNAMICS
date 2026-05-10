@@ -115,13 +115,13 @@ contracts/KIN.INTSTACK.v1.yaml
 contracts/RCFT.INTSTACK.v1.yaml
     └── refs.canonical_anchor → canon/rcft_anchors.yaml
 
-casepacks/gcd_complete/manifest.json
+casepacks/closures/full/gcd/manifest.json
     └── refs.canon_anchors → canon/gcd_anchors.yaml
 
-casepacks/kinematics_complete/manifest.json
+casepacks/closures/full/kinematics/manifest.json
     └── refs.canon_anchors → canon/kin_anchors.yaml
 
-casepacks/rcft_complete/manifest.json
+casepacks/closures/full/rcft/manifest.json
     └── refs.canon_anchors → canon/rcft_anchors.yaml
 
 contracts/ASTRO.INTSTACK.v1.yaml
@@ -130,10 +130,10 @@ contracts/ASTRO.INTSTACK.v1.yaml
 contracts/WEYL.INTSTACK.v1.yaml
     └── refs.canonical_anchor → canon/weyl_anchors.yaml
 
-casepacks/astronomy_complete/manifest.json
+casepacks/closures/full/astronomy/manifest.json
     └── refs.canon_anchors → canon/astro_anchors.yaml
 
-casepacks/weyl_des_y3/manifest.json
+casepacks/closures/full/weyl/manifest.json
     └── refs.canon_anchors → canon/weyl_anchors.yaml
 ```
 

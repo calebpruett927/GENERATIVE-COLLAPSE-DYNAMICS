@@ -245,7 +245,7 @@ class TestSchedulerAdvanced:
         from umcp.fleet.scheduler import Scheduler
 
         s = Scheduler()
-        _job = s.submit("casepacks/hello_world")
+        _job = s.submit("casepacks/pedagogical/hello_world")
         info = WorkerInfo(worker_id="w1", capacity=2)
         s.register_worker(info)
         polled = s.poll("w1")
@@ -265,7 +265,7 @@ class TestSchedulerAdvanced:
 
         s = Scheduler()
         # Submit with a tenant_id that isn't registered yet
-        job = s.submit("casepacks/hello_world", tenant_id="auto_tenant")
+        job = s.submit("casepacks/pedagogical/hello_world", tenant_id="auto_tenant")
         assert job.tenant_id == "auto_tenant"
 
     def test_wait_timeout(self) -> None:
@@ -273,7 +273,7 @@ class TestSchedulerAdvanced:
         from umcp.fleet.scheduler import Scheduler
 
         s = Scheduler()
-        job = s.submit("casepacks/hello_world")
+        job = s.submit("casepacks/pedagogical/hello_world")
         result = s.wait(job.job_id, timeout=0.1, poll_interval=0.05)
         # Should timeout since no worker is processing
         assert result is None
@@ -317,7 +317,7 @@ class TestWorkerInternals:
         from umcp.fleet.worker import Worker
 
         w = Worker("test-w3", scheduler=MagicMock())
-        job = Job(target="casepacks/hello_world")
+        job = Job(target="casepacks/pedagogical/hello_world")
 
         mock_proc = MagicMock()
         mock_proc.returncode = 0
@@ -333,7 +333,7 @@ class TestWorkerInternals:
         from umcp.fleet.worker import Worker
 
         w = Worker("test-w4", scheduler=MagicMock())
-        job = Job(target="casepacks/hello_world")
+        job = Job(target="casepacks/pedagogical/hello_world")
 
         mock_proc = MagicMock()
         mock_proc.returncode = 1
@@ -350,7 +350,7 @@ class TestWorkerInternals:
         from umcp.fleet.worker import Worker
 
         w = Worker("test-w5", scheduler=MagicMock())
-        job = Job(target="casepacks/hello_world")
+        job = Job(target="casepacks/pedagogical/hello_world")
 
         mock_proc = MagicMock()
         mock_proc.returncode = 2

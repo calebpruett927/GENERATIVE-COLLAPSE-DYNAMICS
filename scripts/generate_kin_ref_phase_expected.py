@@ -28,7 +28,7 @@ from typing import Any
 REPO_ROOT = Path(__file__).parent.parent
 
 # Load the KIN.REF.PHASE closure module dynamically
-closure_path = REPO_ROOT / "casepacks" / "kin_ref_phase_oscillator" / "closures" / "kin_ref_phase.py"
+closure_path = REPO_ROOT / "casepacks" / "ladder" / "L1_kin_ref_phase_oscillator" / "closures" / "kin_ref_phase.py"
 spec = importlib.util.spec_from_file_location("kin_ref_phase", closure_path)
 if spec is None or spec.loader is None:
     raise ImportError(f"Could not load module spec from {closure_path}")
@@ -143,7 +143,7 @@ def main() -> int:
     print("=" * 60)
 
     # Paths
-    casepack_dir = REPO_ROOT / "casepacks" / "kin_ref_phase_oscillator"
+    casepack_dir = REPO_ROOT / "casepacks" / "ladder" / "L1_kin_ref_phase_oscillator"
     expected_csv = casepack_dir / "expected" / "ref_phase_expected.csv"
     censor_json = casepack_dir / "expected" / "censor_expected.json"
 

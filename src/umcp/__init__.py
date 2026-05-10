@@ -182,7 +182,7 @@ __all__ = [
     "weld_lineage",
 ]
 
-__version__ = "2.3.1"
+__version__ = "2.3.2"
 
 VALIDATOR_NAME = "umcp-validator"
 DEFAULT_TZ = "America/Chicago"
@@ -368,7 +368,7 @@ def validate(path: str | Path, strict: bool = False) -> ValidationResult:
 
     Example:
         >>> import umcp
-        >>> result = umcp.validate("casepacks/hello_world")
+        >>> result = umcp.validate("casepacks/pedagogical/hello_world")
         >>> if result:
         ...     print("✓ CONFORMANT")
         >>> print(f"Errors: {result.error_count}, Warnings: {result.warning_count}")

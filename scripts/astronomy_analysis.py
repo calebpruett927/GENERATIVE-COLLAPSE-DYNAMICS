@@ -96,14 +96,14 @@ def _pct_error(computed: float, reference: float) -> float:
 
 def _load_invariants() -> dict[str, Any]:
     """Load the generated invariants.json."""
-    path = os.path.join(PROJECT_ROOT, "casepacks/astronomy_complete/expected/invariants.json")
+    path = os.path.join(PROJECT_ROOT, "casepacks/closures/full/astronomy/expected/invariants.json")
     with open(path) as f:
         return json.load(f)  # type: ignore[no-any-return]
 
 
 def _load_csv() -> list[dict[str, str]]:
     """Load raw measurements."""
-    path = os.path.join(PROJECT_ROOT, "casepacks/astronomy_complete/raw_measurements.csv")
+    path = os.path.join(PROJECT_ROOT, "casepacks/closures/full/astronomy/raw_measurements.csv")
     with open(path, newline="") as f:
         return list(csv.DictReader(f))
 

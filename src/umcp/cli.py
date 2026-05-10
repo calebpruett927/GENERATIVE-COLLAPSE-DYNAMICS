@@ -331,6 +331,32 @@ def _relpath(repo_root: Path, p: Path) -> str:
         return p.as_posix()
 
 
+def _iter_casepack_dirs(casepacks_dir: Path) -> list[Path]:
+    """Recursively yield casepack directories (those containing manifest.json).
+
+    Supports the *Entering the Corpus* taxonomy in which casepacks are organized
+    into family subdirectories (pedagogical/, ladder/, closures/full/, ...).
+    A directory is treated as a casepack iff it directly contains manifest.json.
+    Otherwise it is treated as a family directory and recursed into.
+    Hidden directories and those starting with '_' are skipped.
+    """
+    if not casepacks_dir.exists():
+        return []
+    found: list[Path] = []
+
+    def _walk(d: Path) -> None:
+        for entry in sorted(d.iterdir()):
+            if not entry.is_dir() or entry.name.startswith((".", "_")):
+                continue
+            if (entry / "manifest.json").exists():
+                found.append(entry)
+            else:
+                _walk(entry)
+
+    _walk(casepacks_dir)
+    return found
+
+
 LEDGER_GENESIS_HASH = hashlib.sha256(b"GENESIS").hexdigest()[:16]
 
 LEDGER_FIELDNAMES = [
@@ -1493,11 +1519,11 @@ def _validate_repo(repo_root: Path, fail_on_warning: bool) -> dict[str, Any]:
     if schema_rules:
         rules_doc = _load_validator_rules(repo_target, repo_root, rules_path, schema_rules)
 
-    # Validate casepacks
+    # Validate casepacks (recursive: supports family subdirs like pedagogical/, ladder/)
     casepacks_dir = repo_root / "casepacks"
     casepacks_skipped = 0
     if casepacks_dir.exists():
-        for case_dir in sorted(p for p in casepacks_dir.iterdir() if p.is_dir()):
+        for case_dir in _iter_casepack_dirs(casepacks_dir):
             manifest_path = case_dir / "manifest.json"
             expected_dir = case_dir / "expected"
             psi_csv_path = expected_dir / "psi.csv"
@@ -1803,7 +1829,7 @@ def _cmd_validate(args: argparse.Namespace) -> int:
 
     # Generate governance summary with full provenance
     governance_note = (
-        f"UMCP validation: {result['run_status']} (repo + casepacks/hello_world), "
+        f"UMCP validation: {result['run_status']} (repo + casepacks/pedagogical/hello_world), "
         f"errors={error_count} warnings={warning_count}; "
         f"validator={VALIDATOR_NAME} v{__version__} (build=repo, commit={git_commit[:8] if git_commit != 'unknown' else git_commit}, python={python_version}); "
         f"policy strict={str(strict_mode).lower()}; "
@@ -1971,19 +1997,19 @@ def _cmd_list(args: argparse.Namespace) -> int:
         print("\nCASEPACKS:")
         print("-" * 50)
         if casepacks_dir.exists():
-            for cp in sorted(casepacks_dir.iterdir()):
-                if cp.is_dir() and not cp.name.startswith("_"):
-                    manifest = cp / "manifest.json"
-                    if manifest.exists():
-                        with open(manifest) as f:
-                            m = json.load(f)
-                        title = m.get("casepack", {}).get("title", "No title")
-                        version = m.get("casepack", {}).get("version", "?")
-                        print(f"  {cp.name:30} v{version}")
-                        if args.verbose:
-                            print(f"    {title}")
-                    else:
-                        print(f"  {cp.name:30} (no manifest)")
+            for cp in _iter_casepack_dirs(casepacks_dir):
+                manifest = cp / "manifest.json"
+                rel = cp.relative_to(casepacks_dir).as_posix()
+                if manifest.exists():
+                    with open(manifest) as f:
+                        m = json.load(f)
+                    title = m.get("casepack", {}).get("title", "No title")
+                    version = m.get("casepack", {}).get("version", "?")
+                    print(f"  {rel:40} v{version}")
+                    if args.verbose:
+                        print(f"    {title}")
+                else:
+                    print(f"  {rel:40} (no manifest)")
 
     if args.what == "closures" or args.what == "all":
         closures_dir = repo_root / "closures"
@@ -2250,20 +2276,19 @@ def _cmd_report(args: argparse.Namespace) -> int:
     casepacks_dir = repo_root / "casepacks"
     casepacks: list[dict[str, Any]] = []
     if casepacks_dir.exists():
-        for cp in sorted(casepacks_dir.iterdir()):
-            if cp.is_dir() and not cp.name.startswith("_"):
-                manifest = cp / "manifest.json"
-                if manifest.exists():
-                    with open(manifest) as f:
-                        m = json.load(f)
-                    casepacks.append(
-                        {
-                            "id": m.get("casepack", {}).get("id"),
-                            "version": m.get("casepack", {}).get("version"),
-                            "title": m.get("casepack", {}).get("title"),
-                            "path": str(cp),
-                        }
-                    )
+        for cp in _iter_casepack_dirs(casepacks_dir):
+            manifest = cp / "manifest.json"
+            if manifest.exists():
+                with open(manifest) as f:
+                    m = json.load(f)
+                casepacks.append(
+                    {
+                        "id": m.get("casepack", {}).get("id"),
+                        "version": m.get("casepack", {}).get("version"),
+                        "title": m.get("casepack", {}).get("title"),
+                        "path": str(cp),
+                    }
+                )
 
     report["casepacks"] = casepacks
     report["casepack_count"] = len(casepacks)

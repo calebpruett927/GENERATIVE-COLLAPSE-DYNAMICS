@@ -108,7 +108,7 @@ class TestSchedulerReaper:
         s.register_worker(info)
 
         # Submit a job and assign it to this worker
-        job = s.submit("casepacks/hello_world")
+        job = s.submit("casepacks/pedagogical/hello_world")
         with s._lock:
             job.worker_id = "w-dead"
             from umcp.fleet.models import JobStatus
@@ -134,7 +134,7 @@ class TestSchedulerReaper:
         s = Scheduler()
 
         # First: submit, poll, report result to populate cache
-        _job1 = s.submit("casepacks/hello_world")
+        _job1 = s.submit("casepacks/pedagogical/hello_world")
         info = WorkerInfo(worker_id="w-cache", capacity=5)
         s.register_worker(info)
         polled = s.poll("w-cache")
@@ -149,7 +149,7 @@ class TestSchedulerReaper:
         s.report_result(polled.job_id, result)
 
         # Second submit with same target should hit cache
-        job2 = s.submit("casepacks/hello_world")
+        job2 = s.submit("casepacks/pedagogical/hello_world")
         # If cache hit, job2 should be COMPLETED immediately
         from umcp.fleet.models import JobStatus
 

@@ -81,7 +81,7 @@ CI Job: test
 
 CI Job: umcp-validate
   ├── umcp validate .            ← Protocol Step 7
-  └── umcp validate --strict casepacks/UMCP-REF-E2E-0001
+  └── umcp validate --strict casepacks/pedagogical/UMCP-REF-E2E-0001
 ```
 
 ## Common Failure Patterns

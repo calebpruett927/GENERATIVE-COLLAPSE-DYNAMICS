@@ -465,7 +465,7 @@ The kernel provides cross-domain **comparability** — the ability to say
 without claiming that portfolios are particles.
 
 The framework's 15 closure domains (including finance) demonstrate this:
-the finance casepack (`casepacks/finance_continuity/`) passes validation
+the finance casepack (`casepacks/closures/full/finance/`) passes validation
 using a finance-specific adapter with finance-specific channels. The
 kernel evaluates it under the same mathematics as every other domain.
 The claim is not "markets are physics." The claim is "both can be

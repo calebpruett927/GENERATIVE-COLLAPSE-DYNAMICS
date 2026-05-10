@@ -17,7 +17,7 @@ Type I seam classification of negative excitation time in cold 85Rb ensemble und
 | **Version** | 1.0.0 |
 | **Contract** | `GCD.INTSTACK.v1` |
 | **Status** | validated |
-| **Path** | `casepacks/retro_coherent_phys04` |
+| **Path** | `casepacks/ladder/L3_retro_coherent_phys04` |
 | **Canon Anchors** | `canon/gcd_anchors.yaml` |
 
 ## Authors

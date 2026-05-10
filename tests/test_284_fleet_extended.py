@@ -119,8 +119,8 @@ class TestSchedulerExtended:
         return Scheduler(heartbeat_ttl_s=1.0)
 
     def test_submit_creates_job(self, scheduler: Scheduler) -> None:
-        job = scheduler.submit("casepacks/hello_world")
-        assert job.target == "casepacks/hello_world"
+        job = scheduler.submit("casepacks/pedagogical/hello_world")
+        assert job.target == "casepacks/pedagogical/hello_world"
         assert job.status in {JobStatus.QUEUED, JobStatus.COMPLETED}
 
     def test_submit_with_unknown_tenant(self, scheduler: Scheduler) -> None:
@@ -295,7 +295,7 @@ class TestWorkerExtended:
 
     def test_worker_executes_job(self) -> None:
         """Worker executes a job when scheduler provides one."""
-        job = Job(target="casepacks/hello_world")
+        job = Job(target="casepacks/pedagogical/hello_world")
         mock_sched = MagicMock()
         mock_sched.poll.side_effect = [job, None, None, None, None, None, None, None, None, None]
 
@@ -313,7 +313,7 @@ class TestWorkerExtended:
 
     def test_worker_handles_execution_error(self) -> None:
         """Worker handles exceptions during job execution."""
-        job = Job(target="casepacks/hello_world")
+        job = Job(target="casepacks/pedagogical/hello_world")
         mock_sched = MagicMock()
         mock_sched.poll.side_effect = [job, None, None, None, None, None, None, None, None, None]
 

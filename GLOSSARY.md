@@ -55,8 +55,8 @@ Each entry contains:
 
 **Where used:**
 - All CasePacks: `observables.yaml`
-- [casepacks/hello_world](casepacks/hello_world/)
-- [casepacks/UMCP-REF-E2E-0001](casepacks/UMCP-REF-E2E-0001/)
+- [casepacks/pedagogical/hello_world](casepacks/pedagogical/hello_world/)
+- [casepacks/pedagogical/UMCP-REF-E2E-0001](casepacks/pedagogical/UMCP-REF-E2E-0001/)
 
 **Status:** Canonical
 
@@ -714,7 +714,7 @@ See [canon/rcft_anchors.yaml](canon/rcft_anchors.yaml) for complete machine-read
 
 **Where used:**
 - RCFT regime classification: Smooth/Wrinkled/Turbulent
-- [casepacks/rcft_complete/](casepacks/rcft_complete/)
+- [casepacks/closures/full/rcft/](casepacks/closures/full/rcft/)
 - [tests/test_110_rcft_canon.py](tests/test_110_rcft_canon.py)
 
 **Status:** Canonical (Tier-2)
@@ -743,7 +743,7 @@ See [canon/rcft_anchors.yaml](canon/rcft_anchors.yaml) for complete machine-read
 
 **Where used:**
 - RCFT regime: Dormant/Active/Resonant classification
-- [casepacks/rcft_complete/](casepacks/rcft_complete/)
+- [casepacks/closures/full/rcft/](casepacks/closures/full/rcft/)
 - [tests/test_111_rcft_closures.py](tests/test_111_rcft_closures.py)
 
 **Status:** Canonical (Tier-2)
@@ -772,7 +772,7 @@ See [canon/rcft_anchors.yaml](canon/rcft_anchors.yaml) for complete machine-read
 
 **Where used:**
 - RCFT pattern classification
-- [casepacks/rcft_complete/](casepacks/rcft_complete/)
+- [casepacks/closures/full/rcft/](casepacks/closures/full/rcft/)
 - [tests/test_111_rcft_closures.py](tests/test_111_rcft_closures.py)
 
 **Status:** Canonical (Tier-2)
@@ -806,7 +806,7 @@ See [canon/weyl_anchors.yaml](canon/weyl_anchors.yaml) for complete machine-read
 
 **Where used:**
 - [closures/weyl/weyl_transfer.py](closures/weyl/weyl_transfer.py)
-- [casepacks/weyl_des_y3/](casepacks/weyl_des_y3/)
+- [casepacks/closures/full/weyl/](casepacks/closures/full/weyl/)
 
 **Status:** Canonical (WEYL extension)
 
@@ -831,7 +831,7 @@ See [canon/weyl_anchors.yaml](canon/weyl_anchors.yaml) for complete machine-read
 
 **Where used:**
 - [closures/weyl/sigma_evolution.py](closures/weyl/sigma_evolution.py)
-- [casepacks/weyl_des_y3/](casepacks/weyl_des_y3/)
+- [casepacks/closures/full/weyl/](casepacks/closures/full/weyl/)
 
 **Status:** Canonical (WEYL extension)
 
@@ -856,7 +856,7 @@ See [canon/weyl_anchors.yaml](canon/weyl_anchors.yaml) for complete machine-read
 
 **Where used:**
 - [closures/weyl/sigma_evolution.py](closures/weyl/sigma_evolution.py)
-- [casepacks/weyl_des_y3/](casepacks/weyl_des_y3/)
+- [casepacks/closures/full/weyl/](casepacks/closures/full/weyl/)
 
 **Status:** Canonical (WEYL extension)
 

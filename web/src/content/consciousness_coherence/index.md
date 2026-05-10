@@ -112,7 +112,7 @@ icon: brain
 Maps Jackson's 14-stage Recursive Integrity Protocol (RIP) to the 8-channel consciousness coherence kernel. Each RIP level produces a trace vector in [0,1]^8 whose kernel invariants (F, ω, S, C, κ, IC) and regime classification are computed from Tier-1 formulas. The κ=7.2 threshold is tested against actual regime gates.
 
 - **Contract**: `UMA.INTSTACK.v1`
-- **Path**: `casepacks/consciousness_kappa_72`
+- **Path**: `casepacks/ladder/L4_consciousness_kappa_72`
 - **Status**: validated
 
 ### ricp_v2_consciousness
@@ -120,7 +120,7 @@ Maps Jackson's 14-stage Recursive Integrity Protocol (RIP) to the 8-channel cons
 Maps Jackson RICP v2.0 (14-stage framework, 16 levels) to 8-channel consciousness coherence kernel. V2.0 adds Stages 10-12. Three regime transitions found.
 
 - **Contract**: `UMA.INTSTACK.v1`
-- **Path**: `casepacks/ricp_v2_consciousness`
+- **Path**: `casepacks/ladder/L4_ricp_v2_consciousness`
 - **Status**: validated
 
 ## Validation History

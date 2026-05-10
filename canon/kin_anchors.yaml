@@ -2,7 +2,7 @@
 # Kinematics Extension - Physics-Based Motion Layer
 #
 # Interconnections:
-# - Referenced by: contracts/KIN.INTSTACK.v1.yaml, casepacks/kinematics_complete/
+# - Referenced by: contracts/KIN.INTSTACK.v1.yaml, casepacks/closures/full/kinematics/
 # - Parent: canon/anchors.yaml (UMCP.CANON.v1)
 # - Sibling: canon/gcd_anchors.yaml (GCD Tier-1 immutable invariants), canon/rcft_anchors.yaml (RCFT Tier-2 domain expansion)
 # - Implements: Tier-1 kinematics invariants (x, v, a, E_kin, τ_kin, K_stability)

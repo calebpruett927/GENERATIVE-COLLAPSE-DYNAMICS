@@ -109,7 +109,7 @@ icon: trending-up
 Validates month-over-month financial continuity using UMCP kernel invariants. Embeds revenue, expenses, margin, and cash flow as [0,1]^4 coordinates. Seam accounting certifies financial health returns through reporting collapse.
 
 - **Contract**: `FINANCE.INTSTACK.v1`
-- **Path**: `casepacks/finance_continuity`
+- **Path**: `casepacks/closures/full/finance`
 - **Status**: validated
 
 ## Validation History

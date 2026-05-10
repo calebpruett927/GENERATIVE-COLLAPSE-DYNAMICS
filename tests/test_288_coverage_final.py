@@ -554,7 +554,7 @@ class TestSchedulerExtended:
         from umcp.fleet.scheduler import Scheduler
 
         s = Scheduler()
-        job = s.submit("casepacks/hello_world")
+        job = s.submit("casepacks/pedagogical/hello_world")
         assert job is not None
         assert job.job_id
         cancelled = s.cancel(job.job_id)
@@ -564,7 +564,7 @@ class TestSchedulerExtended:
         from umcp.fleet.scheduler import Scheduler
 
         s = Scheduler()
-        job = s.submit("casepacks/hello_world", tenant_id="tenant_a")
+        job = s.submit("casepacks/pedagogical/hello_world", tenant_id="tenant_a")
         retrieved = s.get_job(job.job_id)
         assert retrieved is not None
         assert retrieved.tenant_id == "tenant_a"
@@ -573,7 +573,7 @@ class TestSchedulerExtended:
         from umcp.fleet.scheduler import Scheduler
 
         s = Scheduler()
-        s.submit("casepacks/hello_world")
+        s.submit("casepacks/pedagogical/hello_world")
         # Poll with unregistered worker returns None
         result = s.poll("nonexistent_worker")
         assert result is None
@@ -583,7 +583,7 @@ class TestSchedulerExtended:
         from umcp.fleet.scheduler import Scheduler
 
         s = Scheduler()
-        s.submit("casepacks/hello_world")
+        s.submit("casepacks/pedagogical/hello_world")
         info = WorkerInfo(worker_id="w1", capacity=2)
         s.register_worker(info)
         job = s.poll("w1")
@@ -595,7 +595,7 @@ class TestSchedulerExtended:
         from umcp.fleet.scheduler import Scheduler
 
         s = Scheduler()
-        _submitted = s.submit("casepacks/hello_world")
+        _submitted = s.submit("casepacks/pedagogical/hello_world")
         info = WorkerInfo(worker_id="w2", capacity=2)
         s.register_worker(info)
         job = s.poll("w2")
@@ -606,7 +606,7 @@ class TestSchedulerExtended:
         from umcp.fleet.scheduler import Scheduler
 
         s = Scheduler()
-        s.submit("casepacks/hello_world")
+        s.submit("casepacks/pedagogical/hello_world")
         stats = s.queue_stats()
         assert stats is not None
 

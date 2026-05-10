@@ -77,9 +77,9 @@ This document maps the complete cross-reference network created for UMCP protoco
 
 | File | Link Added | Destination |
 |------|-----------|-------------|
-| [casepacks/hello_world/README.md](casepacks/hello_world/README.md) | Protocol Resources header | All three glossary files |
-| [casepacks/gcd_complete/README.md](casepacks/gcd_complete/README.md) | Protocol Resources header | [GLOSSARY.md#tier-1](../GLOSSARY.md#tier-1-reserved-symbols-gcd-framework), [SYMBOL_INDEX.md](SYMBOL_INDEX.md) |
-| [casepacks/rcft_complete/README.md](casepacks/rcft_complete/README.md) | Protocol Resources header | [GLOSSARY.md#tier-2](../GLOSSARY.md#tier-2-rcft-overlay-extensions), [SYMBOL_INDEX.md](SYMBOL_INDEX.md) |
+| [casepacks/pedagogical/hello_world/README.md](casepacks/pedagogical/hello_world/README.md) | Protocol Resources header | All three glossary files |
+| [casepacks/closures/full/gcd/README.md](casepacks/closures/full/gcd/README.md) | Protocol Resources header | [GLOSSARY.md#tier-1](../GLOSSARY.md#tier-1-reserved-symbols-gcd-framework), [SYMBOL_INDEX.md](SYMBOL_INDEX.md) |
+| [casepacks/closures/full/rcft/README.md](casepacks/closures/full/rcft/README.md) | Protocol Resources header | [GLOSSARY.md#tier-2](../GLOSSARY.md#tier-2-rcft-overlay-extensions), [SYMBOL_INDEX.md](SYMBOL_INDEX.md) |
 
 ---
 

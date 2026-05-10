@@ -8,7 +8,7 @@
 [![C++17](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](src/umcp_cpp/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![UMCP v2.3.1](https://img.shields.io/badge/UMCP-v2.3.1-orange.svg)](pyproject.toml)
-[![Tests: 20,235](https://img.shields.io/badge/tests-20%2C235-brightgreen.svg)](tests/)
+[![Tests: 20,235](https://img.shields.io/badge/tests-20%2C337-brightgreen.svg)](tests/)
 [![Domains: 23](https://img.shields.io/badge/domains-23-blueviolet.svg)](closures/)
 [![Closures: 245](https://img.shields.io/badge/closures-245-informational.svg)](closures/)
 [![Theorems: 746](https://img.shields.io/badge/theorems-746_proven-ff69b4.svg)](closures/)
@@ -614,8 +614,8 @@ umcp validate .
 ### Validate a specific casepack
 
 ```bash
-umcp validate casepacks/hello_world
-umcp validate casepacks/hello_world --strict
+umcp validate casepacks/pedagogical/hello_world
+umcp validate casepacks/pedagogical/hello_world --strict
 ```
 
 ### Run the test suite

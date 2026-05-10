@@ -36,6 +36,16 @@ Cross-references:
     Database:   closures/materials_science/element_database.py (Element, ELEMENTS)
     Gap-capture: closures/materials_science/gap_capture_ss1m.py (SS1M)
     Spec:       KERNEL_SPECIFICATION.md (Tier-1 identities, Lemmas 1-47)
+
+Published canon (Tier-2 closure of record):
+    Paulus, C. (2026). "The Periodic Table Through the GCD Kernel: 118 Elements,
+    8 Channels, and the Heterogeneity Gap as the True Periodic Function."
+    Zenodo. doi:10.5281/zenodo.19868885 (concept DOI; all versions).
+    BibTeX key: paulus2026periodictable.
+    Headline: 111 Collapse / 7 Watch / 0 Stable / 41 Critical across 118 elements
+    under the 8-channel closure implemented here. The companion 12-channel
+    nuclear-informed closure (cross_scale_kernel.py) is published as
+    paulus2026periodictable2 and sharpens this distribution.
 """
 
 from __future__ import annotations

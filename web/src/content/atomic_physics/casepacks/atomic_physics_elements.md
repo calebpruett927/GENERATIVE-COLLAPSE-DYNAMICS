@@ -17,7 +17,7 @@ Atomic physics domain closure demonstrating GCD kernel applied to 3 elements spa
 | **Version** | 1.0.0 |
 | **Contract** | `ATOM.INTSTACK.v1` |
 | **Status** | validated |
-| **Path** | `casepacks/atomic_physics_elements` |
+| **Path** | `casepacks/closures/full/atomic_physics` |
 | **Canon Anchors** | `canon/atom_anchors.yaml` |
 
 ## Authors

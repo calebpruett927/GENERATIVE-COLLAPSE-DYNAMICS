@@ -101,7 +101,7 @@ icon: atom
 Complete reproducibility bundle for the confinement paper. Contains PDG-2024 raw particle data (17 fundamental + 14 composite), 8-channel trace vectors, kernel invariant computation, guard band robustness analysis, and exotic hadron verification. All frozen parameters sourced from SM.INTSTACK.v1.yaml. One-command rerun: python run_confinement_T3.py
 
 - **Contract**: `SM.INTSTACK.v1`
-- **Path**: `casepacks/confinement_T3`
+- **Path**: `casepacks/ladder/L2_confinement_T3`
 - **Status**: validated
 
 ## Validation History

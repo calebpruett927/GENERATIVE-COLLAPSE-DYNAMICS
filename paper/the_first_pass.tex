@@ -651,7 +651,7 @@ reproduce the computation and verify the verdict.  The
 \texttt{hello\_world} casepack contains:
 
 \begin{Verbatim}[fontsize=\small]
-casepacks/hello_world/
+casepacks/pedagogical/hello_world/
   manifest.json
   raw_measurements.csv
   closures/
@@ -686,10 +686,10 @@ casepacks/hello_world/
 \subsection{Command-line validation}
 
 \begin{Verbatim}[fontsize=\small]
-$ umcp validate casepacks/hello_world \
+$ umcp validate casepacks/pedagogical/hello_world \
     --strict
 UMCP validation: CONFORMANT
-  (repo + casepacks/hello_world),
+  (repo + casepacks/pedagogical/hello_world),
   errors=0 warnings=0;
   validator=umcp-validator v2.3.1;
   policy strict=true;
@@ -708,7 +708,7 @@ The same computation is available via the Python API:
 
 \begin{Verbatim}[fontsize=\small]
 from umcp import validate
-result = validate("casepacks/hello_world")
+result = validate("casepacks/pedagogical/hello_world")
 assert result.status == "CONFORMANT"
 \end{Verbatim}
 
@@ -743,7 +743,7 @@ The optional FastAPI extension exposes the same spine over HTTP:
 POST /validate HTTP/1.1
 Content-Type: application/json
 
-{"path": "casepacks/hello_world",
+{"path": "casepacks/pedagogical/hello_world",
  "strict": true}
 \end{Verbatim}
 
@@ -753,7 +753,7 @@ HTTP/1.1 200 OK
 {"status": "CONFORMANT",
  "errors": 0,
  "warnings": 0,
- "path": "casepacks/hello_world",
+ "path": "casepacks/pedagogical/hello_world",
  "strict": true,
  "created_utc": "2026-...",
  "hash": "6fc79df4..."}

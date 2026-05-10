@@ -6,7 +6,7 @@
 [![C++17](https://img.shields.io/badge/C%2B%2B17-accelerator-orange.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/tree/main/src/umcp_cpp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/blob/main/LICENSE)
 [![CI](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/actions/workflows/validate.yml/badge.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/actions)
-[![Tests: 20,221](https://img.shields.io/badge/tests-20%2C235-brightgreen.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/tree/main/tests)
+[![Tests: 20,221](https://img.shields.io/badge/tests-20%2C337-brightgreen.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/tree/main/tests)
 [![Theorems: 746](https://img.shields.io/badge/theorems-746-purple.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/blob/main/CATALOGUE.md)
 [![Domains: 23](https://img.shields.io/badge/domains-23-teal.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/tree/main/closures)
 [![Production/Stable](https://img.shields.io/badge/status-Production%2FStable-brightgreen.svg)](https://pypi.org/project/umcp/)
@@ -29,12 +29,12 @@ Built on **Generative Collapse Dynamics (GCD)**, a measurement theory derived fr
 | **Tier-1 kernel** | Six invariants (F, ω, S, C, κ, IC) computed from any bounded trace vector — domain-independent. |
 | **23 scientific domains** | From particle physics and cosmology to neuroscience and finance — all through one kernel. |
 | **746 proven theorems** | 47 lemmas, 44 structural identities, 746 theorems verified to machine precision. |
-| **20,235 tests** | Comprehensive test suite across 232 files with 245 closure modules. |
+| **20,337 tests** | Comprehensive test suite across 232 files with 245 closure modules. |
 | **Three-valued verdicts** | Never boolean. Always CONFORMANT / NONCONFORMANT / NON\_EVALUABLE. |
 | **Three-layer architecture** | C99 orchestration (~1,900 lines) → C++17 accelerator → Python engine. 760 C/C++ assertions. |
 | **Interactive dashboard** | 46-page Streamlit dashboard for real-time kernel exploration. |
 | **CLI + Python API** | Full command-line interface and programmatic access. |
-| **26 casepacks** | Self-contained validation packages with frozen contracts and expected outputs. |
+| **3 casepacks** | Self-contained validation packages with frozen contracts and expected outputs. |
 
 ---
 
@@ -87,7 +87,7 @@ result = compute_full([0.95, 0.88, 0.92, 0.85])
 print(f"Regime: {result.regime}")  # STABLE, WATCH, or COLLAPSE
 
 # 3. Validate a casepack against its contract
-result = validate("casepacks/hello_world")
+result = validate("casepacks/pedagogical/hello_world")
 print(f"Status: {result.status}")           # CONFORMANT / NONCONFORMANT / NON_EVALUABLE
 print(f"Errors: {result.error_count}")
 ```
@@ -96,10 +96,10 @@ print(f"Errors: {result.error_count}")
 
 ```bash
 # Validate a casepack
-umcp validate casepacks/hello_world
+umcp validate casepacks/pedagogical/hello_world
 
 # Strict mode (publication-grade)
-umcp validate casepacks/hello_world --strict
+umcp validate casepacks/pedagogical/hello_world --strict
 
 # Quick kernel computation
 umcp-calc -c 0.95,0.88,0.92,0.85
@@ -252,7 +252,7 @@ src/umcp_cpp/           # C++17 Accelerator (pybind11)
 
 closures/                # 23 domain closure modules (245 .py files)
 contracts/               # 23 versioned mathematical contracts (YAML)
-casepacks/               # 26 self-contained validation packages
+casepacks/               # 3 self-contained validation packages
 schemas/                 # 17 JSON Schema Draft 2020-12 definitions
 canon/                   # 22 canonical anchor files
 ```

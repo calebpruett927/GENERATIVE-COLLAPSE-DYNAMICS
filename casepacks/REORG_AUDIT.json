@@ -1,0 +1,1744 @@
+{
+  "mapping": {
+    "hello_world": "casepacks/pedagogical/hello_world",
+    "UMCP-REF-E2E-0001": "casepacks/pedagogical/UMCP-REF-E2E-0001",
+    "kin_ref_phase_oscillator": "casepacks/ladder/L1_heterogeneous_local/kin_ref_phase_oscillator",
+    "confinement_T3": "casepacks/ladder/L1_heterogeneous_local/confinement_T3",
+    "nuclear_chain": "casepacks/ladder/L2_finite_return/nuclear_chain",
+    "retro_coherent_phys04": "casepacks/ladder/L2_finite_return/retro_coherent_phys04",
+    "consciousness_kappa_72": "casepacks/ladder/L3_welded_seam/consciousness_kappa_72",
+    "ricp_v2_consciousness": "casepacks/ladder/L3_welded_seam/ricp_v2_consciousness",
+    "bell_curve_pgs": "casepacks/ladder/L4_seam_chain/bell_curve_pgs",
+    "gcd_complete": "casepacks/closures/full/gcd",
+    "rcft_complete": "casepacks/closures/full/rcft",
+    "kinematics_complete": "casepacks/closures/full/kinematics",
+    "weyl_des_y3": "casepacks/closures/full/weyl",
+    "astronomy_complete": "casepacks/closures/full/astronomy",
+    "quantum_mechanics_complete": "casepacks/closures/full/quantum_mechanics",
+    "finance_continuity": "casepacks/closures/full/finance",
+    "atomic_physics_elements": "casepacks/closures/full/atomic_physics",
+    "materials_science_elements": "casepacks/closures/full/materials_science",
+    "everyday_physics_materials": "casepacks/closures/full/everyday_physics",
+    "evolution_kernel": "casepacks/closures/full/evolution",
+    "semiotics_kernel": "casepacks/closures/full/dynamic_semiotics",
+    "awareness_cognition_kernel": "casepacks/closures/full/awareness_cognition",
+    "clinical_neuro_states": "casepacks/closures/full/clinical_neuroscience",
+    "continuity_theory_systems": "casepacks/closures/full/continuity_theory",
+    "spacetime_memory_entities": "casepacks/closures/full/spacetime_memory",
+    "security_validation": "casepacks/closures/full/security"
+  },
+  "references": {
+    "hello_world": {
+      ".github/ISSUE_TEMPLATE/bug_report.md": [
+        [
+          20,
+          "- **Casepack**: <!-- e.g., casepacks/hello_world -->"
+        ]
+      ],
+      ".github/copilot-instructions.md": [
+        [
+          596,
+          "umcp validate casepacks/hello_world --strict # Validate casepack (strict = fail on warnings)"
+        ],
+        [
+          841,
+          "| Casepack structure | `casepacks/hello_world/` |"
+        ]
+      ],
+      "AI_WORKFLOW.md": [
+        [
+          46,
+          "- Multi-file change \u2192 `umcp validate casepacks/hello_world --strict`"
+        ]
+      ],
+      "CHANGELOG.md": [
+        [
+          884,
+          "- `casepacks/hello_world/`: Complete contracts + closures (5 files)"
+        ],
+        [
+          1079,
+          "- `casepacks/hello_world/`: Example with S=0 (zero entropy) state"
+        ],
+        [
+          1129,
+          "- Full CasePack example: `casepacks/hello_world/`"
+        ]
+      ],
+      "CONTRIBUTING.md": [
+        [
+          518,
+          "        >>> result = validate_casepack(\"casepacks/hello_world\")"
+        ]
+      ],
+      "GLOSSARY.md": [
+        [
+          58,
+          "- [casepacks/hello_world](casepacks/hello_world/)"
+        ]
+      ],
+      "PROTOCOL_REFERENCE.md": [
+        [
+          182,
+          "- [casepacks/hello_world/README.md](casepacks/hello_world/README.md) \u2192 protocol resources header"
+        ],
+        [
+          207,
+          "5. Follows \"Where used\" to [casepacks/hello_world/](casepacks/hello_world/)"
+        ],
+        [
+          215,
+          "| **hello_world** | Minimal validation | [casepacks/hello_world/](casepacks/hello_world/) |"
+        ]
+      ],
+      "QUICKSTART_TUTORIAL.md": [
+        [
+          38,
+          "umcp validate casepacks/hello_world"
+        ],
+        [
+          55,
+          "umcp validate casepacks/hello_world --verbose"
+        ],
+        [
+          96,
+          "result = umcp.validate(\"casepacks/hello_world\")"
+        ],
+        [
+          223,
+          "| **Casepack** | Reproducible validation unit | `casepacks/hello_world/` |"
+        ]
+      ],
+      "README.md": [
+        [
+          617,
+          "umcp validate casepacks/hello_world"
+        ],
+        [
+          618,
+          "umcp validate casepacks/hello_world --strict"
+        ]
+      ],
+      "README_PYPI.md": [
+        [
+          90,
+          "result = validate(\"casepacks/hello_world\")"
+        ],
+        [
+          99,
+          "umcp validate casepacks/hello_world"
+        ],
+        [
+          102,
+          "umcp validate casepacks/hello_world --strict"
+        ]
+      ],
+      "THE_FIRST_PASS.md": [
+        [
+          334,
+          "casepacks/hello_world/"
+        ],
+        [
+          411,
+          "$ umcp validate casepacks/hello_world --strict"
+        ],
+        [
+          413,
+          "UMCP validation: CONFORMANT (repo + casepacks/hello_world),"
+        ],
+        [
+          448,
+          "result = validate(\"casepacks/hello_world\")"
+        ],
+        [
+          457,
+          "    -d '{\"path\": \"casepacks/hello_world\", \"strict\": true}'"
+        ],
+        [
+          602,
+          "| **Run it yourself** | `pip install -e \".[all]\"` then `umcp validate casepacks/hello_world --strict` |"
+        ]
+      ],
+      "archive/artifacts/validator.baseline.json": [
+        [
+          74,
+          "      \"target_path\": \"casepacks/hello_world\","
+        ]
+      ],
+      "archive/artifacts/validator.negative.json": [
+        [
+          83,
+          "      \"target_path\": \"casepacks/hello_world\","
+        ]
+      ],
+      "archive/artifacts/validator.strict.json": [
+        [
+          74,
+          "      \"target_path\": \"casepacks/hello_world\","
+        ]
+      ],
+      "archive/dashboard/src/__init__.py": [
+        [
+          436,
+          "                        [sys.executable, \"-m\", \"umcp\", \"validate\", \"casepacks/hello_world\"],"
+        ]
+      ],
+      "archive/dashboard/src/pages_management.py": [
+        [
+          640,
+          "    \"target\": \"casepacks/hello_world\","
+        ],
+        [
+          650,
+          "    \"target_path\": \"casepacks/hello_world\","
+        ]
+      ],
+      "archive/reports/REPOSITORY_ANALYSIS_2026-02-10.md": [
+        [
+          353,
+          "result = umcp.validate(\"casepacks/hello_world\")"
+        ],
+        [
+          861,
+          "result = umcp.validate(\"casepacks/hello_world\")"
+        ]
+      ],
+      "canon/docs/validator_usage.md": [
+        [
+          26,
+          "umcp validate casepacks/hello_world"
+        ]
+      ],
+      "casepacks/UMCP-REF-E2E-0001/logs/validator_output.json": [
+        [
+          64,
+          "      \"target_path\": \"casepacks/hello_world\","
+        ]
+      ],
+      "casepacks/hello_world/README.md": [
+        [
+          52,
+          "umcp validate casepacks/hello_world"
+        ],
+        [
+          55,
+          "umcp validate --strict casepacks/hello_world"
+        ]
+      ],
+      "casepacks/hello_world/expected/ss1m_receipt.json": [
+        [
+          9,
+          "      \"manifest_path\": \"casepacks/hello_world/manifest.json\""
+        ]
+      ],
+      "casepacks/hello_world/generate_expected.py": [
+        [
+          8,
+          "ROOT = Path(__file__).resolve().parents[2]  # repo root (casepacks/hello_world/..)"
+        ],
+        [
+          120,
+          "        \"notes\": \"Generated by casepacks/hello_world/generate_expected.py\","
+        ]
+      ],
+      "docs/GLOSSARY_SYSTEM.md": [
+        [
+          80,
+          "| [casepacks/hello_world/README.md](casepacks/hello_world/README.md) | Protocol Resources header | All three glossary files |"
+        ]
+      ],
+      "docs/SYSTEM_ARCHITECTURE.md": [
+        [
+          27,
+          "\u2502         \u2514\u2500\u2500 casepacks/hello_world/manifest.json"
+        ],
+        [
+          123,
+          "- \u2713 `casepacks/hello_world/manifest.json` (Base example)"
+        ]
+      ],
+      "docs/TERM_INDEX.md": [
+        [
+          65,
+          "- Examples: [casepacks/hello_world/](casepacks/hello_world/), [casepacks/UMCP-REF-E2E-0001/](casepacks/UMCP-REF-E2E-0001/)"
+        ]
+      ],
+      "paper/the_first_pass.tex": [
+        [
+          654,
+          "casepacks/hello_world/"
+        ],
+        [
+          689,
+          "$ umcp validate casepacks/hello_world \\"
+        ],
+        [
+          692,
+          "  (repo + casepacks/hello_world),"
+        ],
+        [
+          711,
+          "result = validate(\"casepacks/hello_world\")"
+        ],
+        [
+          746,
+          "{\"path\": \"casepacks/hello_world\","
+        ],
+        [
+          756,
+          " \"path\": \"casepacks/hello_world\","
+        ]
+      ],
+      "scripts/benchmark_umcp_vs_standard.py": [
+        [
+          163,
+          "        (\"casepacks/hello_world/manifest.yaml\", \"casepack_manifest.schema.json\"),"
+        ]
+      ],
+      "src/umcp/__init__.py": [
+        [
+          371,
+          "        >>> result = umcp.validate(\"casepacks/hello_world\")"
+        ]
+      ],
+      "src/umcp/cli.py": [
+        [
+          1806,
+          "        f\"UMCP validation: {result['run_status']} (repo + casepacks/hello_world), \""
+        ]
+      ],
+      "src/umcp/fleet/__init__.py": [
+        [
+          28,
+          "    job = scheduler.submit(\"casepacks/hello_world\", tenant=tenant)"
+        ]
+      ],
+      "tests/test_173_schema_instances.py": [
+        [
+          68,
+          "        \"\"\"casepacks/hello_world/manifest.json validates against manifest.schema.json.\"\"\""
+        ],
+        [
+          75,
+          "        \"\"\"casepacks/hello_world/expected/invariants.json validates.\"\"\""
+        ],
+        [
+          82,
+          "        \"\"\"casepacks/hello_world/expected/ss1m_receipt.json validates.\"\"\""
+        ]
+      ],
+      "tests/test_177_public_api.py": [
+        [
+          32,
+          "        \"\"\"validate(casepacks/hello_world) returns CONFORMANT.\"\"\""
+        ],
+        [
+          38,
+          "        \"\"\"validate(casepacks/hello_world, strict=True) returns CONFORMANT.\"\"\""
+        ]
+      ],
+      "tests/test_200_fleet.py": [
+        [
+          49,
+          "        job = Job(target=\"casepacks/hello_world\")"
+        ],
+        [
+          514,
+          "        job = s.submit(\"casepacks/hello_world\")"
+        ],
+        [
+          516,
+          "        assert job.target == \"casepacks/hello_world\""
+        ],
+        [
+          672,
+          "        job = s.submit(\"casepacks/hello_world\")"
+        ]
+      ],
+      "tests/test_20_casepack_hello_world_validates.py": [
+        [
+          31,
+          "    Validates casepacks/hello_world/manifest.json against manifest.schema.json."
+        ],
+        [
+          37,
+          "    assert not errors, \"casepacks/hello_world/manifest.json failed schema validation:\\n\" + \"\\n\".join(errors)"
+        ],
+        [
+          51,
+          "        \"casepacks/hello_world/expected/psi.csv (parsed) failed trace.psi schema validation:\\n\" + \"\\n\".join(errors)"
+        ],
+        [
+          64,
+          "        \"casepacks/hello_world/expected/invariants.json failed invariants schema validation:\\n\" + \"\\n\".join(errors)"
+        ],
+        [
+          76,
+          "    assert not errors, \"casepacks/hello_world/expected/ss1m_receipt.json failed SS1m schema validation:\\n\" + \"\\n\".join("
+        ]
+      ],
+      "tests/test_284_fleet_extended.py": [
+        [
+          122,
+          "        job = scheduler.submit(\"casepacks/hello_world\")"
+        ],
+        [
+          123,
+          "        assert job.target == \"casepacks/hello_world\""
+        ],
+        [
+          298,
+          "        job = Job(target=\"casepacks/hello_world\")"
+        ],
+        [
+          316,
+          "        job = Job(target=\"casepacks/hello_world\")"
+        ]
+      ],
+      "tests/test_288_coverage_final.py": [
+        [
+          557,
+          "        job = s.submit(\"casepacks/hello_world\")"
+        ],
+        [
+          567,
+          "        job = s.submit(\"casepacks/hello_world\", tenant_id=\"tenant_a\")"
+        ],
+        [
+          576,
+          "        s.submit(\"casepacks/hello_world\")"
+        ],
+        [
+          586,
+          "        s.submit(\"casepacks/hello_world\")"
+        ],
+        [
+          598,
+          "        _submitted = s.submit(\"casepacks/hello_world\")"
+        ],
+        [
+          609,
+          "        s.submit(\"casepacks/hello_world\")"
+        ]
+      ],
+      "tests/test_289_coverage_push.py": [
+        [
+          248,
+          "        _job = s.submit(\"casepacks/hello_world\")"
+        ],
+        [
+          268,
+          "        job = s.submit(\"casepacks/hello_world\", tenant_id=\"auto_tenant\")"
+        ],
+        [
+          276,
+          "        job = s.submit(\"casepacks/hello_world\")"
+        ],
+        [
+          320,
+          "        job = Job(target=\"casepacks/hello_world\")"
+        ],
+        [
+          336,
+          "        job = Job(target=\"casepacks/hello_world\")"
+        ],
+        [
+          353,
+          "        job = Job(target=\"casepacks/hello_world\")"
+        ]
+      ],
+      "tests/test_290_final_coverage.py": [
+        [
+          111,
+          "        job = s.submit(\"casepacks/hello_world\")"
+        ],
+        [
+          137,
+          "        _job1 = s.submit(\"casepacks/hello_world\")"
+        ],
+        [
+          152,
+          "        job2 = s.submit(\"casepacks/hello_world\")"
+        ]
+      ],
+      "tests/test_291_comprehensive_coverage.py": [
+        [
+          598,
+          "        job = s.submit(\"casepacks/hello_world\", strict=True)"
+        ],
+        [
+          622,
+          "        job = s.submit(\"casepacks/hello_world\")"
+        ]
+      ],
+      "tests/test_51_cli_diff.py": [
+        [
+          38,
+          "            {\"target_path\": \"casepacks/hello_world\", \"status\": \"CONFORMANT\"},"
+        ],
+        [
+          66,
+          "            {\"target_path\": \"casepacks/hello_world\", \"status\": \"CONFORMANT\"},"
+        ]
+      ],
+      "tests/test_90_edge_cases.py": [
+        [
+          91,
+          "        path = Path(\"casepacks/hello_world\")"
+        ]
+      ],
+      "tests/test_init_api.py": [
+        [
+          76,
+          "    result = umcp.validate(\"casepacks/hello_world\")"
+        ],
+        [
+          86,
+          "    path = Path(\"casepacks/hello_world\")"
+        ],
+        [
+          95,
+          "    result = umcp.validate(\"casepacks/hello_world\", strict=True)"
+        ]
+      ]
+    },
+    "UMCP-REF-E2E-0001": {
+      ".github/workflows/main.yml": [
+        [
+          114,
+          "          umcp validate --strict casepacks/UMCP-REF-E2E-0001 --out validator.result.strict.json"
+        ]
+      ],
+      "COMMIT_PROTOCOL.md": [
+        [
+          84,
+          "  \u2514\u2500\u2500 umcp validate --strict casepacks/UMCP-REF-E2E-0001"
+        ]
+      ],
+      "GLOSSARY.md": [
+        [
+          59,
+          "- [casepacks/UMCP-REF-E2E-0001](casepacks/UMCP-REF-E2E-0001/)"
+        ]
+      ],
+      "PROTOCOL_REFERENCE.md": [
+        [
+          218,
+          "| **UMCP-REF-E2E-0001** | End-to-end reference | [casepacks/UMCP-REF-E2E-0001/](casepacks/UMCP-REF-E2E-0001/) |"
+        ]
+      ],
+      "THE_FIRST_PASS.md": [
+        [
+          603,
+          "| **See a richer example** | `casepacks/UMCP-REF-E2E-0001/` \u2014 9 timesteps, OOR events, regime transitions |"
+        ],
+        [
+          617,
+          "To see why homogeneity matters, consider what happens when the three channels diverge. Replace $\\mathbf{c} = (0.99,\\, 0.99,\\, 0.99)$ with $\\mathbf{c} = (0.85,\\, 0.92,\\, 0.98)$ (the $t = 0$ state from `casepacks/UMCP-REF-E2E-0001/`):"
+        ]
+      ],
+      "archive/artifacts/validator.baseline.json": [
+        [
+          52,
+          "      \"target_path\": \"casepacks/UMCP-REF-E2E-0001\","
+        ]
+      ],
+      "archive/artifacts/validator.negative.json": [
+        [
+          52,
+          "      \"target_path\": \"casepacks/UMCP-REF-E2E-0001\","
+        ],
+        [
+          63,
+          "          \"message\": \"Missing required file: casepacks/UMCP-REF-E2E-0001/manifest.json\","
+        ],
+        [
+          64,
+          "          \"path\": \"casepacks/UMCP-REF-E2E-0001/manifest.json\","
+        ]
+      ],
+      "archive/artifacts/validator.strict.json": [
+        [
+          52,
+          "      \"target_path\": \"casepacks/UMCP-REF-E2E-0001\","
+        ]
+      ],
+      "archive/reports/ANALYSIS_SUMMARY.txt": [
+        [
+          121,
+          "\u2502   \u2022 umcp validate --strict casepacks/UMCP-REF-E2E-0001                      \u2502"
+        ]
+      ],
+      "archive/reports/REPOSITORY_ANALYSIS_2026-02-10.md": [
+        [
+          136,
+          "     - Strict: umcp validate --strict casepacks/UMCP-REF-E2E-0001"
+        ]
+      ],
+      "casepacks/UMCP-REF-E2E-0001/README.md": [
+        [
+          72,
+          "umcp validate casepacks/UMCP-REF-E2E-0001"
+        ],
+        [
+          75,
+          "umcp validate --strict casepacks/UMCP-REF-E2E-0001"
+        ]
+      ],
+      "casepacks/UMCP-REF-E2E-0001/expected/ss1m_receipt.json": [
+        [
+          9,
+          "      \"manifest_path\": \"casepacks/UMCP-REF-E2E-0001/manifest.json\""
+        ]
+      ],
+      "casepacks/UMCP-REF-E2E-0001/logs/validator_output.json": [
+        [
+          42,
+          "      \"target_path\": \"casepacks/UMCP-REF-E2E-0001\","
+        ]
+      ],
+      "docs/CASEPACK_REFERENCE.md": [
+        [
+          555,
+          "See `casepacks/UMCP-REF-E2E-0001/` for a complete reference CasePack with all required and optional files."
+        ],
+        [
+          558,
+          "- [casepacks/UMCP-REF-E2E-0001/manifest.json](casepacks/UMCP-REF-E2E-0001/manifest.json)"
+        ],
+        [
+          559,
+          "- [casepacks/UMCP-REF-E2E-0001/manifest/manifest.json](casepacks/UMCP-REF-E2E-0001/manifest/manifest.json)"
+        ],
+        [
+          560,
+          "- [casepacks/UMCP-REF-E2E-0001/receipts/ss1m.json](casepacks/UMCP-REF-E2E-0001/receipts/ss1m.json)"
+        ],
+        [
+          561,
+          "- [casepacks/UMCP-REF-E2E-0001/manifest/sha256sums.txt](casepacks/UMCP-REF-E2E-0001/manifest/sha256sums.txt)"
+        ]
+      ],
+      "docs/TERM_INDEX.md": [
+        [
+          65,
+          "- Examples: [casepacks/hello_world/](casepacks/hello_world/), [casepacks/UMCP-REF-E2E-0001/](casepacks/UMCP-REF-E2E-0001/)"
+        ]
+      ],
+      "docs/UHMP.md": [
+        [
+          242,
+          "- **Manifest generation**: [casepacks/UMCP-REF-E2E-0001/generate_manifest.py](casepacks/UMCP-REF-E2E-0001/generate_manifest.py)"
+        ]
+      ]
+    },
+    "kin_ref_phase_oscillator": {
+      "KINEMATICS_SPECIFICATION.md": [
+        [
+          420,
+          "**CasePack**: `casepacks/kin_ref_phase_oscillator/`"
+        ]
+      ],
+      "archive/artifacts/validator.baseline.json": [
+        [
+          85,
+          "      \"target_path\": \"casepacks/kin_ref_phase_oscillator\","
+        ]
+      ],
+      "archive/artifacts/validator.negative.json": [
+        [
+          94,
+          "      \"target_path\": \"casepacks/kin_ref_phase_oscillator\","
+        ]
+      ],
+      "archive/artifacts/validator.strict.json": [
+        [
+          85,
+          "      \"target_path\": \"casepacks/kin_ref_phase_oscillator\","
+        ]
+      ],
+      "casepacks/kin_ref_phase_oscillator/README.md": [
+        [
+          136,
+          "umcp validate casepacks/kin_ref_phase_oscillator"
+        ]
+      ],
+      "casepacks/kin_ref_phase_oscillator/closures/closure_registry.yaml": [
+        [
+          16,
+          "  notes: \"KIN.REF.PHASE oscillator closures referencing base UMCP closure definitions. Domain-specific phase-anchor selection in casepacks/kin_ref_phase_oscillator/closures/kin_ref_phase.py.\""
+        ]
+      ],
+      "casepacks/kin_ref_phase_oscillator/manifest.json": [
+        [
+          15,
+          "    \"closures_registry\": { \"id\": \"UMCP.CLOSURES.KIN_REF_PHASE.v1\", \"path\": \"casepacks/kin_ref_phase_oscillator/closures/closure_registry.yaml\" }"
+        ]
+      ],
+      "closures/registry.yaml": [
+        [
+          157,
+          "        path: \"casepacks/kin_ref_phase_oscillator/closures/kin_ref_phase.py\""
+        ]
+      ],
+      "tests/closures/test_kin_ref_phase.py": [
+        [
+          12,
+          "CasePack: casepacks/kin_ref_phase_oscillator"
+        ]
+      ],
+      "web/src/content/kinematics/casepacks/kin_ref_phase_oscillator.md": [
+        [
+          20,
+          "| **Path** | `casepacks/kin_ref_phase_oscillator` |"
+        ]
+      ],
+      "web/src/content/kinematics/index.md": [
+        [
+          99,
+          "- **Path**: `casepacks/kin_ref_phase_oscillator`"
+        ]
+      ]
+    },
+    "confinement_T3": {
+      "casepacks/confinement_T3/README.md": [
+        [
+          6,
+          "cd casepacks/confinement_T3"
+        ]
+      ],
+      "casepacks/confinement_T3/run_confinement_T3.py": [
+        [
+          8,
+          "    cd casepacks/confinement_T3"
+        ]
+      ],
+      "web/src/content/standard_model/casepacks/confinement_T3.md": [
+        [
+          20,
+          "| **Path** | `casepacks/confinement_T3` |"
+        ]
+      ],
+      "web/src/content/standard_model/index.md": [
+        [
+          104,
+          "- **Path**: `casepacks/confinement_T3`"
+        ]
+      ]
+    },
+    "nuclear_chain": {
+      "casepacks/nuclear_chain/README.md": [
+        [
+          47,
+          "cd casepacks/nuclear_chain"
+        ]
+      ],
+      "web/src/content/nuclear_physics/casepacks/nuclear_chain.md": [
+        [
+          20,
+          "| **Path** | `casepacks/nuclear_chain` |"
+        ]
+      ],
+      "web/src/content/nuclear_physics/index.md": [
+        [
+          103,
+          "- **Path**: `casepacks/nuclear_chain`"
+        ]
+      ]
+    },
+    "retro_coherent_phys04": {
+      "archive/artifacts/validator.baseline.json": [
+        [
+          118,
+          "      \"target_path\": \"casepacks/retro_coherent_phys04\","
+        ]
+      ],
+      "archive/artifacts/validator.negative.json": [
+        [
+          127,
+          "      \"target_path\": \"casepacks/retro_coherent_phys04\","
+        ]
+      ],
+      "archive/artifacts/validator.strict.json": [
+        [
+          118,
+          "      \"target_path\": \"casepacks/retro_coherent_phys04\","
+        ]
+      ],
+      "casepacks/retro_coherent_phys04/README.md": [
+        [
+          103,
+          "umcp validate casepacks/retro_coherent_phys04"
+        ]
+      ],
+      "scripts/recompute_phys04.py": [
+        [
+          25,
+          "    PHYS-04 casepack: casepacks/retro_coherent_phys04/"
+        ]
+      ],
+      "web/src/content/gcd/casepacks/retro_coherent_phys04.md": [
+        [
+          20,
+          "| **Path** | `casepacks/retro_coherent_phys04` |"
+        ]
+      ],
+      "web/src/content/gcd/index.md": [
+        [
+          179,
+          "- **Path**: `casepacks/retro_coherent_phys04`"
+        ]
+      ]
+    },
+    "consciousness_kappa_72": {
+      "casepacks/consciousness_kappa_72/README.md": [
+        [
+          70,
+          "python -m umcp validate casepacks/consciousness_kappa_72"
+        ]
+      ],
+      "casepacks/consciousness_kappa_72/expected/ss1m_receipt.json": [
+        [
+          9,
+          "      \"manifest_path\": \"casepacks/consciousness_kappa_72/manifest.json\""
+        ]
+      ],
+      "casepacks/ricp_v2_consciousness/README.md": [
+        [
+          136,
+          "See `casepacks/consciousness_kappa_72/` for the RIP v1 (13 levels) analysis."
+        ]
+      ],
+      "docs/contributors/jackson/MATHEMATICAL_REFERENCE.md": [
+        [
+          627,
+          "umcp validate casepacks/consciousness_kappa_72 --strict"
+        ]
+      ],
+      "docs/contributors/jackson/TIER2_DIAGNOSTIC.md": [
+        [
+          351,
+          "| Casepacks | `casepacks/consciousness_kappa_72/`, `casepacks/ricp_v2_consciousness/` |"
+        ]
+      ],
+      "web/src/content/consciousness_coherence/casepacks/consciousness_kappa_72.md": [
+        [
+          20,
+          "| **Path** | `casepacks/consciousness_kappa_72` |"
+        ]
+      ],
+      "web/src/content/consciousness_coherence/index.md": [
+        [
+          115,
+          "- **Path**: `casepacks/consciousness_kappa_72`"
+        ]
+      ]
+    },
+    "ricp_v2_consciousness": {
+      "casepacks/ricp_v2_consciousness/README.md": [
+        [
+          130,
+          "python -m umcp validate casepacks/ricp_v2_consciousness"
+        ],
+        [
+          131,
+          "python -m umcp validate casepacks/ricp_v2_consciousness --strict"
+        ]
+      ],
+      "casepacks/ricp_v2_consciousness/expected/ss1m_receipt.json": [
+        [
+          9,
+          "      \"manifest_path\": \"casepacks/ricp_v2_consciousness/manifest.json\""
+        ]
+      ],
+      "casepacks/ricp_v2_consciousness/one_vector_six_lenses.py": [
+        [
+          81,
+          "    # From casepacks/ricp_v2_consciousness/raw_measurements.csv (exact values)"
+        ]
+      ],
+      "docs/contributors/jackson/MATHEMATICAL_REFERENCE.md": [
+        [
+          628,
+          "umcp validate casepacks/ricp_v2_consciousness --strict"
+        ]
+      ],
+      "docs/contributors/jackson/TIER2_DIAGNOSTIC.md": [
+        [
+          351,
+          "| Casepacks | `casepacks/consciousness_kappa_72/`, `casepacks/ricp_v2_consciousness/` |"
+        ]
+      ],
+      "web/src/content/consciousness_coherence/casepacks/ricp_v2_consciousness.md": [
+        [
+          20,
+          "| **Path** | `casepacks/ricp_v2_consciousness` |"
+        ]
+      ],
+      "web/src/content/consciousness_coherence/index.md": [
+        [
+          123,
+          "- **Path**: `casepacks/ricp_v2_consciousness`"
+        ]
+      ]
+    },
+    "bell_curve_pgs": {
+      "casepacks/bell_curve_pgs/expected/ss1m_receipt.json": [
+        [
+          9,
+          "      \"manifest_path\": \"casepacks/bell_curve_pgs/manifest.json\""
+        ]
+      ]
+    },
+    "gcd_complete": {
+      "CHANGELOG.md": [
+        [
+          885,
+          "- `casepacks/gcd_complete/`: Complete contracts + closures (5 files)"
+        ]
+      ],
+      "PROTOCOL_REFERENCE.md": [
+        [
+          183,
+          "- [casepacks/gcd_complete/README.md](casepacks/gcd_complete/README.md) \u2192 GCD glossary section"
+        ],
+        [
+          216,
+          "| **gcd_complete** | Full GCD framework | [casepacks/gcd_complete/](casepacks/gcd_complete/) |"
+        ]
+      ],
+      "QUICKSTART_TUTORIAL.md": [
+        [
+          75,
+          "umcp validate casepacks/gcd_complete"
+        ],
+        [
+          293,
+          "**Next**: Dive into [KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md) to understand the mathematical foundations, or explore [casepacks/gcd_complete/](casepacks/gcd_complete/) for a comprehensive example."
+        ]
+      ],
+      "archive/artifacts/validator.baseline.json": [
+        [
+          63,
+          "      \"target_path\": \"casepacks/gcd_complete\","
+        ]
+      ],
+      "archive/artifacts/validator.negative.json": [
+        [
+          72,
+          "      \"target_path\": \"casepacks/gcd_complete\","
+        ]
+      ],
+      "archive/artifacts/validator.strict.json": [
+        [
+          63,
+          "      \"target_path\": \"casepacks/gcd_complete\","
+        ]
+      ],
+      "canon/README.md": [
+        [
+          118,
+          "casepacks/gcd_complete/manifest.json"
+        ]
+      ],
+      "canon/gcd_anchors.yaml": [
+        [
+          5,
+          "# - Referenced by: contracts/GCD.INTSTACK.v1.yaml, casepacks/gcd_complete/"
+        ]
+      ],
+      "casepacks/UMCP-REF-E2E-0001/logs/validator_output.json": [
+        [
+          53,
+          "      \"target_path\": \"casepacks/gcd_complete\","
+        ]
+      ],
+      "casepacks/gcd_complete/README.md": [
+        [
+          57,
+          "umcp validate casepacks/gcd_complete"
+        ],
+        [
+          60,
+          "umcp validate --strict casepacks/gcd_complete"
+        ]
+      ],
+      "docs/GLOSSARY_SYSTEM.md": [
+        [
+          81,
+          "| [casepacks/gcd_complete/README.md](casepacks/gcd_complete/README.md) | Protocol Resources header | [GLOSSARY.md#tier-1](../GLOSSARY.md#tier-1-reserved-symbols-gcd-framework), [SYMBOL_INDEX.md](SYMBOL_INDEX.md) |"
+        ]
+      ],
+      "docs/PUBLICATION_INFRASTRUCTURE.md": [
+        [
+          224,
+          "Wrote: /workspaces/GENERATIVE-COLLAPSE-DYNAMICS/casepacks/gcd_complete/outputs/publication_row.csv"
+        ],
+        [
+          225,
+          "Receipt: /workspaces/GENERATIVE-COLLAPSE-DYNAMICS/casepacks/gcd_complete/weld/ss1m.json"
+        ],
+        [
+          513,
+          "  - See: [outputs/invariants.csv](casepacks/gcd_complete/outputs/invariants.csv)"
+        ]
+      ],
+      "docs/SYSTEM_ARCHITECTURE.md": [
+        [
+          42,
+          "\u2502         \u2514\u2500\u2500 casepacks/gcd_complete/manifest.json"
+        ],
+        [
+          124,
+          "- \u2713 `casepacks/gcd_complete/manifest.json` (GCD example)"
+        ]
+      ],
+      "web/src/content/gcd/casepacks/gcd_complete.md": [
+        [
+          20,
+          "| **Path** | `casepacks/gcd_complete` |"
+        ]
+      ],
+      "web/src/content/gcd/index.md": [
+        [
+          147,
+          "- **Path**: `casepacks/gcd_complete`"
+        ]
+      ]
+    },
+    "rcft_complete": {
+      "CHANGELOG.md": [
+        [
+          886,
+          "- `casepacks/rcft_complete/`: Complete contracts + closures (5 files)"
+        ],
+        [
+          1004,
+          "- `casepacks/rcft_complete/`: Complete example with zero-entropy state"
+        ]
+      ],
+      "GLOSSARY.md": [
+        [
+          717,
+          "- [casepacks/rcft_complete/](casepacks/rcft_complete/)"
+        ],
+        [
+          746,
+          "- [casepacks/rcft_complete/](casepacks/rcft_complete/)"
+        ],
+        [
+          775,
+          "- [casepacks/rcft_complete/](casepacks/rcft_complete/)"
+        ]
+      ],
+      "PROTOCOL_REFERENCE.md": [
+        [
+          184,
+          "- [casepacks/rcft_complete/README.md](casepacks/rcft_complete/README.md) \u2192 RCFT glossary section"
+        ],
+        [
+          217,
+          "| **rcft_complete** | Tier-2 RCFT overlay | [casepacks/rcft_complete/](casepacks/rcft_complete/) |"
+        ]
+      ],
+      "archive/artifacts/validator.baseline.json": [
+        [
+          107,
+          "      \"target_path\": \"casepacks/rcft_complete\","
+        ]
+      ],
+      "archive/artifacts/validator.negative.json": [
+        [
+          116,
+          "      \"target_path\": \"casepacks/rcft_complete\","
+        ]
+      ],
+      "archive/artifacts/validator.strict.json": [
+        [
+          107,
+          "      \"target_path\": \"casepacks/rcft_complete\","
+        ]
+      ],
+      "canon/README.md": [
+        [
+          124,
+          "casepacks/rcft_complete/manifest.json"
+        ]
+      ],
+      "canon/rcft_anchors.yaml": [
+        [
+          5,
+          "# - Referenced by: contracts/RCFT.INTSTACK.v1.yaml, casepacks/rcft_complete/"
+        ]
+      ],
+      "casepacks/UMCP-REF-E2E-0001/logs/validator_output.json": [
+        [
+          75,
+          "      \"target_path\": \"casepacks/rcft_complete\","
+        ]
+      ],
+      "casepacks/rcft_complete/README.md": [
+        [
+          69,
+          "umcp validate casepacks/rcft_complete"
+        ],
+        [
+          72,
+          "umcp validate --strict casepacks/rcft_complete"
+        ]
+      ],
+      "docs/GLOSSARY_SYSTEM.md": [
+        [
+          82,
+          "| [casepacks/rcft_complete/README.md](casepacks/rcft_complete/README.md) | Protocol Resources header | [GLOSSARY.md#tier-2](../GLOSSARY.md#tier-2-rcft-overlay-extensions), [SYMBOL_INDEX.md](SYMBOL_INDEX.md) |"
+        ]
+      ],
+      "docs/SYMBOL_INDEX.md": [
+        [
+          252,
+          "- CasePacks: [casepacks/rcft_complete/](casepacks/rcft_complete/)"
+        ],
+        [
+          331,
+          "| RCFT overlay | D_f, \u03a8_r, \u03bb_p | [casepacks/rcft_complete/](casepacks/rcft_complete/) |"
+        ]
+      ],
+      "docs/SYSTEM_ARCHITECTURE.md": [
+        [
+          58,
+          "          \u2514\u2500\u2500 casepacks/rcft_complete/manifest.json"
+        ],
+        [
+          125,
+          "- \u2713 `casepacks/rcft_complete/manifest.json` (RCFT example)"
+        ]
+      ],
+      "docs/rcft_theory.md": [
+        [
+          177,
+          "- **Examples**: [casepacks/rcft_complete/](../casepacks/rcft_complete/)"
+        ]
+      ],
+      "docs/rcft_usage.md": [
+        [
+          328,
+          "- Examples: [casepacks/rcft_complete/](../casepacks/rcft_complete/)"
+        ]
+      ],
+      "tests/test_113_rcft_tier2_layering.py": [
+        [
+          201,
+          "        manifest = Path(\"casepacks/rcft_complete/manifest.json\")"
+        ],
+        [
+          206,
+          "        manifest_path = Path(\"casepacks/rcft_complete/manifest.json\")"
+        ],
+        [
+          215,
+          "        manifest_path = Path(\"casepacks/rcft_complete/manifest.json\")"
+        ],
+        [
+          237,
+          "        receipt_path = Path(\"casepacks/rcft_complete/expected/seam_receipt.json\")"
+        ],
+        [
+          314,
+          "        invariants_path = Path(\"casepacks/rcft_complete/expected/invariants.json\")"
+        ],
+        [
+          327,
+          "        energy_path = Path(\"casepacks/rcft_complete/expected/gcd_energy.json\")"
+        ],
+        [
+          336,
+          "        fractal_path = Path(\"casepacks/rcft_complete/expected/rcft_fractal.json\")"
+        ],
+        [
+          337,
+          "        recursive_path = Path(\"casepacks/rcft_complete/expected/rcft_recursive.json\")"
+        ]
+      ],
+      "web/src/content/gcd/casepacks/rcft_complete.md": [
+        [
+          20,
+          "| **Path** | `casepacks/rcft_complete` |"
+        ]
+      ],
+      "web/src/content/gcd/index.md": [
+        [
+          171,
+          "- **Path**: `casepacks/rcft_complete`"
+        ]
+      ],
+      "web/src/content/rcft/casepacks/rcft_complete.md": [
+        [
+          20,
+          "| **Path** | `casepacks/rcft_complete` |"
+        ]
+      ],
+      "web/src/content/rcft/index.md": [
+        [
+          102,
+          "- **Path**: `casepacks/rcft_complete`"
+        ]
+      ]
+    },
+    "kinematics_complete": {
+      "archive/artifacts/validator.baseline.json": [
+        [
+          96,
+          "      \"target_path\": \"casepacks/kinematics_complete\","
+        ]
+      ],
+      "archive/artifacts/validator.negative.json": [
+        [
+          105,
+          "      \"target_path\": \"casepacks/kinematics_complete\","
+        ]
+      ],
+      "archive/artifacts/validator.strict.json": [
+        [
+          96,
+          "      \"target_path\": \"casepacks/kinematics_complete\","
+        ]
+      ],
+      "canon/README.md": [
+        [
+          121,
+          "casepacks/kinematics_complete/manifest.json"
+        ]
+      ],
+      "canon/kin_anchors.yaml": [
+        [
+          5,
+          "# - Referenced by: contracts/KIN.INTSTACK.v1.yaml, casepacks/kinematics_complete/"
+        ]
+      ],
+      "casepacks/kin_ref_phase_oscillator/README.md": [
+        [
+          96,
+          "The `raw_measurements.csv` contains 31 rows based on the harmonic oscillator scenario from `casepacks/kinematics_complete`, augmented with:"
+        ]
+      ],
+      "casepacks/kinematics_complete/README.md": [
+        [
+          72,
+          "result = validate(\"casepacks/kinematics_complete\")"
+        ]
+      ],
+      "contracts/CHANGELOG.md": [
+        [
+          18,
+          "- CasePack: `casepacks/kinematics_complete/`"
+        ]
+      ],
+      "docs/SYMBOL_INDEX.md": [
+        [
+          230,
+          "- CasePacks: [casepacks/kinematics_complete/](casepacks/kinematics_complete/)"
+        ]
+      ],
+      "web/src/content/kinematics/casepacks/kinematics_complete.md": [
+        [
+          20,
+          "| **Path** | `casepacks/kinematics_complete` |"
+        ]
+      ],
+      "web/src/content/kinematics/index.md": [
+        [
+          107,
+          "- **Path**: `casepacks/kinematics_complete`"
+        ]
+      ]
+    },
+    "weyl_des_y3": {
+      "GLOSSARY.md": [
+        [
+          809,
+          "- [casepacks/weyl_des_y3/](casepacks/weyl_des_y3/)"
+        ],
+        [
+          834,
+          "- [casepacks/weyl_des_y3/](casepacks/weyl_des_y3/)"
+        ],
+        [
+          859,
+          "- [casepacks/weyl_des_y3/](casepacks/weyl_des_y3/)"
+        ]
+      ],
+      "archive/artifacts/validator.baseline.json": [
+        [
+          129,
+          "      \"target_path\": \"casepacks/weyl_des_y3\","
+        ]
+      ],
+      "archive/artifacts/validator.negative.json": [
+        [
+          138,
+          "      \"target_path\": \"casepacks/weyl_des_y3\","
+        ]
+      ],
+      "archive/artifacts/validator.strict.json": [
+        [
+          129,
+          "      \"target_path\": \"casepacks/weyl_des_y3\","
+        ]
+      ],
+      "canon/README.md": [
+        [
+          136,
+          "casepacks/weyl_des_y3/manifest.json"
+        ]
+      ],
+      "canon/weyl_anchors.yaml": [
+        [
+          5,
+          "# - Referenced by: contracts/WEYL.INTSTACK.v1.yaml, casepacks/weyl_des_y3/"
+        ]
+      ],
+      "casepacks/weyl_des_y3/README.md": [
+        [
+          151,
+          "umcp validate casepacks/weyl_des_y3"
+        ]
+      ],
+      "closures/weyl/__init__.py": [
+        [
+          22,
+          "    - Reference casepack: casepacks/weyl_des_y3/"
+        ]
+      ],
+      "web/src/content/evolution/casepacks/weyl_des_y3.md": [
+        [
+          20,
+          "| **Path** | `casepacks/weyl_des_y3` |"
+        ]
+      ],
+      "web/src/content/evolution/index.md": [
+        [
+          121,
+          "- **Path**: `casepacks/weyl_des_y3`"
+        ]
+      ],
+      "web/src/content/weyl/casepacks/weyl_des_y3.md": [
+        [
+          20,
+          "| **Path** | `casepacks/weyl_des_y3` |"
+        ]
+      ],
+      "web/src/content/weyl/index.md": [
+        [
+          97,
+          "- **Path**: `casepacks/weyl_des_y3`"
+        ]
+      ]
+    },
+    "astronomy_complete": {
+      "canon/README.md": [
+        [
+          133,
+          "casepacks/astronomy_complete/manifest.json"
+        ]
+      ],
+      "canon/astro_anchors.yaml": [
+        [
+          5,
+          "# - Referenced by: contracts/ASTRO.INTSTACK.v1.yaml, casepacks/astronomy_complete/"
+        ]
+      ],
+      "casepacks/astronomy_complete/README.md": [
+        [
+          66,
+          "casepacks/astronomy_complete/"
+        ],
+        [
+          78,
+          "python casepacks/astronomy_complete/generate_expected.py"
+        ],
+        [
+          80,
+          "umcp validate casepacks/astronomy_complete --strict"
+        ]
+      ],
+      "scripts/astronomy_analysis.py": [
+        [
+          99,
+          "    path = os.path.join(PROJECT_ROOT, \"casepacks/astronomy_complete/expected/invariants.json\")"
+        ],
+        [
+          106,
+          "    path = os.path.join(PROJECT_ROOT, \"casepacks/astronomy_complete/raw_measurements.csv\")"
+        ]
+      ],
+      "web/src/content/astronomy/casepacks/astronomy_complete.md": [
+        [
+          20,
+          "| **Path** | `casepacks/astronomy_complete` |"
+        ]
+      ],
+      "web/src/content/astronomy/index.md": [
+        [
+          102,
+          "- **Path**: `casepacks/astronomy_complete`"
+        ]
+      ],
+      "web/src/content/evolution/casepacks/astronomy_complete.md": [
+        [
+          20,
+          "| **Path** | `casepacks/astronomy_complete` |"
+        ]
+      ],
+      "web/src/content/evolution/index.md": [
+        [
+          105,
+          "- **Path**: `casepacks/astronomy_complete`"
+        ]
+      ]
+    },
+    "quantum_mechanics_complete": {
+      "casepacks/quantum_mechanics_complete/README.md": [
+        [
+          91,
+          "python casepacks/quantum_mechanics_complete/generate_expected.py"
+        ],
+        [
+          94,
+          "umcp validate casepacks/quantum_mechanics_complete"
+        ]
+      ],
+      "web/src/content/gcd/casepacks/quantum_mechanics_complete.md": [
+        [
+          20,
+          "| **Path** | `casepacks/quantum_mechanics_complete` |"
+        ]
+      ],
+      "web/src/content/gcd/index.md": [
+        [
+          163,
+          "- **Path**: `casepacks/quantum_mechanics_complete`"
+        ]
+      ],
+      "web/src/content/quantum_mechanics/casepacks/quantum_mechanics_complete.md": [
+        [
+          20,
+          "| **Path** | `casepacks/quantum_mechanics_complete` |"
+        ]
+      ],
+      "web/src/content/quantum_mechanics/index.md": [
+        [
+          105,
+          "- **Path**: `casepacks/quantum_mechanics_complete`"
+        ]
+      ]
+    },
+    "finance_continuity": {
+      "archive/reports/DEEP_RESEARCH_SWEEP.md": [
+        [
+          271,
+          "There is no `finance_volatility.py`, no `finance_drawdown.py`, no `finance_sector_rotation.py`. The domain has targets and an embedding but lacks the closure depth to produce meaningful regime transitions. A finance casepack (casepacks/finance_continuity/) exists, but it validates against a thin closure layer."
+        ]
+      ],
+      "casepacks/finance_continuity/README.md": [
+        [
+          33,
+          "python casepacks/finance_continuity/generate_expected.py"
+        ],
+        [
+          36,
+          "umcp validate casepacks/finance_continuity"
+        ]
+      ],
+      "casepacks/finance_continuity/expected/invariants.json": [
+        [
+          218,
+          "  \"notes\": \"Generated by casepacks/finance_continuity/generate_expected.py\""
+        ]
+      ],
+      "casepacks/finance_continuity/generate_expected.py": [
+        [
+          215,
+          "        \"notes\": \"Generated by casepacks/finance_continuity/generate_expected.py\","
+        ]
+      ],
+      "docs/RESPONSES_TO_CRITICS.md": [
+        [
+          468,
+          "the finance casepack (`casepacks/finance_continuity/`) passes validation"
+        ]
+      ],
+      "web/src/content/finance/casepacks/finance_continuity.md": [
+        [
+          20,
+          "| **Path** | `casepacks/finance_continuity` |"
+        ]
+      ],
+      "web/src/content/finance/index.md": [
+        [
+          112,
+          "- **Path**: `casepacks/finance_continuity`"
+        ]
+      ]
+    },
+    "atomic_physics_elements": {
+      "web/src/content/atomic_physics/casepacks/atomic_physics_elements.md": [
+        [
+          20,
+          "| **Path** | `casepacks/atomic_physics_elements` |"
+        ]
+      ],
+      "web/src/content/atomic_physics/index.md": [
+        [
+          99,
+          "- **Path**: `casepacks/atomic_physics_elements`"
+        ]
+      ],
+      "web/src/content/gcd/casepacks/atomic_physics_elements.md": [
+        [
+          20,
+          "| **Path** | `casepacks/atomic_physics_elements` |"
+        ]
+      ],
+      "web/src/content/gcd/index.md": [
+        [
+          99,
+          "- **Path**: `casepacks/atomic_physics_elements`"
+        ]
+      ]
+    },
+    "materials_science_elements": {
+      "web/src/content/gcd/casepacks/materials_science_elements.md": [
+        [
+          20,
+          "| **Path** | `casepacks/materials_science_elements` |"
+        ]
+      ],
+      "web/src/content/gcd/index.md": [
+        [
+          155,
+          "- **Path**: `casepacks/materials_science_elements`"
+        ]
+      ],
+      "web/src/content/materials_science/casepacks/materials_science_elements.md": [
+        [
+          20,
+          "| **Path** | `casepacks/materials_science_elements` |"
+        ]
+      ],
+      "web/src/content/materials_science/index.md": [
+        [
+          143,
+          "- **Path**: `casepacks/materials_science_elements`"
+        ]
+      ]
+    },
+    "everyday_physics_materials": {
+      "web/src/content/everyday_physics/casepacks/everyday_physics_materials.md": [
+        [
+          20,
+          "| **Path** | `casepacks/everyday_physics_materials` |"
+        ]
+      ],
+      "web/src/content/everyday_physics/index.md": [
+        [
+          127,
+          "- **Path**: `casepacks/everyday_physics_materials`"
+        ]
+      ],
+      "web/src/content/gcd/casepacks/everyday_physics_materials.md": [
+        [
+          20,
+          "| **Path** | `casepacks/everyday_physics_materials` |"
+        ]
+      ],
+      "web/src/content/gcd/index.md": [
+        [
+          131,
+          "- **Path**: `casepacks/everyday_physics_materials`"
+        ]
+      ]
+    },
+    "evolution_kernel": {
+      "web/src/content/evolution/casepacks/evolution_kernel.md": [
+        [
+          20,
+          "| **Path** | `casepacks/evolution_kernel` |"
+        ]
+      ],
+      "web/src/content/evolution/index.md": [
+        [
+          113,
+          "- **Path**: `casepacks/evolution_kernel`"
+        ]
+      ],
+      "web/src/content/gcd/casepacks/evolution_kernel.md": [
+        [
+          20,
+          "| **Path** | `casepacks/evolution_kernel` |"
+        ]
+      ],
+      "web/src/content/gcd/index.md": [
+        [
+          139,
+          "- **Path**: `casepacks/evolution_kernel`"
+        ]
+      ]
+    },
+    "semiotics_kernel": {
+      "web/src/content/dynamic_semiotics/casepacks/semiotics_kernel.md": [
+        [
+          20,
+          "| **Path** | `casepacks/semiotics_kernel` |"
+        ]
+      ],
+      "web/src/content/dynamic_semiotics/index.md": [
+        [
+          100,
+          "- **Path**: `casepacks/semiotics_kernel`"
+        ]
+      ],
+      "web/src/content/gcd/casepacks/semiotics_kernel.md": [
+        [
+          20,
+          "| **Path** | `casepacks/semiotics_kernel` |"
+        ]
+      ],
+      "web/src/content/gcd/index.md": [
+        [
+          187,
+          "- **Path**: `casepacks/semiotics_kernel`"
+        ]
+      ]
+    },
+    "awareness_cognition_kernel": {
+      "web/src/content/awareness_cognition/casepacks/awareness_cognition_kernel.md": [
+        [
+          20,
+          "| **Path** | `casepacks/awareness_cognition_kernel` |"
+        ]
+      ],
+      "web/src/content/awareness_cognition/index.md": [
+        [
+          119,
+          "- **Path**: `casepacks/awareness_cognition_kernel`"
+        ]
+      ],
+      "web/src/content/gcd/casepacks/awareness_cognition_kernel.md": [
+        [
+          20,
+          "| **Path** | `casepacks/awareness_cognition_kernel` |"
+        ]
+      ],
+      "web/src/content/gcd/index.md": [
+        [
+          107,
+          "- **Path**: `casepacks/awareness_cognition_kernel`"
+        ]
+      ]
+    },
+    "clinical_neuro_states": {
+      "web/src/content/clinical_neuroscience/casepacks/clinical_neuro_states.md": [
+        [
+          20,
+          "| **Path** | `casepacks/clinical_neuro_states` |"
+        ]
+      ],
+      "web/src/content/clinical_neuroscience/index.md": [
+        [
+          129,
+          "- **Path**: `casepacks/clinical_neuro_states`"
+        ]
+      ],
+      "web/src/content/gcd/casepacks/clinical_neuro_states.md": [
+        [
+          20,
+          "| **Path** | `casepacks/clinical_neuro_states` |"
+        ]
+      ],
+      "web/src/content/gcd/index.md": [
+        [
+          115,
+          "- **Path**: `casepacks/clinical_neuro_states`"
+        ]
+      ]
+    },
+    "continuity_theory_systems": {
+      "web/src/content/continuity_theory/casepacks/continuity_theory_systems.md": [
+        [
+          20,
+          "| **Path** | `casepacks/continuity_theory_systems` |"
+        ]
+      ],
+      "web/src/content/continuity_theory/index.md": [
+        [
+          100,
+          "- **Path**: `casepacks/continuity_theory_systems`"
+        ]
+      ],
+      "web/src/content/gcd/casepacks/continuity_theory_systems.md": [
+        [
+          20,
+          "| **Path** | `casepacks/continuity_theory_systems` |"
+        ]
+      ],
+      "web/src/content/gcd/index.md": [
+        [
+          123,
+          "- **Path**: `casepacks/continuity_theory_systems`"
+        ]
+      ]
+    },
+    "spacetime_memory_entities": {
+      "CHANGELOG.md": [
+        [
+          104,
+          "- `casepacks/spacetime_memory_entities/` \u2014 casepack for spacetime memory domain (3 entities)"
+        ]
+      ],
+      "web/src/content/gcd/casepacks/spacetime_memory_entities.md": [
+        [
+          20,
+          "| **Path** | `casepacks/spacetime_memory_entities` |"
+        ]
+      ],
+      "web/src/content/gcd/index.md": [
+        [
+          195,
+          "- **Path**: `casepacks/spacetime_memory_entities`"
+        ]
+      ],
+      "web/src/content/spacetime_memory/casepacks/spacetime_memory_entities.md": [
+        [
+          20,
+          "| **Path** | `casepacks/spacetime_memory_entities` |"
+        ]
+      ],
+      "web/src/content/spacetime_memory/index.md": [
+        [
+          119,
+          "- **Path**: `casepacks/spacetime_memory_entities`"
+        ]
+      ]
+    },
+    "security_validation": {
+      "closures/security/README.md": [
+        [
+          135,
+          "See `casepacks/security_validation/` for a complete example with:"
+        ]
+      ],
+      "web/src/content/security/casepacks/security_validation.md": [
+        [
+          20,
+          "| **Path** | `casepacks/security_validation` |"
+        ]
+      ],
+      "web/src/content/security/index.md": [
+        [
+          123,
+          "- **Path**: `casepacks/security_validation`"
+        ]
+      ]
+    }
+  }
+}

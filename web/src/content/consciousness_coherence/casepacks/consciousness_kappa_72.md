@@ -17,7 +17,7 @@ Maps Jackson's 14-stage Recursive Integrity Protocol (RIP) to the 8-channel cons
 | **Version** | 1.0.0 |
 | **Contract** | `UMA.INTSTACK.v1` |
 | **Status** | validated |
-| **Path** | `casepacks/consciousness_kappa_72` |
+| **Path** | `casepacks/ladder/L4_consciousness_kappa_72` |
 | **Canon Anchors** | `canon/anchors.yaml` |
 
 ## Authors

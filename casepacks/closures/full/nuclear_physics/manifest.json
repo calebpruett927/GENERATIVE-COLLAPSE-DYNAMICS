@@ -1,0 +1,44 @@
+{
+  "schema": "schemas/manifest.schema.json",
+  "casepack": {
+    "id": "nuclear_physics_stub",
+    "version": "0.1.0",
+    "title": "Nuclear Physics Demonstration Stub",
+    "description": "Minimal Tier-1 demonstration unit for the nuclear_physics domain. Full closure code lives in closures/nuclear_physics/ (binding energy, decay chains, QGP/RHIC); this casepack is a placeholder packaging demonstration pending domain-specific raw measurements.",
+    "created_utc": "2026-05-10T00:00:00Z",
+    "timezone": "America/Chicago",
+    "authors": [
+      "Clement Paulus"
+    ]
+  },
+  "refs": {
+    "canon_anchors": {
+      "path": "canon/nuc_anchors.yaml"
+    },
+    "contract": {
+      "id": "NUC.INTSTACK.v1",
+      "path": "contracts/NUC.INTSTACK.v1.yaml"
+    },
+    "closures_registry": {
+      "id": "UMCP.CLOSURES.DEFAULT.v1",
+      "path": "closures/registry.yaml"
+    }
+  },
+  "artifacts": {
+    "raw_measurements": {
+      "path": "raw_measurements.csv",
+      "format": "csv"
+    },
+    "expected": {
+      "psi_csv": {
+        "path": "expected/psi.csv"
+      },
+      "invariants_json": {
+        "path": "expected/invariants.json"
+      }
+    }
+  },
+  "run_intent": {
+    "notes": "Stub demonstration unit for the nuclear_physics domain. Three uniform channels at c=0.99 yield a Stable regime under canon thresholds. Pending replacement with domain-specific raw measurements drawn from the closure code in closures/nuclear_physics/."
+  }
+}

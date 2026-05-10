@@ -62,7 +62,7 @@ Quick alphabetical index of all protocol terms with definitions and file locatio
 
 **CasePack** - Reproducible computational bundle
 - Structure: manifest + observables + contract + closures + outputs
-- Examples: [casepacks/hello_world/](casepacks/hello_world/), [casepacks/UMCP-REF-E2E-0001/](casepacks/UMCP-REF-E2E-0001/)
+- Examples: [casepacks/pedagogical/hello_world/](casepacks/pedagogical/hello_world/), [casepacks/pedagogical/UMCP-REF-E2E-0001/](casepacks/pedagogical/UMCP-REF-E2E-0001/)
 - Validation: `umcp validate casepacks/<name>`
 
 **Closure** - Auxiliary specification for seam computation

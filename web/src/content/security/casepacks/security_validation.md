@@ -17,7 +17,7 @@ UMCP-based security validation demonstrating 'What Returns Through Collapse Is R
 | **Version** | 1.0.0 |
 | **Contract** | `UMA.INTSTACK.v1` |
 | **Status** | validated |
-| **Path** | `casepacks/security_validation` |
+| **Path** | `casepacks/closures/full/security` |
 | **Canon Anchors** | `canon/anchors.yaml` |
 
 ## Authors

@@ -97,7 +97,7 @@ icon: message-circle
 Dynamic semiotics domain closure demonstrating GCD kernel applied to 3 sign systems. 8-channel semiotic trace with equal weights. Shows living language (Watch), dead language (Collapse from dead community channels), and formal notation (near-Stable, highest fidelity).
 
 - **Contract**: `SEM.INTSTACK.v1`
-- **Path**: `casepacks/semiotics_kernel`
+- **Path**: `casepacks/closures/full/dynamic_semiotics`
 - **Status**: validated
 
 ## Validation History

@@ -126,7 +126,7 @@ icon: heart-pulse
 Clinical neuroscience domain closure demonstrating GCD kernel applied to 3 consciousness states. 10-channel trace (4 cortical + 2 structural + 2 metabolic + 2 systemic) with equal weights. Healthy waking, deep coma, and psychedelic states classified through frozen regime gates.
 
 - **Contract**: `CLIN.INTSTACK.v1`
-- **Path**: `casepacks/clinical_neuro_states`
+- **Path**: `casepacks/closures/full/clinical_neuroscience`
 - **Status**: validated
 
 ## Validation History

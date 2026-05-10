@@ -17,7 +17,7 @@ Dynamic semiotics domain closure demonstrating GCD kernel applied to 3 sign syst
 | **Version** | 1.0.0 |
 | **Contract** | `SEM.INTSTACK.v1` |
 | **Status** | validated |
-| **Path** | `casepacks/semiotics_kernel` |
+| **Path** | `casepacks/closures/full/dynamic_semiotics` |
 | **Canon Anchors** | `canon/semiotics_anchors.yaml` |
 
 ## Authors

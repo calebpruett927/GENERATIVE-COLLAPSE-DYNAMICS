@@ -17,7 +17,7 @@ Nuclear physics casepack covering 6 subdomains: nuclide binding (SEMF), alpha de
 | **Version** | 1.0.0 |
 | **Contract** | `NUC.INTSTACK.v1` |
 | **Status** | validated |
-| **Path** | `casepacks/nuclear_chain` |
+| **Path** | `casepacks/ladder/L2_nuclear_chain` |
 | **Canon Anchors** | `canon/nuc_anchors.yaml` |
 
 ## Authors

@@ -325,4 +325,4 @@ except ValueError as e:
 - Theory: [docs/rcft_theory.md](rcft_theory.md)
 - Canon: [canon/rcft_anchors.yaml](../canon/rcft_anchors.yaml)
 - Contract: [contracts/RCFT.INTSTACK.v1.yaml](../contracts/RCFT.INTSTACK.v1.yaml)
-- Examples: [casepacks/rcft_complete/](../casepacks/rcft_complete/)
+- Examples: [casepacks/closures/full/rcft/](../casepacks/closures/full/rcft/)

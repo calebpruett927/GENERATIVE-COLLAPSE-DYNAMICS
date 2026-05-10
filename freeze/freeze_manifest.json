@@ -7,7 +7,7 @@
     "contract.yaml": "7e3970cea147c08df2df7b37b6dbcd604f05bb7e34bce626d3c1f613160dc667",
     "weights.csv": "2993167e163c4f31db682b50b61b08d5b2ddf0e681cbe5b7500581a56c3e6b2e",
     "observables.yaml": "2b036d4e7bf88f566841df9b047c4f82fa92ce2f9a75152c8d8cad7316afe17d",
-    "closures/registry.yaml": "6f4f9955fa33334ac01cf055ba39f4ba5f495d503ed2b8a355168dfbaf100b32"
+    "closures/registry.yaml": "cad12c99ac14bd87b101372fe46ee506dec2450b8191e93734b24be47777f34e"
   },
   "files_frozen": [
     "embedding.yaml",
@@ -17,5 +17,13 @@
     "observables.yaml",
     "closures/registry.yaml"
   ],
-  "purpose": "Baseline for drift detection and seam accounting"
+  "purpose": "Baseline for drift detection and seam accounting",
+  "weld_history": [
+    {
+      "utc": "2026-05-10",
+      "reason": "Phase 3b casepack reorg: registry path updated for kin_ref_phase closure relocation to casepacks/ladder/L1_kin_ref_phase_oscillator",
+      "file": "closures/registry.yaml",
+      "new_sha": "cad12c99ac14bd87b101372fe46ee506dec2450b8191e93734b24be47777f34e"
+    }
+  ]
 }

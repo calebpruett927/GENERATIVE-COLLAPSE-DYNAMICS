@@ -154,7 +154,7 @@ registry:
         inputs: ["x_series", "v_series", "a_series"]
         outputs: ["K_stability", "S_kin", "C_kin", "omega_kin", "regime", "motion_regime"]
       - name: "kin_ref_phase"
-        path: "casepacks/kin_ref_phase_oscillator/closures/kin_ref_phase.py"
+        path: "casepacks/ladder/L1_kin_ref_phase_oscillator/closures/kin_ref_phase.py"
         description: "KIN.REF.PHASE: Deterministic phase-anchor selection for oscillatory motion"
         contract: "KIN.INTSTACK.v1"
         inputs: ["x_series", "v_series", "t"]

@@ -96,7 +96,7 @@ icon: atom
 Atomic physics domain closure demonstrating GCD kernel applied to 3 elements spanning the periodic table. 8-channel trace with equal weights. Hydrogen (simplest atom, highest fidelity), Iron (d-block, moderate), Uranium (heaviest stable, Collapse). Verifies Tier-1 identities and demonstrates that atomic complexity correlates with drift.
 
 - **Contract**: `ATOM.INTSTACK.v1`
-- **Path**: `casepacks/atomic_physics_elements`
+- **Path**: `casepacks/closures/full/atomic_physics`
 - **Status**: validated
 
 ## Validation History

@@ -179,9 +179,9 @@ This reference guide provides fast pathways to all protocol infrastructure, ensu
 - Individual closures → symbol usage references index
 
 **CasePacks:**
-- [casepacks/hello_world/README.md](casepacks/hello_world/README.md) → protocol resources header
-- [casepacks/gcd_complete/README.md](casepacks/gcd_complete/README.md) → GCD glossary section
-- [casepacks/rcft_complete/README.md](casepacks/rcft_complete/README.md) → RCFT glossary section
+- [casepacks/pedagogical/hello_world/README.md](casepacks/pedagogical/hello_world/README.md) → protocol resources header
+- [casepacks/closures/full/gcd/README.md](casepacks/closures/full/gcd/README.md) → GCD glossary section
+- [casepacks/closures/full/rcft/README.md](casepacks/closures/full/rcft/README.md) → RCFT glossary section
 
 **Documentation:**
 - [docs/rcft_theory.md](docs/rcft_theory.md) → quick reference header
@@ -204,7 +204,7 @@ Example pathway:
 2. Looks up in [docs/TERM_INDEX.md#c](TERM_INDEX.md#c)
 3. Finds [GLOSSARY.md#curvature-proxy-ct](GLOSSARY.md#curvature-proxy-ct)
 4. Follows "Where defined" to [canon/gcd_anchors.yaml](canon/gcd_anchors.yaml)
-5. Follows "Where used" to [casepacks/hello_world/](casepacks/hello_world/)
+5. Follows "Where used" to [casepacks/pedagogical/hello_world/](casepacks/pedagogical/hello_world/)
 
 ---
 
@@ -212,10 +212,10 @@ Example pathway:
 
 | Example | Demonstrates | Location |
 |---------|-------------|----------|
-| **hello_world** | Minimal validation | [casepacks/hello_world/](casepacks/hello_world/) |
-| **gcd_complete** | Full GCD framework | [casepacks/gcd_complete/](casepacks/gcd_complete/) |
-| **rcft_complete** | Tier-2 RCFT overlay | [casepacks/rcft_complete/](casepacks/rcft_complete/) |
-| **UMCP-REF-E2E-0001** | End-to-end reference | [casepacks/UMCP-REF-E2E-0001/](casepacks/UMCP-REF-E2E-0001/) |
+| **hello_world** | Minimal validation | [casepacks/pedagogical/hello_world/](casepacks/pedagogical/hello_world/) |
+| **gcd_complete** | Full GCD framework | [casepacks/closures/full/gcd/](casepacks/closures/full/gcd/) |
+| **rcft_complete** | Tier-2 RCFT overlay | [casepacks/closures/full/rcft/](casepacks/closures/full/rcft/) |
+| **UMCP-REF-E2E-0001** | End-to-end reference | [casepacks/pedagogical/UMCP-REF-E2E-0001/](casepacks/pedagogical/UMCP-REF-E2E-0001/) |
 
 ---
 

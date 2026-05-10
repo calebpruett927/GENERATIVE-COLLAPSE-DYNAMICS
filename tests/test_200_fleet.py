@@ -46,7 +46,7 @@ from umcp.fleet.worker import Worker, WorkerPool
 
 class TestJobModel:
     def test_job_default_id(self) -> None:
-        job = Job(target="casepacks/hello_world")
+        job = Job(target="casepacks/pedagogical/hello_world")
         assert len(job.job_id) == 16
         assert job.status == JobStatus.PENDING
         assert not job.is_terminal
@@ -511,9 +511,9 @@ class TestWorkerPool:
 class TestScheduler:
     def test_submit_creates_job(self) -> None:
         s = Scheduler()
-        job = s.submit("casepacks/hello_world")
+        job = s.submit("casepacks/pedagogical/hello_world")
         assert job.status in {JobStatus.QUEUED, JobStatus.COMPLETED}
-        assert job.target == "casepacks/hello_world"
+        assert job.target == "casepacks/pedagogical/hello_world"
 
     def test_submit_with_tenant(self) -> None:
         s = Scheduler()
@@ -669,7 +669,7 @@ class TestSchedulerWorkerIntegration:
         s.register_worker(info)
 
         # Submit
-        job = s.submit("casepacks/hello_world")
+        job = s.submit("casepacks/pedagogical/hello_world")
         assert job.status == JobStatus.QUEUED
 
         # Poll

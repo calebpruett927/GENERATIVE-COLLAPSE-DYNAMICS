@@ -77,6 +77,32 @@ against the same frozen contract with the same frozen parameters.
 | 22 | [RCFT_FREEZE_WELD.md](RCFT_FREEZE_WELD.md) | RCFT freeze–weld identity (278-day evolution record) |
 | 23 | [OPOLY26_INTERCONNECTION_ANALYSIS.md](OPOLY26_INTERCONNECTION_ANALYSIS.md) | OPoly26 polymer ML × GCD interconnection (6.35M frames) |
 
+### Zenodo Publications (External — Canonical Entry Points)
+
+| # | Publication | DOI (all-versions) | Date | Role |
+|:-:|-------------|--------------------|------|------|
+| Z1 | GCD Whitepaper v2.1.5 — Cross-Domain Comparability via Contract-Frozen Kernel Invariants | [10.5281/zenodo.18819238](https://doi.org/10.5281/zenodo.18819238) | 2026-03 | Formal whitepaper; the technical anchor supplemented by the Ingress Trilogy |
+| Z2 | **Ingress Trilogy** — Orientation Series Parts I–III ("Passport and Entry Map · The Core · The Pass") | [10.5281/zenodo.19622272](https://doi.org/10.5281/zenodo.19622272) | 2026-04 | Pedagogical entry sequence; supplements Z1; canonical on-ramp for new readers |
+| Z3 | The First Pass — Complete Worked Example Through the Spine | [10.5281/zenodo.19520933](https://doi.org/10.5281/zenodo.19520933) | 2026-04 | Shortest standalone full traversal; three voltage readings through twelve stops; **Journal article** |
+| Z4 | Entering the Corpus — Ingress, Publication Architecture, and Guided Routes | [10.5281/zenodo.19702384](https://doi.org/10.5281/zenodo.19702384) | 2026-04 | Companion/method paper; defines the six paper families and the executable casepack ladder |
+| Z5 | The Periodic Table as a Measured Object | [10.5281/zenodo.19639655](https://doi.org/10.5281/zenodo.19639655) | 2026-04 | First resistant measured-object closure; 118 elements through 8-channel atomic closure |
+| Z6 | The Periodic Table as a Measured Object II | [10.5281/zenodo.19852650](https://doi.org/10.5281/zenodo.19852650) | 2026-04 | Cross-scale sequel; 118 elements through 12-channel nuclear-informed closure |
+| Z7 | Contract-First Epistemology — Full Course Architecture v1.0 | [10.5281/zenodo.20074209](https://doi.org/10.5281/zenodo.20074209) | 2026-05 | 28-week teaching architecture (Semester I + II); declared-conformant, efficacy non-evaluable until pilot |
+
+### The Casepack Ladder (Zenodo — Sequential Burdens)
+
+The four rungs declared by *Entering the Corpus* (Z4) and built progressively after *The First Pass* (Z3). Each rung adds exactly one new burden; none claims more than its scope.
+
+| Rung | Casepack | DOI (all-versions) | Date | Burden Added |
+|:-:|----------|--------------------|------|--------------|
+| L1 | The Heterogeneous Local Pass | [10.5281/zenodo.19701728](https://doi.org/10.5281/zenodo.19701728) | 2026-04 | Internal unevenness becomes computable: identical F, ω; divergent IC, C, Δ |
+| L2 | The First Finite-Return Casepack | [10.5281/zenodo.19703022](https://doi.org/10.5281/zenodo.19703022) | 2026-04 | Return as measured finite event: τ_R typed under frozen grammar |
+| L3 | The First Welded Seam Casepack | [10.5281/zenodo.19869774](https://doi.org/10.5281/zenodo.19869774) | 2026-04 | Earned continuity: seam residual closure under frozen accounting |
+| L4 | The First Seam-Chain Casepack | [10.5281/zenodo.19870444](https://doi.org/10.5281/zenodo.19870444) | 2026-04 | Composed continuity: chain ledger telescoping across two welded seams |
+
+> *Return makes the object visible again; weld makes its continuity earned;
+> the chain shows that local welds do not automatically compose.*
+
 ---
 
 ## Why Every Row Has the Same Residuals

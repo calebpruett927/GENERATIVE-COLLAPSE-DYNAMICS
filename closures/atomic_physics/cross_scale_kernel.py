@@ -40,6 +40,18 @@ Cross-references:
     Database:   closures/materials_science/element_database.py
     Kernel:     src/umcp/kernel_optimized.py
     Proof:      closures/atomic_physics/tier1_proof.py
+
+Published canon (Tier-2 closure of record):
+    Paulus, C. (2026). "The Periodic Table Through the GCD Kernel II:
+    Nuclear-Informed Channels and Cross-Scale Coherence." Zenodo.
+    doi:10.5281/zenodo.19869494 (concept DOI; all versions).
+    BibTeX key: paulus2026periodictable2.
+    Successor to paulus2026periodictable (8-channel, periodic_kernel.py).
+    Demonstrates that closure refinement is a structural choice, not a
+    monotone quality dial — adding nuclear channels (BE/A, N/Z,
+    magic_proximity, valence, block_ord) sharpens some regime distinctions
+    and inverts others. magic_proximity is the #1 IC-driving channel
+    (~39 percent contribution); the d-block achieves the highest mean F.
 """
 
 from __future__ import annotations

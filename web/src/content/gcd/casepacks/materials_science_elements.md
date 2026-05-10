@@ -17,7 +17,7 @@ Materials science domain closure demonstrating GCD kernel applied to 3 elements 
 | **Version** | 1.0.0 |
 | **Contract** | `MATL.INTSTACK.v1` |
 | **Status** | validated |
-| **Path** | `casepacks/materials_science_elements` |
+| **Path** | `casepacks/closures/full/materials_science` |
 | **Canon Anchors** | `canon/matl_anchors.yaml` |
 
 ## Authors

@@ -2,7 +2,7 @@ UMCP Validation Report
 ======================
 
 Generated: 2026-02-19T00:00:00Z
-Validator: umcp-validator v2.3.1
+Validator: umcp-validator v2.3.2
 Contract: UMA.INTSTACK.v1 (v1.0.0)
 Closure Registry: UMCP.CLOSURES.DEFAULT.v1
 

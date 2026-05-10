@@ -96,7 +96,7 @@ icon: move
 Canonical test vector for KIN.REF.PHASE closure implementing deterministic phase-anchor selection for oscillatory motion. Includes edge cases: tie-breakers, empty eligible sets, and phase mismatch censoring.
 
 - **Contract**: `KIN.INTSTACK.v1`
-- **Path**: `casepacks/kin_ref_phase_oscillator`
+- **Path**: `casepacks/ladder/L1_kin_ref_phase_oscillator`
 - **Status**: validated
 
 ### kinematics_complete
@@ -104,7 +104,7 @@ Canonical test vector for KIN.REF.PHASE closure implementing deterministic phase
 Complete kinematics casepack demonstrating all kinematic closures: linear motion, rotational motion, energy, momentum, phase space return, and stability analysis.
 
 - **Contract**: `KIN.INTSTACK.v1`
-- **Path**: `casepacks/kinematics_complete`
+- **Path**: `casepacks/closures/full/kinematics`
 - **Status**: validated
 
 ## Validation History

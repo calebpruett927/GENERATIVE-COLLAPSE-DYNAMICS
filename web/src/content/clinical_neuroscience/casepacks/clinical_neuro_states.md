@@ -17,7 +17,7 @@ Clinical neuroscience domain closure demonstrating GCD kernel applied to 3 consc
 | **Version** | 1.0.0 |
 | **Contract** | `CLIN.INTSTACK.v1` |
 | **Status** | validated |
-| **Path** | `casepacks/clinical_neuro_states` |
+| **Path** | `casepacks/closures/full/clinical_neuroscience` |
 | **Canon Anchors** | `canon/clin_anchors.yaml` |
 
 ## Authors

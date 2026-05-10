@@ -116,7 +116,7 @@ icon: orbit
 Spacetime memory domain closure demonstrating GCD kernel applied to 3 entities spanning stellar, cognitive, and diffuse categories. 8-channel trace (coherence_persistence, cycle_return_rate, well_depth_norm, gradient_strength, tidal_symmetry, trajectory_closure, circulation_area, heterogeneity_profile) with equal weights. Neutron star (Watch — highest F in catalog, near-homogeneous channels), Healthy memory (Watch — cognitive cross-domain bridge), Intergalactic medium (deep Collapse — diffuse system with dead channels).
 
 - **Contract**: `ST.INTSTACK.v1`
-- **Path**: `casepacks/spacetime_memory_entities`
+- **Path**: `casepacks/closures/full/spacetime_memory`
 - **Status**: validated
 
 ## Validation History

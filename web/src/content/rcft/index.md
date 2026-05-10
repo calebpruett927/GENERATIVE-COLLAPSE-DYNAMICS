@@ -99,7 +99,7 @@ icon: layers
 Complete RCFT Tier-2 example with zero entropy state and all GCD + RCFT closures
 
 - **Contract**: `RCFT.INTSTACK.v1`
-- **Path**: `casepacks/rcft_complete`
+- **Path**: `casepacks/closures/full/rcft`
 - **Status**: validated
 
 ## Validation History

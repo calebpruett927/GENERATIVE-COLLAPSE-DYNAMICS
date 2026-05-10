@@ -9,7 +9,7 @@ Validates:
 - Phase mismatch case produces PHASE_MISMATCH censor
 - Determinism (two runs produce identical output)
 
-CasePack: casepacks/kin_ref_phase_oscillator
+CasePack: casepacks/ladder/L1_kin_ref_phase_oscillator
 """
 
 from __future__ import annotations
@@ -28,7 +28,7 @@ import pytest
 REPO_ROOT = Path(__file__).parent.parent.parent
 
 # Load the KIN.REF.PHASE closure module dynamically
-closure_path = REPO_ROOT / "casepacks" / "kin_ref_phase_oscillator" / "closures" / "kin_ref_phase.py"
+closure_path = REPO_ROOT / "casepacks" / "ladder" / "L1_kin_ref_phase_oscillator" / "closures" / "kin_ref_phase.py"
 spec = importlib.util.spec_from_file_location("kin_ref_phase", closure_path)
 if spec is None or spec.loader is None:
     raise ImportError(f"Could not load module spec from {closure_path}")
@@ -56,7 +56,7 @@ select_phase_anchor = kin_ref_phase.select_phase_anchor
 @pytest.fixture
 def casepack_dir() -> Path:
     """Get the KIN.REF.PHASE casepack directory."""
-    return REPO_ROOT / "casepacks" / "kin_ref_phase_oscillator"
+    return REPO_ROOT / "casepacks" / "ladder" / "L1_kin_ref_phase_oscillator"
 
 
 @pytest.fixture

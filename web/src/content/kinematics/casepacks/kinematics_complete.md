@@ -17,7 +17,7 @@ Complete kinematics casepack demonstrating all kinematic closures: linear motion
 | **Version** | 1.0.0 |
 | **Contract** | `KIN.INTSTACK.v1` |
 | **Status** | validated |
-| **Path** | `casepacks/kinematics_complete` |
+| **Path** | `casepacks/closures/full/kinematics` |
 | **Canon Anchors** | `canon/kin_anchors.yaml` |
 
 ## Authors

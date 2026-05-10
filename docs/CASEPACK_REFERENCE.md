@@ -552,13 +552,13 @@ This reference structure is governed by:
 
 ## 10. Reference Implementation
 
-See `casepacks/UMCP-REF-E2E-0001/` for a complete reference CasePack with all required and optional files.
+See `casepacks/pedagogical/UMCP-REF-E2E-0001/` for a complete reference CasePack with all required and optional files.
 
 **Key files to inspect**:
-- [casepacks/UMCP-REF-E2E-0001/manifest.json](casepacks/UMCP-REF-E2E-0001/manifest.json)
-- [casepacks/UMCP-REF-E2E-0001/manifest/manifest.json](casepacks/UMCP-REF-E2E-0001/manifest/manifest.json)
-- [casepacks/UMCP-REF-E2E-0001/receipts/ss1m.json](casepacks/UMCP-REF-E2E-0001/receipts/ss1m.json)
-- [casepacks/UMCP-REF-E2E-0001/manifest/sha256sums.txt](casepacks/UMCP-REF-E2E-0001/manifest/sha256sums.txt)
+- [casepacks/pedagogical/UMCP-REF-E2E-0001/manifest.json](casepacks/pedagogical/UMCP-REF-E2E-0001/manifest.json)
+- [casepacks/pedagogical/UMCP-REF-E2E-0001/manifest/manifest.json](casepacks/pedagogical/UMCP-REF-E2E-0001/manifest/manifest.json)
+- [casepacks/pedagogical/UMCP-REF-E2E-0001/receipts/ss1m.json](casepacks/pedagogical/UMCP-REF-E2E-0001/receipts/ss1m.json)
+- [casepacks/pedagogical/UMCP-REF-E2E-0001/manifest/sha256sums.txt](casepacks/pedagogical/UMCP-REF-E2E-0001/manifest/sha256sums.txt)
 
 ---
 

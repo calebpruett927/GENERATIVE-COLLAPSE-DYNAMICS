@@ -29,13 +29,13 @@ class TestValidateAPI:
         assert result.status == "CONFORMANT"
 
     def test_validate_hello_world(self) -> None:
-        """validate(casepacks/hello_world) returns CONFORMANT."""
+        """validate(casepacks/pedagogical/hello_world) returns CONFORMANT."""
         result = validate(HELLO_WORLD)
         assert isinstance(result, ValidationResult)
         assert result.status == "CONFORMANT"
 
     def test_validate_strict_hello_world(self) -> None:
-        """validate(casepacks/hello_world, strict=True) returns CONFORMANT."""
+        """validate(casepacks/pedagogical/hello_world, strict=True) returns CONFORMANT."""
         result = validate(HELLO_WORLD, strict=True)
         assert isinstance(result, ValidationResult)
         assert result.status == "CONFORMANT"

@@ -5,6 +5,35 @@ All notable changes to the UMCP validator and repository will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.2] - 2026-05-10
+
+### Added
+- **Casepack reorganization** into the *Entering the Corpus* taxonomy:
+  - `casepacks/pedagogical/` (2 entries) — onboarding casepacks
+  - `casepacks/ladder/L<n>_<name>/` (7 entries) — capability ladder
+  - `casepacks/closures/full/<domain>/` (17 + 6 stubs = 23 entries) — one casepack per registered domain
+  - `casepacks/TAXONOMY.md` — taxonomy specification with Coverage Gap analysis
+  - `casepacks/REORG_AUDIT.{md,json}` — reference audit of file relocations
+- **6 stub casepacks** for previously uncovered domains under `casepacks/closures/full/`:
+  `nuclear_physics`, `consciousness_coherence`, `standard_model`, `ecology`, `immunology`,
+  `information_theory` — each a minimal Tier-1 Stable-regime demonstration unit pending
+  domain-specific raw measurements
+- `scripts/generate_stub_casepacks.py` — reproducible stub generator
+
+### Changed
+- **Version bump**: 2.3.1 → 2.3.2
+- **Test count**: 20,221 → 20,337 (+116 from recursive parametrize over new casepack tree)
+- **Validate targets**: 27 → 33 (+6 new stub casepacks all CONFORMANT)
+- `tests/test_215_casepack_roundtrip.py` — replaced flat `iterdir()` with recursive
+  `_discover_casepacks()` walker; rekeyed special-case dicts to new POSIX-relative paths
+- `tests/test_120_kinematics_closures.py` — paths updated to `casepacks/closures/full/kinematics/`
+- `src/umcp/api_umcp.py` — health check and `/casepacks` listing now use `rglob("manifest.json")`
+
+### Notes
+- All `manifest.casepack.id` strings are STABLE identifiers and were preserved during relocation
+  (consumed by `api_umcp` DomainInfo, `test_outputs`, `hcg/extractor`, `corpus_resolver`).
+- Git history preserved via `git mv` throughout the reorg.
+
 ## [2.3.1] - 2026-04-11
 
 ### Added

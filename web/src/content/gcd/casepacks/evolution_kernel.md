@@ -17,7 +17,7 @@ Evolution domain closure demonstrating GCD kernel applied to 5 representative or
 | **Version** | 1.0.0 |
 | **Contract** | `UMA.INTSTACK.v1` |
 | **Status** | validated |
-| **Path** | `casepacks/evolution_kernel` |
+| **Path** | `casepacks/closures/full/evolution` |
 | **Canon Anchors** | `canon/evo_anchors.yaml` |
 
 ## Authors

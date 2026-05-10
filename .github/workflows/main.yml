@@ -111,7 +111,7 @@ jobs:
 
       - name: Validate E2E case (strict mode)
         run: |
-          umcp validate --strict casepacks/UMCP-REF-E2E-0001 --out validator.result.strict.json
+          umcp validate --strict casepacks/pedagogical/UMCP-REF-E2E-0001 --out validator.result.strict.json
 
       - name: Check strict validation status
         run: |

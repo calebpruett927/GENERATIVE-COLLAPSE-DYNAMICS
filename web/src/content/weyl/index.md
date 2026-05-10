@@ -94,7 +94,7 @@ icon: globe
 Modified gravity testing using DES Y3 MAGLIM data via Weyl evolution and hJ proxy. Source: doi:10.1038/s41467-024-53363-6
 
 - **Contract**: `WEYL.INTSTACK.v1`
-- **Path**: `casepacks/weyl_des_y3`
+- **Path**: `casepacks/closures/full/weyl`
 - **Status**: validated
 
 ## Validation History

@@ -239,7 +239,7 @@ For a **pure identity operation** (no semantic or metric change):
 
 UMCP already implements partial UHMP support:
 
-- **Manifest generation**: [casepacks/UMCP-REF-E2E-0001/generate_manifest.py](casepacks/UMCP-REF-E2E-0001/generate_manifest.py)
+- **Manifest generation**: [casepacks/pedagogical/UMCP-REF-E2E-0001/generate_manifest.py](casepacks/pedagogical/UMCP-REF-E2E-0001/generate_manifest.py)
 - **Receipt integration**: `receipts/ss1m.json` includes `manifest.root_sha256`
 - **Validation**: [src/umcp/cli.py](src/umcp/cli.py) checks manifest root presence (strict mode)
 - **Testing**: [tests/test_25_umcp_ref_e2e_0001.py](tests/test_25_umcp_ref_e2e_0001.py) verifies manifest root hash

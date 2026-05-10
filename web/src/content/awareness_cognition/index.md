@@ -116,7 +116,7 @@ icon: eye
 Awareness-cognition domain closure demonstrating GCD kernel applied to 3 organisms spanning prokaryote to primate. 10-channel trace (5 awareness + 5 aptitude) with equal weights. Verifies Tier-1 identities and regime classification across phylogenetic diversity.
 
 - **Contract**: `AWC.INTSTACK.v1`
-- **Path**: `casepacks/awareness_cognition_kernel`
+- **Path**: `casepacks/closures/full/awareness_cognition`
 - **Status**: validated
 
 ## Validation History

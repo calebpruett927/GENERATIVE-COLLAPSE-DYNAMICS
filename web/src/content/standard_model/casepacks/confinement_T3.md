@@ -17,7 +17,7 @@ Complete reproducibility bundle for the confinement paper. Contains PDG-2024 raw
 | **Version** | 1.0.0 |
 | **Contract** | `SM.INTSTACK.v1` |
 | **Status** | validated |
-| **Path** | `casepacks/confinement_T3` |
+| **Path** | `casepacks/ladder/L2_confinement_T3` |
 | **Canon Anchors** | `canon/sm_anchors.yaml` |
 
 ## Authors

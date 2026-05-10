@@ -15,7 +15,7 @@ This changelog documents *additions* of new contract versions. Contracts are imm
   - Pin kinematic return detection: eta_position, eta_velocity, H_rec_kin
   - Define stability thresholds: v_stable_max, a_stable_max, E_stable_max
 - Closures: linear_kinematics, rotational_kinematics, energy_mechanics, momentum_dynamics, phase_space_return, kinematic_stability
-- CasePack: `casepacks/kinematics_complete/`
+- CasePack: `casepacks/closures/full/kinematics/`
 - Canon Anchor: `canon/kin_anchors.yaml`
 - Documentation: `KINEMATICS_SPECIFICATION.md`
 

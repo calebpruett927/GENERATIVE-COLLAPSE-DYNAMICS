@@ -17,7 +17,7 @@ Spacetime memory domain closure demonstrating GCD kernel applied to 3 entities s
 | **Version** | 1.0.0 |
 | **Contract** | `ST.INTSTACK.v1` |
 | **Status** | validated |
-| **Path** | `casepacks/spacetime_memory_entities` |
+| **Path** | `casepacks/closures/full/spacetime_memory` |
 | **Canon Anchors** | `canon/st_anchors.yaml` |
 
 ## Authors

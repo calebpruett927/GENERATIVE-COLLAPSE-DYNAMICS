@@ -221,8 +221,8 @@ OK: PASS basic checks (budget closure, dial consistency)
 
 HUD: weld_id=W-2025-12-31-PHYS-COHERENCE | manifest=manifest:gcd_complete | I=0.884123 | kappa=-0.123456 | tol=0.005000 | residual=0.002000000000 | seed=fixed_2026-01-21 | sha256=9a2f83b8...c57e9
 
-Wrote: /workspaces/GENERATIVE-COLLAPSE-DYNAMICS/casepacks/gcd_complete/outputs/publication_row.csv
-Receipt: /workspaces/GENERATIVE-COLLAPSE-DYNAMICS/casepacks/gcd_complete/weld/ss1m.json
+Wrote: /workspaces/GENERATIVE-COLLAPSE-DYNAMICS/casepacks/closures/full/gcd/outputs/publication_row.csv
+Receipt: /workspaces/GENERATIVE-COLLAPSE-DYNAMICS/casepacks/closures/full/gcd/weld/ss1m.json
 Root sha256 = sha256(integrity/sha256.txt) = 9a2f83b8...c57e9
 ```
 
@@ -510,7 +510,7 @@ See [SYMBOL_INDEX.md](SYMBOL_INDEX.md) for the authoritative mapping table inclu
 - ✅ **ASCII header mapping**: Implemented
   - All invariants.csv files use ASCII headers
   - Fixed mapping to typeset symbols documented
-  - See: [outputs/invariants.csv](casepacks/gcd_complete/outputs/invariants.csv)
+  - See: [outputs/invariants.csv](casepacks/closures/full/gcd/outputs/invariants.csv)
 
 - ⚠️ **Case ID convention**: Partial
   - One formal Case ID: UMCP-REF-E2E-0001

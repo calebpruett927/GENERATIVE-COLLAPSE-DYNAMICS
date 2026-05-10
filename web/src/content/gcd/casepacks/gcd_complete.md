@@ -17,7 +17,7 @@ Complete GCD Tier-1 example demonstrating zero entropy state and all GCD closure
 | **Version** | 1.0.0 |
 | **Contract** | `GCD.INTSTACK.v1` |
 | **Status** | validated |
-| **Path** | `casepacks/gcd_complete` |
+| **Path** | `casepacks/closures/full/gcd` |
 | **Canon Anchors** | `canon/gcd_anchors.yaml` |
 
 ## Authors

@@ -17,7 +17,7 @@ Validates month-over-month financial continuity using UMCP kernel invariants. Em
 | **Version** | 1.0.0 |
 | **Contract** | `FINANCE.INTSTACK.v1` |
 | **Status** | validated |
-| **Path** | `casepacks/finance_continuity` |
+| **Path** | `casepacks/closures/full/finance` |
 | **Canon Anchors** | `canon/anchors.yaml` |
 
 ## Authors
