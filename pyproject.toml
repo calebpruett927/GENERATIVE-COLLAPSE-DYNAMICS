@@ -328,6 +328,7 @@ module = [
   "scipy.*",
   "psutil.*",
   "pandas.*",
+  "jsonschema.*",
   "closures.*",
 ]
 ignore_missing_imports = true
