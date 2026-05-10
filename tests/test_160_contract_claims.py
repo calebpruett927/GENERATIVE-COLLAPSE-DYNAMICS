@@ -51,8 +51,8 @@ from umcp.ss1m_triad import EditionCounts, EditionTriad, compute_triad, verify_t
 RNG = np.random.default_rng(42)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-HELLO_INVARIANTS = REPO_ROOT / "casepacks" / "hello_world" / "expected" / "invariants.json"
-HELLO_RECEIPT = REPO_ROOT / "casepacks" / "hello_world" / "expected" / "ss1m_receipt.json"
+HELLO_INVARIANTS = REPO_ROOT / "casepacks" / "pedagogical" / "hello_world" / "expected" / "invariants.json"
+HELLO_RECEIPT = REPO_ROOT / "casepacks" / "pedagogical" / "hello_world" / "expected" / "ss1m_receipt.json"
 
 
 def _random_psi(n: int = 5, *, rng: np.random.Generator = RNG) -> np.ndarray:

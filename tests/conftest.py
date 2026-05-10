@@ -502,12 +502,12 @@ def repo_paths() -> RepoPaths:
         closures_dir=root / "closures",
         closures_registry=root / "closures" / "registry.yaml",
         validator_rules=root / "validator_rules.yaml",
-        hello_world_dir=root / "casepacks" / "hello_world",
-        hello_manifest=root / "casepacks" / "hello_world" / "manifest.json",
-        hello_expected_dir=root / "casepacks" / "hello_world" / "expected",
-        hello_psi_csv=root / "casepacks" / "hello_world" / "expected" / "psi.csv",
-        hello_invariants_json=root / "casepacks" / "hello_world" / "expected" / "invariants.json",
-        hello_ss1m_receipt_json=root / "casepacks" / "hello_world" / "expected" / "ss1m_receipt.json",
+        hello_world_dir=root / "casepacks" / "pedagogical" / "hello_world",
+        hello_manifest=root / "casepacks" / "pedagogical" / "hello_world" / "manifest.json",
+        hello_expected_dir=root / "casepacks" / "pedagogical" / "hello_world" / "expected",
+        hello_psi_csv=root / "casepacks" / "pedagogical" / "hello_world" / "expected" / "psi.csv",
+        hello_invariants_json=root / "casepacks" / "pedagogical" / "hello_world" / "expected" / "invariants.json",
+        hello_ss1m_receipt_json=root / "casepacks" / "pedagogical" / "hello_world" / "expected" / "ss1m_receipt.json",
     )
 
 

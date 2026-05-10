@@ -19,7 +19,7 @@ from pathlib import Path
 import pytest
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-E2E_CASE = REPO_ROOT / "casepacks" / "UMCP-REF-E2E-0001"
+E2E_CASE = REPO_ROOT / "casepacks" / "pedagogical" / "UMCP-REF-E2E-0001"
 SS1M_RECEIPT = E2E_CASE / "receipts" / "ss1m.json"
 KERNEL_LEDGER = E2E_CASE / "outputs" / "kernel_ledger.csv"
 PSI_TRACE = E2E_CASE / "data" / "psi_trace.csv"
