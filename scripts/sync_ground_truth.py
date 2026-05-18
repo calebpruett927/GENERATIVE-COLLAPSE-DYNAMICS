@@ -244,6 +244,7 @@ def _rules() -> list[SyncRule]:
         # README_PYPI.md — badges and key references
         # ══════════════════════════════════════════════════════════
         SyncRule("README_PYPI.md", r"tests-([\d%2C]+)-brightgreen", "{test_count_url}", "PyPI badge: tests"),
+        SyncRule("README_PYPI.md", r"!\[Tests: ([\d,]+)\]", "{test_count_comma}", "PyPI badge alt: tests"),
         SyncRule("README_PYPI.md", r"Theorems: (\d+)", "{theorem_count}", "PyPI badge: theorems"),
         SyncRule("README_PYPI.md", r"Domains: (\d+)", "{domain_count}", "PyPI badge: domains"),
         SyncRule("README_PYPI.md", r"\*\*(\d+) scientific domains\*\*", "{domain_count}", "PyPI key features: domains"),

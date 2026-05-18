@@ -315,3 +315,10 @@ LIBER_COLLAPSUS.out
 
 # Stale distribution packages
 dist/
+
+# Private / non-public collaboration drafts (Caleb ↔ Henric)
+# These RCFT/UMCP anchor extraction and trace preparation drafts are private
+# correspondence and must never be committed to the public repository.
+paper/rcft_umcp_anchor_extraction_run1.*
+paper/rcft_umcp_trace_run1_preparation.*
+paper/rcft_umcp_trace_run1_reply_email.*

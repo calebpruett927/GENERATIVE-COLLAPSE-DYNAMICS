@@ -182,7 +182,7 @@ __all__ = [
     "weld_lineage",
 ]
 
-__version__ = "2.3.2"
+__version__ = "2.3.3"
 
 VALIDATOR_NAME = "umcp-validator"
 DEFAULT_TZ = "America/Chicago"

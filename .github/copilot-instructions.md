@@ -1,6 +1,6 @@
 # Copilot Instructions for GENERATIVE-COLLAPSE-DYNAMICS
 
-**UMCP v2.3.2** · **20,337 tests** · **23 domains** · **245 closure modules** · **47 lemmas** · **44 structural identities**
+**UMCP v2.3.3** · **20,337 tests** · **23 domains** · **245 closure modules** · **47 lemmas** · **44 structural identities**
 
 ## Foundational Principle — Read This First
 

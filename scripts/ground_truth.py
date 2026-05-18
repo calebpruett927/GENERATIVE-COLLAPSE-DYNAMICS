@@ -30,7 +30,7 @@ _REPO_ROOT = Path(__file__).resolve().parent.parent
 # ── Manual / Frozen Metrics ──────────────────────────────────────
 # Update these when content changes.  The sync script propagates them.
 
-VERSION = "2.3.2"
+VERSION = "2.3.3"
 """Package version — canonical source is pyproject.toml, but this must match."""
 
 THEOREM_COUNT = 746
