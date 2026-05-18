@@ -4,7 +4,7 @@
 > and Models for Polymer Simulations with Machine Learning Interatomic Potentials*
 > (arXiv:2512.23117v2)
 >
-> **Repository**: UMCP v2.3.0 — Generative Collapse Dynamics (GCD)
+> **Repository**: UMCP v2.3.3 — Generative Collapse Dynamics (GCD)
 >
 > **Analysis Date**: Generated via 10-projection GCD kernel analysis
 

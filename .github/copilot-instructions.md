@@ -354,13 +354,13 @@ Before writing or modifying code, verify:
 
 UMCP (Universal Measurement Contract Protocol) validates reproducible computational workflows against mathematical contracts. The unit of work is a **casepack** — a directory containing raw data, a contract reference, closures, and expected outputs. The validator checks schema conformance, Tier-1 kernel identities (F = 1 − ω, IC ≈ exp(κ), IC ≤ F), regime classification, and SHA256 integrity, producing a three-valued CONFORMANT/NONCONFORMANT/NON_EVALUABLE verdict and appending to `ledger/return_log.csv`.
 
-**Version**: 2.3.1 · **Python**: ≥3.11 · **License**: MIT
+**Version**: 2.3.3 · **Python**: ≥3.11 · **License**: MIT
 
 ## Architecture
 
 ```
 src/umcp/
-├── __init__.py               # Public API: validate(), MeasurementEngine, __version__ (v2.3.1)
+├── __init__.py               # Public API: validate(), MeasurementEngine, __version__ (v2.3.3)
 ├── __main__.py               # python -m umcp entry point
 ├── cli.py                    # 2659-line argparse CLI — validation engine, all subcommands
 ├── validator.py              # Root-file validator (16 files, checksums, math identities)
@@ -512,7 +512,7 @@ closures/
 | `recursive_instantiation.py` | Recursive instantiation patterns | Structural self-similarity |
 
 **Data artifacts** (not Python — never import these):
-- `contracts/*.yaml` — 21 versioned mathematical contracts (JSON Schema Draft 2020-12)
+- `contracts/*.yaml` — 23 versioned mathematical contracts (JSON Schema Draft 2020-12)
 - `closures/registry.yaml` — central registry; must list every closure used in a run
 - `casepacks/*/manifest.json` — 26 casepack manifests referencing contract, closures, expected outputs
 - `schemas/*.schema.json` — 17 JSON Schema Draft 2020-12 files validating all artifacts

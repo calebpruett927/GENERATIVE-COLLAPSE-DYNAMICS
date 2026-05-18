@@ -412,7 +412,7 @@ $ umcp validate casepacks/pedagogical/hello_world --strict
 
 UMCP validation: CONFORMANT (repo + casepacks/pedagogical/hello_world),
   errors=0 warnings=0;
-  validator=umcp-validator v2.3.1;
+  validator=umcp-validator v2.3.3;
   policy strict=true;
   sha256=6fc79df4...
 ```

@@ -43,7 +43,7 @@ web/
 ├── public/            Static assets (favicon, robots.txt, sitemap.xml)
 ├── src/
 │   ├── components/    9 interactive Astro components (calculators, charts)
-│   ├── content/       Generated domain content (21 domains via HCG)
+│   ├── content/       Generated domain content (23 domains via HCG)
 │   ├── layouts/       5 layouts (Base, Domain, Index, Subpage, Casepack)
 │   ├── lib/
 │   │   ├── kernel.ts    Tier-1 kernel: F, ω, S, C, κ, IC computation

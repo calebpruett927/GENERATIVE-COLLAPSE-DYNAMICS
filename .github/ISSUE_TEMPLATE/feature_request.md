@@ -19,12 +19,13 @@ assignees: ''
 
 ## Relevant Domain (if applicable)
 
-<!-- Which of the 21 domains does this relate to?
+<!-- Which of the 23 domains does this relate to?
 gcd, rcft, kinematics, weyl, security, astronomy, nuclear_physics,
 quantum_mechanics, finance, atomic_physics, materials_science,
 everyday_physics, evolution, dynamic_semiotics, consciousness_coherence,
 continuity_theory, awareness_cognition, standard_model,
-clinical_neuroscience, spacetime_memory -->
+clinical_neuroscience, spacetime_memory, ecology, immunology,
+information_theory -->
 
 Domain: <!-- e.g., quantum_mechanics -->
 

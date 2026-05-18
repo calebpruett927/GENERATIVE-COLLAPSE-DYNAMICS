@@ -293,7 +293,7 @@ Rank-1 ⊂ Rank-2 ⊂ Rank-3. Almost all real-world systems are rank-3.
 | `L-44` | L44 | Fractal Return Scaling | Return distances scale as power law in recursion depth | L-43 |
 | `L-45` | L45 | Seam Residual Algebra | Seam composition forms a monoid: associative with identity, verified to 5.55×10⁻¹⁷ | L-20, I-C8 |
 | `L-46` | L46 | Weld Closure Composition | Composed welds satisfy: PASS₁ ∧ PASS₂ ⇒ PASS₁₂ if residuals are within tolerance | Def-13, L-27 |
-| `L-47` | L47 | Geometric Slaughter (Cross-Domain) | One dead channel (cₖ → ε) kills IC while F stays healthy: IC/F → ε^(wₖ) · (IC_rest/F). Observed in 8/21 domains at phase boundaries (confinement, EWSB, cortical lesion). The drop is exactly IC_dead = ε^(1/n)·c₀^((n-1)/n) for uniform traces (cf. T-KS-1). | L-6, L-30, AI-2 |
+| `L-47` | L47 | Geometric Slaughter (Cross-Domain) | One dead channel (cₖ → ε) kills IC while F stays healthy: IC/F → ε^(wₖ) · (IC_rest/F). Observed in 8/23 domains at phase boundaries (confinement, EWSB, cortical lesion). The drop is exactly IC_dead = ε^(1/n)·c₀^((n-1)/n) for uniform traces (cf. T-KS-1). | L-6, L-30, AI-2 |
 | `L-48` | L48 | Stability Measure-Zero | P(Stable \| uniform random c) → 0 as n grows. For n ≥ 8, the fraction of uniform random trace vectors landing in Stable regime is 0%. Stability is not the generic state — 87.5% of Fisher space lies outside it. | RG-S, I-B11 |
 
 **Source**: [KERNEL_SPECIFICATION.md](KERNEL_SPECIFICATION.md) §4 (L1–L34), §4b (L35–L46), cross-domain (L47), computational probes (L48)
@@ -1392,7 +1392,7 @@ K-κ, K-IC            →   T0-valIdent                →   T2-PP-3 (Confinemen
 AI-1, AI-2, AI-3    →   T0-valIdent._validate_*    →   tier1_proof.py (10,162 tests)
 Def-11               →   T0-SeamAccum               →   T2-QGP-5 (Reconfinement gap)
 Def-13               →   T0-classifyEp              →   T0-EpVerdict (RETURN/GESTURE)
-FP-ε, FP-p, FP-tol  →   frozen_contract.py         →   All 21 domains
+FP-ε, FP-p, FP-tol  →   frozen_contract.py         →   All 23 domains
 RG-S/W/C/X           →   classify_regime()          →   Domain regime analysis
 L-6, L-30            →   IC sensitivity checks      →   T2-CC-4 (Geometric slaughter)
 I-C3                  →   composition analyzer       →   T2-PM-* (cross-scale)
