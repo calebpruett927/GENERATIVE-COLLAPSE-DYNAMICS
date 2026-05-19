@@ -7,7 +7,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/blob/main/LICENSE)
 [![CI](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/actions/workflows/validate.yml/badge.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/actions)
 [![Tests: 20,337](https://img.shields.io/badge/tests-20%2C337-brightgreen.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/tree/main/tests)
-[![Theorems: 746](https://img.shields.io/badge/theorems-746-purple.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/blob/main/CATALOGUE.md)
+[![Theorems: 752](https://img.shields.io/badge/theorems-746-purple.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/blob/main/CATALOGUE.md)
 [![Domains: 23](https://img.shields.io/badge/domains-23-teal.svg)](https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/tree/main/closures)
 [![Production/Stable](https://img.shields.io/badge/status-Production%2FStable-brightgreen.svg)](https://pypi.org/project/umcp/)
 
@@ -28,8 +28,8 @@ Built on **Generative Collapse Dynamics (GCD)**, a measurement theory derived fr
 | **Contract-first validation** | Define mathematical contracts before evidence. Frozen parameters ensure reproducibility. |
 | **Tier-1 kernel** | Six invariants (F, ω, S, C, κ, IC) computed from any bounded trace vector — domain-independent. |
 | **23 scientific domains** | From particle physics and cosmology to neuroscience and finance — all through one kernel. |
-| **746 proven theorems** | 47 lemmas, 44 structural identities, 746 theorems verified to machine precision. |
-| **20,337 tests** | Comprehensive test suite across 232 files with 245 closure modules. |
+| **752 proven theorems** | 47 lemmas, 44 structural identities, 746 theorems verified to machine precision. |
+| **20,337 tests** | Comprehensive test suite across 233 files with 246 closure modules. |
 | **Three-valued verdicts** | Never boolean. Always CONFORMANT / NONCONFORMANT / NON\_EVALUABLE. |
 | **Three-layer architecture** | C99 orchestration (~1,900 lines) → C++17 accelerator → Python engine. 760 C/C++ assertions. |
 | **Interactive dashboard** | 46-page Streamlit dashboard for real-time kernel exploration. |
@@ -250,7 +250,7 @@ src/umcp_cpp/           # C++17 Accelerator (pybind11)
 ├── bindings/            # Zero-copy NumPy bridge
 └── tests/               # 434 Catch2 assertions
 
-closures/                # 23 domain closure modules (245 .py files)
+closures/                # 23 domain closure modules (246 .py files)
 contracts/               # 23 versioned mathematical contracts (YAML)
 casepacks/               # 3 self-contained validation packages
 schemas/                 # 17 JSON Schema Draft 2020-12 definitions

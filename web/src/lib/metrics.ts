@@ -28,20 +28,20 @@ export const LEMMA_COUNT = '47';
 export const LEMMA_COUNT_RAW = 47;
 
 /** Closure modules across all domains. */
-export const CLOSURE_COUNT = '245';
-export const CLOSURE_COUNT_RAW = 245;
+export const CLOSURE_COUNT = '246';
+export const CLOSURE_COUNT_RAW = 246;
 
 /** Proven theorems across all domain closures. */
-export const THEOREM_COUNT = '746';
-export const THEOREM_COUNT_RAW = 746;
+export const THEOREM_COUNT = '752';
+export const THEOREM_COUNT_RAW = 752;
 
 /** Implementation languages (C99, C++17, Python). */
 export const LANGUAGE_COUNT = '3';
 export const LANGUAGE_COUNT_RAW = 3;
 
 /** Test files (numbered test_000 through test_338). */
-export const TEST_FILE_COUNT = '232';
-export const TEST_FILE_COUNT_RAW = 232;
+export const TEST_FILE_COUNT = '233';
+export const TEST_FILE_COUNT_RAW = 233;
 
 /** Base test functions before parametrization. */
 export const BASE_TEST_COUNT = '~800';

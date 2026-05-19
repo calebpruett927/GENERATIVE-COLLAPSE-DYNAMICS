@@ -1191,6 +1191,26 @@ registry:
           n_channels: 8
           n_entities: 12
           n_theorems: 6
+      - name: "afr_return_morphology"
+        path: "closures/continuity_theory/afr_return_morphology.py"
+        description: "AFR.RETURN.v1: Antifragility Return-Morphology Diagnostic. Tier-2 overlay reading the morphology of return across 12 synthetic episodes. Five categories (Fragile→Antifragile), five derived measures (RS, FG, DR, RR, HR), five detectors. 6 theorems T-AFR-1 through T-AFR-6."
+        contract: "UMA.INTSTACK.v1"
+        inputs: ["episode_profiles"]
+        outputs: ["morphology", "RS", "FG", "DR", "RR", "HR", "RCI"]
+        channels:
+          - "adaptive_capacity"
+          - "internal_coherence"
+          - "resource_reserve"
+          - "communication_integrity"
+          - "boundary_discipline"
+          - "knowledge_retention"
+          - "response_agility"
+          - "external_robustness"
+        frozen_params:
+          epsilon: 1.0e-8
+          n_channels: 8
+          n_episodes: 12
+          n_theorems: 6
 
     consciousness_coherence:
       - name: "coherence_kernel"
@@ -1624,8 +1644,8 @@ extensions:
     continuity_theory:
       archetype: kernel-centric
       channels: 8
-      entities: 44
-      theorems: 24
+      entities: 56
+      theorems: 30
       tier1_bootstrap: true
       theorem_prefix: "CT"
     awareness_cognition:

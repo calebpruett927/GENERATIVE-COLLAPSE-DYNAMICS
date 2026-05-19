@@ -1,6 +1,6 @@
 # Copilot Instructions for GENERATIVE-COLLAPSE-DYNAMICS
 
-**UMCP v2.3.3** · **20,337 tests** · **23 domains** · **245 closure modules** · **47 lemmas** · **44 structural identities**
+**UMCP v2.3.3** · **20,337 tests** · **23 domains** · **246 closure modules** · **47 lemmas** · **44 structural identities**
 
 ## Foundational Principle — Read This First
 
@@ -690,7 +690,7 @@ umcp validate <target>
 
 ## Test Patterns
 
-**20,337 test cases** across **232 test files** in `tests/` (230 top-level `test_*.py` + 1 in `tests/closures/` + `conftest.py`), numbered by tier and domain (`test_000_*` through `test_343_*`). Single `tests/conftest.py` provides:
+**20,337 test cases** across **233 test files** in `tests/` (230 top-level `test_*.py` + 1 in `tests/closures/` + `conftest.py`), numbered by tier and domain (`test_000_*` through `test_343_*`). Single `tests/conftest.py` provides:
 - Frozen `RepoPaths` dataclass (session-scoped) with all critical paths
 - `@lru_cache` helpers: `_read_file()`, `_parse_json()`, `_parse_yaml()`, `_compile_schema()`
 - Convention: `test_<subject>_<behavior>()` for functions; `TestCLI*` classes with `subprocess.run` for CLI integration
