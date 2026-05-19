@@ -55,27 +55,28 @@ against the same frozen contract with the same frozen parameters.
 | 15 | [gcd_whitepaper.tex](gcd_whitepaper.tex) | GCD/UMCP (whitepaper) | 406 objects | 3 | — | F+ω=1: 0.0 · IC≤F: 100% · IC=exp(κ): <1e-15 |
 | 16 | [ulrc_grammar.tex](ulrc_grammar.tex) | ULRC grammar / semiotics | (formal grammar) | 1 | — | F+ω=1: 0.0 · IC≤F: 100% · IC=exp(κ): <1e-15 |
 | 17 | [the_first_pass.tex](the_first_pass.tex) | GCD tutorial | (worked example) | — | — | F+ω=1: 0.0 · IC≤F: 100% · IC=exp(κ): <1e-15 |
+| 18 | [invariant_categories.tex](invariant_categories.tex) | Tier-1 kernel taxonomy | 6 invariants → 3 pairs | 4 pair theorems | — | F+ω=1: 0.0 · IC≤F: 100% · IC=exp(κ): <1e-15 |
 
 ### Journal Submissions
 
 | # | Paper | Target | Based On |
 |:-:|-------|--------|----------|
-| 18 | [nature_universal_laws.tex](nature_universal_laws.tex) | Nature Communications | 406 objects, 11 scales |
-| 19 | [prx_submission.tex](prx_submission.tex) | Physical Review X | 406 objects, 11 scales |
+| 19 | [nature_universal_laws.tex](nature_universal_laws.tex) | Nature Communications | 406 objects, 11 scales |
+| 20 | [prx_submission.tex](prx_submission.tex) | Physical Review X | 406 objects, 11 scales |
 
 ### Cover Letters
 
 | # | File | For |
 |:-:|------|-----|
-| 20 | [cover_letter_nature.tex](cover_letter_nature.tex) | nature_universal_laws.tex |
-| 21 | [cover_letter_prx.tex](cover_letter_prx.tex) | prx_submission.tex |
+| 21 | [cover_letter_nature.tex](cover_letter_nature.tex) | nature_universal_laws.tex |
+| 22 | [cover_letter_prx.tex](cover_letter_prx.tex) | prx_submission.tex |
 
 ### Markdown Papers
 
 | # | Paper | Topic |
 |:-:|-------|-------|
-| 22 | [RCFT_FREEZE_WELD.md](RCFT_FREEZE_WELD.md) | RCFT freeze–weld identity (278-day evolution record) |
-| 23 | [OPOLY26_INTERCONNECTION_ANALYSIS.md](OPOLY26_INTERCONNECTION_ANALYSIS.md) | OPoly26 polymer ML × GCD interconnection (6.35M frames) |
+| 23 | [RCFT_FREEZE_WELD.md](RCFT_FREEZE_WELD.md) | RCFT freeze–weld identity (278-day evolution record) |
+| 24 | [OPOLY26_INTERCONNECTION_ANALYSIS.md](OPOLY26_INTERCONNECTION_ANALYSIS.md) | OPoly26 polymer ML × GCD interconnection (6.35M frames) |
 
 ### Zenodo Publications (External — Canonical Entry Points)
 

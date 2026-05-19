@@ -570,6 +570,7 @@ Published papers live in `paper/`. Current papers:
 | `consciousness_coherence.tex` | Consciousness Coherence: Seven Theorems in the GCD Kernel | — |
 | `awareness_cognition_kernel.tex` | Awareness-Cognition Kernel: Ten Theorems Across Phylogeny | — |
 | `cross_scale_matter.tex` | Cross-Scale Matter: From Quarks to Bulk via Five Phase Boundaries | — |
+| `invariant_categories.tex` | The Three Categories of the Generative-Collapse Kernel: A Pairwise Decomposition of the Six Tier-1 Invariants | — |
 | `RCFT_FREEZE_WELD.md` | RCFT Freeze–Weld Identity | — |
 
 All papers use RevTeX4-2 (`revtex4-2` document class) and share `Bibliography.bib`. Compile: `pdflatex → bibtex → pdflatex → pdflatex`.
