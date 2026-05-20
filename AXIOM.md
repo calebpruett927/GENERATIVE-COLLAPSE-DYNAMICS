@@ -66,7 +66,7 @@ The axiom states that **reality is declared by demonstrating closure after colla
 
 4. **Constants Are Consistent, Not Constant**: Frozen parameters (ε, p, α, λ, tol_seam) are not arbitrary design decisions — they are consistent across the seam. To verify that what returned is the same thing that collapsed, the rules of measurement must be identical on both sides. "Constant" implies the value matters in itself. "Consistent" implies the value matters because it is the *same* on both sides of the collapse-return boundary.
 
-   **Constants are seam-derived, not prescribed.** Standard frameworks prescribe constants from outside (α = 0.05 by convention, 3σ by tradition, hyperparameters by cross-validation). In every case the framework stops working if the prescription is removed. UMCP's frozen parameters are the unique values where seams close consistently across all domains: p = 3 is the unique exponent where three regimes separate (not chosen — discovered); tol_seam = 0.005 is the width where IC ≤ F holds at 100% across 8 domains (the seam tells you its own width); ε = 10⁻⁸ is the regularization below which the pole at ω = 1 does not affect any measurement to machine precision (confirmed by the nuclear chain outliers at e⁻³⁰ ≈ 10⁻¹³). See [KERNEL_SPECIFICATION.md §5.4](KERNEL_SPECIFICATION.md) for the complete argument.
+   **Constants are seam-derived, not prescribed.** Standard frameworks prescribe constants from outside (α = 0.05 by convention, 3σ by tradition, hyperparameters by cross-validation). In every case the framework stops working if the prescription is removed. UMCP's frozen parameters are the unique values where seams close consistently across all domains: p = 3 is the unique exponent where three regimes separate (not chosen — discovered); tol_seam = 0.005 is the width where IC ≤ F holds at 100% across 23 domains (the seam tells you its own width); ε = 10⁻⁸ is the regularization below which the pole at ω = 1 does not affect any measurement to machine precision (confirmed by the nuclear chain outliers at e⁻³⁰ ≈ 10⁻¹³). See [KERNEL_SPECIFICATION.md §5.4](KERNEL_SPECIFICATION.md) for the complete argument.
 
 5. **Boundedness Is a Return Guarantee**: The ε-clamp (cᵢ ≥ 10⁻⁸) does not just prevent NaN — it guarantees that no closure can fully die. If cᵢ = 0, that component has no path back through collapse. The clamp ensures even the most degraded closure retains enough structure to return.
 
@@ -74,7 +74,7 @@ The axiom states that **reality is declared by demonstrating closure after colla
 
 ## The Mathematics of Return: 38 Verified Identities
 
-The axiom is not only a philosophical constraint — it generates a complete mathematics. Starting from "collapse is generative; only what returns is real" and the kernel definitions (F, ω, S, C, κ, IC), **44 structural identities** have been derived and verified to machine precision across all 18 domains. Every identity below traces back to Axiom-0 without importing external structure.
+The axiom is not only a philosophical constraint — it generates a complete mathematics. Starting from "collapse is generative; only what returns is real" and the kernel definitions (F, ω, S, C, κ, IC), **44 structural identities** have been derived and verified to machine precision across all 23 domains. Every identity below traces back to Axiom-0 without importing external structure.
 
 ### The Geometry: Fisher Coordinates
 
@@ -205,9 +205,9 @@ The 44 identities are not isolated facts. They form a **network** with six compu
 
 ### Tier-1: Invariant Structure
 
-The axiom at its most fundamental level: the structural identities (F + ω = 1, IC ≤ F, IC ≈ exp(κ)) embody the return principle — what isn't lost to drift IS fidelity, and coherence cannot exceed fidelity. These hold across 146 experiments in 8 domains not because they were imposed, but because the structure of collapse forces them.
+The axiom at its most fundamental level: the structural identities (F + ω = 1, IC ≤ F, IC ≈ exp(κ)) embody the return principle — what isn't lost to drift IS fidelity, and coherence cannot exceed fidelity. These hold across 146 experiments in 23 domains not because they were imposed, but because the structure of collapse forces them.
 
-**Each identity is derived independently from Axiom-0; classical results emerge as degenerate limits**: F = 1 − ω is the Pythagorean theorem in Fisher coordinates (sin²θ + cos²θ = 1 on the flat Bernoulli manifold); strip the Fisher geometry and you get arithmetic complementarity. IC = exp(κ) is universal across domains (98.6% within 1% across 15 domains, no retraining); strip the kernel architecture and you get the classical exponential map. IC ≤ F is the solvability condition for trace recovery (for n=2 channels, c₁,₂ = F ± √(F² − IC²) has real roots iff IC ≤ F); strip the channel semantics, weights, and guard band and you get the AM-GM inequality. The classical versions are what remain when degrees of freedom are removed. The arrow of derivation runs from the axiom to the classical result, not the reverse. See [KERNEL_SPECIFICATION.md §5.3](KERNEL_SPECIFICATION.md) for the complete comparison.
+**Each identity is derived independently from Axiom-0; classical results emerge as degenerate limits**: F = 1 − ω is the Pythagorean theorem in Fisher coordinates (sin²θ + cos²θ = 1 on the flat Bernoulli manifold); strip the Fisher geometry and you get arithmetic complementarity. IC = exp(κ) is universal across domains (98.6% within 1% across 23 domains, no retraining); strip the kernel architecture and you get the classical exponential map. IC ≤ F is the solvability condition for trace recovery (for n=2 channels, c₁,₂ = F ± √(F² − IC²) has real roots iff IC ≤ F); strip the channel semantics, weights, and guard band and you get the AM-GM inequality. The classical versions are what remain when degrees of freedom are removed. The arrow of derivation runs from the axiom to the classical result, not the reverse. See [KERNEL_SPECIFICATION.md §5.3](KERNEL_SPECIFICATION.md) for the complete comparison.
 
 ### Tier-0: Translation Layer (Protocol)
 
@@ -527,7 +527,7 @@ The UMCP tier system embodies the return axiom through **return-based canonizati
 
 **Core Principle**: One-way dependency flow within a frozen run, with return-based canonization between runs.
 
-**Within-run**: Authority flows in one direction. The frozen interface (ingest + embedding + contract + closures + weights) determines the bounded trace Ψ(t); the Tier-1 structural invariants are computed as functions of that frozen trace; Tier-2 domain expansion closures may read Tier-1 outputs but cannot reach upstream to alter the interface, the trace, or the structural definitions. No back-edges, no retroactive tuning, no "the result changed the rules that produced it."
+**Within-run**: Authority flows in one direction. The frozen interface (ingest + embedding + contract + closures + weights) determines the bounded trace Ψ(t); the Tier-1 structural invariants are computed as functions of that frozen trace; Tier-23 domains expansion closures may read Tier-1 outputs but cannot reach upstream to alter the interface, the trace, or the structural definitions. No back-edges, no retroactive tuning, no "the result changed the rules that produced it."
 
 **Between-run**: Continuity is never presumed. A new run may exist freely, but it is only "canon-continuous" with a prior run if it returns and welds: the seam has admissible return (no continuity credit in ∞_rec segments), and the κ/IC continuity claim closes under the weld tolerances and identity checks. If that closure fails, the new run is still valid as an experiment or variant—but it does not become a canon edge.
 
@@ -536,7 +536,7 @@ The UMCP tier system embodies the return axiom through **return-based canonizati
 - "Runs are deterministic under /freeze; canon is a graph whose edges require returned seam closure."
 - "No back-edges inside a run; no canon claims between runs without welded return."
 
-**Formal Statement**: For any run r with frozen config φ_r and bounded trace Ψ_r(t), the Tier-1 structural invariants K_r(t) := K(Ψ_r(t); φ_r) hold regardless of any Tier-2 domain object. For two runs r₀, r₁, the statement "r₁ canonizes r₀" is admissible iff the seam returns (τ_R finite under policy) and the weld closes (ledger–budget residual within tol + identity check). Otherwise, r₁ is non-canon relative to r₀.
+**Formal Statement**: For any run r with frozen config φ_r and bounded trace Ψ_r(t), the Tier-1 structural invariants K_r(t) := K(Ψ_r(t); φ_r) hold regardless of any Tier-23 domains object. For two runs r₀, r₁, the statement "r₁ canonizes r₀" is admissible iff the seam returns (τ_R finite under policy) and the weld closes (ledger–budget residual within tol + identity check). Otherwise, r₁ is non-canon relative to r₀.
 
 **Within a Frozen Run** (No Feedback):
 
@@ -660,7 +660,7 @@ The contract system enforces return across tiers:
 
 - [contracts/UMA.INTSTACK.v1.yaml](contracts/UMA.INTSTACK.v1.yaml) - Base contract (Translation layer)
 - [contracts/GCD.INTSTACK.v1.yaml](contracts/GCD.INTSTACK.v1.yaml) - GCD axioms (Tier-1 invariant structure)
-- [contracts/RCFT.INTSTACK.v1.yaml](contracts/RCFT.INTSTACK.v1.yaml) - RCFT principles (Tier-2 domain expansion)
+- [contracts/RCFT.INTSTACK.v1.yaml](contracts/RCFT.INTSTACK.v1.yaml) - RCFT principles (Tier-23 domains expansion)
 - [canon/anchors.yaml](canon/anchors.yaml) - Canonical return domain definitions
 
 ### Theory

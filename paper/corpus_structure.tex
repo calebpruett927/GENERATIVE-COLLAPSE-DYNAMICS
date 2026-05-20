@@ -29,6 +29,7 @@
 \usepackage{xfrac}
 \usepackage{enumitem}
 \usepackage{array}
+\usepackage{colortbl}
 \newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 \usepackage{tikz}
 \usepackage{pgfplots}
@@ -79,7 +80,7 @@ Generative Collapse Dynamics Corpus}
 \affiliation{UMCP / GCD / RCFT Canon}
 \affiliation{UMCP Reference Implementation, GitHub}
 
-\date{March 13, 2026}
+\date{May 20, 2026}
 
 \begin{abstract}
 This paper is the canonical structural reference for the
@@ -111,12 +112,18 @@ axiom resolves each of these failures by construction, and
 provide the procedural detail to reproduce every step.  All
 definitions, identities, and constants are stated in full,
 making this paper a self-contained reference for the
-44~structural identities, 47~lemmas, 5~frozen parameters,
+44~structural identities, 47~proven lemmas, 5~frozen parameters,
 5~structural constants, 4~regime gates, and 3~algebraic
 identities that constitute the Tier-1 kernel and its Tier-0
-protocol.  The corpus comprises 7{,}875~automated tests across
-18~domain closures, 546~formally tagged objects, and
-406~scale-ladder entities spanning 61~orders of magnitude.
+protocol (reference implementation version~2.3.3).  The corpus
+comprises 20{,}540~automated tests across 23~domain closures and
+246~closure modules, $\sim$620~formally tagged objects catalogued
+by tier and lineage, and 406~scale-ladder entities spanning
+61~orders of magnitude.  The Tier-0 protocol is dually realised in
+Python and in a portable C99 orchestration core ($\sim$1{,}900
+lines, 326~test assertions) with an optional C++17 accelerator
+(434~Catch2 assertions) bound to Python via pybind11, producing a
+stable \texttt{extern "C"} ABI for the full validation spine.
 \end{abstract}
 
 \maketitle
@@ -251,7 +258,7 @@ weld verdicts are issued.
 Section~\ref{sec:identities} catalogues the 44~structural
 identities in four series and six clusters, with verification
 methods.
-Section~\ref{sec:lemmas} inventories the 47~lemmas.
+Section~\ref{sec:lemmas} inventories the 47~proven lemmas.
 Section~\ref{sec:degenerate} proves that classical results
 are degenerate limits, exhibiting the exact mechanism by
 which degrees of freedom are removed.
@@ -272,7 +279,7 @@ mechanisms---manifest and weld---that allow the system to evolve
 without corrupting its history, and formalizes the distinction
 between gestures and welds.
 Section~\ref{sec:scope} summarizes the demonstrated scope
-across 18~domains.
+across 23~domains.
 Section~\ref{sec:conclusions} concludes.
 
 
@@ -389,10 +396,10 @@ reading the everyday word instead of the operational definition.
 \section{The Three-Tier Architecture}\label{sec:tiers}
 % ============================================================
 
-The corpus is currently organized into exactly three tiers.
+The corpus comprises exactly three tiers.
 Every symbol, function, artifact, claim, and definition belongs
-to exactly one tier.  This structure is the latest validated
-architecture, not a decree of finality---it may evolve through
+to exactly one tier.  This structure is the current validated
+architecture, not a decree of finality: it may evolve through
 future seam welds, but any such evolution must itself pass
 through the spine and close with $|s| \leq \tolseam$.
 
@@ -799,8 +806,9 @@ with equal weights: $F = 0.7$, $\mathrm{Var} = 0.00\overline{6}$,
 prediction $\Delta \approx 0.00\overline{6}/1.4 = 0.00476$.
 Exact: $\kappa = (\ln 0.8 + \ln 0.7 + \ln 0.6)/3 = -0.3648$,
 $\IC = e^{-0.3648} = 0.6942$,
-$\Delta = 0.7 - 0.6942 = 0.0058$---within 18\% of the
-perturbative estimate, as expected for $C = 0.20$.
+$\Delta = 0.7 - 0.6942 = 0.0058$---within 22\% of the
+perturbative estimate, as expected for $C = 0.20$ (the next
+correction enters at $O(C^4)$).
 \end{proof}
 
 \begin{proposition}[Composition law]
@@ -856,7 +864,7 @@ $\eps$ & $10^{-8}$ & Guard band & Pole at $\omega=1$ does not affect measurement
 $p$ & $3$ & Drift exponent & Unique integer: $\omega_{\mathrm{trap}}$ is Cardano root of $x^3+x-1=0$ \\
 $\alpha$ & $1.0$ & Curvature coeff.\ & Unit coupling: $D_C = \alpha \cdot C$ \\
 $\lambda$ & $0.2$ & Auxiliary coeff.\ & Return-rate adaptation in $\tRS$ dynamics \\
-$\tolseam$ & $0.005$ & Seam tolerance & $\IC \leq F$ holds at 100\% across all 18 domains \\
+$\tolseam$ & $0.005$ & Seam tolerance & $\IC \leq F$ holds at 100\% across all 23 domains \\
 \bottomrule
 \end{tabular}}
 \end{center}
@@ -927,7 +935,7 @@ structurally determined:
   precision across all tested domains.
 
 \item $\tolseam = 0.005$ is the width where $\IC \leq F$ holds at
-  $100\%$ across all 18~domain closures and 406~scale-ladder
+  $100\%$ across all 23~domain closures and 406~scale-ladder
   objects---not at $99.9\%$ or $99.99\%$, but at $100\%$ with zero
   violations.
 
@@ -974,7 +982,7 @@ system to \regime{Watch}.
 \paragraph{Why these thresholds.}
 The four gate values are not prescribed; they are the unique
 thresholds where the regime classification matches the
-kernel's structural behavior across all 18~tested domains:
+kernel's structural behavior across all 23~tested domains:
 \begin{itemize}[leftmargin=*]
 \item $\omega < 0.038$: the budget cost $\Gam(\omega) = \omega^3/(1{-}\omega+\eps)$
   is below $10^{-5}$ for $\omega < 0.038$, making the drift cost
@@ -994,7 +1002,7 @@ kernel's structural behavior across all 18~tested domains:
   the heterogeneity gap negligible.
 \end{itemize}
 These values were discovered by systematic sweep: they are the
-tightest thresholds at which all 18~domain closures and
+tightest thresholds at which all 23~domain closures and
 $10{,}162$~directed tests produce zero false regime
 classifications.  Loosening any threshold admits traces that the
 kernel's own diagnostics classify as non-stable; tightening any
@@ -1446,9 +1454,9 @@ L46 & Weld closure composition & PASS$_1 \wedge$ PASS$_2 \Rightarrow$ PASS$_{12}
 \end{center}
 
 \paragraph{Verification.}
-The 47~lemmas are not conjectures; each is verified
+The 47~proven lemmas are not conjectures; each is verified
 \emph{computationally} across the full test suite
-(7{,}442~tests, 120~test files).  Range lemmas (L1--L4)
+(20{,}540~tests across 233~test files).  Range lemmas (L1--L4)
 are checked on every kernel invocation.  Monotonicity lemmas
 (L14--L16) are verified by directed perturbation tests.
 Lipschitz bounds (L10--L13, L32) are confirmed by comparing
@@ -1460,7 +1468,7 @@ Convergence lemmas (L39, L43--L44) are verified by the
 orientation script (section~9) and the RCFT closure test
 suite.  The full lemma verification is reproducible:
 \texttt{pytest tests/} exercises every lemma through
-parametrized tests spanning all 18~domains.
+parametrized tests spanning all 23~domains.
 
 
 % ============================================================
@@ -1948,7 +1956,7 @@ chosen lens's dialect; (3)~reconcile the ledger separately; and
 (4)~publish provenance so readers can verify that the Rosetta
 statements correspond to a closed seam.  The meanings of the
 columns remain stable while the dialect changes---this is the
-mechanism by which 18~domains speak to each other through a
+mechanism by which 23~domains speak to each other through a
 shared grammar.
 
 
@@ -2172,11 +2180,11 @@ axiom's own claims about itself.
 \section{Demonstrated Scope}\label{sec:scope}
 % ============================================================
 
-The architecture has been validated across 18~domain closures,
-7{,}875~automated tests, and 406~scale-ladder objects spanning
-61~orders of magnitude.
+The architecture has been validated across 23~domain closures,
+20{,}540~automated tests across 233~test files, and 406~scale-ladder
+objects spanning 61~orders of magnitude.
 
-\subsection{The 18 domains}
+\subsection{The 23 domains}
 
 \begin{center}
 \begin{tabular}{@{}clc@{}}
@@ -2201,6 +2209,11 @@ The architecture has been validated across 18~domain closures,
 16 & Continuity theory & Continuity law closures \\
 17 & Consciousness & 20 systems, 7 theorems \\
 18 & Awareness-cognition & 34 organisms, 10 thms \\
+19 & Clinical neuroscience & 10-channel cortical kernel \\
+20 & Spacetime memory & 40 entities, budget-surface kernel \\
+21 & Ecology & Population/community closures \\
+22 & Immunology & Adaptive-immunity closures \\
+23 & Information theory & Channel/coding closures \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -2209,7 +2222,7 @@ Every domain closure supplies a declared adapter $N_K$ that
 produces a bounded trace.  After embedding, the kernel outputs
 $(F, \omega, S, C, \kappa, \IC)$ are the same mathematical objects
 in every domain.  Cross-domain comparison is therefore mechanical,
-not interpretive.  The 18~domains draw on established
+not interpretive.  The 23~domains draw on established
 physics~\cite{pdg2024,goldstein2002classical,landau1976mechanics,misner1973gravitation},
 nuclear structure~\cite{weizsacker1935,bethe1936},
 quantum field theory~\cite{gross1973,politzer1973,higgs1964,wilson1974confinement},
@@ -2224,20 +2237,24 @@ and evolutionary biology~\cite{darwin1859origin}.
 \toprule
 \textbf{Metric} & \textbf{Count} \\
 \midrule
-Automated tests & 7{,}875 \\
-Test files & 121 \\
+Reference implementation & v2.3.3 \\
+Automated tests & 20{,}540 \\
+Test files & 233 \\
 Structural identities & 44 \\
 Lemmas & 47 \\
-Formally tagged objects & 546 \\
-Domain closures & 18 \\
-Closure modules & 217 \\
-Casepacks & 17 \\
+Formally tagged objects ($\sim$) & 620 \\
+Domain theorems (cumulative) & 752 \\
+Domain closures & 23 \\
+Closure modules & 246 \\
+Casepacks & 26 \\
 Scale-ladder objects & 406 \\
 Dynamic range & 61 orders of magnitude \\
-Contracts (YAML) & 13 \\
+Contracts (YAML) & 23 \\
 Schemas (JSON Schema 2020-12) & 17 \\
-Papers (LaTeX) & 9 \\
-Bibliography entries & 109 \\
+Papers (LaTeX) & 24 \\
+Bibliography entries & 200 \\
+C99 orchestration assertions & 326 \\
+C++ accelerator assertions & 434 \\
 \bottomrule
 \end{tabular}}
 \end{center}
@@ -2263,7 +2280,7 @@ $\Delta = 0.0194$.  For a geometric-slaughter case
 $\IC = 0.0308$, $\Delta = 0.445$---one near-zero channel
 drives $\IC$ toward $\eps$ while $F$ remains moderate.
 The bound holds with zero violations across $10{,}162$~directed
-identity tests spanning all 18~domains (reproduced by the
+identity tests spanning all 23~domains (reproduced by the
 atomic-physics Tier-1 proof script in the repository).
 
 \paragraph{Log-integrity relation ($\IC = e^\kappa$).}
@@ -2331,9 +2348,8 @@ admits traces with $\IC/F < 0.5$ into \regime{Stable}; dropping
 the three-valued verdict forces genuinely non-evaluable
 casepacks into \regime{nonconformant}, producing false
 violations; and unfreezing any parameter mid-run breaks seam
-residual closure ($|s| > \tolseam$).  Each removal produces a
-specific, reproducible failure mode that the full architecture
-prevents~\cite{umcpmetadatarepo}.
+residual closure ($|s| > \tolseam$).
+Each failure mode is specific and reproducible~\cite{umcpmetadatarepo}.
 
 The five incoherences of standard scientific
 logic---arbitrary thresholds, boolean verdicts, domain-locked
@@ -2343,16 +2359,15 @@ The replacement is a grammar: a~fixed set of rules that
 every claim must follow, where the rules are derived from
 the structure of measurement, not prescribed from outside.
 
-The grammar has been validated across 18~domains, 406~objects,
-61~orders of magnitude, and 7{,}875~automated tests.  It produces
+The grammar has been validated across 23~domains, 406~objects,
+61~orders of magnitude, and 20{,}540~automated tests.  It produces
 the same verdicts regardless of which agent operates it, because
 the structure measures---not the agent~\cite{paulus2025umcp}.
 
 \begin{acknowledgments}
 The formal specification, frozen contract, and validator suite are
-maintained in the UMCP reference
-implementation~\cite{umcpmetadatarepo} and described
-in~\cite{paulus2025umcp,paulus2025episteme}.
+maintained in the UMCP reference implementation~\cite{umcpmetadatarepo}
+and described in~\cite{paulus2025umcp,paulus2025episteme}.
 \end{acknowledgments}
 
 % ============================================================
@@ -2373,56 +2388,83 @@ context needed for interpretation.
 \centering
 \begin{tikzpicture}[
   tier/.style={
-    draw, thick, rounded corners=4pt,
-    minimum width=8.0cm, minimum height=1.8cm,
-    text width=7.4cm, align=center,
-    font=\small, line width=0.5pt
+    draw, rounded corners=6pt,
+    minimum width=13cm, minimum height=3.0cm,
+    text width=12.3cm, align=center,
+    line width=1.0pt
   },
-  fwd/.style={-{Stealth[length=5pt]}, line width=0.8pt},
-  back/.style={-{Stealth[length=4pt]}, line width=0.6pt,
-    red!55!black, densely dashed}]
+  fwd/.style={-{Stealth[length=9pt,width=6pt]}, line width=1.5pt},
+  back/.style={-{Stealth[length=7pt,width=5pt]}, line width=1.0pt,
+    red!60!black, densely dashed}]
 
-% Tier boxes — full column width, generous spacing
-\node[tier, fill=blue!8, draw=blue!40!black] (t1) at (0,4.2)
-  {\textbf{Tier-1: Kernel}\\[3pt]
-   {\scriptsize $K\!: [0,1]^n\!\times\!\Delta^n
-     \to (F,\omega,S,C,\kappa,\IC)$}\\[-1pt]
-   {\scriptsize identities, constants, 3 effective DOF}};
+%% --- Tier-1 ---
+\node[tier, fill=blue!13, draw=blue!55!black] (t1) at (0,8.2) {
+  \textbf{\large Tier-1\;|\;The Kernel}\\[5pt]
+  {\normalsize $K:\,[0,1]^n \!\times\! \Delta^n
+    \;\longrightarrow\;
+    \bigl(F,\;\omega,\;S,\;C,\;\kappa,\;\IC\bigr)$}\\[3pt]
+  {\small 47~proven lemmas\enspace$\cdot$\enspace
+    44~structural identities\enspace$\cdot$\enspace
+    3~effective DOF ($F$,\,$\kappa$,\,$C$)}\\[1pt]
+  {\small 5~frozen constants
+    ($\varepsilon$,\,$p$,\,$\alpha$,\,$\lambda$,\,$\mathrm{tol}$)\enspace$\cdot$\enspace
+    \textbf{domain-independent, immutable}}
+};
 
-\node[tier, fill=green!8, draw=green!40!black] (t0) at (0,2.1)
-  {\textbf{Tier-0: Protocol}\\[3pt]
-   {\scriptsize embedding, gates, seam, contracts}\\[-1pt]
-   {\scriptsize regime classification, SHA-256}};
+%% --- Tier-0 ---
+\node[tier, fill=green!13, draw=green!55!black] (t0) at (0,4.1) {
+  \textbf{\large Tier-0\;|\;Protocol}\\[5pt]
+  {\normalsize embedding\enspace$\cdot$\enspace
+    regime gates\enspace$\cdot$\enspace
+    seam calculus\enspace$\cdot$\enspace
+    contracts\enspace$\cdot$\enspace
+    SHA-256}\\[4pt]
+  {\small \textsc{conformant}\,/\,\textsc{nonconformant}\,/\,\textsc{non\_evaluable}%
+    \enspace$\cdot$\enspace
+    Python\,+\,C99 orchestration\,+\,C++ accelerator\enspace$\cdot$\enspace
+    \textbf{frozen per run}}
+};
 
-\node[tier, fill=orange!8, draw=orange!40!black] (t2) at (0,0)
-  {\textbf{Tier-2: Expansion}\\[3pt]
-   {\scriptsize 18 domain closures, channel selection}\\[-1pt]
-   {\scriptsize entity catalogs, normalization}};
+%% --- Tier-2 ---
+\node[tier, fill=orange!13, draw=orange!55!black] (t2) at (0,0) {
+  \textbf{\large Tier-2\;|\;Expansion Space}\\[5pt]
+  {\normalsize 23~domain closures\enspace$\cdot$\enspace
+    channel selection\enspace$\cdot$\enspace
+    entity catalogs\enspace$\cdot$\enspace
+    normalization}\\[4pt]
+  {\small 752~domain theorems\enspace$\cdot$\enspace
+    20{,}540~automated tests\enspace$\cdot$\enspace
+    61~orders of magnitude\enspace$\cdot$\enspace
+    \textbf{freely extensible}}
+};
 
-% Forward arrows (right side) — dependency flows downward
-\draw[fwd, blue!50!black]
-  ([xshift=8pt]t1.south) -- ([xshift=8pt]t0.north)
-  node[midway, right=3pt, font=\scriptsize] {computes};
-\draw[fwd, green!50!black]
-  ([xshift=8pt]t0.south) -- ([xshift=8pt]t2.north)
-  node[midway, right=3pt, font=\scriptsize] {validates};
+%% --- Forward arrows (right of center) ---
+\draw[fwd, blue!60!black]
+  ([xshift=50pt]t1.south) -- ([xshift=50pt]t0.north)
+  node[midway, right=7pt, font=\small, text=blue!70!black]
+    {\emph{computes}};
+\draw[fwd, green!60!black]
+  ([xshift=50pt]t0.south) -- ([xshift=50pt]t2.north)
+  node[midway, right=7pt, font=\small, text=green!70!black]
+    {\emph{validates}};
 
-% Forbidden back-edges (left side) — with prohibition marks
+%% --- Forbidden back-edges (left of center) ---
 \draw[back]
-  ([xshift=-8pt]t2.north) -- ([xshift=-8pt]t0.south)
-  node[midway, font=\bfseries\scriptsize,
-    text=red!55!black, left=3pt] {\texttimes};
+  ([xshift=-50pt]t2.north) -- ([xshift=-50pt]t0.south)
+  node[midway, font=\bfseries\normalsize,
+    text=red!60!black, left=6pt] {\texttimes};
 \draw[back]
-  ([xshift=-8pt]t0.north) -- ([xshift=-8pt]t1.south)
-  node[midway, font=\bfseries\scriptsize,
-    text=red!55!black, left=3pt] {\texttimes};
+  ([xshift=-50pt]t0.north) -- ([xshift=-50pt]t1.south)
+  node[midway, font=\bfseries\normalsize,
+    text=red!60!black, left=6pt] {\texttimes};
 
-% Immutability annotation
-\node[font=\small, text=black!50,
-  anchor=north, text width=7.4cm, align=center]
-  at (0, -1.0)
-  {One-way dependency: Tier-1\,$\to$\,Tier-0\,$\to$\,Tier-2.
-   No back-edges within a frozen run.};
+%% --- Footer ---
+\node[font=\small, text=black!60, text width=13cm, align=center]
+  at (0,-2.4)
+  {One-way dependency within a frozen run:\;
+   Tier-1\,$\to$\,Tier-0\,$\to$\,Tier-2.\;
+   Back-edges (\texttimes) are structurally forbidden.\;
+   Promotion Tier-2\,$\to$\,Tier-1 requires a formal seam weld across runs.};
 
 \end{tikzpicture}
 \caption{Three-tier architecture.  Dependency flows
@@ -2435,54 +2477,65 @@ Tier-2 to Tier-1 requires a formal seam weld.}
 \label{fig:tiers}
 \end{figure*}
 
-% -------------------------------------------------------------
-% Figure: Regime Partition (placed after Tiers for layout)
+% Figure 2: Regime Partition
 % -------------------------------------------------------------
 \begin{figure*}[t!]
 \centering
 \begin{tikzpicture}
-  % Horizontal stacked bar — full width
-  \def\totalw{12.0}
-  \def\barh{1.2}
+  \def\totalw{13.0}
+  \def\barh{1.8}
+  \def\xs{1.625}    % Stable right edge  (12.5% of 13 cm)
+  \def\xw{4.797}    % Watch right edge  (12.5+24.4 = 36.9%)
 
-  % Filled regions proportional to Fisher-space volume
-  \fill[green!25, draw=green!50!black, line width=0.4pt]
-    (0,0) rectangle (1.5,\barh);
-  \fill[yellow!25, draw=yellow!60!black, line width=0.4pt]
-    (1.5,0) rectangle (4.428,\barh);
-  \fill[red!15, draw=red!40!black, line width=0.4pt]
-    (4.428,0) rectangle (\totalw,\barh);
+  %% --- Filled segments ---
+  \fill[green!35, draw=green!65!black, line width=0.7pt]
+    (0,0) rectangle (\xs,\barh);
+  \fill[yellow!55!orange!20, draw=yellow!70!orange!40, line width=0.7pt]
+    (\xs,0) rectangle (\xw,\barh);
+  \fill[red!25, draw=red!55!black, line width=0.7pt]
+    (\xw,0) rectangle (\totalw,\barh);
 
-  % Outer frame
-  \draw[line width=0.6pt] (0,0) rectangle (\totalw,\barh);
+  %% --- Outer frame ---
+  \draw[line width=0.9pt, black!75] (0,0) rectangle (\totalw,\barh);
 
-  % Labels inside each segment
-  \node[font=\small, align=center]
-    at (0.75, 0.6) {\textbf{Stable}\\[-2pt]
-    {\scriptsize 12.5\%}};
-  \node[font=\small, align=center]
-    at (2.964, 0.6) {\textbf{Watch}\\[-2pt]
-    {\scriptsize 24.4\%}};
-  \node[font=\small, align=center]
-    at (8.214, 0.6) {\textbf{Collapse}\\[-2pt]
-    {\scriptsize 63.1\%}};
+  %% --- Threshold dividers (dashed, full bar height) ---
+  \draw[line width=0.9pt, black!50, dashed]
+    (\xs, 0) -- (\xs, \barh);
+  \draw[line width=0.9pt, black!50, dashed]
+    (\xw, 0) -- (\xw, \barh);
 
-  % Threshold markers with tick lines below
-  \draw[line width=0.5pt, black!50]
-    (1.5, -0.08) -- (1.5, -0.35);
-  \draw[line width=0.5pt, black!50]
-    (4.428, -0.08) -- (4.428, -0.35);
-  \node[font=\small, text=black!65, below]
-    at (1.5, -0.35) {$\omega = 0.038$};
-  \node[font=\small, text=black!65, below]
-    at (4.428, -0.35) {$\omega = 0.30$};
+  %% --- Inside labels ---
+  \node[font=\small, align=center] at (0.8125, 0.9) {
+    \textbf{Stable}\\[2pt]
+    {\normalsize 12.5\%}\\[1pt]
+    {\scriptsize all 4 gates}};
+  \node[font=\small, align=center] at (3.211, 0.9) {
+    \textbf{Watch}\\[2pt]
+    {\normalsize 24.4\%}\\[1pt]
+    {\scriptsize partial}};
+  \node[font=\small, align=center] at (8.899, 0.9) {
+    \textbf{Collapse}\\[2pt]
+    {\normalsize 63.1\%}\\[1pt]
+    {\scriptsize $\omega \geq 0.30$}};
 
-  % Gate annotation — compact, below
-  \node[font=\small, text=black!55,
-    text width=10cm, align=center]
-    at (6.0, -0.95)
-    {Stable is conjunctive: $\omega < 0.038$,\;$F > 0.90$,
-     \;$S < 0.15$,\;$C < 0.14$};
+  %% --- Threshold ticks and labels below ---
+  \draw[line width=0.7pt, black!55]
+    (\xs, -0.1) -- (\xs, -0.45);
+  \draw[line width=0.7pt, black!55]
+    (\xw, -0.1) -- (\xw, -0.45);
+
+  \node[font=\small, text=black!70, below]
+    at (\xs, -0.45) {$\omega = 0.038$};
+  \node[font=\small, text=black!70, below]
+    at (\xw, -0.45) {$\omega = 0.30$};
+
+  %% --- Gate condition annotation ---
+  \node[font=\footnotesize, text=black!60, text width=13cm, align=center]
+    at (6.5, -1.2)
+    {Stable is conjunctive:
+     $\omega < 0.038\;\wedge\;F > 0.90\;\wedge\;S < 0.15\;\wedge\;C < 0.14$
+     \;(87.5\% of the manifold lies outside Stable).};
+
 \end{tikzpicture}
 \caption{Regime partition of the Bernoulli manifold in
 Fisher space~\cite{fisher1925,amari2016information}, with
@@ -2494,52 +2547,65 @@ be satisfied simultaneously.}
 \label{fig:regimes}
 \end{figure*}
 
-% -------------------------------------------------------------
-% Figure: The Discourse Spine
+% Figure 3: The Discourse Spine
 % -------------------------------------------------------------
 \begin{figure*}[t!]
 \centering
 \begin{tikzpicture}[
   box/.style={
-    draw, thick, rounded corners=4pt,
-    minimum width=2.8cm, minimum height=1.2cm,
+    draw, rounded corners=5pt,
+    minimum width=2.8cm, minimum height=2.0cm,
     text width=2.6cm, align=center,
-    font=\footnotesize, fill=#1, line width=0.5pt
+    font=\small, line width=0.7pt, fill=#1
   },
-  arr/.style={-{Stealth[length=6pt]}, line width=0.8pt,
-    black!45},
+  arr/.style={-{Stealth[length=7pt,width=5pt]}, line width=1.2pt, black!45},
   ann/.style={font=\scriptsize, text=black!60,
     text width=2.6cm, align=center}]
 
-% Five stops — evenly spaced
-\node[box=blue!8]    (c) at (0,0)
-  {\textbf{Contract}\\[-1pt]{\scriptsize freeze}};
-\node[box=green!8]   (n) at (3.6,0)
-  {\textbf{Canon}\\[-1pt]{\scriptsize tell}};
-\node[box=yellow!10] (l) at (7.2,0)
-  {\textbf{Closures}\\[-1pt]{\scriptsize publish}};
-\node[box=orange!8]  (g) at (10.8,0)
-  {\textbf{Ledger}\\[-1pt]{\scriptsize reconcile}};
-\node[box=red!7]     (s) at (14.4,0)
-  {\textbf{Stance}\\[-1pt]{\scriptsize read}};
+%% --- Five stops ---
+\node[box=blue!14]    (c) at (0,0) {
+  \textbf{Contract}\\[2pt]
+  {\footnotesize freeze}\\[1pt]
+  {\scriptsize sources, norms,\\[-1pt] thresholds}};
+\node[box=green!14]   (n) at (3.6,0) {
+  \textbf{Canon}\\[2pt]
+  {\footnotesize tell}\\[1pt]
+  {\scriptsize five words}};
+\node[box=yellow!22]  (l) at (7.2,0) {
+  \textbf{Closures}\\[2pt]
+  {\footnotesize publish}\\[1pt]
+  {\scriptsize threshold gates}};
+\node[box=orange!16]  (g) at (10.8,0) {
+  \textbf{Ledger}\\[2pt]
+  {\footnotesize reconcile}\\[1pt]
+  {\scriptsize debit/credit}};
+\node[box=red!10]     (s) at (14.4,0) {
+  \textbf{Stance}\\[2pt]
+  {\footnotesize read}\\[1pt]
+  {\scriptsize derived,\\[-1pt] never asserted}};
 
-% Connecting arrows
+%% --- Connecting arrows ---
 \draw[arr] (c) -- (n);
 \draw[arr] (n) -- (l);
 \draw[arr] (l) -- (g);
 \draw[arr] (g) -- (s);
 
-% Annotations below each box — all same font
-\node[ann, below=8pt] at (c.south)
-  {Define rules\\before evidence};
-\node[ann, below=8pt] at (n.south)
-  {Narrate with\\five words};
-\node[ann, below=8pt] at (l.south)
-  {Publish\\threshold gates};
-\node[ann, below=8pt] at (g.south)
-  {Debit/credit\\must balance};
-\node[ann, below=8pt] at (s.south)
-  {Derived verdict\\never asserted};
+%% --- Annotations below each box ---
+\node[ann, below=10pt] at (c.south) {Define rules\\before evidence};
+\node[ann, below=10pt] at (n.south) {Narrate with\\five words};
+\node[ann, below=10pt] at (l.south) {Publish\\threshold gates};
+\node[ann, below=10pt] at (g.south) {Debit/credit\\must balance};
+\node[ann, below=10pt] at (s.south) {Derived verdict\\never asserted};
+
+%% --- Five-word vocabulary footer ---
+\node[font=\scriptsize, text=black!55, text width=15cm, align=center]
+  at (7.2, -2.8)
+  {Canon vocabulary:\;
+   \textbf{Drift}\,($\omega$)\enspace$\cdot$\enspace
+   \textbf{Fidelity}\,($F$)\enspace$\cdot$\enspace
+   \textbf{Roughness}\,($C$)\enspace$\cdot$\enspace
+   \textbf{Return}\,($\tau_R$)\enspace$\cdot$\enspace
+   \textbf{Integrity}\,($\IC$)};
 
 \end{tikzpicture}
 \caption{The discourse spine: every claim follows five
@@ -2561,27 +2627,49 @@ any stop removes a provable guarantee.}
 \centering
 \begin{tikzpicture}
 \begin{axis}[
-  width=0.7\textwidth,
-  height=7cm,
+  width=0.88\textwidth,
+  height=9cm,
   xmode=log,
   xlabel={Dead-channel value $c_\mathrm{dead}$},
-  ylabel={$\IC/F$},
+  ylabel={Kernel invariant value},
   xmin=1e-8, xmax=1,
-  ymin=0, ymax=1.15,
+  ymin=0, ymax=1.12,
   grid=both,
-  grid style={gray!20, line width=0.2pt},
-  major grid style={gray!30, line width=0.3pt},
+  grid style={gray!18, line width=0.2pt},
+  major grid style={gray!32, line width=0.4pt},
   tick label style={font=\scriptsize},
   label style={font=\small},
   x dir=reverse,
-  every axis plot/.append style={line width=1.2pt},
-  legend style={font=\scriptsize, at={(0.03,0.97)},
-    anchor=north west, draw=none, fill=white, fill opacity=0.85,
-    text opacity=1}]
+  clip=false,
+  legend style={font=\scriptsize, at={(0.97,0.62)},
+    anchor=east, draw=gray!40, fill=white, fill opacity=0.92,
+    text opacity=1, row sep=2pt, inner sep=4pt}]
 
-% Main curve
-\addplot[blue!70!black, mark=*, mark size=1.6pt,
-  mark options={fill=blue!50!black}]
+%% Shaded floor zone
+\addplot[fill=red!7, draw=none, forget plot]
+  coordinates {(1e-8,0) (1e-8,0.114) (0.999,0.114) (0.999,0)} \closedcycle;
+
+%% F line: arithmetic mean, stays healthy
+\addplot[orange!70!black, dashed, line width=1.4pt,
+  mark=none]
+  coordinates {
+  (0.999, 0.999)
+  (0.5,   0.937)
+  (0.1,   0.887)
+  (0.01,  0.875)
+  (1e-3,  0.874)
+  (1e-4,  0.874)
+  (1e-5,  0.874)
+  (1e-6,  0.874)
+  (1e-7,  0.874)
+  (1e-8,  0.874)
+};
+\addlegendentry{$F$ (arithmetic mean — stays healthy)}
+
+%% IC/F curve: collapses to 0.114
+\addplot[blue!72!black, line width=1.7pt,
+  mark=*, mark size=2.2pt,
+  mark options={fill=blue!55!black, draw=blue!35!black}]
   coordinates {
   (0.999, 1.000)
   (0.5,   0.978)
@@ -2594,34 +2682,49 @@ any stop removes a provable guarantee.}
   (1e-7,  0.152)
   (1e-8,  0.114)
 };
-\addlegendentry{$\IC/F$ vs.\ $c_\mathrm{dead}$}
+\addlegendentry{$\IC/F$ (geometric/arithmetic ratio — collapses)}
 
-% Asymptotic floor — dashed reference line
-\addplot[dashed, red!55!black, line width=0.7pt,
-  forget plot]
+%% Floor reference line
+\addplot[red!62!black, dashed, line width=1.0pt]
   coordinates {(1e-8, 0.114) (0.999, 0.114)};
-\addlegendentry{floor at $\eps = 10^{-8}$}
+\addlegendentry{$\IC/F$ floor $= 0.114$ at $c_\mathrm{dead} = \eps$}
 
-% Floor value label — in open space, upper left
-\node[font=\scriptsize, text=red!55!black,
-  fill=white, fill opacity=0.85, text opacity=1,
-  inner sep=2pt]
-  at (axis cs:3e-6, 0.85)
-  {$\IC/F \to 0.114$ as $c_\mathrm{dead} \to \eps$};
+%% F healthy annotation — inside chart near middle
+\node[font=\scriptsize, text=orange!72!black,
+  fill=white, fill opacity=0.88, text opacity=1,
+  inner sep=2.5pt, anchor=south]
+  at (axis cs:1e-4, 0.895)
+  {$F \to 0.874$\;(7 healthy channels preserve the mean)};
+
+%% IC/F floor annotation — inside chart, below floor line
+\node[font=\scriptsize, text=red!62!black,
+  fill=white, fill opacity=0.88, text opacity=1,
+  inner sep=2.5pt, anchor=north]
+  at (axis cs:1e-4, 0.100)
+  {$\IC/F \to 0.114$ as $c_\mathrm{dead} \to \eps = 10^{-8}$};
+
+%% Gap annotation — text only, no arrows, in middle gap region
+\node[font=\scriptsize, text=gray!58,
+  fill=white, fill opacity=0.88, text opacity=1,
+  inner sep=2.5pt, anchor=south west]
+  at (axis cs:1e-3, 0.505)
+  {gap $\Delta = F - \IC$ widens};
 
 \end{axis}
 \end{tikzpicture}
 \caption{Geometric slaughter: one dead channel destroys
-multiplicative coherence.  An 8-channel trace with
-7~channels at $c = 0.999$ and 1~channel at
-$c_\mathrm{dead}$.  As the dead channel approaches
-$\eps = 10^{-8}$, $\IC/F$ drops to $\approx 0.114$
-while $F$ remains healthy at $0.874$.  This mechanism
-underlies confinement detection~\cite{wilson1974confinement}
-in the Standard Model closure~\cite{pdg2024}: the color
-channel at $c \approx \eps$ in hadrons produces
-$\IC/F < 0.04$, making the quark${\to}$hadron boundary
-visible as a $100{\times}$ drop.}
+multiplicative coherence while leaving the arithmetic mean
+nearly intact.  An 8-channel trace with 7~channels at
+$c = 0.999$ and 1~channel at $c_\mathrm{dead}$.  As the dead
+channel approaches $\eps = 10^{-8}$, $\IC/F$ (blue) drops
+from $1.000$ to $0.114$, but $F$ (orange) falls only from
+$0.999$ to $0.874$---a diverging heterogeneity gap
+$\Delta = F - \IC$.  This mechanism underlies confinement
+detection~\cite{wilson1974confinement} in the Standard Model
+closure~\cite{pdg2024}: the color channel at $c \approx \eps$
+in hadrons produces $\IC/F < 0.04$, making the
+quark${\to}$hadron boundary visible as a $100{\times}$ drop
+that $F$ alone would miss.}
 \label{fig:slaughter}
 \end{figure*}
 
@@ -2632,79 +2735,108 @@ visible as a $100{\times}$ drop.}
 \centering
 \begin{tikzpicture}
 \begin{axis}[
-  width=0.7\textwidth,
-  height=7cm,
+  width=0.85\textwidth,
+  height=8.5cm,
   xlabel={Channel value $c$},
   ylabel={$f(c) = S(c) + \kappa(c)$},
   xmin=0.01, xmax=0.99,
-  ymin=-3.0, ymax=0.65,
+  ymin=-3.0, ymax=0.72,
   grid=both,
   grid style={gray!20, line width=0.2pt},
-  major grid style={gray!30, line width=0.3pt},
+  major grid style={gray!32, line width=0.4pt},
   tick label style={font=\scriptsize},
   label style={font=\small},
+  xtick={0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9},
   ytick={-3,-2.5,-2,-1.5,-1,-0.5,0,0.5},
-  every axis plot/.append style={line width=1.2pt},
+  clip=false,
   legend style={font=\scriptsize, at={(0.03,0.03)},
-    anchor=south west, draw=none, fill=white,
-    fill opacity=0.85, text opacity=1}]
+    anchor=south west, draw=gray!40, fill=white,
+    fill opacity=0.92, text opacity=1, inner sep=4pt}]
 
-% Main curve with dense sampling
-\addplot[blue!70!black, smooth, samples=80,
-  domain=0.02:0.98]
+%% Background: red zone f < 0 (c < 0.5, collapse territory)
+\addplot[fill=red!5, draw=none, forget plot]
+  coordinates {(0.01,-3.0) (0.50,-3.0) (0.50,0.72) (0.01,0.72)} \closedcycle;
+
+%% Background: green zone f > 0 (c > 0.5, return territory)
+\addplot[fill=green!6, draw=none, forget plot]
+  coordinates {(0.50,-3.0) (0.99,-3.0) (0.99,0.72) (0.50,0.72)} \closedcycle;
+
+%% Equator divider
+\draw[black!22, line width=0.5pt, dashed]
+  (axis cs:0.5, -3.0) -- (axis cs:0.5, 0.72);
+
+%% Vertical guides at landmark x-positions
+\draw[brown!40, line width=0.5pt, densely dotted]
+  (axis cs:0.318, -3.0) -- (axis cs:0.318, 0.72);
+\draw[green!50!black!40, line width=0.5pt, densely dotted]
+  (axis cs:0.782, -3.0) -- (axis cs:0.782, 0.72);
+
+%% Main curve
+\addplot[blue!72!black, smooth, samples=120,
+  domain=0.02:0.98, line width=1.8pt]
   {(1-x)*ln(x/(1-x))};
-\addlegendentry{$f(c) = (1{-}c)\ln\!\bigl[\frac{c}{1-c}\bigr]$}
+\addlegendentry{$f(c) = (1{-}c)\ln\!\bigl[\tfrac{c}{1-c}\bigr]$\;
+  (verified $<10^{-16}$ vs.\ closed form)}
 
-% Zero line for reference
-\draw[black!25, line width=0.4pt]
+%% Zero axis
+\draw[black!30, line width=0.5pt]
   (axis cs:0.01, 0) -- (axis cs:0.99, 0);
 
-% Equator: c = 1/2 — zero crossing
-\addplot[only marks, mark=*, mark size=2.5pt,
-  mark options={fill=red!65!black, draw=red!40!black},
+%% Region labels
+\node[font=\footnotesize, text=red!40!black, anchor=north, inner sep=2pt]
+  at (axis cs:0.255, 0.67) {$f < 0$};
+\node[font=\footnotesize, text=green!45!black, anchor=north, inner sep=2pt]
+  at (axis cs:0.745, 0.67) {$f > 0$};
+
+%% Equator: c = 1/2
+\addplot[only marks, mark=*, mark size=3.0pt,
+  mark options={fill=red!72!black, draw=red!45!black},
   forget plot]
   coordinates {(0.50, 0.0)};
-\node[font=\scriptsize, text=red!65!black,
-  fill=white, fill opacity=0.85, text opacity=1,
-  inner sep=2pt, anchor=south west]
-  at (axis cs:0.53, 0.08)
-  {$c = \tfrac{1}{2}$:\; $f = 0$};
+\node[font=\scriptsize, text=red!72!black,
+  fill=white, fill opacity=0.88, text opacity=1,
+  inner sep=2.5pt, anchor=south west]
+  at (axis cs:0.515, 0.04)
+  {$c = \tfrac{1}{2}$:\enspace$f = 0$\enspace(equator)};
 
-% Maximum: c* = 0.782
-\addplot[only marks, mark=triangle*, mark size=3pt,
-  mark options={fill=green!55!black, draw=green!35!black},
+%% Maximum: c* = 0.7822
+\addplot[only marks, mark=triangle*, mark size=3.5pt,
+  mark options={fill=green!60!black, draw=green!35!black},
   forget plot]
   coordinates {(0.782, 0.279)};
-\node[font=\scriptsize, text=green!55!black,
-  fill=white, fill opacity=0.85, text opacity=1,
-  inner sep=2pt, anchor=south]
-  at (axis cs:0.782, 0.38)
-  {$c^* = 0.7822$:\; max};
+\node[font=\scriptsize, text=green!60!black,
+  fill=white, fill opacity=0.88, text opacity=1,
+  inner sep=2.5pt, anchor=south]
+  at (axis cs:0.782, 0.32)
+  {$c^* = 0.7822$:\enspace$f_{\max}$};
 
-% Cardano root: c_trap = 0.318
-\addplot[only marks, mark=square*, mark size=2.2pt,
-  mark options={fill=orange!70!black, draw=orange!45!black},
+%% Cardano root: c_trap = 0.3178
+\addplot[only marks, mark=square*, mark size=2.5pt,
+  mark options={fill=brown!75, draw=brown!50},
   forget plot]
   coordinates {(0.318, -0.521)};
-\node[font=\scriptsize, text=orange!70!black,
-  fill=white, fill opacity=0.85, text opacity=1,
-  inner sep=2pt, anchor=north west]
-  at (axis cs:0.35, -0.62)
-  {$c_\mathrm{trap} = 0.318$};
+\node[font=\scriptsize, text=brown!75!black,
+  fill=white, fill opacity=0.88, text opacity=1,
+  inner sep=2.5pt, anchor=north west]
+  at (axis cs:0.338, -0.56)
+  {$c_\mathrm{trap} = 0.318$\enspace($x^3+x-1=0$)};
 
 \end{axis}
 \end{tikzpicture}
 \caption{The function
 $f(c) = S(c) + \kappa(c)$ on a
 single Bernoulli channel, verified to $< 10^{-16}$ against
-the closed form $f(c) = (1{-}c)\ln[c/(1{-}c)]$.  Three
-structural landmarks: the \emph{equator} $c = \tfrac{1}{2}$
-where $f = 0$ exactly (quintuple fixed point); the
-\emph{logistic self-dual} point $c^* = 0.7822$ where $f$
-reaches its global maximum; and the \emph{Cardano root}
-$c_\mathrm{trap} = 0.3178$ of $x^3 + x - 1 = 0$ where
-$\Gam$ first drops below~1.  These three points form the
-skeleton of the Bernoulli manifold.}
+the closed form $f(c) = (1{-}c)\ln[c/(1{-}c)]$.
+Background shading marks the two regimes: $f < 0$ (left,
+red, $\kappa$ dominates) and $f > 0$ (right, green, $S$
+dominates).  Three structural landmarks: the \emph{equator}
+$c = \tfrac{1}{2}$ where $f = 0$ exactly (quintuple fixed
+point); the \emph{logistic self-dual} point $c^* = 0.7822$
+where $f$ reaches its global maximum; and the
+\emph{Cardano root} $c_\mathrm{trap} = 0.3178$ of
+$x^3 + x - 1 = 0$ where $\Gam$ first drops below~1.
+These three points form the skeleton of the Bernoulli
+manifold.}
 \label{fig:equator}
 \end{figure*}
 
@@ -2715,8 +2847,8 @@ skeleton of the Bernoulli manifold.}
 \centering
 \begin{tikzpicture}
 \begin{axis}[
-  width=0.55\textwidth,
-  height=0.55\textwidth,
+  width=0.62\textwidth,
+  height=0.62\textwidth,
   xlabel={Fidelity $F$},
   ylabel={Composite integrity $\IC$},
   xmin=0, xmax=1.05,
@@ -2727,64 +2859,65 @@ skeleton of the Bernoulli manifold.}
   label style={font=\small},
   grid=both,
   grid style={gray!15, line width=0.2pt},
-  major grid style={gray!25, line width=0.3pt},
+  major grid style={gray!27, line width=0.35pt},
   axis equal image,
   clip=false]
 
-% Solvable region — below diagonal
-\addplot[fill=blue!8, draw=none, forget plot]
+%% Solvable region — blue tint below diagonal
+\addplot[fill=blue!11, draw=none, forget plot]
   coordinates {(0,0) (1,1) (1,0)} \closedcycle;
 
-% Non-physical region — above diagonal (hatched)
-\addplot[fill=red!5, draw=none,
+%% Non-physical region — hatched above diagonal
+\addplot[fill=red!7, draw=none,
   postaction={pattern=north east lines,
-    pattern color=red!18}, forget plot]
+    pattern color=red!22}, forget plot]
   coordinates {(0,0) (1,1) (0,1)} \closedcycle;
 
-% Diagonal: IC = F
-\addplot[blue!55!black, thick, line width=0.9pt,
+%% Diagonal: IC = F
+\addplot[blue!62!black, line width=1.4pt,
   forget plot]
   coordinates {(0,0) (1.02,1.02)};
 
-% Diagonal label — clearly above the line
-\node[font=\small, text=blue!55!black, rotate=45,
+%% Diagonal label
+\node[font=\small, text=blue!60!black, rotate=45,
   fill=white, fill opacity=0.9, text opacity=1,
   inner sep=2.5pt]
-  at (axis cs:0.72, 0.82)
+  at (axis cs:0.74, 0.83)
   {$\IC = F$};
 
-% Region labels
+%% Region labels
 \node[font=\footnotesize, text=blue!55!black]
-  at (axis cs:0.73, 0.22) {\textit{Solvable}};
-\node[font=\footnotesize, text=red!40!black, rotate=45]
-  at (axis cs:0.25, 0.62) {\textit{Non-physical}};
+  at (axis cs:0.75, 0.22) {\textit{Solvable}};
+\node[font=\footnotesize, text=red!42!black, rotate=45]
+  at (axis cs:0.22, 0.58) {\textit{Non-physical}};
 
-% Example points — homogeneous (near diagonal)
-\addplot[only marks, mark=*, mark size=3pt,
-  mark options={fill=blue!60!black}, forget plot]
-  coordinates {(0.60, 0.57)};
+%% Homogeneous point (near diagonal, high fidelity)
+\addplot[only marks, mark=*, mark size=3.2pt,
+  mark options={fill=blue!65!black}, forget plot]
+  coordinates {(0.60, 0.58)};
 \node[font=\scriptsize, anchor=south west, inner sep=2pt]
-  at (axis cs:0.63, 0.57) {Homogeneous};
+  at (axis cs:0.625, 0.58) {Homogeneous};
 
-% Example points — heterogeneous (far from diagonal)
-\addplot[only marks, mark=*, mark size=3pt,
-  mark options={fill=red!60!black}, forget plot]
-  coordinates {(0.60, 0.15)};
+%% Heterogeneous point (far from diagonal, same F)
+\addplot[only marks, mark=*, mark size=3.2pt,
+  mark options={fill=red!65!black}, forget plot]
+  coordinates {(0.60, 0.13)};
 \node[font=\scriptsize, anchor=north west, inner sep=2pt]
-  at (axis cs:0.63, 0.15) {Heterogeneous};
+  at (axis cs:0.625, 0.13) {Heterogeneous};
 
-% Gap annotation
-\draw[{Stealth[length=3pt]}-{Stealth[length=3pt]},
-  red!55!black, line width=0.6pt]
-  (axis cs:0.55, 0.17) -- (axis cs:0.55, 0.55);
-\node[font=\scriptsize, text=red!55!black,
+%% Gap arrow
+\draw[{Stealth[length=4pt,width=3.5pt]}-{Stealth[length=4pt,width=3.5pt]},
+  red!60!black, line width=0.8pt]
+  (axis cs:0.54, 0.15) -- (axis cs:0.54, 0.56);
+\node[font=\small, text=red!60!black,
   anchor=east, inner sep=2pt]
-  at (axis cs:0.53, 0.36) {$\Delta$};
+  at (axis cs:0.52, 0.36) {$\Delta$};
 
-% Recovery formula — bottom right, clear space
-\node[font=\scriptsize, text=blue!45!black,
-  anchor=north west, inner sep=1pt]
-  at (axis cs:0.30, 0.08)
+%% Recovery formula in bottom right
+\node[font=\scriptsize, text=blue!52!black,
+  fill=blue!4, draw=blue!20, rounded corners=2pt,
+  anchor=south east, inner sep=3pt]
+  at (axis cs:0.97, 0.02)
   {$c_{1,2} = F \pm \sqrt{F^2 - \IC^2}$};
 
 \end{axis}
@@ -2807,48 +2940,61 @@ has real solutions---not merely an algebraic inequality.}
 % -------------------------------------------------------------
 \begin{figure*}[t!]
 \centering
+\renewcommand{\arraystretch}{1.38}
+\setlength{\tabcolsep}{5pt}
+{\small
 \begin{tabular}{@{}llllll@{}}
 \toprule
-\textbf{Lens} & \textbf{Drift} & \textbf{Fidelity} & \textbf{Roughness} & \textbf{Return} & \textbf{Integrity} \\
+\rowcolor{blue!20}
+{\color{white}\textbf{Lens}} &
+{\color{white}\textbf{Drift}} &
+{\color{white}\textbf{Fidelity}} &
+{\color{white}\textbf{Roughness}} &
+{\color{white}\textbf{Return}} &
+{\color{white}\textbf{Integrity}} \\
 \midrule
-Epistemology &
+\rowcolor{gray!7}
+\textbf{Epistemology} &
   Change in belief/evidence &
   Retained warrant &
   Inference friction &
   Justified re-entry &
-  \emph{(read from ledger)} \\[3pt]
-Ontology &
+  \textit{\color{blue!50!black}(read from ledger)} \\
+\textbf{Ontology} &
   State transition &
   Conserved properties &
   Heterogeneity/seams &
   Restored coherence &
-  \emph{(read from ledger)} \\[3pt]
-Phenomenology &
+  \textit{\color{blue!50!black}(read from ledger)} \\
+\rowcolor{gray!7}
+\textbf{Phenomenology} &
   Perceived shift &
   Stable features &
   Distress/bias/effort &
   Coping/repair &
-  \emph{(read from ledger)} \\[3pt]
-History &
+  \textit{\color{blue!50!black}(read from ledger)} \\
+\textbf{History} &
   Periodization &
   Continuity &
   Rupture/confound &
   Reconciliation &
-  \emph{(read from ledger)} \\[3pt]
-Policy &
+  \textit{\color{blue!50!black}(read from ledger)} \\
+\rowcolor{gray!7}
+\textbf{Policy} &
   Regime shift &
   Mandate persistence &
   Friction/cost &
   Reinstatement &
-  \emph{(read from ledger)} \\[3pt]
-Semiotics &
+  \textit{\color{blue!50!black}(read from ledger)} \\
+\textbf{Semiotics} &
   Sign drift &
   Ground persistence &
   Translation friction &
   Interpretant closure &
-  \emph{(read from ledger)} \\
+  \textit{\color{blue!50!black}(read from ledger)} \\
 \bottomrule
 \end{tabular}
+}
 \caption{The Rosetta: cross-domain translation of the five
 words.  Each row is a \emph{lens}---an intellectual field
 whose dialect is mapped to the fixed operational definitions

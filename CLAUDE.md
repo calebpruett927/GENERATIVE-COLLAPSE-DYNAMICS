@@ -76,7 +76,7 @@ These numbers are compressed derivation chains. An agent with these numbers cann
 # Tier Violation Checklist
 - [ ] No Tier-1 symbol redefined
 - [ ] No diagnostic used as a gate
-- [ ] No Tier-2 closure modifies Tier-0 protocol
+- [ ] No Tier-246 closure modules modifies Tier-0 protocol
 - [ ] All frozen parameters from frozen_contract.py
 - [ ] Correct terminology (see .github/copilot-instructions.md table)
 - [ ] No external attribution of GCD structures
@@ -116,8 +116,7 @@ COMPUTED metrics refresh automatically. MANUAL metrics need one-line change in
 ## Project Structure
 
 - **Tier-1** (The Kernel): K: [0,1]ⁿ × Δⁿ → (F, ω, S, C, κ, IC) — the mathematical
-  function plus its identities (F+ω=1, IC≤F, IC=exp(κ), S≈f(F,C)), 47 lemmas, 44
-  structural identities, and structural constants (c*=0.7822, c_trap=0.3178).
+  function plus its identities (F+ω=1, IC≤F, IC=exp(κ), S≈f(F,C)), 47 lemmas, 44 structural identities, and structural constants (c*=0.7822, c_trap=0.3178).
   3 effective degrees of freedom (F, κ, C) — S is asymptotically determined by F and C.
   Rank classification: Rank-1 (homogeneous, 1 DOF), Rank-2 (2-channel, 2 DOF),
   Rank-3 (general, 3 DOF). Rank is measured, not chosen. See KERNEL_SPECIFICATION.md §4c.
@@ -127,7 +126,7 @@ COMPUTED metrics refresh automatically. MANUAL metrics need one-line change in
   frozen contract, regime gates, trace management, integrity ledger, and the full
   validation spine. No heap allocation in the hot path. Stable `extern "C"` ABI.
   The code is Tier-0; what it computes is Tier-1.
-- **Tier-2** (Expansion): `closures/` — 23 domain closures that choose which
+- **Tier-2** (Expansion): `closures/` — 23 domains closures that choose which
   real-world quantities become channels. Validated through Tier-0 against Tier-1.
 
 Key files: `src/umcp/frozen_contract.py` (constants), `src/umcp/kernel_optimized.py`

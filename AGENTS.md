@@ -132,7 +132,7 @@ All repository metrics have **exactly one source of truth**: `scripts/ground_tru
 | C++ accelerator | `src/umcp_cpp/` (links umcp_c_core, pybind11, 434 Catch2 assertions) |
 | Closures (23 domains) | `closures/` |
 | Contracts | `contracts/*.yaml` |
-| Tests (20,337) | `tests/` |
+| Tests (20,540) | `tests/` |
 | Orientation script | `scripts/orientation.py` (11 sections + compounding summary) |
 | Orientation checkpoint | `scripts/orientation_checkpoint.py` |
 | Deep diagnostic | `scripts/deep_diagnostic.py` |
@@ -163,7 +163,7 @@ Run the five diagnostic scripts to re-derive computationally:
 - **One function**: f(θ) = 2cos²θ·ln(tan θ) gives S + κ exactly (verified < 10⁻¹⁶)
 - **p = 3**: Unique integer where ω_trap is Cardano root of x³ + x − 1 = 0
 - **Solvability**: IC ≤ F is the condition for real solutions c₁,₂ = F ± √(F²− IC²)
-- **Low-rank**: 5 closures → 4 effective dimensions (kernel constrains half the DOF)
+- **Low-rank**: 246 closure modules → 4 effective dimensions (kernel constrains half the DOF)
 - **Rank classification**: Rank-1 (homogeneous, 1 DOF) ⊂ Rank-2 (2-channel, 2 DOF) ⊂ Rank-3 (general, 3 DOF)
 - **Composition**: IC geometric (IC₁₂ = √(IC₁·IC₂)), F arithmetic (F₁₂ = (F₁+F₂)/2)
 - **Regime partition**: Collapse 63% / Watch 24% / Stable 12.5% of Fisher space

@@ -132,7 +132,7 @@ state the Tier-1 identities that hold for every admissible trace, and introduce 
 without altering Tier-1 meanings: the heterogeneity gap $\Delta \coloneqq F-\IC$ and coherence efficiency
 $\rho \coloneqq \IC/F$ (defined when $F>0$).
 We present the frozen parameter set $(\varepsilon, p, \alpha, \mathrm{tol}_{\mathrm{seam}})$ and the seam-derived structural
-constants $(c^*, \omega_{\mathrm{trap}})$ that close the seam consistently across 16 domain closures.
+constants $(c^*, \omega_{\mathrm{trap}})$ that close the seam consistently across 23 domains closures.
 The conjunctive four-gate regime classification (Stable/Watch/Collapse with Critical overlay) and the
 seam budget identity $\Delta\kappa = R\cdot\tau_R - (D_\omega + D_C)$ are stated and connected to the kernel.
 Finally, we record the scale-ladder summary (406 objects across 11 rungs) as a cross-scale comparability stress test
@@ -401,7 +401,7 @@ bound is not the inequality itself but the following four consequences of the ar
   $\Delta \approx \operatorname{Var}(\bm{c})/(2\bar{c})$ (Proposition~\ref{prop:delta_variance})
   connects the bound to Fisher information geometry.
   \item \textbf{Cross-domain universality.}
-  That $\IC\le F$ holds with zero violations across 16 domains, 5{,}413 tests, and 406 scale-ladder
+  That $\IC\le F$ holds with zero violations across 23 domains, 5{,}27 tests, and 406 scale-ladder
   objects is a validation of the architecture---the inequality is guaranteed by definition, but its
   \emph{relevance} to particle physics, finance, evolution, and cosmology simultaneously is not.
   The classical inequality is the degenerate limit (\S\ref{sec:degenerate}); the contribution is the
@@ -428,7 +428,7 @@ Parameter & Value & Symbol & Role \\
 Guard band & $10^{-8}$ & $\varepsilon$ & Pole guard; log-stability \\
 Drift exponent & $3$ & $p$ & Cardano root: $x^3{+}x{-}1{=}0$ \\
 Curvature coeff.\ & $1.0$ & $\alpha$ & $D_C = \alpha\cdot C$ \\
-Seam tolerance & $0.005$ & $\tolseam$ & $\IC{\le}F$ at 100\% (16 domains) \\
+Seam tolerance & $0.005$ & $\tolseam$ & $\IC{\le}F$ at 100\% (23 domains) \\
 Domain & $[0,1]$ & $[a,b]$ & Bounded trace domain \\
 \bottomrule
 \end{tabular}
@@ -686,17 +686,17 @@ The active gates are:
 These gates are frozen per run and sourced from the active contract.
 Any modification to the gate thresholds constitutes a structural change requiring a seam declaration.
 % -------------------------
-% Cross-domain patterns (reported; expressed in kernel terms; 16 domains)
+% Cross-domain patterns (reported; expressed in kernel terms; 23 domains)
 % -------------------------
-\section{Cross-domain patterns (16 domains; expressed in kernel terms)}
+\section{Cross-domain patterns (23 domains; expressed in kernel terms)}
 \label{sec:cross_domain}
 
 The kernel exists to make comparison possible without importing domain-native units into the invariant ledger.
-The \ValidatorLine\ release line validates 16 domain closures, each supplying a declared adapter $N_K$ that produces
+The \ValidatorLine\ release line validates 23 domains closures, each supplying a declared adapter $N_K$ that produces
 a bounded trace $\Psi(t)\in[0,1]^n$; after that point, the quantities $(F,\omega,\kappa,\IC,S,C,\tau_R)$ are the
 \emph{same mathematical objects} in every domain.
-The 16 domains are: GCD, RCFT, kinematics, security, Weyl cosmology, astronomy, nuclear physics, quantum mechanics,
-finance, atomic physics (118 elements), materials science, Standard Model (31 particles, 10 proven theorems),
+The 23 domains are: GCD, RCFT, kinematics, security, Weyl cosmology, astronomy, nuclear physics, quantum mechanics,
+finance, atomic physics (118 elements), materials science, Standard Model (31 particles, 686 proven theorems),
 everyday physics, evolution, dynamic semiotics, and continuity theory.
 Accordingly, the statements in this section are expressed in kernel terms: they refer to the invariant ledger and its
 Tier-2 diagnostics $(\Delta,\rho)$, not to the native physical units of the source measurements.
@@ -888,7 +888,7 @@ the key results are summarized below.
   \item \textbf{$p=3$ uniqueness.} $\omega_{\mathrm{trap}}$ is the Cardano root of $x^3+x-1=0$; no other integer $p$ yields
   a solvable algebraic form.
   \item \textbf{Solvability.} For $n=2$ channels, $c_{1,2}=F\pm\sqrt{F^2-\IC^2}$ requires $\IC\le F$ for real solutions.
-  \item \textbf{Low-rank closures.} 5 closure diagnostics span only 4 effective dimensions (PCA)---the closure algebra is low-rank.
+  \item \textbf{Low-rank closures.} 246 closure modules diagnostics span only 4 effective dimensions (PCA)---the closure algebra is low-rank.
   \item \textbf{Composition laws.} $\IC$ composes geometrically ($\IC_{12}=\sqrt{\IC_1\cdot\IC_2}$); $F$ composes
   arithmetically ($F_{12}=(F_1+F_2)/2$).
   \item \textbf{Regime partition.} Under the four-gate criterion: Collapse 63.1\%, Watch 24.4\%, Stable 12.5\% of Fisher space.
@@ -899,7 +899,7 @@ The 47 lemmas (Lemmas 1--47) cover: range bounds (L1), monotonicity (L2, L12), s
 well-posedness of $\tau_R$ (L8), curvature bounds (L10), entropy envelopes (L5, L15, L16), Lipschitz continuity (L23),
 seam composition (L20), return probability (L29), and empirical discoveries including return-collapse duality (L35),
 super-exponential convergence (L39), and the entropy-integrity anti-correlation at $c^*$ (L41).
-All lemmas are verified computationally in the test suite (5{,}413 tests across 16 domain closures).
+All lemmas are verified computationally in the test suite (5{,}27 tests across 23 domains closures).
 
 % -------------------------
 % Falsifiable predictions
@@ -950,7 +950,7 @@ channel values that cluster near~$c^*$.
 Systems far from $c^*$ should either drift toward it over
 time or fail to return.
 
-\textbf{Test.} Across all 16 domain closures, compute the mean channel value $\bar{c}$ for objects classified
+\textbf{Test.} Across all 23 domains closures, compute the mean channel value $\bar{c}$ for objects classified
 as Stable (all four gates satisfied) versus Collapse ($\omega\ge 0.30$).
 The prediction is: $\bar{c}_{\text{Stable}}$ clusters near $c^*$ while $\bar{c}_{\text{Collapse}}$ does not.
 A domain where Stable objects systematically avoid $c^*$ would falsify the prediction.
@@ -1009,7 +1009,7 @@ Absent an explicit seam declaration, comparisons across structural changes are d
 \label{sec:citation_repro}
 
 \noindent\textbf{Verification.}
-The \ValidatorLine\ release line contains 18{,}108 tests across 20 domain closures, 220 closure modules,
+The \ValidatorLine\ release line contains 18{,}27 tests across 23 domains closures, 246 closure modules,
 and 47 lemmas. The three core Tier-1 identities ($F+\omega=1$, $\IC\le F$, $\IC=\exp(\kappa)$) are verified with
 zero violations across the full test suite. The 44 structural identities are re-derivable by running the diagnostic
 scripts in the repository.

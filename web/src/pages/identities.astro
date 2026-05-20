@@ -383,7 +383,7 @@ const base = import.meta.env.BASE_URL;
       id: 'B12', series: 'B', name: 'Low-Rank Closures', formula: '5 diagnostics → 4 effective dims',
       cluster: 'Composition Algebra',
       description: 'The closure algebra is low-rank — PCA confirms half the DOF are constrained.',
-      bounds: '5 closure diagnostics (F, IC, S, C, Δ) span only 4 effective dimensions. PCA eigenvalue ratio λ₅/λ₁ < 0.01.',
+      bounds: '246 closure modules diagnostics (F, IC, S, C, Δ) span only 4 effective dimensions. PCA eigenvalue ratio λ₅/λ₁ < 0.01.',
       range: 'Effective dimensionality: 4 out of 5. The constraint S ≈ f(F,C) removes one DOF.',
       proof: 'The statistical constraint corr(C,S) → −1 as n → ∞ means S is asymptotically determined by F and C. This reduces 5 diagnostics to 4 independent degrees.',
       symbols: ['F', 'IC', 'S', 'C'],

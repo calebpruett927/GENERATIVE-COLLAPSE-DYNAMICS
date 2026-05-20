@@ -8,7 +8,7 @@
 [![C++17](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](src/umcp_cpp/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![UMCP v2.3.3](https://img.shields.io/badge/UMCP-v2.3.3-orange.svg)](pyproject.toml)
-[![Tests: 20,337](https://img.shields.io/badge/tests-20%2C337-brightgreen.svg)](tests/)
+[![Tests: 20,540](https://img.shields.io/badge/tests-20%2C540-brightgreen.svg)](tests/)
 [![Domains: 23](https://img.shields.io/badge/domains-23-blueviolet.svg)](closures/)
 [![Closures: 245](https://img.shields.io/badge/closures-245-informational.svg)](closures/)
 [![Theorems: 746](https://img.shields.io/badge/theorems-746_proven-ff69b4.svg)](closures/)
@@ -24,7 +24,7 @@ Explore the GCD kernel live in your browser — no installation required. Comput
 
 This is not a simulation. It is a **metrological enforcement engine**: schema conformance, kernel identity verification, regime classification, and SHA-256 integrity checking — producing a three-valued `CONFORMANT` / `NONCONFORMANT` / `NON_EVALUABLE` verdict for every run.
 
-**Three-layer C → C++ → Python architecture**: The framework is written in Python with **23 domains**, **245 closure modules**, **746 proven theorems**, and **20,235 tests**. A portable **C99 orchestration core** (`src/umcp_c/`) formalizes the entire Tier-0 protocol in ~1,900 lines of C — frozen contract, regime gates, trace management, integrity ledger, and the full validation spine — with no heap allocation in the hot path and a stable `extern "C"` ABI callable from any language. A **C++17 accelerator** (`src/umcp_cpp/`) links against the C core and exposes a pybind11 zero-copy NumPy bridge for 50–80× speedup on kernel computation, seam chains, and SHA-256 integrity. The Python wrapper (`umcp.accel`) auto-detects the compiled extension at import time; if unavailable, every call falls back transparently to NumPy. Same formulas, same frozen parameters, same results to machine precision — **760 C/C++ test assertions** verify this. The C layer reduces mechanical overhead and maximizes runtime performance now that the protocol is fully synthesized.
+**Three-layer C → C++ → Python architecture**: The framework is written in Python with **23 domains**, **246 closure modules**, **752 proven theorems**, and **20,540 tests**. A portable **C99 orchestration core** (`src/umcp_c/`) formalizes the entire Tier-0 protocol in ~1,900 lines of C — frozen contract, regime gates, trace management, integrity ledger, and the full validation spine — with no heap allocation in the hot path and a stable `extern "C"` ABI callable from any language. A **C++17 accelerator** (`src/umcp_cpp/`) links against the C core and exposes a pybind11 zero-copy NumPy bridge for 50–80× speedup on kernel computation, seam chains, and SHA-256 integrity. The Python wrapper (`umcp.accel`) auto-detects the compiled extension at import time; if unavailable, every call falls back transparently to NumPy. Same formulas, same frozen parameters, same results to machine precision — **760 C/C++ test assertions** verify this. The C layer reduces mechanical overhead and maximizes runtime performance now that the protocol is fully synthesized.
 
 ---
 
@@ -134,7 +134,7 @@ Every claim, measurement, validation, and narrative in UMCP follows exactly **fi
 
 ### The Three-Tier Stack
 
-Tier-1 (44 structural identities, 47 lemmas, 746 proven theorems) → Tier-0 (20,235 tests, 245 closure modules, C++17 accelerator) → Tier-2 (23 domains from particle physics to consciousness). One-way dependency. No back-edges within a frozen run.
+Tier-1 (44 structural identities, 47 lemmas, 752 proven theorems) → Tier-0 (20,540 tests, 246 closure modules, C++17 accelerator) → Tier-2 (23 domains from particle physics to consciousness). One-way dependency. No back-edges within a frozen run.
 
 <p align="center">
   <img src="images/10_tier_architecture.png" alt="Three-Tier Architecture: Tier-1 (Kernel) → Tier-0 (Protocol) → Tier-2 (Domains)" width="88%">
@@ -271,7 +271,7 @@ src/umcp_cpp/                     # C++ accelerator (links umcp_c_core)
 
 ## Closure Domains
 
-UMCP validates across **23 domains** with **245 closure modules**, each encoding real-world measurements into the 8-channel kernel trace:
+UMCP validates across **23 domains** with **246 closure modules**, each encoding real-world measurements into the 8-channel kernel trace:
 
 ### Standard Model — 12 modules
 
@@ -621,7 +621,7 @@ umcp validate casepacks/pedagogical/hello_world --strict
 ### Run the test suite
 
 ```bash
-pytest                            # All 20,221 tests
+pytest                            # All 20,540 tests
 pytest -v --tb=short            # Verbose with short tracebacks
 pytest -n auto                  # Parallel execution
 ```
@@ -681,7 +681,7 @@ umcp integrity                             # Verify SHA-256 checksums
 umcp validate .                            # Full repo validation → CONFORMANT
 
 # 3. Run the test suite
-pytest -v --tb=short                       # 20,221 tests
+pytest -v --tb=short                       # 20,540 tests
 ```
 
 ### C Stack — Build & Verify
@@ -807,7 +807,7 @@ umcp validate <target>
 The GitHub Actions workflow (`.github/workflows/validate.yml`) enforces:
 
 1. **Lint** — `ruff format --check` + `ruff check` + `mypy`
-2. **Test** — Full pytest suite (20,221 tests, 231 test files)
+2. **Test** — Full pytest suite (20,540 tests, 233 test files)
 3. **Validate** — Baseline + strict validation (both must return CONFORMANT)
 
 ### Pre-Commit Protocol
@@ -826,7 +826,7 @@ This mirrors CI exactly: format → lint → type-check → integrity → test �
 
 ## Test Suite
 
-**20,221 tests** across **231 test files**, organized by tier and domain:
+**20,540 tests** across **233 test files**, organized by tier and domain:
 
 | Test Range | Domain | Tests |
 |------------|--------|------:|
@@ -996,7 +996,7 @@ integrity/                 File checksums (279 tracked files)
 
 ── TIER-2 EXPANSION (freely extensible) ────────────────────────────
 casepacks/                 Reproducible validation bundles (26)
-tests/                     Test suite (20,221 tests, 232 files)
+tests/                     Test suite (20,540 tests, 233 files)
 paper/                     Papers + INDEX.md (19 substantive papers)
 data/                      External input data (CERN, TERS, etc.)
 runs/                      Frozen run outputs (kinematics RUN004)

@@ -28,7 +28,7 @@ const domainSchema = z.object({
 
 /**
  * Each domain folder is collected under a single "domains" collection.
- * The glob loader picks up all .md files across all 23 domain folders.
+ * The glob loader picks up all .md files across all 23 domains folders.
  */
 const domains = defineCollection({
   loader: glob({ pattern: '*/index.md', base: './src/content' }),

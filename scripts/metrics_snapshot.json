@@ -1,0 +1,20 @@
+{
+  "closure_modules": 246,
+  "domains": 23,
+  "lemmas": 47,
+  "identities": 44,
+  "tests": 27,
+  "test_files": 233,
+  "test_files_closure": 1,
+  "tracked_files": 280,
+  "bibliography": 200,
+  "casepacks": 3,
+  "contracts": 21,
+  "schemas": 17,
+  "canon_files": 22,
+  "papers_tex": 24,
+  "papers_md": 4,
+  "proven_theorems": 686,
+  "c_assertions": 326,
+  "cpp_assertions": 434
+}

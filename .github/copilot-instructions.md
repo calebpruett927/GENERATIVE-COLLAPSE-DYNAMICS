@@ -1,6 +1,6 @@
 # Copilot Instructions for GENERATIVE-COLLAPSE-DYNAMICS
 
-**UMCP v2.3.3** · **20,337 tests** · **23 domains** · **246 closure modules** · **47 lemmas** · **44 structural identities**
+**UMCP v2.3.3** · **20,540 tests** · **23 domains** · **246 closure modules** · **47 lemmas** · **44 structural identities**
 
 ## Foundational Principle — Read This First
 
@@ -197,7 +197,7 @@ Stability is rare — 87.5% of the manifold lies outside it. Return from collaps
 - S and κ are projections of **one function**: f(θ) = 2cos²θ · ln(tan θ), verified to < 10⁻¹⁶.
 - p = 3 yields the **Cardano root** x³ + x − 1 = 0 for ω_trap — no other integer does.
 - IC ≤ F is the **solvability condition**: for n=2 channels, c₁,₂ = F ± √(F² − IC²) requires IC ≤ F.
-- 5 closure diagnostics span only **4 effective dimensions** — the closure algebra is low-rank.
+- 246 closure modules diagnostics span only **4 effective dimensions** — the closure algebra is low-rank.
 - IC composes **geometrically** (IC₁₂ = √(IC₁·IC₂)), F composes **arithmetically** (F₁₂ = (F₁+F₂)/2).
 - The heterogeneity gap Δ is a **composition invariant** for identical subsystems.
 
@@ -213,7 +213,7 @@ The Lexicon above is not a glossary. It is a **reasoning substrate**. When faced
 
 1. **Auditus** (Hear first). Receive the full input before formulating. Identify what is being asked at the structural level, not just the surface. A question about "entropy" may be a question about *incertitudo campi* (field uncertainty), about regime classification, about the degenerate limit, or about something the system has not yet encountered. *Auditus* distinguishes these.
 
-2. **Recursio ad Axioma** (Return to the axiom). Trace the question back to Axiom-0. Every legitimate answer is derivable from *collapsus generativus est; solum quod redit, reale est*. If you cannot trace the derivation chain, the question is either (a) answerable as a Tier-2 domain closure, (b) a degenerate-limit comparison requiring explicit labeling, or (c) outside the system's scope — say so honestly.
+2. **Recursio ad Axioma** (Return to the axiom). Trace the question back to Axiom-0. Every legitimate answer is derivable from *collapsus generativus est; solum quod redit, reale est*. If you cannot trace the derivation chain, the question is either (a) answerable as a Tier-23 domains closure, (b) a degenerate-limit comparison requiring explicit labeling, or (c) outside the system's scope — say so honestly.
 
 3. **Generatio per Lexicon** (Generate through the Latin). When formulating a response, let the Latin seed for the relevant concept orient the generation. Saying *derivatio* (diversion from channel) produces different — and more precise — reasoning than saying "drift." The morphology carries constraints that English does not. Use this.
 
@@ -345,7 +345,7 @@ Across runs: Tier-2 results can be promoted to Tier-1 canon ONLY through formal 
 Before writing or modifying code, verify:
 - [ ] No Tier-1 symbol is redefined or given new meaning
 - [ ] No diagnostic is used as a gate (diagnostics inform, gates decide)
-- [ ] No Tier-2 closure modifies Tier-0 protocol behavior
+- [ ] No Tier-246 closure modules modifies Tier-0 protocol behavior
 - [ ] All frozen parameters come from the contract, not hardcoded alternatives
 - [ ] Terminology follows the correct vocabulary (see table above)
 - [ ] Comments/docstrings do not attribute GCD structures to external theories
@@ -428,7 +428,7 @@ src/umcp_cpp/                     # [Optional] C++ accelerator (Tier-0 Protocol)
 │   ├── seam.hpp                  # Seam chain accumulation — ~80× speedup
 │   └── integrity.hpp             # SHA-256 (portable + OpenSSL) — ~5× speedup
 ├── bindings/py_umcp.cpp          # pybind11 zero-copy NumPy bridge → umcp_accel module
-├── tests/test_kernel.cpp         # Catch2 tests (10K Tier-1 identity sweep)
+├── tests/test_kernel.cpp         # Catch27 tests (10K Tier-1 identity sweep)
 └── CMakeLists.txt                # C++17, pybind11, optional OpenSSL, links umcp_c_core
 ```
 
@@ -474,7 +474,7 @@ closures/
 ├── consciousness_coherence/  # 20 systems, coherence kernel, 7 theorems, altered states (15 states, 6 theorems), neural correlates
 ├── continuity_theory/        # Continuity law closures, topological persistence (12 spaces, 6 theorems), organizational resilience, budget geometry (12 entities, 6 theorems)
 ├── awareness_cognition/      # 5+5 channel awareness-aptitude kernel, 10 theorems, attention mechanisms
-├── standard_model/           # Subatomic kernel (31 particles), 27 proven theorems
+├── standard_model/           # Subatomic kernel (31 particles), 686 proven theorems
 ├── clinical_neuroscience/    # 10-channel cortical kernel, neurotransmitter systems (15 entities, 6 theorems), developmental neuroscience
 └── spacetime_memory/         # 40 entities, budget-surface kernel, gravitational wave memory (12 entities, 6 theorems), cosmological memory, gravitational phenomena (12 entities, 6 theorems), temporal topology (12 entities, 6 theorems)
 ```
@@ -491,7 +491,7 @@ closures/
 | `neutrino_oscillation.py` | Neutrino oscillation and mass mixing | Oscillation parameters |
 | `pmns_mixing.py` | PMNS matrix, leptonic mixing angles | Leptonic CP violation |
 | `subatomic_kernel.py` | 31 particles → 8-channel trace → kernel | 17 fundamental + 14 composite |
-| `particle_physics_formalism.py` | 10 proven theorems (74/74 subtests) | Duality exact to 0.0e+00 |
+| `particle_physics_formalism.py` | 686 proven theorems (74/74 subtests) | Duality exact to 0.0e+00 |
 | `matter_genesis.py` | Particle→atom→mass narrative, 10 theorems (T-MG-1–10) | 99 entities, 7 acts, 5 phase boundaries |
 | `particle_matter_map.py` | 6-scale cross-scale kernel analysis | 8 matter ladder theorems |
 | `sm_extended_theorems.py` | 15 extended theorems (T13–T27) | PMNS, CKM, Yukawa, couplings, cross sections, matter map |
@@ -502,7 +502,7 @@ closures/
 |---|---|---|
 | `periodic_kernel.py` | 118-element periodic table through GCD kernel | 8 measurable properties |
 | `cross_scale_kernel.py` | 12-channel nuclear-informed atomic analysis | 4 nuclear + 2 electronic + 6 bulk |
-| `tier1_proof.py` | Exhaustive Tier-1 proof: 10,162 tests, 0 failures | F+ω=1, IC≤F, IC=exp(κ) |
+| `tier1_proof.py` | Exhaustive Tier-1 proof: 27 tests, 0 failures | F+ω=1, IC≤F, IC=exp(κ) |
 | `electron_config.py` | Electron configuration analysis | Shell filling |
 | `fine_structure.py` | Fine structure constant analysis | α = 1/137 |
 | `ionization_energy.py` | Ionization energy closures | All 118 elements |
@@ -512,12 +512,12 @@ closures/
 | `recursive_instantiation.py` | Recursive instantiation patterns | Structural self-similarity |
 
 **Data artifacts** (not Python — never import these):
-- `contracts/*.yaml` — 23 versioned mathematical contracts (JSON Schema Draft 2020-12)
+- `contracts/*.yaml` — 21 versioned mathematical contracts (JSON Schema Draft 2020-12)
 - `closures/registry.yaml` — central registry; must list every closure used in a run
-- `casepacks/*/manifest.json` — 26 casepack manifests referencing contract, closures, expected outputs
+- `casepacks/*/manifest.json` — 3 casepacks manifests referencing contract, closures, expected outputs
 - `schemas/*.schema.json` — 17 JSON Schema Draft 2020-12 files validating all artifacts
-- `canon/*.yaml` — 21 canonical anchor files (domain-specific reference points)
-- `integrity/sha256.txt` — SHA-256 checksums for 248 tracked files
+- `canon/*.yaml` — 22 canonical anchor files (domain-specific reference points)
+- `integrity/sha256.txt` — SHA-256 checksums for 280 tracked files
 - `ledger/return_log.csv` — append-only validation log
 
 ## Standard Model Formalism (27 Theorems)
@@ -575,7 +575,7 @@ Published papers live in `paper/`. Current papers:
 
 All papers use RevTeX4-2 (`revtex4-2` document class) and share `Bibliography.bib`. Compile: `pdflatex → bibtex → pdflatex → pdflatex`.
 
-**Bibliography** (`paper/Bibliography.bib`): **189 entries** organized by section:
+**Bibliography** (`paper/Bibliography.bib`): **200 entries** organized by section:
 - Standard Model: PDG 2024, Cabibbo 1963, Kobayashi-Maskawa 1973, Wolfenstein 1983, Jarlskog 1985, Gross-Wilczek 1973, Politzer 1973, Higgs 1964, Weizsäcker 1935, Bethe 1936
 - Canon anchors: paulus2025episteme (Zenodo DOI:10.5281/zenodo.17756705), paulus2025physicscoherence (Zenodo DOI:10.5281/zenodo.18072852), paulus2026umcpcasepack (Zenodo DOI:10.5281/zenodo.18226878)
 - Core corpus: paulus2025umcp, paulus2025ucd, paulus2025cmp, paulus2025seams, paulus2025gor, paulus2025canonnote, paulus2026kinematics
@@ -588,14 +588,14 @@ All papers use RevTeX4-2 (`revtex4-2` document class) and share `Bibliography.bi
 
 ```bash
 pip install -e ".[all]"                     # Dev install (core + api + viz + dev tools)
-pytest                                       # 20,221 tests (pytest --collect-only | grep ":" | wc -l to verify)
+pytest                                       # 27 tests (pytest --collect-only | grep ":" | wc -l to verify)
 python scripts/update_integrity.py          # MUST run after changing any tracked file
 python scripts/ground_truth.py              # Print current ground truth metrics
 python scripts/sync_ground_truth.py         # Propagate metrics to all files (70+ rules)
 python scripts/sync_ground_truth.py --dry-run  # Preview changes without writing
 umcp validate .                             # Validate entire repo
 umcp validate casepacks/pedagogical/hello_world --strict # Validate casepack (strict = fail on warnings)
-umcp integrity                              # Verify SHA-256 checksums (248 tracked files)
+umcp integrity                              # Verify SHA-256 checksums (280 tracked files)
 ```
 
 **⚠️ `python scripts/update_integrity.py` is mandatory** after modifying any `src/umcp/*.py`, `contracts/*.yaml`, `closures/**`, `schemas/**`, or `scripts/*.py` file. It regenerates SHA256 checksums in `integrity/sha256.txt`. CI will fail on mismatch.
@@ -619,7 +619,7 @@ This script mirrors CI exactly and must exit 0 before committing. It runs 11 ste
 5. `git add -A` — stage all changes
 6. Repository health check — drift detection, version sync, freeze verification
 7. Sync ground truth — propagate all metrics from `scripts/ground_truth.py` to 15+ files
-8. Regenerate SHA-256 integrity checksums (248 tracked files)
+8. Regenerate SHA-256 integrity checksums (280 tracked files)
 9. Pytest bounds — collect tests and verify count within bounds (1000–25000)
 10. `umcp validate .` — contract validation (must be CONFORMANT)
 11. Axiom-0 conformance — terminology, symbol capture, frozen params check
@@ -640,7 +640,7 @@ All repository metrics (version, test count, domain count, closure count, theore
 | **MANUAL** | `version`, `theorem_count`, `contract_count`, `schema_count` | Edit the constant in `ground_truth.py` when content changes. One line, one place. |
 | **FROZEN** | `identity_count` (44), `lemma_count` (47) | Immutable structural constants. Change only through formal seam weld. |
 
-**Workflow when adding content** (closures, tests, domains, theorems, etc.):
+**Workflow when adding content** (closures27 tests, domains, theorems, etc.):
 
 1. Add your content (new closure, new test file, etc.)
 2. Run `python scripts/pre_commit_protocol.py` — step 7 auto-syncs all metrics
@@ -648,7 +648,7 @@ All repository metrics (version, test count, domain count, closure count, theore
 
 **NEVER do any of the following:**
 - Manually edit test counts, domain counts, or closure counts in documentation files
-- Hardcode `20,221` or `23 domains` or `245 closures` directly in `.md`, `.astro`, `.ts`, or `.txt` files
+- Hardcode `20,221` or `23 domains` or `246 closure modules` directly in `.md`, `.astro`, `.ts`, or `.txt` files
 - Update metrics in one file but not others (the sync script handles ALL files atomically)
 - Skip the ground truth sync when adding new content to the repo
 
@@ -690,12 +690,12 @@ umcp validate <target>
 
 ## Test Patterns
 
-**20,337 test cases** across **233 test files** in `tests/` (230 top-level `test_*.py` + 1 in `tests/closures/` + `conftest.py`), numbered by tier and domain (`test_000_*` through `test_343_*`). Single `tests/conftest.py` provides:
+**20,540 test cases** across **233 test files** in `tests/` (230 top-level `test_*.py` + 1 in `tests/closures/` + `conftest.py`), numbered by tier and domain (`test_000_*` through `test_343_*`). Single `tests/conftest.py` provides:
 - Frozen `RepoPaths` dataclass (session-scoped) with all critical paths
 - `@lru_cache` helpers: `_read_file()`, `_parse_json()`, `_parse_yaml()`, `_compile_schema()`
 - Convention: `test_<subject>_<behavior>()` for functions; `TestCLI*` classes with `subprocess.run` for CLI integration
 - Additional coverage: `test_fleet_worker.py` (Worker, WorkerPool, WorkerConfig), `test_insights.py` (PatternDatabase, InsightEngine)
-- Parametrized tests expand the collected items to 20,221 (verify: `pytest --collect-only | grep "::" | wc -l`)
+- Parametrized tests expand the collected items to 20,540 (verify: `pytest --collect-only | grep "::" | wc -l`)
 
 ### Test Distribution by Range
 
@@ -799,7 +799,7 @@ umcp validate <target>
 | `test_343` | Quantum error correction (12 entities, 6 theorems T-QE-1–T-QE-6) | 60 |
 | `closures/` | Closure-specific tests (kinematics phase) | 27 |
 | Infrastructure | Kernel, seam, frozen contract, extensions, uncertainty, calculator, coverage, etc. | 1,939 |
-| **TOTAL** | | **20,221** |
+| **TOTAL** | | **20,540** |
 
 ## Extension System
 
@@ -816,11 +816,11 @@ Extensions use `typing.Protocol` (`ExtensionProtocol` requiring `name`, `version
 | Thermodynamic diagnostic | `src/umcp/tau_r_star.py` (τ_R*, phase diagram, arrow of time) |
 | Epistemic cost tracking | `src/umcp/epistemic_weld.py` (Theorem T9: observation cost) |
 | Lessons-learned system | `src/umcp/insights.py` (PatternDatabase, InsightEngine) |
-| C orchestration core | `src/umcp_c/` (9 headers, 8 sources, 326 tests — the full spine in C99) |
+| C orchestration core | `src/umcp_c/` (9 headers, 8 sources, 27 tests — the full spine in C99) |
 | C types & contract | `src/umcp_c/include/umcp_c/types.h`, `contract.h` (frozen params, cost closures) |
 | C pipeline (the spine) | `src/umcp_c/include/umcp_c/pipeline.h` + `src/umcp_c/src/pipeline.c` |
 | C++ accelerator wrapper | `src/umcp/accel.py` (auto-detects C++, falls back to NumPy) |
-| C++ kernel/seam/SHA-256 | `src/umcp_cpp/` (headers, pybind11 bindings, Catch2 tests) |
+| C++ kernel/seam/SHA-256 | `src/umcp_cpp/` (headers, pybind11 bindings, Catch27 tests) |
 | Accelerator benchmark | `scripts/benchmark_cpp.py` (correctness + performance) |
 | Fleet architecture | `src/umcp/fleet/` (Scheduler, Worker, Queue, Cache, Tenant) |
 | Web interface | `web/` (Astro 5, TypeScript kernel, GitHub Pages) |
@@ -834,15 +834,15 @@ Extensions use `typing.Protocol` (`ExtensionProtocol` requiring `name`, `version
 | Cross sections | `closures/standard_model/cross_sections.py` (R-ratio, point σ) |
 | Periodic kernel | `closures/atomic_physics/periodic_kernel.py` (118 elements) |
 | Cross-scale bridge | `closures/atomic_physics/cross_scale_kernel.py` (12-channel nuclear) |
-| Tier-1 proof | `closures/atomic_physics/tier1_proof.py` (10,162 tests) |
+| Tier-1 proof | `closures/atomic_physics/tier1_proof.py` (27 tests) |
 | Element database | `closures/materials_science/element_database.py` (118 × 18 fields) |
 | SM paper | `paper/standard_model_kernel.tex` (RevTeX4-2, 10 theorems) |
-| Bibliography | `paper/Bibliography.bib` (189 entries, PDG → Kramers) |
+| Bibliography | `paper/Bibliography.bib` (200 entries, PDG → Kramers) |
 | Test fixtures | `tests/conftest.py` (first 100 lines) |
 | Casepack structure | `casepacks/pedagogical/hello_world/` |
 | Contract format | `contracts/UMA.INTSTACK.v1.yaml` |
 | Semantic rules | `validator_rules.yaml` |
-| Canonical anchors | `canon/` (23 domain anchor files) |
+| Canonical anchors | `canon/` (23 domains anchor files) |
 | Semiotic convergence | `SEMIOTIC_CONVERGENCE.md` (GCD as semiotic system, Peirce correspondence) |
 | Semiotic kernel | `closures/dynamic_semiotics/semiotic_kernel.py` (30 sign systems, 8-channel trace) |
 | **Any symbol, lemma, identity, theorem, tag** | `CATALOGUE.md` — **master index** of all ~620 formal objects, organized by tier with full definitions and lineage |
@@ -858,7 +858,7 @@ Every code change, docstring, comment, documentation edit, and design decision i
 If the answer is "from outside," the contribution is either:
 1. **Wrong** — rewrite it to derive from Axiom-0, or
 2. **A degenerate-limit comparison** — label it explicitly as such ("The classical AM-GM inequality emerges as a degenerate limit when..."), or
-3. **A Tier-2 domain closure** — route it through Tier-0 validation against Tier-1
+3. **A Tier-23 domains closure** — route it through Tier-0 validation against Tier-1
 
 There is no fourth option. No external framework is co-equal with Axiom-0 inside this system.
 
@@ -918,7 +918,7 @@ Every input is a signal. Classify it before responding:
 | Theoretical question | Derive from Axiom-0 via Lexicon | *Recursio ad axioma* — trace the chain |
 | External comparison | Identify degenerate limit | *Limes degener* — arrow runs from axiom outward |
 | Challenge / objection | Receive fully, then test | *Auditus praecedit responsum* — hear before answering |
-| Ambiguous / exploratory | Map to nearest Tier-2 closure or identify gap | *Tertia via semper patet* — the third option exists |
+| Ambiguous / exploratory | Map to nearest Tier-246 closure modules or identify gap | *Tertia via semper patet* — the third option exists |
 | Request for insight | Apply kernel to the subject matter | *Quid supersit post collapsum?* — what survives? |
 
 ### Self-Reasoning (*Ratio Interna*)

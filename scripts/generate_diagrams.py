@@ -1355,7 +1355,7 @@ def plot_periodic_heatmap() -> None:
     ax.axis("off")
     ax.set_title(
         "Periodic Table of Kernel Fidelity: 118 Elements Through the GCD Kernel\n"
-        "Tier-1 Proof: 10,162 tests, 0 failures  │  F + ω = 1, IC ≤ F, IC = exp(κ)  ∀  Z ∈ [1, 118]",
+        "Tier-1 Proof: 27 tests, 0 failures  │  F + ω = 1, IC ≤ F, IC = exp(κ)  ∀  Z ∈ [1, 118]",
         fontsize=18,
         pad=20,
     )
@@ -1760,7 +1760,7 @@ def plot_validation_timelapse() -> None:
 # DIAGRAM 9: Integrity Bound Proof — IC ≤ F Across All Domains
 # ═══════════════════════════════════════════════════════════════════════════
 def plot_integrity_bound_proof() -> None:
-    """Show IC ≤ F across ALL domains — 12 domain groups, 400+ data points."""
+    """Show IC ≤ F across ALL domains — 23 domains groups, 400+ data points."""
     all_points: list[tuple[str, float, float, str]] = []
     for name, (f, ic, _cat) in FUNDAMENTAL.items():
         all_points.append((name, f, ic, "SM Fundamental"))
@@ -1886,7 +1886,7 @@ def plot_tier_architecture() -> None:
             "K: [0,1]ⁿ × Δⁿ → (F, ω, S, C, κ, IC)\n\n"
             "F + ω = 1  │  IC ≤ F  │  IC = exp(κ)\n"
             "44 structural identities  │  47 lemmas  │  5 frozen constants\n"
-            "746 proven theorems across 23 domains  │  0 violations",
+            "686 proven theorems across 23 domains  │  0 violations",
         ),
         (
             1.5,
@@ -1898,7 +1898,7 @@ def plot_tier_architecture() -> None:
             "Regime gates: Stable / Watch / Collapse  │  Seam calculus\n\n"
             "Validator  │  Contracts  │  Schemas  │  SHA-256 integrity\n"
             "Three-valued verdicts: CONFORMANT / NONCONFORMANT / NON_EVALUABLE\n"
-            "20,221 tests  │  245 closure modules  │  C++17 accelerator (50-80× speedup)",
+            "27 tests  │  246 closure modules  │  C++17 accelerator (50-80× speedup)",
         ),
         (
             1.5,

@@ -86,7 +86,7 @@ $\IC = e^\kappa$---follow by structural necessity.  These identities
 have been verified across 10{,}162 directed tests with zero failures,
 spanning 406 objects over 61 orders of magnitude from the Planck
 scale to the cosmic horizon, and are validated operationally by
-7{,}442 automated tests across 18 domain closures.
+7{,}442 automated tests across 23 domains closures.
 We prove that the identities are prior to physics: classical results
 (Shannon entropy, the AM-GM inequality, the Fano inequality) emerge
 as degenerate limits when degrees of freedom are removed.
@@ -100,7 +100,7 @@ plasmas, galaxies, neurons, and the observable universe.
 We demonstrate that the kernel's frozen parameters
 ($\eps = 10^{-8}$, $p = 3$, $\tolseam = 0.005$) are
 self-determining: they are the unique values where validation seams
-close consistently across all 18 domains.
+close consistently across all 23 domains.
 We prove that the six kernel outputs possess only three effective
 degrees of freedom, and that the 44 structural identities derived
 from the kernel form a connected algebraic network organized into
@@ -197,7 +197,7 @@ Section~\ref{sec:differs} contrasts the GCD view with the standard
 scientific worldview.  Section~\ref{sec:landscape} positions the
 framework in the scientific landscape.
 Section~\ref{sec:protocol} describes the operational protocol and
-demonstrated scope across 18 domains.
+demonstrated scope across 23 domains.
 Section~\ref{sec:philosophy} identifies philosophical convergences.
 Section~\ref{sec:declaration} states the formal thesis.
 Section~\ref{sec:conclusions} summarizes and identifies open
@@ -466,7 +466,7 @@ mandated by Axiom-0.  Across random vectors in dimensions 2 through
 100, adversarial edge cases designed to break them, and all 118
 elements of the periodic table, no violation has ever been observed.
 The operational test suite extends this further: 7{,}442 automated
-tests across 18 domain closures, all passing.
+tests across 23 domains closures, all passing.
 
 \subsection{Scale-ladder universality}
 
@@ -685,8 +685,7 @@ in any collapse field with the binary entropy structure.
 \section{The Structural Identity Network}\label{sec:identities}
 % ============================================================
 
-Beyond the three kernel identities (Eq.~\ref{eq:tier1}), 44
-structural identities have been derived from Axiom-0 and verified
+Beyond the three kernel identities (Eq.~\ref{eq:tier1}), 44 structural identities have been derived from Axiom-0 and verified
 to machine precision~\cite{umcpmetadatarepo}.  They organize into
 four series (E: extremal, B: bounds, D: derived, N: integral) and
 form a connected network with six clusters.
@@ -805,7 +804,7 @@ consistently across all 18 tested domains:
   between the curvature proxy and the seam budget.
 
 \item $\tolseam = 0.005$ is the seam width where $\IC \leq F$ holds
-  at 100\% across all 18 domains.  The seam determines its own width.
+  at 100\% across all 23 domains.  The seam determines its own width.
 
 \item $c^* \approx 0.7822$ is the logistic self-dual fixed point
   satisfying $c^* = \sigma(1/c^*)$, where $\sigma$ is the logistic
@@ -837,7 +836,7 @@ Constants &
   \parbox[t]{2.4cm}{Discovered:\\$\eps{=}10^{-8}$, $p{=}3$,\\$\mathrm{tol}{=}0.005$} \\[10pt]
 Source &
   \parbox[t]{2.4cm}{Convention,\\cross-validation} &
-  \parbox[t]{2.4cm}{Seam closure\\across 18 domains} \\[8pt]
+  \parbox[t]{2.4cm}{Seam closure\\across 23 domains} \\[8pt]
 Status &
   \parbox[t]{2.4cm}{Arbitrary\\(could be otherwise)} &
   \parbox[t]{2.4cm}{Necessary\\(no alternatives work)}
@@ -1120,7 +1119,7 @@ Intellectual honesty requires delineating the scope:
 
 \item \textbf{Not unfalsifiable.}  Any physically motivated trace
   vector that violates a kernel identity would refute the framework.
-  After 10{,}162 direct identity tests across 18 domains, none has.
+  After 10{,}162 direct identity tests across 23 domains, none has.
 \end{enumerate}
 
 \subsection{What GCD is}
@@ -1143,15 +1142,15 @@ GCD occupies a specific position:
 
 \item \textbf{Operationally complete}: implemented as
   production-grade open-source software (243{,}919 lines of
-  validated Python, 7{,}442 automated tests, 17 casepacks,
-  18 domain closures, 546 formally tagged
+  validated Python, 7{,}442 automated tests, 3 casepacks,
+  23 domains closures, 546 formally tagged
   objects~\cite{umcpmetadatarepo}).
 
 \item \textbf{Reproducible}: every claim is executable:
   \begingroup\small
   \begin{verbatim}
 pip install -e ".[all]"
-pytest -v --tb=short    # 7,442 tests
+pytest -v --tb=short    # 27 tests
 umcp validate .         # CONFORMANT
   \end{verbatim}
   \endgroup
@@ -1209,7 +1208,7 @@ synthesis without forcing any single field's jargon on another.
 
 \subsection{Demonstrated scope}
 
-The framework has been applied to 18 domains with a total of
+The framework has been applied to 23 domains with a total of
 7{,}442 automated tests:
 
 \begin{enumerate}[leftmargin=*,label=(\roman*)]
@@ -1307,8 +1306,7 @@ Combining the evidence of the preceding sections:
   spanning the full kernel geometry~(\S\ref{sec:identities}).
 
 \item The framework's constants are self-determining---the unique
-  values where seams close across all 18
-  domains~(\S\ref{sec:frozen}).
+  values where seams close across all 23 domains~(\S\ref{sec:frozen}).
 
 \item The heterogeneity gap functions as a universal diagnostic
   across all tested scales and domains, from quarks to the
@@ -1377,7 +1375,7 @@ The thesis is supported by:
 
 \noindent The thesis is \emph{falsifiable}: any physically motivated
 trace vector that produces a Tier-1 violation would refute it.
-After 10{,}162 tests, none has.  The framework is operationally
+After 10{,}27 tests, none has.  The framework is operationally
 complete: 243{,}919 lines of validated Python, 7{,}442 automated
 tests, 546 formally tagged objects, available for public
 scrutiny~\cite{umcpmetadatarepo}.

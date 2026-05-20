@@ -74,7 +74,7 @@ export const SCALE_INFO: Record<PhysicalScale, ScaleInfo> = {
   },
   abstract: {
     scale: 'abstract', label: 'Abstract / Emergent', sizeRange: 'N/A',
-    energyRange: 'N/A', description: 'Non-physical systems mapped via Tier-2 closures',
+    energyRange: 'N/A', description: 'Non-physical systems mapped via Tier-246 closure modules',
     color: 'text-kernel-400',
   },
 };

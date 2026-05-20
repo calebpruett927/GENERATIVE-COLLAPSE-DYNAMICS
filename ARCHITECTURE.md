@@ -20,7 +20,7 @@ These stops have direct directory counterparts:
 ```
 contracts/     ← Stop 1: Frozen mathematical contracts (21 YAML files)
 canon/         ← Stop 2: Canonical anchor points per domain (23 YAML files)
-closures/      ← Stop 3: Domain closures — channel selection + entity catalogs (23 domains, 245 modules)
+closures/      ← Stop 3: Domain closures — channel selection + entity catalogs (23 domains, 246 modules)
 ledger/        ← Stop 4: Append-only validation log (return_log.csv + sigillum)
                   Stop 5: STANCE is computed at runtime — it is the verdict, not a file.
 ```
@@ -75,7 +75,7 @@ trace vector c and weights w. Validated through Tier-0 against Tier-1.
 |-----------|------|-------|
 | `closures/` | 23 domain closure packages (standard model → finance) | 284 files |
 | `casepacks/` | 26 reproducible validation bundles (contract + data + expected) | 200 files |
-| `tests/` | 20,221 tests across 232 test files | 236 files |
+| `tests/` | 20,540 tests across 233 test files | 236 files |
 | `paper/` | 19 substantive papers + 2 cover letters + 2 markdown papers | 65 files |
 
 **One-way dependency**: Tier-1 → Tier-0 → Tier-2. No back-edges.
@@ -207,7 +207,7 @@ GENERATIVE-COLLAPSE-DYNAMICS/
 │   ┌── TIER-2 EXPANSION ──────────────────────────────────────┐
 │   │                                                           │
 ├── casepacks/          Reproducible validation bundles (26)    │
-├── tests/              Test suite (20,221 tests, 232 files)    │
+├── tests/              Test suite (20,540 tests, 233 files)    │
 ├── paper/              Papers + INDEX.md (19 substantive)      │
 ├── data/               External input data (CERN, TERS, etc.)  │
 ├── runs/               Frozen run outputs (kinematics RUN004)  │
