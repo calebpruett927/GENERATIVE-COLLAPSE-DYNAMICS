@@ -33,7 +33,7 @@ _REPO_ROOT = Path(__file__).resolve().parent.parent
 VERSION = "2.3.3"
 """Package version — canonical source is pyproject.toml, but this must match."""
 
-THEOREM_COUNT = 752
+THEOREM_COUNT = 746
 """Proven theorems across all domain closures.  Update after adding theorems."""
 
 IDENTITY_COUNT = 44

@@ -32,8 +32,8 @@ export const CLOSURE_COUNT = '246';
 export const CLOSURE_COUNT_RAW = 246;
 
 /** Proven theorems across all domain closures. */
-export const THEOREM_COUNT = '752';
-export const THEOREM_COUNT_RAW = 752;
+export const THEOREM_COUNT = '746';
+export const THEOREM_COUNT_RAW = 746;
 
 /** Implementation languages (C99, C++17, Python). */
 export const LANGUAGE_COUNT = '3';
