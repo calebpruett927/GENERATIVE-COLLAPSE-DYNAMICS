@@ -129,6 +129,45 @@ stable \texttt{extern "C"} ABI for the full validation spine.
 \maketitle
 
 % ============================================================
+% Reader's Route — fast-access map to the canonical reference
+% ============================================================
+\begin{figure*}[!t]
+\centering
+\begin{tikzpicture}
+\node[draw=blue!55!black, line width=0.7pt,
+      fill=blue!4, rounded corners=4pt,
+      inner sep=11pt, text width=0.96\textwidth] (route) {%
+\renewcommand{\arraystretch}{1.22}%
+\setlength{\tabcolsep}{8pt}%
+\begin{minipage}{\linewidth}
+\centering
+{\bfseries\large\color{blue!55!black}%
+  Reader's Route\,---\,Where to start}\\[1pt]
+{\footnotesize\itshape\color{blue!55!black}%
+  This is a canonical reference. New readers may prefer the
+  \href{https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/blob/main/scripts/orientation.py}%
+  {Orientation Series}
+  or
+  \href{https://github.com/calebpruett927/GENERATIVE-COLLAPSE-DYNAMICS/blob/main/THE_FIRST_PASS.md}%
+  {First Pass} \\
+  for an entry path; this paper is the spine they return to.}\\[6pt]
+{\small
+\begin{tabular}{@{}>{\bfseries\color{blue!55!black}}l@{\hspace{0.6em}}l@{\hspace{1.4em}}>{\bfseries\color{blue!55!black}}l@{\hspace{0.6em}}l@{}}
+If you need\,\dots & go to & If you need\,\dots & go to \\
+\midrule
+the axiom               & \S\ref{sec:axiom}\,(II)
+  & return / welds        & \S\ref{sec:seam}\,(VII), \S\ref{sec:governance}\,(XV) \\
+the kernel              & \S\ref{sec:kernel}\,(IV)
+  & implementation scope  & \S\ref{sec:scope}\,(XVI) \\
+constants \& gates      & \S\hyperref[sec:regime]{V}\,--\,\S\ref{sec:regime}\,(VI)
+  & the spine end-to-end  & \S\ref{sec:canon}\,(XII) \\
+\end{tabular}}
+\end{minipage}
+};
+\end{tikzpicture}
+\end{figure*}
+
+% ============================================================
 \section{Introduction: The Incoherence of Standard Scientific Logic}
 \label{sec:intro}
 % ============================================================
