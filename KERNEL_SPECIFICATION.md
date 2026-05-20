@@ -769,7 +769,7 @@ Together, Lemmas 1–34 provide a **complete formal foundation** for kernel vali
 
 ---
 
-## 4b. Extended Lemmas: Empirical Discoveries and Cross-Domain Laws (35-46)
+## 4b. Extended Lemmas: Empirical Discoveries and Cross-Domain Laws (35-47)
 
 **Purpose**: These lemmas extend the formal foundation based on **empirical observations** from quantum optics, astrophysics, and topological quantum computing. They formalize patterns discovered in the physics_observations_complete.csv dataset (38 observations across 23 orders of magnitude in scale).
 
