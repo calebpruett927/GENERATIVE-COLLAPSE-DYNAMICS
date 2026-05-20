@@ -85,7 +85,7 @@ import{c as v,a as $}from"./kernel.BXRI7fNr.js";import"./constants.DtcEBpaC.js";
     `}function g(){const e=document.getElementById("domain-tbody"),t=10;e.innerHTML=o.map(n=>{const a={STABLE:{bg:"bg-green-900/20",text:"text-green-400"},WATCH:{bg:"bg-amber-900/20",text:"text-amber-400"},COLLAPSE:{bg:"bg-red-900/20",text:"text-red-400"}}[n.regime]||{bg:"",text:""},s=n.kernel.IC/n.kernel.F,l=x===n.id;return`
         <tr class="domain-row border-b border-kernel-800 hover:bg-kernel-800/30 transition cursor-pointer ${a.bg}"
             data-domain="${n.id}">
-          <td class="p-1.5 text-kernel-500 domain-chevron" style="width:20px">${l?"▾":"▸"}</td>
+          <td class="p-1.5 text-kernel-23 domains-chevron" style="width:20px">${l?"▾":"▸"}</td>
           <td class="p-1.5 text-kernel-300">${n.name}</td>
           <td class="text-right p-1.5">${n.kernel.F.toFixed(4)}</td>
           <td class="text-right p-1.5">${n.kernel.omega.toFixed(4)}</td>
