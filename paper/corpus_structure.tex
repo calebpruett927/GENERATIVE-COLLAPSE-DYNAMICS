@@ -1469,7 +1469,7 @@ L34 & Entropy-curvature & $C \to 0 \Longrightarrow S \to h(F)$, $\IC \to F$ \\
 \end{tabular}}
 \end{center}
 
-\subsection{Extended lemmas (L35--L46)}
+\subsection{Extended lemmas (L35--L47)}
 
 \begin{center}
 {\small\begin{tabular}{@{}clp{3.7cm}@{}}
@@ -1488,6 +1488,7 @@ L43 & RCFT convergence & Recursive kernel application converges \\
 L44 & Fractal return scaling & Return distances: power law in recursion depth \\
 L45 & Seam residual algebra & Monoid; associativity error $5.55 \times 10^{-17}$ \\
 L46 & Weld closure composition & PASS$_1 \wedge$ PASS$_2 \Rightarrow$ PASS$_{12}$ if residuals within tolerance \\
+L47 & Geometric slaughter (cross-domain) & One dead channel $c_k \to \eps$ kills $\IC$ while $F$ stays healthy: $\IC/F \to \eps^{w_k} \cdot (\IC_\mathrm{rest}/F)$.  Observed in 8/23 domains at phase boundaries (confinement, EWSB, cortical lesion). \\
 \bottomrule
 \end{tabular}}
 \end{center}
@@ -1505,7 +1506,12 @@ across $10{,}000$~random traces.  The seam lemmas
 test (associativity error $5.55 \times 10^{-17}$).
 Convergence lemmas (L39, L43--L44) are verified by the
 orientation script (section~9) and the RCFT closure test
-suite.  The full lemma verification is reproducible:
+suite.  The cross-domain geometric-slaughter lemma (L47)
+is verified by the orientation script (section~3) and the
+confinement-cliff observation in the standard-model closure
+(neutron $\IC/F = 0.0089$, proton $\IC/F = 0.0371$; all
+hadrons below $0.04$ owing to the dead colour channel).
+The full lemma verification is reproducible:
 \texttt{pytest tests/} exercises every lemma through
 parametrized tests spanning all 23~domains.
 
