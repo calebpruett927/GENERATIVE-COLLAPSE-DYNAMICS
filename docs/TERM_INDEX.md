@@ -1,7 +1,7 @@
 # UMCP Term Index
 
-**Alphabetical term lookup with file locations**  
-**Version:** 1.0.0  
+**Alphabetical term lookup with file locations**
+**Version:** 1.0.0
 **Last Updated:** 2026-01-20
 
 Quick alphabetical index of all protocol terms with definitions and file locations. For symbol-specific lookup, see [Symbol Index](SYMBOL_INDEX.md). For complete structured definitions, see [Glossary](../GLOSSARY.md).
@@ -315,7 +315,8 @@ Quick alphabetical index of all protocol terms with definitions and file locatio
 
 ## R
 
-**RCFT** - Recursive Collapse Field Theory (Tier-2)
+**RCFT** - Recursive Collapse Field Theory (functional system — *explores*; Tier-2 closure family in this repo)
+- Placement: [SUMMA_REDITUS.md](../SUMMA_REDITUS.md) §II–III — RCFT is on the functional axis, not a tier
 - Canon: [canon/rcft_anchors.yaml](canon/rcft_anchors.yaml)
 - Contract: [contracts/RCFT.INTSTACK.v1.yaml](contracts/RCFT.INTSTACK.v1.yaml)
 - Theory: [docs/rcft_theory.md](docs/rcft_theory.md)
@@ -497,6 +498,6 @@ Quick alphabetical index of all protocol terms with definitions and file locatio
 
 ---
 
-**Last Updated:** 2026-01-20  
-**Version:** 1.0.0  
+**Last Updated:** 2026-01-20
+**Version:** 1.0.0
 **Maintenance:** Update when new terms introduced or locations change

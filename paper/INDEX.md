@@ -51,7 +51,7 @@ against the same frozen contract with the same frozen parameters.
 | 11 | [nile_collapse_dynamics.tex](nile_collapse_dynamics.tex) | History (civilizations) | 3 trajectories | 18 | — | F+ω=1: 0.0 · IC≤F: 100% · IC=exp(κ): <1e-15 |
 | 12 | [magnetic_friction_kernel.tex](magnetic_friction_kernel.tex) | Materials (magnetic) | 12 systems | — | 32 | F+ω=1: 0.0 · IC≤F: 100% · IC=exp(κ): <1e-15 |
 | 13 | [gravitational_time_dilation.tex](gravitational_time_dilation.tex) | Spacetime / gravity | (theoretical) | 6 | — | F+ω=1: 0.0 · IC≤F: 100% · IC=exp(κ): <1e-15 |
-| 14 | [corpus_structure.tex](corpus_structure.tex) | GCD corpus (meta) | 18 domains | 4 | — | F+ω=1: 0.0 · IC≤F: 100% · IC=exp(κ): <1e-15 |
+| 14 | [corpus_structure.tex](corpus_structure.tex) | Structura Collapsus — collapse-kernel & protocol reference | 18 domains | 4 | — | F+ω=1: 0.0 · IC≤F: 100% · IC=exp(κ): <1e-15 |
 | 15 | [gcd_whitepaper.tex](gcd_whitepaper.tex) | GCD/UMCP (whitepaper) | 406 objects | 3 | — | F+ω=1: 0.0 · IC≤F: 100% · IC=exp(κ): <1e-15 |
 | 16 | [ulrc_grammar.tex](ulrc_grammar.tex) | ULRC grammar / semiotics | (formal grammar) | 1 | — | F+ω=1: 0.0 · IC≤F: 100% · IC=exp(κ): <1e-15 |
 | 17 | [the_first_pass.tex](the_first_pass.tex) | GCD tutorial | (worked example) | — | — | F+ω=1: 0.0 · IC≤F: 100% · IC=exp(κ): <1e-15 |

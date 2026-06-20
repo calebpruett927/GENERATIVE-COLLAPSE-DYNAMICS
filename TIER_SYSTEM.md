@@ -11,6 +11,14 @@
 
 The **UMCP tier system** has exactly three tiers. No half-tiers. No confusion.
 
+> **The tiers are the authority axis.** They govern *what may be changed*, and they are
+> orthogonal to the **functional axis** — UMCP (measures), RCFT (explores), ULRC (preserves
+> language) — which governs *what is being done* and operates across all three tiers. A
+> functional system is **never** a tier. The functional axis is specified in
+> [FUNCTIONAL_SYSTEMS.md](FUNCTIONAL_SYSTEMS.md); for the two-axis matrix and the
+> constitutional layer above (Reditus → Structura Reditus → GCD), see
+> [SUMMA_REDITUS.md](SUMMA_REDITUS.md).
+
 | Tier | Name | Role |
 |------|------|------|
 | **1** | **The Kernel** | The mathematical function K: [0,1]ⁿ × Δⁿ → (F, ω, S, C, κ, IC), its six definitions, their provable identities (F + ω = 1, IC ≤ F, IC = exp(κ), S ≈ f(F,C)), and the 47 lemmas, 44 structural identities, and 5 structural constants that follow. 3 effective degrees of freedom (F, κ, C). Domain-independent. Immutable. |

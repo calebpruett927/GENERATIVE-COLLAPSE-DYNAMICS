@@ -1,22 +1,29 @@
 # Recursive Collapse Field Theory (RCFT) - Tier-2 Overlay
 
-**Quick Reference:** [GLOSSARY.md](../GLOSSARY.md#tier-2-rcft-overlay-extensions) | [SYMBOL_INDEX.md](../SYMBOL_INDEX.md#tier-2-rcft-extension-symbols) | [canon/rcft_anchors.yaml](../canon/rcft_anchors.yaml)
+**Quick Reference:** [GLOSSARY.md](../GLOSSARY.md#tier-2-rcft-overlay-extensions) | [SYMBOL_INDEX.md](../SYMBOL_INDEX.md#tier-2-rcft-extension-symbols) | [canon/rcft_anchors.yaml](../canon/rcft_anchors.yaml) | [SUMMA_REDITUS.md](../SUMMA_REDITUS.md) | [FUNCTIONAL_SYSTEMS.md](../FUNCTIONAL_SYSTEMS.md)
+
+> **Placement.** RCFT is one of the three **functional systems** of GCD — it *explores*
+> (UMCP measures; ULRC preserves language). A functional system operates *across* all tiers
+> and is **not itself a tier**. What this document specifies is RCFT's **Tier-2 closure
+> family** — the fractal/recursive geometric overlay with symbols D_f, Ψ_r, λ_p, Θ. RCFT
+> *develops* Tier-2 closures, but RCFT itself is cross-tier. See
+> [SUMMA_REDITUS.md](../SUMMA_REDITUS.md) §II–III for the authority/function separation.
 
 ## Overview
 
-RCFT is a Tier-2 overlay that extends the Generative Collapse Dynamics (GCD) framework with geometric and topological analysis capabilities. It operates under the principle of **augmentation without override**: all GCD Tier-1 invariants remain frozen and unchanged, while RCFT adds three new dimensions of analysis.
+This RCFT overlay is a **Tier-2 closure family** that extends the Generative Collapse Dynamics (GCD) framework with geometric and topological analysis capabilities. It operates under the principle of **augmentation without override**: all GCD Tier-1 invariants remain frozen and unchanged, while RCFT adds three new dimensions of analysis.
 
 ## Theoretical Foundation
 
 ### Three Core Principles
 
-**P-RCFT-0: Augmentation, Never Override**  
+**P-RCFT-0: Augmentation, Never Override**
 RCFT adds analytical dimensions without modifying GCD's mathematical foundation. All 13 Tier-1 symbols (`ω`, `F`, `S`, `C`, `τ_R`, `κ`, `IC`, `IC_min`, `I`, `E_potential`, `Φ_collapse`, `Φ_gen`, `R`) remain frozen.
 
-**P-RCFT-1: Recursion Reveals Hidden Structure**  
+**P-RCFT-1: Recursion Reveals Hidden Structure**
 Collapse events exhibit self-similar patterns across scales. RCFT quantifies these recursive structures through fractal dimension and field memory analysis.
 
-**P-RCFT-2: Fields Carry Collapse Memory**  
+**P-RCFT-2: Fields Carry Collapse Memory**
 The collapse field `Ψ` encodes the history of prior collapse events. Recursive analysis reveals how past collapses influence future dynamics through exponentially-decaying field memory.
 
 ## RCFT Metrics
@@ -83,7 +90,7 @@ $$\Psi_r = \sum_{n=1}^{\infty} \alpha^n \cdot \Psi_n \quad \text{converges for }
 - **Mixed** ($0.1 \leq$ phase variance $\leq 0.5$): Combination of standing and traveling waves
 - **Traveling** (phase variance $> 0.5$): Propagating oscillations, low phase coherence
 
-**Interpretation**: 
+**Interpretation**:
 - $\lambda_p$ measures the characteristic length scale of oscillations. Infinite wavelength indicates constant fields.
 - $\Theta$ measures the phase angle. Low phase variance indicates coherent oscillations (standing waves).
 

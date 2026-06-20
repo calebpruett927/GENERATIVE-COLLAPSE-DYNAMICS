@@ -5,6 +5,13 @@
 This file maps the repository's directory structure to the three tiers,
 the five-stop validation spine, and the append-only continuity rule.
 
+> **Placement.** This document describes the **authority axis** (the tiers) and the spine.
+> The orthogonal **functional axis** — UMCP (measures), RCFT (explores), ULRC (preserves
+> language), each operating *across* all tiers — and the constitutional layer above it
+> (object *Reditus* → field *Structura Reditus* → theory GCD) are mapped in
+> [SUMMA_REDITUS.md](SUMMA_REDITUS.md). The tiers govern *what may change*; the functional
+> systems govern *what is done*. A functional system is never a tier.
+
 ---
 
 ## The Spine in the File System

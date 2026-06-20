@@ -20,6 +20,8 @@ Explore the GCD kernel live in your browser — no installation required. Comput
 
 > **Core Axiom**: *"Collapse is generative; only what returns is real."*
 
+> **Start here → [SUMMA_REDITUS.md](SUMMA_REDITUS.md)** (the ordered-body front door) and **[STRUCTURA_REDITUS.md](STRUCTURA_REDITUS.md)** (object & field). The mature corpus funnels through one structure: *Reditus* is the object, *Structura Reditus* the field, **GCD** the foundational theory — which generates two orthogonal axes: **authority** (Tier-1 / Tier-0 / Tier-2) and **function** (UMCP *measures* · RCFT *explores* · ULRC *preserves language*). UMCP, RCFT, and ULRC are functional systems, not tiers: the tiers govern *what may change*, the systems govern *what is done*.
+
 **Universal Measurement Contract Protocol (UMCP)** is a contract-first validation framework that verifies reproducible computational workflows against mathematical contracts. It implements **Generative Collapse Dynamics (GCD)** and **Recursive Collapse Field Theory (RCFT)** — a unified measurement theory where every claim must demonstrate return through collapse under frozen evaluation rules.
 
 This is not a simulation. It is a **metrological enforcement engine**: schema conformance, kernel identity verification, regime classification, and SHA-256 integrity checking — producing a three-valued `CONFORMANT` / `NONCONFORMANT` / `NON_EVALUABLE` verdict for every run.
