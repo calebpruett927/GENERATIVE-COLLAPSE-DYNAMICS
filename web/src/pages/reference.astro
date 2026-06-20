@@ -46,6 +46,9 @@ const base = import.meta.env.BASE_URL;
       <button data-tab="terminology" class="ref-tab-btn bg-kernel-800 text-kernel-400 px-4 py-2 rounded-lg text-sm transition hover:bg-kernel-700">
         Terminology
       </button>
+      <button data-tab="architecture" class="ref-tab-btn bg-kernel-800 text-kernel-400 px-4 py-2 rounded-lg text-sm transition hover:bg-kernel-700">
+        Architecture
+      </button>
     </div>
 
     <!-- Tab content -->
@@ -344,6 +347,56 @@ const base = import.meta.env.BASE_URL;
     table.innerHTML = html;
   }
 
+  // ─── Architecture — Two Axes (authority × functional) ─────
+  const architecture = {
+    constitution: [
+      { name: 'Reditus', kind: 'object', desc: 'The admissible return of structure through collapse under declared conditions.' },
+      { name: 'Structura Reditus', kind: 'field', desc: 'The field that studies admissible return.' },
+      { name: 'GCD', kind: 'theory', desc: 'Generative Collapse Dynamics — the foundational theory that generates both axes.' },
+    ],
+    authority: [
+      { tier: 'Tier-1', name: 'The Kernel', desc: 'The kernel function and its provable identities. Immutable within a run.' },
+      { tier: 'Tier-0', name: 'Protocol', desc: 'Embedding, regime gates, seam calculus, validation — the code that computes the kernel.' },
+      { tier: 'Tier-2', name: 'Expansion Space', desc: 'Domain closures: which real-world quantities become channels. Freely extensible.' },
+    ],
+    functional: [
+      { sys: 'UMCP', verb: 'measures', desc: 'Universal Measurement Contract Protocol — validates reproducible workflows against contracts.' },
+      { sys: 'RCFT', verb: 'explores', desc: 'Recursive Collapse Field Theory — the discovery engine; develops Tier-2 closures.' },
+      { sys: 'ULRC', verb: 'preserves language', desc: 'Unified Language of Recursive Collapse — translates meaning across tiers without drift.' },
+    ],
+  };
+
+  function renderArchitecture() {
+    const block = (title: string, color: string, rows: { a: string; b: string; desc: string }[]) => `
+      <div>
+        <div class="text-[10px] uppercase tracking-wider mb-2" style="color:${color}">${title}</div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          ${rows.map(r => `
+            <div class="bg-kernel-900 border border-kernel-700 rounded-lg p-4">
+              <div class="flex items-baseline gap-2 mb-1">
+                <span class="text-sm font-bold text-kernel-200">${r.a}</span>
+                <span class="text-[10px] uppercase text-kernel-600">${r.b}</span>
+              </div>
+              <div class="text-xs text-kernel-400">${r.desc}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>`;
+    return `<div class="space-y-6">
+      <p class="text-xs text-kernel-500">
+        GCD generates two orthogonal axes (separation of powers). The <strong class="text-kernel-300">authority axis</strong>
+        (tiers) governs what may change; the <strong class="text-kernel-300">functional axis</strong> (systems) governs
+        what is done. A functional system operates across all tiers but is never a tier.
+      </p>
+      ${block('The Constitution — object before field, field before theory', '#fbbf24', architecture.constitution.map(c => ({ a: c.name, b: c.kind, desc: c.desc })))}
+      ${block('Authority Axis — what may be changed (tiers)', '#60a5fa', architecture.authority.map(t => ({ a: t.tier, b: t.name, desc: t.desc })))}
+      ${block('Functional Axis — what is being done (systems)', '#4ade80', architecture.functional.map(f => ({ a: f.sys, b: f.verb, desc: f.desc })))}
+      <div class="text-xs text-kernel-500 px-3 py-2 bg-kernel-900/50 rounded border border-kernel-800 italic">
+        The two axes are orthogonal: tiers govern authority, systems govern operation. The systems operate across the tiers; the tiers constrain what each system may alter.
+      </div>
+    </div>`;
+  }
+
   // ─── Tab Routing ──────────────────────────────────────────
   const renderers: Record<string, () => string> = {
     symbols: renderSymbols,
@@ -352,6 +405,7 @@ const base = import.meta.env.BASE_URL;
     lenses: renderLenses,
     spine: renderSpine,
     terminology: renderTerminology,
+    architecture: renderArchitecture,
   };
 
   function renderActiveTab() {
