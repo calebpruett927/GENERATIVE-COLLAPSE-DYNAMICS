@@ -14,9 +14,24 @@
 - C/C++ Assertions: 760
 - Python: ≥3.11
 
-## Core Framework (UMCP — Universal Measurement Contract Protocol)
+## Architecture — The Mature Hierarchy (Two Axes)
 
-UMCP validates reproducible computational workflows against mathematical contracts.
+Reditus is the object: the admissible return of structure through collapse under declared conditions.
+Structura Reditus is the field that studies it. Generative Collapse Dynamics (GCD) is the foundational
+theory. GCD generates two orthogonal axes (separation of powers):
+
+- Authority axis (what may be changed) — the tiers: Tier-1 (immutable kernel), Tier-0 (protocol), Tier-2 (domain closures).
+- Functional axis (what is being done) — the systems: UMCP measures, RCFT explores, ULRC preserves language.
+
+A functional system operates across all tiers but is never a tier. Order of burden:
+object before field, field before theory, theory before protocol, protocol before domain application.
+
+## UMCP — Measurement Functional System
+
+UMCP (Universal Measurement Contract Protocol) is the measurement system of GCD: it validates
+reproducible computational workflows against mathematical contracts. RCFT (Recursive Collapse Field
+Theory) explores candidate structures before freeze; ULRC (Unified Language of Recursive Collapse)
+preserves structural meaning across domains.
 Every claim follows the spine: Contract → Canon → Closures → Integrity Ledger → Stance.
 Verdicts are three-valued: CONFORMANT / NONCONFORMANT / NON_EVALUABLE.
 
