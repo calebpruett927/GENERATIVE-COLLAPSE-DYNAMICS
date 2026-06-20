@@ -1,4 +1,4 @@
-import{c as Sa,a as nl}from"./kernel.BXRI7fNr.js";import{E as il}from"./constants.DtcEBpaC.js";/**
+import{c as Sa,a as nl}from"./kernel.Dqu16SkF.js";import{E as il}from"./constants.DtcEBpaC.js";/**
  * @license
  * Copyright 2010-2026 Three.js Authors
  * SPDX-License-Identifier: MIT
