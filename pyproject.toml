@@ -85,7 +85,7 @@ dependencies = [
   "pyyaml>=6.0.1",
   "jsonschema>=4.23.0",
   "numpy>=1.24.0",
-  "scipy>=1.10.0"
+  "scipy>=1.17.1"
 ]
 
 # Optional dependencies for different use cases
