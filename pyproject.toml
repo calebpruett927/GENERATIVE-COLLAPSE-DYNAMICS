@@ -277,6 +277,7 @@ exclude_lines = [
 line-length = 120
 target-version = "py311"
 exclude = ["archive", "build", "build_*", "src/umcp_c/build*", "src/umcp_cpp/build*"]
+extend-exclude = ["*.md"]  # Markdown code fences are documentation, not formatter-owned Python source
 
 [tool.ruff.lint]
 select = [

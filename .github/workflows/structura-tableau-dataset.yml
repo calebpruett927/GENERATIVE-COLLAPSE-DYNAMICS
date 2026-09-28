@@ -1,0 +1,66 @@
+name: Build Structura Tableau Dataset
+
+on:
+  push:
+    branches:
+      - feat/structura-tableau-control-surface
+    paths:
+      - "integrations/tableau/**"
+      - ".github/workflows/structura-tableau-dataset.yml"
+      - "runs/**"
+      - "archive/runs/**"
+      - "casepacks/**"
+  workflow_dispatch:
+    inputs:
+      include_archive:
+        description: Include archive/runs lineage
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build dataset
+        shell: bash
+        run: |
+          args=(--repo-root . --output-dir artifacts/tableau)
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.include_archive }}" != "true" ]]; then
+            args+=(--no-archive)
+          fi
+          python integrations/tableau/export_dataset.py "${args[@]}"
+
+      - name: Validate dataset
+        run: python integrations/tableau/validate_export.py artifacts/tableau
+
+      - name: Package dataset
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import shutil
+
+          root = Path("artifacts/tableau")
+          shutil.make_archive("artifacts/structura-reditus-tableau-dataset", "zip", root)
+          PY
+
+      - name: Upload dataset artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: structura-reditus-tableau-dataset
+          path: |
+            artifacts/tableau/
+            artifacts/structura-reditus-tableau-dataset.zip
+          if-no-files-found: error
+          retention-days: 30
